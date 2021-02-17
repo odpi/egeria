@@ -4729,39 +4729,6 @@ public class RepositoryHandler
 
 
     /**
-     * Create a local relationship between two entities.
-     *
-     * @param userId calling user
-     * @param relationshipTypeGUID unique identifier of the relationship's type
-     * @param end1GUID entity to store at end 1
-     * @param end2GUID entity to store at end 2
-     * @param relationshipProperties properties for the relationship
-     * @param methodName name of calling method
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public void createRelationship(String                  userId,
-                                   String                  relationshipTypeGUID,
-                                   String                  end1GUID,
-                                   String                  end2GUID,
-                                   InstanceProperties      relationshipProperties,
-                                   String                  methodName) throws UserNotAuthorizedException,
-                                                                              PropertyServerException
-    {
-        this.createRelationship(userId,
-                                relationshipTypeGUID,
-                                null,
-                                null,
-                                end1GUID,
-                                end2GUID,
-                                relationshipProperties,
-                                methodName);
-    }
-
-
-    /**
      * Create a relationship between two entities.  The value of external source GUID determines if it is local or remote.
      *
      * @param userId calling user
@@ -5634,6 +5601,8 @@ public class RepositoryHandler
         {
             this.createRelationship(userId,
                                     relationshipTypeGUID,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     end1GUID,
                                     end2GUID,
                                     null,

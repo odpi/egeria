@@ -616,18 +616,14 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                              "Look for the confirmation message that indicated that the connection object is valid and has been incorporated into " +
                               "the enterprise connector manager's list."),
 
-
     REMOTE_MEMBER_REFRESHED("OMRS-AUDIT-0128",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "Configuration for an existing remote member from server {0} for cohort {1} is being refreshed into the enterprise connector" +
-                                    " manager.  It has a metadata collection id of {2}, a metadata collection name of {3}, " +
+                      "Configuration received for an existing remote member from server {0} for cohort {1} has not changed.  It has a " +
+                              "metadata collection id of {2}, a metadata collection name of {3}, " +
                                     "the server type is {4} and its owning organization is {5}",
-                      "The enterprise connector manager is preparing to process new connection information from a remote member of the cohort.  " +
-                              "It will attempt to create a connector for it in order to validate that the connection object is valid. If all is " +
-                              "well, the list of systems that are called when a request is made by the access services is updated with the new " +
-                              "member.",
-                      "Look for the confirmation message that indicated that the connection object is valid and has been added into " +
-                              "the enterprise connector manager's list."),
+                      "The enterprise connector manager has validated that there is no need to update the enterprise configuration for " +
+                              "this remote member.",
+                      "Validate that nothing has changed in the remote system."),
 
     NEW_REMOTE_MEMBER_FAILURE("OMRS-AUDIT-0129",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -679,6 +675,18 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                "The connector has been removed from this access service's federation list " +
                                        "of servers that are called during a metadata request.",
                              "Ensure that this message appears for each of the access services operating in this server."),
+
+    REMOTE_MEMBER_UPDATED("OMRS-AUDIT-0135",
+                          OMRSAuditLogRecordSeverity.INFO,
+                          "Configuration for an existing remote member from server {0} for cohort {1} has changed and is being updated in" +
+                                  " the enterprise connector manager.  It has a metadata collection id of {2}, a metadata collection name of {3}, " +
+                                  "the server type is {4} and its owning organization is {5}",
+                          "The enterprise connector manager is preparing to process new connection information from a remote member of the cohort.  " +
+                                  "It will attempt to create a connector for it in order to validate that the connection object is valid. If all is " +
+                                  "well, the list of systems that are called when a request is made by the access services is updated with the new " +
+                                  "member.",
+                          "Look for the confirmation message that indicated that the connection object is valid and has been added into " +
+                                  "the enterprise connector manager's list."),
 
     INCOMING_CONFLICTING_TYPEDEFS("OMRS-AUDIT-0201",
                       OMRSAuditLogRecordSeverity.TYPES,

@@ -69,7 +69,7 @@ public class DatabaseIntegratorRESTServices
 
             response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
                                                                         DatabaseIntegratorConnector.class,
-                                                                        IntegrationServiceDescription.DATABASE_INTEGRATOR_OMIS.getIntegrationServiceName()));
+                                                                        IntegrationServiceDescription.DATABASE_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
         }
         catch (Throwable error)
         {

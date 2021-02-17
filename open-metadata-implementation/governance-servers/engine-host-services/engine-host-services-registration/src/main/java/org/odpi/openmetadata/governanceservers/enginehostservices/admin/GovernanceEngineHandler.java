@@ -33,12 +33,13 @@ import java.util.*;
  */
 public abstract class GovernanceEngineHandler
 {
-    protected String                 serverName;    /* Initialized in constructor */
-    protected String                 serverUserId;  /* Initialized in constructor */
-    protected GovernanceEngineClient serverClient;  /* Initialized in constructor */
-    protected String                 engineUserId;  /* Initialized in constructor */
-    protected AuditLog               auditLog;      /* Initialized in constructor */
-    protected int                    maxPageSize;   /* Initialized in constructor */
+    protected String                 serverName;        /* Initialized in constructor */
+    protected String                 serverUserId;      /* Initialized in constructor */
+    private   String                 engineServiceName; /* Initialized in constructor */
+    protected GovernanceEngineClient serverClient;      /* Initialized in constructor */
+    protected String                 engineUserId;      /* Initialized in constructor */
+    protected AuditLog               auditLog;          /* Initialized in constructor */
+    protected int                    maxPageSize;       /* Initialized in constructor */
 
     protected String                     governanceEngineName;   /* Initialized in constructor */
     protected String                     governanceEngineGUID       = null;
@@ -61,6 +62,7 @@ public abstract class GovernanceEngineHandler
      * @param engineConfig the properties of the governance engine.
      * @param serverName the name of the engine host server where the governance engine is running
      * @param serverUserId user id for the server to use
+     * @param engineServiceName name of the OMES that is supporting this governance engine
      * @param configurationClient client to retrieve the configuration
      * @param serverClient client to control the execution of governance action requests
      * @param auditLog logging destination
@@ -69,11 +71,13 @@ public abstract class GovernanceEngineHandler
     public GovernanceEngineHandler(EngineConfig                        engineConfig,
                                    String                              serverName,
                                    String                              serverUserId,
+                                   String                              engineServiceName,
                                    GovernanceEngineConfigurationClient configurationClient,
                                    GovernanceEngineClient              serverClient,
                                    AuditLog                            auditLog,
                                    int                                 maxPageSize)
     {
+        this.engineServiceName = engineServiceName;
         this.governanceEngineName = engineConfig.getEngineQualifiedName();
         this.serverName = serverName;
         this.serverUserId = serverUserId;
@@ -113,6 +117,7 @@ public abstract class GovernanceEngineHandler
 
         mySummary.setGovernanceEngineName(governanceEngineName);
         mySummary.setGovernanceEngineTypeName(governanceEngineTypeName);
+        mySummary.setGovernanceEngineService(engineServiceName);
         mySummary.setGovernanceEngineGUID(governanceEngineGUID);
 
         if (governanceEngineProperties != null)

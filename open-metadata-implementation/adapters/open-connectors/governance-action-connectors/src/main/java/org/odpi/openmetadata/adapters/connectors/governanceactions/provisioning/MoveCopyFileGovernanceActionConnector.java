@@ -7,11 +7,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
@@ -23,7 +21,7 @@ import java.util.*;
 /**
  * MoveCopyFileGovernanceActionConnector moves or copies files from one location to another and optionally creates lineage between them.
  */
-class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceActionService
+public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceActionService
 {
     /*
      * This map remembers the index of the last file that was created in a destination folder.
@@ -229,7 +227,7 @@ class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceAction
 
             Object fileNamePatternOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.TARGET_FILE_NAME_PATTERN_CONFIGURATION_PROPERTY);
 
-            if (processNameOption != null)
+            if (fileNamePatternOption != null)
             {
                 destinationFileNamePattern = fileNamePatternOption.toString();
             }
@@ -298,13 +296,14 @@ class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceAction
         {
             if (auditLog != null)
             {
-                auditLog.logMessage(methodName,
-                                    GovernanceActionConnectorsAuditCode.PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                    error.getClass().getName(),
-                                                                                                                    sourceFileName,
-                                                                                                                    destinationFolderName,
-                                                                                                                    destinationFileNamePattern,
-                                                                                                                    error.getMessage()));
+                auditLog.logException(methodName,
+                                      GovernanceActionConnectorsAuditCode.PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      sourceFileName,
+                                                                                                                      destinationFolderName,
+                                                                                                                      destinationFileNamePattern,
+                                                                                                                      error.getMessage()),
+                                      error);
             }
 
             outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
@@ -322,17 +321,230 @@ class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanceAction
     }
 
 
-    private String getPathName(OpenMetadataElement metadataElement)
+    /**
+     * Extract the path name located in the properties of the the supplied asset metadata element (either a FileFolder or DataFile).
+     * It looks first in the linked connection endpoint.  If this is not available then the qualified name of the asset is used.
+     *
+     * @param asset metadata element
+     * @return pathname
+     */
+    private String getPathName(OpenMetadataElement asset)
     {
         final String methodName = "getPathName";
-        // todo navigate to Endpoint and only use qualifiedName if Endpoint not available
+        final String connectionRelationshipName = "ConnectionToAsset";
 
-        ElementProperties properties = metadataElement.getElementProperties();
+        final String qualifiedNameParameterName = "qualifiedName";
 
-        return propertyHelper.getStringProperty(governanceServiceName,
-                                                "qualifiedName",
+        /*
+         * The best location of the pathname is in the endpoint address property of the connection object linked to the
+         * metadata element.
+         */
+        OpenMetadataStore store = governanceContext.getOpenMetadataStore();
+
+        try
+        {
+            List<RelatedMetadataElement> connectionLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
+                                                                                            connectionRelationshipName,
+                                                                                            0,
+                                                                                            0);
+
+            if ((connectionLinks == null) || (connectionLinks.isEmpty()))
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                          GovernanceActionConnectorsAuditCode.NO_LINKED_CONNECTION.getMessageDefinition(governanceServiceName,
+                                                                                                                        asset.getElementGUID()));
+                }
+            }
+            else if (connectionLinks.size() > 1)
+            {
+                String pathName = null;
+
+                for (RelatedMetadataElement connectionLink : connectionLinks)
+                {
+                    if (connectionLink != null)
+                    {
+                        String networkAddress = this.getPathNameFromConnection(asset.getElementGUID(), connectionLink);
+
+                        if (networkAddress != null)
+                        {
+                            if (pathName == null)
+                            {
+                                pathName = networkAddress;
+                            }
+                            else
+                            {
+                                if (! networkAddress.equals(pathName))
+                                {
+                                    if (auditLog != null)
+                                    {
+                                        auditLog.logMessage(methodName,
+                                                            GovernanceActionConnectorsAuditCode.TOO_MANY_CONNECTIONS.getMessageDefinition(governanceServiceName,
+                                                                                                                                          Integer.toString(connectionLinks.size()),
+                                                                                                                                          asset.getElementGUID(),
+                                                                                                                                          connectionLinks.toString()));
+                                    }
+
+                                    pathName = null;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (pathName != null)
+                {
+                    return pathName;
+                }
+            }
+            else
+            {
+                String pathName = this.getPathNameFromConnection(asset.getElementGUID(), connectionLinks.get(0));
+
+                if (pathName != null)
+                {
+                    return pathName;
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      GovernanceActionConnectorsAuditCode.ENDPOINT_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  error.getMessage()),
+                                      error);
+            }
+        }
+
+        /*
+         * Unable to get the pathname from the endpoint so default to the qualified name.
+         */
+        ElementProperties properties = asset.getElementProperties();
+
+        String qualifiedName = propertyHelper.getStringProperty(governanceServiceName,
+                                                qualifiedNameParameterName,
                                                 properties,
                                                 methodName);
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                GovernanceActionConnectorsAuditCode.QUALIFIED_NAME_PATH_NAME.getMessageDefinition(governanceServiceName,
+                                                                                                                  qualifiedName));
+        }
+
+        return qualifiedName;
+    }
+
+
+    /**
+     * Extract the network address from the endpoint lined to the connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param connectionLink link between the asset and the connection
+     * @return network address from the endpoint, null or exception
+     * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    private String getPathNameFromConnection(String                 assetGUID,
+                                             RelatedMetadataElement connectionLink) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String endpointRelationshipName = "ConnectionEndpoint";
+        final String endpointNetworkAddressName = "networkAddress";
+        final String methodName = "getPathNameFromConnection";
+
+        OpenMetadataStore   store = governanceContext.getOpenMetadataStore();
+        OpenMetadataElement connection = connectionLink.getElementProperties();
+
+        if (connection == null)
+        {
+            /*
+             * The connection comes from the RelatedMetadataElement.  If it is null then this is a bug in the governance action framework (GAF).
+             */
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    GovernanceActionConnectorsAuditCode.NO_RELATED_ASSET.getMessageDefinition(governanceServiceName,
+                                                                                                              connectionLink.toString()));
+            }
+        }
+        else
+        {
+            List<RelatedMetadataElement> endpointLinks = store.getRelatedMetadataElements(connection.getElementGUID(),
+                                                                                          endpointRelationshipName,
+                                                                                          0,
+                                                                                          0);
+
+            if ((endpointLinks == null) || (endpointLinks.isEmpty()))
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        GovernanceActionConnectorsAuditCode.NO_LINKED_ENDPOINT.getMessageDefinition(governanceServiceName,
+                                                                                                                    assetGUID,
+                                                                                                                    connection.getElementGUID()));
+                }
+            }
+            else if (endpointLinks.size() > 1)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        GovernanceActionConnectorsAuditCode.TOO_MANY_ENDPOINTS.getMessageDefinition(governanceServiceName,
+                                                                                                                    assetGUID,
+                                                                                                                    connection.getElementGUID(),
+                                                                                                                    Integer.toString(
+                                                                                                                            endpointLinks.size()),
+                                                                                                                    endpointLinks.toString()));
+                }
+            }
+            else
+            {
+                OpenMetadataElement endpoint = endpointLinks.get(0).getElementProperties();
+
+                if (endpoint == null)
+                {
+                    if (auditLog != null)
+                    {
+                        auditLog.logMessage(methodName,
+                                            GovernanceActionConnectorsAuditCode.NO_RELATED_ASSET.getMessageDefinition(governanceServiceName,
+                                                                                                                      endpointLinks.get(0).toString()));
+                    }
+                }
+                else
+                {
+                    ElementProperties properties = endpoint.getElementProperties();
+
+                    String address = propertyHelper.getStringProperty(governanceServiceName,
+                                                                      endpointNetworkAddressName,
+                                                                      properties,
+                                                                      methodName);
+                    if (address == null)
+                    {
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                GovernanceActionConnectorsAuditCode.NO_NETWORK_ADDRESS.getMessageDefinition(governanceServiceName,
+                                                                                                                            endpoint.getElementGUID(),
+                                                                                                                            connection.getElementGUID(),
+                                                                                                                            assetGUID));
+                        }
+                    }
+
+                    return address;
+                }
+            }
+        }
+
+        return null;
     }
 
 

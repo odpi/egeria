@@ -5,9 +5,13 @@ package org.odpi.openmetadata.engineservices.governanceaction.server;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMESServiceInstanceHandler;
 import org.odpi.openmetadata.engineservices.governanceaction.handlers.GovernanceActionEngineHandler;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.engineservices.governanceaction.properties.ProviderReport;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 
 /**
  * GovernanceActionInstanceHandler retrieves information from the instance map for the
@@ -28,31 +32,49 @@ class GovernanceActionInstanceHandler extends OMESServiceInstanceHandler
 
 
     /**
-     * Retrieve the specific handler for the governance action engine.
+     * Return the connector type for the requested connector provider after validating that the resulting
+     * connector implements the correct interface.  This method is for tools that are configuring
+     * connector into an Egeria governance server.  Each integration service/engine service has a specific
+     * REST API endpoint for their service.  The configuration tool calls it and this method is called.
+     * Because the method is in the instance handler, a result can be returned for all registered services
+     * (the service does not need to be configured and running).
      *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
-     * @param governanceActionEngineName unique name of the governance action engine
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return handler for use by the requested instance
-     * @throws InvalidParameterException no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @param connectorProviderClassName name of the connector provider class
+     * @param requiredConnectorInterface  connector interface class
+     * @param serviceName service name
+     * @return ConnectorType bean
+     * @throws InvalidParameterException one of the parameters is null
+     * @throws ConnectionCheckedException the connection passed to the connector provider is not valid
+     * @throws ConnectorCheckedException the connector is not valid
+     * @throws ClassNotFoundException when the provided class cannot be found
+     * @throws InstantiationException when the provided class cannot be instantiated
+     * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
-    GovernanceActionEngineHandler getGovernanceActionEngineHandler(String userId,
-                                                     String serverName,
-                                                     String governanceActionEngineName,
-                                                     String serviceOperationName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public ProviderReport validateGovernanceActionConnector(String   connectorProviderClassName,
+                                                            Class<?> requiredConnectorInterface,
+                                                            String   serviceName) throws InvalidParameterException,
+                                                                                         ConnectionCheckedException,
+                                                                                         ConnectorCheckedException,
+                                                                                         ClassNotFoundException,
+                                                                                         InstantiationException,
+                                                                                         IllegalAccessException
     {
-        GovernanceActionInstance instance = (GovernanceActionInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        ProviderReport providerReport = new ProviderReport();
+        providerReport.setConnectorType(validateConnector(connectorProviderClassName, requiredConnectorInterface, serviceName));
 
-        if (instance != null)
+        Class<?> connectorProviderClass = Class.forName(connectorProviderClassName);
+        Object   connectorProvider = connectorProviderClass.newInstance();
+
+        if (connectorProvider instanceof GovernanceActionServiceProviderBase)
         {
-            return instance.getGovernanceActionEngine(governanceActionEngineName);
+            GovernanceActionServiceProviderBase governanceActionServiceProvider = (GovernanceActionServiceProviderBase)connectorProvider;
+            providerReport.setSupportedRequestTypes(governanceActionServiceProvider.supportedRequestTypes());
+            providerReport.setSupportedRequestParameters(governanceActionServiceProvider.supportedRequestParameters());
+            providerReport.setSupportedRequestSourceNames(governanceActionServiceProvider.supportedRequestSourceNames());
+            providerReport.setSupportedActionTargetNames(governanceActionServiceProvider.supportedActionTargetNames());
+            providerReport.setSupportedGuards(governanceActionServiceProvider.supportedGuards());
         }
 
-        return null;
+        return providerReport;
     }
 }

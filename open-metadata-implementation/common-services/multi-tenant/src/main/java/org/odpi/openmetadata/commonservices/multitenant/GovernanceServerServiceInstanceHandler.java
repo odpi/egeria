@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
@@ -19,7 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  */
 public class GovernanceServerServiceInstanceHandler extends AuditableServerServiceInstanceHandler
 {
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    protected final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Constructor passes the service name that is used on all calls to this instance.

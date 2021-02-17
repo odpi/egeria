@@ -38,7 +38,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
+            <artifactId>governance-action-api</artifactId>
         </dependency>
 
         <dependency>

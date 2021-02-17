@@ -168,7 +168,7 @@ public class GovernanceContext
     {
         this.completionStatus = status;
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, newActionTargetGUIDs);
+        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargetGUIDs);
     }
 
 
