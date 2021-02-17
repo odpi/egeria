@@ -85,8 +85,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_GUID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_DISPLAY_NAME;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
@@ -473,7 +471,7 @@ public class LineageGraphConnectorHelper {
             lineageVertex.setNodeID(originalVertex.property((PROPERTY_KEY_PROCESS_GUID)).value().toString());
 
         }
-        Map<String, String> properties = retrieveProperties(originalVertex);
+        Map<String, String> properties = retrieveProperties(originalVertex, false);
         lineageVertex.setProperties(properties);
         return lineageVertex;
     }
@@ -496,13 +494,13 @@ public class LineageGraphConnectorHelper {
      *
      * @return the filtered properties of the vertex
      */
-    private Map<String, String> retrieveProperties(Vertex vertex) {
+    private Map<String, String> retrieveProperties(Vertex vertex, Boolean retrieveAll) {
         boolean isClassificationVertex = vertex.edges(Direction.IN, EDGE_LABEL_CLASSIFICATION).hasNext();
         Map<String, String> newNodeProperties = new HashMap<>();
         Iterator<VertexProperty<Object>> originalProperties = vertex.properties();
         while (originalProperties.hasNext()) {
             Property<Object> originalProperty = originalProperties.next();
-            if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key()) || isClassificationVertex) {
+            if (retrieveAll || immutableReturnedPropertiesWhiteList.contains(originalProperty.key()) || isClassificationVertex) {
                 String newPropertyKey = originalProperty.key().
                         replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, "").
                         replace(PROPERTY_KEY_PREFIX_ELEMENT, "");
@@ -895,12 +893,10 @@ public class LineageGraphConnectorHelper {
         Map<String, String> properties = new HashMap<>();
         if(vertexGraphTraversal.hasNext()) {
             Vertex vertex = vertexGraphTraversal.next();
-            properties = retrieveProperties(vertex);
+            properties = retrieveProperties(vertex, true);
         }
 
         LineageVertex lineageVertex = new LineageVertex();
-        lineageVertex.setDisplayName(properties.remove(PROPERTY_NAME_DISPLAY_NAME));
-        lineageVertex.setGuid(properties.remove(PROPERTY_NAME_GUID));
         lineageVertex.setProperties(properties);
 
         return lineageVertex;
