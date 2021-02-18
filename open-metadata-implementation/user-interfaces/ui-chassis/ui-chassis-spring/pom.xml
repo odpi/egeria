@@ -58,12 +58,6 @@
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.reactivestreams</groupId>
-                    <artifactId>reactive-streams</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
