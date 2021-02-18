@@ -86,6 +86,12 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_COLUMN_IN_GUID = "columnInGuid";
     public static final String PROPERTY_KEY_COLUMN_OUT_GUID = "columnOutGuid";
 
+    //EMBEDDED PROPERTIES
+
+    public static final String PROPERTY_KEY_ADDITIONAL_PROPERTIES = "additionalProperties";
+    public static final String PROPERTY_KEY_EXTENDED_PROPERTIES = "extendedProperties";
+
+
     public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_NAME_QUALIFIED_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_QUALIFIED_NAME;
