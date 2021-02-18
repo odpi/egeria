@@ -152,9 +152,9 @@ public class AssetBuilder extends ReferenceableBuilder
      * @throws InvalidParameterException AssetZones is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
      */
-    void setAssetZones(String       userId,
-                       List<String> zoneMembership,
-                       String       methodName) throws InvalidParameterException
+    protected void setAssetZones(String       userId,
+                                 List<String> zoneMembership,
+                                 String       methodName) throws InvalidParameterException
     {
         try
         {
@@ -214,10 +214,10 @@ public class AssetBuilder extends ReferenceableBuilder
      * @throws InvalidParameterException AssetOwnership is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
      */
-    void setAssetOwnership(String userId,
-                           String owner,
-                           int    ownerType,
-                           String methodName) throws InvalidParameterException
+    protected void setAssetOwnership(String userId,
+                                     String owner,
+                                     int    ownerType,
+                                     String methodName) throws InvalidParameterException
     {
         if (owner != null)
         {

@@ -5,15 +5,12 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionProcessElement;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -1235,6 +1232,7 @@ public class GovernanceEngineRESTServices
                 handler.recordCompletionStatus(userId,
                                                governanceActionGUID,
                                                statusOrdinal,
+                                               requestBody.getRequestProperties(),
                                                requestBody.getOutputGuards(),
                                                requestBody.getNewActionTargetGUIDs(),
                                                methodName);
@@ -1361,6 +1359,7 @@ public class GovernanceEngineRESTServices
                                                                          requestBody.getProcessQualifiedName(),
                                                                          requestBody.getRequestSourceGUIDs(),
                                                                          requestBody.getActionTargetGUIDs(),
+                                                                         requestBody.getRequestProperties(),
                                                                          requestBody.getStartTime(),
                                                                          requestBody.getOriginatorServiceName(),
                                                                          requestBody.getOriginatorEngineName(),

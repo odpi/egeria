@@ -23,7 +23,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
 {
     private static final Logger log = LoggerFactory.getLogger(DataFolderMonitorIntegrationConnector.class);
 
-    private File              dataFolderFile    = null;
+    private File dataFolderFile = null;
 
     /**
      * Set up the file listener class - this is implemented by the subclasses

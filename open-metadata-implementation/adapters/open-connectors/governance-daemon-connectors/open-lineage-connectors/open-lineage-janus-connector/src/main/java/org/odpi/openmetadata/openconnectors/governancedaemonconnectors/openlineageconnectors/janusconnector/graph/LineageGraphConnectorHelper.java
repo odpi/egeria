@@ -471,7 +471,7 @@ public class LineageGraphConnectorHelper {
             lineageVertex.setNodeID(originalVertex.property((PROPERTY_KEY_PROCESS_GUID)).value().toString());
 
         }
-        Map<String, String> properties = retrieveProperties(originalVertex);
+        Map<String, String> properties = retrieveProperties(originalVertex, false);
         lineageVertex.setProperties(properties);
         return lineageVertex;
     }
@@ -494,13 +494,13 @@ public class LineageGraphConnectorHelper {
      *
      * @return the filtered properties of the vertex
      */
-    private Map<String, String> retrieveProperties(Vertex vertex) {
+    private Map<String, String> retrieveProperties(Vertex vertex, Boolean retrieveAll) {
         boolean isClassificationVertex = vertex.edges(Direction.IN, EDGE_LABEL_CLASSIFICATION).hasNext();
         Map<String, String> newNodeProperties = new HashMap<>();
         Iterator<VertexProperty<Object>> originalProperties = vertex.properties();
         while (originalProperties.hasNext()) {
             Property<Object> originalProperty = originalProperties.next();
-            if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key()) || isClassificationVertex) {
+            if (retrieveAll || immutableReturnedPropertiesWhiteList.contains(originalProperty.key()) || isClassificationVertex) {
                 String newPropertyKey = originalProperty.key().
                         replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, "").
                         replace(PROPERTY_KEY_PREFIX_ELEMENT, "");
@@ -879,5 +879,26 @@ public class LineageGraphConnectorHelper {
             default:
                 return Optional.empty();
         }
+    }
+
+    /**
+     * Gets lineage vertex by guid.
+     *
+     * @param guid the guid
+     * @return the lineage vertex by guid
+     */
+    LineageVertex getLineageVertexByGuid(String guid) {
+        GraphTraversal<Vertex, Vertex> vertexGraphTraversal = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
+
+        Map<String, String> properties = new HashMap<>();
+        if(vertexGraphTraversal.hasNext()) {
+            Vertex vertex = vertexGraphTraversal.next();
+            properties = retrieveProperties(vertex, true);
+        }
+
+        LineageVertex lineageVertex = new LineageVertex();
+        lineageVertex.setProperties(properties);
+
+        return lineageVertex;
     }
 }

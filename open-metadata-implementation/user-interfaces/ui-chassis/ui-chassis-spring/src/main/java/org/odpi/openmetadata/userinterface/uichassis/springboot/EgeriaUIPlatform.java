@@ -23,6 +23,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.PostConstruct;
 
@@ -40,6 +42,9 @@ public class EgeriaUIPlatform {
     @Value("${strict.ssl}")
     Boolean strictSSL;
 
+    @Value("${cors.allowed-origins}")
+    String[] allowedOrigins;
+
     public static void main(String[] args) {
         SpringApplication.run(EgeriaUIPlatform.class, args);
     }
@@ -54,6 +59,22 @@ public class EgeriaUIPlatform {
             }
         };
     }
+
+
+    @Bean
+    @ConditionalOnProperty(value = "cors.allowed-origins")
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                if(allowedOrigins.length>0) {
+                    registry.addMapping("/**")
+                            .allowedOrigins(allowedOrigins);
+                }
+            }
+        };
+    }
+
 
 
     @Bean

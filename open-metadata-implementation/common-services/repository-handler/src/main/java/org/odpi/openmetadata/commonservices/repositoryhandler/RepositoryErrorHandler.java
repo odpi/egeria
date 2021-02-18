@@ -461,11 +461,12 @@ public class RepositoryErrorHandler
                                              String     methodName,
                                              String     typeName)
     {
-        auditLog.logMessage(methodName, RepositoryHandlerAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
-                                                                                                              typeName,
-                                                                                                              methodName,
-                                                                                                              error.getClass().getName(),
-                                                                                                              error.getMessage()));
+        auditLog.logException(methodName, RepositoryHandlerAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
+                                                                                                                typeName,
+                                                                                                                methodName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                error.getMessage()),
+                              error);
     }
 
 

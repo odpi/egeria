@@ -41,11 +41,6 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
 
     private static final String connectorClassName = MoveCopyFileGovernanceActionConnector.class.getName();
 
-    private List<String> supportedRequestTypes       = new ArrayList<>();
-    private List<String> supportedRequestParameters  = new ArrayList<>();
-    private List<String> supportedTargetActionNames  = new ArrayList<>();
-    private List<String> supportedGuards             = new ArrayList<>();
-
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -56,15 +51,19 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         super();
         super.setConnectorClassName(connectorClassName);
 
+        supportedRequestTypes = new ArrayList<>();
         supportedRequestTypes.add(COPY_REQUEST_TYPE);
         supportedRequestTypes.add(MOVE_REQUEST_TYPE);
 
+        supportedRequestParameters = new ArrayList<>();
         supportedRequestParameters.add(SOURCE_FILE_PARAMETER);
         supportedRequestParameters.add(DESTINATION_FOLDER_PARAMETER);
 
+        supportedTargetActionNames = new ArrayList<>();
         supportedTargetActionNames.add(SOURCE_FILE_ACTION_TARGET);
         supportedTargetActionNames.add(DESTINATION_FOLDER_ACTION_TARGET);
 
+        supportedGuards = new ArrayList<>();
         supportedGuards.add(PROVISIONING_COMPLETE_GUARD);
         supportedGuards.add(PROVISIONING_FAILED_GUARD);
 
@@ -82,74 +81,11 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         recognizedConfigurationProperties.add(PROVISION_UNCATALOGUED_FILES_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(NO_LINEAGE_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(LINEAGE_PROCESS_NAME_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(TOP_LEVEL_PROCESS_ONLY_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(LINEAGE_TO_DESTINATION_FOLDER_ONLY_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(TARGET_FILE_NAME_PATTERN_CONFIGURATION_PROPERTY);
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
-    }
-
-
-    /**
-     * The request types returned are those that affect the governance action service's behaviour.  Other request types may be used
-     * to call the governance action service but they result in default behaviour.
-     *
-     * @return list of request types
-     */
-    @Override
-    public List<String> supportedRequestTypes()
-    {
-        return supportedRequestTypes;
-    }
-
-
-    /**
-     * The request parameters returned are used by the governance action service to control its behaviour.
-     *
-     * @return list of parameter names used if the connector is provisioning
-     */
-    @Override
-    public List<String> supportedRequestParameters()
-    {
-        return supportedRequestParameters;
-    }
-
-
-    /**
-     * The request source names returned are the request source names that affect the governance action service's behaviour.  Other request
-     * source names may be used in a call the governance action service but they result in default behaviour.
-     *
-     * @return null since request sources are ignored
-     */
-    @Override
-    public List<String> supportedRequestSourceNames()
-    {
-        return null;
-    }
-
-
-    /**
-     * The action target names returned are those that affect the governance action service's behaviour.  Other action target names may be used
-     * in a call the governance action service but they result in default behaviour.
-     *
-     * @return list of action target names with special meaning
-     */
-    @Override
-    public List<String> supportedActionTargetNames()
-    {
-        return supportedTargetActionNames;
-    }
-
-
-    /**
-     * The guards describe the output assessment from the governance action service.  The list returned is the complete list of
-     * guards to expect from the governance action service.  They are used when defining governance action processes that choreograph
-     * the execution of governance action services using the guards to determine the path in the process to take.
-     *
-     * @return list of guards
-     */
-    @Override
-    public  List<String> supportedGuards()
-    {
-        return supportedGuards;
     }
 }

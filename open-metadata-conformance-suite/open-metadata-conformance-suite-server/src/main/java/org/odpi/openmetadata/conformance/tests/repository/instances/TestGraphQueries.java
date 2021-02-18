@@ -15,12 +15,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.text.MessageFormat;
+import java.util.*;
 
 
 /**
@@ -58,7 +54,7 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
     private static final String assertionMsg7 = " graph query returned all the expected related entities.";
 
     private static final String assertion8 = testCaseId + "-08";
-    private static final String assertionMsg8 = " graph query returned the expected number of entities.";
+    private static final String assertionMsg8 = " getLinkedEntities found {0}/{1} expected entities using parameters: {2}";
 
     private static final String assertion9 = testCaseId + "-09";
     private static final String assertionMsg9 = " graph query returned all the expected entities.";
@@ -1264,13 +1260,17 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
 
                 /* Check entities */
+                int resultCount = returnedEntities == null ? 0 : returnedEntities.size();
+                int expectedEntityCount = expectedEntityGUIDs.size();
+                Map<String, String> parameters = getParameters(entityAGUID, entityBGUID);
+                String assertionMessage = MessageFormat.format(assertionMsg8, resultCount, expectedEntityCount, parameters);
 
                 assertCondition(((!expectedEntityGUIDs.isEmpty() && returnedEntities != null
                                 && !(returnedEntities.isEmpty())
                                 && returnedEntities.size() == expectedEntityGUIDs.size())
                                 || expectedEntityGUIDs.isEmpty() && returnedEntities == null),
                         assertion8,
-                        testTypeName + assertionMsg8,
+                        assertionMessage,
                         RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
                         RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
 
@@ -1320,6 +1320,15 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
             }
         }
+    }
+
+    private Map<String, String> getParameters(String startEntityGUID, String endEntityGUID) {
+        Map<String,String> parameters = new TreeMap<>();
+        parameters.put("startEntityGUID", startEntityGUID);
+        parameters.put("endEntityGUID", endEntityGUID);
+        parameters.put("limitResultsByStatus", "null");
+        parameters.put("asOfTime", "null");
+        return parameters;
     }
 
 }
