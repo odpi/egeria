@@ -455,7 +455,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                     SubjectAreaOMASAPIResponse<Category> relatedCategoriesResponse = getCategoriesWithPaging(userId, guid, categoryHandler, startingFrom, pageSize, methodName);
                     if (relatedCategoriesResponse.results() != null && relatedCategoriesResponse.results().size() > 0) {
                         for (Category relatedCategory : relatedCategoriesResponse.results()) {
-                            if (filteredCategoriesList.size() < pageSize) {
+                            if (filteredCategoriesList.size() < requestedStartingFrom + pageSize) {
                                 boolean addCategory = false;
                                 if (isAll) {
                                     if (onlyTop) {

@@ -298,7 +298,6 @@ public class SubjectAreaGlossaryRESTResource {
                                                                       @RequestParam(value = "sequencingOrder", required = false) String sequencingOrder,
                                                                       @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
                                                                       ) {
-
         return restAPI.getGlossaryCategories(serverName, userId, guid, searchCriteria, asOfTime, onlyTop, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 }
