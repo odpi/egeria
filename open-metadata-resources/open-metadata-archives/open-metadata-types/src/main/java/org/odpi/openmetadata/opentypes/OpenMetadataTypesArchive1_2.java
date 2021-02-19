@@ -9685,30 +9685,11 @@ public class OpenMetadataTypesArchive1_2
 
         final String superTypeName = "SoftwareServerCapability";
 
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "version";
-        final String attribute1Description     = "Version number of the protocol supported by the cohort registry.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
     }
 
 
@@ -19642,37 +19623,16 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
         
-        final String attribute1Name            = "minimumLength";
-        final String attribute1Description     = "Minimum length of the data.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "length";
-        final String attribute2Description     = "Length of the data.";
-        final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "fraction";
         final String attribute3Description     = "Number of significant digits to the right of decimal point.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "isNullable";
-        final String attribute4Description     = "Accepts null values or not.";
-        final String attribute4DescriptionGUID = null;
         final String attribute5Name            = "isUnique";
         final String attribute5Description     = "Data is unique or not.";
         final String attribute5DescriptionGUID = null;
         
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
-                                                        attribute2Description,
-                                                        attribute2DescriptionGUID);
-        properties.add(property);
         property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
                                                         attribute3Description,
                                                         attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute4Name,
-                                                            attribute4Description,
-                                                            attribute4DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getBooleanTypeDefAttribute(attribute5Name,
                                                             attribute5Description,

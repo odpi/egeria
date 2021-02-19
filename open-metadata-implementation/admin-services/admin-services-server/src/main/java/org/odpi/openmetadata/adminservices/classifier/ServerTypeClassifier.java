@@ -98,13 +98,21 @@ public class ServerTypeClassifier
         if (accessServiceConfigList != null)
         {
             LocalRepositoryMode localRepositoryMode = this.detectLocalRepository(repositoryServicesConfig);
-            if (localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
+            if (localRepositoryMode == LocalRepositoryMode.METADATA_CACHE)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else if (localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else if (localRepositoryMode == LocalRepositoryMode.PLUGIN_REPOSITORY)
             {
                 serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
             }
             else if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY)
             {
-                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+                serverTypeClassification = ServerTypeClassification.REPOSITORY_PROXY;
             }
             else
             {
@@ -355,20 +363,23 @@ public class ServerTypeClassifier
         if (serverTypeClassification == null)
         {
             /*
-             * Last attempt to classify is the repository proxy.
-             * The repository proxy has the local repository and nothing else.
+             * Last attempt to classify the server - it could be a metadata server or a repository proxy that are not running the access services.
              */
-            LocalRepositoryMode localRepositoryMode = this.detectLocalRepository(repositoryServicesConfig);
+            LocalRepositoryMode   localRepositoryMode = this.detectLocalRepository(repositoryServicesConfig);
 
             if (localRepositoryMode == LocalRepositoryMode.METADATA_CACHE)
             {
-                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_POINT;
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
             }
             else if (localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
             {
                 serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
             }
-            else
+            else if (localRepositoryMode == LocalRepositoryMode.PLUGIN_REPOSITORY)
+            {
+                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+            }
+            else if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY)
             {
                 serverTypeClassification = ServerTypeClassification.REPOSITORY_PROXY;
             }
@@ -493,7 +504,12 @@ public class ServerTypeClassifier
 
         if (localRepositoryMode == null)
         {
-            return LocalRepositoryMode.UNCLASSIFIED;
+            if (localRepositoryConfig.getLocalRepositoryLocalConnection() != null)
+            {
+                return LocalRepositoryMode.REPOSITORY_PROXY;
+            }
+
+            return LocalRepositoryMode.NO_REPOSITORY;
         }
 
         return localRepositoryMode;

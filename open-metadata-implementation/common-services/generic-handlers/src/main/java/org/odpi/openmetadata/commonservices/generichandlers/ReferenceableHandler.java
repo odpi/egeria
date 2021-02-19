@@ -728,7 +728,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Returns the list of related assets for the asset.  It uses the supportedZones supplied with the service.
+     * Returns the list of elements that are linked to provide more information.  It uses the supportedZones supplied with the service.
      *
      * @param userId       String   userId of user making request.
      * @param startingGUID    String   unique id for element.
@@ -768,7 +768,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Returns the list of related assets for the asset.
+     * Returns the list of elements that are linked to provide more information.
      *
      * @param userId       String   userId of user making request.
      * @param startingGUID    String   unique id for element.

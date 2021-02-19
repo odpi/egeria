@@ -71,7 +71,7 @@ public class FilesIntegratorRESTServices
 
             response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
                                                                         FilesIntegratorConnector.class,
-                                                                        IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceName()));
+                                                                        IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
         }
         catch (Throwable error)
         {

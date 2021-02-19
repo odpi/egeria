@@ -70,7 +70,7 @@ public class CatalogIntegratorRESTServices
 
             response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
                                                                         CatalogIntegratorConnector.class,
-                                                                        IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS.getIntegrationServiceName()));
+                                                                        IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
         }
         catch (Throwable error)
         {

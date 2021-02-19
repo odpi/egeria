@@ -43,7 +43,7 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                           "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the ODPi Egeria community for help."),
 
     UNABLE_TO_SET_ANCHORS("OMAG-REPOSITORY-HANDLER-0004",
-                          OMRSAuditLogRecordSeverity.ERROR,
+                          OMRSAuditLogRecordSeverity.EXCEPTION,
                           "The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of type {1} during method {2}." +
                                   " The resulting exception was {3} with error message {4}",
                           "The server was attempting to add Anchors classifications to a collection of metadata instances that are " +

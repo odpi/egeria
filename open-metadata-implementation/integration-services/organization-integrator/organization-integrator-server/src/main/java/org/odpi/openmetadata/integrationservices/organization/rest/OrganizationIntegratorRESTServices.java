@@ -69,7 +69,7 @@ public class OrganizationIntegratorRESTServices
 
             response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
                                                                         OrganizationIntegratorConnector.class,
-                                                                        IntegrationServiceDescription.ORGANIZATION_INTEGRATOR_OMIS.getIntegrationServiceName()));
+                                                                        IntegrationServiceDescription.ORGANIZATION_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
         }
         catch (Throwable error)
         {

@@ -386,6 +386,7 @@ public class OMAGServerPlatformActiveServices
         try
         {
             response.setServerName(serverName);
+            response.setServerType(serverInstanceMap.getServerType(userId, serverName, methodName));
             response.setActive(serverInstanceMap.isServerActive(userId, serverName));
             response.setServerStartTime(serverInstanceMap.getServerStartTime(userId, serverName));
             response.setServerEndTime(serverInstanceMap.getServerEndTime(userId, serverName));

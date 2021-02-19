@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,20 +20,17 @@ public class ProcessPropertiesBuilder extends AssetBuilder {
     private final String formula;
 
     public ProcessPropertiesBuilder(String qualifiedName, String processDisplayName, String technicalName, String technicalDescription,
-                                    String typeGUID, String typeName, String formula, Map<String, String> additionalProperties,
-                                    Map<String, Object> extendedProperties, InstanceStatus initialStatus, OMRSRepositoryHelper repositoryHelper,
-                                    String serviceName, String serverName) {
-        super(qualifiedName,
-                technicalName,
-                technicalDescription,
-                additionalProperties,
-                typeGUID,
-                typeName,
-                extendedProperties,
-                initialStatus,
-                repositoryHelper,
-                serviceName,
-                serverName);
+                                    List<String> zoneMembership, String owner, int ownerType, String typeGUID, String typeName,
+                                    String formula, Map<String, String> additionalProperties, Map<String, Object> extendedProperties,
+                                    InstanceStatus initialStatus, OMRSRepositoryHelper repositoryHelper, String serviceName,
+                                    String serverName, String userId, String methodName) throws InvalidParameterException {
+        super(qualifiedName, technicalName, technicalDescription, additionalProperties, typeGUID, typeName, extendedProperties,
+                initialStatus, repositoryHelper, serviceName, serverName);
+
+        if (zoneMembership != null) {
+            setAssetZones(userId, zoneMembership, methodName);
+        }
+        setAssetOwnership(userId, owner, ownerType, methodName);
 
         this.processDisplayName = processDisplayName;
         this.formula = formula;

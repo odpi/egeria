@@ -69,7 +69,7 @@ public class SecurityIntegratorRESTServices
 
             response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
                                                                         SecurityIntegratorConnector.class,
-                                                                        IntegrationServiceDescription.SECURITY_INTEGRATOR_OMIS.getIntegrationServiceName()));
+                                                                        IntegrationServiceDescription.SECURITY_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
         }
         catch (Throwable error)
         {

@@ -34,7 +34,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         It is restricted to the capability of the third party repository.
  *     </li>
  *     <li>
- *         OPEN_METADATA_NATIVE means the repository is able to support the open metadata types and instances
+ *         PLUGIN_REPOSITORY means the repository is able to support the open metadata types and instances
  *         natively.  This type of repository has been built specifically for open metadata and as such is able to
  *         absorb new types of metadata.  At least one of these types of repository should be operating in a cohort
  *         if the access services are enabled.
@@ -49,11 +49,13 @@ public enum LocalRepositoryMode implements Serializable
     UNCLASSIFIED         (0,  "Unclassified",        "The mode of the repository is unknown."),
     NO_REPOSITORY        (1,  "No Repository",       "The server is running without a local repository."),
     METADATA_CACHE       (2,  "Metadata Cache",      "This local repository is read only and is able to act as a cache " +
-            "for metadata but not to master new values."),
+                                                             "for metadata but not to master new values."),
     REPOSITORY_PROXY     (3,  "Repository Proxy",    "This local repository is actually a proxy to third party " +
-            "metadata repository. It is restricted to the capability of the third party repository."),
-    OPEN_METADATA_NATIVE (4,  "Open Metadata Native","This local repository has been built specifically for open metadata " +
-            "and as such is able to dynamically absorb new types of metadata.");
+                                                             "metadata repository. It is restricted to the capability of the third party repository."),
+    OPEN_METADATA_NATIVE (4,  "Open Metadata Native","This local repository is a plugin repository that is " +
+                                                             "part of Egeria and has been built " +
+                                                "specifically for open metadata and as such is able to dynamically absorb new types of metadata."),
+    PLUGIN_REPOSITORY    (5,  "Plugin Repository",   "This local repository has been built by a third party as a plugin repository.");
 
     private static final long serialVersionUID = 1L;
 

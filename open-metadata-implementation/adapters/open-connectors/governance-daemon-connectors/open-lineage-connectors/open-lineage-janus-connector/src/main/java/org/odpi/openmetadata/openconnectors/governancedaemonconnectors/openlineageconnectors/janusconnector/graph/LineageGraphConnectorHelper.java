@@ -78,6 +78,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TRANSLATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ADDITIONAL_PROPERTIES;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_EXTENDED_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
@@ -94,6 +96,11 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class LineageGraphConnectorHelper {
 
     private static final Logger log = LoggerFactory.getLogger(LineageGraphConnectorHelper.class);
+    private static final String EMPTY_STRING = "";
+    private static final String COMMA_SPACE_DELIMITER = ", ";
+    private static final String COLUMN_SPACE_DELIMITER = ": ";
+    private static final List<String> EMBEDDED_PROPERTIES = Arrays.asList(PROPERTY_KEY_ADDITIONAL_PROPERTIES, PROPERTY_KEY_EXTENDED_PROPERTIES);
+
 
     private final GraphTraversalSource g;
     private final boolean supportingTransactions;
@@ -502,12 +509,46 @@ public class LineageGraphConnectorHelper {
             Property<Object> originalProperty = originalProperties.next();
             if (immutableReturnedPropertiesWhiteList.contains(originalProperty.key()) || isClassificationVertex) {
                 String newPropertyKey = originalProperty.key().
-                        replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, "").
-                        replace(PROPERTY_KEY_PREFIX_ELEMENT, "");
+                        replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, EMPTY_STRING).
+                        replace(PROPERTY_KEY_PREFIX_ELEMENT, EMPTY_STRING);
 
                 String newPropertyValue = originalProperty.value().toString();
                 newNodeProperties.put(newPropertyKey, newPropertyValue);
             }
+        }
+        return newNodeProperties;
+    }
+
+    /**
+     * Retrieve all properties of the vertex from the db without filtering.
+     *
+     * @param vertex the vertex to de mapped
+     *
+     * @return the filtered properties of the vertex
+     */
+    private Map<String, String> retrieveAllProperties(Vertex vertex) {
+
+        Map<String, String> newNodeProperties = new HashMap<>();
+        Iterator<VertexProperty<Object>> originalProperties = vertex.properties();
+
+        while (originalProperties.hasNext()) {
+            Property<Object> originalProperty = originalProperties.next();
+
+                String newPropertyKey = originalProperty.key().
+                        replace(PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY, EMPTY_STRING).
+                        replace(PROPERTY_KEY_PREFIX_ELEMENT, EMPTY_STRING);
+
+                String newPropertyValue = originalProperty.value().toString();
+
+                if(EMBEDDED_PROPERTIES.contains(newPropertyKey)) {
+                    String[] propertyPairs = newPropertyValue.split(COMMA_SPACE_DELIMITER);
+                    for(String propertyPair : propertyPairs) {
+                        String[] propertyItems = propertyPair.split(COLUMN_SPACE_DELIMITER);
+                        newNodeProperties.put(propertyItems[0], propertyItems[1]);
+                    }
+                } else {
+                    newNodeProperties.put(newPropertyKey, newPropertyValue);
+                }
         }
         return newNodeProperties;
     }
@@ -879,5 +920,26 @@ public class LineageGraphConnectorHelper {
             default:
                 return Optional.empty();
         }
+    }
+
+    /**
+     * Gets lineage vertex by guid.
+     *
+     * @param guid the guid
+     * @return the lineage vertex by guid
+     */
+    LineageVertex getLineageVertexByGuid(String guid) {
+        GraphTraversal<Vertex, Vertex> vertexGraphTraversal = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
+
+        Map<String, String> properties = new HashMap<>();
+        if(vertexGraphTraversal.hasNext()) {
+            Vertex vertex = vertexGraphTraversal.next();
+            properties = retrieveAllProperties(vertex);
+        }
+
+        LineageVertex lineageVertex = new LineageVertex();
+        lineageVertex.setProperties(properties);
+
+        return lineageVertex;
     }
 }
