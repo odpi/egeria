@@ -278,6 +278,13 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                            "The thread will stop calling refresh() on the integration connectors hosted in this daemon and stop running.",
                            "Ensure that the thread terminates without errors."),
 
+    DAEMON_THREAD_CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0044",
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    "The integration daemon thread for integration daemon {0} caught a {1} exception from an integration connector containing message {2}",
+                    "The integration daemon thread will move to the next connector and revisit this connector at the next refresh time.",
+                    "Use the message from the exception and knowledge of the integration connector's behavior to " +
+                            "track down and resolve the cause of the error and then restart the connector.  The integration daemon thread will then continue to call the connector."),
+
     SERVER_NOT_AUTHORIZED("INTEGRATION-DAEMON-SERVICES-0050",
                           OMRSAuditLogRecordSeverity.SECURITY,
                           "Integration service {0} is not authorized to call its partner " +

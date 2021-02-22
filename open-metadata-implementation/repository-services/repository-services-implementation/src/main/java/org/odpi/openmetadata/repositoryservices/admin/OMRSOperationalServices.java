@@ -707,6 +707,7 @@ public class OMRSOperationalServices
              */
             LocalOMRSConnectorProvider localConnectorProvider =
                     new LocalOMRSConnectorProvider(localMetadataCollectionId,
+                                                   localRepositoryConfig.getLocalRepositoryMode(),
                                                    localRepositoryConfig.getLocalRepositoryRemoteConnection(),
                                                    getLocalRepositoryEventMapper(localRepositoryConfig.getEventMapperConnection()),
                                                    localRepositoryEventManager,

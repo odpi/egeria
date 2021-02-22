@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -208,6 +209,53 @@ public class GraphOMRSMapperUtils {
         return qualifiedPropertyNames;
     }
 
+    /*
+     * Return a de-duplicated map of (short) property name --> TDA, where each entry is the one found in the most superior type def
+     * in the type hierarchy. This is implemented by starting at the specified type and working up the hierarchy, overwriting a
+     * previous entry in the map with each higher definition of the same (short) property name.
+     */
+    Map<String,TypeDefAttribute>  getUniquePropertyDefsForTypeDef(String               sourceName,
+                                                                  TypeDef              typeDef,
+                                                                  OMRSRepositoryHelper repositoryHelper)
+    {
+        Map<String,TypeDefAttribute> uniquePropertyDefsForType = new HashMap<>();
 
+        List<TypeDefAttribute> propertiesDefinition = typeDef.getPropertiesDefinition();
+
+        if (propertiesDefinition != null)
+        {
+            for (TypeDefAttribute propDef : propertiesDefinition)
+            {
+                uniquePropertyDefsForType.put(propDef.getAttributeName(), propDef);
+            }
+        }
+
+        /*
+         * Move up the TypeDef hierarchy merging the higher level property definitions.
+         */
+        TypeDefLink superTypeLink = typeDef.getSuperType();
+
+        while (superTypeLink != null)
+        {
+            TypeDef superTypeDef = repositoryHelper.getTypeDefByName(sourceName, superTypeLink.getName());
+            if (superTypeDef != null)
+            {
+                List<TypeDefAttribute> superTypePropertiesDefinition = superTypeDef.getPropertiesDefinition();
+                if (superTypePropertiesDefinition != null)
+                {
+                    for (TypeDefAttribute propDef : superTypePropertiesDefinition)
+                    {
+                        uniquePropertyDefsForType.put(propDef.getAttributeName(), propDef);
+                    }
+                }
+                superTypeLink = superTypeDef.getSuperType();
+            }
+            else
+            {
+                superTypeLink = null; // finish
+            }
+        }
+        return uniquePropertyDefsForType;
+    }
 
 }

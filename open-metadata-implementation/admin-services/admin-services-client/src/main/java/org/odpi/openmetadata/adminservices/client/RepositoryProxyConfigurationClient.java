@@ -64,17 +64,17 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
 
 
     /**
-     * Provide the connection to the local repository connector that maps
-     * the OMRS RepositoryConnector API to the third party repository API.
+     * Provide the connection to the third party metadata server repository connector that maps
+     * the OMRS RepositoryConnector API to the third party metadata server API.
      *
      * @param connection  connection to the OMRS repository connector.
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setRepositoryConnection(Connection connection) throws OMAGNotAuthorizedException,
-                                                                      OMAGInvalidParameterException,
-                                                                      OMAGConfigurationErrorException
+    public void setRepositoryProxyConnection(Connection connection) throws OMAGNotAuthorizedException,
+                                                                           OMAGInvalidParameterException,
+                                                                           OMAGConfigurationErrorException
     {
         final String methodName    = "setRepositoryConnection";
         final String parameterName = "connection";
@@ -98,7 +98,7 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
 
 
     /**
-     * Provide the connection to the local repository connector that maps
+     * Provide the connection to the third party metadata server repository connector that maps
      * the OMRS RepositoryConnector API to the third party repository API.
      *
      * @param connectorProvider    connector provider class name to the OMRS repository connector.
@@ -107,8 +107,8 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public void setRepositoryConnection(String              connectorProvider,
-                                        Map<String, Object> additionalProperties) throws OMAGNotAuthorizedException,
+    public void setRepositoryProxyConnection(String              connectorProvider,
+                                             Map<String, Object> additionalProperties) throws OMAGNotAuthorizedException,
                                                                                               OMAGInvalidParameterException,
                                                                                               OMAGConfigurationErrorException
     {
@@ -136,7 +136,7 @@ public class RepositoryProxyConfigurationClient extends CohortMemberConfiguratio
 
 
     /**
-     * Provide the connection to the local repository's event mapper if needed.  The default value is null which
+     * Provide the connection to the third party repository's event mapper.  The default value is null which
      * means no event mapper.  An event mapper is needed if the third party repository has additional APIs that can change
      * the metadata in its repository without going through the open metadata and governance services.
      * The event mapper detects changes to the third party repository and converts them to OMRS Events.

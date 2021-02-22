@@ -214,6 +214,8 @@ public class PersonalProfileHandler
         String profileGUID =  repositoryHandler.createEntity(userId,
                                                              PersonalProfileMapper.PERSONAL_PROFILE_TYPE_GUID,
                                                              PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,
+                                                             null,
+                                                             null,
                                                              properties,
                                                              methodName);
 
@@ -310,14 +312,17 @@ public class PersonalProfileHandler
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         repositoryHandler.removeEntity(userId,
+                                       null,
+                                       null,
                                        profileGUID,
+                                       guidParameterName,
                                        PersonalProfileMapper.PERSONAL_PROFILE_TYPE_GUID,
                                        PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,
                                        PersonalProfileMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                        qualifiedName,
                                        methodName);
 
-        // todo remove all dependent entities
+        // todo remove all dependent entities - in switch to
         log.debug("Delete of personal details successful: " + profileGUID);
     }
 

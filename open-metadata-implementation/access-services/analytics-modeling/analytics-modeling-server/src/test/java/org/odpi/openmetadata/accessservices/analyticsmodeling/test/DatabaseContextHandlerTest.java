@@ -7,6 +7,7 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.expectThrows;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsMode
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
@@ -38,6 +40,8 @@ import org.testng.annotations.Test;
 
 public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
+	private static final String TBL_LOCATION = "Location";
+	private static final String TBL_DATE = "Date";
 	private static final String DATABASE_ADVENTURE_WORKS = "AdventureWorks";
 	private static final String DATABASE_GOSALES = "GOSALES";
 	private static final String DATA_TYPE_DECIMAL = "DECIMAL";
@@ -279,17 +283,17 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		EntityDetail entitySchema = createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 
-		EntityDetail entityTableDate = createSchemaTable(entitySchema, "Date");
+		EntityDetail entityTableDate = createSchemaTable(entitySchema, TBL_DATE);
 		EntityDetail pkDate = addColumn(entityTableDate, "DateKey", DATA_TYPE_INTEGER, VENDOR_TYPE_INT32);
-		setColumnPrimaryKey(pkDate, buildKey(PRIMARY_KEY_PREFIX, "Date", "DateKey"));
-		addColumn(entityTableDate, "Date", "TIMESTAMP", "DATETIME");
+		setColumnPrimaryKey(pkDate, buildKey(PRIMARY_KEY_PREFIX, TBL_DATE, "DateKey"));
+		addColumn(entityTableDate, TBL_DATE, "TIMESTAMP", "DATETIME");
 
 		// table "Location" has combined primary key with two fields
-		EntityDetail entityTableLocation = createSchemaTable(entitySchema, "Location");
+		EntityDetail entityTableLocation = createSchemaTable(entitySchema, TBL_LOCATION);
 		EntityDetail pkLatitude = addColumn(entityTableLocation, "Latitude", DATA_TYPE_DECIMAL, DATA_TYPE_DECIMAL);
-		setColumnPrimaryKey(pkLatitude, buildKey(PRIMARY_KEY_PREFIX, "Location", "Latitude", "Longitude"));
+		setColumnPrimaryKey(pkLatitude, buildKey(PRIMARY_KEY_PREFIX, TBL_LOCATION, "Latitude", "Longitude"));
 		EntityDetail pkLongitude = addColumn(entityTableLocation, "Longitude", DATA_TYPE_DECIMAL, DATA_TYPE_DECIMAL);
-		setColumnPrimaryKey(pkLongitude, buildKey(PRIMARY_KEY_PREFIX, "Location", "Latitude", "Longitude"));
+		setColumnPrimaryKey(pkLongitude, buildKey(PRIMARY_KEY_PREFIX, TBL_LOCATION, "Latitude", "Longitude"));
 		addColumn(entityTableLocation, "Destination", DATA_TYPE_VARCHAR, VENDOR_TYPE_STRING);
 
 		EntityDetail entityTableA = createSchemaTable(entitySchema, "Product");
@@ -328,25 +332,41 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		// testing is done here
 		ResponseContainerModule moduleResponse = databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES,
-				SCHEMA_DBO);
+				SCHEMA_DBO, null);
 
 		// assert result
 		assertNotNull(moduleResponse);
 		List<Table> tables = moduleResponse.getPhysicalModule().getDataSource().get(0).getTable();
 
-		assertEquals(4, tables.size(), "Failed to retrieve tables.");
+		assertEquals(tables.size(), 4, "Failed to retrieve tables.");
 
 		String module = TestUtilities.readJsonFile("/src/test/resources/", "getModule");
 		TestUtilities.validateGUIDs(moduleResponse);
 		TestUtilities.assertObjectJson(moduleResponse, module);
-	}
+		
+		// test table filter include
+		ModuleTableFilter filter = new ModuleTableFilter();
+		filter.getMeta().setIncludedTables(Arrays.asList(TBL_DATE, TBL_LOCATION));
+		moduleResponse = databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES,	SCHEMA_DBO, filter);
+		assertNotNull(moduleResponse);
+		tables = moduleResponse.getPhysicalModule().getDataSource().get(0).getTable();
+		assertEquals(tables.size(), 2, "Two tables should pass the filter.");
+
+		// test table filter exclude
+		filter = new ModuleTableFilter();
+		filter.getMeta().setExcludedTables(Arrays.asList(TBL_DATE));
+		moduleResponse = databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES,	SCHEMA_DBO, filter);
+		assertNotNull(moduleResponse);
+		tables = moduleResponse.getPhysicalModule().getDataSource().get(0).getTable();
+		assertEquals(tables.size(), 3, "Three tables should pass the filter.");
+}
 
 	@Test
 	public void getModuleFailure_BadDataSourceGuid() {
 
 		String badGuid = "BadGuid";
 		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
-				() -> databaseContextHandler.getModule(badGuid, DATABASE_GOSALES, SCHEMA_DBO));
+				() -> databaseContextHandler.getModule(badGuid, DATABASE_GOSALES, SCHEMA_DBO, null));
 		assertEquals(AnalyticsModelingErrorCode.GET_ENTITY_EXCEPTION.getMessageDefinition().getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
 
@@ -360,7 +380,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		String badSchema = "schemaUnknown";
 		AnalyticsModelingCheckedException thrown = expectThrows(AnalyticsModelingCheckedException.class,
-				() -> databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES, badSchema));
+				() -> databaseContextHandler.getModule(entityDB.getGUID(), DATABASE_GOSALES, badSchema, null));
 
 		assertEquals(AnalyticsModelingErrorCode.SCHEMA_UNKNOWN.getMessageDefinition().getMessageId(),
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
@@ -388,7 +408,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	public void getModuleInvalidParameter() {
 
 		InvalidParameterException thrown = expectThrows(InvalidParameterException.class,
-				() -> databaseContextHandler.getModule(null, DATABASE_GOSALES, SCHEMA_DBO));
+				() -> databaseContextHandler.getModule(null, DATABASE_GOSALES, SCHEMA_DBO, null));
 		assertEquals(thrown.getParameterName(), DatabaseContextHandler.DATA_SOURCE_GUID, "Incorrect parameter name.");
 	}
 

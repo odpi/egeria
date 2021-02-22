@@ -11,30 +11,46 @@ import java.util.List;
  */
 public abstract class GovernanceActionServiceProviderBase extends ConnectorProviderBase
 {
+    protected List<String> supportedRequestTypes       = null;
+    protected List<String> supportedRequestParameters  = null;
+    protected List<String> supportedRequestSourceNames = null;
+    protected List<String> supportedTargetActionNames  = null;
+    protected List<String> supportedGuards             = null;
+
+
     /**
      * The request types returned are those that affect the governance action service's behaviour.  Other request types may be used
      * to call the governance action service but they result in default behaviour.
      *
-     * @return list of request types with special meaning
+     * @return list of request types
      */
-    public abstract List<String> supportedRequestTypes();
+    public List<String> supportedRequestTypes()
+    {
+        return supportedRequestTypes;
+    }
 
 
     /**
      * The request parameters returned are used by the governance action service to control its behaviour.
      *
-     * @return list of parameter names with special meaning
+     * @return list of parameter names used if the connector is provisioning
      */
-    public abstract List<String> supportedRequestParameters();
+    public List<String> supportedRequestParameters()
+    {
+        return supportedRequestParameters;
+    }
 
 
     /**
      * The request source names returned are the request source names that affect the governance action service's behaviour.  Other request
      * source names may be used in a call the governance action service but they result in default behaviour.
      *
-     * @return list of request source names with special meaning
+     * @return list of request sources with special meaning
      */
-    public abstract List<String> supportedRequestSourceNames();
+    public List<String> supportedRequestSourceNames()
+    {
+        return supportedRequestSourceNames;
+    }
 
 
     /**
@@ -43,7 +59,10 @@ public abstract class GovernanceActionServiceProviderBase extends ConnectorProvi
      *
      * @return list of action target names with special meaning
      */
-    public abstract List<String> supportedActionTargetNames();
+    public List<String> supportedActionTargetNames()
+    {
+        return supportedTargetActionNames;
+    }
 
 
     /**
@@ -51,7 +70,10 @@ public abstract class GovernanceActionServiceProviderBase extends ConnectorProvi
      * guards to expect from the governance action service.  They are used when defining governance action processes that choreograph
      * the execution of governance action services using the guards to determine the path in the process to take.
      *
-     * @return list of guards produced by this service
+     * @return list of guards
      */
-    public abstract List<String> supportedGuards();
+    public  List<String> supportedGuards()
+    {
+        return supportedGuards;
+    }
 }

@@ -3,11 +3,15 @@
 package org.odpi.openmetadata.governanceservers.openlineage.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.util.OpenLineageExceptionHandler;
 
@@ -18,6 +22,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
 
     private static final String LINEAGE = "/lineage/";
     private static final String ENTITIES = "/entities/{2}";
+    private static final String DETAILS = "/details";
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
     /**
@@ -58,8 +63,18 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
         return lineageVerticesAndEdges;
     }
 
+    public LineageVertex getEntityDetails(String userId, String guid) throws InvalidParameterException, PropertyServerException, OpenLineageException {
+        String methodName = "OpenLineageClient.getEntityDetails";
+        LineageVertexResponse lineageVertexResponse = callGetRESTCall(methodName, LineageVertexResponse.class,
+                serverPlatformURLRoot + BASE_PATH + LINEAGE + ENTITIES + DETAILS, serverName, userId, guid);
+
+        detectExceptions(methodName, lineageVertexResponse);
+        LineageVertex entityDetails = lineageVertexResponse.getLineageVertex();
+        return entityDetails;
+    }
+
     private void detectExceptions(String methodName,
-                                  LineageResponse response)
+                                  FFDCResponseBase response)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
         openLineageExceptionHandler.detectAndThrowInvalidParameterException(response);
         openLineageExceptionHandler.detectAndThrowPropertyServerException(response);

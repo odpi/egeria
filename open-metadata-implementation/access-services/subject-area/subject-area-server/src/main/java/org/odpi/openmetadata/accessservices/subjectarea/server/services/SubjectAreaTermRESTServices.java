@@ -189,7 +189,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                                                      Date asOfTime,
                                                      Integer startingFrom,
                                                      Integer pageSize,
-                                                     SequencingOrder sequencingOrder,
+                                                     String sequencingOrder,
                                                      String sequencingProperty) {
 
         final String methodName = "findTerm";
@@ -199,13 +199,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
-            FindRequest findRequest = new FindRequest();
-            findRequest.setSearchCriteria(searchCriteria);
-            findRequest.setAsOfTime(asOfTime);
-            findRequest.setStartingFrom(startingFrom);
-            findRequest.setPageSize(pageSize);
-            findRequest.setSequencingOrder(sequencingOrder);
-            findRequest.setSequencingProperty(sequencingProperty);
+            FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
             response = handler.findTerm(userId, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);

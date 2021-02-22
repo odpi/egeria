@@ -138,7 +138,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
                                                              Date asOfTime,
                                                              Integer startingFrom,
                                                              Integer pageSize,
-                                                             SequencingOrder sequencingOrder,
+                                                             String sequencingOrder,
                                                              String sequencingProperty) {
 
         final String methodName = "findCategory";
@@ -148,13 +148,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            FindRequest findRequest = new FindRequest();
-            findRequest.setSearchCriteria(searchCriteria);
-            findRequest.setAsOfTime(asOfTime);
-            findRequest.setStartingFrom(startingFrom);
-            findRequest.setPageSize(pageSize);
-            findRequest.setSequencingOrder(sequencingOrder);
-            findRequest.setSequencingProperty(sequencingProperty);
+            FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
             response = handler.findCategory(userId, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
@@ -340,6 +334,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
+     * @param searchCriteria String expression to match the categorized Term property values.
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
      * @return A list of terms is categorized by this Category
@@ -349,8 +344,8 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
-     * */
-    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+     **/
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid,String searchCriteria, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategorizedTerms";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -358,7 +353,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.getCategorizedTerms(userId, guid,instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom , pageSize);
+            response = handler.getCategorizedTerms(userId, guid, searchCriteria, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom , pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         }
@@ -372,10 +367,11 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       unique identifier for requesting user, under which the request is performed
-     * @param guid         guid of the category to get terms
+     * @param guid         guid of the parent category
+     * @param searchCriteria String expression matching child Category property values.
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
-     * @return A list of child categories
+     * @return A list of child categories filtered by the search criteria if one is supplied.
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -383,7 +379,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, String searchCriteria, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategoryChildren";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -391,7 +387,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.getCategoryChildren(userId, guid, startingFrom , pageSize);
+            response = handler.getCategoryChildren(userId, guid, searchCriteria, startingFrom , pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         }

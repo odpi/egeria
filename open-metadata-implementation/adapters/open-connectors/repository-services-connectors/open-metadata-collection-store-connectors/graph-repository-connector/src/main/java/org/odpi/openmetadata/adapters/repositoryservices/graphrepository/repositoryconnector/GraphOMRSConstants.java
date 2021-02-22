@@ -224,7 +224,14 @@ public class GraphOMRSConstants {
         return PROPERTY_KEY_PREFIX_CLASSIFICATION + propertyName;
     }
 
-
+    /*
+     * Constant separator for qualifiedPropertyNames for type-defined attributes. The separator is inserted
+     * between the type name and the (short) property name. It serves no function purpose but improves readability
+     * of things like qualified property names and index names, both of which appear in debug logs.
+     * The separator is deliberately alphanumeric (only) because other characters are not compatible with the
+     * Lucene indexing interface.
+     */
+    public static final String QUALIFIED_PROPERTY_SEPARATOR = "x";
 
     public enum ElementType {
         Vertex,
