@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage;
 
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
+import org.odpi.openmetadata.accessservices.assetlineage.rest.AssetContextResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
@@ -10,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * {@inheritDoc}
@@ -18,6 +21,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
 
     private static final String BASE_PATH = "/servers/{0}/open-metadata/access-services/asset-lineage/users/{1}/";
     private static final String PUBLISH_ENTITIES = "/publish-entities/{2}";
+    private static final String PROVIDE_CONTEXT = "/provide-context/{2}";
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -68,4 +72,26 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
 
         return response.getGUIDs();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, RelationshipsContext> provideAssetContext(String serverName, String userId, String guid, String entityType)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        String methodName = "provideAssetContext";
+
+        invalidParameterHandler.validateUserId(methodName, userId);
+
+        String urlTemplate = serverPlatformURLRoot + BASE_PATH + PROVIDE_CONTEXT;
+        AssetContextResponse response = callGetRESTCall(methodName, AssetContextResponse.class, urlTemplate, serverName,
+                userId, entityType);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(response);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(response);
+        exceptionHandler.detectAndThrowPropertyServerException(response);
+
+        return response.getContextMap();
+    }
+
 }

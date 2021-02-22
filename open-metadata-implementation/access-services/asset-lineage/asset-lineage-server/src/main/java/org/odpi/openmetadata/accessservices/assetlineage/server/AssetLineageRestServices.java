@@ -7,11 +7,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.PredicateUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
+import org.odpi.openmetadata.accessservices.assetlineage.rest.AssetContextResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -241,5 +243,31 @@ public class AssetLineageRestServices {
         }
 
         return null;
+    }
+
+    public AssetContextResponse provideAssetContextForSchemaElement(String serverName, String userId, String entityType, String guid) {
+        String methodName = "provideAssetContextForSchemaElement";
+        AssetContextResponse response = new AssetContextResponse();
+
+        try {
+            AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
+            HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
+
+            EntityDetail entity = handlerHelper.getEntityDetails(userId, guid, entityType);
+
+            Map<String, RelationshipsContext> assetContext = assetContextHandler.buildSchemaElementAssetContext(userId, entity);
+            response.setContextMap(assetContext);
+
+        } catch (InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (OCFCheckedExceptionBase e) {
+            restExceptionHandler.captureThrowable(response, e, methodName);
+        }
+
+        return response;
     }
 }

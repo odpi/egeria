@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEvent
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -64,7 +65,7 @@ public class AssetContextHandler {
     }
 
     /**
-     * Builds the context for a schema element.
+     * Builds the context for a schema element without the asset context.
      *
      * @param userId       the unique identifier for the user
      * @param entityDetail the entity for which the context is build
@@ -76,23 +77,47 @@ public class AssetContextHandler {
     public Map<String, RelationshipsContext> buildSchemaElementContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String methodName = "buildSchemaElementContext";
 
-        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
-        invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(), GUID_PARAMETER,
-                handlerHelper.getAssetZoneMembership(entityDetail.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
+        validateAsset(entityDetail, methodName);
 
         Map<String, RelationshipsContext> context = new HashMap<>();
         Set<GraphContext> columnContext = new HashSet<>();
 
         context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(), buildLineageMappingsContext(userId, entityDetail));
         final String typeDefName = entityDetail.getType().getTypeDefName();
+
+        if (TABULAR_COLUMN.equals(typeDefName) || RELATIONAL_COLUMN.equals(typeDefName)) {
+            context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
+                        columnContext));
+        }
+
+        return context;
+    }
+
+
+    /**
+     * Builds the asset context for a schema element.
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the asset context of the schema element
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    public Map<String, RelationshipsContext> buildSchemaElementAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        final String methodName = "buildSchemaElementAssetContext";
+
+        validateAsset(entityDetail, methodName);
+
+        Map<String, RelationshipsContext> context = new HashMap<>();
+        Set<GraphContext> columnContext = new HashSet<>();
+
+        final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
             case TABULAR_COLUMN:
                 EntityDetail schemaType = addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
 
                 EntityDetail dataFile = addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
-
-                context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
-                        columnContext));
 
                 if (dataFile != null) {
                     context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildDataFileContext(userId, dataFile));
@@ -102,9 +127,6 @@ public class AssetContextHandler {
             case RELATIONAL_COLUMN:
                 EntityDetail relationalTable = addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
 
-                context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
-                        columnContext));
-
                 if (relationalTable != null) {
                     context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, relationalTable));
                 }
@@ -112,6 +134,12 @@ public class AssetContextHandler {
         }
 
         return context;
+    }
+
+    private void validateAsset(EntityDetail entityDetail, String methodName) throws InvalidParameterException {
+        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(), GUID_PARAMETER,
+                handlerHelper.getAssetZoneMembership(entityDetail.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
     }
 
     /**
