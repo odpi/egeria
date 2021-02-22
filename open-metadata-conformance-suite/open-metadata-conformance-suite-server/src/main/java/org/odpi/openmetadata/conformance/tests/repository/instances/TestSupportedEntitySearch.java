@@ -28,6 +28,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryTimeoutException;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -890,6 +891,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 return;
 
             }
+            catch (RepositoryTimeoutException exc) {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                return;
+
+            }
             catch(Exception exc) {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -1191,6 +1205,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc) {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
                 return;
 
             }
@@ -1518,6 +1545,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc) {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
                 return;
 
             }
@@ -1906,6 +1946,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 return;
 
             }
+            catch (RepositoryTimeoutException exc) {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                return;
+
+            }
             catch(Exception exc)
             {
                 /*
@@ -1992,6 +2045,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
                                                    RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
+                    return;
+
+                }
+                catch (RepositoryTimeoutException exc) {
+
+                    /*
+                     * Such a query may simply timeout, in which case we do not have enough information
+                     * to know whether this optional function is supported or not.
+                     */
+                    super.addDiscoveredProperty("query timeouts",
+                                                true,
+                                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
                     return;
 
                 }
@@ -2282,6 +2348,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 return;
 
             }
+            catch (RepositoryTimeoutException exc) {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                return;
+
+            }
             catch (Exception exc)
             {
                 /*
@@ -2460,6 +2539,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                         RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc) {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
                 return;
 
             }
@@ -2863,6 +2955,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 return;
 
             }
+            catch (RepositoryTimeoutException exc) {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+                return;
+
+            }
             catch(Exception exc) {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -3105,6 +3210,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             return;
 
         }
+        catch (RepositoryTimeoutException exc) {
+
+            /*
+             * Such a query may simply timeout, in which case we do not have enough information
+             * to know whether this optional function is supported or not.
+             */
+            super.addDiscoveredProperty("query timeouts",
+                                        true,
+                                        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+            return;
+
+        }
         catch (Exception exc)
         {
             /*
@@ -3318,6 +3436,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
                                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
 
+            return;
+
+        }
+        catch (RepositoryTimeoutException exc) {
+
+            /*
+             * Such a query may simply timeout, in which case we do not have enough information
+             * to know whether this optional function is supported or not.
+             */
+            super.addDiscoveredProperty("query timeouts",
+                                        true,
+                                        RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
             return;
 
         }
