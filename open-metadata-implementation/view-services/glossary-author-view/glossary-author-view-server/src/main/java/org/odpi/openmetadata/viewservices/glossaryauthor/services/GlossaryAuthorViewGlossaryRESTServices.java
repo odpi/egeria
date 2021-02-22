@@ -156,9 +156,15 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             if (pageSize == null) {
                 pageSize = invalidParameterHandler.getMaxPagingSize();
             }
+            if (sequencingOrder == null) {
+                sequencingOrder =SequencingOrder.ANY;
+            }
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+
+
+
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder.name(), sequencingProperty, invalidParameterHandler.getMaxPagingSize());
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
