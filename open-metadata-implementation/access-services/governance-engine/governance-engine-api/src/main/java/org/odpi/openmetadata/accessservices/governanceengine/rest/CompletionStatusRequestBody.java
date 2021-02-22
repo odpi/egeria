@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionSt
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,9 +26,10 @@ public class CompletionStatusRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private CompletionStatus status               = null;
-    private List<String>     outputGuards         = null;
-    private List<String>     newActionTargetGUIDs = null;
+    private CompletionStatus    status               = null;
+    private Map<String, String> requestProperties    = null;
+    private List<String>        outputGuards         = null;
+    private List<String>        newActionTargetGUIDs = null;
 
 
     /**
@@ -49,6 +51,7 @@ public class CompletionStatusRequestBody implements Serializable
         if (template != null)
         {
             status = template.getStatus();
+            requestProperties = template.getRequestProperties();
             outputGuards = template.getOutputGuards();
             newActionTargetGUIDs = template.getNewActionTargetGUIDs();
         }
@@ -74,6 +77,38 @@ public class CompletionStatusRequestBody implements Serializable
     public void setStatus(CompletionStatus status)
     {
         this.status = status;
+    }
+
+
+    /**
+     * Return the parameters to pass onto the governance service.
+     *
+     * @return map of properties
+     */
+    public Map<String, String> getRequestProperties()
+    {
+        if (requestProperties == null)
+        {
+            return null;
+        }
+
+        if (requestProperties.isEmpty())
+        {
+            return null;
+        }
+
+        return requestProperties;
+    }
+
+
+    /**
+     * Set up the parameters to pass onto the governance service.
+     *
+     * @param requestProperties map of properties
+     */
+    public void setRequestProperties(Map<String, String> requestProperties)
+    {
+        this.requestProperties = requestProperties;
     }
 
 
@@ -151,6 +186,7 @@ public class CompletionStatusRequestBody implements Serializable
     {
         return "CompletionStatusRequestBody{" +
                        "status=" + status +
+                       ", requestProperties=" + requestProperties +
                        ", outputGuards=" + outputGuards +
                        ", newActionTargetGUIDs=" + newActionTargetGUIDs +
                        '}';

@@ -97,17 +97,17 @@ public class Connection extends Referenceable
     /*
      * Attributes of a connector
      */
-    protected String              displayName             = null;
-    protected String              description             = null;
-    protected ConnectorType       connectorType           = null;
-    protected Endpoint            endpoint                = null;
-    protected String              userId                  = null;
-    protected String              encryptedPassword       = null;
-    protected String              clearPassword           = null;
-    protected Map<String, Object> configurationProperties = null;
-    protected Map<String, String> securedProperties       = null;
+    private String              displayName             = null;
+    private String              description             = null;
+    private ConnectorType       connectorType           = null;
+    private Endpoint            endpoint                = null;
+    private String              userId                  = null;
+    private String              encryptedPassword       = null;
+    private String              clearPassword           = null;
+    private Map<String, Object> configurationProperties = null;
+    private Map<String, String> securedProperties       = null;
 
-    protected String              assetSummary            = null;
+    private String              assetSummary            = null;
 
     /**
      * Return the standard type for a connection type.

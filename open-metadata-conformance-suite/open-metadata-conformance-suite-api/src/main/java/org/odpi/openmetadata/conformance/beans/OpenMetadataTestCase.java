@@ -24,6 +24,9 @@ public abstract class OpenMetadataTestCase
     protected Integer defaultProfileId = null;
     protected Integer defaultRequirementId = null;
 
+    protected Long startTime = null;
+    protected Long endTime = null;
+
     protected OpenMetadataConformanceWorkbenchWorkPad  workPad = null;
 
     protected List<String>        successfulAssertions   = new ArrayList<>();
@@ -212,6 +215,12 @@ public abstract class OpenMetadataTestCase
             {
                 result.setSuccessMessage(successMessage);
             }
+
+            if (startTime != null && endTime != null)
+            {
+                result.setElapsedTime(endTime - startTime);
+            }
+
         }
 
         return result;
@@ -340,6 +349,7 @@ public abstract class OpenMetadataTestCase
         final String methodName = "startAsynchronousTest";
 
         this.logTestStart(methodName);
+        startTime = System.currentTimeMillis();
     }
 
 
@@ -350,6 +360,7 @@ public abstract class OpenMetadataTestCase
     {
         final String methodName = "endAsynchronousTest";
 
+        endTime = System.currentTimeMillis();
         this.logTestEnd(methodName);
     }
 
@@ -363,6 +374,7 @@ public abstract class OpenMetadataTestCase
         final String methodName = "executeTest";
 
         this.logTestStart(methodName);
+        startTime = System.currentTimeMillis();
 
         try
         {
@@ -388,6 +400,7 @@ public abstract class OpenMetadataTestCase
             workPad.addUnexpectedException(defaultProfileId, defaultRequirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage, exceptionBean);
         }
 
+        endTime = System.currentTimeMillis();
         this.logTestEnd(methodName);
     }
 
@@ -403,6 +416,10 @@ public abstract class OpenMetadataTestCase
         final String methodName = "executeTest";
 
         this.logTestStart(methodName);
+        if (TestPhase.EXECUTE.equals(phase))
+        {
+            startTime = System.currentTimeMillis();
+        }
 
         try
         {
@@ -428,6 +445,10 @@ public abstract class OpenMetadataTestCase
             workPad.addUnexpectedException(defaultProfileId, defaultRequirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage, exceptionBean);
         }
 
+        if (TestPhase.EXECUTE.equals(phase))
+        {
+            endTime = System.currentTimeMillis();
+        }
         this.logTestEnd(methodName);
     }
 

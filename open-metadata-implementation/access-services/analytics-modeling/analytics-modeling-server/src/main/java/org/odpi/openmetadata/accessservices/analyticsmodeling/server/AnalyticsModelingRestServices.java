@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
@@ -162,10 +163,11 @@ public class AnalyticsModelingRestServices {
 	 * @param databaseGuid of the requested database.
 	 * @param catalog      catalog name of the database.
 	 * @param schema       schema name of the database.
+	 * @param request      table filter 
 	 * @return module for the requested schema.
 	 */
 	public AnalyticsModelingOMASAPIResponse getModule(String serverName, String userId, String databaseGuid, String catalog,
-			String schema) {
+			String schema, ModuleTableFilter request) {
 
 		String methodName = "getModule";
 		AnalyticsModelingOMASAPIResponse ret;
@@ -177,7 +179,7 @@ public class AnalyticsModelingRestServices {
 
 			ModuleResponse response = new ModuleResponse();
 			ResponseContainerModule module = getHandler().getDatabaseContextHandler(serverName, userId, methodName)
-					.getModule(databaseGuid, catalog, schema);
+					.getModule(databaseGuid, catalog, schema, request);
 			response.setModule(module);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {

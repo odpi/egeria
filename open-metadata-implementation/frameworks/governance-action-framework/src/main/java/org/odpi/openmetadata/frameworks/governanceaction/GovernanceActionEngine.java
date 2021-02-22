@@ -33,7 +33,7 @@ public abstract class GovernanceActionEngine
      * @param actionTargetGUIDs list of action targets for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible".
      * @param requestType request type to identify the governance action service to run
-     * @param requestProperties properties to pass to the governance action service
+     * @param requestParameters properties to pass to the governance action service
      *
      * @return unique identifier of the governance action
      *
@@ -50,7 +50,7 @@ public abstract class GovernanceActionEngine
                                                     List<String>        actionTargetGUIDs,
                                                     Date                startTime,
                                                     String              requestType,
-                                                    Map<String, String> requestProperties) throws InvalidParameterException,
+                                                    Map<String, String> requestParameters) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException;
 
