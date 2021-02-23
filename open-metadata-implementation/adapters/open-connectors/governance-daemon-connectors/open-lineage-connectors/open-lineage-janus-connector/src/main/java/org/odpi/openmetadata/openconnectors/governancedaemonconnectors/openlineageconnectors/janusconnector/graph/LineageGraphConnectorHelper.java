@@ -890,7 +890,7 @@ public class LineageGraphConnectorHelper {
                 .findFirst();
     }
 
-        private Map<String, String> getProcessProperties(GraphTraversalSource g, Object vertexId) {
+    private Map<String, String> getProcessProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
 
         GraphTraversal<Vertex, ? extends Property<Object>> qualifiedNameTraversal = g.V(vertexId).properties(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME);
