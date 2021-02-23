@@ -850,8 +850,8 @@ public class LineageGraphConnectorHelper {
     private Map<String, String> getDataFileProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = extractPropertiesFromNeighborhood(g, vertexId);
         if(!properties.containsKey(FILE_FOLDER_KEY)){
-            String path = extractPathFromVertexProperties(g, vertexId).trim();
-            properties.put(FILE_FOLDER_KEY, "/" + path);
+            Optional<String> path = extractPathFromVertexProperties(g, vertexId);
+            path.ifPresent(s -> properties.put(FILE_FOLDER_KEY, "/" + s.trim()));
         }
         return properties;
     }
@@ -875,15 +875,19 @@ public class LineageGraphConnectorHelper {
         return properties;
     }
 
-    private String extractPathFromVertexProperties(GraphTraversalSource g, Object vertexId) {
+    private Optional<String> extractPathFromVertexProperties(GraphTraversalSource g, Object vertexId) {
 
-        String additionalProperties = g.V(vertexId).next().property(PROPERTY_KEY_INSTANCE_PROP_ADDITIONAL_PROPERTIES).value().toString();
-        Optional<String> path = Arrays.stream(additionalProperties.split(","))
+        VertexProperty<String> additionalProperties =
+                g.V(vertexId).next().property(PROPERTY_KEY_INSTANCE_PROP_ADDITIONAL_PROPERTIES);
+        if(!additionalProperties.isPresent()){
+            return Optional.empty();
+        }
+
+        String additionalPropertiesValue = additionalProperties.value();
+        return Arrays.stream(additionalPropertiesValue.split(","))
                 .filter(s -> s.trim().startsWith("path"))
                 .map(s -> s.split(":")[1])
                 .findFirst();
-
-        return path.orElse("<unknown>");
     }
 
         private Map<String, String> getProcessProperties(GraphTraversalSource g, Object vertexId) {
