@@ -5,11 +5,11 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.PredicateUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
-import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -26,9 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
@@ -62,6 +62,7 @@ public class AssetLineageRestServices {
      * @param userId                 the name of the calling user
      * @param entityType             the type of the entity to search for
      * @param findEntitiesParameters filtering used to reduce the scope of the search
+     *
      * @return a list of unique identifiers (guids) of the available entityType as a response
      */
     public GUIDListResponse publishEntities(String serverName, String userId, String entityType,
@@ -85,6 +86,7 @@ public class AssetLineageRestServices {
 
         return response;
     }
+
     private GUIDListResponse publishEntitiesContext(String userId, String serverName, String entityType, List<EntityDetail> entitiesByTypeName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         String methodName = "publishEntitiesContext";
@@ -96,7 +98,8 @@ public class AssetLineageRestServices {
             return response;
         }
 
-        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_FOUND", entityType, String.valueOf(entitiesByTypeName.size())));
+        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_FOUND", entityType,
+                String.valueOf(entitiesByTypeName.size())));
         auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES", entityType,
                 entitiesByTypeName.stream().map(InstanceHeader::getGUID).collect(Collectors.joining(","))));
 
@@ -106,10 +109,12 @@ public class AssetLineageRestServices {
             return response;
         }
 
-        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_START", entityType, String.valueOf(entitiesByTypeName.size())));
+        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_START", entityType,
+                String.valueOf(entitiesByTypeName.size())));
         List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher, auditLog);
         response.setGUIDs(publishedEntitiesContext);
-        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_END", entityType, String.valueOf(publishedEntitiesContext.size())));
+        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_END", entityType,
+                String.valueOf(publishedEntitiesContext.size())));
         return response;
     }
 
@@ -218,26 +223,24 @@ public class AssetLineageRestServices {
     private String publishContext(EntityDetail entityDetail, AssetLineagePublisher publisher) throws OCFCheckedExceptionBase,
                                                                                                      JsonProcessingException {
         String typeName = entityDetail.getType().getTypeDefName();
-        //TODO to review after refactoring the context structure for horizontal lineage
+        Map<String, RelationshipsContext> context = new HashMap<>();
         switch (typeName) {
             case GLOSSARY_TERM: {
-                Map<String, RelationshipsContext> glossaryContext = publisher.publishGlossaryContext(entityDetail);
-                if (glossaryContext != null) {
-                    return entityDetail.getGUID();
-                }
+                context = publisher.publishGlossaryContext(entityDetail);
                 break;
             }
             case PROCESS: {
-                Map<String, Set<GraphContext>> processContext = publisher.publishProcessContext(entityDetail);
-                if (processContext != null) {
-                    return entityDetail.getGUID();
-                }
+                context = publisher.publishProcessContext(entityDetail);
                 break;
             }
             default:
                 log.error("Unsupported typeName {} for entity with guid {}. The context can not be published",
                         typeName, entityDetail.getGUID());
                 break;
+        }
+
+        if (MapUtils.isEmpty(context)) {
+            return entityDetail.getGUID();
         }
 
         return null;

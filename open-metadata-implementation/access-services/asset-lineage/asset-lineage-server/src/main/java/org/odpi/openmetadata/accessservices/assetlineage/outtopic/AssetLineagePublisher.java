@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Multimap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
@@ -80,17 +81,19 @@ public class AssetLineagePublisher {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
+     * @return
      */
-    public Map<String, Set<GraphContext>> publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
-        Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail);
+    public Map<String, RelationshipsContext> publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+        Multimap<String, RelationshipsContext> processContext = processContextHandler.buildProcessContext(serverUserName, entityDetail);
 
-        if (MapUtils.isEmpty(processContext)) {
+        if (processContext.isEmpty()) {
             log.info("Context not found for the entity {} ", entityDetail.getGUID());
             return Collections.emptyMap();
         }
 
-        publishProcessContextEvents(processContext);
-        return processContext;
+//        publishLineageRelationshipsEvents(processContext);
+//        return processContext;
+        return null;
     }
 
     /**
@@ -245,8 +248,7 @@ public class AssetLineagePublisher {
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException    problem accessing property server
      */
-    public boolean isEntityEligibleForPublishing(EntityDetail entityDetail)
-            throws UserNotAuthorizedException, PropertyServerException {
+    public boolean isEntityEligibleForPublishing(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         String typeDefName = entityDetail.getType().getTypeDefName();
         if (typeDefName.equals(GLOSSARY_CATEGORY) || typeDefName.equals(GLOSSARY_TERM)) {
             return glossaryHandler.hasGlossaryTermLineageRelationships(serverUserName, entityDetail);

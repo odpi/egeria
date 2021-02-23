@@ -18,7 +18,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
@@ -36,6 +35,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 
 
@@ -95,11 +96,12 @@ public class HandlerHelper {
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId, entityGUID, entityTypeName, typeGuid,
                 relationshipTypeName, methodName);
 
-        if (relationships != null) {
-            return relationships;
+        if (CollectionUtils.isEmpty(relationships)) {
+            return Collections.emptyList();
         }
 
-        return Collections.emptyList();
+        return relationships.stream().filter(relationship -> relationship.getEntityOneProxy() != null && relationship.getEntityTwoProxy() != null)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -175,11 +177,14 @@ public class HandlerHelper {
      * @param entityTypeName         the name of the entity type
      * @param searchProperties       searchProperties used in the filtering
      * @param findEntitiesParameters filtering used to reduce the scope of the search
+     *
      * @return a list with entities matching the supplied parameters;
+     *
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
      */
-    public List<EntityDetail> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties, FindEntitiesParameters findEntitiesParameters)
+    public List<EntityDetail> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
+                                                 FindEntitiesParameters findEntitiesParameters)
             throws UserNotAuthorizedException, PropertyServerException {
         final String methodName = "findEntitiesByType";
         String typeDefGUID = getTypeByName(userId, entityTypeName);
@@ -352,9 +357,11 @@ public class HandlerHelper {
 
     /**
      * Creat the search body for find entities searching entities updated after the given time
+     *
      * @param time date in milliseconds after which the entities were updated
+     *
      * @return the search properties having the condition updateTime greater than the provided time
-    * */
+     */
     public SearchProperties getSearchPropertiesAfterUpdateTime(Long time) {
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
@@ -376,9 +383,9 @@ public class HandlerHelper {
     /**
      * Builds the relationships context for an entity
      *
-     * @param userId           the unique identifier for the user
-     * @param entityGUID       the guid of the entity
-     * @param relationships    the list of relationships for which the context is built
+     * @param userId        the unique identifier for the user
+     * @param entityGUID    the guid of the entity
+     * @param relationships the list of relationships for which the context is built
      *
      * @return a set of {@link GraphContext} containing the lineage context for the relationships
      *
@@ -387,9 +394,9 @@ public class HandlerHelper {
      * @throws UserNotAuthorizedException the user not authorized exception
      */
     public RelationshipsContext buildContextForRelationships(String userId, String entityGUID, List<Relationship> relationships) throws
-                                                                                                                                       UserNotAuthorizedException,
-                                                                                                                                       PropertyServerException,
-                                                                                                                                       InvalidParameterException {
+                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                 PropertyServerException,
+                                                                                                                                 InvalidParameterException {
         Set<GraphContext> lineageRelationships = new HashSet<>();
 
         Converter converter = new Converter(repositoryHelper);
@@ -432,7 +439,59 @@ public class HandlerHelper {
                 .map(classification -> getClassificationVertex(classification, entityGUID))
                 .map(classificationVertex -> new GraphContext(CLASSIFICATION, classificationVertex.getGuid(), originalEntityVertex,
                         classificationVertex)).collect(Collectors.toSet()));
+    }
 
+    /**
+     * Adds the relationships context for an entity, based on the relationship type.
+     *
+     * @param userId               the unique identifier for the user
+     * @param startEntity          the start entity for the relationships
+     * @param relationshipTypeName the type of the relationship for which the context is built
+     * @param context              the context to be updated
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    protected EntityDetail addContextForRelationships(String userId, EntityDetail startEntity, String relationshipTypeName,
+                                                      Set<GraphContext> context) throws OCFCheckedExceptionBase {
+        if (startEntity == null) {
+            return null;
+        }
 
+        context.addAll(buildContextForLineageClassifications(startEntity).getRelationships());
+
+        List<Relationship> relationships = getRelationshipsByType(userId, startEntity.getGUID(), relationshipTypeName,
+                startEntity.getType().getTypeDefName());
+        if (CollectionUtils.isEmpty(relationships)) {
+            return null;
+        }
+
+        if (startEntity.getType().getTypeDefName().equals(FILE_FOLDER)) {
+            relationships = relationships.stream().filter(relationship ->
+                    relationship.getEntityTwoProxy().getGUID().equals(startEntity.getGUID())).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(relationships)) {
+                return null;
+            }
+        }
+
+        context.addAll(buildContextForRelationships(userId, startEntity.getGUID(), relationships).getRelationships());
+
+        return getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
+    }
+
+    /**
+     * Builds the lineage mappings context for a schema element.
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the lineage mappings context of the schema element
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    RelationshipsContext buildLineageMappingsContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        List<Relationship> relationships = getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING,
+                entityDetail.getType().getTypeDefName());
+
+        return buildContextForRelationships(userId, entityDetail.getGUID(), relationships);
     }
 }

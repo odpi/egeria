@@ -2,9 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -22,12 +28,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_DELEGATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_SCHEMA;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableProcessRelationshipsTypes;
@@ -55,11 +67,8 @@ public class ProcessContextHandler {
      * @param repositoryHandler       handler for calling the repository services
      * @param supportedZones          configurable list of zones that Asset Lineage is allowed to retrieve Assets from
      */
-    public ProcessContextHandler(InvalidParameterHandler invalidParameterHandler,
-                                 OMRSRepositoryHelper repositoryHelper,
-                                 RepositoryHandler repositoryHandler,
-                                 AssetContextHandler assetContextHandler,
-                                 List<String> supportedZones,
+    public ProcessContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
+                                 RepositoryHandler repositoryHandler, AssetContextHandler assetContextHandler, List<String> supportedZones,
                                  Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
@@ -78,20 +87,75 @@ public class ProcessContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Map<String, Set<GraphContext>> getProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {
+    public Multimap<String, RelationshipsContext> buildProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {
 
-        final String methodName = "getProcessContext";
+        final String methodName = "buildProcessContext";
 
-        graph = new AssetContext();
+        String processGUID = process.getGUID();
+        invalidParameterHandler.validateAssetInSupportedZone(processGUID, GUID_PARAMETER,
+                handlerHelper.getAssetZoneMembership(process.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
 
-        invalidParameterHandler.validateAssetInSupportedZone(process.getGUID(),
-                GUID_PARAMETER,
-                handlerHelper.getAssetZoneMembership(process.getClassifications()),
-                supportedZones,
-                ASSET_LINEAGE_OMAS,
-                methodName);
+        List<Relationship> processPorts = handlerHelper.getRelationshipsByType(userId, processGUID, PROCESS_PORT, PROCESS);
+        if (CollectionUtils.isEmpty(processPorts)) {
+            log.error("No relationships Process Port has been found for the entity with guid {}", processGUID);
 
-        return checkIfAllRelationshipsExist(userId, process);
+            throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(), this.getClass().getName(), "Retrieving Relationship");
+        }
+
+        RelationshipsContext relationshipsContext = handlerHelper.buildContextForRelationships(userId, processGUID, processPorts);
+
+        for (Relationship processPort : processPorts) {
+            EntityDetail port = handlerHelper.getEntityAtTheEnd(userId, processGUID, processPort);
+            addContextForPort(userId, port, relationshipsContext.getRelationships());
+        }
+
+        Multimap<String, RelationshipsContext> context = ArrayListMultimap.create();
+        context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), relationshipsContext);
+
+        Set<LineageEntity> tabularColumns = relationshipsContext.getRelationships().stream()
+                .filter(relationship -> relationship.getRelationshipType().equalsIgnoreCase(ATTRIBUTE_FOR_SCHEMA))
+                .map(GraphContext::getToVertex).collect(Collectors.toSet());
+
+        for (LineageEntity tabularColumn : tabularColumns) {
+            addLineageContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName());
+        }
+
+        return context;
+    }
+
+    private void addLineageContextForColumn(String userId, Multimap<String, RelationshipsContext> context, String columnGUID, String typeDefName) throws
+                                                                                                                                            OCFCheckedExceptionBase {
+        List<Relationship> lineageMappings = handlerHelper.getRelationshipsByType(userId, columnGUID, LINEAGE_MAPPING, typeDefName);
+
+        context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(),
+                handlerHelper.buildContextForRelationships(userId, columnGUID, lineageMappings));
+
+        for (Relationship lineageMapping : lineageMappings) {
+            context.putAll(Multimaps.forMap(assetContextHandler.buildSchemaElementContext(userId, handlerHelper.getEntityAtTheEnd(userId,
+                    columnGUID, lineageMapping))));
+        }
+    }
+
+    private void addContextForPort(String userId, EntityDetail port, Set<GraphContext> relationshipsContext) throws OCFCheckedExceptionBase {
+        String portType = port.getType().getTypeDefName();
+
+        if (PORT_ALIAS.equals(portType)) {
+            EntityDetail delegatedPort = handlerHelper.addContextForRelationships(userId, port, PORT_DELEGATION, relationshipsContext);
+
+            addContextForPort(userId, delegatedPort, relationshipsContext);
+        }
+        if (PORT_IMPLEMENTATION.equals(portType)) {
+            EntityDetail tabularSchemaType = handlerHelper.addContextForRelationships(userId, port, PORT_SCHEMA, relationshipsContext);
+
+            EntityDetail tabularColumn = handlerHelper.addContextForRelationships(userId, tabularSchemaType, ATTRIBUTE_FOR_SCHEMA,
+                    relationshipsContext);
+
+            if (tabularColumn == null) {
+                log.error("No entity TabularColumn has been found for the the TabularSchemaType with guid {}", tabularSchemaType.getGUID());
+
+                throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(), this.getClass().getName(), "Retrieving Relationship");
+            }
+        }
     }
 
     /**

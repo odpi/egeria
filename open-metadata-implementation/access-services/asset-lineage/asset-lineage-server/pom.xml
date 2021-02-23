@@ -95,6 +95,10 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>audit-log-framework</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
