@@ -27,6 +27,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_ENDPOINT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_TO_ASSET;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_CONTENT_FOR_DATA_SET;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
@@ -34,6 +35,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 
 /**
@@ -84,10 +86,23 @@ public class AssetContextHandler {
 
         context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(), buildLineageMappingsContext(userId, entityDetail));
         final String typeDefName = entityDetail.getType().getTypeDefName();
+        switch (typeDefName) {
+            case TABULAR_COLUMN:
+                EntityDetail schemaType = addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
 
-        if (TABULAR_COLUMN.equals(typeDefName) || RELATIONAL_COLUMN.equals(typeDefName)) {
-            context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
+                addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
+
+                context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
                         columnContext));
+
+                break;
+
+            case RELATIONAL_COLUMN:
+                addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
+
+                context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
+                        columnContext));
+                break;
         }
 
         return context;
@@ -104,32 +119,20 @@ public class AssetContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Map<String, RelationshipsContext> buildSchemaElementAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
-        final String methodName = "buildSchemaElementAssetContext";
+    public Map<String, RelationshipsContext> buildAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        final String methodName = "buildAssetContext";
 
         validateAsset(entityDetail, methodName);
-
         Map<String, RelationshipsContext> context = new HashMap<>();
-        Set<GraphContext> columnContext = new HashSet<>();
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
-            case TABULAR_COLUMN:
-                EntityDetail schemaType = addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
-
-                EntityDetail dataFile = addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
-
-                if (dataFile != null) {
-                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildDataFileContext(userId, dataFile));
-                }
+            case DATA_FILE:
+                context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildDataFileContext(userId, entityDetail));
                 break;
 
-            case RELATIONAL_COLUMN:
-                EntityDetail relationalTable = addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
-
-                if (relationalTable != null) {
-                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, relationalTable));
-                }
+            case RELATIONAL_TABLE:
+                context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, entityDetail));
                 break;
         }
 

@@ -194,7 +194,6 @@ public class ProcessContextHandler {
 
         if (superTypes.contains(TABULAR_COLUMN)) {
             Map<String, RelationshipsContext> assetContext = assetContextHandler.buildSchemaElementContext(userId, entity);
-            assetContext.putAll(assetContextHandler.buildSchemaElementAssetContext(userId, entity));
 
             for (String eventType : assetContext.keySet()) {
                 RelationshipsContext relationshipContext = assetContext.get(eventType);

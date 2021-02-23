@@ -255,7 +255,7 @@ public class AssetLineageRestServices {
 
             EntityDetail entity = handlerHelper.getEntityDetails(userId, guid, entityType);
 
-            Map<String, RelationshipsContext> assetContext = assetContextHandler.buildSchemaElementAssetContext(userId, entity);
+            Map<String, RelationshipsContext> assetContext = assetContextHandler.buildAssetContext(userId, entity);
             response.setContextMap(assetContext);
 
         } catch (InvalidParameterException e) {
