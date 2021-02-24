@@ -12,7 +12,7 @@ on:
       - created
   # Also allow for manual invocation for testing
   workflow_dispatch:
-  
+
 
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
       # Normal build (in future may also run reports (site))
       - name: Build with Maven
-        run: mvn -B -DuseMavenCentral clean verify
+        run: mvn -B -DuseMavenCentral clean deploy
         # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to 
         # verify (close) the repository & release
         env:
