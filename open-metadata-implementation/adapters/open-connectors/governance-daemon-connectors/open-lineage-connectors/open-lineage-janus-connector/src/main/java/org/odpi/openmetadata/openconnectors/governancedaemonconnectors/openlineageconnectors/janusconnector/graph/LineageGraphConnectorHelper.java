@@ -79,10 +79,11 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ADDITIONAL_PROPERTIES;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_EXTENDED_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_EXTENDED_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCE_PROP_ADDITIONAL_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
@@ -847,6 +848,15 @@ public class LineageGraphConnectorHelper {
     }
 
     private Map<String, String> getDataFileProperties(GraphTraversalSource g, Object vertexId) {
+        Map<String, String> properties = extractPropertiesFromNeighborhood(g, vertexId);
+        if(!properties.containsKey(FILE_FOLDER_KEY)){
+            Optional<String> path = extractPathFromVertexProperties(g, vertexId);
+            path.ifPresent(s -> properties.put(FILE_FOLDER_KEY, "/" + s.trim()));
+        }
+        return properties;
+    }
+
+    private Map<String, String> extractPropertiesFromNeighborhood(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
 
         List<Vertex> folderVertices = getFolderVertices(g, vertexId);
@@ -863,7 +873,21 @@ public class LineageGraphConnectorHelper {
         }
 
         return properties;
+    }
 
+    private Optional<String> extractPathFromVertexProperties(GraphTraversalSource g, Object vertexId) {
+
+        VertexProperty<String> additionalProperties =
+                g.V(vertexId).next().property(PROPERTY_KEY_INSTANCE_PROP_ADDITIONAL_PROPERTIES);
+        if(!additionalProperties.isPresent()){
+            return Optional.empty();
+        }
+
+        String additionalPropertiesValue = additionalProperties.value();
+        return Arrays.stream(additionalPropertiesValue.split(","))
+                .filter(s -> s.trim().startsWith("path"))
+                .map(s -> s.split(":")[1])
+                .findFirst();
     }
 
     private Map<String, String> getProcessProperties(GraphTraversalSource g, Object vertexId) {
