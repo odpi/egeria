@@ -27,7 +27,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_ENDPOINT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_TO_ASSET;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_CONTENT_FOR_DATA_SET;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
@@ -35,7 +34,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 
 /**
@@ -94,7 +92,6 @@ public class AssetContextHandler {
 
                 context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
                         columnContext));
-
                 break;
 
             case RELATIONAL_COLUMN:
@@ -127,16 +124,34 @@ public class AssetContextHandler {
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
-            case DATA_FILE:
-                context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildDataFileContext(userId, entityDetail));
+            case TABULAR_COLUMN:
+                EntityDetail schemaType = getNextEntityDetail(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA);
+                EntityDetail dataFile = getNextEntityDetail(userId, schemaType, ASSET_SCHEMA_TYPE);
+                if(dataFile != null) {
+                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildDataFileContext(userId, dataFile));
+                }
                 break;
 
-            case RELATIONAL_TABLE:
-                context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, entityDetail));
+            case RELATIONAL_COLUMN:
+                EntityDetail relationalTable = getNextEntityDetail(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE);
+                if(relationalTable != null) {
+                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, relationalTable));
+                }
                 break;
         }
 
         return context;
+    }
+
+    private EntityDetail getNextEntityDetail(String userId, EntityDetail entityDetail, String relationshipType) throws OCFCheckedExceptionBase {
+        if(entityDetail == null) {
+            return null;
+        }
+        List<Relationship> relationships = getEntityOneProxyByRelationshipType(userId, entityDetail, relationshipType);
+        if (relationships == null) {
+            return null;
+        }
+        return handlerHelper.getEntityAtTheEnd(userId, entityDetail.getGUID(), relationships.get(0));
     }
 
     private void validateAsset(EntityDetail entityDetail, String methodName) throws InvalidParameterException {
@@ -267,22 +282,32 @@ public class AssetContextHandler {
 
         context.addAll(handlerHelper.buildContextForLineageClassifications(startEntity).getRelationships());
 
-        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipTypeName,
-                startEntity.getType().getTypeDefName());
-        if (CollectionUtils.isEmpty(relationships)) {
+        List<Relationship> relationships = getEntityOneProxyByRelationshipType(userId, startEntity, relationshipTypeName);
+        if (relationships == null) {
             return null;
-        }
-
-        if (startEntity.getType().getTypeDefName().equals(FILE_FOLDER)) {
-            relationships = relationships.stream().filter(relationship ->
-                    relationship.getEntityTwoProxy().getGUID().equals(startEntity.getGUID())).collect(Collectors.toList());
-            if (CollectionUtils.isEmpty(relationships)) {
-                return null;
-            }
         }
 
         context.addAll(handlerHelper.buildContextForRelationships(userId, startEntity.getGUID(), relationships).getRelationships());
 
         return handlerHelper.getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
+    }
+
+    private List<Relationship> getEntityOneProxyByRelationshipType(String userId, EntityDetail startEntity, String relationshipTypeName) throws OCFCheckedExceptionBase {
+        String typeDefName = startEntity.getType().getTypeDefName();
+        String guid = startEntity.getGUID();
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, guid, relationshipTypeName,
+                typeDefName);
+        if (CollectionUtils.isEmpty(relationships)) {
+            return null;
+        }
+
+        if (typeDefName.equals(FILE_FOLDER)) {
+            relationships = relationships.stream().filter(relationship ->
+                    relationship.getEntityTwoProxy().getGUID().equals(guid)).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(relationships)) {
+                return null;
+            }
+        }
+        return relationships;
     }
 }
