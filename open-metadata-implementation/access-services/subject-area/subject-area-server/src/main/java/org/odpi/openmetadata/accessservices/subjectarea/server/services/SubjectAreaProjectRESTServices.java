@@ -61,7 +61,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
@@ -98,7 +98,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
@@ -149,7 +149,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
@@ -208,7 +208,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
@@ -259,7 +259,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler projectHandler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
@@ -306,7 +306,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
@@ -355,7 +355,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
@@ -394,7 +394,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);

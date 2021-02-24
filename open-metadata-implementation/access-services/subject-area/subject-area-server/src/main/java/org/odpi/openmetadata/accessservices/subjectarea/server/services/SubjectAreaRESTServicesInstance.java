@@ -72,7 +72,7 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
@@ -118,7 +118,7 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
@@ -171,7 +171,7 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
@@ -222,7 +222,7 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
@@ -272,7 +272,7 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
-                AuditLog auditLog = null;
+        AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
