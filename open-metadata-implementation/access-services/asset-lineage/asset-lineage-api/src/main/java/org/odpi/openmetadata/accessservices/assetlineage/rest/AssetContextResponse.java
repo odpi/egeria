@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * AssetContextResponse is the response structure used on the OMAS REST API calls that return a
- * map of RelationshipsContext objects as an asset context response. It is used for schema elements.
+ * RelationshipsContext object as an asset context response. It is used for schema elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,25 +26,25 @@ public class AssetContextResponse extends FFDCResponseBase
 {
     private static final long serialVersionUID = 1L;
 
-    private Map<String, RelationshipsContext> contextMap = null;
+    private RelationshipsContext context = null;
 
     /**
-     * Set up the name to description map result.
+     * Sets context.
      *
-     * @param contextMap map of strings
+     * @param context the context
      */
-    public void setContextMap(Map<String, RelationshipsContext> contextMap)
+    public void setContext(RelationshipsContext context)
     {
-        this.contextMap = contextMap;
+        this.context = context;
     }
 
     /**
-     * Gets context map.
+     * Gets context.
      *
-     * @return the context map
+     * @return the context
      */
-    public Map<String, RelationshipsContext> getContextMap() {
-        return contextMap;
+    public RelationshipsContext getContext() {
+        return context;
     }
 
     @Override
@@ -56,20 +55,20 @@ public class AssetContextResponse extends FFDCResponseBase
 
         AssetContextResponse that = (AssetContextResponse) o;
 
-        return Objects.equals(contextMap, that.contextMap);
+        return Objects.equals(context, that.context);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (contextMap != null ? contextMap.hashCode() : 0);
+        result = 31 * result + (context != null ? context.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "AssetContextResponse{" +
-                "contextMap=" + contextMap +
+                "contextMap=" + context +
                 '}';
     }
 }

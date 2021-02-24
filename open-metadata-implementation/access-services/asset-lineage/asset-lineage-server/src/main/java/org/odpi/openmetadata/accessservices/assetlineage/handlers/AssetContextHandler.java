@@ -110,11 +110,11 @@ public class AssetContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Map<String, RelationshipsContext> buildAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    public RelationshipsContext buildAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String methodName = "buildAssetContext";
 
         handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
-        Map<String, RelationshipsContext> context = new HashMap<>();
+        RelationshipsContext context = new RelationshipsContext();
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
@@ -122,14 +122,14 @@ public class AssetContextHandler {
                 EntityDetail schemaType = handlerHelper.getNextEntityDetail(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA);
                 EntityDetail dataFile = handlerHelper.getNextEntityDetail(userId, schemaType, ASSET_SCHEMA_TYPE);
                 if (dataFile != null) {
-                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildDataFileContext(userId, dataFile));
+                    context = buildDataFileContext(userId, dataFile);
                 }
                 break;
 
             case RELATIONAL_COLUMN:
                 EntityDetail relationalTable = handlerHelper.getNextEntityDetail(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE);
                 if (relationalTable != null) {
-                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, relationalTable));
+                    context = buildRelationalTableContext(userId, relationalTable);
                 }
                 break;
         }

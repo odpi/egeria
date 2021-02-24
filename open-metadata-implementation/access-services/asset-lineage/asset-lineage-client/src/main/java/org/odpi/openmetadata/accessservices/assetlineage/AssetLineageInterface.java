@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The Asset Lineage OMAS provides services to query the lineage of business terms and data assets.
@@ -33,7 +32,7 @@ public interface AssetLineageInterface {
 
 
     /**
-     * Provide asset context map.
+     * Provide the asset context of an entity - used for data files and relational tables.
      *
      * @param serverName the server name
      * @param userId     the user id
@@ -44,7 +43,7 @@ public interface AssetLineageInterface {
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
      */
-    Map<String, RelationshipsContext> provideAssetContext(String serverName, String userId, String guid, String entityType)
+    RelationshipsContext provideAssetContext(String serverName, String userId, String guid, String entityType)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 
 }

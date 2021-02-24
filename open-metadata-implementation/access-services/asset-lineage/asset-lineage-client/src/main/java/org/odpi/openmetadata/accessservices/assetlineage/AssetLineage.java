@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@inheritDoc}
@@ -77,7 +76,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
      * {@inheritDoc}
      */
     @Override
-    public Map<String, RelationshipsContext> provideAssetContext(String serverName, String userId, String guid, String entityType)
+    public RelationshipsContext provideAssetContext(String serverName, String userId, String guid, String entityType)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "provideAssetContext";
 
@@ -91,7 +90,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
         exceptionHandler.detectAndThrowUserNotAuthorizedException(response);
         exceptionHandler.detectAndThrowPropertyServerException(response);
 
-        return response.getContextMap();
+        return response.getContext();
     }
 
 }
