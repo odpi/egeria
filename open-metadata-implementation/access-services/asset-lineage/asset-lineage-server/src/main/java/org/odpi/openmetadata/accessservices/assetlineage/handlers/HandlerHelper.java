@@ -18,7 +18,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
@@ -35,7 +34,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 
 
@@ -48,10 +49,10 @@ public class HandlerHelper {
     private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private static final String ZONE_MEMBERSHIP = "zoneMembership";
 
-    private Set<String> lineageClassificationTypes;
-    private RepositoryHandler repositoryHandler;
-    private OMRSRepositoryHelper repositoryHelper;
-    private InvalidParameterHandler invalidParameterHandler;
+    private final Set<String> lineageClassificationTypes;
+    private final RepositoryHandler repositoryHandler;
+    private final OMRSRepositoryHelper repositoryHelper;
+    private final InvalidParameterHandler invalidParameterHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -432,7 +433,95 @@ public class HandlerHelper {
                 .map(classification -> getClassificationVertex(classification, entityGUID))
                 .map(classificationVertex -> new GraphContext(CLASSIFICATION, classificationVertex.getGuid(), originalEntityVertex,
                         classificationVertex)).collect(Collectors.toSet()));
+    }
 
+    /**
+     * Adds the relationships context for an entity, based on the relationship type.
+     *
+     * @param userId               the unique identifier for the user
+     * @param startEntity          the start entity for the relationships
+     * @param relationshipTypeName the type of the relationship for which the context is built
+     * @param context              the context to be updated
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+     EntityDetail addContextForRelationships(String userId, EntityDetail startEntity, String relationshipTypeName,
+                                                    Set<GraphContext> context) throws OCFCheckedExceptionBase {
+        if (startEntity == null) {
+            return null;
+        }
 
+        context.addAll(buildContextForLineageClassifications(startEntity).getRelationships());
+
+        List<Relationship> relationships = getRelationshipsByRelationshipType(userId, startEntity, relationshipTypeName);
+        if (relationships == null) {
+            return null;
+        }
+
+        context.addAll(buildContextForRelationships(userId, startEntity.getGUID(), relationships).getRelationships());
+
+        return getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
+    }
+
+    /**
+     * Using the start entity it gets all the relationships it has by the given type. If the type is "FileFolder"
+     * then it filters only those there the start entity is the entity two proxy.
+     *
+     * @param userId               the user id
+     * @param startEntity          the start entity
+     * @param relationshipTypeName the relationship type name
+     * @return the entity one proxy by relationship type
+     * @throws OCFCheckedExceptionBase the ocf checked exception base
+     */
+    public List<Relationship> getRelationshipsByRelationshipType(String userId, EntityDetail startEntity, String relationshipTypeName) throws OCFCheckedExceptionBase {
+        String guid = startEntity.getGUID();
+        String typeDefName = startEntity.getType().getTypeDefName();
+        List<Relationship> relationships = getRelationshipsByType(userId, guid, relationshipTypeName, typeDefName);
+        if (CollectionUtils.isEmpty(relationships)) {
+            return null;
+        }
+
+        if (typeDefName.equals(FILE_FOLDER)) {
+            relationships = relationships.stream().filter(relationship ->
+                    relationship.getEntityTwoProxy().getGUID().equals(guid)).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(relationships)) {
+                return null;
+            }
+        }
+        return relationships;
+    }
+
+    /**
+     * Gets next entity detail using relationships.
+     *
+     * @param userId           the user id
+     * @param entityDetail     the entity detail
+     * @param relationshipType the relationship type
+     * @return the next entity detail
+     * @throws OCFCheckedExceptionBase the ocf checked exception base
+     */
+    public EntityDetail getNextEntityDetail(String userId, EntityDetail entityDetail, String relationshipType) throws OCFCheckedExceptionBase {
+        if(entityDetail == null) {
+            return null;
+        }
+        List<Relationship> relationships = getRelationshipsByRelationshipType(userId, entityDetail, relationshipType);
+        if (relationships == null) {
+            return null;
+        }
+        return getEntityAtTheEnd(userId, entityDetail.getGUID(), relationships.get(0));
+    }
+
+    /**
+     * Validate asset's GUID and it being in the specific supported zones.
+     *
+     * @param entityDetail   the entity detail
+     * @param methodName     the method name
+     * @param supportedZones the supported zones
+     * @throws InvalidParameterException the invalid parameter exception
+     */
+    public void validateAsset(EntityDetail entityDetail, String methodName, List<String> supportedZones) throws InvalidParameterException {
+        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(), GUID_PARAMETER,
+                getAssetZoneMembership(entityDetail.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
     }
 }
