@@ -3893,5 +3893,42 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>dist-github</id>
+            <activation>
+                <property>
+                    <name>useGitHub</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub Packages</name>
+                    <url>https://maven.pkg.github.com/odpi/egeria</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>dist-oss</id>
+            <activation>
+                <property>
+                    <name>useMavenCentral</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>ossrh</id>
+                    <name>Central Repository OSSRH - Staging</name>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+                  </repository>
+                  <snapshotRepository>
+                    <id>ossrh</id>
+                    <name>Central Repository OSSRH - Snapshots</name>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                  </snapshotRepository>
+            </distributionManagement>
+        </profile>
     </profiles>
 </project>
