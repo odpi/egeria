@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
@@ -16,11 +19,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -39,6 +39,7 @@ public class GlossaryContextHandler {
 
     private InvalidParameterHandler invalidParameterHandler;
     private HandlerHelper handlerHelper;
+    private AssetContextHandler assetContextHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -48,9 +49,11 @@ public class GlossaryContextHandler {
      * @param repositoryHandler       handler for calling the repository services
      */
     public GlossaryContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                                  RepositoryHandler repositoryHandler, Set<String> lineageClassificationTypes) {
+                                  RepositoryHandler repositoryHandler, AssetContextHandler assetContextHandler,
+                                  Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
+        this.assetContextHandler = assetContextHandler;
     }
 
     /**
@@ -81,7 +84,7 @@ public class GlossaryContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Map<String, RelationshipsContext> buildGlossaryTermContext(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
+    public Multimap<String, RelationshipsContext> buildGlossaryTermContext(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
         String methodName = "buildGlossaryTermContext";
 
         String glossaryTermGUID = glossaryTerm.getGUID();
@@ -91,11 +94,11 @@ public class GlossaryContextHandler {
         List<Relationship> termCategorizations = getTermCategorizations(userId, glossaryTermGUID, GLOSSARY_TERM);
         List<Relationship> glossaries = getTermAnchors(userId, glossaryTermGUID);
 
+        Multimap<String, RelationshipsContext> context = ArrayListMultimap.create();
         if (Stream.of(semanticAssignments, termCategorizations, glossaries).allMatch(CollectionUtils::isEmpty)) {
-            return Collections.emptyMap();
+            return context;
         }
 
-        Map<String, RelationshipsContext> context = new HashMap<>();
         context.put(AssetLineageEventType.SEMANTIC_ASSIGNMENTS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
                 glossaryTermGUID, semanticAssignments));
         context.put(AssetLineageEventType.TERM_CATEGORIZATIONS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
@@ -110,6 +113,11 @@ public class GlossaryContextHandler {
 
         context.put(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT.getEventTypeName(),
                 handlerHelper.buildContextForLineageClassifications(glossaryTerm));
+
+        Set<EntityDetail> schemaElementsAttached = getSchemaElementsAttached(userId, glossaryTerm);
+        for (EntityDetail schemaElement : schemaElementsAttached) {
+            context.putAll(Multimaps.forMap(assetContextHandler.buildSchemaElementContext(userId, schemaElement)));
+        }
 
         return context;
     }

@@ -4,8 +4,9 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.collections4.PredicateUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
@@ -26,9 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
@@ -223,7 +222,7 @@ public class AssetLineageRestServices {
     private String publishContext(EntityDetail entityDetail, AssetLineagePublisher publisher) throws OCFCheckedExceptionBase,
                                                                                                      JsonProcessingException {
         String typeName = entityDetail.getType().getTypeDefName();
-        Map<String, RelationshipsContext> context = new HashMap<>();
+        Multimap<String, RelationshipsContext> context = ArrayListMultimap.create();
         switch (typeName) {
             case GLOSSARY_TERM: {
                 context = publisher.publishGlossaryContext(entityDetail);
@@ -239,7 +238,7 @@ public class AssetLineageRestServices {
                 break;
         }
 
-        if (MapUtils.isEmpty(context)) {
+        if (!context.isEmpty()) {
             return entityDetail.getGUID();
         }
 

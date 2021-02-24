@@ -6,19 +6,18 @@ package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
@@ -32,9 +31,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_CATEGORY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
@@ -79,21 +76,22 @@ public class AssetLineagePublisher {
      *
      * @param entityDetail entity to get context
      *
+     * @return
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
-     * @return
      */
-    public Map<String, RelationshipsContext> publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    public Multimap<String, RelationshipsContext> publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase,
+                                                                                                          JsonProcessingException {
         Multimap<String, RelationshipsContext> processContext = processContextHandler.buildProcessContext(serverUserName, entityDetail);
 
         if (processContext.isEmpty()) {
             log.info("Context not found for the entity {} ", entityDetail.getGUID());
-            return Collections.emptyMap();
         }
 
-//        publishLineageRelationshipsEvents(processContext);
-//        return processContext;
-        return null;
+        publishLineageRelationshipsEvents(processContext);
+
+        return processContext;
     }
 
     /**
@@ -118,21 +116,16 @@ public class AssetLineagePublisher {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    public Map<String, RelationshipsContext> publishGlossaryContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase,
-                                                                                                      JsonProcessingException {
-        Map<String, RelationshipsContext> glossaryTermContext = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
+    public Multimap<String, RelationshipsContext> publishGlossaryContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase,
+                                                                                                           JsonProcessingException {
+        Multimap<String, RelationshipsContext> glossaryTermContext = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
 
-        if (MapUtils.isEmpty(glossaryTermContext)) {
+        if (glossaryTermContext.isEmpty()) {
             log.info("Context not found for the entity {} ", entityDetail.getGUID());
-            return Collections.emptyMap();
         }
 
         publishLineageRelationshipsEvents(glossaryTermContext);
 
-        Set<EntityDetail> schemaElementsAttached = glossaryHandler.getSchemaElementsAttached(serverUserName, entityDetail);
-        for (EntityDetail schemaElement : schemaElementsAttached) {
-            publishLineageRelationshipsEvents(assetContextHandler.buildSchemaElementContext(serverUserName, schemaElement));
-        }
 
         return glossaryTermContext;
     }
@@ -145,18 +138,18 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    private void publishLineageRelationshipsEvents(Map<String, RelationshipsContext> contextMap) throws JsonProcessingException,
-                                                                                                        ConnectorCheckedException {
+    private void publishLineageRelationshipsEvents(Multimap<String, RelationshipsContext> contextMap) throws JsonProcessingException,
+                                                                                                             ConnectorCheckedException {
         for (String eventType : contextMap.keySet()) {
-            RelationshipsContext relationshipsContext = contextMap.get(eventType);
+            for (RelationshipsContext relationshipsContext : contextMap.get(eventType)) {
+                if (CollectionUtils.isNotEmpty(relationshipsContext.getRelationships())) {
+                    LineageRelationshipsEvent event = new LineageRelationshipsEvent();
 
-            if (CollectionUtils.isNotEmpty(relationshipsContext.getRelationships())) {
-                LineageRelationshipsEvent event = new LineageRelationshipsEvent();
+                    event.setRelationshipsContext(relationshipsContext);
+                    event.setAssetLineageEventType(AssetLineageEventType.getByEventTypeName(eventType));
 
-                event.setRelationshipsContext(relationshipsContext);
-                event.setAssetLineageEventType(AssetLineageEventType.getByEventTypeName(eventType));
-
-                publishEvent(event);
+                    publishEvent(event);
+                }
             }
         }
     }
@@ -178,7 +171,7 @@ public class AssetLineagePublisher {
             return;
         }
 
-        publishLineageRelationshipsEvents(classificationContext);
+        publishLineageRelationshipsEvents(Multimaps.forMap(classificationContext));
     }
 
 
@@ -257,26 +250,6 @@ public class AssetLineagePublisher {
         return true;
     }
 
-    /**
-     * Publishes a {@link ProcessLineageEvent} for each entry from the context map
-     *
-     * @param context the context of the lineage entity
-     *
-     * @throws JsonProcessingException   exception parsing the event json
-     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
-     */
-    private void publishProcessContextEvents(Map<String, Set<GraphContext>> context) throws JsonProcessingException, ConnectorCheckedException {
-
-        for (String guid : context.keySet()) {
-            ProcessLineageEvent event = new ProcessLineageEvent();
-
-            event.setContext(context.get(guid));
-            event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
-
-            publishEvent(event);
-        }
-
-    }
 
 }
 
