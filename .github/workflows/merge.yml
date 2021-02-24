@@ -42,12 +42,6 @@ jobs:
       - name: Build with Maven (no snapshots published to maven central)
         if: ${{ github.repository != 'odpi/egeria' || github.ref != 'refs/heads/master'}}
         run: mvn -B clean verify
-        # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to 
-        # verify (close) the repository & release
-        env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
       # --
       # TODO - Publish docker images
       # --
