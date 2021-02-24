@@ -156,16 +156,13 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             if (pageSize == null) {
                 pageSize = invalidParameterHandler.getMaxPagingSize();
             }
+            if (sequencingOrder == null) {
+                sequencingOrder =SequencingOrder.ANY;
+            }
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
-            FindRequest findRequest = new FindRequest();
-            findRequest.setSearchCriteria(searchCriteria);
-            findRequest.setAsOfTime(asOfTime);
-            findRequest.setStartingFrom(startingFrom);
-            findRequest.setPageSize(pageSize);
-            findRequest.setSequencingOrder(sequencingOrder);
-            findRequest.setSequencingProperty(sequencingProperty);
+            FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder.name(), sequencingProperty, invalidParameterHandler.getMaxPagingSize());
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
             List<Glossary> glossaries = clients.glossaries().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
@@ -489,29 +486,43 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         return response;
     }
 
-    public SubjectAreaOMASAPIResponse<Category> getCategories(String serverName,
-                                                              String userId,
-                                                              String guid,
-                                                              Integer startingFrom,
-                                                              Integer pageSize,
-                                                              Boolean onlyTop) {
+    /**
+     * Get the Categories owned by this glossary.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param searchCriteria String expression matching child Term property values.
+     * @param asOfTime     the categories returned as they were at this time. null indicates at the current time.
+     * @param onlyTop      when only the top categories (those categories without parents) are returned.
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return A list of categories owned by the glossary
+     *
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    public SubjectAreaOMASAPIResponse<Category> getCategories(String serverName, String userId, String guid, String searchCriteria, Date asOfTime, Boolean onlyTop, Integer startingFrom, Integer pageSize, String sequencingOrder, String sequencingProperty) {
+
 
         final String methodName = "getCategories";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
-        FindRequest findRequest = new FindRequest();
-        if (startingFrom == null) {
-            startingFrom = 0;
-        }
-        if (pageSize == null) {
-            pageSize = invalidParameterHandler.getMaxPagingSize();
-        }
+        FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, invalidParameterHandler.getMaxPagingSize());
+
         try {
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             findRequest.setPageSize(pageSize);
             findRequest.setStartingFrom(startingFrom);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaConfigClient client = instanceHandler.getSubjectAreaConfigClient(serverName, userId, methodName);
             Config subjectAreaConfig = client.getConfig(userId);
@@ -524,25 +535,36 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-    public SubjectAreaOMASAPIResponse<Term> getTerms(String serverName,
-                                                     String userId,
-                                                     String guid,
-                                                     Integer startingFrom,
-                                                     Integer pageSize
-                                                    ) {
+    /**
+     * Get terms that are owned by this glossary
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @param searchCriteria String expression matching child Term property values.
+     * @param asOfTime   the terms returned as they were at this time. null indicates at the current time.
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     *
+     * @return A list of terms owned by the glossary
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    public SubjectAreaOMASAPIResponse<Term> getTerms(String serverName, String userId, String guid, String searchCriteria, Date asOfTime, Integer startingFrom, Integer pageSize, String sequencingOrder,String sequencingProperty) {
+
 
         final String methodName = "getTerms";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
-        FindRequest findRequest = new FindRequest();
-        if (startingFrom == null) {
-            startingFrom = 0;
-        }
-        if (pageSize == null) {
-            pageSize = invalidParameterHandler.getMaxPagingSize();
-        }
+        FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, invalidParameterHandler.getMaxPagingSize());
         try {
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             findRequest.setPageSize(pageSize);

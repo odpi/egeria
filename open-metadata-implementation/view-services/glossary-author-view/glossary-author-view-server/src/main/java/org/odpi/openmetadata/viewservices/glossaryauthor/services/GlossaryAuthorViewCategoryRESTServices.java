@@ -375,8 +375,25 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+    /**
+     * Get this Category's child Categories. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the parent category
+     * @param searchCriteria String expression matching child Category property values.
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of child categories filtered by the search criteria if one is supplied.
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     **/
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, String searchCriteria, Integer startingFrom, Integer pageSize) {
 
-    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategoryChildren";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -389,10 +406,12 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         if (pageSize == null) {
             pageSize = invalidParameterHandler.getMaxPagingSize();
         }
+
         try {
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             findRequest.setPageSize(pageSize);
             findRequest.setStartingFrom(startingFrom);
+            findRequest.setSearchCriteria(searchCriteria);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest);
@@ -404,7 +423,24 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         return response;
     }
 
-    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+    /**
+     * Get the terms that are categorized by this Category
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @param searchCriteria String expression to match the categorized Term property values.
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of terms is categorized by this Category
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     **/
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid,String searchCriteria, Integer startingFrom, Integer pageSize) {
             final String methodName = "getCategorizedTerms";
 
             RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -421,6 +457,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
                 invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
                 findRequest.setPageSize(pageSize);
                 findRequest.setStartingFrom(startingFrom);
+                findRequest.setSearchCriteria(searchCriteria);
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
                 List<Term> terms = ((SubjectAreaCategoryClient)clients.categories()).getTerms(userId, guid, findRequest);

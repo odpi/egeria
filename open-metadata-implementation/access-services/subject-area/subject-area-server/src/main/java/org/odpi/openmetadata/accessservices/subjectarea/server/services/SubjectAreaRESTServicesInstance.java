@@ -4,12 +4,16 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaRelationshipHandler;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 
 /**
@@ -258,5 +262,27 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
         }
         return response;
+    }
+
+    protected FindRequest getFindRequest(String searchCriteria, Date asOfTime, Integer startingFrom, Integer pageSize, String sequencingOrderName, String sequencingProperty, Integer handlerMaxPageSize) {
+        FindRequest findRequest = new FindRequest();
+        SequencingOrder sequencingOrder = SequencingOrder.ANY;
+        for (SequencingOrder possibleSequence: SequencingOrder.values()) {
+            if (possibleSequence.name().equals(sequencingOrderName)) {
+                sequencingOrder=possibleSequence;
+            }
+
+        }
+        findRequest.setSearchCriteria(searchCriteria);
+        findRequest.setAsOfTime(asOfTime);
+        findRequest.setStartingFrom(startingFrom);
+        if (pageSize == null){
+            findRequest.setPageSize(handlerMaxPageSize);
+        } else {
+            findRequest.setPageSize(pageSize);
+        }
+        findRequest.setSequencingOrder(sequencingOrder);
+        findRequest.setSequencingProperty(sequencingProperty);
+        return findRequest;
     }
 }
