@@ -33,5 +33,5 @@ jobs:
           restore-keys: ${{ runner.os }}-daily
       # Windows is slow for IO. Source/javadoc well verified elsewhere so we skip those here:
       - name: Build with Maven
-        run: mvn -DargLine="-XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:GCTimeRatio=99" -B -Dmaven.source.skip=true -Dmaven.javadoc.skip=true clean verify --file pom.xml
+        run: mvn clean verify 
       # no assemblies being uploaded here - we just want to verify
