@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaCategoryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
@@ -10,6 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -64,11 +64,15 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
     public SubjectAreaOMASAPIResponse<Glossary> createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
         final String methodName = "createGlossary";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.createGlossary(userId, suppliedGlossary);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         return response;
     }
@@ -90,11 +94,15 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
     public SubjectAreaOMASAPIResponse<Glossary> getGlossaryByGuid(String serverName, String userId, String guid) {
         final String methodName = "getGlossaryByGuid";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.getGlossaryByGuid(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         return response;
     }
@@ -130,12 +138,16 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
 
         final String methodName = "findGlossary";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
             response = handler.findGlossary(userId, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
 
         return response;
@@ -175,7 +187,9 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
@@ -186,6 +200,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             response = handler.getGlossaryRelationships(userId, guid, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -222,11 +238,15 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.updateGlossary(userId, guid, suppliedGlossary, isReplace);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -268,11 +288,15 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.deleteGlossary(userId, guid, isPurge);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -303,11 +327,15 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             response = handler.restoreGlossary(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -342,12 +370,16 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
             response = handler.getTerms(userId, guid, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -383,12 +415,16 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGlossaryHandler handler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
             response = handler.getCategories(userId, guid, findRequest, onlyTop, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName));
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
