@@ -44,9 +44,8 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
       # Normal build (in future may also run reports (site))
       - name: Build with Maven
-        run: mvn -B -DuseMavenCentral \
-             -Ddocker -Ddocker.repo=odpi -Ddocker.registry=docker.io -Ddocker.images=core \
-             clean deploy        
+        # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
+        run: 'mvn -B -DuseMavenCentral -Ddocker "-Ddocker.repo=odpi" "-Ddocker.registry=docker.io" "-Ddocker.images=core" clean deploy'        
         # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to 
         # verify (close) the repository & release
         env:
