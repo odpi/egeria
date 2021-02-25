@@ -197,10 +197,10 @@ public class IdentifierResolver {
 						Arrays.asList(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME), true,
 						null, null, 0, 0, methodName);
 				
-				if (refAsset.size() > 1) {
-					// qualified name collision: corrupted repository data
-				} else if (refAsset.isEmpty()) {
+				if (refAsset == null || refAsset.isEmpty()) {
 					// missing referenced asset: maybe fine if the reference is not used, but log warning
+				} else if (refAsset.size() > 1) {
+					// qualified name collision: corrupted repository data
 				} else {
 					ref.setGuid(refAsset.get(0).getGUID());
 					resolveSourcesGuids(ref);
