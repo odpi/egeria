@@ -18,15 +18,6 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
-          - task: Bash@3
-            displayName: 'Delete plexus-classworlds.license'
-            inputs:
-              targetType: 'inline'
-              script: |
-                cd $M2_HOME/boot
-                ls -la
-                rm ./plexus-classworlds.license
-            # TODO: Not sure if this is really needed...
           - script: mkdir -p ${HOME}/.docker
           - task: DownloadSecureFile@1
             displayName: 'Download docker config'

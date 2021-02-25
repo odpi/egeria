@@ -998,6 +998,13 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
              * as the relationship and all of its history should have been purged. Therefore this exception being thrown
              * indicates success -- so we do not need to handle it any further.
              */
+
+            assertCondition((true),
+                    assertion25,
+                    testTypeName + assertionMsg25,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+
         } catch (FunctionNotSupportedException exception) {
 
             super.addNotSupportedAssertion(assertion31,
