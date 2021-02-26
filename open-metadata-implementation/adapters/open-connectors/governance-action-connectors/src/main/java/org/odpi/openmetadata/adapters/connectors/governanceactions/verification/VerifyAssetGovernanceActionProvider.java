@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning;
+package org.odpi.openmetadata.adapters.connectors.governanceactions.verification;
 
 
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionConnector;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 
@@ -11,13 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MoveCopyFileGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
- * This is a Provisioning Governance Action Service.
+ * VerifyAssetGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
+ * This is a Verification Governance Action Service.
  */
-public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServiceProviderBase
+public class VerifyAssetGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
-    private static final String  connectorTypeGUID = "e2a14ca8-57b1-48d7-9cc4-d0b44983ca79";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Provisioning:MoveCopyFile";
+    private static final String  connectorTypeGUID = "26df5406-8c4b-4738-96f6-1aea5dfd71de";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Verification:VerifyAsset";
     private static final String  connectorTypeDisplayName = "Move or Copy File Governance Action Service";
     private static final String  connectorTypeDescription = "Provisioning Governance Action Service that moves or copies files on request.";
 
@@ -28,7 +29,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
     static final String LINEAGE_TO_DESTINATION_FOLDER_ONLY_CONFIGURATION_PROPERTY = "lineageToDestinationFolderOnly";
     static final String TARGET_FILE_NAME_PATTERN_CONFIGURATION_PROPERTY           = "targetFileNamePattern";
 
-    static final String COPY_REQUEST_TYPE = "copy-file";
+    static final String NEW_REQUEST_TYPE = "new-asset";
     static final String MOVE_REQUEST_TYPE = "move-file";
     static final String DELETE_REQUEST_TYPE = "delete-file";
 
@@ -48,13 +49,13 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * store implementation.
      */
-    public MoveCopyFileGovernanceActionProvider()
+    public VerifyAssetGovernanceActionProvider()
     {
         super();
         super.setConnectorClassName(connectorClassName);
 
         supportedRequestTypes = new ArrayList<>();
-        supportedRequestTypes.add(COPY_REQUEST_TYPE);
+        supportedRequestTypes.add(NEW_REQUEST_TYPE);
         supportedRequestTypes.add(MOVE_REQUEST_TYPE);
         supportedRequestTypes.add(DELETE_REQUEST_TYPE);
 
