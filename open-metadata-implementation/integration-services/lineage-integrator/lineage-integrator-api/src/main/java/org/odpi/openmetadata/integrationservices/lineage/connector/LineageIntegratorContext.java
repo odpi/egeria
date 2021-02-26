@@ -102,6 +102,7 @@ public class LineageIntegratorContext
      * Create a new metadata element to represent an asset using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new asset.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -111,7 +112,8 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createAssetFromTemplate(String             templateGUID,
+    public String createAssetFromTemplate(boolean            assetManagerIsHome,
+                                          String             templateGUID,
                                           TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -119,6 +121,7 @@ public class LineageIntegratorContext
         return dataAssetExchangeClient.createAssetFromTemplate(userId,
                                                                assetManagerGUID,
                                                                assetManagerName,
+                                                               assetManagerIsHome,
                                                                templateGUID,
                                                                null,
                                                                null,
@@ -377,6 +380,7 @@ public class LineageIntegratorContext
     /**
      * Create a new metadata element to represent a schema type using an existing metadata element as a template.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -386,7 +390,8 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaTypeFromTemplate(String             templateGUID,
+    public String createSchemaTypeFromTemplate(boolean            assetManagerIsHome,
+                                               String             templateGUID,
                                                TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
@@ -394,6 +399,7 @@ public class LineageIntegratorContext
         return dataAssetExchangeClient.createSchemaTypeFromTemplate(userId,
                                                                     assetManagerGUID,
                                                                     assetManagerName,
+                                                                    assetManagerIsHome,
                                                                     templateGUID,
                                                                     null,
                                                                     null,
@@ -656,6 +662,8 @@ public class LineageIntegratorContext
     /**
      * Create a new metadata element to represent a schema attribute using an existing metadata element as a template.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
+     * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -665,14 +673,18 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaAttributeFromTemplate(String              templateGUID,
-                                                    TemplateProperties  templateProperties) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public String createSchemaAttributeFromTemplate(boolean            assetManagerIsHome,
+                                                    String             schemaElementGUID,
+                                                    String             templateGUID,
+                                                    TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         return dataAssetExchangeClient.createSchemaAttributeFromTemplate(userId,
                                                                          assetManagerGUID,
                                                                          assetManagerName,
+                                                                         assetManagerIsHome,
+                                                                         schemaElementGUID,
                                                                          templateGUID,
                                                                          null,
                                                                          null,
@@ -714,6 +726,7 @@ public class LineageIntegratorContext
     /**
      * Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param formula description of how the value is calculated
      *
@@ -721,7 +734,8 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setSchemaElementAsCalculatedValue(String schemaElementGUID,
+    public void setSchemaElementAsCalculatedValue(boolean                   assetManagerIsHome,
+                                                  String schemaElementGUID,
                                                   String formula) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -729,6 +743,7 @@ public class LineageIntegratorContext
         dataAssetExchangeClient.setSchemaElementAsCalculatedValue(userId,
                                                                   assetManagerGUID,
                                                                   assetManagerName,
+                                                                  assetManagerIsHome,
                                                                   schemaElementGUID,
                                                                   null,
                                                                   formula);
@@ -1027,6 +1042,7 @@ public class LineageIntegratorContext
     /**
      * Create a new metadata element to represent a process using an existing metadata element as a template.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -1036,7 +1052,8 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createProcessFromTemplate(String             templateGUID,
+    public String createProcessFromTemplate(boolean            assetManagerIsHome,
+                                            String             templateGUID,
                                             TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
@@ -1044,6 +1061,7 @@ public class LineageIntegratorContext
         return lineageExchangeClient.createProcessFromTemplate(userId,
                                                                assetManagerGUID,
                                                                assetManagerName,
+                                                               assetManagerIsHome,
                                                                templateGUID,
                                                                null,
                                                                null,
