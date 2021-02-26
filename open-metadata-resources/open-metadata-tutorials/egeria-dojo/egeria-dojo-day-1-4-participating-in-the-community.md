@@ -24,7 +24,7 @@ This community is stronger if it consists of individuals from different organiza
 and backgrounds.  This means we need a respectful and inclusive
 culture to allow a diverse range of people to participate.
 
-This culture is reflected in the [Code of Conduct](../../../CODE_OF_CONDUCT.md)
+This culture is reflected in the [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct)
 that every participant must adhere to.
 
 Within the community, contributors are focused on making the contributions
