@@ -6,11 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -26,20 +22,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionTypeProperties extends ReferenceableProperties
 {
-    private static final long          serialVersionUID = 1L;
+    private static final long   serialVersionUID     = 1L;
 
-    private int                        domainIdentifier       = 0;
-    private String                     displayName            = null;
-    private String                     description            = null;
+    private int                 domainIdentifier     = 0;
+    private String              displayName          = null;
+    private String              description          = null;
 
-    private String                     owner                  = null;
-    private OwnerCategory              ownerCategory          = null;
+    private String              owner                = null;
+    private OwnerCategory       ownerCategory        = null;
 
-    private List<String>               supportedGuards        = null;
+    private List<String>        supportedGuards      = null;
 
-    private String                     governanceEngineGUID   = null;
-    private String                     requestType            = null;
-    private Map<String, String>        requestProperties      = null;
+    private String              governanceEngineGUID = null;
+    private String              requestType          = null;
+    private Map<String, String> requestParameters    = null;
 
     /**
      * Default constructor
@@ -69,7 +65,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
 
             governanceEngineGUID = template.getGovernanceEngineGUID();
             requestType = template.getRequestType();
-            requestProperties = template.getRequestProperties();
+            requestParameters = template.getRequestParameters();
         }
     }
 
@@ -256,30 +252,30 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
      *
      * @return map of properties
      */
-    public Map<String, String> getRequestProperties()
+    public Map<String, String> getRequestParameters()
     {
-        if (requestProperties == null)
+        if (requestParameters == null)
         {
             return null;
         }
 
-        if (requestProperties.isEmpty())
+        if (requestParameters.isEmpty())
         {
             return null;
         }
 
-        return requestProperties;
+        return requestParameters;
     }
 
 
     /**
      * Set up the parameters to pass onto the governance service.
      *
-     * @param requestProperties map of properties
+     * @param requestParameters map of properties
      */
-    public void setRequestProperties(Map<String, String> requestProperties)
+    public void setRequestParameters(Map<String, String> requestParameters)
     {
-        this.requestProperties = requestProperties;
+        this.requestParameters = requestParameters;
     }
 
 
@@ -300,7 +296,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
                        ", supportedGuards=" + supportedGuards +
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
                        ", requestType='" + requestType + '\'' +
-                       ", requestProperties=" + requestProperties +
+                       ", requestParameters=" + requestParameters +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        '}';
@@ -337,7 +333,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
                        Objects.equals(supportedGuards, that.supportedGuards) &&
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
                        Objects.equals(requestType, that.requestType) &&
-                       Objects.equals(requestProperties, that.requestProperties);
+                       Objects.equals(requestParameters, that.requestParameters);
     }
 
 
@@ -350,6 +346,6 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, owner, ownerCategory, supportedGuards, governanceEngineGUID,
-                            requestType, requestProperties);
+                            requestType, requestParameters);
     }
 }

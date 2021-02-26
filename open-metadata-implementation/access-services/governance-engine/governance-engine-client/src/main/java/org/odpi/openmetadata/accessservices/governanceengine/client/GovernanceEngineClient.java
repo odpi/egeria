@@ -958,7 +958,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "updateGovernanceActionStatus";
         final String guidParameterName = "governanceActionGUID";
         final String statusParameterName = "governanceActionStatus";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}status/update";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}/status/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceActionGUID, guidParameterName, methodName);
@@ -982,7 +982,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      *
      * @param userId caller's userId
      * @param governanceActionGUID unique identifier of the governance action to update
-     * @param requestProperties request properties from the caller (will be passed onto any follow on actions)
+     * @param requestParameters request properties from the caller (will be passed onto any follow on actions)
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
@@ -994,7 +994,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     @Override
     public void recordCompletionStatus(String              userId,
                                        String              governanceActionGUID,
-                                       Map<String, String> requestProperties,
+                                       Map<String, String> requestParameters,
                                        CompletionStatus    status,
                                        List<String>        outputGuards,
                                        List<String>        newActionTargetGUIDs) throws InvalidParameterException,
@@ -1010,7 +1010,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
 
         CompletionStatusRequestBody requestBody = new CompletionStatusRequestBody();
 
-        requestBody.setRequestProperties(requestProperties);
+        requestBody.setRequestParameters(requestParameters);
         requestBody.setStatus(status);
         requestBody.setOutputGuards(outputGuards);
         requestBody.setNewActionTargetGUIDs(newActionTargetGUIDs);
@@ -1040,7 +1040,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestType request type to identify the governance action service to run
-     * @param requestProperties properties to pass to the governance action service
+     * @param requestParameters properties to pass to the governance action service
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the requesting governance engine (if initiated by a governance engine).
      *
@@ -1061,7 +1061,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
                                            Date                startTime,
                                            String              governanceEngineName,
                                            String              requestType,
-                                           Map<String, String> requestProperties,
+                                           Map<String, String> requestParameters,
                                            String              originatorServiceName,
                                            String              originatorEngineName) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
@@ -1087,7 +1087,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setReceivedGuards(receivedGuards);
         requestBody.setStartTime(startTime);
         requestBody.setRequestType(requestType);
-        requestBody.setRequestProperties(requestProperties);
+        requestBody.setRequestParameters(requestParameters);
         requestBody.setOriginatorServiceName(originatorServiceName);
         requestBody.setOriginatorEngineName(originatorEngineName);
 
@@ -1110,7 +1110,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
      * @param actionTargetGUIDs list of action targets for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible".
-     * @param requestProperties request properties to be passed to the first governance action
+     * @param requestParameters request properties to be passed to the first governance action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      *
@@ -1125,7 +1125,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
                                                   List<String>        requestSourceGUIDs,
                                                   List<String>        actionTargetGUIDs,
                                                   Date                startTime,
-                                                  Map<String, String> requestProperties,
+                                                  Map<String, String> requestParameters,
                                                   String              originatorServiceName,
                                                   String              originatorEngineName) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
@@ -1144,7 +1144,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
         requestBody.setActionTargetGUIDs(actionTargetGUIDs);
         requestBody.setStartTime(startTime);
-        requestBody.setRequestProperties(requestProperties);
+        requestBody.setRequestParameters(requestParameters);
         requestBody.setOriginatorServiceName(originatorServiceName);
         requestBody.setOriginatorEngineName(originatorEngineName);
 

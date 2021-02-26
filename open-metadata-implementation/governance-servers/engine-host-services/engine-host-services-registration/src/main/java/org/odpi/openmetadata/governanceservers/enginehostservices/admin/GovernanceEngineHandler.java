@@ -289,7 +289,9 @@ public abstract class GovernanceEngineHandler
                         governanceServiceLookupTable.put(governanceRequestType, governanceServiceCache);
 
                         auditLog.logMessage(methodName,
-                                            EngineHostServicesAuditCode.SUPPORTED_REQUEST_TYPE.getMessageDefinition(governanceEngineName, serverName));
+                                            EngineHostServicesAuditCode.SUPPORTED_REQUEST_TYPE.getMessageDefinition(governanceEngineName,
+                                                                                                                    serverName,
+                                                                                                                    governanceRequestType));
                     }
                 }
             }
@@ -409,33 +411,31 @@ public abstract class GovernanceEngineHandler
      * Execute the requested governance action on or after the start time.
      *
      * @param governanceActionElement element describing the governance action.
-     *
-     * @throws InvalidParameterException Vital fields of the governance action are not filled out
-     * @throws UserNotAuthorizedException the governance service is not permitted to execute the governance action
-     * @throws PropertyServerException there is a problem communicating with the open metadata stores
      */
-    public void executeGovernanceAction(GovernanceActionElement  governanceActionElement) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+    public void executeGovernanceAction(GovernanceActionElement  governanceActionElement)
     {
         final String methodName = "executeGovernanceAction";
 
         try
         {
-            ElementHeader              elementHeader = governanceActionElement.getElementHeader();
-            GovernanceActionProperties properties = governanceActionElement.getProperties();
+            ElementHeader              elementHeader                 = governanceActionElement.getElementHeader();
+            GovernanceActionElement    latestGovernanceActionElement = serverClient.getGovernanceAction(serverUserId, elementHeader.getGUID());
+            GovernanceActionProperties properties                    = latestGovernanceActionElement.getProperties();
 
-            serverClient.claimGovernanceAction(engineUserId, elementHeader.getGUID());
+            if (properties.getActionStatus() == GovernanceActionStatus.APPROVED)
+            {
+                serverClient.claimGovernanceAction(serverUserId, elementHeader.getGUID());
 
-            // todo if the start date is in the future then the governance action should be given to the scheduler
+                // todo if the start date is in the future then the governance action should be given to the scheduler
 
-            serverClient.updateGovernanceActionStatus(engineUserId, elementHeader.getGUID(), GovernanceActionStatus.IN_PROGRESS);
+                serverClient.updateGovernanceActionStatus(serverUserId, elementHeader.getGUID(), GovernanceActionStatus.IN_PROGRESS);
 
-            GovernanceServiceHandler governanceServiceHandler = runGovernanceService(elementHeader.getGUID(),
-                                                                                     properties.getRequestType(),
-                                                                                     properties.getRequestProperties(),
-                                                                                     properties.getRequestSourceElements(),
-                                                                                     properties.getActionTargetElements());
+                runGovernanceService(elementHeader.getGUID(),
+                                     properties.getRequestType(),
+                                     properties.getRequestParameters(),
+                                     properties.getRequestSourceElements(),
+                                     properties.getActionTargetElements());
+            }
         }
         catch (Exception error)
         {
