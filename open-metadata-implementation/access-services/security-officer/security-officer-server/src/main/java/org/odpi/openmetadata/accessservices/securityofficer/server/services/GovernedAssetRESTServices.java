@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.Softw
 import org.odpi.openmetadata.accessservices.securityofficer.server.handler.GovernedAssetHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 import java.util.List;
@@ -58,11 +59,13 @@ public class GovernedAssetRESTServices
         String methodName = "getGovernedAssets";
 
         GovernedAssetListResponse response = new GovernedAssetListResponse();
+        AuditLog     auditLog = null;
         try {
             GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernedAssetList(governedAssetHandler.getGovernedAssets(userId, entityTypes, offset, pageSize));
-        } catch (Throwable e) {
-            restExceptionHandler.captureThrowable(response, e, methodName);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
         }
 
         return response;
@@ -86,16 +89,18 @@ public class GovernedAssetRESTServices
     public GovernedAssetResponse getGovernedAsset(String serverName, String userId, String assetGuid) {
         String methodName = "getGovernedAsset";
         GovernedAssetResponse response = new GovernedAssetResponse();
+        AuditLog     auditLog = null;
 
         try {
             GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setAsset(governedAssetHandler.getGovernedAsset(userId, assetGuid));
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
-        } catch (Throwable e) {
-            restExceptionHandler.captureThrowable(response, e, methodName);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
         }
 
         return response;
@@ -105,25 +110,29 @@ public class GovernedAssetRESTServices
         String methodName = "createSoftwareServer";
 
         StringResponse response = new StringResponse();
+        AuditLog     auditLog = null;
         try {
             GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setResultString(governedAssetHandler.createSoftwareServerCapability(userId, requestBody.getSoftwareServerCapability()));
-        } catch (Throwable e) {
-            restExceptionHandler.captureThrowable(response, e, methodName);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
         }
 
         return response;
     }
 
     public SoftwareServerCapabilityResponse getSoftwareServerByGUID(String serverName, String userId, String guid) {
-        String methodName = "getSoftwareServerByGUID";
-        SoftwareServerCapabilityResponse response = new SoftwareServerCapabilityResponse();
+        String                           methodName = "getSoftwareServerByGUID";
+        SoftwareServerCapabilityResponse response   = new SoftwareServerCapabilityResponse();
+        AuditLog                         auditLog   = null;
 
         try {
             GovernedAssetHandler governedAssetHandler = instanceHandler.getGovernedAssetHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setServerCapability(governedAssetHandler.getSoftwareServerCapabilityByGUID(userId, guid));
-        } catch (Throwable e) {
-            restExceptionHandler.captureThrowable(response, e, methodName);
+        } catch (Exception e) {
+            restExceptionHandler.captureExceptions(response, e, methodName, auditLog);
         }
 
         return response;
