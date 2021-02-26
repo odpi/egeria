@@ -125,7 +125,7 @@ public class ClassificationTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -134,7 +134,7 @@ public class ClassificationTest
         {
             validateResultObject(objectMapper.readValue(jsonString, Classification.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -148,7 +148,7 @@ public class ClassificationTest
         {
             jsonString = objectMapper.writeValueAsString(propertyBase);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -157,7 +157,7 @@ public class ClassificationTest
         {
             validateResultObject((Classification) objectMapper.readValue(jsonString, CommunityProfileElementHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
