@@ -48,7 +48,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -78,7 +78,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -108,7 +108,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -138,7 +138,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -168,7 +168,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -198,7 +198,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -227,7 +227,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -258,7 +258,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -287,7 +287,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -316,7 +316,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -352,7 +352,7 @@ public class OMAGServerPlatformActiveServices
         }
         catch (Exception error)
         {
-            exceptionHandler.captureExceptions(response, error, methodName, null);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

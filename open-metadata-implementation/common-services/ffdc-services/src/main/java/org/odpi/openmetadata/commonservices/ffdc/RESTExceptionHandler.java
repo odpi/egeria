@@ -473,6 +473,21 @@ public class RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response
      * @param methodName calling method
+     */
+    public  void captureExceptions(FFDCResponse response,
+                                   Throwable    error,
+                                   String       methodName)
+    {
+        this.captureExceptions(response, error, methodName, null);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response
+     * @param methodName calling method
      * @param auditLog log location for recording an unexpected exception
      */
     public  void captureExceptions(FFDCResponse response,
