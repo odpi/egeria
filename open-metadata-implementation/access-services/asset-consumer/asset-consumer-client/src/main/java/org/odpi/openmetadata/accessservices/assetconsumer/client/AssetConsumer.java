@@ -408,7 +408,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         {
             asset = this.getAssetSummary(restClient, serviceURLName, userId, assetToken, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             asset = null;
         }
