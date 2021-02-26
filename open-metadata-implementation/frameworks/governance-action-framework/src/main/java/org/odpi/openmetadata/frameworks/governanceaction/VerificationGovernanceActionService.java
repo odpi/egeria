@@ -68,7 +68,6 @@ public abstract class VerificationGovernanceActionService extends GovernanceActi
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
-        governanceContext = null;
         super.disconnect();
     }
 }
