@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
@@ -62,8 +60,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
             Config config = new Config();
             config.setMaxPageSize(glossaryViewMaxMageSize);
             response.addResult(config);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -125,8 +123,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
 
             List<Category> categories = clients.categories().find(userId, findRequest);
             response.addAllResults(categories);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -188,8 +186,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
 
             List<Line> lines =  clients.categories().getRelationships(userId, guid, findRequest);
             response.addAllResults(lines);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -238,8 +236,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
                 updatedCategory = clients.categories().update(userId, guid, category);
             }
             response.addResult(updatedCategory);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -293,8 +291,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
             } else {
                 clients.categories().delete(userId, guid);
             }
-        }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -332,8 +330,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Category category = clients.categories().restore(userId, guid);
             response.addResult(category);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -360,8 +358,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest);
             response.addAllResults(categories);
-        } catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -388,8 +386,8 @@ public class GlossaryAuthorViewConfigRESTServices extends BaseGlossaryAuthorView
                 SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
                 List<Term> terms = ((SubjectAreaCategoryClient)clients.categories()).getTerms(userId, guid, findRequest);
                 response.addAllResults(terms);
-            } catch (Throwable error) {
-                response = getResponseForError(error, auditLog, className, methodName);
+            } catch (Exception exception) {
+                response = getResponseForException(exception, auditLog, className, methodName);
             }
             restCallLogger.logRESTCallReturn(token, response.toString());
             return response;

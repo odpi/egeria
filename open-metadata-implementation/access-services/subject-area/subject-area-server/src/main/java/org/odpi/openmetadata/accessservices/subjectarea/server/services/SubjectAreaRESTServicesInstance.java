@@ -3,11 +3,16 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaAuditCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaRelationshipHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -67,12 +72,16 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.createLine(restAPIName, userId, clazz, line);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
@@ -109,12 +118,16 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.getLine(restAPIName, userId, clazz, guid);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
@@ -158,12 +171,16 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.updateLine(restAPIName, userId, guid, clazz, line, isReplace);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
@@ -205,12 +222,16 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.deleteLine(restAPIName, userId, clazz, guid, isPurge);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
@@ -251,12 +272,16 @@ public class SubjectAreaRESTServicesInstance {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
         SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
             response = handler.restoreLine(restAPIName, userId, clazz, guid);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
@@ -284,5 +309,31 @@ public class SubjectAreaRESTServicesInstance {
         findRequest.setSequencingOrder(sequencingOrder);
         findRequest.setSequencingProperty(sequencingProperty);
         return findRequest;
+    }
+    /**
+     * Get the appropriate response from the supplied Exception
+     *
+     * @param exception      - supplied exception
+     * @param auditLog   - auditlog (may be null if unable to initialize)
+     * @param className  - calling class's Name
+     * @param restAPIName - calling method's name
+     * @return response corresponding to the exception.
+     */
+    protected <T> SubjectAreaOMASAPIResponse<T> getResponseForException(Exception exception, AuditLog auditLog, String className, String restAPIName) {
+        SubjectAreaOMASAPIResponse<T> response = new SubjectAreaOMASAPIResponse<>();
+        if (exception instanceof OCFCheckedExceptionBase) {
+            response.setExceptionInfo((OCFCheckedExceptionBase) exception, className);
+        } else {
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition();
+            messageDefinition.setMessageParameters(exception.getMessage());
+            SubjectAreaCheckedException checkedException = new SubjectAreaCheckedException(messageDefinition, className, restAPIName, exception);
+            response.setExceptionInfo(checkedException, className);
+            if (auditLog != null) {
+                auditLog.logException(restAPIName,
+                                      SubjectAreaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(exception.getClass().getName(), restAPIName, exception.getMessage()),
+                                      exception);
+            }
+        }
+        return response;
     }
 }
