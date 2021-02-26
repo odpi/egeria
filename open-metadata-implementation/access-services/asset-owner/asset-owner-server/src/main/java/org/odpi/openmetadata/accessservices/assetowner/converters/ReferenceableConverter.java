@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FolderElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.FolderProperties;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -12,22 +12,23 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+
 /**
- * FileFolderConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a FileFolderElement bean.
+ * AssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a bean that inherits from AssetProperties.
  */
-public class FileFolderConverter<B> extends AssetConverter<B>
+public class ReferenceableConverter<B> extends AssetOwnerOMASConverter<B>
 {
     /**
      * Constructor
      *
-     * @param repositoryHelper helper object to parse entity/relationship objects
+     * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
      * @param serverName local server name
      */
-    public FileFolderConverter(OMRSRepositoryHelper repositoryHelper,
-                               String               serviceName,
-                               String               serverName)
+    public ReferenceableConverter(OMRSRepositoryHelper repositoryHelper,
+                                  String               serviceName,
+                                  String               serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -55,43 +56,38 @@ public class FileFolderConverter<B> extends AssetConverter<B>
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof FolderElement)
+            if (returnBean instanceof AssetElement)
             {
-                FolderElement bean = (FolderElement) returnBean;
-                FolderProperties folderProperties = new FolderProperties();
+                AssetElement bean = (AssetElement) returnBean;
+                AssetProperties assetProperties = new AssetProperties();
 
-                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
-
-                InstanceProperties instanceProperties;
-
-                /*
-                 * The initial set of values come from the entity.
-                 */
                 if (entity != null)
                 {
-                    instanceProperties = new InstanceProperties(entity.getProperties());
+                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
-                    folderProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    folderProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    folderProperties.setDisplayName(this.removeName(instanceProperties));
-                    folderProperties.setDescription(this.removeDescription(instanceProperties));
-                    folderProperties.setPathName(this.removePathName(instanceProperties));
-                    folderProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
-                    folderProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    assetProperties.setDisplayName(this.removeName(instanceProperties));
+                    assetProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /* Note this value should be in the classification */
-                    folderProperties.setOwner(this.removeOwner(instanceProperties));
+                    assetProperties.setOwner(this.removeOwner(instanceProperties));
                     /* Note this value should be in the classification */
-                    folderProperties.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
+                    assetProperties.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
                     /* Note this value should be in the classification */
-                    folderProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
+                    assetProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    folderProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    folderProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    assetProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    assetProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
                     /*
                      * The values in the classifications override the values in the main properties of the Asset's entity.
@@ -99,27 +95,20 @@ public class FileFolderConverter<B> extends AssetConverter<B>
                      */
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
-                    folderProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
+                    assetProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
-                    folderProperties.setOwner(this.getOwner(instanceProperties));
-                    folderProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
+                    assetProperties.setOwner(this.getOwner(instanceProperties));
+                    assetProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
-                    folderProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    folderProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    folderProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+                    assetProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
+                    assetProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
+                    assetProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
-
-                    folderProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
-                    folderProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));
-                    folderProperties.setEncodingDescription(this.getDataStoreEncodingDescription(instanceProperties));
-                    folderProperties.setEncodingProperties(this.getEncodingProperties(instanceProperties));
-
-                    bean.setFolderProperties(folderProperties);
+                    bean.setAssetProperties(assetProperties);
                 }
                 else
                 {
