@@ -38,9 +38,15 @@ public class Constants {
 	public static final String RELATIONAL_TABLE = "RelationalTable";
 	public static final String SCHEMA_ASSET = "SchemaAsset";
 	public static final String SOURCE = "source";
+	public static final String SYNC_DATA_TYPE = "datatype";	
+	public static final String SYNC_DESCRIPTION = "description";	
+	public static final String SYNC_EXPRESSION = "expression";
+	public static final String SYNC_IDENTIFIER = "identifier";
+	public static final String SYNC_ID_LIST_DELIMITER = "\t";
+	public static final String SYNC_NATIVE_CLASS = "nativeClass";
 	public static final String TYPE = "type";
 	public static final String TYPE_SUFFIX = "_type";
 	public static final String USER_ID = "userId";
 	public static final String VERSION = "version";
-	public static final String ZONE_MEMBERSHIP = "zoneMembership";	
+	public static final String ZONE_MEMBERSHIP = "zoneMembership";
 }
