@@ -162,7 +162,7 @@ public class FavouriteCollectionOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -171,7 +171,7 @@ public class FavouriteCollectionOutboundEventTest
         {
             validateResultObject(objectMapper.readValue(jsonString, FavouriteCollectionOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -185,7 +185,7 @@ public class FavouriteCollectionOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -194,7 +194,7 @@ public class FavouriteCollectionOutboundEventTest
         {
             validateResultObject((FavouriteCollectionOutboundEvent) objectMapper.readValue(jsonString, PersonalProfileOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -209,7 +209,7 @@ public class FavouriteCollectionOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -218,7 +218,7 @@ public class FavouriteCollectionOutboundEventTest
         {
             validateResultObject((FavouriteCollectionOutboundEvent) objectMapper.readValue(jsonString, CommunityProfileOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -233,7 +233,7 @@ public class FavouriteCollectionOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superSuperSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -242,7 +242,7 @@ public class FavouriteCollectionOutboundEventTest
         {
             validateResultObject((FavouriteCollectionOutboundEvent) objectMapper.readValue(jsonString, CommunityProfileEventHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

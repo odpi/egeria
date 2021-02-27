@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,8 +46,8 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     /*
      * Values for a schema type that is a map
      */
-    private SchemaTypeBuilder mapFrom = null;
-    private SchemaTypeBuilder mapTo   = null;
+    private SchemaTypeBuilder   mapFrom = null;
+    private SchemaTypeBuilder   mapTo   = null;
 
     /*
      * Values for a schema type choice
@@ -316,6 +317,34 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     public boolean isDerived()
     {
         return (! (formula == null));
+    }
+
+
+    /**
+     * Return the list of builders that each hold details of a schema Type to update.
+     *
+     * @return list of builders including this one
+     */
+    List<SchemaTypeBuilder> getSchemaTypeBuilders()
+    {
+        List<SchemaTypeBuilder> builders = new ArrayList<>();
+
+        builders.add(this);
+
+        if (mapFrom != null)
+        {
+            builders.add(mapFrom);
+        }
+        if (mapTo != null)
+        {
+            builders.add(mapTo);
+        }
+        if ((schemaOptions != null) && (! schemaOptions.isEmpty()))
+        {
+            builders.addAll(schemaOptions);
+        }
+
+        return builders;
     }
 
 

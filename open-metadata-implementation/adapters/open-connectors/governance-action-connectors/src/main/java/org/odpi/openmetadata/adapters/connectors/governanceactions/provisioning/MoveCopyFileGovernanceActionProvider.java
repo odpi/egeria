@@ -12,12 +12,13 @@ import java.util.List;
 
 /**
  * MoveCopyFileGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
- * This is is a Provisioning Governance Action Service.
+ * This is a Provisioning Governance Action Service.
  */
 public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "e2a14ca8-57b1-48d7-9cc4-d0b44983ca79";
-    private static final String  connectorTypeName = "Move or Copy File Governance Action Service";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Provisioning:MoveCopyFile";
+    private static final String  connectorTypeDisplayName = "Move or Copy File Governance Action Service";
     private static final String  connectorTypeDescription = "Provisioning Governance Action Service that moves or copies files on request.";
 
     static final String PROVISION_UNCATALOGUED_FILES_CONFIGURATION_PROPERTY       = "provisionUncataloguedFiles";
@@ -29,6 +30,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
 
     static final String COPY_REQUEST_TYPE = "copy-file";
     static final String MOVE_REQUEST_TYPE = "move-file";
+    static final String DELETE_REQUEST_TYPE = "delete-file";
 
     static final String SOURCE_FILE_PARAMETER        = "source-file";
     static final String DESTINATION_FOLDER_PARAMETER = "destination-folder";
@@ -54,6 +56,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         supportedRequestTypes = new ArrayList<>();
         supportedRequestTypes.add(COPY_REQUEST_TYPE);
         supportedRequestTypes.add(MOVE_REQUEST_TYPE);
+        supportedRequestTypes.add(DELETE_REQUEST_TYPE);
 
         supportedRequestParameters = new ArrayList<>();
         supportedRequestParameters.add(SOURCE_FILE_PARAMETER);
@@ -72,8 +75,8 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
+        connectorType.setQualifiedName(connectorTypeQualifiedName);
+        connectorType.setDisplayName(connectorTypeDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 

@@ -167,7 +167,7 @@ public class DiscoveryEnginePublisher
                 outTopicAuditLog.logMessage(actionDescription, DiscoveryEngineAuditCode.PUBLISHING_SHUTDOWN.getMessageDefinition(outTopicName));
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             if (outTopicAuditLog != null)
             {

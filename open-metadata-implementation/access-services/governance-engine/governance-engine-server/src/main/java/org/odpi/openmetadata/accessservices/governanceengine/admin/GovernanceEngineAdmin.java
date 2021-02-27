@@ -137,7 +137,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                                   error);
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   GovernanceEngineAuditCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(error.getClass().getName(),

@@ -29,12 +29,12 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String                      typeName             = null;
-    protected List<ElementClassification> classifications      = null;
-    protected String                      qualifiedName        = null;
-    protected List<MeaningProperties>     meanings             = null;
-    protected Map<String, String>         additionalProperties = null;
-    protected Map<String, Object>         extendedProperties   = null;
+    private String                      typeName             = null;
+    private List<ElementClassification> classifications      = null;
+    private String                      qualifiedName        = null;
+    private List<MeaningProperties>     meanings             = null;
+    private Map<String, String>         additionalProperties = null;
+    private Map<String, Object>         extendedProperties   = null;
 
 
     /**

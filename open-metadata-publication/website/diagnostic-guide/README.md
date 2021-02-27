@@ -135,6 +135,7 @@ and another example:
 }
 ```
 
+Additional examples of common errors are shown here.
 ## Audit Log Messages
 
 The diagram below illustrates the structure of the audit log records:
