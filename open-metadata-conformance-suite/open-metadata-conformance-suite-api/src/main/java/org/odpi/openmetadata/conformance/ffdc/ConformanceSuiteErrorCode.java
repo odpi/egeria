@@ -142,6 +142,11 @@ public enum ConformanceSuiteErrorCode
             "The system is unable to access the connectors to issue metadata requests to the technologies under test.",
             "Change the setting of the enterprise access service to ensure it is enabled."),
 
+    UNKNOWN_PROFILE_NAME(400, "CONFORMANCE-SUITE-400-023 ",
+            "Unable to create a report for a profile with unknown name {0}",
+            "The system is unable to create the report.",
+            "Validate the profile name with the messages being produced by the audit log and the conformance suite documentation."),
+
     NO_ENTERPRISE_TOPIC(500, "CONFORMANCE-SUITE-500-001 ",
             "The ODPi Egeria Conformance Suite located in OMAG server {0} has not been passed an enterprise topic connector",
             "The conformance suite is unable to receive and evaluate events from technologies under test.",

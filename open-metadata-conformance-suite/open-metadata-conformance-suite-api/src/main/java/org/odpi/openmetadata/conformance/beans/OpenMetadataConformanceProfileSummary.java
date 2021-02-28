@@ -14,13 +14,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * OpenMetadataConformanceProfileResults provides a detailed assessment of a technology's
- * conformance to an open metadata conformance profile, including all evidence collected.
+ * OpenMetadataConformanceProfileSummary provides a summary of the assessment of a technology's
+ * conformance to an open metadata conformance profile.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataConformanceProfileResults implements Serializable
+public class OpenMetadataConformanceProfileSummary implements Serializable
 {
     private static final long   serialVersionUID = 1L;
 
@@ -30,13 +30,13 @@ public class OpenMetadataConformanceProfileResults implements Serializable
     private String                                                  documentationURL   = null;
     private OpenMetadataConformanceProfilePriority                  profilePriority    = null;
     private OpenMetadataConformanceStatus                           conformanceStatus  = null;
-    private List<OpenMetadataConformanceRequirementResults>         requirementResults = null;
+    private List<OpenMetadataConformanceRequirementSummary>         requirementSummary = null;
 
 
     /**
      * Default constructor used in JSON exchange
      */
-    public OpenMetadataConformanceProfileResults()
+    public OpenMetadataConformanceProfileSummary()
     {
     }
 
@@ -50,7 +50,7 @@ public class OpenMetadataConformanceProfileResults implements Serializable
      * @param documentationURL URL to the documentation of the profile
      * @param profilePriority mandatory or optional
      */
-    public OpenMetadataConformanceProfileResults(Integer                                id,
+    public OpenMetadataConformanceProfileSummary(Integer                                id,
                                                  String                                 name,
                                                  String                                 description,
                                                  String                                 documentationURL,
@@ -68,7 +68,7 @@ public class OpenMetadataConformanceProfileResults implements Serializable
      *
      * @param template object to copy
      */
-    public OpenMetadataConformanceProfileResults(OpenMetadataConformanceProfileResults  template)
+    public OpenMetadataConformanceProfileSummary(OpenMetadataConformanceProfileSummary  template)
     {
         if (template != null)
         {
@@ -78,7 +78,7 @@ public class OpenMetadataConformanceProfileResults implements Serializable
             this.documentationURL = template.getDocumentationURL();
             this.profilePriority = template.getProfilePriority();
             this.conformanceStatus = template.getConformanceStatus();
-            this.requirementResults = template.getRequirementResults();
+            this.requirementSummary = template.getRequirementSummary();
         }
     }
 
@@ -218,25 +218,22 @@ public class OpenMetadataConformanceProfileResults implements Serializable
     /**
      * Return detailed results, requirement by requirement.
      *
-     * @return list of requirement results
-     *
+     * @return list of requirement results (summary)
      */
-    public List<OpenMetadataConformanceRequirementResults> getRequirementResults()
+    public List<OpenMetadataConformanceRequirementSummary> getRequirementSummary()
     {
-        return requirementResults;
+        return requirementSummary;
     }
-
 
     /**
      * Set up detailed results, requirement by requirement.
      *
-     * @param requirementResults list of requirement results
+     * @param requirementSummary list of requirement results (summary)
      */
-    public void setRequirementResults(List<OpenMetadataConformanceRequirementResults> requirementResults)
+    public void setRequirementSummary(List<OpenMetadataConformanceRequirementSummary> requirementSummary)
     {
-        this.requirementResults = requirementResults;
+        this.requirementSummary = requirementSummary;
     }
-
 
     /**
      * toString() JSON-style
@@ -246,14 +243,14 @@ public class OpenMetadataConformanceProfileResults implements Serializable
     @Override
     public String toString()
     {
-        return "OpenMetadataConformanceProfileResults{" +
+        return "OpenMetadataConformanceProfileSummary{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", documentationURL='" + documentationURL + '\'' +
                 ", profilePriority=" + profilePriority +
                 ", conformanceStatus=" + conformanceStatus +
-                ", requirementResults=" + requirementResults +
+                ", requirementSummary=" + requirementSummary +
                 '}';
     }
 }
