@@ -6,6 +6,11 @@
 
 ## Defining Governance Engines and Governance Services
 
+
+![Figure 1](../governance-request-type.png)
+> **Figure 1:** Governance request types as part of a governance engine definition
+
+
 ## Defining Governance Action Processes
 
 ----
