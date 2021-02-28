@@ -3,7 +3,7 @@
 
 FROM node:14-alpine as build
 
-ARG version=2.7-SNAPSHOT
+ARG version=2.7
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
