@@ -5,15 +5,16 @@
 
 # Governance Engine Open Metadata Access Service (OMAS)
 
+The **Governance Engine OMAS** provides the metadata services for running
+**[governance engines](docs/concepts/governance-engine.md)**.
 
-A **[governance engine](docs/concepts/governance-engine.md)** is a collection of related 
+A governance engine is a collection of related 
 **[governance services](docs/concepts/governance-service.md)** that provide pluggable
 governance functions.  The governance services are implemented as 
 specialist [connectors](../../frameworks/open-connector-framework) that are defined by:
 
  * [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework) for Open Discovery Services
    that analyse the content of resources in the digital landscape.
-   
  * [Governance Action Framework (GAF)](../../frameworks/governance-action-framework) of Governance Action Services
    that monitor, assess and maintain metadata.
 
