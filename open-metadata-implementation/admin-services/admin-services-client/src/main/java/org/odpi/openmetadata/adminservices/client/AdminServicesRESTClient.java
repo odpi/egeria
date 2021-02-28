@@ -45,7 +45,7 @@ class AdminServicesRESTClient
         {
             this.clientConnector = factory.getClientConnector();
         }
-        catch (Throwable     error)
+        catch (Exception error)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                     this.getClass().getName(),
@@ -83,7 +83,7 @@ class AdminServicesRESTClient
         {
             this.clientConnector = factory.getClientConnector();
         }
-        catch (Throwable     error)
+        catch (Exception error)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                     this.getClass().getName(),
@@ -592,7 +592,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callGetRESTCall(methodName, returnClass, urlTemplate);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -622,7 +622,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callGetRESTCall(methodName, returnClass, urlTemplate, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -653,7 +653,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callPostRESTCallNoParams(methodName, returnClass, urlTemplate, requestBody);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -686,7 +686,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callPostRESTCall(methodName, returnClass, urlTemplate, requestBody, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -716,7 +716,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callDeleteRESTCallNoParams(methodName, returnClass, urlTemplate, requestBody);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -748,7 +748,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callDeleteRESTCall(methodName, returnClass, urlTemplate, requestBody, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }

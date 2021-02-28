@@ -176,7 +176,7 @@ public class NewAssetEventTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -185,7 +185,7 @@ public class NewAssetEventTest
         {
             validateResultObject(objectMapper.readValue(jsonString, NewAssetEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -199,7 +199,7 @@ public class NewAssetEventTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -208,7 +208,7 @@ public class NewAssetEventTest
         {
             validateResultObject((NewAssetEvent) objectMapper.readValue(jsonString, AssetEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -223,7 +223,7 @@ public class NewAssetEventTest
         {
             jsonString = objectMapper.writeValueAsString(superSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -232,7 +232,7 @@ public class NewAssetEventTest
         {
             validateResultObject((NewAssetEvent) objectMapper.readValue(jsonString, AssetConsumerEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

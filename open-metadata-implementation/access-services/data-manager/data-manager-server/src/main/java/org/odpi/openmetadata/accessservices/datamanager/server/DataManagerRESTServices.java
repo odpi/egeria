@@ -15,9 +15,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import org.slf4j.LoggerFactory;
 
@@ -70,21 +67,9 @@ public class DataManagerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setConnection(instanceHandler.getOutTopicConnection(userId, serverName, methodName, callerId));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -144,21 +129,9 @@ public class DataManagerRESTServices
                                                           methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -218,21 +191,9 @@ public class DataManagerRESTServices
                                                                         methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -289,21 +250,9 @@ public class DataManagerRESTServices
                                                                     requestBody.getVendorProperties(),
                                                                     methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -349,21 +298,9 @@ public class DataManagerRESTServices
                                                                 parameterName,
                                                                 methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

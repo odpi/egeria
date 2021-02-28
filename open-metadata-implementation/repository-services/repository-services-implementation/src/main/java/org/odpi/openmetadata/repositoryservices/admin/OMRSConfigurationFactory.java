@@ -217,6 +217,25 @@ public class OMRSConfigurationFactory
 
 
     /**
+     * Return the local repository configuration for a plugin repository.
+     *
+     * @param localServerName name of local server
+     * @param localServerURL url used to call local server
+     * @return LocalRepositoryConfig object
+     */
+    public LocalRepositoryConfig getPluginRepositoryLocalRepositoryConfig(String localServerName, String localServerURL)
+    {
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
+                                                                                           localServerURL);
+
+        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.PLUGIN_REPOSITORY);
+        localRepositoryConfig.setLocalRepositoryLocalConnection(null);
+
+        return localRepositoryConfig;
+    }
+
+
+    /**
      * Return the local repository configuration for a repository proxy.
      *
      * @param localServerName name of local server

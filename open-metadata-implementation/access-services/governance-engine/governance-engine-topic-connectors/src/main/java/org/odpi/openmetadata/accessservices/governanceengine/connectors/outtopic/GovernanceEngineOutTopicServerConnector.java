@@ -46,7 +46,7 @@ public class GovernanceEngineOutTopicServerConnector extends OpenMetadataTopicSe
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             throw new ConnectorCheckedException(GovernanceEngineErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
                                                                                                                    event.toString(),

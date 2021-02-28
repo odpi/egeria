@@ -256,7 +256,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is unable to process the request further.",
             "This error suggests there is a logic error in either this repository, or the home repository for the instance.  Open a Github issue to get this fixed."),
     UNEXPECTED_EXCEPTION_FROM_COHORT(400, "OMRS-REPOSITORY-400-055",
-            "An unexpected exception was received from a repository connector during the {0} operation which had message: {1}",
+            "An unexpected {0} exception was received from a repository connector during the {1} operation which had message: {2}",
             "The system can can not continue processing the request.",
             "This error suggests there is a logic error in either this repository, or the home repository for the instance.  Open up a Github issue to get this fixed."),
     NO_HOME_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-056",

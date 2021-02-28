@@ -108,14 +108,14 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                         {
                             if ((relationship != null) && (relationship.getType() != null))
                             {
-                                String actualTypeName = primaryEntity.getType().getTypeDefName();
+                                String actualTypeName = relationship.getType().getTypeDefName();
 
                                 if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME))
                                 {
                                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
                                     properties.setRequestType(this.removeRequestType(instanceProperties));
-                                    properties.setRequestProperties(this.removeRequestParameters(instanceProperties));
+                                    properties.setRequestParameters(this.removeRequestParameters(instanceProperties));
 
                                     EntityProxy entityProxy = relationship.getEntityTwoProxy();
 

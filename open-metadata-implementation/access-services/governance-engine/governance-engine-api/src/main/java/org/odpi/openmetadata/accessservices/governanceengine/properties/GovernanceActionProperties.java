@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTarget
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +35,12 @@ public class GovernanceActionProperties extends ReferenceableProperties
     private List<String>               mandatoryGuards        = null;
     private List<String>               receivedGuards         = null;
 
-    private String                     governanceEngineGUID   = null;
-    private String                     governanceEngineName   = null;
-    private String                     requestType            = null;
-    private Map<String, String>        requestProperties      = null;
-    private List<RequestSourceElement> requestSourceElements  = null;
-    private List<ActionTargetElement>  actionTargetElements   = null;
+    private String                     governanceEngineGUID  = null;
+    private String                     governanceEngineName  = null;
+    private String                     requestType           = null;
+    private Map<String, String>        requestParameters     = null;
+    private List<RequestSourceElement> requestSourceElements = null;
+    private List<ActionTargetElement>  actionTargetElements  = null;
 
     private GovernanceActionStatus     actionStatus           = null;
 
@@ -81,7 +80,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
             governanceEngineGUID = template.getGovernanceEngineGUID();
             governanceEngineName = template.getGovernanceEngineName();
             requestType = template.getRequestType();
-            requestProperties = template.getRequestProperties();
+            requestParameters = template.getRequestParameters();
             requestSourceElements = template.getRequestSourceElements();
             actionTargetElements = template.getActionTargetElements();
 
@@ -423,30 +422,30 @@ public class GovernanceActionProperties extends ReferenceableProperties
      *
      * @return map of properties
      */
-    public Map<String, String> getRequestProperties()
+    public Map<String, String> getRequestParameters()
     {
-        if (requestProperties == null)
+        if (requestParameters == null)
         {
             return null;
         }
 
-        if (requestProperties.isEmpty())
+        if (requestParameters.isEmpty())
         {
             return null;
         }
 
-        return requestProperties;
+        return requestParameters;
     }
 
 
     /**
      * Set up the parameters to pass onto the governance service.
      *
-     * @param requestProperties map of properties
+     * @param requestParameters map of properties
      */
-    public void setRequestProperties(Map<String, String> requestProperties)
+    public void setRequestParameters(Map<String, String> requestParameters)
     {
-        this.requestProperties = requestProperties;
+        this.requestParameters = requestParameters;
     }
 
 
@@ -520,7 +519,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
                        ", governanceEngineName='" + governanceEngineName + '\'' +
                        ", requestType='" + requestType + '\'' +
-                       ", requestProperties=" + requestProperties +
+                       ", requestParameters=" + requestParameters +
                        ", requestSourceElements=" + requestSourceElements +
                        ", actionTargetElements=" + actionTargetElements +
                        ", actionStatus=" + actionStatus +
@@ -563,7 +562,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
                        Objects.equals(governanceEngineName, that.governanceEngineName) &&
                        Objects.equals(requestType, that.requestType) &&
-                       Objects.equals(requestProperties, that.requestProperties) &&
+                       Objects.equals(requestParameters, that.requestParameters) &&
                        Objects.equals(requestSourceElements, that.requestSourceElements) &&
                        Objects.equals(actionTargetElements, that.actionTargetElements) &&
                        actionStatus == that.actionStatus &&
@@ -583,7 +582,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, receivedGuards, governanceEngineGUID, governanceEngineName,
-                            requestType, requestProperties, requestSourceElements, actionTargetElements, actionStatus, startTime,
+                            requestType, requestParameters, requestSourceElements, actionTargetElements, actionStatus, startTime,
                             processingEngineUserId, completionTime, completionGuards);
     }
 }

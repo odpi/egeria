@@ -183,7 +183,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTIVITY_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME);
         }
 
         if (startDate == null)
@@ -287,7 +287,7 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTIVITY_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME);
         }
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,

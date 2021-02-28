@@ -50,7 +50,7 @@ public class GlossaryViewAdmin extends AccessServiceAdmin
                     auditCode.getFormattedLogMessage(serverName), accessServiceConfig.toString(), auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-        } catch (Throwable error) {
+        } catch (Exception error) {
             auditCode = GlossaryViewAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()), accessServiceConfig.toString(),

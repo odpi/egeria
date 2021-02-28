@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceAc
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,7 +26,7 @@ public abstract class GovernanceServiceHandler implements Runnable
 {
     protected GovernanceEngineProperties governanceEngineProperties;
     protected String                     governanceEngineGUID;
-    protected String                     governanceEngineUserId;
+    protected String                     engineHostUserId;
     protected String                     governanceServiceGUID;
     protected String                     governanceServiceName;
 
@@ -44,7 +45,7 @@ public abstract class GovernanceServiceHandler implements Runnable
      *
      * @param governanceEngineProperties properties of the governance engine - used for message logging
      * @param governanceEngineGUID unique identifier of the governance engine - used for message logging
-     * @param governanceActionUserId userId for making updates to the governance actions
+     * @param engineHostUserId userId for making updates to the governance actions
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param governanceActionClient client for processing governance actions
      * @param requestType incoming request type
@@ -54,7 +55,7 @@ public abstract class GovernanceServiceHandler implements Runnable
      */
     protected GovernanceServiceHandler(GovernanceEngineProperties governanceEngineProperties,
                                        String                     governanceEngineGUID,
-                                       String                     governanceActionUserId,
+                                       String                     engineHostUserId,
                                        String                     governanceActionGUID,
                                        GovernanceEngineClient     governanceActionClient,
                                        String                     requestType,
@@ -65,7 +66,7 @@ public abstract class GovernanceServiceHandler implements Runnable
     {
         this.governanceEngineProperties = governanceEngineProperties;
         this.governanceEngineGUID       = governanceEngineGUID;
-        this.governanceEngineUserId     = governanceActionUserId;
+        this.engineHostUserId           = engineHostUserId;
         this.governanceServiceGUID      = governanceServiceGUID;
         this.governanceServiceName      = governanceServiceName;
         this.governanceActionGUID       = governanceActionGUID;
@@ -133,7 +134,7 @@ public abstract class GovernanceServiceHandler implements Runnable
     {
         if (governanceActionGUID != null)
         {
-            governanceActionClient.updateActionTargetStatus(governanceEngineUserId, actionTargetGUID, status, startDate, completionDate);
+            governanceActionClient.updateActionTargetStatus(engineHostUserId, actionTargetGUID, status, startDate, completionDate);
         }
     }
 
@@ -143,21 +144,28 @@ public abstract class GovernanceServiceHandler implements Runnable
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param requestParameters properties to pass to the next governance action service
      * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public void recordCompletionStatus(CompletionStatus status,
-                                       List<String>     outputGuards,
-                                       List<String>     newActionTargetGUIDs) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public void recordCompletionStatus(CompletionStatus    status,
+                                       List<String>        outputGuards,
+                                       Map<String, String> requestParameters,
+                                       List<String>        newActionTargetGUIDs) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         if (governanceActionGUID != null)
         {
-            governanceActionClient.recordCompletionStatus(governanceEngineUserId, governanceActionGUID, status, outputGuards, newActionTargetGUIDs);
+            governanceActionClient.recordCompletionStatus(engineHostUserId,
+                                                          governanceActionGUID,
+                                                          requestParameters,
+                                                          status,
+                                                          outputGuards,
+                                                          newActionTargetGUIDs);
         }
     }
 

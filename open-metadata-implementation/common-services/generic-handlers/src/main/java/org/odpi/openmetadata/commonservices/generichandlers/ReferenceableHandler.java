@@ -663,9 +663,11 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param beanGUID unique identifier of bean
      * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
      * @param securityLabels list of security labels defining the security characteristics of the element
      * @param securityProperties Descriptive labels describing origin of the asset
      * @param methodName calling method
+     *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
@@ -673,6 +675,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void  addSecurityTags(String                userId,
                                  String                beanGUID,
                                  String                beanGUIDParameterName,
+                                 String                beanGUIDTypeName,
                                  List<String>          securityLabels,
                                  Map<String, Object>   securityProperties,
                                  String                methodName) throws InvalidParameterException,
@@ -688,7 +691,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         this.setClassificationInRepository(userId,
                                            beanGUID,
                                            beanGUIDParameterName,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                           beanGUIDTypeName,
                                            OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
                                            builder.getSecurityTagProperties(securityLabels, securityProperties, methodName),
@@ -702,7 +705,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param beanGUID unique identifier of entity to update
      * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
      * @param methodName calling method
+     *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
@@ -710,6 +715,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void  removeSecurityTags(String userId,
                                     String beanGUID,
                                     String beanGUIDParameterName,
+                                    String beanGUIDTypeName,
                                     String methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
@@ -719,7 +725,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 null,
                                                 beanGUID,
                                                 beanGUIDParameterName,
-                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                beanGUIDTypeName,
                                                 OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
                                                 methodName);
@@ -728,7 +734,84 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Returns the list of related assets for the asset.  It uses the supportedZones supplied with the service.
+     * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
+     *
+     * @param userId calling user
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param name name of the template
+     * @param description description of when, where and how to use the template
+     * @param additionalProperties any additional properties
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addTemplateClassification(String              userId,
+                                          String              beanGUID,
+                                          String              beanGUIDParameterName,
+                                          String              beanGUIDTypeName,
+                                          String              name,
+                                          String              description,
+                                          Map<String, String> additionalProperties,
+                                          String              methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                serverName);
+
+        this.setClassificationInRepository(userId,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME,
+                                           builder.getTemplateProperties(name, description, additionalProperties, methodName),
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the classification that indicates that this asset can be used as a template.
+     *
+     * @param userId calling user
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void removeTemplateClassification(String userId,
+                                             String beanGUID,
+                                             String beanGUIDParameterName,
+                                             String beanGUIDTypeName,
+                                             String methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                null,
+                                                null,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME,
+                                                methodName);
+    }
+
+
+    /**
+     * Returns the list of elements that are linked to provide more information.  It uses the supportedZones supplied with the service.
      *
      * @param userId       String   userId of user making request.
      * @param startingGUID    String   unique id for element.
@@ -768,7 +851,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Returns the list of related assets for the asset.
+     * Returns the list of elements that are linked to provide more information.
      *
      * @param userId       String   userId of user making request.
      * @param startingGUID    String   unique id for element.

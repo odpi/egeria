@@ -94,25 +94,25 @@ public class DinoViewRESTServices {
             response.setServerList(serverList);
 
         }
-        catch (InvalidParameterException error)
+        catch (InvalidParameterException exception)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, exception);
         }
-        catch (PropertyServerException error)
+        catch (PropertyServerException exception)
         {
-            restExceptionHandler.capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, exception);
         }
-        catch (UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException exception)
         {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, exception);
         }
-        catch (DinoViewServiceException error)
+        catch (DinoViewServiceException exception)
         {
-            DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
         }
-        catch (Throwable error)
+        catch (Exception exception)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
 
@@ -167,25 +167,25 @@ public class DinoViewRESTServices {
                                                                          requestBody.getPlatformName(),
                                                                          methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -194,11 +194,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -257,25 +257,25 @@ public class DinoViewRESTServices {
                                                              requestBody.getPlatformName(),
                                                              methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -284,11 +284,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -346,25 +346,25 @@ public class DinoViewRESTServices {
                                                                            requestBody.getPlatformName(),
                                                                            methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
 
@@ -374,11 +374,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -436,25 +436,25 @@ public class DinoViewRESTServices {
                                                                           methodName));
 
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -463,11 +463,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -524,25 +524,25 @@ public class DinoViewRESTServices {
                                                                              requestBody.getPlatformName(),
                                                                              methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -551,11 +551,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -613,25 +613,25 @@ public class DinoViewRESTServices {
                                                                            requestBody.getPlatformName(),
                                                                            methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -640,11 +640,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -701,25 +701,25 @@ public class DinoViewRESTServices {
                                                                                  methodName));
 
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
 
@@ -729,11 +729,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
 
@@ -791,25 +791,25 @@ public class DinoViewRESTServices {
                                                                              requestBody.getPlatformName(),
                                                                              methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -818,11 +818,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -883,25 +883,25 @@ public class DinoViewRESTServices {
                                                                      requestBody.getDescription(),
                                                                      methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -910,11 +910,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -976,25 +976,25 @@ public class DinoViewRESTServices {
                                                            requestBody.getPlatformName(),
                                                            methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
         }
         else
@@ -1002,11 +1002,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1067,25 +1067,25 @@ public class DinoViewRESTServices {
                 response.setServerTypeDescription(summary.getServerTypeDescription());
 
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1094,11 +1094,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1155,25 +1155,25 @@ public class DinoViewRESTServices {
                                                                               requestBody.getPlatformName(),
                                                                               methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1182,11 +1182,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1243,25 +1243,25 @@ public class DinoViewRESTServices {
                                                                                 requestBody.getPlatformName(),
                                                                                 methodName));
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1270,11 +1270,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1344,19 +1344,19 @@ public class DinoViewRESTServices {
                                                                                 methodName));
 
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
                 /*
                  * If the method managed to retrieve stored configuration and it is just the 'instance'
@@ -1367,15 +1367,15 @@ public class DinoViewRESTServices {
                  */
                 if (response.getStoredConfig() == null)
                 {
-                    DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                    DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
                 }
                 else {
                     /* proceed to the normal method exit with logging and return.... */
                 }
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1384,11 +1384,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1447,25 +1447,25 @@ public class DinoViewRESTServices {
                                                                methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1474,11 +1474,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1538,25 +1538,25 @@ public class DinoViewRESTServices {
                                                                            methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1565,11 +1565,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1627,25 +1627,25 @@ public class DinoViewRESTServices {
                                                                         methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1654,11 +1654,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1719,25 +1719,25 @@ public class DinoViewRESTServices {
                                                                         methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1746,11 +1746,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1810,25 +1810,25 @@ public class DinoViewRESTServices {
                                                                       methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1837,11 +1837,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1907,25 +1907,25 @@ public class DinoViewRESTServices {
                                                                                       methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -1934,11 +1934,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2000,25 +2000,25 @@ public class DinoViewRESTServices {
                                                                                  methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -2027,11 +2027,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2094,25 +2094,25 @@ public class DinoViewRESTServices {
                                                                                  methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -2121,11 +2121,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2188,25 +2188,25 @@ public class DinoViewRESTServices {
                                                                                  methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -2215,11 +2215,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2285,25 +2285,25 @@ public class DinoViewRESTServices {
                                                                          methodName));
 
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (DinoViewServiceException error)
+            catch (DinoViewServiceException exception)
             {
-                DinoExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                DinoExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -2312,11 +2312,11 @@ public class DinoViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            DinoViewServiceException error = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            DinoViewServiceException exception = new DinoViewServiceException(DinoViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                           this.getClass().getName(),
                                                                           methodName);
 
-            DinoExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            DinoExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

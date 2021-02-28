@@ -568,7 +568,11 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        governanceEngineClient.updateActionTargetStatus(engineUserId, actionTargetGUID, status, startDate, completionDate);
+        /*
+         * Notice the call goes to the local handler to issue the request from the Engine Host's userId and to direct
+         * the metadata update to the governance metadata server.
+         */
+        governanceServiceHandler.updateActionTargetStatus(actionTargetGUID, status, startDate, completionDate);
     }
 
 
@@ -577,6 +581,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param requestParameters properties to pass to the next governance action service
      * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
      *
      * @throws InvalidParameterException the completion status is null
@@ -584,13 +589,18 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     @Override
-    public void recordCompletionStatus(CompletionStatus status,
-                                       List<String>     outputGuards,
-                                       List<String>     newActionTargetGUIDs) throws InvalidParameterException,
+    public void recordCompletionStatus(CompletionStatus    status,
+                                       List<String>        outputGuards,
+                                       Map<String, String> requestParameters,
+                                       List<String>        newActionTargetGUIDs) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        governanceServiceHandler.recordCompletionStatus(status, outputGuards, newActionTargetGUIDs);
+        /*
+         * Notice the call goes to the local handler to issue the request from the Engine Host's userId and to direct
+         * the metadata update to the governance metadata server.
+         */
+        governanceServiceHandler.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargetGUIDs);
     }
 
 
@@ -608,7 +618,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine to run the request
      * @param requestType request type to identify the governance action service to run
-     * @param requestProperties properties to pass to the governance action service
+     * @param requestParameters properties to pass to the governance action service
      *
      * @return unique identifier of the governance action
      * @throws InvalidParameterException null qualified name
@@ -625,7 +635,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                            Date                startTime,
                                            String              governanceEngineName,
                                            String              requestType,
-                                           Map<String, String> requestProperties) throws InvalidParameterException,
+                                           Map<String, String> requestParameters) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
@@ -640,7 +650,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                startTime,
                                                                governanceEngineName,
                                                                requestType,
-                                                               requestProperties,
+                                                               requestParameters,
                                                                governanceServiceHandler.getGovernanceServiceName(),
                                                                governanceServiceHandler.getGovernanceEngineName());
     }
@@ -650,6 +660,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * Using the named governance action process as a template, initiate a chain of governance actions.
      *
      * @param processQualifiedName unique name of the governance action process to use
+     * @param requestParameters initial set of request parameters to pass to the governance actions
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
      * @param actionTargetGUIDs list of action targets for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible".
@@ -660,18 +671,20 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public String initiateGovernanceActionProcess(String       processQualifiedName,
-                                                  List<String> requestSourceGUIDs,
-                                                  List<String> actionTargetGUIDs,
-                                                  Date         startTime) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public String initiateGovernanceActionProcess(String              processQualifiedName,
+                                                  Map<String, String> requestParameters,
+                                                  List<String>        requestSourceGUIDs,
+                                                  List<String>        actionTargetGUIDs,
+                                                  Date                startTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         return governanceEngineClient.initiateGovernanceActionProcess(engineUserId,
                                                                       processQualifiedName,
                                                                       requestSourceGUIDs,
                                                                       actionTargetGUIDs,
                                                                       startTime,
+                                                                      requestParameters,
                                                                       governanceServiceHandler.getGovernanceServiceName(),
                                                                       governanceServiceHandler.getGovernanceEngineName());
     }

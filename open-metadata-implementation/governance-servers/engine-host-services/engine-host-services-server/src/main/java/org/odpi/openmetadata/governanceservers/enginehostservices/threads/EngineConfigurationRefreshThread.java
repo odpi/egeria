@@ -9,7 +9,7 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.admin.Governan
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
-import org.odpi.openmetadata.governanceservers.enginehostservices.listener.EngineConfigurationRefreshListener;
+import org.odpi.openmetadata.governanceservers.enginehostservices.listener.GovernanceEngineOutTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,7 +98,7 @@ public class EngineConfigurationRefreshThread implements Runnable
             {
                 try
                 {
-                    eventClient.registerListener(localServerUserId, new EngineConfigurationRefreshListener(engineHandlers, auditLog));
+                    eventClient.registerListener(localServerUserId, new GovernanceEngineOutTopicListener(engineHandlers, auditLog));
                     listenerRegistered = true;
 
                     auditLog.logMessage(actionDescription,
