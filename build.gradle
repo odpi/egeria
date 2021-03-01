@@ -190,7 +190,7 @@ allprojects {
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.4")
             runtimeOnly("org.janusgraph:janusgraph-es:0.5.3")
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.2")
-            testImplementation("junit:junit:4.13.1")
+            testImplementation("junit:junit:4.13.2")
             testImplementation("org.glassfish:javax.json:1.1.4")
             testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
             testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
