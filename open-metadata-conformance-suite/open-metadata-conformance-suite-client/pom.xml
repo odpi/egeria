@@ -46,8 +46,8 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>http-helper</artifactId>
         </dependency>
 
         <dependency>

@@ -24,9 +24,6 @@ public abstract class OpenMetadataTestCase
     protected Integer defaultProfileId = null;
     protected Integer defaultRequirementId = null;
 
-    protected Long startTime = null;
-    protected Long endTime = null;
-
     protected OpenMetadataConformanceWorkbenchWorkPad  workPad = null;
 
     protected List<String>        successfulAssertions   = new ArrayList<>();
@@ -216,11 +213,6 @@ public abstract class OpenMetadataTestCase
                 result.setSuccessMessage(successMessage);
             }
 
-            if (startTime != null && endTime != null)
-            {
-                result.setElapsedTime(endTime - startTime);
-            }
-
         }
 
         return result;
@@ -254,15 +246,39 @@ public abstract class OpenMetadataTestCase
                                    Integer   profileId,
                                    Integer   requirementId) throws AssertionFailureException
     {
+        assertCondition(condition, assertionId, assertionMessage, profileId, requirementId, null, null);
+    }
+
+
+    /**
+     * Throw an exception if the condition is not true; else return
+     *
+     * @param condition condition to test
+     * @param assertionId identifier for the assertion
+     * @param assertionMessage descriptive message of the assertion
+     * @param profileId identifier of profile for this assertion
+     * @param requirementId identifier of requirement for this assertion
+     * @param methodName method that this condition tests
+     * @param elapsedTime of the test executing (in milliseconds)
+     * @throws AssertionFailureException condition was false
+     */
+    protected void assertCondition(boolean   condition,
+                                   String    assertionId,
+                                   String    assertionMessage,
+                                   Integer   profileId,
+                                   Integer   requirementId,
+                                   String    methodName,
+                                   Long      elapsedTime) throws AssertionFailureException
+    {
         if (condition)
         {
             successfulAssertions.add(assertionId + ": " +assertionMessage);
-            workPad.addSuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage);
+            workPad.addSuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionId, methodName, elapsedTime);
             return;
         }
 
         unsuccessfulAssertions.add(assertionId + ": " + assertionMessage);
-        workPad.addUnsuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage);
+        workPad.addUnsuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionId, methodName, elapsedTime);
         throw new AssertionFailureException(assertionId, assertionMessage);
     }
 
@@ -282,15 +298,38 @@ public abstract class OpenMetadataTestCase
                                    Integer   profileId,
                                    Integer   requirementId)
     {
+        verifyCondition(condition, assertionId, assertionMessage, profileId, requirementId, null, null);
+    }
+
+
+    /**
+     * Log if the condition is not true; else return
+     *
+     * @param condition condition to test
+     * @param assertionId identifier for the assertion
+     * @param assertionMessage descriptive message of the assertion
+     * @param profileId identifier of profile for this assertion
+     * @param requirementId identifier of requirement for this assertion
+     * @param methodName method that this condition tests
+     * @param elapsedTime of the test executing (in milliseconds)
+     */
+    protected void verifyCondition(boolean   condition,
+                                   String    assertionId,
+                                   String    assertionMessage,
+                                   Integer   profileId,
+                                   Integer   requirementId,
+                                   String    methodName,
+                                   Long      elapsedTime)
+    {
         if (condition)
         {
             successfulAssertions.add(assertionId + ": " + assertionMessage);
-            workPad.addSuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage);
+            workPad.addSuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionId, methodName, elapsedTime);
             return;
         }
 
         unsuccessfulAssertions.add(assertionId + ": " + assertionMessage);
-        workPad.addUnsuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage);
+        workPad.addUnsuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionId, methodName, elapsedTime);
     }
 
 
@@ -308,7 +347,7 @@ public abstract class OpenMetadataTestCase
                                             Integer   requirementId)
     {
         notSupportedAssertions.add(assertionId + ": " + assertionMessage);
-        workPad.addNotSupportedCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage);
+        workPad.addNotSupportedCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionId);
     }
 
 
@@ -349,7 +388,6 @@ public abstract class OpenMetadataTestCase
         final String methodName = "startAsynchronousTest";
 
         this.logTestStart(methodName);
-        startTime = System.currentTimeMillis();
     }
 
 
@@ -360,7 +398,6 @@ public abstract class OpenMetadataTestCase
     {
         final String methodName = "endAsynchronousTest";
 
-        endTime = System.currentTimeMillis();
         this.logTestEnd(methodName);
     }
 
@@ -374,7 +411,6 @@ public abstract class OpenMetadataTestCase
         final String methodName = "executeTest";
 
         this.logTestStart(methodName);
-        startTime = System.currentTimeMillis();
 
         try
         {
@@ -400,7 +436,6 @@ public abstract class OpenMetadataTestCase
             workPad.addUnexpectedException(defaultProfileId, defaultRequirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage, exceptionBean);
         }
 
-        endTime = System.currentTimeMillis();
         this.logTestEnd(methodName);
     }
 
@@ -416,10 +451,6 @@ public abstract class OpenMetadataTestCase
         final String methodName = "executeTest";
 
         this.logTestStart(methodName);
-        if (TestPhase.EXECUTE.equals(phase))
-        {
-            startTime = System.currentTimeMillis();
-        }
 
         try
         {
@@ -445,10 +476,6 @@ public abstract class OpenMetadataTestCase
             workPad.addUnexpectedException(defaultProfileId, defaultRequirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage, exceptionBean);
         }
 
-        if (TestPhase.EXECUTE.equals(phase))
-        {
-            endTime = System.currentTimeMillis();
-        }
         this.logTestEnd(methodName);
     }
 
