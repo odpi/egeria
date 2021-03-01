@@ -41,7 +41,7 @@ apply plugin: 'nebula-aggregate-javadocs'
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '2.7-SNAPSHOT'
+    version = '2.7'
 
     apply plugin: 'java'
 
