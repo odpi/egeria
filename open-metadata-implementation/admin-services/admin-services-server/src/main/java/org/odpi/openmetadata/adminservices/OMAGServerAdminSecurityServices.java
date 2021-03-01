@@ -85,7 +85,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -118,7 +118,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -152,7 +152,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -212,7 +212,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -252,7 +252,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -307,7 +307,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }

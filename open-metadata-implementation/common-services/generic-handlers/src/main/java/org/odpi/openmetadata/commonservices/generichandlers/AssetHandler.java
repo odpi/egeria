@@ -392,7 +392,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param qualifiedName unique name for this asset - must not be null
      * @param qualifiedNameParameterName parameter name providing qualifiedName
      * @param displayName the stored display name property for the database - if null, the value from the template is used
-     * @param description the stored description property associated with the database - if null, the value from the template is used.
+     * @param description the stored description property associated with the database - if null, the value from the template is used
+     * @param networkAddress if there is a connection object for this asset - update the endpoint network address
      * @param methodName calling method
      *
      * @return unique identifier of the asset in the repository.  If a connection or schema object is provided,
@@ -413,6 +414,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                        String qualifiedNameParameterName,
                                        String displayName,
                                        String description,
+                                       String networkAddress,
                                        String methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
@@ -432,17 +434,75 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 serviceName,
                                                 serverName);
 
-        return this.createBeanFromTemplate(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           templateGUID,
-                                           templateGUIDParameterName,
-                                           expectedTypeGUID,
-                                           expectedTypeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                           builder,
-                                           methodName);
+        String assetGUID = this.createBeanFromTemplate(userId,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       templateGUID,
+                                                       templateGUIDParameterName,
+                                                       expectedTypeGUID,
+                                                       expectedTypeName,
+                                                       qualifiedName,
+                                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                       builder,
+                                                       methodName);
+
+        if (assetGUID != null)
+        {
+            Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                                                      assetGUID,
+                                                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                                                                      OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                      methodName);
+
+            if (assetConnectionRelationship != null)
+            {
+                String connectionGUID = assetConnectionRelationship.getEntityOneProxy().getGUID();
+
+                Relationship  connectionEndpointRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                                                             connectionGUID,
+                                                                                                             OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                                                             OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
+                                                                                                             OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                             methodName);
+                if (connectionEndpointRelationship != null)
+                {
+                    final String endpointGUIDParameterName = "endpointGUID";
+
+                    String endpointGUID = connectionEndpointRelationship.getEntityOneProxy().getGUID();
+
+                    EntityDetail endpointEntity = this.getEntityFromRepository(userId,
+                                                                               endpointGUID,
+                                                                               endpointGUIDParameterName,
+                                                                               OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                               methodName);
+
+                    String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(endpointEntity, methodName);
+
+                    if (assetGUID.equals(anchorGUID))
+                    {
+                        InstanceProperties endpointProperties = endpointEntity.getProperties();
+
+                        endpointProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                          endpointProperties,
+                                                                                          OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                                          networkAddress,
+                                                                                          methodName);
+                        repositoryHandler.updateEntityProperties(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 endpointGUID,
+                                                                 endpointEntity,
+                                                                 OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                 endpointProperties,
+                                                                 methodName);
+                    }
+                }
+            }
+        }
+
+        return assetGUID;
     }
 
 
@@ -905,7 +965,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                  connectionGUID,
                                                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                  assetGUID,
-                                                                 OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
                                                                  methodName);
@@ -2055,7 +2115,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     resultTypeGUID,
                                     resultTypeName,
                                     specificMatchPropertyNames,
-                                    false,
+                                    true,
                                     serviceSupportedZones,
                                     startFrom,
                                     pageSize,

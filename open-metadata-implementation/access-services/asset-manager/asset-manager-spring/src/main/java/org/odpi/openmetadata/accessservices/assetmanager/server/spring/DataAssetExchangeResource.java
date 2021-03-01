@@ -68,6 +68,7 @@ public class DataAssetExchangeResource
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template and correlate to external identifiers
      *
@@ -81,9 +82,10 @@ public class DataAssetExchangeResource
     public GUIDResponse createAssetFromTemplate(@PathVariable String              serverName,
                                                 @PathVariable String              userId,
                                                 @PathVariable String              templateGUID,
+                                                @RequestParam boolean             assetManagerIsHome,
                                                 @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createAssetFromTemplate(serverName, userId, templateGUID, requestBody);
+        return restAPI.createAssetFromTemplate(serverName, userId, assetManagerIsHome, templateGUID, requestBody);
     }
 
 

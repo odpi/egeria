@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project. -->
+<!-- Copyright Contributors to the Egeria project. -->
 
 ![Egeria Logo](assets/img/ODPi_Egeria_Logo_color.png)
 
@@ -28,7 +28,7 @@ delivered in each release and our future plans.
 ## Egeria governance
 
 This project aims to operate in a transparent, accessible way for the benefit
-of the ODPi Egeria community.
+of the Egeria community.
 All participation in this project is open and not
 bound to any corporate affiliation.
 
@@ -96,4 +96,4 @@ Java Profiler.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
-Copyright Contributors to the ODPi Egeria project.
+Copyright Contributors to the Egeria project.

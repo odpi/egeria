@@ -110,6 +110,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         File   sourceFile          = new File(sourceFilePathName);
         File   destinationFolder   = new File(destinationFolderName);
 
+        if (! destinationFolder.exists())
+        {
+            FileUtils.forceMkdir(destinationFolder);
+        }
+
         String destinationFileName = getDestinationFileName(null, destinationFolderName, sourceFile, fileNamePattern);
 
         while (destinationFileName != null)
@@ -188,6 +193,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         String  sourceFileGUID = null;
         String  destinationFolderName = null;
         boolean copyFile = true;
+        boolean deleteFile = false;
         boolean createLineage = true;
 
         Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
@@ -237,6 +243,10 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         {
             copyFile = false;
         }
+        else if (MoveCopyFileGovernanceActionProvider.DELETE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+        {
+            deleteFile = true;
+        }
 
         if (governanceContext.getActionTargetElements() != null)
         {
@@ -269,18 +279,16 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         try
         {
-            String destinationFileName = provisionFile(governanceServiceName,
-                                                       destinationFolderName,
-                                                       sourceFileName,
-                                                       destinationFileNamePattern,
-                                                       copyFile,
-                                                       auditLog);
-
-            if (destinationFileName != null)
+            /*
+             * The delete-file option does not perform any updates on metadata.
+             * This can be managed by the integration connectors that monitor the file system.
+             */
+            if (deleteFile)
             {
-                if (createLineage)
+                if (sourceFileName != null)
                 {
-                    createLineage(sourceFileGUID, destinationFileName, lineageProcessName);
+                    File fileToDelete = new File(sourceFileName);
+                    FileUtils.forceDelete(fileToDelete);
                 }
 
                 outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_COMPLETE_GUARD);
@@ -288,8 +296,28 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             }
             else
             {
-                outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
-                completionStatus = CompletionStatus.FAILED;
+                String destinationFileName = provisionFile(governanceServiceName,
+                                                           destinationFolderName,
+                                                           sourceFileName,
+                                                           destinationFileNamePattern,
+                                                           copyFile,
+                                                           auditLog);
+
+                if (destinationFileName != null)
+                {
+                    if (createLineage)
+                    {
+                        createLineage(sourceFileGUID, destinationFileName, lineageProcessName);
+                    }
+
+                    outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_COMPLETE_GUARD);
+                    completionStatus = CompletionStatus.ACTIONED;
+                }
+                else
+                {
+                    outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_GUARD);
+                    completionStatus = CompletionStatus.FAILED;
+                }
             }
         }
         catch (Exception  error)

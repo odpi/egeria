@@ -71,9 +71,9 @@ public class SecurityIntegratorRESTServices
                                                                         SecurityIntegratorConnector.class,
                                                                         IntegrationServiceDescription.SECURITY_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

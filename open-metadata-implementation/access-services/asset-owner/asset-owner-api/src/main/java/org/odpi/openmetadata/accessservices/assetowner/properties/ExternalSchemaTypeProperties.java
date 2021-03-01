@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ExternalSchemaTypeProperties carries the specialized parameters for creating or updating enum schema types.
+ * ExternalSchemaTypeProperties carries the unique identifier and properties of a reusable schema type.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,7 +22,8 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private SchemaTypeProperties externalSchemaType = null;
+    private String               externalSchemaTypeGUID = null;
+    private SchemaTypeProperties externalSchemaType     = null;
 
     /**
      * Default constructor
@@ -41,13 +42,41 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
     public ExternalSchemaTypeProperties(ExternalSchemaTypeProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            externalSchemaTypeGUID = template.getExternalSchemaTypeGUID();
+            externalSchemaType = template.getExternalSchemaType();
+        }
     }
 
 
     /**
-     * Return the unique identifier of the schema type that is reusable amongst assets.
+     * Return the unique identifier of the external schema type.
      *
      * @return string guid
+     */
+    public String getExternalSchemaTypeGUID()
+    {
+        return externalSchemaTypeGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the external schema type.
+     *
+     * @param externalSchemaTypeGUID string guid
+     */
+    public void setExternalSchemaTypeGUID(String externalSchemaTypeGUID)
+    {
+        this.externalSchemaTypeGUID = externalSchemaTypeGUID;
+    }
+
+
+    /**
+     * Return the schema type that is reusable amongst assets.
+     *
+     * @return bean describing external schema
      */
     public SchemaTypeProperties getExternalSchemaType()
     {
@@ -56,9 +85,9 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
 
 
     /**
-     * Set up the unique identifier of the schema type that is reusable amongst assets.
+     * Set up the schema type that is reusable amongst assets.
      *
-     * @param externalSchemaType string guid
+     * @param externalSchemaType bean describing external schema
      */
     public void setExternalSchemaType(SchemaTypeProperties externalSchemaType)
     {
@@ -75,24 +104,25 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
     public String toString()
     {
         return "ExternalSchemaTypeProperties{" +
-                "externalSchemaTypeGUID='" + externalSchemaType + '\'' +
-                ", dataType='" + getDataType() + '\'' +
-                ", defaultValue='" + getDefaultValue() + '\'' +
-                ", versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", formula='" + getFormula() + '\'' +
-                ", queries=" + getQueries() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "externalSchemaTypeGUID=" + externalSchemaTypeGUID +
+                       ", externalSchemaType=" + externalSchemaType +
+                       ", dataType='" + getDataType() + '\'' +
+                       ", defaultValue='" + getDefaultValue() + '\'' +
+                       ", versionNumber='" + getVersionNumber() + '\'' +
+                       ", author='" + getAuthor() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", encodingStandard='" + getEncodingStandard() + '\'' +
+                       ", namespace='" + getNamespace() + '\'' +
+                       ", formula='" + getFormula() + '\'' +
+                       ", queries=" + getQueries() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", deprecated=" + getIsDeprecated() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -118,7 +148,8 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
             return false;
         }
         ExternalSchemaTypeProperties that = (ExternalSchemaTypeProperties) objectToCompare;
-        return Objects.equals(externalSchemaType, that.externalSchemaType);
+        return Objects.equals(externalSchemaTypeGUID, that.externalSchemaTypeGUID) &&
+                       Objects.equals(externalSchemaType, that.externalSchemaType);
     }
 
 
@@ -130,6 +161,6 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalSchemaType);
+        return Objects.hash(super.hashCode(), externalSchemaTypeGUID, externalSchemaType);
     }
 }

@@ -1696,8 +1696,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
                                     if ((typeDefAttribute.isUnique()) && (propertyName != null))
                                     {
-                                        InstancePropertyValue propertyValue = entityProperties.getPropertyValue(
-                                                propertyName);
+                                        InstancePropertyValue propertyValue = entityProperties.getPropertyValue(propertyName);
 
                                         if (propertyValue != null)
                                         {

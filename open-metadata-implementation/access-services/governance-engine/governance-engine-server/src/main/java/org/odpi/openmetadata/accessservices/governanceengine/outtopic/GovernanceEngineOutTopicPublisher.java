@@ -238,7 +238,7 @@ public class GovernanceEngineOutTopicPublisher
                 outTopicAuditLog.logMessage(actionDescription, GovernanceEngineAuditCode.PUBLISHING_SHUTDOWN.getMessageDefinition(outTopicName));
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             if (outTopicAuditLog != null)
             {
