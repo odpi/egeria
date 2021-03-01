@@ -178,7 +178,7 @@
 
         <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
         <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
-        <spring.version>5.3.1</spring.version>
+        <spring.version>5.3.4</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
         <spring-data.version>2.4.1</spring-data.version>
         <springdoc.version>1.4.6</springdoc.version>
