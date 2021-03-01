@@ -77,11 +77,10 @@ public abstract class WatchdogGovernanceActionService extends GovernanceActionSe
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
-        if (governanceContext != null)
+        if ((isActive()) && (governanceContext != null))
         {
             governanceContext.disconnectListener();
         }
-        governanceContext = null;
         super.disconnect();
     }
 }

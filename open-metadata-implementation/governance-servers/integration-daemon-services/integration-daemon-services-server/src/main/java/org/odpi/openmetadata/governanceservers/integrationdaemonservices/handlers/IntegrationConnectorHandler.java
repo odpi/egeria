@@ -306,11 +306,18 @@ public class IntegrationConnectorHandler implements Serializable
         {
             Map<String, Object>  connectionConfigurationProperties = connection.getConfigurationProperties();
 
-            if (isMergeUpdate)
+            if (connectionConfigurationProperties != null)
             {
-                if (configurationProperties != null)
+                if (isMergeUpdate)
                 {
-                    connectionConfigurationProperties.putAll(configurationProperties);
+                    if (configurationProperties != null)
+                    {
+                        connectionConfigurationProperties.putAll(configurationProperties);
+                    }
+                }
+                else
+                {
+                    connectionConfigurationProperties = configurationProperties;
                 }
             }
             else
