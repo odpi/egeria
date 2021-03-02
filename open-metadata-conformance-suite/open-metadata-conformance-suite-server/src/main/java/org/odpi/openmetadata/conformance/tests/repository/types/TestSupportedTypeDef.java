@@ -231,7 +231,7 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
          */
         start = System.currentTimeMillis();
         TypeDef   resultObject = metadataCollection.getTypeDefByName(workPad.getLocalServerUserId(), typeDef.getName());
-        elapsedTime = System.currentTimeMillis();
+        elapsedTime = System.currentTimeMillis() - start;
 
         verifyCondition((resultObject != null),
                         assertion14,
