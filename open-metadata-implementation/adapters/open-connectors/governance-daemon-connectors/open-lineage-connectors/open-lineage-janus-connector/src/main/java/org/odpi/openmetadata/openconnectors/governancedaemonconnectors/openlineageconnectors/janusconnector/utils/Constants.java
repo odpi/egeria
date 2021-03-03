@@ -20,6 +20,7 @@ public final class Constants {
     public static final String TABULAR_COLUMN_TYPE = "TabularColumnType";
     public static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
     public static final String DATA_FILE = "DataFile";
+    public static final String CSV_FILE = "CSVFile";
     public static final String FILE_FOLDER = "FileFolder";
     public static final String CONNECTION = "Connection";
     public static final String PROCESS = "Process";
