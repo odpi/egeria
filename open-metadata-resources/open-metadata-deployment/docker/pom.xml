@@ -70,6 +70,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Do not deploy to maven central - this is only for building docker, not distributin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                <skip>true</skip>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
