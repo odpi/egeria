@@ -4,7 +4,7 @@
 # Release 2.7 (March 2021)
 
 Release 2.7 adds support for:
-
+* No new features
 
 Details of these and other changes are in the sections that follow.
 
