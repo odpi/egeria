@@ -66,7 +66,7 @@ public abstract class CommunityProfileCheckedExceptionBase extends OCFCheckedExc
     public CommunityProfileCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                                                 String                     className,
                                                 String                     actionDescription,
-                                                Throwable                  caughtError)
+                                                Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -85,7 +85,7 @@ public abstract class CommunityProfileCheckedExceptionBase extends OCFCheckedExc
     public CommunityProfileCheckedExceptionBase(ExceptionMessageDefinition messageDefinition,
                                                 String                     className,
                                                 String                     actionDescription,
-                                                Throwable                  caughtError,
+                                                Exception                  caughtError,
                                                 Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -174,7 +174,7 @@ public abstract class CommunityProfileCheckedExceptionBase extends OCFCheckedExc
                                                 String    errorMessage,
                                                 String    systemAction,
                                                 String    userAction,
-                                                Throwable caughtError)
+                                                Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

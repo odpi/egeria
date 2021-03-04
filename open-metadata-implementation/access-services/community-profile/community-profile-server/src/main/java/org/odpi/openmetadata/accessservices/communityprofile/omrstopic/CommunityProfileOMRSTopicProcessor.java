@@ -144,7 +144,7 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                         }
                     }
                 }
-                catch (Throwable  error)
+                catch (Exception  error)
                 {
                     auditLog.logException(methodName,
                                           CommunityProfileAuditCode.KARMA_POINT_EXCEPTION.getMessageDefinition(contributingUserId,
@@ -212,7 +212,7 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                     publisher.sendNewUserIdentityEvent(userIdentityHandler.getUserIdentity(entity));
                 }
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logException(methodName,
                                       CommunityProfileAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(entity.getGUID(),

@@ -145,7 +145,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
                                   error);
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   DiscoveryEngineAuditCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(error.getClass().getName(),

@@ -117,6 +117,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * Create a new metadata element to represent an asset using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new asset.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this process
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
      * @param assetExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param assetExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
@@ -131,7 +132,8 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createAssetFromTemplate(String              templateGUID,
+    public String createAssetFromTemplate(boolean             assetManagerIsHome,
+                                          String              templateGUID,
                                           String              assetExternalIdentifier,
                                           String              assetExternalIdentifierName,
                                           String              assetExternalIdentifierUsage,
@@ -148,6 +150,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
             return dataAssetExchangeClient.createAssetFromTemplate(userId,
                                                                    assetManagerGUID,
                                                                    assetManagerName,
+                                                                   assetManagerIsHome,
                                                                    templateGUID,
                                                                    assetExternalIdentifier,
                                                                    assetExternalIdentifierName,
