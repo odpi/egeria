@@ -732,6 +732,18 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Validate that a home metadata collection identifier in an classification is not null.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param classification classification to test.
+     * @param methodName method receiving the call
+     * @throws RepositoryErrorException no guid provided
+     */
+    void validateHomeMetadataGUID(String           sourceName,
+                                  Classification   classification,
+                                  String           methodName) throws RepositoryErrorException;
+
+    /**
      * Validate that the asOfTime parameter is not for the future.
      *
      * @param sourceName  source of the request (used for logging)
