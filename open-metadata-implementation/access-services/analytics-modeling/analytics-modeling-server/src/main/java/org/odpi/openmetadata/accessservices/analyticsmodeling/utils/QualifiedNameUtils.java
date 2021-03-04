@@ -54,10 +54,13 @@ public class QualifiedNameUtils {
 				.skip(1).collect(Collectors.toList());
 	}
 	
+	/**
+	 * Escape meta characters in qualifies name. 
+	 * @param input with qualified name.
+	 * @return escaped regex.
+	 */
 	public static String escapeQualifiedNameRegExPattern(String input) {
-		String ret = input.replace("(", "\\(");
-		ret = ret.replace(")", "\\)");
-		return ret;
+		return input.replace("(", "\\(").replace(")", "\\)");
 	}
 
 }

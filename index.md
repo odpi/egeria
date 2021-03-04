@@ -3,7 +3,7 @@ layout: homepage
 css: style-sub.css
 ---
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project. -->
+<!-- Copyright Contributors to the Egeria project. -->
 
 # Egeria - Open Metadata and Governance
 
@@ -137,7 +137,7 @@ The following articles may answer additional questions that you have.
 
 ## ODPi Egeria project governance
 
-This project is maintained by the ODPi Egeria community.
+This project is maintained by the Egeria community.
 To understand how to join and contribute see the
 [Community Guide](Community-Guide.md).
 
@@ -153,4 +153,4 @@ The governance of the project is described in more detail in the
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
-Copyright Contributors to the ODPi Egeria project.
+Copyright Contributors to the Egeria project.

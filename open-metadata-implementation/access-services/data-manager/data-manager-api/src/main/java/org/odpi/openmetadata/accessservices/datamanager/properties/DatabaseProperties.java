@@ -154,6 +154,7 @@ public class DatabaseProperties extends DataStoreProperties
                        ", databaseVersion='" + databaseVersion + '\'' +
                        ", databaseInstance='" + databaseInstance + '\'' +
                        ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                       ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
                        ", modifiedTime=" + getModifiedTime() +
                        ", encodingType='" + getEncodingType() + '\'' +

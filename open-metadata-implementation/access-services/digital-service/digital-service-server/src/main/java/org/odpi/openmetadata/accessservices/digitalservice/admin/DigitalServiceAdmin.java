@@ -98,7 +98,7 @@ public class DigitalServiceAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   DigitalServiceAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

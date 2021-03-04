@@ -31,25 +31,25 @@ abstract public class BaseGlossaryAuthorView {
     /**
      * Get the appropriate response from the supplied Exception
      *
-     * @param error      - supplied exception
+     * @param exception      - supplied exception
      * @param auditLog   - auditlog (may be null if unable to initialize)
      * @param className  - calling class's Name
      * @param methodName - calling method's name
-     * @return response corresponding to the error.
+     * @return response corresponding to the exception.
      */
-    protected <T> SubjectAreaOMASAPIResponse<T> getResponseForError(Throwable error, AuditLog auditLog, String className, String methodName) {
+    protected <T> SubjectAreaOMASAPIResponse<T> getResponseForException(Exception exception, AuditLog auditLog, String className, String methodName) {
         SubjectAreaOMASAPIResponse<T> response = new SubjectAreaOMASAPIResponse<>();
-        if (error instanceof OCFCheckedExceptionBase) {
-            response.setExceptionInfo((OCFCheckedExceptionBase) error, className);
+        if (exception instanceof OCFCheckedExceptionBase) {
+            response.setExceptionInfo((OCFCheckedExceptionBase) exception, className);
         } else {
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition();
-            messageDefinition.setMessageParameters(error.getMessage());
-            SubjectAreaCheckedException checkedException = new SubjectAreaCheckedException(messageDefinition, className, methodName, error);
+            messageDefinition.setMessageParameters(exception.getMessage());
+            SubjectAreaCheckedException checkedException = new SubjectAreaCheckedException(messageDefinition, className, methodName, exception);
             response.setExceptionInfo(checkedException, className);
             if (auditLog != null) {
                 auditLog.logException(methodName,
-                        GlossaryAuthorViewAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(), methodName, error.getMessage()),
-                        error);
+                        GlossaryAuthorViewAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(exception.getClass().getName(), methodName, exception.getMessage()),
+                        exception);
             }
         }
         return response;

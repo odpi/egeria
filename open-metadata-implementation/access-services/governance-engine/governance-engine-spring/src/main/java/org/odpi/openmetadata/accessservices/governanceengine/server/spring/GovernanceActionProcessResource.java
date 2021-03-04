@@ -398,7 +398,7 @@ public class GovernanceActionProcessResource
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
      * @param actionTypeGUID unique identifier of the governance action type
-     * @param requestBody null request body
+     * @param requestBody optional guard
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid

@@ -6458,18 +6458,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        /*
-         * Send refresh message
-         */
-        outboundRepositoryEventProcessor.processRefreshEntityRequested(repositoryName,
-                                                                       metadataCollectionId,
-                                                                       localServerName,
-                                                                       localServerType,
-                                                                       localOrganizationName,
-                                                                       typeDefGUID,
-                                                                       typeDefName,
-                                                                       entityGUID,
-                                                                       homeMetadataCollectionId);
+        if (produceEventsForRealConnector)
+        {
+            /*
+             * Send refresh message
+             */
+            outboundRepositoryEventProcessor.processRefreshEntityRequested(repositoryName,
+                                                                           metadataCollectionId,
+                                                                           localServerName,
+                                                                           localServerType,
+                                                                           localOrganizationName,
+                                                                           typeDefGUID,
+                                                                           typeDefName,
+                                                                           entityGUID,
+                                                                           homeMetadataCollectionId);
+        }
     }
 
 
@@ -6881,20 +6884,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-
-        /*
-         * Process refresh request
-         */
-        outboundRepositoryEventProcessor.processRefreshRelationshipRequest(repositoryName,
-                                                                           metadataCollectionId,
-                                                                           localServerName,
-                                                                           localServerType,
-                                                                           localOrganizationName,
-                                                                           typeDefGUID,
-                                                                           typeDefName,
-                                                                           relationshipGUID,
-                                                                           homeMetadataCollectionId);
-
+        if (produceEventsForRealConnector)
+        {
+            /*
+             * Process refresh request
+             */
+            outboundRepositoryEventProcessor.processRefreshRelationshipRequest(repositoryName,
+                                                                               metadataCollectionId,
+                                                                               localServerName,
+                                                                               localServerType,
+                                                                               localOrganizationName,
+                                                                               typeDefGUID,
+                                                                               typeDefName,
+                                                                               relationshipGUID,
+                                                                               homeMetadataCollectionId);
+        }
     }
 
 

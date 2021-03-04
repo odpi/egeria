@@ -860,8 +860,11 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
                 InstanceGraph instGraph = null;
 
+                long start;
+                long elapsedTime;
                 try {
 
+                    start = System.currentTimeMillis();
                     instGraph = metadataCollection.getEntityNeighborhood(workPad.getLocalServerUserId(),
                             entityGUID,
                             null,
@@ -870,6 +873,7 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                             null,
                             null,
                             level);
+                    elapsedTime = System.currentTimeMillis() - start;
 
                 } catch (FunctionNotSupportedException exception) {
 
@@ -905,7 +909,9 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                         assertion14,
                         testTypeName + assertionMsg14,
                         RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId(),
+                        "getEntityNeighborhood",
+                        elapsedTime);
 
 
                 /*
@@ -1012,8 +1018,11 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
             List<EntityDetail> relatedEntities = null;
 
+            long start;
+            long elapsedTime;
             try {
 
+                start = System.currentTimeMillis();
                 relatedEntities = metadataCollection.getRelatedEntities(workPad.getLocalServerUserId(),
                         entityGUID,
                         null,
@@ -1024,6 +1033,7 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                         null,
                         null,
                         0);
+                elapsedTime = System.currentTimeMillis() - start;
 
             } catch (FunctionNotSupportedException exception) {
 
@@ -1061,8 +1071,9 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                     assertion15,
                     testTypeName + assertionMsg15,
                     RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
-
+                    RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId(),
+                    "getRelatedEntities",
+                    elapsedTime);
 
 
             /*
@@ -1204,13 +1215,17 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
                 InstanceGraph instanceGraph = null;
 
+                long start;
+                long elapsedTime;
                 try {
 
+                    start = System.currentTimeMillis();
                     instanceGraph = metadataCollection.getLinkingEntities(workPad.getLocalServerUserId(),
                             entityAGUID,
                             entityBGUID,
                             null,
                             null);
+                    elapsedTime = System.currentTimeMillis() - start;
 
                 } catch (FunctionNotSupportedException exception) {
 
@@ -1242,7 +1257,9 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                         assertion16,
                         testTypeName + assertionMsg16,
                         RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId(),
+                        "getLinkingEntities",
+                        elapsedTime);
 
 
                 /* Check results */
