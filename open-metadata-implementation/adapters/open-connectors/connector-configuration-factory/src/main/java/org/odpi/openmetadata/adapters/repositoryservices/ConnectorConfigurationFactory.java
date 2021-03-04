@@ -395,9 +395,9 @@ public class ConnectorConfigurationFactory
      * @throws InstantiationException when the provided class cannot be instantiated
      * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
-    public Connection  getRepositoryProxyConnection(String              connectorProviderClassName,
-                                                    String              url,
-                                                    Map<String, Object> configurationProperties) throws ClassNotFoundException,
+    public Connection getRepositoryConnection(String              connectorProviderClassName,
+                                              String              url,
+                                              Map<String, Object> configurationProperties) throws ClassNotFoundException,
                                                                                                         InstantiationException,
                                                                                                         IllegalAccessException
     {

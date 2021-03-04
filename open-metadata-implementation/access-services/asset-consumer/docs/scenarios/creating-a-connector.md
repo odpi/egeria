@@ -50,7 +50,7 @@ In this first example, the connector is created from the hard-coded connection.
 
             connector = (CSVFileStoreConnector)client.getConnectorByConnection(clientUserId, getHardCodedConnection(fileName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             System.out.println("The connector can not be created with Asset Consumer OMAS.");
         }
@@ -134,7 +134,7 @@ The next example, uses the Connection guid:
          */
         return (CSVFileStoreConnector) client.getConnectorByGUID(clientUserId, connectionGUID);
     }
-    catch (Throwable error)
+    catch (Exception error)
     {
         System.out.println("Unable to create connector for connection: " + connectionGUID);
     }
@@ -152,7 +152,7 @@ The final example uses the Asset guid:
          */
         return (CSVFileStoreConnector) client.getConnectorForAsset(clientUserId, assetGUID);
     }
-    catch (Throwable error)
+    catch (Exception error)
     {
         System.out.println("Unable to create connector for asset: " + assetGUID);
     }

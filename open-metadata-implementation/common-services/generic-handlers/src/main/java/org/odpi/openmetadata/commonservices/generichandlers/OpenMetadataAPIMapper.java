@@ -479,6 +479,7 @@ public class OpenMetadataAPIMapper
     public static final String DATA_STORE_TYPE_NAME                      = "DataStore";
     /* Asset */
 
+    public static final String PATH_NAME_PROPERTY_NAME                   = "pathName";                              /* from DataStore entity */
     public static final String STORE_CREATE_TIME_PROPERTY_NAME           = "storeCreateTime";                       /* from DataStore entity */
     public static final String STORE_CREATE_TIME_PROPERTY_NAME_DEP       = "createTime";                            /* from DataStore entity */
     public static final String STORE_UPDATE_TIME_PROPERTY_NAME           = "storeUpdateTime";                       /* from DataStore entity */
@@ -1042,7 +1043,7 @@ public class OpenMetadataAPIMapper
     public static final String NEXT_GOVERNANCE_ACTION_TYPE_NAME          = "NextGovernanceAction";
     /* End1 = GovernanceAction; End 2 = GovernanceAction */
 
-    public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID      = "390559eb-6a0c-4dd7-bc95-b9074caffa7f";
+    public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID      = "e690ab17-6779-46b4-a8f1-6872d88c1bbb";
     public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME      = "GovernanceActionExecutor";
     /* End1 = GovernanceAction; End 2 = GovernanceEngine */
 
@@ -1056,7 +1057,7 @@ public class OpenMetadataAPIMapper
     public static final String KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME  = "KnownDuplicate";
     /* Referenceable */
 
-    public static final String KNOWN_DUPLICATE_LINK_TYPE_GUID            = "390559eb-6a0c-4dd7-bc95-b9074caffa7f";
+    public static final String KNOWN_DUPLICATE_LINK_TYPE_GUID            = "7540d9fb-1848-472e-baef-97a44b9f0c45";
     public static final String KNOWN_DUPLICATE_LINK_TYPE_NAME            = "KnownDuplicateLink";
     /* End1 = Referenceable; End 2 = Referenceable */
 
@@ -1101,11 +1102,6 @@ public class OpenMetadataAPIMapper
     public static final String INCIDENT_DEPENDENCY_TYPE_NAME             = "IncidentDependency";
     /* End1 = IncidentReport; End 2 = IncidentReport */
 
-
-    public static final String REFERENCEABLE_TO_CERTIFICATION_TYPE_GUID  = "390559eb-6a0c-4dd7-bc95-b9074caffa7f";
-    public static final String REFERENCEABLE_TO_CERTIFICATION_TYPE_NAME  = "Certification";
-    /* End1 = Referenceable; End 2 = CertificationType */
-
     public static final String CERTIFICATION_TYPE_TYPE_GUID              = "97f9ffc9-e2f7-4557-ac12-925257345eea";
     public static final String CERTIFICATION_TYPE_TYPE_NAME              = "CertificationType";
     /* GovernanceDefinition */
@@ -1124,10 +1120,6 @@ public class OpenMetadataAPIMapper
     public static final String CUSTODIAN_PROPERTY_NAME                   = "custodian";                 /* from Certification relationship */
     public static final String RECIPIENT_PROPERTY_NAME                   = "recipient";                 /* from Certification relationship */
     public static final String NOTES_PROPERTY_NAME                       = "notes";                     /* from Certification relationship */
-
-    public static final String CERTIFICATION_LINK_TYPE_GUID  = "390559eb-6a0c-4dd7-bc95-b9074caffa7f";
-    public static final String CERTIFICATION_LINK_TYPE_NAME  = "Certification";
-    /* End1 = CertificationType; End 2 = CertificationType */
 
     public static final String REFERENCEABLE_TO_LICENSE_TYPE_GUID                = "35e53b7f-2312-4d66-ae90-2d4cb47901ee";
     public static final String REFERENCEABLE_TO_LICENSE_TYPE_NAME                = "License";

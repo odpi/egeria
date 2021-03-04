@@ -16,9 +16,11 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationsh
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
@@ -32,6 +34,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.addE;
@@ -42,11 +48,13 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.unfold;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphTransactionManager.commit;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_DISCONNECT_ERROR;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_TRAVERSAL_EMPTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.PROCESS_MAPPING_ERROR;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CSV_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
@@ -172,8 +180,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
                 .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
                 .out(PORT_SCHEMA).out(ATTRIBUTE_FOR_SCHEMA).in(LINEAGE_MAPPING)
-                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
-                                .has(PROPERTY_KEY_LABEL, DATA_FILE),
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, DATA_FILE),
+                        __.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, CSV_FILE),
                         __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)).toList();
 
         if (graphFactory.isSupportingTransactions()) {
@@ -352,7 +360,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             return Optional.of(table.next());
         }
         if (TABULAR_COLUMN.equalsIgnoreCase(asset.label())) {
-            Iterator<Vertex> dataFile = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(DATA_FILE));
+            Iterator<Vertex> dataFile = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(DATA_FILE, CSV_FILE));
 
             return Optional.of(dataFile.next());
         }
@@ -374,44 +382,47 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 LineageEntity toEntity = entry.getToVertex();
 
                 upsertToGraph(fromEntity, toEntity, entry.getRelationshipType(), entry.getRelationshipGuid());
-
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().commit();
-                }
             } catch (Exception e) {
                 log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().rollback();
-                }
             }
         });
     }
 
-    private void upsertToGraph(LineageEntity fromEntity, LineageEntity toEntity, String relationshipLabel, String relationshipGuid) {
+    private void upsertToGraph(LineageEntity fromEntity, LineageEntity toEntity,
+                               final String relationshipLabel, final String relationshipGuid) {
 
-        Vertex from = g.V().has(PROPERTY_KEY_ENTITY_GUID, fromEntity.getGuid())
-                .fold()
-                .coalesce(unfold(),
-                        addV(fromEntity.getTypeDefName())
-                                .property(PROPERTY_KEY_ENTITY_GUID, fromEntity.getGuid()))
-                .next();
+        Function<LineageEntity, Vertex> createVertexFunction = (lineageEntity) ->
+             g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid())
+                    .fold()
+                    .coalesce(unfold(),
+                            addV(lineageEntity.getTypeDefName())
+                                    .property(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid()))
+                    .next();
 
-        Vertex to = g.V().has(PROPERTY_KEY_ENTITY_GUID, toEntity.getGuid())
-                .fold()
-                .coalesce(unfold(),
-                        addV(toEntity.getTypeDefName())
-                                .property(PROPERTY_KEY_ENTITY_GUID, toEntity.getGuid()))
-                .next();
+        Vertex from = commit(graphFactory, g, createVertexFunction, fromEntity,
+                "Unable to create vertex with type " + fromEntity.getTypeDefName() + " and guid "
+                        + fromEntity.getGuid());
 
+        Vertex to = commit(graphFactory, g, createVertexFunction, toEntity,
+                "Unable to create vertex with type " + toEntity.getTypeDefName() + " and guid "
+                        + toEntity.getGuid());
 
-        g.V(from.id()).as("from")
-                .V(to.id())
+        Supplier<Edge> createEdgeSupplier = () -> g.V(from.id()).as("from").V(to.id())
                 .coalesce(inE(relationshipLabel).where(outV().as("from")),
                         addE(relationshipLabel).from("from")).property(PROPERTY_KEY_RELATIONSHIP_GUID, relationshipGuid).next();
 
-        addOrUpdatePropertiesVertex(from, fromEntity);
-        addOrUpdatePropertiesVertex(to, toEntity);
+        commit(graphFactory, g, createEdgeSupplier,
+                "Unable to create edge with label " + relationshipLabel + " and guid " + relationshipGuid);
         //TODO add relationship properties -> meaning add relationship properties on AssetLineage omas event
+
+        BiConsumer<Vertex, LineageEntity> addOrUpdatePropertiesVertexConsumer = this::addOrUpdatePropertiesVertex;
+
+        commit(graphFactory, g, addOrUpdatePropertiesVertexConsumer, from, fromEntity,
+                "Unable to add properties on vertex from entity with type " + fromEntity.getTypeDefName() +
+                "and guid " + fromEntity.getGuid());
+        commit(graphFactory, g, addOrUpdatePropertiesVertexConsumer, to, toEntity,
+                "Unable to add properties on vertex from entity with type " + toEntity.getTypeDefName() +
+                        "and guid " + toEntity.getGuid());
     }
 
     /**
@@ -489,18 +500,13 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         LineageEntity firstEnd = lineageRelationship.getSourceEntity();
         LineageEntity secondEnd = lineageRelationship.getTargetEntity();
 
-        try {
-            upsertToGraph(firstEnd, secondEnd, lineageRelationship.getTypeDefName(), lineageRelationship.getGuid());
-            addOrUpdatePropertiesEdge(lineageRelationship);
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().commit();
-            }
-        } catch (Exception e) {
-            log.debug("An exception happened during update of the properties with error:", e);
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
-        }
+        upsertToGraph(firstEnd, secondEnd, lineageRelationship.getTypeDefName(), lineageRelationship.getGuid());
+
+        Consumer<LineageRelationship> addOrUpdatePropertiesEdge = this::addOrUpdatePropertiesEdge;
+        commit(graphFactory, g, addOrUpdatePropertiesEdge, lineageRelationship,
+                "Unable to add properties on edge from relationship with type " +
+                        lineageRelationship.getTypeDefName() + "and guid " + lineageRelationship.getGuid());
+
     }
 
     /**
@@ -732,10 +738,10 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         final String VERTEX = "vertex";
 
         Iterator<Vertex> end = g.V(vertex.id())
-                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
-                                .has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
-                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)
-                                .store(VERTEX)).select(VERTEX).unfold();
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
+                        __.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, CSV_FILE).store(VERTEX),
+                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE).store(VERTEX))
+                .select(VERTEX).unfold();
         return end.hasNext();
     }
 
@@ -774,6 +780,15 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         return new LineageResponse(lineageVerticesAndEdges.orElse(null));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LineageVertexResponse getEntityDetails(String guid) {
+        LineageVertex lineageVertex = helper.getLineageVertexByGuid(guid);
+
+        return new LineageVertexResponse(lineageVertex);
+    }
 
 }
 

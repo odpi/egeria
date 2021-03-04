@@ -112,17 +112,21 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
             instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
 
+            long start = System.currentTimeMillis();
             newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                      entityDef.getGUID(),
                                                      instProps,
                                                      null,
                                                      null);
+            long elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion7,
                             testTypeName + assertionMsg7,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "addEntity",
+                            elapsedTime);
 
             createdEntitiesTUT.add(newEntity);
 
@@ -195,14 +199,16 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         EntityDetail reIdentifiedEntity = null;
 
+        long elapsedTime;
         try {
 
-
+            long start = System.currentTimeMillis();
             reIdentifiedEntity = metadataCollection.reIdentifyEntity(workPad.getLocalServerUserId(),
                                                                      entityDef.getGUID(),
                                                                      entityDef.getName(),
                                                                      newEntity.getGUID(),
                                                                      newGUID);
+            elapsedTime = System.currentTimeMillis() - start;
 
         } catch (FunctionNotSupportedException exception) {
 
@@ -235,7 +241,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                         assertion8,
                         testTypeName + assertionMsg8,
                         RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                        RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId(),
+                        "reIdentifyEntity",
+                        elapsedTime);
 
         createdEntitiesTUT.add(reIdentifiedEntity);
 
@@ -256,21 +264,28 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          * Validate that the entity can no longer be retrieved under its original GUID.
          */
 
+        long start = System.currentTimeMillis();
         try {
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((false),
                             assertion5,
                             testTypeName + assertionMsg5,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId(),
+                            "getEntityDetail-negative",
+                            elapsedTime);
 
         } catch (EntityNotKnownException exception) {
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion5,
                             testTypeName + assertionMsg5,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId(),
+                            "getEntityDetail-negative",
+                            elapsedTime);
         }
 
 

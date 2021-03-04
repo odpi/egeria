@@ -35,7 +35,7 @@ public class GovernanceActionRequestBody implements Serializable
     private List<String>        receivedGuards        = null;
     private Date                startTime             = null;
     private String              requestType           = null;
-    private Map<String, String> requestProperties     = null;
+    private Map<String, String> requestParameters     = null;
     private String              originatorServiceName = null;
     private String              originatorEngineName  = null;
 
@@ -66,7 +66,7 @@ public class GovernanceActionRequestBody implements Serializable
             receivedGuards = template.getReceivedGuards();
             startTime = template.getStartTime();
             requestType = template.getRequestType();
-            requestProperties = template.getRequestProperties();
+            requestParameters = template.getRequestParameters();
             originatorServiceName = template.getOriginatorServiceName();
             originatorEngineName = template.getOriginatorEngineName();}
     }
@@ -295,30 +295,30 @@ public class GovernanceActionRequestBody implements Serializable
      *
      * @return map of properties
      */
-    public Map<String, String> getRequestProperties()
+    public Map<String, String> getRequestParameters()
     {
-        if (requestProperties == null)
+        if (requestParameters == null)
         {
             return null;
         }
 
-        if (requestProperties.isEmpty())
+        if (requestParameters.isEmpty())
         {
             return null;
         }
 
-        return requestProperties;
+        return requestParameters;
     }
 
 
     /**
      * Set up the parameters to pass onto the governance service.
      *
-     * @param requestProperties map of properties
+     * @param requestParameters map of properties
      */
-    public void setRequestProperties(Map<String, String> requestProperties)
+    public void setRequestParameters(Map<String, String> requestParameters)
     {
-        this.requestProperties = requestProperties;
+        this.requestParameters = requestParameters;
     }
 
 
@@ -383,7 +383,7 @@ public class GovernanceActionRequestBody implements Serializable
                        ", actionTargetGUIDs=" + actionTargetGUIDs +
                        ", startTime=" + startTime +
                        ", requestType='" + requestType + '\'' +
-                       ", requestProperties=" + requestProperties +
+                       ", requestParameters=" + requestParameters +
                        ", originatorServiceName=" + originatorServiceName +
                        ", originatorEngineName=" + originatorEngineName +
                        '}';
@@ -418,7 +418,7 @@ public class GovernanceActionRequestBody implements Serializable
                        Objects.equals(requestType, that.requestType) &&
                        Objects.equals(originatorServiceName, that.originatorServiceName) &&
                        Objects.equals(originatorEngineName, that.originatorEngineName) &&
-                       Objects.equals(requestProperties, that.requestProperties);
+                       Objects.equals(requestParameters, that.requestParameters);
     }
 
 
@@ -431,6 +431,6 @@ public class GovernanceActionRequestBody implements Serializable
     public int hashCode()
     {
         return Objects.hash(qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargetGUIDs, startTime, requestType,
-                            requestProperties, originatorServiceName, originatorEngineName);
+                            requestParameters, originatorServiceName, originatorEngineName);
     }
 }

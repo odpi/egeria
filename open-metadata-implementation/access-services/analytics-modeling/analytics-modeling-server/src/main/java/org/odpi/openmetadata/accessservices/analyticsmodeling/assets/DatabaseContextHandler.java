@@ -266,11 +266,12 @@ public class DatabaseContextHandler {
 	 * @param databaseGuid of the module
 	 * @param catalog of the module
 	 * @param schema of the module
+	 * @param filter contains optional table filter
 	 * @return module built for defined schema
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema) 
+	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema, ModuleTableFilter filter) 
 			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
 		String context = "getModule";
@@ -279,31 +280,41 @@ public class DatabaseContextHandler {
 
 		ResponseContainerModule ret = new ResponseContainerModule();
 		ret.setId(catalog + "_" + schema);
-		ret.setPhysicalModule(buildModule(databaseGuid, catalog, schema));
+		ret.setPhysicalModule(buildModule(databaseGuid, catalog, schema, filter));
 		return ret;
 	}
 
-	private MetadataModule buildModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
+	private MetadataModule buildModule(String databaseGuid, String catalog, String schema, ModuleTableFilter filter) 
+			throws AnalyticsModelingCheckedException
+	{
 		MetadataModule module = new MetadataModule();
 		module.setIdentifier("physicalmodule");
-		module.setDataSource(Arrays.asList(buildDataSource(databaseGuid, catalog, schema)));
+		module.setDataSource(Arrays.asList(buildDataSource(databaseGuid, catalog, schema, filter)));
 		return module;
 	}
 
-	private DataSource buildDataSource(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
+	private DataSource buildDataSource(String databaseGuid, String catalog, String schema, ModuleTableFilter filter) 
+			throws AnalyticsModelingCheckedException {
 		DataSource ds = new DataSource();
 		ds.setCatalog(catalog);
 		EntityDetail schemaEntity = getSchemaEntityByName(databaseGuid, schema);
 		ds.setSchema(getEntityStringProperty(schemaEntity, Constants.ATTRIBUTE_NAME));
 		ds.setName(catalog + "." + ds.getSchema());
-		ds.setTable(buildTables(databaseGuid, schemaEntity));
+		ds.setTable(buildTables(databaseGuid, schemaEntity, filter));
 		ds.addProperty(Constants.GUID, schemaEntity.getGUID());
 		return ds;
 	}
 
-	private List<Table> buildTables(String databaseGuid, EntityDetail schemaEntity) throws AnalyticsModelingCheckedException {
+	private List<Table> buildTables(String databaseGuid, EntityDetail schemaEntity, ModuleTableFilter tblFilter)
+			throws AnalyticsModelingCheckedException {
 
 		List<EntityDetail> tables = getTablesForSchema(schemaEntity);
+		
+		if (tblFilter != null) {
+			tables = tables.stream()
+					.filter(tbl->tblFilter.match(getEntityStringProperty(tbl, Constants.DISPLAY_NAME)))
+					.collect(Collectors.toList());
+		}
 
 		List<Table> ret = tables
 				.parallelStream()

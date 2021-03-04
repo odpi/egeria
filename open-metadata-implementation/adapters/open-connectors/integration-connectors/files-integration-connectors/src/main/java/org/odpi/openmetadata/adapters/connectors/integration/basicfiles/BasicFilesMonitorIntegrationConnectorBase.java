@@ -258,7 +258,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         }
         else
         {
-            messageDefinition = errorCode.getMessageDefinition(fileLocationName, super.connectionBean.toString());
+            messageDefinition = errorCode.getMessageDefinition(fileLocationName);
         }
 
         ConfigException error;
@@ -286,6 +286,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                                   BasicFilesIntegrationConnectorsAuditCode.BAD_CONFIGURATION.getMessageDefinition(connectorName,
                                                                                                                   ConfigException.class.getName(),
                                                                                                                   fileDirectoryName,
+                                                                                                                  methodName,
                                                                                                                   error.getMessage()),
                                   error);
         }

@@ -137,6 +137,22 @@ public class OpenLineageService {
     }
 
     /**
+     * Gets node details.
+     *
+     * @param userId the user id
+     * @param guid   the guid
+     * @return the node details
+     */
+    public LineageVertex getEntityDetails(String userId, String guid) {
+        try {
+        return openLineageClient.getEntityDetails(userId, guid);
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error("Cannot get node details for guid {}", guid);
+            throw new RuntimeException("entity details error", e);
+        }
+    }
+
+    /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
      * @param includeProcesses if true includes processes in the response

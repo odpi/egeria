@@ -36,15 +36,29 @@ for example, [AssetManager](0056-Asset-Managers.md).
 
 ![UML](0017-External-Identifiers.png#pagewidth)
 
+## More information
+
+There is an article on the use of external identifiers for correlating metadata elements from
+different types of technologies [here](../external-identifiers).  
 
 External identifiers are used extensively in the
-[Asset Manager OMAS](../../../open-metadata-implementation/access-services/asset-manager).
-They can be queried using the **getAssetProperties()** method from
+[Asset Manager OMAS](../../../open-metadata-implementation/access-services/asset-manager)
+in order to correlate the identifiers from third party technologies and open metadata types.
+
+The [Catalog Integrator OMIS](../../../open-metadata-implementation/integration-services/catalog-integrator)
+and [Lineage Integrator OMIS](../../../open-metadata-implementation/integration-services/lineage-integrator)
+make use of Asset Manager OMAS's support for external identifiers in the interfaces they provide
+to [integration connectors](../../../open-metadata-implementation/governance-servers/integration-daemon-services/docs/integration-connector.md).
+
+External identifiers associated with an asset can be queried using the **getAssetProperties()** method from
 [Asset Consumer OMAS](../../../open-metadata-implementation/access-services/asset-consumer) and
 [Asset Owner OMAS](../../../open-metadata-implementation/access-services/asset-owner).
+It is also available through the **getConnectedAssetProperties()** method on connectors that
+have been created by Asset Consumer OMAS and Asset Owner OMAS.
 
+----
 
-Return to [Area 0](Area-0-models.md).
+* Return to [Area 0](Area-0-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

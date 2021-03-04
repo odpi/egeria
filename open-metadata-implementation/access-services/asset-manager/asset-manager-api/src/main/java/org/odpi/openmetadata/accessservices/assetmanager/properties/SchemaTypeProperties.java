@@ -22,10 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = LiteralSchemaTypeProperties.class, name = "LiteralSchemaTypeProperties"),
-        @JsonSubTypes.Type(value = SimpleSchemaTypeProperties.class, name = "SimpleSchemaTypeProperties"),
-        @JsonSubTypes.Type(value = SchemaTypeChoiceProperties.class, name = "SchemaTypeChoiceProperties"),
-        @JsonSubTypes.Type(value = MapSchemaTypeProperties.class, name = "MapSchemaTypeProperties"),
+                      @JsonSubTypes.Type(value = ComplexSchemaTypeProperties.class, name = "ComplexSchemaTypeProperties"),
+                      @JsonSubTypes.Type(value = LiteralSchemaTypeProperties.class, name = "LiteralSchemaTypeProperties"),
+                      @JsonSubTypes.Type(value = SimpleSchemaTypeProperties.class, name = "SimpleSchemaTypeProperties"),
+                      @JsonSubTypes.Type(value = SchemaTypeChoiceProperties.class, name = "SchemaTypeChoiceProperties"),
+                      @JsonSubTypes.Type(value = MapSchemaTypeProperties.class, name = "MapSchemaTypeProperties"),
               })
 public class SchemaTypeProperties extends SchemaProperties
 {

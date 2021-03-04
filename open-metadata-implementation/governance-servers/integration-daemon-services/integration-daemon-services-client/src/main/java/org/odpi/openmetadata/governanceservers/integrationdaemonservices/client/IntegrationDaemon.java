@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -255,9 +256,13 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(serviceURLMarker, nameParameter, methodName);
 
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(connectorName);
+
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        connectorName,
+                                        requestBody,
                                         serverName,
                                         userId,
                                         serviceURLMarker);
@@ -290,9 +295,13 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(serviceURLMarker, nameParameter, methodName);
 
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(connectorName);
+
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        connectorName,
+                                        requestBody,
                                         serverName,
                                         userId,
                                         serviceURLMarker);

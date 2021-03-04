@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -68,9 +69,9 @@ public class IntegrationDaemonRESTServices
 
             response.setProperties(handler.getConfigurationProperties(userId, connectorName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -122,9 +123,9 @@ public class IntegrationDaemonRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -175,9 +176,9 @@ public class IntegrationDaemonRESTServices
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -195,7 +196,7 @@ public class IntegrationDaemonRESTServices
      * @param serverName name of the integration daemon
      * @param userId identifier of calling user
      * @param serviceURLMarker unique name of the integration service
-     * @param connectorName name of a specific connector to refresh - if null all connectors are refreshed
+     * @param requestBody name of a specific connector to refresh - if null all connectors are refreshed
      *
      * @return void or
      *
@@ -203,10 +204,10 @@ public class IntegrationDaemonRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
      */
-    public  VoidResponse refreshService(String serverName,
-                                        String userId,
-                                        String serviceURLMarker,
-                                        String connectorName)
+    public  VoidResponse refreshService(String          serverName,
+                                        String          userId,
+                                        String          serviceURLMarker,
+                                        NameRequestBody requestBody)
     {
         final String methodName = "refreshService";
 
@@ -220,11 +221,19 @@ public class IntegrationDaemonRESTServices
             IntegrationServiceHandler handler = instanceHandler.getIntegrationServiceHandler(userId, serverName, serviceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            String connectorName = null;
+
+            if (requestBody != null)
+            {
+                connectorName = requestBody.getName();
+            }
+
             handler.refreshService(connectorName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -239,7 +248,7 @@ public class IntegrationDaemonRESTServices
      * @param serverName name of the integration daemon
      * @param userId identifier of calling user
      * @param serviceURLMarker unique name of the integration service
-     * @param connectorName name of a specific connector to refresh - if null all connectors are restarted.
+     * @param requestBody name of a specific connector to refresh - if null all connectors are restarted.
      *
      * @return void or
      *
@@ -247,10 +256,10 @@ public class IntegrationDaemonRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
      */
-    public  VoidResponse restartService(String serverName,
-                                        String userId,
-                                        String serviceURLMarker,
-                                        String connectorName)
+    public  VoidResponse restartService(String          serverName,
+                                        String          userId,
+                                        String          serviceURLMarker,
+                                        NameRequestBody requestBody)
     {
         final String methodName = "restartService";
 
@@ -264,11 +273,19 @@ public class IntegrationDaemonRESTServices
             IntegrationServiceHandler handler = instanceHandler.getIntegrationServiceHandler(userId, serverName, serviceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            String connectorName = null;
+
+            if (requestBody != null)
+            {
+                connectorName = requestBody.getName();
+            }
+
             handler.restartService(connectorName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -322,9 +339,9 @@ public class IntegrationDaemonRESTServices
                 response.setIntegrationServiceSummaries(integrationServiceSummaries);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

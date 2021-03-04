@@ -156,6 +156,7 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update0045ServersAndAssets();
+        update0210DataStores();
         update0462GovernanceActionFlow();
         update0463GovernanceAction();
         update0512CalculatedValue();
@@ -266,6 +267,46 @@ public class OpenMetadataTypesArchive
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0210 Replace AssetServerUse relationship with SeverAssetUse
+     */
+    private void update0210DataStores()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataStore());
+    }
+
+    private TypeDefPatch updateDataStore()
+    {
+        final String typeName = "DataStore";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "pathName";
+        final String attribute1Description     = "The fully qualified physical location of the data store.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 

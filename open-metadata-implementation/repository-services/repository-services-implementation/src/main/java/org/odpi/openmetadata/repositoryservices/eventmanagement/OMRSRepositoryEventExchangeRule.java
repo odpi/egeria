@@ -111,6 +111,13 @@ public class OMRSRepositoryEventExchangeRule
                  */
                 return true;
             }
+            else if (exchangeRule == OpenMetadataExchangeRule.DESELECTED_TYPES)
+            {
+                /*
+                 * All active types should be processed
+                 */
+                return (! selectedTypesToProcess.contains(typeDefGUID));
+            }
             else
             {
                 /*

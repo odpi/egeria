@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.api;
 
+import org.odpi.openmetadata.engineservices.governanceaction.properties.ProviderReport;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -20,14 +21,14 @@ public interface GovernanceActionAPI
      * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
-     * @return connector type for this connector
+     * @return connector type and other capabilities for this connector
      *
      * @throws InvalidParameterException the connector provider class name is not a valid connector fo this service
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    ConnectorType validateConnector(String userId,
-                                    String connectorProviderClassName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException;
+    ProviderReport validateConnector(String userId,
+                                     String connectorProviderClassName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 }

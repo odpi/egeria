@@ -115,6 +115,7 @@ public class LineageExchangeService extends SchemaExchangeService
     /**
      * Create a new metadata element to represent a process using an existing metadata element as a template.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
      * @param processExternalIdentifier unique identifier of the process in the external asset manager
      * @param processExternalIdentifierName name of property for the external identifier in the external asset manager
@@ -130,7 +131,8 @@ public class LineageExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createProcessFromTemplate(String              templateGUID,
+    public String createProcessFromTemplate(boolean             assetManagerIsHome,
+                                            String              templateGUID,
                                             String              processExternalIdentifier,
                                             String              processExternalIdentifierName,
                                             String              processExternalIdentifierUsage,
@@ -147,6 +149,7 @@ public class LineageExchangeService extends SchemaExchangeService
             return lineageExchangeClient.createProcessFromTemplate(userId,
                                                                    assetManagerGUID,
                                                                    assetManagerName,
+                                                                   assetManagerIsHome,
                                                                    templateGUID,
                                                                    processExternalIdentifier,
                                                                    processExternalIdentifierName,

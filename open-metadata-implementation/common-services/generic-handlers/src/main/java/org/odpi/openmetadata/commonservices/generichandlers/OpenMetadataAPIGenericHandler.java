@@ -1756,6 +1756,20 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                     OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
                                                                     anchorsClassification.getProperties(),
                                                                     methodName);
+
+                    /*
+                     * This is an attempt to trap an intermittent error recorded in issue #4680.
+                     */
+                    if ("<unknown>".equals(anchorGUID))
+                    {
+                        final String localMethodName = "getAnchorGUIDFromAnchorsClassification";
+
+                        throw new PropertyServerException(GenericHandlersErrorCode.UNKNOWN_ANCHOR_GUID.getMessageDefinition(localMethodName,
+                                                                                                                            serviceName,
+                                                                                                                            methodName),
+                                                          this.getClass().getName(),
+                                                          localMethodName);
+                    }
                 }
             }
         }
@@ -1765,6 +1779,10 @@ public class OpenMetadataAPIGenericHandler<B>
              * No Anchors Classification - this is not an error - it means the connectTo entity is either an anchor itself, or was not created by an
              * Egeria component.
              */
+        }
+        catch (PropertyServerException error)
+        {
+            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
         }
 
         return anchorGUID;
@@ -1794,6 +1812,20 @@ public class OpenMetadataAPIGenericHandler<B>
         Classification     anchorsClassification;
         InstanceProperties anchorsProperties = null;
         String             currentAnchorGUID = null;
+
+        /*
+         * This is an attempt to trap an intermittent error recorded in issue #4680.
+         */
+        if ("<unknown>".equals(anchorGUID))
+        {
+            final String localMethodName = "maintainAnchorGUIDInClassification";
+
+            throw new PropertyServerException(GenericHandlersErrorCode.UNKNOWN_ANCHOR_GUID.getMessageDefinition(localMethodName,
+                                                                                                                serviceName,
+                                                                                                                methodName),
+                                              this.getClass().getName(),
+                                              localMethodName);
+        }
 
         /*
          * It is necessary to retrieve any existing classification to know whether it is a classify or reclassify method required.
@@ -1826,6 +1858,21 @@ public class OpenMetadataAPIGenericHandler<B>
              * Egeria component.
              */
             anchorsClassification = null;
+        }
+
+
+        /*
+         * This is an attempt to trap an intermittent error recorded in issue #4680.
+         */
+        if ("<unknown>".equals(currentAnchorGUID))
+        {
+            final String localMethodName = "maintainAnchorGUIDInClassification";
+
+            throw new PropertyServerException(GenericHandlersErrorCode.UNKNOWN_ANCHOR_GUID.getMessageDefinition(localMethodName,
+                                                                                                                serviceName,
+                                                                                                                methodName),
+                                              this.getClass().getName(),
+                                              localMethodName);
         }
 
         /*
@@ -4453,30 +4500,54 @@ public class OpenMetadataAPIGenericHandler<B>
                                      methodName);
 
             /*
-             * All OK to create the new bean,
+             * All OK to create the new bean, now work out the classifications.  Start with the classifications from the template (ignoring Anchors
+             * and LatestChange) and then overlay the classifications set up in the builder.
              */
+            Map<String, Classification> newClassificationMap = new HashMap<>();
+
+            if (templateEntity.getClassifications() != null)
+            {
+                for (Classification templateClassification : templateEntity.getClassifications())
+                {
+                    if (templateClassification != null)
+                    {
+                        if ((! OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())) &&
+                            (! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())))
+                        {
+                            newClassificationMap.put(templateClassification.getName(), templateClassification);
+                        }
+                    }
+                }
+            }
+
+            List<Classification> builderClassifications = propertyBuilder.getEntityClassifications();
+            if (builderClassifications != null)
+            {
+                for (Classification builderClassification : builderClassifications)
+                {
+                    if (builderClassification != null)
+                    {
+                        newClassificationMap.put(builderClassification.getName(), builderClassification);
+                    }
+                }
+            }
+
+            List<Classification> newClassifications = null;
+
+            if (! newClassificationMap.isEmpty())
+            {
+                newClassifications = new ArrayList<>(newClassificationMap.values());
+            }
+
             String newEntityGUID = repositoryHandler.createEntity(userId,
                                                                   entityTypeGUID,
                                                                   entityTypeName,
                                                                   externalSourceGUID,
                                                                   externalSourceName,
                                                                   propertyBuilder.getInstanceProperties(methodName),
-                                                                  propertyBuilder.getEntityClassifications(),
+                                                                  newClassifications,
                                                                   propertyBuilder.getInstanceStatus(),
                                                                   methodName);
-
-            /*
-             * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
-             * updated, there is a possibility of making complementary changes to the entities that were derived from it.
-             */
-            repositoryHandler.createRelationship(localServerUserId,
-                                                 OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 newEntityGUID,
-                                                 templateGUID,
-                                                 null,
-                                                 methodName);
 
             /*
              * The real value of templates is that they cover the creation of a cluster of metadata instances.  The last step is to explore
@@ -4492,6 +4563,19 @@ public class OpenMetadataAPIGenericHandler<B>
                                             entityTypeName,
                                             uniqueParameterValue,
                                             methodName);
+
+            /*
+             * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
+             * updated, there is a possibility of making complementary changes to the entities that were derived from it.
+             */
+            repositoryHandler.createRelationship(localServerUserId,
+                                                 OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 newEntityGUID,
+                                                 templateGUID,
+                                                 null,
+                                                 methodName);
 
             return newEntityGUID;
         }
@@ -4566,7 +4650,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 EntityDetail nextTemplateEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                     entityProxy.getGUID(),
                                                                                     nextTemplateEntityGUIDParameterName,
-                                                                                    expectedTypeName,
+                                                                                    null,
                                                                                     methodName);
 
                 if ((nextTemplateEntity != null) && (nextTemplateEntity.getType() != null))
@@ -4576,7 +4660,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
                     EntityDetail nextTemplateEntityAnchor = this.validateAnchorEntity(userId,
                                                                                       nextTemplateEntity.getGUID(),
-                                                                                      expectedTypeName,
+                                                                                      null,
                                                                                       nextTemplateEntity,
                                                                                       nextTemplateEntityGUIDParameterName,
                                                                                       false,
@@ -4596,8 +4680,14 @@ public class OpenMetadataAPIGenericHandler<B>
                         if (repositoryHelper.isTypeOf(serviceName, nextTemplateEntityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
                         {
                             nextQualifiedName = qualifiedName + "::" + nextTemplateEntityTypeName;
-                            int    nextQualifiedNameCount = qualifiedNameUsageCount.get(nextQualifiedName);
+                            int    nextQualifiedNameCount = 0;
+
+                            if (qualifiedNameUsageCount.get(nextQualifiedName) != null)
+                            {
+                                nextQualifiedNameCount = qualifiedNameUsageCount.get(nextQualifiedName);
+                            }
                             qualifiedNameUsageCount.put(nextQualifiedName, nextQualifiedNameCount + 1);
+
                             if (nextQualifiedNameCount > 0)
                             {
                                 nextQualifiedName = nextQualifiedName + "_" + nextQualifiedNameCount;
@@ -8376,7 +8466,7 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             return results.get(0);
         }
-        else
+        else if (results.size() > 1)
         {
             errorHandler.handleAmbiguousEntityName(value,
                                                    valueParameterName,

@@ -145,7 +145,7 @@ public class KarmaPointOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -154,7 +154,7 @@ public class KarmaPointOutboundEventTest
         {
             validateResultObject(objectMapper.readValue(jsonString, KarmaPointOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -168,7 +168,7 @@ public class KarmaPointOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -177,7 +177,7 @@ public class KarmaPointOutboundEventTest
         {
             validateResultObject((KarmaPointOutboundEvent) objectMapper.readValue(jsonString, PersonalProfileOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -192,7 +192,7 @@ public class KarmaPointOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -201,7 +201,7 @@ public class KarmaPointOutboundEventTest
         {
             validateResultObject((KarmaPointOutboundEvent) objectMapper.readValue(jsonString, CommunityProfileOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -216,7 +216,7 @@ public class KarmaPointOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superSuperSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -225,7 +225,7 @@ public class KarmaPointOutboundEventTest
         {
             validateResultObject((KarmaPointOutboundEvent) objectMapper.readValue(jsonString, CommunityProfileEventHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

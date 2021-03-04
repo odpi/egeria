@@ -55,7 +55,7 @@ public class OMRSArchiveGUIDMap
 
             idToGUIDMap = objectMapper.readValue(idFileContents, Map.class);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             idToGUIDMap = new HashMap<>();
         }

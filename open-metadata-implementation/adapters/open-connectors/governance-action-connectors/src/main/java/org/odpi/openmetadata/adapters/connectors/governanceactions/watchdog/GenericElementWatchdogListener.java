@@ -8,19 +8,19 @@ import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceE
 
 
 /**
- * MonitorForNewAssetListener implements the watchdog listener interface for the
+ * GenericElementWatchdogListener implements the watchdog listener interface for the GenericElementWatchdogGovernanceActionConnector.
  */
-public class MonitorForNewAssetListener extends WatchdogGovernanceListener
+public class GenericElementWatchdogListener extends WatchdogGovernanceListener
 {
-    MonitorForNewAssetGovernanceActionConnector connector;
+    GenericElementWatchdogGovernanceActionConnector connector;
 
 
     /**
-     * Construct the listener that is registered with the Governance context.
+     * Construct the listener that is registered with the GovernanceContext.
      *
      * @param connector connector to delegate all events to
      */
-    public MonitorForNewAssetListener(MonitorForNewAssetGovernanceActionConnector connector)
+    public GenericElementWatchdogListener(GenericElementWatchdogGovernanceActionConnector connector)
     {
         this.connector = connector;
     }

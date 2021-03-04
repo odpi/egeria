@@ -246,10 +246,52 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     @PostMapping(path = "/local-repository/mode/read-only-repository")
-    public VoidResponse setGraphLocalRepository(@PathVariable                  String              userId,
-                                                @PathVariable                  String              serverName)
+    public VoidResponse setReadOnlyLocalRepository(@PathVariable                  String              userId,
+                                                   @PathVariable                  String              serverName)
     {
         return adminAPI.setReadOnlyLocalRepository(userId, serverName);
+    }
+
+
+    /**
+     * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connection  connection to the OMRS repository connector.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set
+     */
+    @PostMapping(path = "/local-repository/mode/plugin-repository/connection")
+    public VoidResponse setPluginRepositoryConnection(@PathVariable String     userId,
+                                                      @PathVariable String     serverName,
+                                                      @RequestBody  Connection connection)
+    {
+        return adminAPI.setPluginRepositoryConnection(userId, serverName, connection);
+    }
+
+
+    /**
+     * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
+     *
+     * @param userId   user that is issuing the request.
+     * @param serverName   local server name.
+     * @param connectorProvider  connector provider class name to the OMRS repository connector.
+     * @param additionalProperties      additional parameters to pass to the repository connector
+     * @return void response or
+     * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set.
+     */
+    @PostMapping(path = "/local-repository/mode/plugin-repository/details")
+    public VoidResponse setPluginRepositoryConnection(@PathVariable                   String               userId,
+                                                      @PathVariable                   String               serverName,
+                                                      @RequestParam                   String               connectorProvider,
+                                                      @RequestBody(required = false)  Map<String, Object>  additionalProperties)
+    {
+        return adminAPI.setPluginRepositoryConnection(userId, serverName, connectorProvider, additionalProperties);
     }
 
 
@@ -296,7 +338,7 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Provide the connection to the local repository's event mapper if needed.  The default value is null which
+     * Provide the connection to a repository proxy's event mapper.  The default value is null which
      * means no event mapper.  An event mapper is needed if the local repository has additional APIs that can change
      * the metadata in the repository without going through the open metadata and governance services.
      *
@@ -309,16 +351,16 @@ public class ConfigRepositoryServicesResource
      * OMAGConfigurationErrorException the local repository mode, or the event mapper has not been set
      */
     @PostMapping(path = "/local-repository/event-mapper-connection")
-    public VoidResponse setLocalRepositoryEventMapper(@PathVariable String     userId,
+    public VoidResponse setRepositoryProxyEventMapper(@PathVariable String     userId,
                                                       @PathVariable String     serverName,
                                                       @RequestBody  Connection connection)
     {
-        return adminAPI.setLocalRepositoryEventMapper(userId, serverName, connection);
+        return adminAPI.setRepositoryProxyEventMapper(userId, serverName, connection);
     }
 
 
     /**
-     * Provide the connection to the local repository's event mapper if needed.  The default value is null which
+     * Provide the connection to a repository proxy's event mapper.  The default value is null which
      * means no event mapper.  An event mapper is needed if the local repository has additional APIs that can change
      * the metadata in the repository without going through the open metadata and governance services.
      *
@@ -333,13 +375,13 @@ public class ConfigRepositoryServicesResource
      * OMAGConfigurationErrorException the local repository mode has not been set.
      */
     @PostMapping(path = "/local-repository/event-mapper-details")
-    public VoidResponse setLocalRepositoryEventMapper(@PathVariable                 String               userId,
+    public VoidResponse setRepositoryProxyEventMapper(@PathVariable                 String               userId,
                                                       @PathVariable                 String               serverName,
                                                       @RequestParam                 String               connectorProvider,
                                                       @RequestParam                 String               eventSource,
                                                       @RequestBody(required=false)  Map<String, Object>  additionalProperties)
     {
-        return adminAPI.setLocalRepositoryEventMapper(userId, serverName, connectorProvider, eventSource, additionalProperties);
+        return adminAPI.setRepositoryProxyEventMapper(userId, serverName, connectorProvider, eventSource, additionalProperties);
     }
 
 
