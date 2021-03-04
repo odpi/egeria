@@ -390,15 +390,20 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  * can be achieved by testing if instance count is odd/even - odd => distinct; even => use common value.
                  */
 
+                // We will simply average the results given there is only a single assertion (not instance-by-instance)
+                long totalElapsedTime = 0;
                 for (int instanceCount = 0 ; instanceCount < numInstancesToCreate ; instanceCount++ ) {
 
                     instProps = super.generatePropertiesForInstance(workPad.getLocalServerUserId(), attrList, instanceCount);
 
+                    long start = System.currentTimeMillis();
                     EntityDetail newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                                           entityDef.getGUID(),
                                                                           instProps,
                                                                           null,
                                                                           null);
+                    long finish = System.currentTimeMillis();
+                    totalElapsedTime += (finish - start);
 
                     // Record the created instance for result prediction and verification
                     knownInstances.add(newEntity);
@@ -415,7 +420,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                 ASSERTION_2,
                                  ASSERTION_MSG_2 + testTypeName,
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                                "addEntity",
+                                totalElapsedTime / numInstancesToCreate);
 
             }
             catch (FunctionNotSupportedException exception) {
@@ -862,8 +869,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             Map<String,String> parameters = getParameters(entityDef.getGUID(), matchProperties, matchCriteria);
 
+            long elapsedTime;
             try {
 
+                long start = System.currentTimeMillis();
                 result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
                                                                    entityDef.getGUID(),
                                                                    matchProperties,
@@ -875,6 +884,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                    null,
                                                                    null,
                                                                    pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exc) {
 
@@ -997,7 +1007,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                             ASSERTION_3,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId(),
+                            "findEntitiesByProperty",
+                            elapsedTime);
 
 
             /*
@@ -1179,8 +1191,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             Map<String,String> parameters = getParameters(entityDef.getGUID(), matchProperties, matchCriteria);
 
+            long elapsedTime;
             try {
 
+                long start = System.currentTimeMillis();
                 result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
                                                                    entityDef.getGUID(),
                                                                    matchProperties,
@@ -1192,6 +1206,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                    null,
                                                                    null,
                                                                    pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exc) {
 
@@ -1272,7 +1287,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                             ASSERTION_5,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId(),
+                            "findEntitiesByProperty",
+                            elapsedTime);
 
 
 
@@ -1518,9 +1535,11 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             Map<String, String> parameters = getParameters(entityDef.getGUID(), literalisedValue);
 
+            long elapsedTime;
             try
             {
 
+                long start = System.currentTimeMillis();
                 result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
                                                                         entityDef.getGUID(),
                                                                         literalisedValue,
@@ -1531,6 +1550,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                         null,
                                                                         null,
                                                                         pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exc)
             {
@@ -1598,7 +1618,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     ASSERTION_7,
                     assertionMessage,
                     RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId(),
+                    "findEntitiesByPropertyValue",
+                    elapsedTime);
 
 
             /*
@@ -2017,9 +2039,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 Map<String,String> parameters = getParameters(entityDef.getGUID(), matchProperties, MatchCriteria.ALL);
 
+                long elapsedTime;
                 try {
 
-
+                    long start = System.currentTimeMillis();
                     result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
                                                                        entityDef.getGUID(),
                                                                        matchProperties,
@@ -2031,6 +2054,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                        null,
                                                                        null,
                                                                        pageSize);
+                    elapsedTime = System.currentTimeMillis() - start;
                 }
                 catch (FunctionNotSupportedException exc)
                 {
@@ -2099,7 +2123,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                 ASSERTION_9,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId(),
+                                "findEntitiesByProperty",
+                                elapsedTime);
 
 
                 /*
@@ -2317,9 +2343,11 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             Map<String, String> parameters = getParameters(entityDef.getGUID(), regexValue);
 
+            long elapsedTime;
             try
             {
 
+                long start = System.currentTimeMillis();
                 result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
                                                                         entityDef.getGUID(),
                                                                         regexValue,
@@ -2330,7 +2358,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                         null,
                                                                         null,
                                                                         pageSize);
-
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exc)
             {
@@ -2399,7 +2427,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     ASSERTION_11,
                     assertionMessage,
                     RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId(),
+                    "findEntitiesByPropertyValue",
+                    elapsedTime);
 
 
             /*
@@ -2514,6 +2544,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             try
             {
 
+                long start = System.currentTimeMillis();
                 result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
                                                                    entityDef.getGUID(),
                                                                    matchProperties,
@@ -2525,6 +2556,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                    null,
                                                                    null,
                                                                    pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exc) {
 
@@ -2593,7 +2625,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     ASSERTION_13,
                     assertionMessage,
                     RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId(),
+                    "findEntitiesByProperty",
+                    elapsedTime);
 
 
             /*
@@ -2924,9 +2958,11 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             Map<String,String> parameters = getParameters(entityDef.getGUID(), searchProperties1.toString());
 
+            long elapsedTime;
             try
             {
 
+                long start = System.currentTimeMillis();
                 result = metadataCollection.findEntities(workPad.getLocalServerUserId(),
                                                          entityDef.getGUID(),
                                                          null,  // no subtype GUID filtering
@@ -2938,7 +2974,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                          null,
                                                          null,
                                                          pageSize);
-
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exc) {
 
@@ -3061,7 +3097,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                             ASSERTION_103,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId(),
+                            "findEntities",
+                            elapsedTime);
 
 
             /*
@@ -3180,9 +3218,11 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
         Map<String, String> parameters = getParameters(entityDef.getGUID(), null, null);
 
+        long elapsedTime;
         try
         {
 
+            long start = System.currentTimeMillis();
             result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
                                                                entityDef.getGUID(),
                                                                null,
@@ -3194,6 +3234,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                                null,
                                                                null,
                                                                pageSize);
+            elapsedTime = System.currentTimeMillis() - start;
         }
         catch (FunctionNotSupportedException exc) {
 
@@ -3317,7 +3358,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                         ASSERTION_105,
                         assertionMessage,
                         RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
+                        RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId(),
+                        "findEntitiesByProperty",
+                        elapsedTime);
 
 
         /*
@@ -3409,9 +3452,11 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
         Map<String, String> parameters = getParameters(entityDef.getGUID(), null, null);
 
+        long elapsedTime;
         try
         {
 
+            long start = System.currentTimeMillis();
             result = metadataCollection.findEntities(workPad.getLocalServerUserId(),
                                                      entityDef.getGUID(),
                                                      null,  // no subtype GUID filtering
@@ -3423,6 +3468,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                      null,
                                                      null,
                                                      pageSize);
+            elapsedTime = System.currentTimeMillis() - start;
         }
         catch (FunctionNotSupportedException exc) {
 
@@ -3546,7 +3592,9 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                         ASSERTION_107,
                         assertionMessage,
                         RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+                        RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId(),
+                        "findEntities",
+                        elapsedTime);
 
 
         /*
