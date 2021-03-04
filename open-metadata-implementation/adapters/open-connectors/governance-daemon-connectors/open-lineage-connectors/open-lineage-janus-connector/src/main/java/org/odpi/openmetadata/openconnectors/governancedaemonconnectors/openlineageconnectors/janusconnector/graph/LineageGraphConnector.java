@@ -54,6 +54,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.PROCESS_MAPPING_ERROR;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CSV_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
@@ -179,8 +180,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
                 .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
                 .out(PORT_SCHEMA).out(ATTRIBUTE_FOR_SCHEMA).in(LINEAGE_MAPPING)
-                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
-                                .has(PROPERTY_KEY_LABEL, DATA_FILE),
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, DATA_FILE),
+                        __.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, CSV_FILE),
                         __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)).toList();
 
         if (graphFactory.isSupportingTransactions()) {
@@ -359,7 +360,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             return Optional.of(table.next());
         }
         if (TABULAR_COLUMN.equalsIgnoreCase(asset.label())) {
-            Iterator<Vertex> dataFile = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(DATA_FILE));
+            Iterator<Vertex> dataFile = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(DATA_FILE, CSV_FILE));
 
             return Optional.of(dataFile.next());
         }
@@ -737,10 +738,10 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         final String VERTEX = "vertex";
 
         Iterator<Vertex> end = g.V(vertex.id())
-                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
-                                .has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
-                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)
-                                .store(VERTEX)).select(VERTEX).unfold();
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
+                        __.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, CSV_FILE).store(VERTEX),
+                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE).store(VERTEX))
+                .select(VERTEX).unfold();
         return end.hasNext();
     }
 
