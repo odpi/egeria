@@ -146,7 +146,7 @@ public class DigitalServiceTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -155,7 +155,7 @@ public class DigitalServiceTest
         {
             validateResultObject(objectMapper.readValue(jsonString, DigitalService.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

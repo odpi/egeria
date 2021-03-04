@@ -127,6 +127,7 @@ public class SchemaExchangeService
     /**
      * Create a new metadata element to represent a schema type using an existing metadata element as a template.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
      * @param templateGUID unique identifier of the metadata element to copy
      * @param schemaTypeExternalIdentifier unique identifier of the schema type in the external asset manager
      * @param schemaTypeExternalIdentifierName name of property for the external identifier in the external asset manager
@@ -142,7 +143,8 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaTypeFromTemplate(String              templateGUID,
+    public String createSchemaTypeFromTemplate(boolean             assetManagerIsHome,
+                                               String              templateGUID,
                                                String              schemaTypeExternalIdentifier,
                                                String              schemaTypeExternalIdentifierName,
                                                String              schemaTypeExternalIdentifierUsage,
@@ -159,6 +161,7 @@ public class SchemaExchangeService
             return schemaExchangeClient.createSchemaTypeFromTemplate(userId,
                                                                      assetManagerGUID,
                                                                      assetManagerName,
+                                                                     assetManagerIsHome,
                                                                      templateGUID,
                                                                      schemaTypeExternalIdentifier,
                                                                      schemaTypeExternalIdentifierName,
@@ -504,10 +507,9 @@ public class SchemaExchangeService
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
-                    connectorName,
-                    methodName),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
+                                                                                                                               connectorName,
+                                                                                                                               methodName),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  userId);
@@ -518,6 +520,8 @@ public class SchemaExchangeService
     /**
      * Create a new metadata element to represent a schema attribute using an existing metadata element as a template.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
      * @param schemaAttributeExternalIdentifierName name of property for the external identifier in the external asset manager
@@ -533,7 +537,9 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaAttributeFromTemplate(String              templateGUID,
+    public String createSchemaAttributeFromTemplate(boolean             assetManagerIsHome,
+                                                    String              schemaElementGUID,
+                                                    String              templateGUID,
                                                     String              schemaAttributeExternalIdentifier,
                                                     String              schemaAttributeExternalIdentifierName,
                                                     String              schemaAttributeExternalIdentifierUsage,
@@ -548,16 +554,18 @@ public class SchemaExchangeService
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             return schemaExchangeClient.createSchemaAttributeFromTemplate(userId,
-                                                                            assetManagerGUID,
-                                                                            assetManagerName,
-                                                                            templateGUID,
-                                                                            schemaAttributeExternalIdentifier,
-                                                                            schemaAttributeExternalIdentifierName,
-                                                                            schemaAttributeExternalIdentifierUsage,
-                                                                            connectorName,
-                                                                            schemaAttributeExternalIdentifierKeyPattern,
-                                                                            mappingProperties,
-                                                                            templateProperties);
+                                                                          assetManagerGUID,
+                                                                          assetManagerName,
+                                                                          assetManagerIsHome,
+                                                                          schemaElementGUID,
+                                                                          templateGUID,
+                                                                          schemaAttributeExternalIdentifier,
+                                                                          schemaAttributeExternalIdentifierName,
+                                                                          schemaAttributeExternalIdentifierUsage,
+                                                                          connectorName,
+                                                                          schemaAttributeExternalIdentifierKeyPattern,
+                                                                          mappingProperties,
+                                                                          templateProperties);
         }
         else
         {
@@ -619,6 +627,7 @@ public class SchemaExchangeService
     /**
      * Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.
      *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param schemaElementExternalIdentifier unique identifier of the schema element in the external asset manager
      * @param formula description of how the value is calculated
@@ -627,17 +636,18 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setSchemaElementAsCalculatedValue(String schemaElementGUID,
-                                                  String schemaElementExternalIdentifier,
-                                                  String formula) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void setSchemaElementAsCalculatedValue(boolean assetManagerIsHome,
+                                                  String  schemaElementGUID,
+                                                  String  schemaElementExternalIdentifier,
+                                                  String  formula) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String methodName = "setGlossaryAsCanonical";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            schemaExchangeClient.setSchemaElementAsCalculatedValue(userId, assetManagerGUID, assetManagerName, schemaElementGUID, schemaElementExternalIdentifier, formula);
+            schemaExchangeClient.setSchemaElementAsCalculatedValue(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, schemaElementGUID, schemaElementExternalIdentifier, formula);
         }
         else
         {
@@ -888,10 +898,10 @@ public class SchemaExchangeService
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
             schemaExchangeClient.clearForeignKeyRelationship(userId,
-                                                              assetManagerGUID,
-                                                              assetManagerName,
-                                                              primaryKeyGUID,
-                                                              foreignKeyGUID);
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             primaryKeyGUID,
+                                                             foreignKeyGUID);
         }
         else
         {

@@ -161,7 +161,7 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"Review the exception to resolve the issue."),
 	FAILED_CREATE_SERVER_CAPABILITY(
 			"OMAS-ANALYTICS-MODELING-026", 
-			"User {0} failed to create server capability {1}. Cause: {3}",
+			"User {0} failed to create server capability {1}. Cause: {2}",
 			"The system is unable to process the request.",
 			"Review the exception to resolve the issue."),
 	

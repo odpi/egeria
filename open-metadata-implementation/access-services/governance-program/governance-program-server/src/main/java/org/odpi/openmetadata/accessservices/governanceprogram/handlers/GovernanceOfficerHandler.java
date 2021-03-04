@@ -260,7 +260,7 @@ public class GovernanceOfficerHandler
                     governanceOfficer.setSuccessors(this.getSuccessors(relationships, now, userId));
                 }
             }
-            catch (Throwable   error)
+            catch (Exception   error)
             {
                 errorHandler.handleUnexpectedException(error,
                                                        methodName,
@@ -973,7 +973,7 @@ public class GovernanceOfficerHandler
 
                     this.relieveGovernanceOfficer(userId, governanceOfficerGUID, governanceOfficer.getAppointee().getProfile().getGUID(), incumbentEndDate);
                 }
-                catch (Throwable   error)
+                catch (Exception   error)
                 {
                     throw new PropertyServerException(GovernanceProgramErrorCode.FREE_ROLE_FOR_APPOINTMENT_FAILED.getMessageDefinition(error.getMessage()),
                                                       this.getClass().getName(),

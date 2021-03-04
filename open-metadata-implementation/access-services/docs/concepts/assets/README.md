@@ -89,29 +89,57 @@ Egeria's Open Metadata Access Services (OMASs) provide the specialized services 
 managing Assets.  Each OMAS focuses on a particular part of the asset lifecycle or
 person/tool that is working with the Assets.  For example,
 
-* **[Asset Catalog OMAS](../../../asset-catalog/README.md)** provides a search service for locating Assets.
-* **[Asset Consumer OMAS](../../../asset-consumer/README.md)** provides a service for accessing the content of an Asset,
+* **[Analytics Modeling OMAS](../../../analytics-modeling)**
+enables business intelligence and data virtualization tools to maintain information about the data views and
+reporting Assets they are maintaining.
+* **[Asset Catalog OMAS](../../../asset-catalog)** provides a search service for locating Assets.
+* **[Asset Consumer OMAS](../../../asset-consumer)** provides a service for accessing the content of an Asset,
 extracting additional information that is known about the Asset and providing feedback about the Asset.
-* **[Asset Owner OMAS](../../../asset-owner/README.md)** provides a service for the owner of an Asset
+It is designed for tools that consume assets to support the work of their users.
+These users can provide feedback on the asset description and the resource that it describes.
+* **[Asset Manager OMAS](../../../asset-manager)** provides a service for exchanging metadata about assets and
+related information with a third party [asset manager](../server-capabilities/asset-manager.md).
+This API supports the many-to-many correlation of identifiers used in the third party asset manager and the
+open metadata ecosystem.
+* **[Asset Owner OMAS](../../../asset-owner)** provides a service for the owner of an Asset
 to classify and manage the asset, and understand how it is being used by the organization.
-* **[Discovery Engine OMAS](../../../discovery-engine/README.md)** provides a service for adding annotations to an
-asset's information that has been determined by specific analysis of the Asset's contents by a discovery service.
+* **[Discovery Engine OMAS](../../../discovery-engine)** provides a service for adding annotations to an
+asset's information that has been determined by specific analysis of the Asset's contents by a
+[discovery service](../../../../frameworks/open-discovery-framework/docs/discovery-service.md).
 * **[Data Manager OMAS](../../../data-manager/README.md)** enables
 a data manager (such as a database or file system) to maintain information about the assets it stores.
-* **[IT Infrastructure OMAS](../../../it-infrastructure/README.md)** provides
-a service for maintaining information about the IT infrastructure owned or used by an organization.
-* **[Data Science OMAS](../../../data-science/README.md)** provides a service for maintaining information
+* **[Governance Engine OMAS](../../../governance-engine)** provides the metadata services for
+[governance action services](../../../../frameworks/governance-action-framework/docs/governance-action-service.md)
+that verify, enhance and correct the properties of assets and their associated elements.
+* **[IT Infrastructure OMAS](../../../it-infrastructure)** provides
+a service for maintaining information about the IT assets and supporting infrastructure owned or used by an organization.
+* **[Data Science OMAS](../../../data-science)** provides a service for maintaining information
 about analytical models and related assets such as python notebooks.
-* **[Information View OMAS](../../../information-view/README.md)**
-enables business intelligence and data virtualization tools to maintain information about the data views and reporting Assets they are maintaining.
-
-
 
 ## Sharing information about assets
 
 Egeria's Open Metadata Repository Services (OMRS) provides the ability to store and extract information about
 Assets in a distributed collection of servers called an
 [open metadata repository cohort](../../../../repository-services/docs/open-metadata-repository-cohort.md).
+The cohort provides both peer-to-peer exchange of metadata via an event bus topic 
+and federated queries between different members of the cohort.
+Egeria provides a [metadata server](../../../../admin-services/docs/concepts/metadata-server.md),
+a [metadata access point](../../../../admin-services/docs/concepts/metadata-access-point.md) and a
+[repository proxy](../../../../admin-services/docs/concepts/repository-proxy.md) server that are all able to
+join a cohort.  The repository proxy supports the integration of third party
+servers (typically [asset managers](../server-capabilities/asset-manager.md)) into the cohort.
+The mapping between the third party server's APIs and the open metadata APIs in this case is
+implemented in an [repository connector](../../../../repository-services/docs/component-descriptions/connectors/repository-connector.md).
+
+
+It is also possible to manage the exchange of Asset metadata with other types of third party technologies
+using the [Open Metadata Integration Services (OMIS)](../../../../integration-services) running
+in an [integration daemon](../../../../admin-services/docs/concepts/integration-daemon.md).
+Using this pattern is simpler to integrate by involves maintaining a copy of the third party technology's
+metadata in a [metadata server](../../../../admin-services/docs/concepts/metadata-server.md) that can then
+join one or more open metadata repository cohorts to share this metadata more broadly.
+The mapping between the third party technology's APIs and the open metadata APIs in this case is
+implemented in an [integration connector](../../../../governance-servers/integration-daemon-services/docs/integration-connector.md).
 
 ----
 

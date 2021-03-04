@@ -78,7 +78,7 @@ public class AccessServiceEventTypeTest
         {
             jsonString = objectMapper.writeValueAsString(AssetConsumerEventType.NEW_ASSET_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -87,7 +87,7 @@ public class AccessServiceEventTypeTest
         {
             assertTrue(objectMapper.readValue(jsonString, AssetConsumerEventType.class) == AssetConsumerEventType.NEW_ASSET_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

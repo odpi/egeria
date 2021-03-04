@@ -192,7 +192,7 @@ public class OMAGConformanceSuiteConfigServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -262,7 +262,7 @@ public class OMAGConformanceSuiteConfigServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -332,7 +332,7 @@ public class OMAGConformanceSuiteConfigServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -393,7 +393,7 @@ public class OMAGConformanceSuiteConfigServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }

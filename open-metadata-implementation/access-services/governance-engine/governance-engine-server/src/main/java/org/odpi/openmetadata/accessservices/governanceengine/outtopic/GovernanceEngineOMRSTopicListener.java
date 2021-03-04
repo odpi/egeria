@@ -161,7 +161,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     }
 
 
-
     /**
      * Process an entity extracted from an event.
      *

@@ -871,89 +871,6 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
 
     /**
-     * Add or replace the security tags for an asset or one of its elements.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of asset
-     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
-     *                         If null then the assetGUID is used.
-     * @param securityLabels list of security labels defining the security characteristics of the element
-     * @param securityProperties Descriptive labels describing origin of the asset
-     * @throws InvalidParameterException entity not known, null userId or guid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void  addSecurityTags(String                userId,
-                                 String                assetGUID,
-                                 String                assetElementGUID,
-                                 List<String>          securityLabels,
-                                 Map<String, Object>   securityProperties) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
-    {
-        final String   methodName = "addSecurityTags";
-        final String   assetGUIDParameter = "assetGUID";
-        final String   assetURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/security-tags";
-        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/security-tags";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
-
-        SecurityTagsRequestBody requestBody = new SecurityTagsRequestBody();
-        requestBody.setSecurityLabels(securityLabels);
-        requestBody.setSecurityProperties(securityProperties);
-
-        if (assetElementGUID == null)
-        {
-            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + assetURLTemplate, requestBody, serverName, userId, assetGUID);
-        }
-        else
-        {
-            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + elementURLTemplate, requestBody, serverName, userId, assetGUID, assetElementGUID);
-        }
-    }
-
-
-    /**
-     * Remove the security tags classification to an asset or one of its elements.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of asset
-     * @param assetElementGUID element where the security tags need to be removed.
-     *                         If null then the assetGUID is used.
-     * @throws InvalidParameterException entity not known, null userId or guid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void  removeSecurityTags(String                userId,
-                                    String                assetGUID,
-                                    String                assetElementGUID) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
-    {
-        final String   methodName = "addSecurityTags";
-        final String   assetGUIDParameter = "assetGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
-
-        final String   assetURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/security-tags/delete";
-        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/security-tags/delete";
-
-        if (assetElementGUID == null)
-        {
-            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + assetURLTemplate, nullRequestBody, serverName, userId, assetGUID);
-        }
-        else
-        {
-            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + elementURLTemplate, nullRequestBody, serverName, userId, assetGUID, assetElementGUID);
-        }
-    }
-
-
-    /**
      * Update the zones for a specific asset.
      *
      * @param userId calling user
@@ -1022,6 +939,165 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
+    }
+
+
+    /**
+     * Add or replace the security tags for an asset or one of its elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element to link it to - its type must inherit from Referenceable.
+     *                         If null then the assetGUID is used.
+     * @param securityLabels list of security labels defining the security characteristics of the element
+     * @param securityProperties Descriptive labels describing origin of the asset
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void  addSecurityTags(String                userId,
+                                 String                assetGUID,
+                                 String                assetElementGUID,
+                                 List<String>          securityLabels,
+                                 Map<String, Object>   securityProperties) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String   methodName = "addSecurityTags";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   assetURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/security-tags";
+        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/security-tags";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        SecurityTagsRequestBody requestBody = new SecurityTagsRequestBody();
+        requestBody.setSecurityLabels(securityLabels);
+        requestBody.setSecurityProperties(securityProperties);
+
+        if (assetElementGUID == null)
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + assetURLTemplate, requestBody, serverName, userId, assetGUID);
+        }
+        else
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + elementURLTemplate, requestBody, serverName, userId, assetGUID, assetElementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the security tags classification to an asset or one of its elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID element where the security tags need to be removed.
+     *                         If null then the assetGUID is used.
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void  removeSecurityTags(String                userId,
+                                    String                assetGUID,
+                                    String                assetElementGUID) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String   methodName = "removeSecurityTags";
+        final String   assetGUIDParameter = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        final String   assetURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/security-tags/delete";
+        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/security-tags/delete";
+
+        if (assetElementGUID == null)
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + assetURLTemplate, nullRequestBody, serverName, userId, assetGUID);
+        }
+        else
+        {
+            restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL + elementURLTemplate, nullRequestBody, serverName, userId, assetGUID, assetElementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to classify
+     * @param name name of the template
+     * @param description description of when, where and how to use the template
+     * @param additionalProperties any additional properties
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addTemplateClassification(String              userId,
+                                          String              assetGUID,
+                                          String              name,
+                                          String              description,
+                                          Map<String, String> additionalProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String   methodName = "addTemplateClassification";
+        final String   assetGUIDParameter = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/template-classification";
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setDescription(description);
+        requestBody.setAdditionalProperties(additionalProperties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
+    }
+
+
+    /**
+     * Remove the classification that indicates that this asset can be used as a template.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to declassify
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void removeTemplateClassification(String userId,
+                                             String assetGUID) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        final String   methodName = "removeTemplateClassification";
+        final String   assetGUIDParameter = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/template-classification/delete";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
                                         serverName,
                                         userId,
                                         assetGUID);
