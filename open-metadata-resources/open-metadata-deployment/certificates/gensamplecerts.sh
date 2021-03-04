@@ -42,6 +42,12 @@ CA_CHAIN=EgeriaCAChain
 # Used in openssl.cnf for the subjectAltName where needed - export to environment
 export SAN="DNS:localhost"
 
+# Cleanup directories
+rm -f *.pem
+rm -f *.p12
+rm -fr ${rootCA}
+rm -fr ${iCA}
+
 # A few empty dirs needed
 for d in ./${rootCA} ./${iCA}
 do
@@ -129,6 +135,23 @@ do
   keytool -importcert -alias ${FNAME} -file ${FNAME}.cert.pem -keypass ${KEYPASS} -storepass ${STOREPASS} \
           -noprompt -destkeystore ${FNAME}.p12
 done
+
+# ---
+# Distribute certs in build tree
+#
+# This is for transition only -- to validate/test the certs created here and replace
+# the simpler certs originally provided with egeria
+# This is a dev activity, not deployment, and primarily to support testing as we migrate
+# ---
+echo "\n\n---- Deploying certs to current build"
+BASE=../../..
+cp EgeriaCAChain.p12 ${BASE}/truststore.p12
+cp EgeriaClient.p12 ${BASE}/keystore.12
+cp EgeriaUIChassis.p12 ${BASE}/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/keystore.p12
+cp EgeriaCAChain.p12 ${BASE}/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/truststore.p12
+cp EgeriaServerChassis.p12 ${BASE}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12
+cp EgeriaCAChain.p12 ${BASE}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12
+
 
 # ---
 # output message
