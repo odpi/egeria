@@ -8,7 +8,10 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -114,20 +117,16 @@ public class AssetContextHandler {
         return context;
     }
 
-    private boolean isInternalTabularColumn(String userId, EntityDetail entityDetail) {
+    private boolean isInternalTabularColumn(String userId, EntityDetail entityDetail) throws InvalidParameterException, PropertyServerException,
+                                                                                             UserNotAuthorizedException {
+        String methodName = "isInternalTabularColumn";
+
         String anchorGUID = entityDetail.getProperties().getPropertyValue(ANCHOR_GUID).valueAsString();
         if (StringUtils.isEmpty(anchorGUID)) {
             return false;
         }
 
-        EntityDetail anchorProcess;
-        try {
-            anchorProcess = handlerHelper.getEntityDetails(userId, anchorGUID, PROCESS);
-        } catch (Exception e) {
-            // entity is not found or the type of the entity is not Process
-            return false;
-        }
-        return anchorProcess != null;
+        return repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, PROCESS, methodName);
     }
 
     /**
