@@ -68,23 +68,26 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 			}
 			
 			if (object instanceof AnalyticsMetadata) {
-				throw new PropertyServerException(
-						AnalyticsModelingErrorCode.UNEXPECTED_CLASS.getMessageDefinition(object.getClass().getSimpleName()),
-						this.getClass().getSimpleName(),
-						methodName);
+				
+				AnalyticsMetadata bean = (AnalyticsMetadata) object;
+				
+				bean.setDisplayName(this.removeDisplayName(instanceProperties));
+				bean.setDescription(this.removeDescription(instanceProperties));
+				bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
+				bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+				bean.setElementPosition(this.getPosition(instanceProperties));
+
+				bean.setNativeJavaClass(bean.getClass().getName());
+
+				bean.convertAnalyticsMetadataProperties();
+				
+				return bean;
 			}
-			
-			AnalyticsMetadata bean = (AnalyticsMetadata) object;
-			
-			bean.setDisplayName(this.removeDisplayName(instanceProperties));
-			bean.setDescription(this.removeDescription(instanceProperties));
-			bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-			bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-			bean.setElementPosition(this.getPosition(instanceProperties));
-			
-			bean.convertProperties();
-			
-			return bean;
+
+			throw new PropertyServerException(
+					AnalyticsModelingErrorCode.UNEXPECTED_CLASS.getMessageDefinition(object.getClass().getSimpleName()),
+					this.getClass().getSimpleName(),
+					methodName);
 		}
 
 		throw new PropertyServerException(

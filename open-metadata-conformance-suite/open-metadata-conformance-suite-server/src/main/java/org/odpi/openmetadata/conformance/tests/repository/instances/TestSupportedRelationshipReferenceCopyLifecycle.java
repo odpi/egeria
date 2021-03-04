@@ -494,9 +494,13 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          */
 
         Relationship retrievedReferenceCopy = null;
+        long start;
+        long elapsedTime;
         try {
 
+            start = System.currentTimeMillis();
             retrievedReferenceCopy = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
         } catch (Exception exc) {
             /*
@@ -517,7 +521,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                         assertion2,
                         testTypeName + assertionMsg2,
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                        "getRelationship",
+                        elapsedTime);
 
 
         /*
@@ -541,25 +547,31 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             try {
 
+                start = System.currentTimeMillis();
                 Relationship updatedRelationship = metadataCollection.updateRelationshipStatus(workPad.getLocalServerUserId(), retrievedReferenceCopy.getGUID(), validInstanceStatus);
+                elapsedTime = System.currentTimeMillis() - start;
 
                 assertCondition((false),
                                 assertion4,
                                 testTypeName + assertionMsg4,
                                 RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
+                                "updateRelationshipStatus-negative",
+                                elapsedTime);
 
             } catch (InvalidParameterException e) {
 
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
-
+                elapsedTime = System.currentTimeMillis() - start;
                 assertCondition((true),
                                 assertion4,
                                 testTypeName + assertionMsg4,
                                 RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
+                                "updateRelationshipStatus-negative",
+                                elapsedTime);
             } catch (Exception exc) {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -592,25 +604,31 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             try {
 
+                start = System.currentTimeMillis();
                 Relationship minPropertiesRelationship = metadataCollection.updateRelationshipProperties(workPad.getLocalServerUserId(), retrievedReferenceCopy.getGUID(), minRelationshipProps);
+                elapsedTime = System.currentTimeMillis() - start;
 
                 assertCondition((false),
                                 assertion5,
                                 testTypeName + assertionMsg5,
                                 RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
+                                "updateRelationshipProperties-negative",
+                                elapsedTime);
 
             } catch (InvalidParameterException e) {
 
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
-
+                elapsedTime = System.currentTimeMillis() - start;
                 assertCondition((true),
                                 assertion5,
                                 testTypeName + assertionMsg5,
                                 RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
+                                "updateRelationshipProperties-negative",
+                                elapsedTime);
             } catch (Exception exc) {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -640,28 +658,34 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         try {
 
+            start = System.currentTimeMillis();
             Relationship reTypedRelationship = metadataCollection.reTypeRelationship(workPad.getLocalServerUserId(),
                                                                                      newRelationship.getGUID(),
                                                                                      relationshipDef,
                                                                                      relationshipDef); // see comment above about using original type
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((false),
                             assertion6,
                             testTypeName + assertionMsg6,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
+                            "reTypeRelationship-negative",
+                            elapsedTime);
 
         } catch (InvalidParameterException e) {
 
             /*
              * We are not expecting the type update to work - it should have thrown an InvalidParameterException
              */
-
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion6,
                             testTypeName + assertionMsg6,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
+                            "reTypeRelationship-negative",
+                            elapsedTime);
         } catch (Exception exc) {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -692,11 +716,13 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         try {
 
+            start = System.currentTimeMillis();
             Relationship reIdentifiedRelationship = metadataCollection.reIdentifyRelationship(workPad.getLocalServerUserId(),
                                                                                               relationshipDef.getGUID(),
                                                                                               relationshipDef.getName(),
                                                                                               newRelationship.getGUID(),
                                                                                               newGUID);
+            elapsedTime = System.currentTimeMillis() - start;
 
             createdRelationshipsTUT.add(reIdentifiedRelationship);
 
@@ -704,19 +730,23 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             assertion7,
                             testTypeName + assertionMsg7,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
+                            "reIdentifyRelationship-negative",
+                            elapsedTime);
 
         } catch (InvalidParameterException e) {
 
             /*
              * We are not expecting the identity update to work - it should have thrown an InvalidParameterException
              */
-
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion7,
                             testTypeName + assertionMsg7,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
+                            "reIdentifyRelationship-negative",
+                            elapsedTime);
 
         } catch (Exception exc) {
             /*
@@ -743,7 +773,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         try {
 
+            start = System.currentTimeMillis();
             metadataCollection.purgeRelationshipReferenceCopy(workPad.getLocalServerUserId(), refRelationship);
+            elapsedTime = System.currentTimeMillis() - start;
 
             /*
              * Note that the ref copy could be purged
@@ -752,7 +784,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             assertion8,
                             testTypeName + assertionMsg8,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId(),
+                            "purgeRelationshipReferenceCopy",
+                            elapsedTime);
 
         } catch (Exception exc) {
             /*
@@ -772,11 +806,13 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         try {
 
+            start = System.currentTimeMillis();
             metadataCollection.refreshRelationshipReferenceCopy(workPad.getLocalServerUserId(),
                                                                 refRelationship.getGUID(),
                                                                 relationshipDef.getGUID(),
                                                                 relationshipDef.getName(),
                                                                 ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()));
+            elapsedTime = System.currentTimeMillis() - start;
 
             /*
              * Note that the refresh request failed, fail the test
@@ -785,7 +821,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             assertion9,
                             testTypeName + assertionMsg9,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                            "refreshRelationshipReferenceCopy",
+                            elapsedTime);
         } catch (Exception exc) {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -849,8 +887,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         try {
 
-
+            start = System.currentTimeMillis();
             refreshedRelationshipRefCopy = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
         } catch (Exception exc) {
             /*
@@ -871,7 +910,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                         assertion10,
                         testTypeName + assertionMsg10,
                         RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                        "getRelationship",
+                        elapsedTime);
 
 
         /*
@@ -943,21 +984,27 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
 
         try {
+            start = System.currentTimeMillis();
             metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((false),
                             assertion12,
                             testTypeName + assertionMsg12,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId(),
+                            "getRelationship-negative",
+                            elapsedTime);
 
         } catch (RelationshipNotKnownException exception) {
-
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion12,
                             testTypeName + assertionMsg12,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId(),
+                            "getRelationship-negative",
+                            elapsedTime);
         } catch (Exception exc) {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -1103,18 +1150,22 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         Relationship relationshipWithMappingProperties = null;
 
         try {
+            start = System.currentTimeMillis();
             relationshipWithMappingProperties = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
                                                                                    relationshipDef.getGUID(),
                                                                                    super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
                                                                                    end1.getGUID(),
                                                                                    end2.getGUID(),
                                                                                    null);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion14,
                             testTypeName + assertionMsg14,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                            "addRelationship",
+                            elapsedTime);
 
             createdRelationshipsTUT.add(relationshipWithMappingProperties);
 
@@ -1256,13 +1307,17 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         try {
 
+            start = System.currentTimeMillis();
             metadataCollection.saveRelationshipReferenceCopy(workPad.getLocalServerUserId(), remoteRelationshipWithMappingProperties);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion15,
                             testTypeName + assertionMsg15,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                            "saveRelationshipReferenceCopy",
+                            elapsedTime);
 
             createdRelationshipRefCopiesTUT.add(remoteRelationshipWithMappingProperties);
 
@@ -1271,7 +1326,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             try {
 
+                start = System.currentTimeMillis();
                 retrievedReferenceCopyWithMappingProperties = metadataCollection.getRelationship(workPad.getLocalServerUserId(), remoteRelationshipGUID);
+                elapsedTime = System.currentTimeMillis() - start;
 
             } catch (Exception exc) {
                 /*
@@ -1292,7 +1349,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             assertion16,
                             assertionMsg16 + relationshipDef.getName(),
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                            "getRelationship",
+                            elapsedTime);
 
 
             //---------------------------------------------
@@ -1319,6 +1378,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
              */
             Relationship newMasterRelationship = null;
             try {
+                start = System.currentTimeMillis();
                 newMasterRelationship = metadataCollection.reHomeRelationship(workPad.getLocalServerUserId(),
                                                                               remoteRelationshipGUID,
                                                                               relationshipDef.getGUID(),
@@ -1326,13 +1386,15 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                                                               ctsMetadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId()),
                                                                               metadataCollectionId,
                                                                               repositoryConformanceWorkPad.getTutRepositoryConnector().getMetadataCollectionName());
-
+                elapsedTime = System.currentTimeMillis() - start;
 
                 assertCondition((true),
                                 assertion17,
                                 testTypeName + assertionMsg17,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId(),
+                                "reHomeRelationship",
+                                elapsedTime);
 
                 createdRelationshipsTUT.add(newMasterRelationship);
 
@@ -1374,7 +1436,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             try {
 
+                start = System.currentTimeMillis();
                 retrievedReferenceCopyWithMappingProperties = metadataCollection.getRelationship(workPad.getLocalServerUserId(), remoteRelationshipGUID);
+                elapsedTime = System.currentTimeMillis() - start;
 
             }
             catch (Exception exc) {
@@ -1396,7 +1460,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             assertion18,
                             assertionMsg18 + relationshipDef.getName(),
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId(),
+                            "getRelationship",
+                            elapsedTime);
 
             /*
              * Verify that the new master instance has the local metadataCollectionId

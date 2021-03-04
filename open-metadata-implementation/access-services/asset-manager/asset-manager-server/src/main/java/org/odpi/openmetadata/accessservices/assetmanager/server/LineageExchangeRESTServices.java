@@ -13,8 +13,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -88,21 +86,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -117,6 +103,7 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new process or
@@ -126,6 +113,7 @@ public class LineageExchangeRESTServices
      */
     public GUIDResponse createProcessFromTemplate(String              serverName,
                                                   String              userId,
+                                                  boolean             assetManagerIsHome,
                                                   String              templateGUID,
                                                   TemplateRequestBody requestBody)
     {
@@ -146,6 +134,7 @@ public class LineageExchangeRESTServices
 
                 response.setGUID(handler.createProcessFromTemplate(userId,
                                                                    requestBody.getMetadataCorrelationProperties(),
+                                                                   assetManagerIsHome,
                                                                    templateGUID,
                                                                    requestBody.getElementProperties(),
                                                                    methodName));
@@ -155,21 +144,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -225,21 +202,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -292,21 +257,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -375,21 +328,9 @@ public class LineageExchangeRESTServices
                                            methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -450,21 +391,9 @@ public class LineageExchangeRESTServices
                                            methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -509,21 +438,9 @@ public class LineageExchangeRESTServices
 
             handler.publishProcess(userId, processGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -567,21 +484,9 @@ public class LineageExchangeRESTServices
 
             handler.withdrawProcess(userId, processGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -623,21 +528,9 @@ public class LineageExchangeRESTServices
 
             handler.removeProcess(userId, requestBody, processGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -696,21 +589,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -766,21 +647,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -839,21 +708,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -910,21 +767,9 @@ public class LineageExchangeRESTServices
                                                              methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -981,21 +826,9 @@ public class LineageExchangeRESTServices
                                                              methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1060,21 +893,9 @@ public class LineageExchangeRESTServices
                                                                 methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1134,21 +955,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1202,21 +1011,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1280,21 +1077,9 @@ public class LineageExchangeRESTServices
                                          portGUID,
                                          methodName);            }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1355,21 +1140,9 @@ public class LineageExchangeRESTServices
                                          methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1435,21 +1208,9 @@ public class LineageExchangeRESTServices
                                             methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1510,21 +1271,9 @@ public class LineageExchangeRESTServices
                                             methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1589,21 +1338,9 @@ public class LineageExchangeRESTServices
                                             methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1664,21 +1401,9 @@ public class LineageExchangeRESTServices
                                             methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1720,21 +1445,9 @@ public class LineageExchangeRESTServices
 
             handler.removePort(userId, requestBody, portGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1793,21 +1506,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1872,21 +1573,9 @@ public class LineageExchangeRESTServices
                                                                    methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1951,21 +1640,9 @@ public class LineageExchangeRESTServices
                                                            methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2023,21 +1700,9 @@ public class LineageExchangeRESTServices
                                                               methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2096,21 +1761,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2168,21 +1821,9 @@ public class LineageExchangeRESTServices
                                                           methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2229,21 +1870,9 @@ public class LineageExchangeRESTServices
 
             handler.setBusinessSignificant(userId, requestBody, elementGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2285,21 +1914,9 @@ public class LineageExchangeRESTServices
 
             handler.clearBusinessSignificant(userId, requestBody, elementGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2361,21 +1978,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2436,21 +2041,9 @@ public class LineageExchangeRESTServices
                                                         methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2506,21 +2099,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2577,21 +2158,9 @@ public class LineageExchangeRESTServices
                                       methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2634,21 +2203,9 @@ public class LineageExchangeRESTServices
 
             response.setElementList(handler.getDataFlowConsumers(userId, dataSupplierGUID, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2691,21 +2248,9 @@ public class LineageExchangeRESTServices
 
             response.setElementList(handler.getDataFlowSuppliers(userId, dataConsumerGUID, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2767,21 +2312,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2842,21 +2375,9 @@ public class LineageExchangeRESTServices
                                                            methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2912,21 +2433,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2983,21 +2492,9 @@ public class LineageExchangeRESTServices
                                          methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3040,21 +2537,9 @@ public class LineageExchangeRESTServices
 
             response.setElementList(handler.getControlFlowNextSteps(userId, currentStepGUID, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3097,21 +2582,9 @@ public class LineageExchangeRESTServices
 
             response.setElementList(handler.getControlFlowPreviousSteps(userId, currentStepGUID, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3173,21 +2646,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3248,21 +2709,9 @@ public class LineageExchangeRESTServices
                                                            methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3318,21 +2767,9 @@ public class LineageExchangeRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3389,21 +2826,9 @@ public class LineageExchangeRESTServices
                                          methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3446,21 +2871,9 @@ public class LineageExchangeRESTServices
 
             response.setElementList(handler.getProcessCalled(userId, callerGUID, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3503,21 +2916,9 @@ public class LineageExchangeRESTServices
 
             response.setElementList(handler.getProcessCallers(userId, calledGUID, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3580,21 +2981,9 @@ public class LineageExchangeRESTServices
                                             methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3655,21 +3044,9 @@ public class LineageExchangeRESTServices
                                             methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3712,21 +3089,9 @@ public class LineageExchangeRESTServices
 
             response.setElementList(handler.getDestinationLineageMappings(userId, sourceElementGUID, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -3769,21 +3134,9 @@ public class LineageExchangeRESTServices
 
             response.setElementList(handler.getSourceLineageMappings(userId, destinationElementGUID, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

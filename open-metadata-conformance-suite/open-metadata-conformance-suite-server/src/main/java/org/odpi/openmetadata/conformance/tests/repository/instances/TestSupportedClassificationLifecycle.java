@@ -93,6 +93,7 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
 
         InstanceProperties instProps = null;
 
+        long elapsedTime;
         try {
 
             /*
@@ -104,17 +105,21 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
 
             instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), testEntityDef);
 
+            long start = System.currentTimeMillis();
             testEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                      testEntityDef.getGUID(),
                                                      instProps,
                                                      null,
                                                      null);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion6,
                             testTypeName + assertionMsg6,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "addEntity",
+                            elapsedTime);
 
             // Record the created instance for later clean up.
             createdEntities.add(testEntity);
@@ -166,10 +171,12 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
         EntityDetail classifiedEntity = null;
         try {
 
+            long start = System.currentTimeMillis();
             classifiedEntity = metadataCollection.classifyEntity(workPad.getLocalServerUserId(),
                                                                               testEntity.getGUID(),
                                                                               classificationDef.getName(),
                                                                               null);
+            elapsedTime = System.currentTimeMillis() - start;
 
         }
         catch (Exception exc) {
@@ -194,7 +201,9 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
                         assertion2,
                         testEntityDef.getName() + assertionMsg2,
                         RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId(),
+                        "classifyEntity",
+                        elapsedTime);
 
         Classification initialClassification = null;
 
@@ -222,10 +231,12 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
 
             try {
 
-                 reclassifiedEntity = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
+                long start = System.currentTimeMillis();
+                reclassifiedEntity = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
                                                                                                 testEntity.getGUID(),
                                                                                                 classificationDef.getName(),
                                                                                                 classificationProperties);
+                elapsedTime = System.currentTimeMillis() - start;
 
             }
             catch (Exception exc) {
@@ -260,7 +271,9 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
                             assertion4,
                             testTypeName + assertionMsg4 + testEntityDef.getName(),
                             RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId(),
+                            "updateEntityClassification",
+                            elapsedTime);
         }
 
 
@@ -268,10 +281,11 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
 
         try {
 
+            long start = System.currentTimeMillis();
             declassifiedEntity = metadataCollection.declassifyEntity(workPad.getLocalServerUserId(),
                                                                                   testEntity.getGUID(),
                                                                                   classificationDef.getName());
-
+            elapsedTime = System.currentTimeMillis() - start;
         }
         catch (Exception exc) {
             /*
@@ -294,7 +308,9 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
                         assertion5,
                         testTypeName + assertionMsg5 + testEntityDef.getName(),
                         RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.CLASSIFICATION_LIFECYCLE.getRequirementId(),
+                        "declassifyEntity",
+                        elapsedTime);
 
         super.setSuccessMessage("Classifications can be managed through their lifecycle");
     }

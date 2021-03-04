@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -46,12 +47,16 @@ public class SubjectAreaConfigRESTServices extends SubjectAreaRESTServicesInstan
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         SubjectAreaOMASAPIResponse<Config> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaConfigHandler handler = instanceHandler.getSubjectAreaConfigHandler(userId, serverName, methodName);
             response = handler.getConfig(userId);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);

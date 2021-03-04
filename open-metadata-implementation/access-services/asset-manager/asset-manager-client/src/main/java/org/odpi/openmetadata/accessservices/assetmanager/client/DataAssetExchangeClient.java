@@ -201,6 +201,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
      * @param assetExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param assetExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
@@ -220,6 +221,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
     public String createAssetFromTemplate(String              userId,
                                           String              assetManagerGUID,
                                           String              assetManagerName,
+                                          boolean             assetManagerIsHome,
                                           String              templateGUID,
                                           String              assetExternalIdentifier,
                                           String              assetExternalIdentifierName,
@@ -253,14 +255,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                    mappingProperties,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/from-template/{2}?assetManagerIsHome={3}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  templateGUID);
+                                                                  templateGUID,
+                                                                  assetManagerIsHome);
 
         return restResult.getGUID();
     }

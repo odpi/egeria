@@ -445,7 +445,7 @@ public class RESTExceptionHandler
                                   Throwable    error,
                                   String       methodName)
     {
-        this.captureThrowable(response, error, methodName, null);
+        this.captureExceptions(response, error, methodName, null);
     }
 
 
@@ -457,10 +457,43 @@ public class RESTExceptionHandler
      * @param methodName calling method
      * @param auditLog log location for recording an unexpected exception
      */
+    @Deprecated
     public  void captureThrowable(FFDCResponse response,
                                   Throwable    error,
                                   String       methodName,
                                   AuditLog     auditLog)
+    {
+        this.captureExceptions(response, error, methodName, auditLog);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response
+     * @param methodName calling method
+     */
+    public  void captureExceptions(FFDCResponse response,
+                                   Throwable    error,
+                                   String       methodName)
+    {
+        this.captureExceptions(response, error, methodName, null);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response
+     * @param methodName calling method
+     * @param auditLog log location for recording an unexpected exception
+     */
+    public  void captureExceptions(FFDCResponse response,
+                                   Throwable    error,
+                                   String       methodName,
+                                   AuditLog     auditLog)
     {
         log.error("Exception from " + methodName + " being packaged for return on REST call", error);
 

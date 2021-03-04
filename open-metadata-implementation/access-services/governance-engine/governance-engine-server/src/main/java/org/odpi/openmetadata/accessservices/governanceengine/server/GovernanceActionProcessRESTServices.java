@@ -140,9 +140,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -303,9 +303,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -350,9 +350,9 @@ public class GovernanceActionProcessRESTServices
 
             handler.publishAsset(userId, processGUID, processGUIDParameterName, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -396,9 +396,9 @@ public class GovernanceActionProcessRESTServices
 
             handler.withdrawAsset(userId, processGUID, processGUIDParameterName, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -449,9 +449,9 @@ public class GovernanceActionProcessRESTServices
                                            null,
                                            methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -512,9 +512,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -575,9 +575,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -620,9 +620,9 @@ public class GovernanceActionProcessRESTServices
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                            methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -686,7 +686,7 @@ public class GovernanceActionProcessRESTServices
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getGovernanceEngineGUID(),
                                                                     requestBody.getRequestType(),
-                                                                    requestBody.getRequestProperties(),
+                                                                    requestBody.getRequestParameters(),
                                                                     methodName));
             }
             else
@@ -694,9 +694,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -764,7 +764,7 @@ public class GovernanceActionProcessRESTServices
                                                    properties.getAdditionalProperties(),
                                                    properties.getGovernanceEngineGUID(),
                                                    properties.getRequestType(),
-                                                   properties.getRequestProperties(),
+                                                   properties.getRequestParameters(),
                                                    methodName);
             }
             else
@@ -772,9 +772,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -817,9 +817,9 @@ public class GovernanceActionProcessRESTServices
 
             handler.removeGovernanceActionType(userId, actionTypeGUID, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -883,9 +883,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -949,9 +949,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -991,9 +991,9 @@ public class GovernanceActionProcessRESTServices
 
             response.setElement(handler.getGovernanceActionTypeByGUID(userId, actionTypeGUID, methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1040,9 +1040,9 @@ public class GovernanceActionProcessRESTServices
 
             handler.setupFirstActionType(userId, processGUID, actionTypeGUID, requestBody, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1082,9 +1082,9 @@ public class GovernanceActionProcessRESTServices
 
             response.setElement(handler.getFirstActionType(userId, processGUID, null, methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1127,9 +1127,9 @@ public class GovernanceActionProcessRESTServices
 
             handler.removeFirstActionType(userId, processGUID, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1187,9 +1187,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1243,9 +1243,9 @@ public class GovernanceActionProcessRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1325,9 +1325,9 @@ public class GovernanceActionProcessRESTServices
             }
 
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1370,9 +1370,9 @@ public class GovernanceActionProcessRESTServices
 
             handler.removeNextActionType(userId, actionLinkGUID, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

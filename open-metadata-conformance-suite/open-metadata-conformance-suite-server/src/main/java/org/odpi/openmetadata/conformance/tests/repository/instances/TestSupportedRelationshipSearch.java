@@ -27,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryTimeoutException;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -374,6 +375,21 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             return;
 
         }
+        catch (RepositoryTimeoutException exc)
+        {
+
+            /*
+             * Such a query may simply timeout, in which case we do not have enough information
+             * to know whether this optional function is supported or not.
+             */
+            super.addDiscoveredProperty("query timeouts",
+                                        true,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+            return;
+
+
+        }
         catch (Exception exc)
         {
             /*
@@ -432,7 +448,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             for (int instanceCount = 0; instanceCount < numInstancesToCreate; instanceCount++)
             {
 
-
                 Relationship newRelationship = createRelationship(relationshipDef,
                                                                   super.generatePropertiesForInstance(workPad.getLocalServerUserId(),
                                                                                                       attrList,
@@ -446,16 +461,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                      * and cleanup).
                      *
                      */
-
-                    /*
-                     * We succeeded in creating instances - record the fact
-                     */
-                    assertCondition((true),
-                                    ASSERTION_3,
-                                    testTypeName + ASSERTION_MSG_3,
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
-
 
                 }
                 else
@@ -701,7 +706,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
         try
         {
 
+            long start = System.currentTimeMillis();
             retRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(), relationshipDef.getGUID(), instanceProps, end1.getGUID(), end2.getGUID(), null);
+            long elapsedTime = System.currentTimeMillis() - start;
+
+            /*
+             * We succeeded in creating instances - record the fact
+             */
+            assertCondition((retRelationship != null),
+                    ASSERTION_3,
+                    testTypeName + ASSERTION_MSG_3,
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                    "addRelationship",
+                    elapsedTime);
 
             // Record the relationship instance for future result prediction and verification.
             knownInstances.add(retRelationship);
@@ -1084,9 +1102,12 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             Map<String, String> parameters = getParameters(relationshipDef.getGUID(), matchProperties, matchCriteria);
 
+            long start;
+            long elapsedTime;
             try
             {
 
+                start = System.currentTimeMillis();
                 result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
                                                                         relationshipDef.getGUID(),
                                                                         matchProperties,
@@ -1097,6 +1118,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                         null,
                                                                         null,
                                                                         pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exception)
             {
@@ -1110,6 +1132,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                ASSERTION_MSG_101FRBP,
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc)
+            {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                 return;
 
             }
@@ -1207,7 +1243,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                             ASSERTION_4,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId(),
+                            "findRelationshipsByProperty",
+                            elapsedTime);
 
 
             /*
@@ -1409,8 +1447,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             Map<String, String> parameters = getParameters(relationshipDef.getGUID(), matchProperties, matchCriteria);
 
+            long start;
+            long elapsedTime;
             try
             {
+                start = System.currentTimeMillis();
                 result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
                                                                         relationshipDef.getGUID(),
                                                                         matchProperties,
@@ -1421,6 +1462,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                         null,
                                                                         null,
                                                                         pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
 
             }
             catch (FunctionNotSupportedException exception)
@@ -1435,6 +1477,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                ASSERTION_MSG_101FRBP,
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc)
+            {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                 return;
 
             }
@@ -1489,8 +1545,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                             ASSERTION_6,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
-
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId(),
+                            "findRelationshipsByProperty",
+                            elapsedTime);
 
 
             /*
@@ -1773,8 +1830,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             Map<String, String> parameters = getParameters(relationshipDef.getGUID(), literalisedValue);
 
+            long start;
+            long elapsedTime;
             try
             {
+                start = System.currentTimeMillis();
                 result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
                                                                              relationshipDef.getGUID(),
                                                                              literalisedValue,
@@ -1784,6 +1844,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                              null,
                                                                              null,
                                                                              pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exception)
             {
@@ -1797,6 +1858,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                ASSERTION_MSG_101FRBPV,
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc)
+            {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
                 return;
 
             }
@@ -1839,7 +1914,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                             ASSERTION_8,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_VALUE_SEARCH.getRequirementId(),
+                            "findRelationshipsByPropertyValue",
+                            elapsedTime);
 
 
             /*
@@ -2206,8 +2283,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
              */
             List<Relationship> result = null;
 
+            long start;
+            long elapsedTime;
             try
             {
+                start = System.currentTimeMillis();
                 result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
                                                                         null,
                                                                         matchProperties,
@@ -2218,7 +2298,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                         null,
                                                                         null,
                                                                         pageSize);
-
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exception)
             {
@@ -2232,6 +2312,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                ASSERTION_MSG_101FRBP,
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc)
+            {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
                 return;
 
             }
@@ -2297,6 +2391,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
                 try
                 {
+                    start = System.currentTimeMillis();
                     result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
                                                                             relationshipDef.getGUID(),
                                                                             matchProperties,
@@ -2307,6 +2402,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                             null,
                                                                             null,
                                                                             pageSize);
+                    elapsedTime = System.currentTimeMillis() - start;
                 }
                 catch (FunctionNotSupportedException exception)
                 {
@@ -2322,6 +2418,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                    RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
                     return;
+                }
+                catch (RepositoryTimeoutException exc)
+                {
+
+                    /*
+                     * Such a query may simply timeout, in which case we do not have enough information
+                     * to know whether this optional function is supported or not.
+                     */
+                    super.addDiscoveredProperty("query timeouts",
+                                                true,
+                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                    return;
+
                 }
                 catch (Exception exc)
                 {
@@ -2361,8 +2471,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                 ASSERTION_10,
                                 assertionMessage,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
-
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId(),
+                                "findRelationshipsByProperty",
+                                elapsedTime);
 
                 /*
                  * If there were any result, check that all expected relationships were returned and (in the pageLimited case) that any
@@ -2614,8 +2725,11 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             Map<String, String> parameters = getParameters(relationshipDef.getGUID(), regexValue);
 
+            long start;
+            long elapsedTime;
             try
             {
+                start = System.currentTimeMillis();
                 result = metadataCollection.findRelationshipsByPropertyValue(workPad.getLocalServerUserId(),
                                                                              relationshipDef.getGUID(),
                                                                              regexValue,
@@ -2625,6 +2739,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                              null,
                                                                              null,
                                                                              pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (FunctionNotSupportedException exc)
             {
@@ -2645,6 +2760,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
 
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc)
+            {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
                 return;
 
             }
@@ -2686,7 +2815,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                             ASSERTION_12,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_VALUE_SEARCH.getRequirementId(),
+                            "findRelationshipsByPropertyValue",
+                            elapsedTime);
 
 
             /*
@@ -2823,6 +2954,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
             try
             {
 
+                start = System.currentTimeMillis();
                 result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
                                                                         relationshipDef.getGUID(),
                                                                         matchProperties,
@@ -2833,6 +2965,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                         null,
                                                                         null,
                                                                         pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
 
             }
             catch (FunctionNotSupportedException exc)
@@ -2854,6 +2987,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc)
+            {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
                 return;
 
             }
@@ -2894,7 +3041,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                             ASSERTION_14,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_ADVANCED_PROPERTY_SEARCH.getRequirementId(),
+                            "findRelationshipsByProperty",
+                            elapsedTime);
 
 
             /*
@@ -3252,9 +3401,12 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
             Map<String, String> parameters = getParameters(relationshipDef.getGUID(), searchProperties1.toString());
 
+            long start;
+            long elapsedTime;
             try
             {
 
+                start = System.currentTimeMillis();
                 result = metadataCollection.findRelationships(workPad.getLocalServerUserId(),
                                                               relationshipDef.getGUID(),
                                                               null,  // no subtype GUID filtering
@@ -3265,6 +3417,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                               null,
                                                               null,
                                                               pageSize);
+                elapsedTime = System.currentTimeMillis() - start;
 
             }
             catch (FunctionNotSupportedException exc)
@@ -3280,6 +3433,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
                                                RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId());
 
+                return;
+
+            }
+            catch (RepositoryTimeoutException exc)
+            {
+
+                /*
+                 * Such a query may simply timeout, in which case we do not have enough information
+                 * to know whether this optional function is supported or not.
+                 */
+                super.addDiscoveredProperty("query timeouts",
+                                            true,
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId());
                 return;
 
             }
@@ -3377,7 +3544,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                             ASSERTION_103,
                             assertionMessage,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId(),
+                            "findRelationships",
+                            elapsedTime);
 
 
             /*
@@ -3498,9 +3667,12 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
         Map<String, String> parameters = getParameters(relationshipDef.getGUID(), null, null);
 
+        long start;
+        long elapsedTime;
         try
         {
 
+            start = System.currentTimeMillis();
             result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
                                                                     relationshipDef.getGUID(),
                                                                     null,
@@ -3511,6 +3683,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                                     null,
                                                                     null,
                                                                     pageSize);
+            elapsedTime = System.currentTimeMillis() - start;
 
         }
         catch (FunctionNotSupportedException exception)
@@ -3527,6 +3700,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
 
             return;
+        }
+        catch (RepositoryTimeoutException exc)
+        {
+
+            /*
+             * Such a query may simply timeout, in which case we do not have enough information
+             * to know whether this optional function is supported or not.
+             */
+            super.addDiscoveredProperty("query timeouts",
+                                        true,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+            return;
+
         }
         catch (Exception exc)
         {
@@ -3622,7 +3809,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                         ASSERTION_105,
                         assertionMessage,
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
-                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId(),
+                        "findRelationshipsByProperty",
+                        elapsedTime);
 
 
         /*
@@ -3712,9 +3901,12 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
         Map<String, String> parameters = getParameters(relationshipDef.getGUID(), null, null);
 
+        long start;
+        long elapsedTime;
         try
         {
 
+            start = System.currentTimeMillis();
             result = metadataCollection.findRelationships(workPad.getLocalServerUserId(),
                                                           relationshipDef.getGUID(),
                                                           null,  // no subtype GUID filtering
@@ -3725,7 +3917,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                                           null,
                                                           null,
                                                           pageSize);
-
+            elapsedTime = System.currentTimeMillis() - start;
 
         }
         catch (FunctionNotSupportedException exception)
@@ -3741,6 +3933,20 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
                                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId());
 
+            return;
+
+        }
+        catch (RepositoryTimeoutException exc)
+        {
+
+            /*
+             * Such a query may simply timeout, in which case we do not have enough information
+             * to know whether this optional function is supported or not.
+             */
+            super.addDiscoveredProperty("query timeouts",
+                                        true,
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId());
             return;
 
         }
@@ -3838,7 +4044,9 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                         ASSERTION_107,
                         assertionMessage,
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
-                        RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId());
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId(),
+                        "findRelationships",
+                        elapsedTime);
 
 
         /*

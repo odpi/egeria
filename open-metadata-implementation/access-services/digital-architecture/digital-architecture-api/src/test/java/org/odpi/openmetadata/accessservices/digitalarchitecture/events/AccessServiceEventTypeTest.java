@@ -76,7 +76,7 @@ public class AccessServiceEventTypeTest
         {
             jsonString = objectMapper.writeValueAsString(DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -85,7 +85,7 @@ public class AccessServiceEventTypeTest
         {
             assertTrue(objectMapper.readValue(jsonString, DigitalArchitectureEventType.class) == DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

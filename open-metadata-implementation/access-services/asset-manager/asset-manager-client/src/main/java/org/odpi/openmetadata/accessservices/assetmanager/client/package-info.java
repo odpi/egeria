@@ -22,10 +22,11 @@
  *
  *     <li>InfrastructureExchangeClient enables the caller to describe servers and related infrastructure.</li>
  *
+ *     <li>LineageExchangeClient support for creating lineage from processing engines.</li>
+ *
  *     <li>StewardshipExchangeClient enables the caller to describe classifications and issues found in assets.</li>
  *
- *     <li>Valid ValuesExchangeClient enables the caller to describe reference data.</li>
- *
+ *     <li>ValidValuesExchangeClient enables the caller to describe reference data.</li>
  * </ul>
  */
 package org.odpi.openmetadata.accessservices.assetmanager.client;

@@ -44,7 +44,7 @@ public class SecurityOfficerOutTopicServerConnector extends OpenMetadataTopicSen
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             throw new ConnectorCheckedException(SecurityOfficerErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
                                                                                                                    event.toString(),

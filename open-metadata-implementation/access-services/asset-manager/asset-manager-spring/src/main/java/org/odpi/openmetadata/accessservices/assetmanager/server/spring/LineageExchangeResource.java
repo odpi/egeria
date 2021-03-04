@@ -86,9 +86,10 @@ public class LineageExchangeResource
     public GUIDResponse createProcessFromTemplate(@PathVariable String              serverName,
                                                   @PathVariable String              userId,
                                                   @PathVariable String              templateGUID,
+                                                  @RequestParam boolean             assetManagerIsHome,
                                                   @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createProcessFromTemplate(serverName, userId, templateGUID, requestBody);
+        return restAPI.createProcessFromTemplate(serverName, userId, assetManagerIsHome, templateGUID, requestBody);
     }
 
 

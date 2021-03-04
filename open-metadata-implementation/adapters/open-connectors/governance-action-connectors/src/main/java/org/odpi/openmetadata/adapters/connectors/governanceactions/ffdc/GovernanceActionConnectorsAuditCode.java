@@ -46,7 +46,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
 
     PROVISIONING_EXCEPTION("GOVERNANCE-ACTION-CONNECTORS-0004",
                           OMRSAuditLogRecordSeverity.EXCEPTION,
-                          "The {0} governance action service encountered an {1} exception when provisioning file {2} to {3} destination folder using {4} file pattern.  The exception message included was {5}",
+                          "The {0} governance action service encountered an {1} exception when provisioning file {2} to {3} destination folder using the {4} file pattern.  The exception message included was {5}",
                           "The exception is logged.  More messages may follow if follow on attempts are made to provision the file.  These can help to determine how to recover from this error.",
                           "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  " +
