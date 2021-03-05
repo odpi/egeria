@@ -568,7 +568,11 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        governanceEngineClient.updateActionTargetStatus(engineUserId, actionTargetGUID, status, startDate, completionDate);
+        /*
+         * Notice the call goes to the local handler to issue the request from the Engine Host's userId and to direct
+         * the metadata update to the governance metadata server.
+         */
+        governanceServiceHandler.updateActionTargetStatus(actionTargetGUID, status, startDate, completionDate);
     }
 
 
@@ -592,6 +596,10 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
+        /*
+         * Notice the call goes to the local handler to issue the request from the Engine Host's userId and to direct
+         * the metadata update to the governance metadata server.
+         */
         governanceServiceHandler.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargetGUIDs);
     }
 

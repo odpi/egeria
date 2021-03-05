@@ -24,8 +24,9 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest Egeria release:
 
-Note that as of 2.6 the dates in the release notes now apply to when the code is released publically, rather than the month the code was developed
-
+* [Release 2.7](release-notes-2-7.md) - March 2020
+  * Bug Fixes
+  * Dependency updates
 ## Older Releases
 
 * [Release 2.6](release-notes-2-6.md) - February 2020

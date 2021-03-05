@@ -86,7 +86,7 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   AssetOwnerAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

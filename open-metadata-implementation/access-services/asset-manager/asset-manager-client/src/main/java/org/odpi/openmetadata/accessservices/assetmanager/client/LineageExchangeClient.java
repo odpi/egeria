@@ -202,6 +202,8 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
      * @param processExternalIdentifier unique identifier of the process in the external process manager
      * @param processExternalIdentifierName name of property for the external identifier in the external process manager
@@ -222,6 +224,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
     public String createProcessFromTemplate(String              userId,
                                             String              assetManagerGUID,
                                             String              assetManagerName,
+                                            boolean             assetManagerIsHome,
                                             String              templateGUID,
                                             String              processExternalIdentifier,
                                             String              processExternalIdentifierName,
@@ -255,14 +258,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                    mappingProperties,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/from-template/{2}assetManagerIsHome={3}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  templateGUID);
+                                                                  templateGUID,
+                                                                  assetManagerIsHome);
 
         return restResult.getGUID();
     }

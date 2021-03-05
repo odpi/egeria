@@ -183,6 +183,8 @@ public class AssetContextHandler {
     private RelationshipsContext buildDataFileContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         Set<GraphContext> context = new HashSet<>();
 
+        addConnectionToAssetContext(userId, entityDetail, context);
+
         EntityDetail fileFolder = handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_FILE, context);
 
         addContextForFileFolder(userId, fileFolder, context);

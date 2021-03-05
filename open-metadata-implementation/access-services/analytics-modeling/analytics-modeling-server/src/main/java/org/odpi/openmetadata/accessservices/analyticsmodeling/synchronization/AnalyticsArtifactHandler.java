@@ -19,6 +19,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.co
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.AssetConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.SchemaTypeConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AssetReference;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
@@ -38,7 +39,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AnalyticsArtifactHandler {
 
-	public static final String ID_LIST_DELIMITER = "\t";
 	private AssetHandler<Asset> assetHandler;
 	private SchemaTypeHandler<SchemaType> schemaTypeHandler;
 	private SchemaAttributeHandler<SchemaAttribute, SchemaType> metadataHandler;
@@ -348,10 +348,10 @@ public class AnalyticsArtifactHandler {
 						parentGUID, "parentGUID", IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
 						IdMap.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, IdMap.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
 		                qualifiedName, "qualifiedName",
-		                createContainerBuilder(container, anchorGUID), methodName)
+		                createAnalyticsMetadataBuilder(container, anchorGUID), methodName)
 				: metadataHandler.createBeanInRepository(ctx.getUserId(), null, null,
 						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, null, null,
-						createContainerBuilder(container, anchorGUID), methodName);
+						createAnalyticsMetadataBuilder(container, anchorGUID), methodName);
 		
 		if (!bNested) {
 			// global calculation connects to the schema
@@ -414,10 +414,10 @@ public class AnalyticsArtifactHandler {
 						parentGUID, "parentGUID", IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
 						IdMap.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, IdMap.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
 		                qualifiedName, "qualifiedName",
-		                createItemBuilder(item, anchorGUID), methodName)
+		                createAnalyticsMetadataBuilder(item, anchorGUID), methodName)
 				: metadataHandler.createBeanInRepository(ctx.getUserId(), null, null,
 						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, null, null,
-						createItemBuilder(item, anchorGUID), methodName);
+						createAnalyticsMetadataBuilder(item, anchorGUID), methodName);
 
 		if (!bNested) {
 			// top level items connects to the schema
@@ -466,29 +466,15 @@ public class AnalyticsArtifactHandler {
 		});
 	}
 
-	private AnalyticsMetadataBuilder createItemBuilder(MetadataItem src, String assetGUID) throws InvalidParameterException 
+
+
+	private AnalyticsMetadataBuilder createAnalyticsMetadataBuilder(AnalyticsMetadata src, String assetGUID) throws InvalidParameterException 
 	{
-		String methodName = "createItemBuilder";
-		Map<String, String>  additionalProperties = new HashMap<>();
-        Map<String, Object>  extendedProperties = null;
-	
-        if (src.getSourceId() != null) {
-            additionalProperties.put(IdMap.SOURCE_ID, String.join(ID_LIST_DELIMITER, src.getSourceId()));
-        }
+		String methodName = "createAnalyticsMetadataBuilder";
 
-        additionalProperties.put(Constants.TYPE, src.getType());
+		src.prepareAnalyticsMetadataProperties();
 
-        AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(
-        		src,
-				src.getQualifiedName(),
-                src.getDisplayName(),
-                src.getDescription(),
-                src.getElementPosition(),
-                additionalProperties,
-                extendedProperties,
-                ctx.getRepositoryHelper(),
-                ctx.getServiceName(),
-                ctx.getServerName());
+        AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(src, null, ctx);
 		
         if (assetGUID != null) {
     		builder.setAnchors(ctx.getUserId(), assetGUID, methodName);
@@ -501,44 +487,5 @@ public class AnalyticsArtifactHandler {
 		builder.setSchemaType(ctx.getUserId(), schemaTypeBuilder, methodName);
 		
 		return builder;	
-	}
-
-	AnalyticsMetadataBuilder createContainerBuilder(MetadataContainer src, String assetGUID) throws InvalidParameterException {
-
-		String methodName = "createContainerBuilder";
-		
-		Map<String, String>  additionalProperties = new HashMap<>();
-        Map<String, Object>  extendedProperties = null;
-
-        if (src.getSourceId() != null) {
-            additionalProperties.put(IdMap.SOURCE_ID, String.join(ID_LIST_DELIMITER, src.getSourceId()));
-        }
-
-        additionalProperties.put(Constants.TYPE, src.getType());
-        
-        AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(
-				src,
-				src.getQualifiedName(),
-                src.getDisplayName(),
-                src.getDescription(),
-                src.getElementPosition(),
-                additionalProperties,
-                extendedProperties,
-                ctx.getRepositoryHelper(),
-                ctx.getServiceName(),
-                ctx.getServerName());
-		
-        if (assetGUID != null) {
-        	builder.setAnchors(ctx.getUserId(), assetGUID, methodName);
-        }
-
-        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(src.getQualifiedName(),
-        		IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                ctx.getRepositoryHelper(), ctx.getServiceName(), ctx.getServerName());
-		
-		builder.setSchemaType(ctx.getUserId(), schemaTypeBuilder, methodName);
-		
-
-		return builder;
 	}
 }

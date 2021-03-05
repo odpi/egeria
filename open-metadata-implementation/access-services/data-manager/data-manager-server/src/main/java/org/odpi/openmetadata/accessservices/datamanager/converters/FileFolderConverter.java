@@ -73,6 +73,9 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
                     fileFolderProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     fileFolderProperties.setDisplayName(this.removeName(instanceProperties));
                     fileFolderProperties.setDescription(this.removeDescription(instanceProperties));
+                    fileFolderProperties.setPathName(this.removePathName(instanceProperties));
+                    fileFolderProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
+                    fileFolderProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
 
                     /* Note this value should be in the classification */
                     fileFolderProperties.setOwner(this.removeOwner(instanceProperties));

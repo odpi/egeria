@@ -40,7 +40,8 @@ public abstract class ConnectorBase extends Connector
     protected ConnectionProperties     connectionProperties     = null;
     protected Connection               connectionBean           = null;
     protected ConnectedAssetProperties connectedAssetProperties = null;
-    protected boolean                  isActive                 = false;
+
+    private volatile boolean           isActive                 = false;
 
     /*
      * Secured properties are protected properties from the connection.  They are retrieved as a protected
@@ -164,7 +165,7 @@ public abstract class ConnectorBase extends Connector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public synchronized void start() throws ConnectorCheckedException
     {
         isActive = true;
     }
@@ -176,10 +177,12 @@ public abstract class ConnectorBase extends Connector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  void disconnect() throws ConnectorCheckedException
+    public  synchronized void disconnect() throws ConnectorCheckedException
     {
         isActive = false;
     }
+
+
 
 
     /**
@@ -188,7 +191,7 @@ public abstract class ConnectorBase extends Connector
      *
      * @return isActive flag
      */
-    public boolean isActive()
+    public synchronized boolean isActive()
     {
         return isActive;
     }

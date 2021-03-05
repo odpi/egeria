@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 
@@ -53,9 +54,11 @@ public class DigitalServiceRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             if (digitalServiceRequestBody == null)
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
@@ -66,9 +69,9 @@ public class DigitalServiceRESTServices
             DigitalService              digitalService = digitalServiceRequestBody.getDigitalService();
             response.setGUID(handler.createDigitalServiceEntity(userId, serverName, digitalService));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
