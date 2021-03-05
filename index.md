@@ -18,7 +18,7 @@ but manage it in a siloed, proprietary way that assumes
 they are the only technology employed by the organization.
 The result is that knowledge is not shared between people that use different tool sets.
 
-ODPi Egeria is an open source project dedicated to making metadata open and automatically exchanged between tools
+Egeria is an open source project dedicated to making metadata open and automatically exchanged between tools
 and platforms, no matter which vendor they come from.
 
 We believe in the **open metadata and governance manifesto**:
