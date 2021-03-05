@@ -3395,7 +3395,7 @@
                         <exclude>config</exclude>
                         <exclude>**/LICENSE*.txt</exclude>
                         <exclude>data/**</exclude>
-                        <exclude>open-metadata-resources/open-metadata-deployment/certificates/**</exclude>
+                        <exclude>**/certificates/**</exclude>
                         <exclude>**/*.p12</exclude>
                     </excludes>
                     <licenseFamilies>
