@@ -5,13 +5,9 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.springframework.web.bind.annotation.*;
 
 /**
