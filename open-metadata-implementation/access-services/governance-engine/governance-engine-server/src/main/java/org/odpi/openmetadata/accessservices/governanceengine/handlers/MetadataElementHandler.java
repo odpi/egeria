@@ -128,6 +128,102 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId caller's userId
+     * @param uniqueName unique name for the metadata element
+     * @param uniqueNameParameterName name of the parameter that passed the unique name (optional)
+     * @param uniqueNamePropertyName name of the property from the open types to use in the look up
+     * @param methodName calling method
+     *
+     * @return metadata element properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public B getMetadataElementByUniqueName(String userId,
+                                            String uniqueName,
+                                            String uniqueNameParameterName,
+                                            String uniqueNamePropertyName,
+                                            String methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        final String nameParameterName = "uniqueName";
+        final String namePropertyName  = "uniqueNamePropertyName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
+        invalidParameterHandler.validateName(uniqueNamePropertyName, namePropertyName, methodName);
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        if (uniqueNameParameterName != null)
+        {
+            invalidParameterHandler.validateName(uniqueName, uniqueNameParameterName, methodName);
+        }
+        else
+        {
+            invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
+        }
+
+        return this.getBeanByUniqueName(userId,
+                                        uniqueName,
+                                        uniqueNameParameterName,
+                                        uniqueNamePropertyName,
+                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
+                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId caller's userId
+     * @param uniqueName unique name for the metadata element
+     * @param uniqueNameParameterName name of the parameter that passed the unique name (optional)
+     * @param uniqueNamePropertyName name of the property from the open types to use in the look up
+     * @param methodName calling method
+     *
+     * @return metadata element unique identifier (guid)
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public String getMetadataElementGUIDByUniqueName(String userId,
+                                                     String uniqueName,
+                                                     String uniqueNameParameterName,
+                                                     String uniqueNamePropertyName,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String nameParameterName = "uniqueName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        if (uniqueNameParameterName != null)
+        {
+            invalidParameterHandler.validateName(uniqueName, uniqueNameParameterName, methodName);
+        }
+        else
+        {
+            invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
+        }
+
+        return this.getBeanGUIDByUniqueName(userId,
+                                            uniqueName,
+                                            uniqueNameParameterName,
+                                            uniqueNamePropertyName,
+                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
+                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                            methodName);
+    }
+
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param userId caller's userId
@@ -170,6 +266,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param elementGUID unique identifier for the starting metadata element
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -183,6 +280,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     public List<RelatedMetadataElement> getRelatedMetadataElements(String userId,
                                                                    String elementGUID,
+                                                                   int    startingAtEnd,
                                                                    String relationshipTypeName,
                                                                    int    startFrom,
                                                                    int    pageSize,
@@ -215,7 +313,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                                     relationshipTypeGUID,
                                                                     relationshipTypeName,
+                                                                    null,
                                                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                    startingAtEnd,
                                                                     startFrom,
                                                                     pageSize,
                                                                     methodName);
