@@ -774,6 +774,23 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Validate that the time parameters are not inverted ('from' later than 'to').
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param parameterName name of the parameter that passed the guid.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the instance (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the instance (exclusive)
+     * @param methodName method receiving the call
+     * @throws InvalidParameterException 'fromTime' is later than 'toTime'
+     */
+    void validateDateRange(String sourceName,
+                           String parameterName,
+                           Date   fromTime,
+                           Date   toTime,
+                           String methodName) throws InvalidParameterException;
+
+
+    /**
      * Validate that a page size parameter is not negative.
      *
      * @param sourceName  source of the request (used for logging)

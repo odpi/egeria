@@ -379,6 +379,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
                          "The system is unable to proceed with processing this classification update request because it does not know which repository to call.",
                          "This error suggests there is a logic error in either this repository, or the home repository for the classification. " +
                                  "Note this may be different from the home repository for the entity.  Raise a Github issue in order to get this fixed."),
+    INVALID_TIME_RANGE(400, "OMRS-REPOSITORY-400-083",
+            "The OMRS repository connector operation {0} does not allow a time range from {1} to {2}",
+            "The system is unable continue processing the request because the time range provided does not overlap.",
+            "Correct the code in the caller's method (potentially just reverse the times) and retry the request."),
 
     NULL_USER_NAME(400, "OMRS-REST-API-400-001",
             "The OMRS REST API for server {0} has been called with a null user name (userId)",
