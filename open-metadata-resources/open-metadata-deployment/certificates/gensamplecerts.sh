@@ -34,6 +34,7 @@ TRUSTSTORE=EgeriaCA.p12
 KEYPASS=egeria
 STOREPASS=egeria
 
+# The tools will be creating a few directories for handling the CAs to useful to keep these here
 export iCA=EgeriaIntermediateCA
 export rootCA=EgeriaRootCA
 
@@ -42,13 +43,13 @@ CA_CHAIN=EgeriaCAChain
 # Used in openssl.cnf for the subjectAltName where needed - export to environment
 export SAN="DNS:localhost"
 
-# Cleanup directories
+# Cleanup directories from old runs (this will DELETE all your certs!!)
 rm -f *.pem
 rm -f *.p12
 rm -fr ${rootCA}
 rm -fr ${iCA}
 
-# A few empty dirs needed
+# A few empty dirs needed by the signing process
 for d in ./${rootCA} ./${iCA}
 do
   for e in certs crl csr newcerts private
@@ -66,6 +67,8 @@ echo 1000 > ./${iCA}/crlnumber
 #
 # Generates a root Certificate Authority for all the certs we create here in Egeria
 # ---
+# CA/CA_POLICY are variables used in the openssl.cnf file -- we need to use two different contexts -
+# for both the root cert authority, and then the intermediate cert authority
 export CA=${rootCA}
 export CA_POLICY=policy_strict
 printf "\n\n---- Generating root CA ($rootCA)  ----\n\n"
@@ -96,11 +99,19 @@ openssl ca -config ./openssl.cnf -batch -passin pass:${KEYPASS} \
         -in ${iCA}/csr/${iCA}.csr.pem -out ${iCA}/certs/${iCA}.cert.pem
 
 
-# Create certificate chain files
-printf "\n\n---- Create CA chain files ----\n\n"
-cat ${rootCA}/certs/${rootCA}.cert.pem ${iCA}/certs/${iCA}.cert.pem > ${CA_CHAIN}.cert.pem
-keytool -importcert -trustcacerts -alias EgeriaCA -file ${CA_CHAIN}.cert.pem -keypass ${KEYPASS} \
-        -storepass ${STOREPASS} -noprompt -destkeystore ${CA_CHAIN}.p12
+# Create truststore - just the rootCA. Intermediate is included for keystores
+# Deploy this anywhere that needs to 'trust' the certs we create later. It should be sufficient
+printf "\n\n---- Create truststore (rootCA) ----\n\n"
+
+# -- will use keytool instead, can't seem to get a cert exported via openssl ...
+#openssl pkcs12 -export -in ${rootCA}/certs/${rootCA}.cert.pem -out ${rootCA}.p12 \
+#          -passin pass:${KEYPASS} -passout pass:${KEYPASS} -nokeys -cacerts
+keytool -importcert -noprompt -keystore ${rootCA}.p12 -storepass ${STOREPASS} -alias ${rootCA} \
+        -file ${rootCA}/certs/${rootCA}.cert.pem
+
+# Now we use the intermediate CA from now on for signing
+export CA=${iCA}
+export CA_POLICY=policy_loose
 
 # ---
 # Server Certs
@@ -115,8 +126,11 @@ do
           -config ./openssl.cnf 
   openssl ca -in ${FNAME}.csr.pem -out ${FNAME}.cert.pem -extensions server_cert -notext -days 375 \
           -config ./openssl.cnf -batch -passin pass:${KEYPASS}
-  keytool -importcert -alias ${FNAME} -file ${FNAME}.cert.pem -keypass ${KEYPASS} -storepass ${STOREPASS} \
-          -noprompt -destkeystore ${FNAME}.p12
+  # We include the full chain in the .p12 archive
+  cat ${rootCA}/certs/${rootCA}.cert.pem ${iCA}/certs/${iCA}.cert.pem  > tmp.pem
+  openssl pkcs12 -export -chain -in ${FNAME}.cert.pem -CAfile tmp.pem -inkey ${FNAME}.key.pem -name $FNAME -out ${FNAME}.p12 \
+          -passin pass:${KEYPASS} -passout pass:${KEYPASS}  
+  
 done
 
 # ---
@@ -132,8 +146,9 @@ do
           -config ./openssl.cnf 
   openssl ca -in ${FNAME}.csr.pem -out ${FNAME}.cert.pem -extensions client_cert -notext -days 375 \
           -config ./openssl.cnf -batch -passin pass:${KEYPASS}
-  keytool -importcert -alias ${FNAME} -file ${FNAME}.cert.pem -keypass ${KEYPASS} -storepass ${STOREPASS} \
-          -noprompt -destkeystore ${FNAME}.p12
+  cat ${rootCA}/certs/${rootCA}.cert.pem ${iCA}/certs/${iCA}.cert.pem  > tmp.pem
+  openssl pkcs12 -export -in ${FNAME}.cert.pem -CAfile tmp.pem -inkey ${FNAME}.key.pem -name $FNAME -out ${FNAME}.p12 \
+          -passin pass:${KEYPASS} -passout pass:${KEYPASS}  
 done
 
 # ---
@@ -145,12 +160,12 @@ done
 # ---
 echo "\n\n---- Deploying certs to current build"
 BASE=../../..
-cp EgeriaCAChain.p12 ${BASE}/truststore.p12
-cp EgeriaClient.p12 ${BASE}/keystore.12
+cp ${rootCA}.p12 ${BASE}/truststore.p12
+cp EgeriaClient.p12 ${BASE}/EgeriaClient.p12
 cp EgeriaUIChassis.p12 ${BASE}/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/keystore.p12
-cp EgeriaCAChain.p12 ${BASE}/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/truststore.p12
+cp ${rootCA}.p12 ${BASE}/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/truststore.p12
 cp EgeriaServerChassis.p12 ${BASE}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12
-cp EgeriaCAChain.p12 ${BASE}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12
+cp ${rootCA}.p12 ${BASE}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/truststore.p12
 
 
 # ---
