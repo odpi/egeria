@@ -148,7 +148,7 @@ public class CommunityOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -157,7 +157,7 @@ public class CommunityOutboundEventTest
         {
             validateResultObject(objectMapper.readValue(jsonString, CommunityOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -171,7 +171,7 @@ public class CommunityOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -180,7 +180,7 @@ public class CommunityOutboundEventTest
         {
             validateResultObject((CommunityOutboundEvent) objectMapper.readValue(jsonString, CommunityProfileOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -194,7 +194,7 @@ public class CommunityOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -203,7 +203,7 @@ public class CommunityOutboundEventTest
         {
             validateResultObject((CommunityOutboundEvent) objectMapper.readValue(jsonString, CommunityProfileEventHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

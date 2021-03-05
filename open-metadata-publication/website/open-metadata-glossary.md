@@ -61,7 +61,7 @@
 * [Event Bus](../../open-metadata-implementation/admin-services/docs/concepts/event-bus.md)
 * [Event Management Services Subsystem (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/event-management-services.md)
 * [Events (OMRS)](../../open-metadata-implementation/repository-services/docs/event-descriptions)
-
+* [External Identifiers](external-identifiers)
 
 ## F
 

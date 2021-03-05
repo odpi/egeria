@@ -72,8 +72,8 @@ public class NoProfileForUserException extends CommunityProfileCheckedExceptionB
     public NoProfileForUserException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError,
-                                     String userId)
+                                     Exception                  caughtError,
+                                     String                     userId)
     {
         super(messageDefinition, className, actionDescription, caughtError);
         this.userId = userId;
@@ -94,7 +94,7 @@ public class NoProfileForUserException extends CommunityProfileCheckedExceptionB
     public NoProfileForUserException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError,
+                                     Exception                  caughtError,
                                      String userId,
                                      Map<String, Object>        relatedProperties)
     {
@@ -193,7 +193,7 @@ public class NoProfileForUserException extends CommunityProfileCheckedExceptionB
                                      String    errorMessage,
                                      String    systemAction,
                                      String    userAction,
-                                     Throwable caughtError,
+                                     Exception caughtError,
                                      String    userId)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);

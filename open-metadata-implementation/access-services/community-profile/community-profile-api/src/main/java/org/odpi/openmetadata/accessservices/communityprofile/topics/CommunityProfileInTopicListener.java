@@ -88,7 +88,7 @@ public class CommunityProfileInTopicListener
             {
                 CommunityProfileInboundEvent event = objectMapper.readValue(eventPayload, CommunityProfileInboundEvent.class);
             }
-            catch (Throwable  exc)
+            catch (Exception  exc)
             {
 
             }

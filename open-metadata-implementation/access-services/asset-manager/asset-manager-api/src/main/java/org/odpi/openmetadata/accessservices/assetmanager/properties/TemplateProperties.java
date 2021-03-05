@@ -24,9 +24,10 @@ public class TemplateProperties implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private String qualifiedName = null;
-    private String displayName   = null;
-    private String description   = null;
+    private String qualifiedName  = null;
+    private String displayName    = null;
+    private String description    = null;
+    private String networkAddress = null;
 
     /**
      * Default constructor
@@ -46,9 +47,10 @@ public class TemplateProperties implements Serializable
     {
         if (template != null)
         {
-            qualifiedName = template.getQualifiedName();
-            displayName   = template.getDisplayName();
-            description   = template.getDescription();
+            qualifiedName  = template.getQualifiedName();
+            displayName    = template.getDisplayName();
+            description    = template.getDescription();
+            networkAddress = template.getNetworkAddress();
         }
     }
 
@@ -123,6 +125,28 @@ public class TemplateProperties implements Serializable
 
 
     /**
+     * Return the physical network address of this metadata element (if this makes sense).
+     *
+     * @return string name
+     */
+    public String getNetworkAddress()
+    {
+        return networkAddress;
+    }
+
+
+    /**
+     * Set up the physical network address of this metadata element (if this makes sense).
+     *
+     * @param networkAddress string name
+     */
+    public void setNetworkAddress(String networkAddress)
+    {
+        this.networkAddress = networkAddress;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -131,10 +155,11 @@ public class TemplateProperties implements Serializable
     public String toString()
     {
         return "TemplateProperties{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+                       "qualifiedName='" + qualifiedName + '\'' +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", networkAddress='" + networkAddress + '\'' +
+                       '}';
     }
 
 
@@ -158,7 +183,8 @@ public class TemplateProperties implements Serializable
         TemplateProperties that = (TemplateProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
                 Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description);
+                Objects.equals(description, that.description) &&
+                       Objects.equals(networkAddress, that.networkAddress);
     }
 
 
@@ -170,6 +196,6 @@ public class TemplateProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, displayName, description);
+        return Objects.hash(qualifiedName, displayName, description, networkAddress);
     }
 }

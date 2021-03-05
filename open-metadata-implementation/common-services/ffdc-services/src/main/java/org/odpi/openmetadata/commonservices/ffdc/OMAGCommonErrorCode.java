@@ -192,7 +192,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
     METHOD_NOT_IMPLEMENTED(500, "OMAG-COMMON-500-001",
                            "Method {0} called by user {1} to OMAG Server {2} is not implemented in service {3}",
                            "The user has issued a valid call to an open metadata REST API that is currently not yet implemented.",
-                           "Look to become a contributor or advocate for the ODPi Egeria community to help get this method implemented as soon as possible."),
+                           "Look to become a contributor or advocate for the Egeria community to help get this method implemented as soon as possible."),
 
     CLIENT_SIDE_REST_API_ERROR(503, "OMAG-COMMON-503-001",
                                "A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}",

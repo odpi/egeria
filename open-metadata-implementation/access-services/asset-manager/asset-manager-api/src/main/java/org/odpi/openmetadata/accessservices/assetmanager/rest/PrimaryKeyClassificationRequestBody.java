@@ -21,12 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PrimaryKeyClassificationRequestBody implements Serializable
+public class PrimaryKeyClassificationRequestBody extends AssetManagerIdentifiersRequestBody
 {
     private static final long   serialVersionUID = 1L;
 
-    private MetadataCorrelationProperties metadataCorrelationProperties = null;
-    private PrimaryKeyProperties          primaryKeyProperties          = null;
+    private PrimaryKeyProperties primaryKeyProperties = null;
 
 
 
@@ -48,31 +47,8 @@ public class PrimaryKeyClassificationRequestBody implements Serializable
     {
         if (template != null)
         {
-            metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             primaryKeyProperties          = template.getPrimaryKeyProperties();
         }
-    }
-
-
-    /**
-     * Return the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @return properties object
-     */
-    public MetadataCorrelationProperties getMetadataCorrelationProperties()
-    {
-        return metadataCorrelationProperties;
-    }
-
-
-    /**
-     * Set up the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @param metadataCorrelationProperties properties object
-     */
-    public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
-    {
-        this.metadataCorrelationProperties = metadataCorrelationProperties;
     }
 
 
@@ -107,8 +83,9 @@ public class PrimaryKeyClassificationRequestBody implements Serializable
     public String toString()
     {
         return "PrimaryKeyClassificationRequestBody{" +
-                       "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       ", primaryKeyProperties='" + primaryKeyProperties + '\'' +
+                       "primaryKeyProperties=" + primaryKeyProperties +
+                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
+                       ", assetManagerName='" + getAssetManagerName() + '\'' +
                        '}';
     }
 
@@ -131,8 +108,7 @@ public class PrimaryKeyClassificationRequestBody implements Serializable
             return false;
         }
         PrimaryKeyClassificationRequestBody that = (PrimaryKeyClassificationRequestBody) objectToCompare;
-        return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getPrimaryKeyProperties(), that.getPrimaryKeyProperties());
+        return Objects.equals(getPrimaryKeyProperties(), that.getPrimaryKeyProperties());
     }
 
 
@@ -144,6 +120,6 @@ public class PrimaryKeyClassificationRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMetadataCorrelationProperties(), getPrimaryKeyProperties());
+        return Objects.hash(super.hashCode(), primaryKeyProperties);
     }
 }

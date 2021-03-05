@@ -179,7 +179,7 @@ public class SuccessMessageResponseTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -188,7 +188,7 @@ public class SuccessMessageResponseTest
         {
             validateResultObject(objectMapper.readValue(jsonString, SuccessMessageResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -202,7 +202,7 @@ public class SuccessMessageResponseTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -211,7 +211,7 @@ public class SuccessMessageResponseTest
         {
             validateResultObject((SuccessMessageResponse) objectMapper.readValue(jsonString, AdminServicesAPIResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -91,6 +91,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param assetExternalIdentifier unique identifier of the asset in the external asset manager
      * @param assetExternalIdentifierName name of property for the external identifier in the external asset manager
      * @param assetExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
@@ -109,6 +110,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
     String createAssetFromTemplate(String              userId,
                                    String              assetManagerGUID,
                                    String              assetManagerName,
+                                   boolean             assetManagerIsHome,
                                    String              templateGUID,
                                    String              assetExternalIdentifier,
                                    String              assetExternalIdentifierName,

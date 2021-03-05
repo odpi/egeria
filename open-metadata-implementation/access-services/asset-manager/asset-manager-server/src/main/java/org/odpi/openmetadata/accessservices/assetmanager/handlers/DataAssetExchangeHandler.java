@@ -27,9 +27,9 @@ import java.util.List;
  */
 public class DataAssetExchangeHandler extends ExchangeHandlerBase
 {
-    private AssetHandler<AssetElement>               assetHandler;
+    private AssetHandler<AssetElement> assetHandler;
 
-    private final static String assetGUIDParameterName        = "assetGUID";
+    private final static String assetGUIDParameterName = "assetGUID";
 
 
 
@@ -170,14 +170,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String externalSourceGUID = null;
-        String externalSourceName = null;
-
-        if ((assetManagerIsHome) && (correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
-        {
-            externalSourceGUID = correlationProperties.getAssetManagerGUID();
-            externalSourceName = correlationProperties.getAssetManagerName();
-        }
 
         String typeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
 
@@ -200,8 +192,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         }
 
         String assetGUID = assetHandler.createAssetInRepository(userId,
-                                                                externalSourceGUID,
-                                                                externalSourceName,
+                                                                this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
+                                                                this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                                 assetProperties.getQualifiedName(),
                                                                 assetProperties.getTechnicalName(),
                                                                 assetProperties.getTechnicalDescription(),
@@ -244,6 +236,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      *
      * @param userId calling user
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      * @param methodName calling method
@@ -256,6 +249,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      */
     public String createAssetFromTemplate(String                        userId,
                                           MetadataCorrelationProperties correlationProperties,
+                                          boolean                       assetManagerIsHome,
                                           String                        templateGUID,
                                           TemplateProperties            templateProperties,
                                           String                        methodName) throws InvalidParameterException,
@@ -272,8 +266,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         String assetGUID = assetHandler.addAssetFromTemplate(userId,
-                                                             null,
-                                                             null,
+                                                             this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
+                                                             this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                              templateGUID,
                                                              templateGUIDParameterName,
                                                              OpenMetadataAPIMapper.ASSET_TYPE_GUID,
@@ -282,6 +276,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                              qualifiedNameParameterName,
                                                              templateProperties.getDisplayName(),
                                                              templateProperties.getDescription(),
+                                                             templateProperties.getNetworkAddress(),
                                                              methodName);
         if (assetGUID != null)
         {
@@ -336,15 +331,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                         correlationProperties,
                                         methodName);
 
-        String externalSourceGUID = null;
-        String externalSourceName = null;
-
-        if ((correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
-        {
-            externalSourceGUID = correlationProperties.getAssetManagerGUID();
-            externalSourceName = correlationProperties.getAssetManagerName();
-        }
-
         int ownerTypeOrdinal = 0;
 
         if (assetProperties.getOwnerCategory() != null)
@@ -382,8 +368,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         }
 
         assetHandler.updateAsset(userId,
-                                 externalSourceGUID,
-                                 externalSourceName,
+                                 this.getExternalSourceGUID(correlationProperties),
+                                 this.getExternalSourceName(correlationProperties),
                                  assetGUID,
                                  assetGUIDParameterName,
                                  assetProperties.getQualifiedName(),
@@ -483,15 +469,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
 
-        String externalSourceGUID = null;
-        String externalSourceName = null;
-
-        if ((correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
-        {
-            externalSourceGUID = correlationProperties.getAssetManagerGUID();
-            externalSourceName = correlationProperties.getAssetManagerName();
-        }
-
         this.validateExternalIdentifier(userId,
                                         assetGUID,
                                         assetGUIDParameterName,
@@ -500,8 +477,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                         methodName);
 
         assetHandler.deleteBeanInRepository(userId,
-                                            externalSourceGUID,
-                                            externalSourceName,
+                                            getExternalSourceGUID(correlationProperties),
+                                            getExternalSourceName(correlationProperties),
                                             assetGUID,
                                             assetGUIDParameterName,
                                             OpenMetadataAPIMapper.ASSET_TYPE_GUID,
@@ -563,8 +540,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned

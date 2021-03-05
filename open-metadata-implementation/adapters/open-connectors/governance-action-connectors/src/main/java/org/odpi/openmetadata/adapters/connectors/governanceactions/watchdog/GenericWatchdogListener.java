@@ -8,11 +8,11 @@ import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceE
 
 
 /**
- * GenericElementWatchdogListener implements the watchdog listener interface for the GenericElementWatchdogGovernanceActionConnector.
+ * GenericWatchdogListener implements the watchdog listener interface for the GenericWatchdogGovernanceActionConnectors.
  */
-public class GenericElementWatchdogListener extends WatchdogGovernanceListener
+public class GenericWatchdogListener extends WatchdogGovernanceListener
 {
-    GenericElementWatchdogGovernanceActionConnector connector;
+    GenericWatchdogGovernanceActionConnector connector;
 
 
     /**
@@ -20,7 +20,7 @@ public class GenericElementWatchdogListener extends WatchdogGovernanceListener
      *
      * @param connector connector to delegate all events to
      */
-    public GenericElementWatchdogListener(GenericElementWatchdogGovernanceActionConnector connector)
+    public GenericWatchdogListener(GenericWatchdogGovernanceActionConnector connector)
     {
         this.connector = connector;
     }

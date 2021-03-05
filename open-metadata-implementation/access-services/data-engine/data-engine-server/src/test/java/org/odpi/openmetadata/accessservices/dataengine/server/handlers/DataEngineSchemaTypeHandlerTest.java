@@ -157,14 +157,6 @@ class DataEngineSchemaTypeHandlerTest {
                 .validateName(QUALIFIED_NAME, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
         verify(invalidParameterHandler, times(1))
                 .validateName(NAME, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
-
-        TypeDef classificationTypeDef = repositoryHelper.getTypeDefByName(USER, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance("sourceName", null,
-                SchemaTypePropertiesMapper.DATA_TYPE, attribute.getDataType(), methodName);
-
-        verify(repositoryHandler, times(1)).classifyEntity(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, ATTRIBUTE_GUID, classificationTypeDef.getGUID(), classificationTypeDef.getName(),
-                null, null, properties, "createSchemaAttribute");
     }
 
     @Test
