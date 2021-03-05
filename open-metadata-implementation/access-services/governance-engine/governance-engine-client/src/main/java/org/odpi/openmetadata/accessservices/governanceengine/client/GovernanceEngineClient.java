@@ -142,6 +142,106 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
 
 
     /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId caller's userId
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     *
+     * @return metadata element properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public OpenMetadataElement getMetadataElementByUniqueName(String userId,
+                                                              String uniqueName,
+                                                              String uniquePropertyName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        final String methodName = "getMetadataElementByUniqueName";
+        final String defaultPropertyName = "qualifiedName";
+        final String nameParameterName = "uniqueName";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/by-unique-name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(uniqueName);
+        requestBody.setNameParameterName(nameParameterName);
+
+        if (uniquePropertyName != null)
+        {
+            requestBody.setNamePropertyName(uniquePropertyName);
+        }
+        else
+        {
+            requestBody.setNamePropertyName(defaultPropertyName);
+        }
+
+        OpenMetadataElementResponse restResult = restClient.callOpenMetadataElementPostRESTCall(methodName,
+                                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                                               requestBody,
+                                                                                               serverName,
+                                                                                               userId);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId caller's userId
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     *
+     * @return metadata element unique identifier (guid)
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public String getMetadataElementGUIDByUniqueName(String userId,
+                                                     String uniqueName,
+                                                     String uniquePropertyName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String methodName = "getMetadataElementGUIDByUniqueName";
+        final String defaultPropertyName = "qualifiedName";
+        final String nameParameterName = "uniqueName";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/guid-by-unique-name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(uniqueName);
+        requestBody.setNameParameterName(nameParameterName);
+
+        if (uniquePropertyName != null)
+        {
+            requestBody.setNamePropertyName(uniquePropertyName);
+        }
+        else
+        {
+            requestBody.setNamePropertyName(defaultPropertyName);
+        }
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param userId caller's userId
@@ -191,6 +291,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      *
      * @param userId caller's userId
      * @param elementGUID unique identifier for the starting metadata element
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -204,6 +305,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     @Override
     public List<RelatedMetadataElement> getRelatedMetadataElements(String userId,
                                                                    String elementGUID,
+                                                                   int    startingAtEnd,
                                                                    String relationshipTypeName,
                                                                    int    startFrom,
                                                                    int    pageSize) throws InvalidParameterException,
@@ -213,20 +315,21 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "getRelatedMetadataElements";
         final String guidParameterName = "elementGUID";
         final String typeNameParameterName = "relationshipTypeName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/type/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/type/{3}?startingAtEnd={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
 
         RelatedMetadataElementListResponse restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
-                                                                                                               serverPlatformURLRoot + urlTemplate,
-                                                                                                               serverName,
-                                                                                                               userId,
-                                                                                                               elementGUID,
-                                                                                                               relationshipTypeName,
-                                                                                                               Integer.toString(startFrom),
-                                                                                                               Integer.toString(pageSize));
+                                                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                                                             serverName,
+                                                                                                             userId,
+                                                                                                             elementGUID,
+                                                                                                             relationshipTypeName,
+                                                                                                             Integer.toString(startingAtEnd),
+                                                                                                             Integer.toString(startFrom),
+                                                                                                             Integer.toString(pageSize));
 
         return restResult.getElementList();
     }
@@ -558,7 +661,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "classifyMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classification/{3}/new";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -607,7 +710,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "reclassifyMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classification/{3}/update-properties";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -654,7 +757,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "updateClassificationStatusInStore";
         final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classification/{3}/update-status";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/update-status";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -696,7 +799,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "unclassifyMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classification/{3}/delete";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1133,7 +1236,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "initiateGovernanceAction";
         final String qualifiedNameParameterName = "processQualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions-processes/initiate";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/initiate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(processQualifiedName, qualifiedNameParameterName, methodName);

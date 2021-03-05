@@ -22,7 +22,7 @@ import java.util.*;
  */
 public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollectionBase
 {
-    private InMemoryOMRSMetadataStore         repositoryStore = new InMemoryOMRSMetadataStore();
+    private InMemoryOMRSMetadataStore  repositoryStore = new InMemoryOMRSMetadataStore();
 
 
     /**
@@ -2086,8 +2086,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                 newClassification,
                                                                                 methodName);
 
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
-
         repositoryStore.updateEntityInStore(updatedEntity);
 
         /*
@@ -2233,8 +2231,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                 newClassification,
                                                                                 methodName);
 
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
-
         repositoryStore.updateEntityInStore(updatedEntity);
 
         /*
@@ -2292,8 +2288,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                      entity,
                                                                                      classificationName,
                                                                                      methodName);
-
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
         repositoryStore.updateEntityInStore(updatedEntity);
 
@@ -2369,8 +2363,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                    entity,
                                                                                    newClassification,
                                                                                    methodName);
-
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
         repositoryStore.updateEntityInStore(updatedEntity);
 

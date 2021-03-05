@@ -1190,6 +1190,53 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
+     * Throws an exception if an entity is classified with the supplied classification name.
+     * It is typically used when adding new classifications to entities.
+     *
+     * @param sourceName          source of the request (used for logging)
+     * @param entity              entity to update
+     * @param classificationName  classification to retrieve
+     * @param methodName          calling method
+     * @throws ClassificationErrorException  the classification is not attached to the entity
+     */
+    @Override
+    public void checkEntityNotClassifiedEntity(String        sourceName,
+                                               EntitySummary entity,
+                                               String        classificationName,
+                                               String        methodName) throws ClassificationErrorException
+    {
+        final String thisMethodName = "checkEntityNotClassifiedEntity";
+
+        if ((entity == null) || (classificationName == null))
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName, thisMethodName, methodName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+
+        List<Classification> entityClassifications = entity.getClassifications();
+
+        if (entityClassifications != null)
+        {
+            for (Classification entityClassification : entityClassifications)
+            {
+                if (classificationName.equals(entityClassification.getName()))
+                {
+                    throw new ClassificationErrorException(OMRSErrorCode.ENTITY_ALREADY_CLASSIFIED.getMessageDefinition(methodName,
+                                                                                                                        sourceName,
+                                                                                                                        classificationName,
+                                                                                                                        entity.getGUID()),
+                                                           this.getClass().getName(),
+                                                           methodName);
+                }
+            }
+        }
+
+
+    }
+
+
+    /**
      * Add a classification to an existing entity.
      *
      * @param sourceName          source of the request (used for logging)
