@@ -2,26 +2,54 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
-
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.*;
 
-
 /**
- * MonitorForNewAssetGovernanceActionConnector is a Watchdog Governance Action Service that listens for new or refreshed Assets
- * and kicks off a governance action process to validate that this Asset is correctly set up.
- * It is designed to run continuously and so does not set up completion status or guards.  This means its
- * Governance Action entity is never completed and this service is restarted each time the hosting engine is restarted.
+ * GenericFolderWatchdogGovernanceActionConnector listens for events relating to files in a folder.
  */
-public class GenericElementWatchdogGovernanceActionConnector extends GenericWatchdogGovernanceActionConnector
+public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatchdogGovernanceActionConnector
 {
+    private String folderName = null;
+    private String folderGUID = null;
+
+
+    /**
+     * Call made by the ConnectorProvider to initialize the Connector with the base services.
+     *
+     * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
+     * @param connectionProperties   POJO for the configuration used to create the connector.
+     */
+    @Override
+    public void initialize(String               connectorInstanceId,
+                           ConnectionProperties connectionProperties)
+    {
+        super.initialize(connectorInstanceId, connectionProperties);
+
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+        /*
+         * Retrieve the configuration properties from the Connection object.  These properties affect all requests to this connector.
+         */
+        if (configurationProperties != null)
+        {
+            Object folderNameOption = configurationProperties.get(GenericFolderWatchdogGovernanceActionProvider.FOLDER_NAME_PROPERTY);
+
+            if (folderNameOption != null)
+            {
+                folderName = folderNameOption.toString();
+            }
+        }
+    }
 
 
     /**
@@ -35,7 +63,61 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
     @Override
     public void start() throws ConnectorCheckedException
     {
-        super.start("OpenMetadataRoot");
+        super.validateContext(governanceContext);
+
+        /*
+         * Retrieve the source file and destination folder from either the request parameters or the action targets.  If both
+         * are specified then the action target elements take priority.
+         */
+        if (governanceContext.getRequestParameters() != null)
+        {
+            Map<String, String> requestParameters = governanceContext.getRequestParameters();
+
+            for (String requestParameterName : requestParameters.keySet())
+            {
+                if (requestParameterName != null)
+                {
+                    if (GenericFolderWatchdogGovernanceActionProvider.FOLDER_NAME_PROPERTY.equals(requestParameterName))
+                    {
+                        folderName = requestParameters.get(requestParameterName);
+                    }
+                }
+            }
+        }
+
+        List<ActionTargetElement> actionTargetElements = governanceContext.getActionTargetElements();
+
+        if (actionTargetElements != null)
+        {
+            for (ActionTargetElement actionTargetElement : actionTargetElements)
+            {
+                if (actionTargetElement != null)
+                {
+                    if (GenericFolderWatchdogGovernanceActionProvider.FOLDER_TARGET_PROPERTY.equals(actionTargetElement.getActionTargetName()))
+                    {
+                        folderGUID = actionTargetElement.getActionTargetGUID();
+                    }
+                }
+            }
+        }
+
+
+        if ((folderGUID == null) && (folderName != null))
+        {
+            try
+            {
+                folderGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(folderName, null);
+            }
+            catch (OCFCheckedExceptionBase error)
+            {
+                throw new ConnectorCheckedException(error.getMessage(), error);
+            }
+        }
+
+        /*
+         * This registers the listener
+         */
+        super.start("DataFile");
     }
 
 
@@ -60,15 +142,15 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
             {
                 WatchdogMetadataElementEvent metadataElementEvent = (WatchdogMetadataElementEvent) event;
 
-                String elementGUID = metadataElementEvent.getMetadataElement().getElementGUID();
+                String fileGUID = metadataElementEvent.getMetadataElement().getElementGUID();
 
-                Map<String, String> requestParameters = new HashMap<>();
-                List<String> actionTargetGUIDs = new ArrayList<>();
-
-                actionTargetGUIDs.add(elementGUID);
-
-                if ((instancesToListenTo == null) || (instancesToListenTo.contains(elementGUID)))
+                if (fileInFolder(fileGUID))
                 {
+                    Map<String, String> requestParameters = new HashMap<>();
+                    List<String> actionTargetGUIDs = new ArrayList<>();
+
+                    actionTargetGUIDs.add(fileGUID);
+
                     if (metadataElementEvent.getEventType() != WatchdogEventType.NEW_ELEMENT)
                     {
                         initiateProcess(newElementProcessName,
@@ -133,72 +215,6 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                                             actionTargetGUIDs);
                         }
                     }
-
-                    if (GenericElementWatchdogGovernanceActionProvider.PROCESS_SINGLE_EVENT.equals(governanceContext.getRequestType()))
-                    {
-                        completed = true;
-                    }
-                }
-            }
-            else if (event instanceof WatchdogRelatedElementsEvent)
-            {
-                WatchdogRelatedElementsEvent relatedElementsEvent = (WatchdogRelatedElementsEvent) event;
-
-                RelatedMetadataElements relatedMetadataElements = relatedElementsEvent.getRelatedMetadataElements();
-
-                if (relatedMetadataElements != null)
-                {
-                    String end1GUID = relatedMetadataElements.getElementGUIDAtEnd1();
-                    String end2GUID = relatedMetadataElements.getElementGUIDAtEnd2();
-
-                    if ((instancesToListenTo == null) ||
-                                (instancesToListenTo.contains(end1GUID)) ||
-                                (instancesToListenTo.contains(end2GUID)))
-                    {
-                        Map<String, String> requestParameters = new HashMap<>();
-
-                        requestParameters.put("RelationshipGUID", relatedMetadataElements.getRelationshipGUID());
-                        requestParameters.put("RelationshipTypeName", relatedMetadataElements.getRelationshipType().getElementTypeName());
-
-                        List<String> actionTargetGUIDs = new ArrayList<>();
-
-                        actionTargetGUIDs.add(end1GUID);
-                        actionTargetGUIDs.add(end2GUID);
-
-                        if (relatedElementsEvent.getEventType() == WatchdogEventType.NEW_RELATIONSHIP)
-                        {
-                            initiateProcess(newRelationshipProcessName,
-                                            requestParameters,
-                                            actionTargetGUIDs);
-                        }
-                        else if (relatedElementsEvent.getEventType() == WatchdogEventType.UPDATED_RELATIONSHIP_PROPERTIES)
-                        {
-                            ElementProperties previousElementProperties = null;
-
-                            if (relatedElementsEvent.getPreviousRelatedMetadataElements() != null)
-                            {
-                                previousElementProperties = relatedElementsEvent.getPreviousRelatedMetadataElements().getRelationshipProperties();
-                            }
-
-                            requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                           relatedMetadataElements.getRelationshipProperties()));
-
-                            initiateProcess(updatedRelationshipProcessName,
-                                            requestParameters,
-                                            actionTargetGUIDs);
-                        }
-                        else if (relatedElementsEvent.getEventType() == WatchdogEventType.DELETED_RELATIONSHIP)
-                        {
-                            initiateProcess(deletedRelationshipProcessName,
-                                            requestParameters,
-                                            actionTargetGUIDs);
-                        }
-
-                        if (GenericElementWatchdogGovernanceActionProvider.PROCESS_SINGLE_EVENT.equals(governanceContext.getRequestType()))
-                        {
-                            completed = true;
-                        }
-                    }
                 }
             }
 
@@ -207,7 +223,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                 try
                 {
                     List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericElementWatchdogGovernanceActionProvider.MONITORING_FAILED);
+                    outputGuards.add(GenericWatchdogGovernanceActionProvider.MONITORING_FAILED);
 
                     governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null);
                 }
@@ -226,6 +242,92 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
         }
     }
 
+
+    /**
+     * Determine if the file is in the folder.
+     *
+     * @param fileGUID unique identifier of file
+     * @return boolean flag to indicate if the file is in the monitored folder
+     * @throws GovernanceServiceException reports that the event can not be processed (this is logged but
+     *                                    no other action is taken).  The listener will continue to be
+     *                                    called until the watchdog governance action service declares it is complete
+     *                                    or administrator action shuts down the service.
+     */
+    private boolean fileInFolder(String fileGUID) throws GovernanceServiceException
+    {
+        if (folderGUID == null)
+        {
+            return true;
+        }
+
+        try
+        {
+            String parentFolderGUID = getFolderGUID(fileGUID);
+
+            if (GenericFolderWatchdogGovernanceActionProvider.DIRECT_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+            {
+                if (parentFolderGUID.equals(folderGUID))
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                while (parentFolderGUID != null)
+                {
+                    if (parentFolderGUID.equals(folderGUID))
+                    {
+                        return true;
+                    }
+
+                    parentFolderGUID = getFolderGUID(parentFolderGUID);
+                }
+            }
+
+            return false;
+        }
+        catch (OCFCheckedExceptionBase error)
+        {
+            throw new GovernanceServiceException(error.getMessage(), error);
+        }
+    }
+
+
+    /**
+     * Return the unique identifier of a folder by navigating form the file.
+     *
+     * @param fileGUID file unique identifier
+     *
+     * @return unique identifier of the folder
+     * @throws InvalidParameterException one of the parameters passed to open metadata is invalid (probably a bug in this code)
+     * @throws UserNotAuthorizedException the userId for the connector does not have the authority it needs
+     * @throws PropertyServerException there is a problem with the metadata server(s)
+     */
+    private String getFolderGUID(String  fileGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        String folderGUID = null;
+
+        List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
+                                                                                                                                      2,
+                                                                                                                                      "NestedFile",
+                                                                                                                                      0,
+                                                                                                                                      0);
+
+        if (relatedMetadataElementList != null)
+        {
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    folderGUID = relatedMetadataElement.getElementProperties().getElementGUID();
+                }
+            }
+        }
+
+        return folderGUID;
+    }
 
     /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()

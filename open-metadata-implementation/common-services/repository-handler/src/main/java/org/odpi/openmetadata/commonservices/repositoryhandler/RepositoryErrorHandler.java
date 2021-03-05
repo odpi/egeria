@@ -165,7 +165,8 @@ public class RepositoryErrorHandler
             return;
         }
 
-        if (instanceHeader.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
+        if ((instanceHeader.getInstanceProvenanceType() == null) ||
+            (instanceHeader.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT))
         {
             /*
              * Local cohort instances can be updated by any caller provided they have the right security (tested elsewhere).

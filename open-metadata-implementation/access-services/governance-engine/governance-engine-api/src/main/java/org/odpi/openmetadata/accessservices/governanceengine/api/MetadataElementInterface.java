@@ -37,6 +37,44 @@ public interface MetadataElementInterface
 
 
     /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId caller's userId
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     *
+     * @return metadata element properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    OpenMetadataElement getMetadataElementByUniqueName(String userId,
+                                                       String uniqueName,
+                                                       String uniquePropertyName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException;
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId caller's userId
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     *
+     * @return metadata element unique identifier (guid)
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    String getMetadataElementGUIDByUniqueName(String userId,
+                                              String uniqueName,
+                                              String uniquePropertyName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param userId caller's userId
@@ -62,6 +100,7 @@ public interface MetadataElementInterface
      *
      * @param userId caller's userId
      * @param elementGUID unique identifier for the starting metadata element
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -74,6 +113,7 @@ public interface MetadataElementInterface
      */
     List<RelatedMetadataElement> getRelatedMetadataElements(String userId,
                                                             String elementGUID,
+                                                            int    startingAtEnd,
                                                             String relationshipTypeName,
                                                             int    startFrom,
                                                             int    pageSize) throws InvalidParameterException,
