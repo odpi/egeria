@@ -3,8 +3,10 @@
 
 # Release 2.7 (March 2021)
 
-Release 2.7 adds support for:
-* No new features
+Release 2.7 adds:
+* Performance improvements in the graph repo
+* Changes to metadata types
+* Changes to the distribution process
 
 Details of these and other changes are in the sections that follow.
 
