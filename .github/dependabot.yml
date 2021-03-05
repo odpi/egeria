@@ -46,7 +46,7 @@ updates:
   reviewers:
   - planetf1
 - package-ecosystem: "github-actions"
-  directory: "/.github/workflows"
+  directory: "/"
   schedule:
     interval: weekly
   open-pull-requests-limit: 10
