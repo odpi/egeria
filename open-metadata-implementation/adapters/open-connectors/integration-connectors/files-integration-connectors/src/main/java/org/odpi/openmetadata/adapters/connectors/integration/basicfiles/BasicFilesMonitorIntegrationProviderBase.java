@@ -15,8 +15,8 @@ import java.util.List;
  */
 class BasicFilesMonitorIntegrationProviderBase extends ConnectorProviderBase
 {
-    static String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
-    static String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY    = "allowCatalogDelete";
+    static final String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
+    static final String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY    = "allowCatalogDelete";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
