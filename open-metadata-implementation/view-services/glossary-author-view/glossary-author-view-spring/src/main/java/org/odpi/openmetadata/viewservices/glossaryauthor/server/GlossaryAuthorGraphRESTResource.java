@@ -20,7 +20,7 @@ import java.util.Date;
  * Access Service (OMAS).  This interface provides term authoring interfaces for subject area experts.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
+@RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}")
 @Tag(name="Subject Area OMAS", description="The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs=@ExternalDocumentation(description="Subject Area Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
 public class GlossaryAuthorGraphRESTResource {
     private final GlossaryAuthorViewGraphRESTServices restAPI = new GlossaryAuthorViewGraphRESTServices();
@@ -57,7 +57,7 @@ public class GlossaryAuthorGraphRESTResource {
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @GetMapping( path = "/users/{userId}/nodes/{guid}")
+    @GetMapping( path = "/graph/{guid}")
     public SubjectAreaOMASAPIResponse<Graph> getGraph(@PathVariable String serverName,
                                                       @PathVariable String userId,
                                                       @PathVariable String guid,
@@ -98,7 +98,7 @@ public class GlossaryAuthorGraphRESTResource {
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @GetMapping( path = "/users/{userId}/node-counts/{guid}")
+    @GetMapping( path = "/users/{userId}/graph-counts/{guid}")
     public SubjectAreaOMASAPIResponse<GraphStatistics> getGraphCounts(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,

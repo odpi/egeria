@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 /**
- * This class holds a count associated with a nodes by NodeType name or lines by LineType name.
+ * This class holds a count associated with a node by NodeType name or a line by LineType name.
  */
 public class NodeLineStats {
     private String nodeOrLineTypeName;

@@ -65,7 +65,7 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
             Graph graph = getGraphObject(serverName, userId, guid, asOfTime, nodeFilterStr, lineFilterStr, statusFilter, methodName);
             // construct graph statistics from the graph
             GraphStatistics graphStatistics = new GraphStatistics(guid, 1);
-            // TODO populate
+
             Set<? extends Node> nodes= graph.getNodes();
             Set<? extends Line> lines= graph.getLines();
             Map<String, NodeLineStats>  nodeCountsMap = null;
@@ -109,6 +109,8 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
         SubjectAreaGraphClient graphClient = instanceHandler.getSubjectAreaGraphClient(serverName, userId, methodName);
         final Stream<NodeType> allNodeTypesStream = Arrays.stream(NodeType.values());
         Set<NodeType> nodeTypes =  allNodeTypesStream.collect(Collectors.toSet());
+        // remove Unknown
+        nodeTypes.remove(NodeType.Unknown);
         if (nodeFilterStr != null) {
             Set<String> typeNames = allNodeTypesStream.map(NodeType::name).collect(Collectors.toSet());
             nodeTypes = Arrays.stream(nodeFilterStr.split(","))
@@ -118,6 +120,9 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
         }
         final Stream<LineType> allLineTypesStream = Arrays.stream(LineType.values());
         Set<LineType> lineTypes =  allLineTypesStream.collect(Collectors.toSet());
+        if (lineTypes.contains(LineType.Unknown)) {
+            lineTypes.remove(LineType.Unknown);
+        }
         if (lineFilterStr != null) {
             Set<String> typeNames = allLineTypesStream.map(LineType::name).collect(Collectors.toSet());
             lineTypes = Arrays.stream(lineFilterStr.split(","))
