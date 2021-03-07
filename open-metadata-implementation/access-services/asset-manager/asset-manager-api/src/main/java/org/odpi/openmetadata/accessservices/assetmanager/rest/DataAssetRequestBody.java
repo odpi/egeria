@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 
 import java.io.Serializable;
@@ -17,23 +17,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * AssetRequestBody describes the request body used to create/update asset properties.
+ * DataAssetRequestBody describes the request body used to create/update asset properties.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetRequestBody implements Serializable
+public class DataAssetRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
     private MetadataCorrelationProperties metadataCorrelationProperties = null;
-    private AssetProperties               elementProperties             = null;
+    private DataAssetProperties           elementProperties             = null;
 
 
     /**
      * Default constructor
      */
-    public AssetRequestBody()
+    public DataAssetRequestBody()
     {
         super();
     }
@@ -44,7 +44,7 @@ public class AssetRequestBody implements Serializable
      *
      * @param template object to copy
      */
-    public AssetRequestBody(AssetRequestBody template)
+    public DataAssetRequestBody(DataAssetRequestBody template)
     {
         if (template != null)
         {
@@ -81,7 +81,7 @@ public class AssetRequestBody implements Serializable
      *
      * @return properties object
      */
-    public AssetProperties getElementProperties()
+    public DataAssetProperties getElementProperties()
     {
         return elementProperties;
     }
@@ -92,7 +92,7 @@ public class AssetRequestBody implements Serializable
      *
      * @param elementProperties properties object
      */
-    public void setElementProperties(AssetProperties elementProperties)
+    public void setElementProperties(DataAssetProperties elementProperties)
     {
         this.elementProperties = elementProperties;
     }
@@ -106,7 +106,7 @@ public class AssetRequestBody implements Serializable
     @Override
     public String toString()
     {
-        return "AssetRequestBody{" +
+        return "DataAssetRequestBody{" +
                        "metadataCorrelationProperties=" + metadataCorrelationProperties +
                        ", elementProperties=" + elementProperties +
                        '}';
@@ -130,7 +130,7 @@ public class AssetRequestBody implements Serializable
         {
             return false;
         }
-        AssetRequestBody that = (AssetRequestBody) objectToCompare;
+        DataAssetRequestBody that = (DataAssetRequestBody) objectToCompare;
         return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
                        Objects.equals(getElementProperties(), that.getElementProperties());
     }

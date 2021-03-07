@@ -68,7 +68,7 @@ public class LineageIntegratorContext
      */
 
     /**
-     * Create a new metadata element to represent the root of an asset.
+     * Create a new metadata element to represent the root of a data asset.
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param assetProperties properties to store
@@ -79,22 +79,22 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createAsset(boolean         assetManagerIsHome,
-                              AssetProperties assetProperties) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public String createDataAsset(boolean             assetManagerIsHome,
+                                  DataAssetProperties assetProperties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return dataAssetExchangeClient.createAsset(userId,
-                                                   assetManagerGUID,
-                                                   assetManagerName,
-                                                   assetManagerIsHome,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   assetProperties);
+        return dataAssetExchangeClient.createDataAsset(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       assetManagerIsHome,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       assetProperties);
     }
 
 
@@ -112,29 +112,29 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createAssetFromTemplate(boolean            assetManagerIsHome,
-                                          String             templateGUID,
-                                          TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public String createDataAssetFromTemplate(boolean            assetManagerIsHome,
+                                              String             templateGUID,
+                                              TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        return dataAssetExchangeClient.createAssetFromTemplate(userId,
-                                                               assetManagerGUID,
-                                                               assetManagerName,
-                                                               assetManagerIsHome,
-                                                               templateGUID,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               templateProperties);
+        return dataAssetExchangeClient.createDataAssetFromTemplate(userId,
+                                                                   assetManagerGUID,
+                                                                   assetManagerName,
+                                                                   assetManagerIsHome,
+                                                                   templateGUID,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   templateProperties);
     }
 
 
     /**
-     * Update the metadata element representing an asset.
+     * Update the metadata element representing a data source.
      *
      * @param assetGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -144,24 +144,24 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateAsset(String          assetGUID,
-                            boolean         isMergeUpdate,
-                            AssetProperties assetProperties) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void updateDataAsset(String              assetGUID,
+                                boolean             isMergeUpdate,
+                                DataAssetProperties assetProperties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        dataAssetExchangeClient.updateAsset(userId,
-                                            assetManagerGUID,
-                                            assetManagerName,
-                                            assetGUID,
-                                            null,
-                                            isMergeUpdate,
-                                            assetProperties);
+        dataAssetExchangeClient.updateDataAsset(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                assetGUID,
+                                                null,
+                                                isMergeUpdate,
+                                                assetProperties);
     }
 
 
     /**
-     * Update the zones for the asset so that it becomes visible to consumers.
+     * Update the zones for the data asset so that it becomes visible to consumers.
      * (The zones are set to the list of zones in the publishedZones option configured for each
      * instance of the Asset Manager OMAS).
      *
@@ -171,16 +171,16 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishAsset(String assetGUID) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException
+    public void publishDataAsset(String assetGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
-        dataAssetExchangeClient.publishAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
+        dataAssetExchangeClient.publishDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
     }
 
 
     /**
-     * Update the zones for the asset so that it is no longer visible to consumers.
+     * Update the zones for the data asset so that it is no longer visible to consumers.
      * (The zones are set to the list of zones in the defaultZones option configured for each
      * instance of the Asset Manager OMAS.  This is the setting when the database is first created).
      *
@@ -190,16 +190,16 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawAsset(String assetGUID) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException
+    public void withdrawDataAsset(String assetGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
-        dataAssetExchangeClient.withdrawAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
+        dataAssetExchangeClient.withdrawDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
     }
 
 
     /**
-     * Remove the metadata element representing an asset.  This will delete the asset and all anchored
+     * Remove the metadata element representing a data asset.  This will delete the asset and all anchored
      * elements such as schema and comments.
      *
      * @param assetGUID unique identifier of the metadata element to remove
@@ -208,16 +208,16 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeAsset(String assetGUID) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException
+    public void removeDataAsset(String assetGUID) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
-        dataAssetExchangeClient.removeAsset(userId, assetManagerGUID, assetManagerName, assetGUID, null);
+        dataAssetExchangeClient.removeDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID, null);
     }
 
 
     /**
-     * Classify the asset to indicate that it can be used as reference data.
+     * Classify the data asset to indicate that it can be used as reference data.
      *
      * @param assetGUID unique identifier of the metadata element to update
      *
@@ -225,11 +225,11 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setAssetAsReferenceData(String assetGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public void setDataAssetAsReferenceData(String assetGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
-        dataAssetExchangeClient.setAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, null);
+        dataAssetExchangeClient.setDataAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, null);
     }
 
 
@@ -242,16 +242,16 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearAssetAsReferenceData(String assetGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void clearDataAssetAsReferenceData(String assetGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
-        dataAssetExchangeClient.clearAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, null);
+        dataAssetExchangeClient.clearDataAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, null);
     }
 
 
     /**
-     * Retrieve the list of asset metadata elements that contain the search string.
+     * Retrieve the list of data asset metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
      * @param searchString string to find in the properties
@@ -264,18 +264,18 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement> findAssets(String searchString,
-                                         int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public List<DataAssetElement> findDataAssets(String searchString,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
-        return dataAssetExchangeClient.findAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return dataAssetExchangeClient.findDataAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
     }
 
 
     /**
-     * Retrieve the list of asset metadata elements with a matching qualified or display name.
+     * Retrieve the list of data asset metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
      * @param name name to search for
@@ -288,13 +288,13 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement>   getAssetsByName(String name,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<DataAssetElement> getDataAssetsByName(String name,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return dataAssetExchangeClient.getAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return dataAssetExchangeClient.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
     }
 
 
@@ -310,12 +310,12 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement>   getAssetsForAssetManager(int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<DataAssetElement> getDataAssetsForAssetManager(int startFrom,
+                                                               int pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
-        return dataAssetExchangeClient.getAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+        return dataAssetExchangeClient.getDataAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
     }
 
 
@@ -330,11 +330,11 @@ public class LineageIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetElement getAssetByGUID(String openMetadataGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public DataAssetElement getDataAssetByGUID(String openMetadataGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
-        return dataAssetExchangeClient.getAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
+        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
     }
 
 

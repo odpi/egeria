@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class DataAssetExchangeHandler extends ExchangeHandlerBase
 {
-    private AssetHandler<AssetElement> assetHandler;
+    private AssetHandler<DataAssetElement> assetHandler;
 
     private final static String assetGUIDParameterName = "assetGUID";
 
@@ -74,7 +74,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
               auditLog);
 
         assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
-                                          AssetElement.class,
+                                          DataAssetElement.class,
                                           serviceName,
                                           serverName,
                                           invalidParameterHandler,
@@ -108,13 +108,13 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    private void addCorrelationPropertiesToDataAssets(String             userId,
-                                                      String             assetManagerGUID,
-                                                      String             assetManagerName,
-                                                      List<AssetElement> results,
-                                                      String             methodName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    private void addCorrelationPropertiesToDataAssets(String                 userId,
+                                                      String                 assetManagerGUID,
+                                                      String                 assetManagerName,
+                                                      List<DataAssetElement> results,
+                                                      String                 methodName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         if ((results != null) && (assetManagerGUID != null))
         {
@@ -155,13 +155,13 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createAsset(String                        userId,
-                              MetadataCorrelationProperties correlationProperties,
-                              boolean                       assetManagerIsHome,
-                              AssetProperties               assetProperties,
-                              String                        methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public String createDataAsset(String                        userId,
+                                  MetadataCorrelationProperties correlationProperties,
+                                  boolean                       assetManagerIsHome,
+                                  DataAssetProperties           assetProperties,
+                                  String                        methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String propertiesParameterName     = "assetProperties";
         final String qualifiedNameParameterName  = "assetProperties.qualifiedName";
@@ -247,14 +247,14 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createAssetFromTemplate(String                        userId,
-                                          MetadataCorrelationProperties correlationProperties,
-                                          boolean                       assetManagerIsHome,
-                                          String                        templateGUID,
-                                          TemplateProperties            templateProperties,
-                                          String                        methodName) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public String createDataAssetFromTemplate(String                        userId,
+                                              MetadataCorrelationProperties correlationProperties,
+                                              boolean                       assetManagerIsHome,
+                                              String                        templateGUID,
+                                              TemplateProperties            templateProperties,
+                                              String                        methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String templateGUIDParameterName   = "templateGUID";
         final String propertiesParameterName     = "templateProperties";
@@ -306,14 +306,14 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateAsset(String                        userId,
-                            MetadataCorrelationProperties correlationProperties,
-                            String                        assetGUID,
-                            boolean                       isMergeUpdate,
-                            AssetProperties               assetProperties,
-                            String                        methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void updateDataAsset(String                        userId,
+                                MetadataCorrelationProperties correlationProperties,
+                                String                        assetGUID,
+                                boolean                       isMergeUpdate,
+                                DataAssetProperties           assetProperties,
+                                String                        methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String assetGUIDParameterName      = "assetGUID";
         final String propertiesParameterName     = "assetProperties";
@@ -404,11 +404,11 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishAsset(String userId,
-                             String assetGUID,
-                             String methodName) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException
+    public void publishDataAsset(String userId,
+                                 String assetGUID,
+                                 String methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         final String assetGUIDParameterName = "assetGUID";
 
@@ -432,11 +432,11 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawAsset(String userId,
-                              String assetGUID,
-                              String methodName) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void withdrawDataAsset(String userId,
+                                  String assetGUID,
+                                  String methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         final String assetGUIDParameterName = "assetGUID";
 
@@ -457,12 +457,12 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeAsset(String                        userId,
-                            MetadataCorrelationProperties correlationProperties,
-                            String                        assetGUID,
-                            String                        methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void removeDataAsset(String                        userId,
+                                MetadataCorrelationProperties correlationProperties,
+                                String                        assetGUID,
+                                String                        methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String assetGUIDParameterName = "assetGUID";
 
@@ -500,11 +500,11 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setAssetAsReferenceData(String userId,
-                                        String assetGUID,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void setDataAssetAsReferenceData(String userId,
+                                            String assetGUID,
+                                            String methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String assetGUIDParameterName = "assetGUID";
         
@@ -523,11 +523,11 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearAssetAsReferenceData(String userId,
-                                          String assetGUID,
-                                          String methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public void clearDataAssetAsReferenceData(String userId,
+                                              String assetGUID,
+                                              String methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String assetGUIDParameterName = "assetGUID";
         
@@ -551,24 +551,24 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement> findAssets(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         String searchString,
-                                         int    startFrom,
-                                         int    pageSize,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<DataAssetElement> findDataAssets(String userId,
+                                                 String assetManagerGUID,
+                                                 String assetManagerName,
+                                                 String searchString,
+                                                 int    startFrom,
+                                                 int    pageSize,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
-        List<AssetElement> results = assetHandler.findAssets(userId,
-                                                             searchString,
-                                                             searchStringParameterName,
-                                                             startFrom,
-                                                             pageSize,
-                                                             methodName);
+        List<DataAssetElement> results = assetHandler.findAssets(userId,
+                                                                 searchString,
+                                                                 searchStringParameterName,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 methodName);
         
         addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
         
@@ -592,21 +592,21 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement> scanAssets(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         int    startFrom,
-                                         int    pageSize,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<DataAssetElement> scanDataAssets(String userId,
+                                                 String assetManagerGUID,
+                                                 String assetManagerName,
+                                                 int    startFrom,
+                                                 int    pageSize,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        List<AssetElement> results = assetHandler.assetScan(userId,
-                                                            OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                            startFrom,
-                                                            pageSize,
-                                                            methodName);
+        List<DataAssetElement> results = assetHandler.assetScan(userId,
+                                                                OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                startFrom,
+                                                                pageSize,
+                                                                methodName);
 
         addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
 
@@ -632,26 +632,26 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement>   getAssetsByName(String userId,
-                                                String assetManagerGUID,
-                                                String assetManagerName,
-                                                String name,
-                                                int    startFrom,
-                                                int    pageSize,
-                                                String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<DataAssetElement> getDataAssetsByName(String userId,
+                                                      String assetManagerGUID,
+                                                      String assetManagerName,
+                                                      String name,
+                                                      int    startFrom,
+                                                      int    pageSize,
+                                                      String methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String nameParameterName = "name";
 
-        List<AssetElement> results = assetHandler.findAssetsByName(userId,
-                                                                   OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                   name,
-                                                                   nameParameterName,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   methodName);
+        List<DataAssetElement> results = assetHandler.findAssetsByName(userId,
+                                                                       OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                       name,
+                                                                       nameParameterName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       methodName);
 
         addCorrelationPropertiesToDataAssets(userId, assetManagerGUID, assetManagerName, results, methodName);
 
@@ -675,14 +675,14 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement>   getAssetsForAssetManager(String userId,
-                                                         String assetManagerGUID,
-                                                         String assetManagerName,
-                                                         int    startFrom,
-                                                         int    pageSize,
-                                                         String methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<DataAssetElement> getDataAssetsForAssetManager(String userId,
+                                                               String assetManagerGUID,
+                                                               String assetManagerName,
+                                                               int    startFrom,
+                                                               int    pageSize,
+                                                               String methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String assetManagerGUIDParameterName = "assetManagerGUID";
         final String assetEntityParameterName = "assetEntity";
@@ -691,7 +691,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
 
-        List<AssetElement> results = new ArrayList<>();
+        List<DataAssetElement> results = new ArrayList<>();
 
         List<EntityDetail> assetEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                 assetManagerGUID,
@@ -708,22 +708,22 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
             {
                 if (assetEntity != null)
                 {
-                    AssetElement assetElement = assetHandler.getBeanFromEntity(userId,
-                                                                                        assetEntity,
-                                                                                        assetEntityParameterName,
-                                                                                        methodName);
+                    DataAssetElement dataAssetElement = assetHandler.getBeanFromEntity(userId,
+                                                                                       assetEntity,
+                                                                                       assetEntityParameterName,
+                                                                                       methodName);
 
-                    if (assetElement != null)
+                    if (dataAssetElement != null)
                     {
-                        assetElement.setCorrelationHeaders(this.getCorrelationProperties(userId,
-                                                                                            assetEntity.getGUID(),
-                                                                                            assetGUIDParameterName,
-                                                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                            assetManagerGUID,
-                                                                                            assetManagerName,
-                                                                                            methodName));
+                        dataAssetElement.setCorrelationHeaders(this.getCorrelationProperties(userId,
+                                                                                             assetEntity.getGUID(),
+                                                                                             assetGUIDParameterName,
+                                                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                             assetManagerGUID,
+                                                                                             assetManagerName,
+                                                                                             methodName));
 
-                        results.add(assetElement);
+                        results.add(dataAssetElement);
                     }
                 }
             }
@@ -755,21 +755,21 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetElement getAssetByGUID(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String openMetadataGUID,
-                                       String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public DataAssetElement getDataAssetByGUID(String userId,
+                                               String assetManagerGUID,
+                                               String assetManagerName,
+                                               String openMetadataGUID,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String guidParameterName = "openMetadataGUID";
 
-        AssetElement asset = assetHandler.getBeanFromRepository(userId,
-                                                                openMetadataGUID,
-                                                                guidParameterName,
-                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                methodName);
+        DataAssetElement asset = assetHandler.getBeanFromRepository(userId,
+                                                                    openMetadataGUID,
+                                                                    guidParameterName,
+                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                    methodName);
 
         if (asset != null)
         {
