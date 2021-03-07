@@ -165,6 +165,111 @@ public class GovernanceEngineRESTServices
 
 
     /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataElementResponse getMetadataElementByUniqueName(String          serverName,
+                                                                      String          userId,
+                                                                      NameRequestBody requestBody)
+    {
+        final String methodName = "getMetadataElementByUniqueName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        OpenMetadataElementResponse response = new OpenMetadataElementResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setElement(handler.getMetadataElementByUniqueName(userId,
+                                                                           requestBody.getName(),
+                                                                           requestBody.getNameParameterName(),
+                                                                           requestBody.getNamePropertyName(),
+                                                                           methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element unique identifier (guid) or
+     *  InvalidParameterException the unique identifier is null or not known or
+     *  UserNotAuthorizedException the governance action service is not able to access the element or
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public GUIDResponse getMetadataElementGUIDByUniqueName(String          serverName,
+                                                           String          userId,
+                                                           NameRequestBody requestBody)
+    {
+        final String methodName = "getMetadataElementGUIDByUniqueName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
+                                                                            requestBody.getName(),
+                                                                            requestBody.getNameParameterName(),
+                                                                            requestBody.getNamePropertyName(),
+                                                                            methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param serverName     name of server instance to route request to
@@ -224,6 +329,7 @@ public class GovernanceEngineRESTServices
      * @param userId caller's userId
      * @param elementGUID unique identifier for the starting metadata element
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -234,11 +340,12 @@ public class GovernanceEngineRESTServices
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public RelatedMetadataElementListResponse getRelatedMetadataElements(String serverName,
-                                                                          String userId,
-                                                                          String elementGUID,
-                                                                          String relationshipTypeName,
-                                                                          int    startFrom,
-                                                                          int    pageSize)
+                                                                         String userId,
+                                                                         String elementGUID,
+                                                                         String relationshipTypeName,
+                                                                         int    startingAtEnd,
+                                                                         int    startFrom,
+                                                                         int    pageSize)
     {
         final String methodName = "getRelatedMetadataElements";
 
@@ -253,7 +360,7 @@ public class GovernanceEngineRESTServices
 
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getRelatedMetadataElements(userId, elementGUID, relationshipTypeName, startFrom, pageSize, methodName));
+            response.setElementList(handler.getRelatedMetadataElements(userId, elementGUID, startingAtEnd, relationshipTypeName, startFrom, pageSize, methodName));
         }
         catch (Exception error)
         {

@@ -26,6 +26,7 @@ public class NameRequestBody implements Serializable
 
     private String name = null;
     private String nameParameterName = null;
+    private String namePropertyName = null;
 
 
     /**
@@ -47,6 +48,8 @@ public class NameRequestBody implements Serializable
         if (template != null)
         {
             name = template.getName();
+            nameParameterName = template.getNameParameterName();
+            namePropertyName = template.getNamePropertyName();
         }
     }
 
@@ -96,6 +99,28 @@ public class NameRequestBody implements Serializable
 
 
     /**
+     * Return the property name from the open metadata types.
+     *
+     * @return string name
+     */
+    public String getNamePropertyName()
+    {
+        return namePropertyName;
+    }
+
+
+    /**
+     * Set up the property name from the open metadata types.
+     *
+     * @param namePropertyName string
+     */
+    public void setNamePropertyName(String namePropertyName)
+    {
+        this.namePropertyName = namePropertyName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -106,6 +131,7 @@ public class NameRequestBody implements Serializable
         return "NameRequestBody{" +
                        "name='" + name + '\'' +
                        ", nameParameterName='" + nameParameterName + '\'' +
+                       ", namePropertyName='" + namePropertyName + '\'' +
                        '}';
     }
 
@@ -129,7 +155,8 @@ public class NameRequestBody implements Serializable
         }
         NameRequestBody that = (NameRequestBody) objectToCompare;
         return Objects.equals(getName(), that.getName()) &&
-                       Objects.equals(getNameParameterName(), that.getNameParameterName());
+                       Objects.equals(getNameParameterName(), that.getNameParameterName()) &&
+                       Objects.equals(getNamePropertyName(), that.getNamePropertyName());
     }
 
 
@@ -141,6 +168,6 @@ public class NameRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getName(), getNameParameterName());
+        return Objects.hash(getName(), getNameParameterName(), getNamePropertyName());
     }
 }

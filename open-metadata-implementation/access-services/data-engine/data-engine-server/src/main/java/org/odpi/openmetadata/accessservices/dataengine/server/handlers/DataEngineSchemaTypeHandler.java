@@ -22,7 +22,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttrib
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -317,27 +316,19 @@ public class DataEngineSchemaTypeHandler {
         final String methodName = "createSchemaAttribute";
         SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
+        schemaTypeBuilder.setDataType(dataType);
         schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
         final String schemaTypeGUIDParameterName = "schemaTypeGUID";
         final String qualifiedNameParameterName = "schemaAttribute.getQualifiedName()";
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-        String schemaAttributeGUID = schemaAttributeHandler.createNestedSchemaAttribute(userId, externalSourceGUID,
+        schemaAttributeHandler.createNestedSchemaAttribute(userId, externalSourceGUID,
                 externalSourceName, schemaTypeGUID, schemaTypeGUIDParameterName,
                 OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
                 OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                 OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                 attribute.getQualifiedName(), qualifiedNameParameterName, schemaAttributeBuilder, methodName);
-
-        TypeDef classificationTypeDef = repositoryHelper.getTypeDefByName(userId, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
-                SchemaTypePropertiesMapper.DATA_TYPE, dataType, methodName);
-
-        repositoryHandler.classifyEntity(userId, externalSourceGUID,
-                externalSourceName, schemaAttributeGUID, classificationTypeDef.getGUID(), classificationTypeDef.getName(),
-                null, null, properties, methodName);
-
     }
 
     private EntityDetail buildSchemaTypeEntityDetail(String schemaTypeGUID, SchemaType schemaType) throws InvalidParameterException {
