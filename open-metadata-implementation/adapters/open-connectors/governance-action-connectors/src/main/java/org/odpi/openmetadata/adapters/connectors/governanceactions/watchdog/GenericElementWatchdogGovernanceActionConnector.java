@@ -209,7 +209,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                     List<String> outputGuards = new ArrayList<>();
                     outputGuards.add(GenericElementWatchdogGovernanceActionProvider.MONITORING_FAILED);
 
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null);
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards);
                 }
                 catch (Exception error)
                 {

@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MoveCopyFileGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
- * This is a Provisioning Governance Action Service.
+ * GenericFolderWatchdogGovernanceActionProvider is the OCF connector provider for the Generic Folder Watchdog Governance Action Service.
+ * This is a Watchdog Governance Action Service.
  */
 public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchdogGovernanceActionProvider
 {
