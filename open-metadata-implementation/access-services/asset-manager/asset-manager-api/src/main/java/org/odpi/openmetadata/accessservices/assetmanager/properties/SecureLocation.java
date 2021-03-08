@@ -14,23 +14,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GlossaryTermContextDefinition describes a type of context that a glossary term represents.
+ * SecureLocation defines that a location is secure.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GlossaryTermContextDefinition implements Serializable
+public class SecureLocation implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
     private String description = null;
-    private String scope       = null;
+    private String level       = null;
 
 
     /**
      * Default constructor
      */
-    public GlossaryTermContextDefinition()
+    public SecureLocation()
     {
         super();
     }
@@ -41,18 +41,18 @@ public class GlossaryTermContextDefinition implements Serializable
      *
      * @param template template object to copy.
      */
-    public GlossaryTermContextDefinition(GlossaryTermContextDefinition template)
+    public SecureLocation(SecureLocation template)
     {
         if (template != null)
         {
             description = template.getDescription();
-            scope = template.getScope();
+            level = template.getLevel();
         }
     }
 
 
     /**
-     * Set up description of the context.
+     * Set up description of the security at the location.
      *
      * @param description String
      */
@@ -63,7 +63,7 @@ public class GlossaryTermContextDefinition implements Serializable
 
 
     /**
-     * Return the description for the context.
+     * Return the description fof the security at the location.
      *
      * @return String description
      */
@@ -74,24 +74,24 @@ public class GlossaryTermContextDefinition implements Serializable
 
 
     /**
-     * Set up the scope of where the context applies.
+     * Set up the level of security for the location.
      *
-     * @param scope string
+     * @param level string
      */
-    public void setScope(String scope)
+    public void setLevel(String level)
     {
-        this.scope = scope;
+        this.level = level;
     }
 
 
     /**
-     * Returns the name of the scope of where the context applies.
+     * Returns the name of the level of security for the location.
      *
      * @return string
      */
-    public String getScope()
+    public String getLevel()
     {
-        return scope;
+        return level;
     }
 
 
@@ -103,9 +103,9 @@ public class GlossaryTermContextDefinition implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryTermContextDefinition{" +
+        return "SecureLocation{" +
                        "description='" + description + '\'' +
-                       ", scope='" + scope + '\'' +
+                       ", level='" + level + '\'' +
                        '}';
     }
 
@@ -127,9 +127,9 @@ public class GlossaryTermContextDefinition implements Serializable
         {
             return false;
         }
-        GlossaryTermContextDefinition that = (GlossaryTermContextDefinition) objectToCompare;
+        SecureLocation that = (SecureLocation) objectToCompare;
         return Objects.equals(description, that.description) &&
-                Objects.equals(scope, that.scope);
+                Objects.equals(level, that.level);
     }
 
 
@@ -141,6 +141,6 @@ public class GlossaryTermContextDefinition implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(description, scope);
+        return Objects.hash(description, level);
     }
 }

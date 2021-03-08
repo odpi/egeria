@@ -14,23 +14,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GlossaryTermContextDefinition describes a type of context that a glossary term represents.
+ * CyberLocation indicates that a location is a cyber location rather than a physical location.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GlossaryTermContextDefinition implements Serializable
+public class CyberLocation implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private String description = null;
-    private String scope       = null;
+    private String address = null;
 
 
     /**
      * Default constructor
      */
-    public GlossaryTermContextDefinition()
+    public CyberLocation()
     {
         super();
     }
@@ -41,57 +40,34 @@ public class GlossaryTermContextDefinition implements Serializable
      *
      * @param template template object to copy.
      */
-    public GlossaryTermContextDefinition(GlossaryTermContextDefinition template)
+    public CyberLocation(CyberLocation template)
     {
         if (template != null)
         {
-            description = template.getDescription();
-            scope = template.getScope();
+            address = template.getAddress();
         }
     }
 
 
     /**
-     * Set up description of the context.
+     * Set up address of the location.
      *
-     * @param description String
+     * @param address String
      */
-    public void setDescription(String description)
+    public void setAddress(String address)
     {
-        this.description = description;
+        this.address = address;
     }
 
 
     /**
-     * Return the description for the context.
+     * Return the address for the location.
      *
-     * @return String description
+     * @return String address
      */
-    public String getDescription()
+    public String getAddress()
     {
-        return description;
-    }
-
-
-    /**
-     * Set up the scope of where the context applies.
-     *
-     * @param scope string
-     */
-    public void setScope(String scope)
-    {
-        this.scope = scope;
-    }
-
-
-    /**
-     * Returns the name of the scope of where the context applies.
-     *
-     * @return string
-     */
-    public String getScope()
-    {
-        return scope;
+        return address;
     }
 
 
@@ -103,9 +79,8 @@ public class GlossaryTermContextDefinition implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryTermContextDefinition{" +
-                       "description='" + description + '\'' +
-                       ", scope='" + scope + '\'' +
+        return "CyberLocation{" +
+                       "address='" + address + '\'' +
                        '}';
     }
 
@@ -127,9 +102,8 @@ public class GlossaryTermContextDefinition implements Serializable
         {
             return false;
         }
-        GlossaryTermContextDefinition that = (GlossaryTermContextDefinition) objectToCompare;
-        return Objects.equals(description, that.description) &&
-                Objects.equals(scope, that.scope);
+        CyberLocation that = (CyberLocation) objectToCompare;
+        return Objects.equals(address, that.address);
     }
 
 
@@ -141,6 +115,6 @@ public class GlossaryTermContextDefinition implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(description, scope);
+        return Objects.hash(address);
     }
 }

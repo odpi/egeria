@@ -12,30 +12,35 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * A GlossaryTermActivityType defines the type of activity described by a glossary term.
+ * ProcessContainmentType defines the ownership of a process withing a sub process. It is used in a
+ * ProcessHierarchy relationship.
+ * <ul>
+ * <li>OWNED - The parent process owns the child process in the relationship, such that if the parent is removed the child should also be removed.
+ * A child can have at most one such parent.</li>
+ * <li>USED - The child process is simply used by the parent. A child process can have many such relationships to parents.</li>
+ * <li>OTHER - None of the above.</li>
+ * </ul>
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
-public enum GlossaryTermActivityType implements Serializable
+@JsonIgnoreProperties(ignoreUnknown = true)
+public enum ServerAssetUseType implements Serializable
 {
-    OPERATION  (0,  0,  "Operation","Normal processing."),
-    ACTION     (1,  1,  "Action",   "A requested or required change."),
-    TASK       (2,  2,  "Task",     "A piece of work for a person, organization or engine."),
-    PROCESS    (3,  3,  "Process",  "A sequence of tasks."),
-    PROJECT    (4,  4,  "Project",  "An organized activity to achieve a specific goal."),
-    OTHER      (99, 99, "Other",    "Another type of activity.");
+    OWNS      (0,  0,  "Owns",     "The asset is managed and updated via this relationship"),
+    GOVERNS   (1,  1,  "Governs",  "The asset is governed through this relationship."),
+    MAINTAINS (2,  2,  "Maintains","The asset is maintained through this relationship."),
+    USES      (3,  3,  "Uses",     "The asset is used through this relationship."),
+    OTHER     (99, 99, "Other",    "None of the above.");
 
-    public static final String ENUM_TYPE_GUID  = "af7e403d-9865-4ebb-8c1a-1fd57b4f4bca";
-    public static final String ENUM_TYPE_NAME  = "ActivityType";
+    private static final long serialVersionUID = 1L;
 
-    private int    openTypeOrdinal;
+    public static final String ENUM_TYPE_GUID  = "09439481-9489-467c-9ae5-178a6e0b6b5a";
+    public static final String ENUM_TYPE_NAME  = "ServerAssetUseType";
 
     private int    ordinal;
+    private int    openTypeOrdinal;
     private String name;
     private String description;
-
-    private static final long     serialVersionUID = 1L;
 
 
     /**
@@ -46,10 +51,10 @@ public enum GlossaryTermActivityType implements Serializable
      * @param name default name
      * @param description default description
      */
-    GlossaryTermActivityType(int    ordinal,
-                             int    openTypeOrdinal,
-                             String name,
-                             String description)
+    ServerAssetUseType(int    ordinal,
+                       int    openTypeOrdinal,
+                       String name,
+                       String description)
     {
         this.ordinal         = ordinal;
         this.openTypeOrdinal = openTypeOrdinal;
@@ -57,10 +62,11 @@ public enum GlossaryTermActivityType implements Serializable
         this.description     = description;
     }
 
+
     /**
-     * Return the code for this enum instance
+     * Return the code for this enum used for indexing based on the enum value.
      *
-     * @return int key pattern code
+     * @return int code number
      */
     public int getOrdinal()
     {
@@ -69,9 +75,9 @@ public enum GlossaryTermActivityType implements Serializable
 
 
     /**
-     * Return the default name for this enum instance.
+     * Return the default name for this enum type.
      *
-     * @return String default name
+     * @return String name
      */
     public String getName()
     {
@@ -80,9 +86,9 @@ public enum GlossaryTermActivityType implements Serializable
 
 
     /**
-     * Return the default description for the key pattern for this enum instance.
+     * Return the default description for this enum.
      *
-     * @return String default description
+     * @return String description
      */
     public String getDescription()
     {
@@ -125,13 +131,11 @@ public enum GlossaryTermActivityType implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryTermActivityType{" +
-                       "openTypeOrdinal=" + openTypeOrdinal +
-                       ", ordinal=" + ordinal +
-                       ", name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       ", openTypeGUID='" + getOpenTypeGUID() + '\'' +
-                       ", openTypeName='" + getOpenTypeName() + '\'' +
+        return "ServerAssetUseType{" +
+                       "codeValue=" + ordinal +
+                       ", codeName='" + name + '\'' +
+                       ", description='" + description +
                        '}';
     }
 }
+
