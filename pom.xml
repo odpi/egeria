@@ -182,7 +182,7 @@
         <spring-security.version>5.4.1</spring-security.version>
         <spring-data.version>2.4.1</spring-data.version>
         <springdoc.version>1.4.6</springdoc.version>
-        <springdoc-plugin.version>1.1</springdoc-plugin.version>
+        <springdoc-plugin.version>1.2</springdoc-plugin.version>
         <servo-core.version>0.13.0</servo-core.version>
         <netflix-zuul.version>2.2.6.RELEASE</netflix-zuul.version>
         <tomcat.version>9.0.40</tomcat.version>
