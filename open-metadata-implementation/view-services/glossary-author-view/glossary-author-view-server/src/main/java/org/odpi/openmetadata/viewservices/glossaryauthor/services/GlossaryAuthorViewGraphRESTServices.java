@@ -68,8 +68,8 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
 
             Set<? extends Node> nodes= graph.getNodes();
             Set<? extends Line> lines= graph.getLines();
-            Map<String, NodeLineStats>  nodeCountsMap = null;
-            Map<String, NodeLineStats>  lineCountsMap = null;
+            Map<String, NodeLineStats>  nodeCountsMap = new HashMap<>();
+            Map<String, NodeLineStats>  lineCountsMap = new HashMap<>();
             if (nodes !=null) {
                 for (Node node: nodes) {
                     String name = node.getName();
