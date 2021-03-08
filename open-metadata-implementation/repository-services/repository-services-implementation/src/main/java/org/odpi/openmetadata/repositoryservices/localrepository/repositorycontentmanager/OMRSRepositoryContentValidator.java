@@ -1456,6 +1456,38 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     }
 
 
+    /**
+     * Validate that a home metadata collection identifier in an classification is not null.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param classification classification to test.
+     * @param methodName method receiving the call
+     * @throws RepositoryErrorException no guid provided
+     */
+    @Override
+    public  void validateHomeMetadataGUID(String           sourceName,
+                                          Classification   classification,
+                                          String           methodName) throws RepositoryErrorException
+    {
+        final String  thisMethodName = "validateHomeMetadataGUID";
+
+        if (classification == null)
+        {
+            this.throwValidatorLogicError(sourceName, methodName, thisMethodName);
+        }
+
+        if (classification.getMetadataCollectionId() == null)
+        {
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_INSTANCE_METADATA_COLLECTION_ID.getMessageDefinition(classification.getName(),
+                                                                                                                       sourceName,
+                                                                                                                       methodName,
+                                                                                                                       classification.toString()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
+    }
+
+
 
     /**
      * Validate that a home metadata collection identifier in an instance is not null.

@@ -1447,8 +1447,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
 
                             enumPropertyValue.setOrdinal(ordinal);
-                            enumPropertyValue.setSymbolicName(enumPropertyValue.getSymbolicName());
-                            enumPropertyValue.setDescription(enumPropertyValue.getDescription());
+                            enumPropertyValue.setSymbolicName(enumElementDef.getValue());
+                            enumPropertyValue.setDescription(enumElementDef.getDescription());
 
                             resultingProperties.setProperty(propertyName, enumPropertyValue);
 
