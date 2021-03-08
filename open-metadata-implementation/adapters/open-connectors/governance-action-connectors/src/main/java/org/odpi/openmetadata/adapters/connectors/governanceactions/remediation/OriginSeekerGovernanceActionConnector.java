@@ -56,7 +56,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
         {
             if (governanceContext.getActionTargetElements() == null)
             {
-                completionStatus = CompletionStatus.INVALID;
+                completionStatus = CompletionStatus.FAILED;
                 outputGuards.add(OriginSeekerGovernanceActionProvider.NO_TARGETS_DETECTED_GUARD);
             }
             else if (governanceContext.getActionTargetElements().size() == 1)
@@ -70,7 +70,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
 
                 if (existingAssetOriginClassification != null)
                 {
-                    completionStatus = CompletionStatus.INVALID;
+                    completionStatus = CompletionStatus.ACTIONED;
                     outputGuards.add(OriginSeekerGovernanceActionProvider.ORIGIN_ALREADY_ASSIGNED_GUARD);
                 }
 
@@ -92,7 +92,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                          * No origin classifications have been detected which means the guard needs to be set so that a manual assignment
                          * can be initiated.
                          */
-                        outputGuards.add(OriginSeekerGovernanceActionProvider.NO_TARGETS_DETECTED_GUARD);
+                        outputGuards.add(OriginSeekerGovernanceActionProvider.NO_ORIGINS_DETECTED_GUARD);
                         completionStatus = CompletionStatus.INVALID;
                     }
                     else if (originClassifications.size() == 1)
@@ -132,7 +132,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                  * Multiple action targets to supply.  This governance action does not support multiple action targets because the
                  * result of the origin search could be different for each action target and so it would be difficult to automate the response.
                  */
-                completionStatus = CompletionStatus.INVALID;
+                completionStatus = CompletionStatus.FAILED;
                 outputGuards.add(OriginSeekerGovernanceActionProvider.MULTIPLE_TARGETS_DETECTED_GUARD);
             }
 

@@ -12,7 +12,7 @@
 * ConnectorProviderClassName: org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider
 
 
-Move/Copy File Governance Action Service moves or copies files from one location to another and
+**Move/Copy File** Provisioning Governance Action Service moves or copies files from one location to another and
 optionally creates lineage between them.
 
 This governance action service is highly configurable.

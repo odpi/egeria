@@ -2,17 +2,17 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
-# Generic Element Watchdog Governance Action Service
+# Generic Folder Watchdog Governance Action Service
 
 * Connector Category: [Watchdog Governance Action Service](../../../open-metadata-implementation/frameworks/governance-action-framework/docs/watchdog-governance-service.md)
 * Hosting Service: [Governance Action OMES](../../../open-metadata-implementation/engine-services/governance-action)
 * Hosting Server: [Engine Host](../../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
 * Source Module: [governance-action-connectors](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors)
 * Jar File Name: `governance-action-connectors.jar`
-* ConnectorProviderClassName: `org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericElementWatchdogGovernanceActionProvider`
+* ConnectorProviderClassName: `org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider`
 
 
-The **Generic Element Watchdog** Governance Action Service detects changes to requested elements and initiates a governance action process when they
+The **Generic Folder Watchdog** Governance Action Service detects changes to the assets in a specific folder and initiates a governance action process when they
 occur.  It has two modes of operation: 
 
 - listening for a single event and then terminating when it occurs or 
@@ -20,13 +20,12 @@ occur.  It has two modes of operation:
 
 It is possible to listen for:
 
-- specific types of elements
-- specific instances
+- assets directly in the folder - and optionally assets in any nested folder
 - specific types of events
 
 
-![Figure 1](generic-element-watchdog-governance-action-service.png#pagewidth)
-> **Figure 1:** Operation of generic element watchdog governance action service
+![Figure 1](generic-folder-watchdog-governance-action-service.png#pagewidth)
+> **Figure 1:** Operation of generic folder watchdog governance action service
 
 
 ## Configuration
@@ -37,14 +36,10 @@ running in the [Engine Host](../../../open-metadata-implementation/admin-service
 The following properties that can be set up
 in its connection's configuration properties and overridden by the request parameters.
 
-The **interestingTypeName** property takes the name of an element type.  If set, it determines which types of elements are to be
+The **interestingTypeName** property takes the name of an DataFile type.  If set, it determines which types of assets are to be
 monitored.  This monitoring includes all subtypes of this interesting type.  If interestingTypeName is not set
-the default value is OpenMetadataRoot - effectively all elements with an open metadata type.
+the default value is DataFile - effectively all files with an open metadata type.
 
-The **instanceToMonitor** property takes the unique identifier of a metadata element.  If set, this service will
-only consider events for this instance.  If it is not set then all elements of the interesting type are
-monitored unless there are one or more action targets that are labelled with instanceToMonitor when this service starts.
-If the action targets are set up then these are the instances that are monitored.
 
 The rest of the properties are the governance action processes to call for specific types of events.  The property is set to the
 qualified name of the process to run if the type of event occurs on the metadata instance(s) being monitored.  If the property is not
@@ -56,9 +51,6 @@ set, the type of event it refers to is ignored.
 - **classifiedElementProcessName**: listen for elements that have had a new classification attached
 - **reclassifiedElementProcessName**: listen for elements that have had the properties in one of their classifications changed
 - **declassifiedElementProcessName**: listen for elements that have had a classification removed
-- **newRelationshipProcessName**: listen for new relationships linking these elements to other elements
-- **updatedRelationshipProcessName**: listen for changes to the properties of relationships that are attached to these elements
-- **deletedRelationshipProcessName**: listen for the removal of relationships attached to these elements
 
 This is its connection definition to use when
 creating the definition of the governance action service
@@ -74,21 +66,17 @@ Replace `{typeName}`, `{guid}` and `{processQualifiedName}` as required.
                       "connectorType" : 
                       {
                            "class" : "ConnectorType",
-                           "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericElementWatchdogGovernanceActionProvider"           
+                           "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider"           
                       },
                       "configurationProperties": 
                       {
                               "interestingTypeName": "{typeName}",
-                              "instanceToMonitor": "{guid}",
                               "newElementProcessName": "{processQualifiedName}",
                               "updatedElementProcessName": "{processQualifiedName}",
                               "deletedElementProcessName": "{processQualifiedName}",
                               "classifiedElementProcessName": "{processQualifiedName}",
                               "reclassifiedElementProcessName": "{processQualifiedName}",
-                              "declassifiedElementProcessName": "{processQualifiedName}",
-                              "newRelationshipProcessName": "{processQualifiedName}",
-                              "updatedRelationshipProcessName": "{processQualifiedName}",
-                              "deletedRelationshipProcessName": "{processQualifiedName}"
+                              "declassifiedElementProcessName": "{processQualifiedName}"
                       }
                   }
 }
@@ -104,27 +92,29 @@ it supports the following options.
 
 There are two request types that control its modes of operation:
 
-* **process-single-event** to request it monitors for a single specific event and then completes.
-* **process-multiple-events** to request it continuously monitors for events until it fails.
-If the engine host server where it is running is restarted, this governance action service is also restarted.
+* **member-of-folder** to request it monitors for file assets that are directly in the named folder.
+* **nested-in-folder** to request it monitors for file assets that are either directly in the named folder or any sub-folder.
 
 Any of the configuration properties can be overridden by request parameters of the same name.
 
 #### Action Targets
 
-The **instanceToMonitor** property can be supplied as a name action target.  Using action targets allows the
+The **folderTarget** property can be supplied as a named action target.  Using action targets allows the
 instance to be dynamically controlled and for multiple instances to be monitored.
 
 #### Completion Status and Guards
 
-This service will only complete and produce a guard if it encounters an unrecoverable error or 
-it is set up to listen for a single event and that event occurs.
+This service will only complete and produce a guard if it encounters an unrecoverable error.
 
-On completion, this governance action service uses:
+In which case, this governance action service uses:
 
-* `CompletionStatus.ACTIONED` with guard `monitoring-complete` - requested single event occurred, or
-* `CompletionStatus.FAILED` with guard `monitoring-failed` - monitor not configured correctly or failed 
+* `CompletionStatus.FAILED` with guard `monitoring-failed` 
 
+It is also possible to shutdown the governance action service by setting
+
+* `CompletionStatus.ACTIONED` with guard `monitoring-completed` 
+
+in the governance action.
 
 ## Examples of use
 
