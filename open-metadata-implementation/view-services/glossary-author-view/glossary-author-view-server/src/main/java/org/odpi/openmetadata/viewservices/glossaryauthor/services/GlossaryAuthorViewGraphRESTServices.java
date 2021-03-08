@@ -66,12 +66,14 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
             // construct graph statistics from the graph
             GraphStatistics graphStatistics = new GraphStatistics(guid, 1);
 
-            Set<? extends Node> nodes= graph.getNodes();
-            Set<? extends Line> lines= graph.getLines();
+            Map<String, Node> nodes= graph.getNodes();
+            Map<String, Line> lines= graph.getLines();
             Map<String, NodeLineStats>  nodeCountsMap = new HashMap<>();
             Map<String, NodeLineStats>  lineCountsMap = new HashMap<>();
             if (nodes !=null) {
-                for (Node node: nodes) {
+                Set<String> nodeGuids = nodes.keySet();
+                for (String nodeGuid: nodeGuids) {
+                    Node node = nodes.get(nodeGuid);
                     String typeName = node.getNodeType().name();
                     NodeLineStats countForNodeOrLineType = nodeCountsMap.get(typeName);
                     int count =0;
@@ -83,7 +85,9 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
                 }
             }
             if (lines !=null) {
-                for (Line line: lines) {
+                Set<String> lineGuids = lines.keySet();
+                for (String lineGuid: lineGuids) {
+                    Line line = lines.get(lineGuid);
                     String typeName = line.getLineType().name();
                     NodeLineStats countForNodeOrLineType = lineCountsMap.get(typeName);
                     int count =0;
