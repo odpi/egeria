@@ -52,7 +52,7 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
         return response;
     }
 
-    public SubjectAreaOMASAPIResponse<GraphStatistics> getGraphStatistics(String serverName, String userId, String guid, Date asOfTime, String nodeFilterStr, String lineFilterStr, StatusFilter statusFilter) {
+    public SubjectAreaOMASAPIResponse<GraphStatistics> getGraphCounts(String serverName, String userId, String guid, Date asOfTime, String nodeFilterStr, String lineFilterStr, StatusFilter statusFilter) {
         final String methodName = "getGraphStatistics";
         SubjectAreaOMASAPIResponse<GraphStatistics> response = new SubjectAreaOMASAPIResponse<>();
 

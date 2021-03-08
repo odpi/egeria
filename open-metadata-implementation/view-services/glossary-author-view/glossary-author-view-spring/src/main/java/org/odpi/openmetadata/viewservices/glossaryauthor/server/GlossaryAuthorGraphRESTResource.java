@@ -98,7 +98,7 @@ public class GlossaryAuthorGraphRESTResource {
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    @GetMapping( path = "/users/{userId}/graph-counts/{guid}")
+    @GetMapping( path = "/graph-counts/{guid}")
     public SubjectAreaOMASAPIResponse<GraphStatistics> getGraphCounts(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,
@@ -108,6 +108,6 @@ public class GlossaryAuthorGraphRESTResource {
                                                                       @RequestParam(value = "statusFilter", required=false)StatusFilter statusFilter   // may need to extend this for controlled terms
                                                                      ) {
 
-        return restAPI.getGraphStatistics(serverName, userId, guid, asOfTime,  nodeFilterStr, lineFilterStr, statusFilter);
+        return restAPI.getGraphCounts(serverName, userId, guid, asOfTime, nodeFilterStr, lineFilterStr, statusFilter);
     }
 }
