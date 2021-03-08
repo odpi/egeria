@@ -78,15 +78,16 @@ public class AnalyticsArtifactHandler {
 	/**
 	 * Create assets defined by input.
 	 * @param user making the request.
+	 * @param serverCapability where the artifact is located.
 	 * @param input definition of analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
 	 */
-	public ResponseContainerAssets createAssets(String user, String input)
+	public ResponseContainerAssets createAssets(String user, String serverCapability, String input)
 			throws AnalyticsModelingCheckedException
 	{
 		String methodName = "createAssets";
-		ctx.setUserId(user);	// set the user requested the operation
+		ctx.initializeSoftwareServerCapability(user, serverCapability);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		List<String> guids = new ArrayList<>();

@@ -146,7 +146,7 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 			json = json.replace(pair.getKey(), pair.getValue());
 		}
 
-		ResponseContainerAssets guids = obj.createAssets(USER_ID, json);
+		ResponseContainerAssets guids = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, json);
 		
 		assertEquals(guids.getAssetsList().size(), 1, "Single asset should be created.");
 		
@@ -167,9 +167,11 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 	@Test
 	void testCreateModule() throws Exception {
 
-		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
 		
-		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		ResponseContainerAssets guidsModule = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -189,11 +191,12 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 	@Test
 	void testCreateReport() throws Exception {
 
-		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
-		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
 		
 		
-		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "report"));
+		ResponseContainerAssets guidsReport = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				TestUtilities.readJsonFile(FOLDER_INPUT, "report"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
@@ -213,10 +216,11 @@ class AnalyticsArtifactHandlerTest extends InMemoryRepositoryTest {
 	@Test
 	void testCreateDashboard() throws Exception {
 
-		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
-		obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "baseModule"));
+		obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
 		
-		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, TestUtilities.readJsonFile(FOLDER_INPUT, "dashboard"));
+		ResponseContainerAssets guidsDashBoard = obj.createAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
+				TestUtilities.readJsonFile(FOLDER_INPUT, "dashboard"));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the built asset. 
