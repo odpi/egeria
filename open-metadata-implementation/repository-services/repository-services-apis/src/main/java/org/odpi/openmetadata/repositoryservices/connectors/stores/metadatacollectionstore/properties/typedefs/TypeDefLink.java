@@ -86,7 +86,8 @@ public class TypeDefLink extends TypeDefElementHeader
      *
      * @return String guid
      */
-    public String getGUID() {
+    public String getGUID()
+    {
         return guid;
     }
 
@@ -109,7 +110,8 @@ public class TypeDefLink extends TypeDefElementHeader
      *
      * @return String name
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 

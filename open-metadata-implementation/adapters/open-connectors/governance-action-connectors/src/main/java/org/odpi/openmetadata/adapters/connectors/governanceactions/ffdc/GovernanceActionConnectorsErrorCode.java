@@ -54,11 +54,20 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
             "The exception is logged and the integration connector continues to synchronize metadata.  " +
                     "This file is not catalogued at this time but may succeed later.",
             "Use the message in the unexpected exception to determine the root cause of the error and fix it."),
+
+    NO_SOURCE_FILE_NAME(400, "GOVERNANCE-ACTION-CONNECTORS-400-006",
+                        "The {0} governance action service has been called without a source file name to work with",
+                        "The provisioning governance action service connector is designed to manage files on request.  " +
+                                "It is unable to operate without the name of the source file and so it terminates with a FAILED completion status.",
+                        "The source file is passed to the governance action service through the request parameters or via the TargetForAction " +
+                                "relationship.  Correct the information passed to the governance service and rerun the request"),
+
     FILES_LOCATION_NOT_FOUND(404, "GOVERNANCE-ACTION-CONNECTORS-404-001",
              "The directory named {0} in the Connection object {1} does not exist",
              "The connector is unable to locate the file it has been asked to work with.",
              "Ensure that the name of the file in the address property of the connection's Endpoint object matches the location of the file " +
                            "that the connector is to access."),
+
     UNEXPECTED_SECURITY_EXCEPTION(500, "GOVERNANCE-ACTION-CONNECTORS-500-001",
              "The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to access the file.",
