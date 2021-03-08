@@ -72,26 +72,26 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
             Map<String, NodeLineStats>  lineCountsMap = new HashMap<>();
             if (nodes !=null) {
                 for (Node node: nodes) {
-                    String name = node.getName();
-                    NodeLineStats countForNodeOrLineType = nodeCountsMap.get(name);
+                    String typeName = node.getNodeType().name();
+                    NodeLineStats countForNodeOrLineType = nodeCountsMap.get(typeName);
                     int count =0;
                     if (countForNodeOrLineType != null) {
                         count = countForNodeOrLineType.getCount();
                     }
-                    countForNodeOrLineType = new NodeLineStats(name, count+1);
-                    nodeCountsMap.put(name, countForNodeOrLineType);
+                    countForNodeOrLineType = new NodeLineStats(typeName, count+1);
+                    nodeCountsMap.put(typeName, countForNodeOrLineType);
                 }
             }
             if (lines !=null) {
                 for (Line line: lines) {
-                    String name = line.getName();
-                    NodeLineStats countForNodeOrLineType = lineCountsMap.get(name);
+                    String typeName = line.getLineType().name();
+                    NodeLineStats countForNodeOrLineType = lineCountsMap.get(typeName);
                     int count =0;
                     if (countForNodeOrLineType != null) {
                         count = countForNodeOrLineType.getCount();
                     }
-                    countForNodeOrLineType = new NodeLineStats(name, count+1);
-                    lineCountsMap.put(name, countForNodeOrLineType);
+                    countForNodeOrLineType = new NodeLineStats(typeName, count+1);
+                    lineCountsMap.put(typeName, countForNodeOrLineType);
                 }
             }
             graphStatistics.setLineCounts(lineCountsMap);
