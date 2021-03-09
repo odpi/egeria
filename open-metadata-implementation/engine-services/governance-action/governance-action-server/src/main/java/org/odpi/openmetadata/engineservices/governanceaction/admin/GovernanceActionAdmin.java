@@ -36,7 +36,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
      * @param localServerPassword password for this server to use if sending REST requests.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions.
-     * @param governanceActionClient client used to connect to the Governance Engine OMAS to manage governance actions
+     * @param serverClient client used to connect to the Governance Engine OMAS to manage governance actions
      * @param engineServiceConfig details of the options and the engines to run.
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
@@ -47,7 +47,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                            String                              localServerPassword,
                                                            int                                 maxPageSize,
                                                            GovernanceEngineConfigurationClient configurationClient,
-                                                           GovernanceEngineClient              governanceActionClient,
+                                                           GovernanceEngineClient              serverClient,
                                                            EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize engine service";
@@ -110,7 +110,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                                                                                accessServiceServerName,
                                                                                                                                localServerUserId,
                                                                                                                                configurationClient,
-                                                                                                                               governanceActionClient,
+                                                                                                                               serverClient,
                                                                                                                                governanceEngineClient,
                                                                                                                                maxPageSize);
 
@@ -174,7 +174,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
      * @param accessServiceServerName Server Name for the Governance Action Engine OMAS
      * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages.
      * @param configurationClient client to retrieve configuration from
-     * @param governanceActionClient client to control the execution of governance action requests
+     * @param serverClient client to control the execution of governance action requests
      * @param governanceEngineClient client for calling REST APIs
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      * @return map of governance action engine GUIDs to handlers
@@ -184,7 +184,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                                           String                              accessServiceServerName,
                                                                                           String                              localServerUserId,
                                                                                           GovernanceEngineConfigurationClient configurationClient,
-                                                                                          GovernanceEngineClient              governanceActionClient,
+                                                                                          GovernanceEngineClient              serverClient,
                                                                                           GovernanceEngineClient              governanceEngineClient,
                                                                                           int                                 maxPageSize)
     {
@@ -203,7 +203,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                                            accessServiceRootURL,
                                                                                            localServerUserId,
                                                                                            configurationClient,
-                                                                                           governanceActionClient,
+                                                                                           serverClient,
                                                                                            governanceEngineClient,
                                                                                            auditLog,
                                                                                            maxPageSize);

@@ -300,7 +300,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                                                                       Long.toString(endTime.getTime() - startTime.getTime())));
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             auditLog.logException(actionDescription,
                                   GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_FAILED.getMessageDefinition(governanceActionServiceType,

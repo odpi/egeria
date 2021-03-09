@@ -343,6 +343,39 @@ public class OMRSAPIHelper {
         }
     }
 
+    public void callOMRSUpdateClassification(String restAPIName,
+                                             String userId,
+                                             String entityGUID,
+                                             Classification existingClassification,
+                                             InstanceProperties newProperties) throws UserNotAuthorizedException,
+                                                                                      PropertyServerException,
+                                                                                      SubjectAreaCheckedException {
+        String methodName = "callOMRSUpdateClassification";
+        try {
+            InstanceType type = existingClassification.getType();
+            String typeDefGUID = null;
+            String typeDefName = null;
+
+            if (type != null) {
+                typeDefGUID = type.getTypeDefGUID();
+                typeDefName = type.getTypeDefName();
+            }
+            getRepositoryHandler().reclassifyEntity(userId,
+                                                    null,
+                                                    null,
+                                                    entityGUID,
+                                                    typeDefGUID,
+                                                    typeDefName,
+                                                    existingClassification,
+                                                    newProperties,
+                                                    restAPIName);
+        } catch (PropertyServerException | UserNotAuthorizedException e) {
+            throw e;
+        } catch (Exception error) {
+            prepareUnexpectedError(error, methodName);
+        }
+    }
+
     public void callOMRSDeClassifyEntity(String restAPIName,
                                          String userId,
                                          String entityGUID,

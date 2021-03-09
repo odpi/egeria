@@ -252,8 +252,8 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is not able to continue processing the request.",
             "This error suggests there is a logic error in either this repository, or the home repository for this instance.  Raise a Github issue to get this fixed."),
     NULL_INSTANCE_METADATA_COLLECTION_ID(400, "OMRS-REPOSITORY-400-054",
-            "The instance {0} retrieved from repository {1} during the {2} operation has a null metadata collection id in its header: {3}",
-            "The system is unable to process the request further.",
+            "The element {0} retrieved from repository {1} during the {2} operation has a null metadata collection id in its header: {3}",
+            "The system is unable to process the request further because the element has an invalid header.",
             "This error suggests there is a logic error in either this repository, or the home repository for the instance.  Open a Github issue to get this fixed."),
     UNEXPECTED_EXCEPTION_FROM_COHORT(400, "OMRS-REPOSITORY-400-055",
             "An unexpected {0} exception was received from a repository connector during the {1} operation which had message: {2}",
@@ -370,6 +370,15 @@ public enum OMRSErrorCode implements ExceptionMessageSet
                                        "classification for an entity in this repository because it does not support the classification type.  " +
                                        "The system will attempt to store the classification in another member of the cohort",
             "Ensure there is at least one repository in the cohort that supports this classification type."),
+    ENTITY_ALREADY_CLASSIFIED(400, "OMRS-REPOSITORY-400-081",
+                          "A {0} request has been made to repository {1} to add a classification {2} to entity {3} when this entity is already classified",
+                          "The system is unable to perform the request as only one classification of a specific type is permitted.",
+                          "Use the updateClassificationProperties to make changed to an existing classification."),
+    NO_HOME_FOR_CLASSIFICATION(400, "OMRS-REPOSITORY-400-082",
+                         "The OMRS repository connector operation {0} from the OMRS Enterprise Repository Services can not locate the home repository connector for classification {1} located in metadata collection {2}",
+                         "The system is unable to proceed with processing this classification update request because it does not know which repository to call.",
+                         "This error suggests there is a logic error in either this repository, or the home repository for the classification. " +
+                                 "Note this may be different from the home repository for the entity.  Raise a Github issue in order to get this fixed."),
 
     NULL_USER_NAME(400, "OMRS-REST-API-400-001",
             "The OMRS REST API for server {0} has been called with a null user name (userId)",

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-# API for the open metadata connectors
+# API for the open metadata security connectors
 
 Below is a description of the API of the two
 [Open Metadata Security Connectors](../metadata-security-connectors).
