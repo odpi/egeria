@@ -7,7 +7,7 @@ name: "Merge (Java8, Maven)"
 
 on:
   push:
-    branches: [master,egeria-release-*,egeria-feature-*]
+    branches: [master,egeria-release-*,feature-*]
   
 jobs:
   build:
