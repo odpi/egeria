@@ -225,7 +225,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                     List<String> outputGuards = new ArrayList<>();
                     outputGuards.add(GenericWatchdogGovernanceActionProvider.MONITORING_FAILED);
 
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null);
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards);
                 }
                 catch (Exception error)
                 {

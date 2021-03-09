@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetProperties;
 
 import java.util.Date;
 import java.util.Map;
@@ -19,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataStoreProperties extends AssetProperties
+public class DataStoreProperties extends DataAssetProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -68,7 +67,7 @@ public class DataStoreProperties extends AssetProperties
      *
      * @param template object to copy
      */
-    public DataStoreProperties(AssetProperties template)
+    public DataStoreProperties(DataAssetProperties template)
     {
         super(template);
     }

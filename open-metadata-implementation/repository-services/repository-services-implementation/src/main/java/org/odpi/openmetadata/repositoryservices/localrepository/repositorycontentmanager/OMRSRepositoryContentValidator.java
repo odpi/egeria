@@ -621,7 +621,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         final String userIdParameterName = "userId";
 
-        if ("".equals(userId))
+        if ((userId == null) || (userId.length() == 0))
         {
             throw new InvalidParameterException(OMRSErrorCode.NULL_USER_ID.getMessageDefinition(userIdParameterName, methodName, sourceName),
                                                 this.getClass().getName(),
@@ -1921,7 +1921,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                         String searchCriteria,
                                         String methodName) throws InvalidParameterException
     {
-        if ((searchCriteria == null) || ("".equals(searchCriteria)))
+        if ((searchCriteria == null) || (searchCriteria.length() == 0))
         {
             throw new InvalidParameterException(OMRSErrorCode.NO_SEARCH_CRITERIA.getMessageDefinition(parameterName,
                                                                                                       methodName,
@@ -3384,9 +3384,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 throw new InvalidParameterException(OMRSErrorCode.INVALID_RELATIONSHIP_ENDS.getMessageDefinition(methodName,
                                                                                                                  sourceName,
-                                                                                                                 typeDef.toString(),
-                                                                                                                 entityOneProxy.toString(),
-                                                                                                                 entityTwoProxy.toString()),
+                                                                                                                 typeDef.getName(),
+                                                                                                                 entityOneProxy.getGUID(),
+                                                                                                                 entityOneTypeName,
+                                                                                                                 entityOneTypeDefName,
+                                                                                                                 entityTwoProxy.getGUID(),
+                                                                                                                 entityTwoTypeName,
+                                                                                                                 entityTwoTypeDefName),
                                                     this.getClass().getName(),
                                                     methodName,
                                                     "relationship.End");

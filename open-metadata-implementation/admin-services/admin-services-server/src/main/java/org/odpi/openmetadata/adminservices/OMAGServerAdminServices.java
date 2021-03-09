@@ -136,7 +136,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(typeName))
+            if ((typeName != null) && (typeName.length() == 0))
             {
                 typeName = null;
             }
@@ -209,7 +209,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(name))
+            if (name != null && (name.length() == 0))
             {
                 name = null;
             }
@@ -282,7 +282,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(serverUserId))
+            if ((serverUserId != null) && (serverUserId.length() == 0))
             {
                 serverUserId = null;
             }
@@ -355,7 +355,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(serverPassword))
+            if ((serverPassword != null) && (serverPassword.length() == 0))
             {
                 serverPassword = null;
             }
@@ -512,7 +512,7 @@ public class OMAGServerAdminServices
 
             EventBusConfig   eventBusConfig = new EventBusConfig();
 
-            if ("".equals(connectorProvider))
+            if ((connectorProvider != null) && (connectorProvider.length() == 0))
             {
                 eventBusConfig.setConnectorProvider(null);
             }
@@ -521,7 +521,7 @@ public class OMAGServerAdminServices
                 eventBusConfig.setConnectorProvider(connectorProvider);
             }
 
-            if ("".equals(topicURLRoot))
+            if ((topicURLRoot != null) && (topicURLRoot.length() == 0))
             {
                 eventBusConfig.setTopicURLRoot(null);
             }
@@ -742,7 +742,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(url))
+            if ((url != null) && (url.length() == 0))
             {
                 url = null;
             }
