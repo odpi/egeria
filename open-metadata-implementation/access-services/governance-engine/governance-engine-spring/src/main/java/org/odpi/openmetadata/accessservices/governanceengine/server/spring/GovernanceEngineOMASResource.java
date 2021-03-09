@@ -85,13 +85,57 @@ public class GovernanceEngineOMASResource
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    @PostMapping(path = "/open-metadata-store/elements/{elementGUID}")
+    @GetMapping(path = "/open-metadata-store/metadata-elements/{elementGUID}")
 
     public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String serverName,
                                                                 @PathVariable String userId,
                                                                 @PathVariable String elementGUID)
     {
         return restAPI.getMetadataElementByGUID(serverName, userId, elementGUID);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/open-metadata-store/metadata-elements/by-unique-name")
+
+    public OpenMetadataElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
+                                                                      @PathVariable String          userId,
+                                                                      @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementByUniqueName(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element unique identifier (guid) or
+     *  InvalidParameterException the unique identifier is null or not known or
+     *  UserNotAuthorizedException the governance action service is not able to access the element or
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/open-metadata-store/metadata-elements/guid-by-unique-name")
+
+    public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
+                                                           @PathVariable String          userId,
+                                                           @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementGUIDByUniqueName(serverName, userId, requestBody);
     }
 
 
@@ -129,6 +173,7 @@ public class GovernanceEngineOMASResource
      * @param userId caller's userId
      * @param elementGUID unique identifier for the starting metadata element
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -144,10 +189,11 @@ public class GovernanceEngineOMASResource
                                                                          @PathVariable String userId,
                                                                          @PathVariable String elementGUID,
                                                                          @PathVariable String relationshipTypeName,
+                                                                         @RequestParam int    startingAtEnd,
                                                                          @RequestParam int    startFrom,
                                                                          @RequestParam int    pageSize)
     {
-        return restAPI.getRelatedMetadataElements(serverName, userId, elementGUID, relationshipTypeName, startFrom, pageSize);
+        return restAPI.getRelatedMetadataElements(serverName, userId, elementGUID, relationshipTypeName, startingAtEnd, startFrom, pageSize);
     }
 
 
@@ -327,7 +373,7 @@ public class GovernanceEngineOMASResource
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classification/{classificationName}/new")
+    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/new")
 
     public VoidResponse classifyMetadataElementInStore(@PathVariable String                       serverName,
                                                        @PathVariable String                       userId,
@@ -355,7 +401,7 @@ public class GovernanceEngineOMASResource
      *  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classification/{classificationName}/update-properties")
+    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-properties")
 
     public VoidResponse reclassifyMetadataElementInStore(@PathVariable String                      serverName,
                                                          @PathVariable String                      userId,
@@ -383,7 +429,7 @@ public class GovernanceEngineOMASResource
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classification/{classificationName}/update-status")
+    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-status")
 
     public VoidResponse updateClassificationStatusInStore(@PathVariable String                            serverName,
                                                           @PathVariable String                            userId,
@@ -410,7 +456,7 @@ public class GovernanceEngineOMASResource
      *  UserNotAuthorizedException the governance action service is not authorized to remove this classification
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classification/{classificationName}/delete")
+    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/delete")
 
     public VoidResponse unclassifyMetadataElementInStore(@PathVariable                  String          serverName,
                                                          @PathVariable                  String          userId,
@@ -640,7 +686,7 @@ public class GovernanceEngineOMASResource
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/governance-actions-processes/initiate")
+    @PostMapping(path = "/governance-action-processes/initiate")
 
     public GUIDResponse initiateGovernanceActionProcess(@PathVariable String                             serverName,
                                                         @PathVariable String                             userId,

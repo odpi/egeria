@@ -1456,6 +1456,38 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     }
 
 
+    /**
+     * Validate that a home metadata collection identifier in an classification is not null.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param classification classification to test.
+     * @param methodName method receiving the call
+     * @throws RepositoryErrorException no guid provided
+     */
+    @Override
+    public  void validateHomeMetadataGUID(String           sourceName,
+                                          Classification   classification,
+                                          String           methodName) throws RepositoryErrorException
+    {
+        final String  thisMethodName = "validateHomeMetadataGUID";
+
+        if (classification == null)
+        {
+            this.throwValidatorLogicError(sourceName, methodName, thisMethodName);
+        }
+
+        if (classification.getMetadataCollectionId() == null)
+        {
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_INSTANCE_METADATA_COLLECTION_ID.getMessageDefinition(classification.getName(),
+                                                                                                                       sourceName,
+                                                                                                                       methodName,
+                                                                                                                       classification.toString()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
+    }
+
+
 
     /**
      * Validate that a home metadata collection identifier in an instance is not null.
@@ -1549,6 +1581,48 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         else
         {
             this.validateAsOfTime(sourceName, parameterName, asOfTime, methodName);
+        }
+    }
+
+
+    /**
+     * Validate that the time parameters are not inverted ('from' later than 'to').
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param parameterName name of the parameter that passed the guid.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the instance (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the instance (exclusive)
+     * @param methodName method receiving the call
+     * @throws InvalidParameterException 'fromTime' is later than 'toTime', or either is some point in the future
+     */
+    @Override
+    public  void validateDateRange(String sourceName,
+                                   String parameterName,
+                                   Date   fromTime,
+                                   Date   toTime,
+                                   String methodName) throws InvalidParameterException
+    {
+        // If either (or both) are null, then this is valid: simply extend forwards or backwards (or both) as far as we can
+        if (fromTime != null && toTime != null)
+        {
+            if (fromTime.compareTo(toTime) > 0)
+            {
+                throw new InvalidParameterException(OMRSErrorCode.INVALID_TIME_RANGE.getMessageDefinition(methodName,
+                                                                                                          fromTime.toString(),
+                                                                                                          toTime.toString()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+            }
+        }
+        // Regardless, validate any non-null date is not in the future
+        if (fromTime != null)
+        {
+            this.validateAsOfTime(sourceName, "fromTime", fromTime, methodName);
+        }
+        if (toTime != null)
+        {
+            this.validateAsOfTime(sourceName, "toTime", toTime, methodName);
         }
     }
 
