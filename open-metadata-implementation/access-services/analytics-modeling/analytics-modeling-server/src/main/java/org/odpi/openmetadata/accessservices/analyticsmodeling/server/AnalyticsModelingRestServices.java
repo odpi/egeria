@@ -212,7 +212,7 @@ public class AnalyticsModelingRestServices {
 
 			AssetsResponse response = new AssetsResponse();
 			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
-					.createAssets(userId, artifact);
+					.createAssets(userId, serverCapability, artifact);
 			response.setAssetList(assets);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {

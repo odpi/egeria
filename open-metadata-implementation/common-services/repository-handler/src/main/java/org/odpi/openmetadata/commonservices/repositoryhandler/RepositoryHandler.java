@@ -817,8 +817,8 @@ public class RepositoryHandler
      * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName unique name for the external source.
      * @param entityGUID entity to update
-     * @param existingEntityClassifications existing classifications
-     * @param classifications classifications for the entity
+     * @param existingEntityClassifications existing classifications retrieved from the repository
+     * @param classifications new/updated classifications for the entity
      * @param methodName name of calling method
      * @throws InvalidParameterException problem with the GUID
      * @throws PropertyServerException problem accessing property server

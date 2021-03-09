@@ -2344,8 +2344,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName, entity, newClassification, methodName);
 
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
-
         graphStore.updateEntityInStore(updatedEntity);
 
         return updatedEntity;
@@ -2473,8 +2471,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName, entity, newClassification, methodName);
 
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
-
         graphStore.updateEntityInStore(updatedEntity);
 
         return updatedEntity;
@@ -2531,8 +2527,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName, entity, classificationName, methodName);
-
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
         graphStore.updateEntityInStore(updatedEntity);
 
@@ -3426,8 +3420,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 entity,
                 newClassification,
                 methodName);
-
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
         graphStore.updateEntityInStore(updatedEntity);
 

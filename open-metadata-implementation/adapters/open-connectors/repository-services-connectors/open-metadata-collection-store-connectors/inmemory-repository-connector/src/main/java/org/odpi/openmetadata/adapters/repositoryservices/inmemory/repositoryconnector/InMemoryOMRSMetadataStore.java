@@ -6,8 +6,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositorycon
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
 import java.util.*;
 
@@ -284,6 +282,7 @@ class InMemoryOMRSMetadataStore
 
         while (existingEntity != null)
         {
+            entityStore.put(entity.getGUID(), existingEntity);
             entity.setGUID(UUID.randomUUID().toString());
             existingEntity = entityStore.put(entity.getGUID(), entity);
         }
@@ -308,6 +307,7 @@ class InMemoryOMRSMetadataStore
 
         while (existingRelationship != null)
         {
+            relationshipStore.put(relationship.getGUID(), existingRelationship);
             relationship.setGUID(UUID.randomUUID().toString());
             existingRelationship = relationshipStore.put(relationship.getGUID(), relationship);
         }
@@ -333,9 +333,9 @@ class InMemoryOMRSMetadataStore
      *
      * @param entity - new version of the entity
      */
-    synchronized void updateEntityInStore(EntityDetail    entity)
+    synchronized void updateEntityInStore(EntityDetail entity)
     {
-        EntityDetail    oldEntity = entityStore.put(entity.getGUID(), entity);
+        EntityDetail oldEntity = entityStore.put(entity.getGUID(), entity);
 
         if (oldEntity != null)
         {
@@ -349,7 +349,7 @@ class InMemoryOMRSMetadataStore
      *
      * @param entityProxy - entity proxy object to add
      */
-    synchronized void updateEntityProxyInStore(EntityProxy    entityProxy)
+    synchronized void updateEntityProxyInStore(EntityProxy entityProxy)
     {
         entityProxyStore.put(entityProxy.getGUID(), entityProxy);
     }
