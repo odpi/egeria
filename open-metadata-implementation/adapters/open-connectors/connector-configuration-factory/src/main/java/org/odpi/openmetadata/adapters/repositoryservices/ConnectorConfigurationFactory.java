@@ -500,7 +500,7 @@ public class ConnectorConfigurationFactory
 
         String connectorTypeJavaClassName = KAFKA_OPEN_METADATA_TOPIC_PROVIDER;
 
-        if ((connectorProviderClassName != null) && (! "".equals(connectorProviderClassName)))
+        if ((connectorProviderClassName != null) && (connectorProviderClassName.length() > 0))
         {
             connectorTypeJavaClassName = connectorProviderClassName;
         }

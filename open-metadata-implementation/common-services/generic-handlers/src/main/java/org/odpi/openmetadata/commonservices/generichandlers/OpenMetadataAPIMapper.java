@@ -901,7 +901,7 @@ public class OpenMetadataAPIMapper
     /* Project */
 
     public static final String SUPPLEMENTARY_PROPERTIES_TYPE_GUID                = "2bb10ba5-7aa2-456a-8b3a-8fdbd75c95cd";
-    public static final String SUPPLEMENTARY_PROPERTIES_TYPE_NAME                = "SupplementaryProperties";
+    public static final String SUPPLEMENTARY_PROPERTIES_TYPE_NAME                = "SupplementaryProperties";  /* from Area 3 */
     /* End1 = Referenceable; End 2 = GlossaryTerm */
 
 
