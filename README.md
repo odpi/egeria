@@ -94,6 +94,7 @@ the presentations from past webinars.
 We are grateful to [YourKit, LLC](https://www.yourkit.com) for supporting open source projects with its full-feature
 Java Profiler.
 
+TEST FEATURE
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the Egeria project.
