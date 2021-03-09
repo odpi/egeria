@@ -149,9 +149,7 @@ public class ProcessContextHandler {
         String portType = port.getType().getTypeDefName();
 
         if (PORT_ALIAS.equals(portType)) {
-            EntityDetail delegatedPort = handlerHelper.addContextForRelationships(userId, port, PORT_DELEGATION, relationshipsContext);
-
-            addContextForPort(userId, delegatedPort, relationshipsContext);
+            handlerHelper.addContextForRelationships(userId, port, PORT_DELEGATION, relationshipsContext);
         }
         if (PORT_IMPLEMENTATION.equals(portType)) {
             EntityDetail tabularSchemaType = handlerHelper.addContextForRelationships(userId, port, PORT_SCHEMA, relationshipsContext);
