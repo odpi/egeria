@@ -3395,6 +3395,8 @@
                         <exclude>config</exclude>
                         <exclude>**/LICENSE*.txt</exclude>
                         <exclude>data/**</exclude>
+                        <exclude>**/certificates/**</exclude>
+                        <exclude>**/*.p12</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
