@@ -84,8 +84,6 @@ public class AssetContextHandler {
         Map<String, RelationshipsContext> context = new HashMap<>();
         Set<GraphContext> columnContext = new HashSet<>();
 
-//        context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(), handlerHelper.buildLineageMappingsContext(userId,
-//                entityDetail));
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
             case TABULAR_COLUMN:
@@ -117,11 +115,23 @@ public class AssetContextHandler {
         return context;
     }
 
-    private boolean isInternalTabularColumn(String userId, EntityDetail entityDetail) throws InvalidParameterException, PropertyServerException,
-                                                                                             UserNotAuthorizedException {
+    /**
+     * Validates that an entity is internal to DataEngine OMAS
+     *
+     * @param userId        the unique identifier for the user
+     * @param tabularColumn the column to validate
+     *
+     * @return true if it's internal, false otherwise
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private boolean isInternalTabularColumn(String userId, EntityDetail tabularColumn) throws InvalidParameterException, PropertyServerException,
+                                                                                              UserNotAuthorizedException {
         String methodName = "isInternalTabularColumn";
 
-        String anchorGUID = entityDetail.getProperties().getPropertyValue(ANCHOR_GUID).valueAsString();
+        String anchorGUID = tabularColumn.getProperties().getPropertyValue(ANCHOR_GUID).valueAsString();
         if (StringUtils.isEmpty(anchorGUID)) {
             return false;
         }

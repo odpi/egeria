@@ -49,7 +49,6 @@ public class AssetLineagePublisher {
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
     private GlossaryContextHandler glossaryHandler;
-    private AssetContextHandler assetContextHandler;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -68,7 +67,6 @@ public class AssetLineagePublisher {
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
-        this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
     }
 
     /**
@@ -76,7 +74,7 @@ public class AssetLineagePublisher {
      *
      * @param entityDetail entity to get context
      *
-     * @return
+     * @return the Process context
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
@@ -111,6 +109,7 @@ public class AssetLineagePublisher {
      * Build the context for a Glossary Term and publishes the event to the out topic
      *
      * @param entityDetail glossary term to get context
+
      * @return the Glossary Term context
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors

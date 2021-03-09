@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
@@ -36,7 +35,6 @@ import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 
 
@@ -194,64 +192,6 @@ public class HandlerHelper {
     }
 
     /**
-     * Adds entities and relationships for the process Context structure
-     *
-     * @param userId       the user Id of user making request.
-     * @param startEntity  parent entity of the relationship
-     * @param relationship the relationship of the parent node
-     * @param graph        the graph
-     *
-     * @return Entity which is the child of the relationship, null if there is no Entity
-     *
-     * @throws InvalidParameterException  the invalid parameter exception
-     * @throws PropertyServerException    the property server exception
-     * @throws UserNotAuthorizedException the user not authorized exception
-     */
-    EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity, Relationship relationship, AssetContext graph) throws
-                                                                                                                                      OCFCheckedExceptionBase {
-
-        Converter converter = new Converter(repositoryHelper);
-        EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
-
-        if (endEntity == null) return null;
-
-        LineageEntity startVertex;
-        LineageEntity endVertex;
-
-        if (startEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID())) {
-            startVertex = converter.createLineageEntity(endEntity);
-            endVertex = converter.createLineageEntity(startEntity);
-        } else {
-            startVertex = converter.createLineageEntity(startEntity);
-            endVertex = converter.createLineageEntity(endEntity);
-        }
-
-
-        enhanceGraphContext(relationship, graph, startVertex, endVertex);
-        return endEntity;
-
-    }
-
-    private void enhanceGraphContext(Relationship relationship, AssetContext graph, LineageEntity startVertex, LineageEntity endVertex) {
-
-        GraphContext relationshipContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
-
-        if (graph.getNeighbors().containsKey(relationshipContext.getRelationshipGuid())) {
-            return;
-        }
-        for (GraphContext context : graph.getGraphContexts()) {
-            if (relationshipContext.getRelationshipGuid().equals(context.getRelationshipGuid())) {
-                return;
-            }
-        }
-
-        graph.addVertex(startVertex);
-        graph.addVertex(endVertex);
-        graph.addGraphContext(relationshipContext);
-
-    }
-
-    /**
      * Fetch the zone membership property
      *
      * @param classifications asset properties
@@ -279,18 +219,6 @@ public class HandlerHelper {
         return Collections.emptyList();
     }
 
-    /**
-     * Adds the classification context to the asset context.
-     *
-     * @param assetContext the context of the asset that is to be updated
-     * @param entity       the entity with its classifications
-     */
-    public void addLineageClassificationToContext(EntityDetail entity, AssetContext assetContext) {
-        List<Classification> classifications = filterLineageClassifications(entity.getClassifications());
-        if (CollectionUtils.isNotEmpty(classifications)) {
-            addClassificationsToGraphContext(classifications, assetContext, entity);
-        }
-    }
 
     /**
      * Extract the lineage classifications from the list of classifications assigned
@@ -308,29 +236,6 @@ public class HandlerHelper {
         } else {
             return Collections.emptyList();
         }
-    }
-
-    /**
-     * Add lineage classification to the graph context object
-     *
-     * @param classifications the list of classifications
-     * @param assetContext    the asset context object
-     * @param entityDetail    the entity object that is converted to lineage entity
-     */
-    private void addClassificationsToGraphContext(List<Classification> classifications, AssetContext assetContext, EntityDetail entityDetail) {
-        Converter converter = new Converter(repositoryHelper);
-        LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
-        assetContext.addVertex(originalEntityVertex);
-
-        String entityGUID = entityDetail.getGUID();
-        for (Classification classification : classifications) {
-            LineageEntity classificationVertex = getClassificationVertex(classification, entityGUID);
-            assetContext.addVertex(classificationVertex);
-            GraphContext graphContext = new GraphContext(CLASSIFICATION, classificationVertex.getGuid(),
-                    originalEntityVertex, classificationVertex);
-            assetContext.addGraphContext(graphContext);
-        }
-
     }
 
     private LineageEntity getClassificationVertex(Classification classification, String entityGUID) {
@@ -476,22 +381,5 @@ public class HandlerHelper {
         context.addAll(buildContextForRelationships(userId, startEntity.getGUID(), relationships).getRelationships());
 
         return getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
-    }
-
-    /**
-     * Builds the lineage mappings context for a schema element.
-     *
-     * @param userId       the unique identifier for the user
-     * @param entityDetail the entity for which the context is build
-     *
-     * @return the lineage mappings context of the schema element
-     *
-     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
-     */
-    RelationshipsContext buildLineageMappingsContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
-        List<Relationship> relationships = getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING,
-                entityDetail.getType().getTypeDefName());
-
-        return buildContextForRelationships(userId, entityDetail.getGUID(), relationships);
     }
 }
