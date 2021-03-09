@@ -93,7 +93,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     private static final String ASSERTION_MSG_8   = "findEntitiesByPropertyValue returned {0} unexpected results using parameters: {1}";
 
     private static final String ASSERTION_9       = TEST_CASE_ID + "-09";
-    private static final String ASSERTION_MSG_9   = ASSERTION_MSG_7;
+    private static final String ASSERTION_MSG_9   = ASSERTION_MSG_3;
 
     private static final String ASSERTION_10      = TEST_CASE_ID + "-10";
     private static final String ASSERTION_MSG_10  = ASSERTION_MSG_4;
