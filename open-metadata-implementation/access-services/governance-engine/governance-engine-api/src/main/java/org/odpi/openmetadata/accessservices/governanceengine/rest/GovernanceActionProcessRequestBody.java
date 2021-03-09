@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,12 +26,13 @@ public class GovernanceActionProcessRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private String       processQualifiedName  = null;
-    private List<String> requestSourceGUIDs    = null;
-    private List<String> actionTargetGUIDs     = null;
-    private Date         startTime             = null;
-    private String       originatorServiceName = null;
-    private String       originatorEngineName  = null;
+    private String              processQualifiedName  = null;
+    private Map<String, String> requestParameters     = null;
+    private List<String>        requestSourceGUIDs    = null;
+    private List<String>        actionTargetGUIDs     = null;
+    private Date                startTime             = null;
+    private String              originatorServiceName = null;
+    private String              originatorEngineName  = null;
 
 
     /**
@@ -52,6 +54,7 @@ public class GovernanceActionProcessRequestBody implements Serializable
         if (template != null)
         {
             processQualifiedName = template.getProcessQualifiedName();
+            requestParameters = template.getRequestParameters();
             requestSourceGUIDs = template.getRequestSourceGUIDs();
             actionTargetGUIDs = template.getActionTargetGUIDs();
             startTime = template.getStartTime();
@@ -82,6 +85,38 @@ public class GovernanceActionProcessRequestBody implements Serializable
     public void setProcessQualifiedName(String processQualifiedName)
     {
         this.processQualifiedName = processQualifiedName;
+    }
+
+
+    /**
+     * Return the parameters to pass onto the governance service.
+     *
+     * @return map of properties
+     */
+    public Map<String, String> getRequestParameters()
+    {
+        if (requestParameters == null)
+        {
+            return null;
+        }
+
+        if (requestParameters.isEmpty())
+        {
+            return null;
+        }
+
+        return requestParameters;
+    }
+
+
+    /**
+     * Set up the parameters to pass onto the governance service.
+     *
+     * @param requestParameters map of properties
+     */
+    public void setRequestParameters(Map<String, String> requestParameters)
+    {
+        this.requestParameters = requestParameters;
     }
 
 
@@ -205,11 +240,12 @@ public class GovernanceActionProcessRequestBody implements Serializable
     {
         return "GovernanceActionProcessRequestBody{" +
                        "processQualifiedName='" + processQualifiedName + '\'' +
+                       ", requestParameters=" + requestParameters +
                        ", requestSourceGUIDs=" + requestSourceGUIDs +
                        ", actionTargetGUIDs=" + actionTargetGUIDs +
                        ", startTime=" + startTime +
-                       ", originatorServiceName=" + originatorServiceName +
-                       ", originatorEngineName=" + originatorEngineName +
+                       ", originatorServiceName='" + originatorServiceName + '\'' +
+                       ", originatorEngineName='" + originatorEngineName + '\'' +
                        '}';
     }
 
@@ -234,6 +270,7 @@ public class GovernanceActionProcessRequestBody implements Serializable
         GovernanceActionProcessRequestBody that = (GovernanceActionProcessRequestBody) objectToCompare;
         return Objects.equals(processQualifiedName, that.processQualifiedName) &&
                        Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
+                       Objects.equals(requestParameters, that.requestParameters) &&
                        Objects.equals(actionTargetGUIDs, that.actionTargetGUIDs) &&
                        Objects.equals(originatorServiceName, that.originatorServiceName) &&
                        Objects.equals(originatorEngineName, that.originatorEngineName) &&
@@ -249,7 +286,7 @@ public class GovernanceActionProcessRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(processQualifiedName, requestSourceGUIDs, actionTargetGUIDs, startTime,
+        return Objects.hash(processQualifiedName, requestSourceGUIDs, requestParameters, actionTargetGUIDs, startTime,
                             originatorServiceName, originatorEngineName);
     }
 }

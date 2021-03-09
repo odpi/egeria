@@ -113,7 +113,7 @@ public class SubjectAreaTermRESTResource {
                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
                                                      @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
                                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                     @RequestParam(value = "sequencingOrder", required = false) String sequencingOrder,
                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
         return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);

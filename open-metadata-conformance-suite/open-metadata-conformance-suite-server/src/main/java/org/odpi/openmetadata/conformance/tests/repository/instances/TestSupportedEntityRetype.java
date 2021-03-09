@@ -134,6 +134,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
         EntityDetail newEntity;
         InstanceProperties instanceProperties = null;
 
+        long start;
+        long elapsedTime;
         try {
 
             /*
@@ -145,17 +147,21 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
             instanceProperties = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
 
+            start = System.currentTimeMillis();
             newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                      entityDef.getGUID(),
                                                      instanceProperties,
                                                     null,
                                                     null);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                     assertion17,
                     testTypeName + assertionMsg17,
                     RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                    "addEntity",
+                    elapsedTime);
 
             createdEntities.add(newEntity);
 
@@ -264,10 +270,12 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
                 try {
 
+                    start = System.currentTimeMillis();
                     subTypedEntity = metadataCollection.reTypeEntity(workPad.getLocalServerUserId(),
                                                                      newEntity.getGUID(),
                                                                      entityDef,
                                                                      subTypeDef);
+                    elapsedTime = System.currentTimeMillis() - start;
                 } catch (FunctionNotSupportedException exception) {
 
                     super.addNotSupportedAssertion(assertion18,
@@ -298,7 +306,9 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                                 assertion18,
                                 testTypeName + assertionMsg18,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId(),
+                                "reTypeEntity",
+                                elapsedTime);
 
                 createdEntities.add(subTypedEntity);
 
@@ -347,13 +357,17 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                  * Verify that the instance can be retrieved from the store and its type and properties match those for the instance returned by the reType method
                  */
 
+                start = System.currentTimeMillis();
                 EntityDetail retrievedSubTypedEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
 
                 verifyCondition((retrievedSubTypedEntity != null),
                                 assertion7,
                                 testTypeName + assertionMsg7,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId(),
+                                "getEntityDetail",
+                                elapsedTime);
 
                 assertCondition((subTypedEntity.getType() != null) && (subTypedEntity.getType().getTypeDefName().equals(subTypeName)),
                                 assertion8,
@@ -380,10 +394,12 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
                 try {
 
+                    start = System.currentTimeMillis();
                     superTypedEntity = metadataCollection.reTypeEntity(workPad.getLocalServerUserId(),
                                                                        newEntity.getGUID(),
                                                                        subTypeDef,
                                                                        entityDef);
+                    elapsedTime = System.currentTimeMillis() - start;
 
                 } catch (FunctionNotSupportedException exception) {
 
@@ -418,7 +434,9 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                                 assertion10,
                                 testTypeName + assertionMsg10,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId(),
+                                "reTypeEntity",
+                                elapsedTime);
 
                 /*
                  * Check that the retyped entity has the correct type
@@ -454,13 +472,17 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                  * Verify that the instance can be retrieved from the store and that it has the correct type and properties
                  */
 
+                start = System.currentTimeMillis();
                 EntityDetail retrievedSuperTypedEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
 
                 verifyCondition((retrievedSuperTypedEntity != null),
                                 assertion14,
                                 testTypeName + assertionMsg14,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId(),
+                                "getEntityDetail",
+                                elapsedTime);
 
                 /*
                  * Verify that the instance can be retrieved from the store and its type name and properties match those for the original instance

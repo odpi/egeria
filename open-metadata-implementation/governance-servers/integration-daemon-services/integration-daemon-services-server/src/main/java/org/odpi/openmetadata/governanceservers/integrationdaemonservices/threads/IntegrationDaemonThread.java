@@ -89,20 +89,30 @@ public class IntegrationDaemonThread implements Runnable
             {
                 if (connectorHandler != null)
                 {
-                    if (connectorHandler.getLastRefreshTime() == null)
+                    try
                     {
-                        connectorHandler.refreshConnector(actionDescription, true);
-                    }
-                    else if (connectorHandler.getMinMinutesBetweenRefresh() > 0)
-                    {
-                        long nextRefreshTime =
-                                connectorHandler.getLastRefreshTime().getTime() +
-                                        (connectorHandler.getMinMinutesBetweenRefresh() * 60000);
-
-                        if (nextRefreshTime < now.getTime())
+                        if (connectorHandler.getLastRefreshTime() == null)
                         {
-                            connectorHandler.refreshConnector(actionDescription, false);
+                            connectorHandler.refreshConnector(actionDescription, true);
                         }
+                        else if (connectorHandler.getMinMinutesBetweenRefresh() > 0)
+                        {
+                            long nextRefreshTime =
+                                    connectorHandler.getLastRefreshTime().getTime() +
+                                            (connectorHandler.getMinMinutesBetweenRefresh() * 60000);
+
+                            if (nextRefreshTime < now.getTime())
+                            {
+                                connectorHandler.refreshConnector(actionDescription, false);
+                            }
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        auditLog.logMessage(actionDescription,
+                                            IntegrationDaemonServicesAuditCode.DAEMON_THREAD_CONNECTOR_ERROR.getMessageDefinition(integrationDaemonName,
+                                                                                                                                  error.getClass().getName(),
+                                                                                                                                  error.getMessage()));
                     }
                 }
             }

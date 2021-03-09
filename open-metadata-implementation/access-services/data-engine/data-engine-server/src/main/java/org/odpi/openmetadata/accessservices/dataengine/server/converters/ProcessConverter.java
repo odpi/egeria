@@ -12,8 +12,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -31,52 +33,82 @@ public class ProcessConverter<B> extends OpenMetadataAPIGenericConverter<B> {
 
     /**
      * Request the bean is extracted from the repository objects
+     * @param processClass the process class
      * @param entity the EntityDetail from which the bean is extracted
+     * @param methodName the name of the caller method
      * @throws PropertyServerException problem accessing the property server
      *
      * @return output bean
      */
-    public Process getProcessBean(Class<B> processClass, EntityDetail entity) throws PropertyServerException {
-        final String methodName = "updateBean";
-
-        Process process = null;
+    public B getNewBean(Class<B> processClass, EntityDetail entity, String methodName) throws PropertyServerException {
+        B returnBean;
         try {
-            process = (Process) processClass.newInstance();
+            returnBean = processClass.newInstance();
 
-        if (entity != null) {
-            InstanceType type = entity.getType();
+            if (returnBean instanceof Process) {
+                Process process = (Process) returnBean;
 
-            process.setTypeGUID(type.getTypeDefGUID());
-            process.setTypeName(type.getTypeDefName());
-            process.setGUID(entity.getGUID());
 
-            InstanceProperties entityProperties = entity.getProperties();
-            if(entityProperties != null) {
+                if (entity != null) {
+                    InstanceType type = entity.getType();
 
-                InstanceProperties instanceProperties = new InstanceProperties(entityProperties);
+                    process.setTypeGUID(type.getTypeDefGUID());
+                    process.setTypeName(type.getTypeDefName());
+                    process.setGUID(entity.getGUID());
 
-                process.setName(removeName(instanceProperties));
-                process.setQualifiedName(removeQualifiedName(instanceProperties));
-                process.setDisplayName(removeDisplayName(instanceProperties));
-                process.setDescription(removeDescription(instanceProperties));
+                    InstanceProperties entityProperties = entity.getProperties();
+                    if (entityProperties != null) {
 
-                process.setOwner(removeOwner(instanceProperties));
-                process.setOwnerType(removeOwnerTypeFromProperties(instanceProperties));
-                process.setZoneMembership(removeZoneMembership(instanceProperties));
+                        InstanceProperties instanceProperties = new InstanceProperties(entityProperties);
 
-                process.setAdditionalProperties(removeAdditionalProperties(instanceProperties));
-                process.setExtendedProperties(getRemainingExtendedProperties(instanceProperties));
+                        process.setName(removeName(instanceProperties));
+                        process.setQualifiedName(removeQualifiedName(instanceProperties));
+                        process.setDisplayName(removeDisplayName(instanceProperties));
+                        process.setDescription(removeDescription(instanceProperties));
 
-                process.setFormula(repositoryHelper.removeStringProperty(serviceName,
-                        ProcessPropertiesMapper.FORMULA_PROPERTY_NAME, instanceProperties, methodName));
+                        process.setOwner(removeOwner(instanceProperties));
+                        process.setOwnerType(removeOwnerTypeFromProperties(instanceProperties));
+                        process.setZoneMembership(removeZoneMembership(instanceProperties));
+
+                        process.setAdditionalProperties(removeAdditionalProperties(instanceProperties));
+                        process.setExtendedProperties(getRemainingExtendedProperties(instanceProperties));
+
+                        process.setFormula(repositoryHelper.removeStringProperty(serviceName,
+                                ProcessPropertiesMapper.FORMULA_PROPERTY_NAME, instanceProperties, methodName));
+                    }
+                }
             }
-        }
-
+            return returnBean;
         } catch (IllegalAccessException | InstantiationException | ClassCastException error) {
-            super.handleInvalidBeanClass(process.getName(), error, methodName);
+            super.handleInvalidBeanClass(processClass.getName(), error, methodName);
         }
 
-        return process;
+        return null;
+    }
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
+     * relationships between them.  The relationships may be omitted if they do not have any properties.
+     *
+     * TO BE IMPLEMENTED IN CASE OF NEED
+     *
+     * @param beanClass name of the class to create
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the content of the bean
+     * @param supplementaryEntities entities connected to the primary entity by the relationships
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    public B getNewComplexBean(Class<B>           beanClass,
+                               EntityDetail       primaryEntity,
+                               List<EntityDetail> supplementaryEntities,
+                               List<Relationship> relationships,
+                               String             methodName) throws PropertyServerException
+    {
+       return super.getNewComplexBean(beanClass, primaryEntity, supplementaryEntities,relationships, methodName);
     }
 
     int removeOwnerTypeFromProperties(InstanceProperties properties) {

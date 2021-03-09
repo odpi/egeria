@@ -71,7 +71,7 @@ public class TestOpenMetadataEventProtocolVersion
         {
             jsonString = objectMapper.writeValueAsString(OpenMetadataEventProtocolVersion.V1);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -80,7 +80,7 @@ public class TestOpenMetadataEventProtocolVersion
         {
             assertTrue(objectMapper.readValue(jsonString, OpenMetadataEventProtocolVersion.class) == OpenMetadataEventProtocolVersion.V1);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

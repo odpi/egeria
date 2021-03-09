@@ -67,21 +67,9 @@ public class UserIdentityRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.addUserIdentity(userId, qualifiedName, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -129,21 +117,9 @@ public class UserIdentityRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.addIdentityToProfile(userId, qualifiedName, profileGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -191,21 +167,9 @@ public class UserIdentityRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeIdentityFromProfile(userId, qualifiedName, profileGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -252,21 +216,9 @@ public class UserIdentityRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeUserIdentity(userId, qualifiedName, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

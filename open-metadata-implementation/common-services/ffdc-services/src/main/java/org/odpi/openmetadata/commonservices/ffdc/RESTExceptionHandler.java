@@ -375,7 +375,7 @@ public class RESTExceptionHandler
      * @param restResult  response from the encoded exception from the server.
      * @throws PropertyServerException wrapping exception for the caught exception
      */
-    private void throwUnexpectedException(String           methodName,
+    private void throwUnexpectedException(String       methodName,
                                           FFDCResponse restResult) throws PropertyServerException
     {
         log.error(methodName + " returned unexpected exception", restResult);
@@ -396,7 +396,7 @@ public class RESTExceptionHandler
      * @param error returned response.
      * @param exceptionClassName  class name of the exception to recreate
      */
-    protected  void captureCheckedException(FFDCResponse        response,
+    protected  void captureCheckedException(FFDCResponse            response,
                                             OCFCheckedExceptionBase error,
                                             String                  exceptionClassName)
     {
@@ -412,10 +412,10 @@ public class RESTExceptionHandler
      * @param exceptionClassName  class name of the exception to recreate
      * @param exceptionProperties map of properties stored in the exception to help with diagnostics
      */
-    protected  void captureCheckedException(FFDCResponse             response,
-                                            OCFCheckedExceptionBase      error,
-                                            String                       exceptionClassName,
-                                            Map<String, Object>          exceptionProperties)
+    protected  void captureCheckedException(FFDCResponse            response,
+                                            OCFCheckedExceptionBase error,
+                                            String                  exceptionClassName,
+                                            Map<String, Object>     exceptionProperties)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
@@ -441,11 +441,11 @@ public class RESTExceptionHandler
      * @param error returned response
      * @param methodName calling method
      */
-    public  void captureThrowable(FFDCResponse             response,
-                                  Throwable                    error,
-                                  String                       methodName)
+    public  void captureThrowable(FFDCResponse response,
+                                  Throwable    error,
+                                  String       methodName)
     {
-        this.captureThrowable(response, error, methodName, null);
+        this.captureExceptions(response, error, methodName, null);
     }
 
 
@@ -457,10 +457,43 @@ public class RESTExceptionHandler
      * @param methodName calling method
      * @param auditLog log location for recording an unexpected exception
      */
+    @Deprecated
     public  void captureThrowable(FFDCResponse response,
                                   Throwable    error,
                                   String       methodName,
                                   AuditLog     auditLog)
+    {
+        this.captureExceptions(response, error, methodName, auditLog);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response
+     * @param methodName calling method
+     */
+    public  void captureExceptions(FFDCResponse response,
+                                   Throwable    error,
+                                   String       methodName)
+    {
+        this.captureExceptions(response, error, methodName, null);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response
+     * @param methodName calling method
+     * @param auditLog log location for recording an unexpected exception
+     */
+    public  void captureExceptions(FFDCResponse response,
+                                   Throwable    error,
+                                   String       methodName,
+                                   AuditLog     auditLog)
     {
         log.error("Exception from " + methodName + " being packaged for return on REST call", error);
 
@@ -517,7 +550,7 @@ public class RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    public  void captureInvalidParameterException(FFDCResponse          response,
+    public  void captureInvalidParameterException(FFDCResponse              response,
                                                   InvalidParameterException error)
     {
         Map<String, Object>  exceptionProperties = error.getRelatedProperties();
@@ -551,7 +584,7 @@ public class RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    public  void capturePropertyServerException(FFDCResponse        response,
+    public  void capturePropertyServerException(FFDCResponse            response,
                                                 PropertyServerException error)
     {
         captureCheckedException(response, error, PropertyServerException.class.getName());
@@ -564,7 +597,7 @@ public class RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    public  void captureUserNotAuthorizedException(FFDCResponse           response,
+    public  void captureUserNotAuthorizedException(FFDCResponse               response,
                                                    UserNotAuthorizedException error)
     {
         Map<String, Object>  exceptionProperties = error.getRelatedProperties();

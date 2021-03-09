@@ -180,7 +180,7 @@ public class AssetOwnerEventTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -189,7 +189,7 @@ public class AssetOwnerEventTest
         {
             validateResultObject(objectMapper.readValue(jsonString, AssetOwnerEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -203,7 +203,7 @@ public class AssetOwnerEventTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -212,7 +212,7 @@ public class AssetOwnerEventTest
         {
             validateResultObject((AssetOwnerEvent) objectMapper.readValue(jsonString, AssetOwnerEventHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

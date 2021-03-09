@@ -90,7 +90,7 @@ public class AccessServiceOutboundEventTypeTest
         {
             jsonString = objectMapper.writeValueAsString(CommunityProfileOutboundEventType.NEW_REF_PERSONAL_PROFILE_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -99,7 +99,7 @@ public class AccessServiceOutboundEventTypeTest
         {
             assertTrue(objectMapper.readValue(jsonString, CommunityProfileOutboundEventType.class) == CommunityProfileOutboundEventType.NEW_REF_PERSONAL_PROFILE_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
