@@ -129,7 +129,6 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-archives:open-connector-archives').shadowJar }
                 fileMode = 0755
             }
             into('samples') {
