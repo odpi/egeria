@@ -109,12 +109,20 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
             Graph graph = new Graph();
             if (CollectionUtils.isNotEmpty(instanceGraph.getRelationships())) {
                 List<Line> lines = getLinesFromRelationships(instanceGraph.getRelationships());
-                graph.setLines(new HashSet<>(lines));
+                Map<String,Line> guidToLineMap = new HashMap<>();
+                for (Line line: lines) {
+                    guidToLineMap.put(line.getSystemAttributes().getGUID(), line);
+                }
+                graph.setLines(guidToLineMap);
             }
 
             if (CollectionUtils.isNotEmpty(instanceGraph.getEntities())) {
                 List<Node> nodes = getNodesFromEntityDetails(instanceGraph.getEntities());
-                graph.setNodes(new HashSet<>(nodes));
+                Map<String, Node> guidToNodeMap = new HashMap<>();
+                for (Node node: nodes) {
+                    guidToNodeMap.put(node.getSystemAttributes().getGUID(), node);
+                }
+                graph.setNodes(guidToNodeMap);
             }
             // end of if after getEntityNeighbourhood call
             response.addResult(graph);

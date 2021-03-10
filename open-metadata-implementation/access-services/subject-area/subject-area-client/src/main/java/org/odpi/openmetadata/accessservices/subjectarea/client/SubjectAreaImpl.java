@@ -27,7 +27,7 @@ public class SubjectAreaImpl implements SubjectArea {
 
     private final SubjectAreaNodeClients nodeClients;
     private final SubjectAreaRelationshipClients relationshipAPI;
-    private final SubjectAreaGraph graphAPI;
+    private final SubjectAreaGraphClient graphAPI;
     private final SubjectAreaConfigClient configAPI;
     private final String serverName;
     private final String omasServerUrl;
@@ -47,7 +47,7 @@ public class SubjectAreaImpl implements SubjectArea {
             SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, omasServerURL);
             DefaultSubjectAreaNodeClients subjectAreaNode = new DefaultSubjectAreaNodeClients(client);
             SubjectAreaLine subjectAreaLine = new SubjectAreaLine(client);
-            SubjectAreaGraph subjectAreaGraph = new SubjectAreaGraphClient(client);
+            SubjectAreaGraphClient subjectAreaGraph = new SubjectAreaGraphClient(client);
             SubjectAreaConfigClient subjectAreaConfig = new SubjectAreaConfigClient(client);
 
             this.nodeClients = subjectAreaNode;
@@ -91,8 +91,6 @@ public class SubjectAreaImpl implements SubjectArea {
         return this.relationshipAPI;
     }
 
-
-
     /**
      * Get the subject area graph API class - use this class to issue config calls.
      *
@@ -102,7 +100,13 @@ public class SubjectAreaImpl implements SubjectArea {
     public SubjectAreaConfigClient subjectAreaConfigClient() {
         return this.configAPI;
     }
-
+    /**
+     * Get the subject area graph API class - use this class to issue graph calls.
+     *
+     * @return subject area graph API class
+     */
+    @Override
+    public SubjectAreaGraphClient subjectAreaGraphClient() { return this.graphAPI; }
 
     /**
      * Server Name under which this request is performed, this is used in multi tenanting to identify the tenant

@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * A graph contain
- * A Node is an entity in the subject area omas that has a type {@code  NodeType}, name, qualified name and description.
+ * A Node is a Glossary Artifact in the subject area omas that has a type {@code  NodeType}, name, qualified name and description.
  * A node may be in one or more projects.
  * <p>
  * Nodes can be connected with {@code Line }s to form graphs. As they may be visualised, so a node has an associated
@@ -27,23 +29,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Graph implements Serializable {
-    private Set<? extends Node> nodes = null;
-    private Set<? extends Line> lines = null;
+    private Map<String, Node> nodes = null;
+    private Map<String, Line> lines = null;
 
 
-    public Set<? extends Node> getNodes() {
+    public Map<String, Node> getNodes() {
         return nodes;
     }
 
-    public void setNodes(Set<? extends Node> nodes) {
+    public void setNodes(Map<String, Node> nodes) {
         this.nodes = nodes;
     }
 
-    public Set<? extends Line> getLines() {
+    public Map<String, Line> getLines() {
         return lines;
     }
 
-    public void setLines(Set<? extends Line> lines) {
+    public void setLines(Map<String, Line> lines) {
         this.lines = lines;
     }
 
@@ -54,15 +56,17 @@ public class Graph implements Serializable {
 
         if (nodes !=null && !nodes.isEmpty()) {
             sb.append("Nodes= [\n");
-            for (Node node:nodes) {
-               node.toString(sb);
+            Set<String> guids = nodes.keySet();
+            for (String guid: guids) {
+               nodes.get(guid).toString(sb);
             }
             sb.append("Nodes= ]\n");
         }
         if (lines !=null && !lines.isEmpty()) {
             sb.append("Lines= [\n");
-            for (Line line:lines) {
-               line.toString(sb);
+            Set<String> guids = lines.keySet();
+            for (String guid: guids) {
+                lines.get(guid).toString(sb);
             }
             sb.append("Lines= ]\n");
         }
