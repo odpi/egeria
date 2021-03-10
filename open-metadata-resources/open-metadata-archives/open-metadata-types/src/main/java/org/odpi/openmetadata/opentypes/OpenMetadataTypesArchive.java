@@ -155,6 +155,17 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        addRelationshipSupertypes();
+        update0320CategoryHierarchy();
+        update0330Terms();
+        update0350RelatedTerms();
+        update0360Contexts();
+        update0370SemanticAssignment();
+        update0380SpineObjects();
+        update0465DuplicateProcessing();
+        update0534RelationalSchemas();
+        update0540DataClasses();
+        update0545ReferenceData();
 
     }
 
@@ -162,7 +173,168 @@ public class OpenMetadataTypesArchive
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+    private void addRelationshipSupertypes()
+    {
+        this.archiveBuilder.addRelationshipDef(getGovernedRelationship());
+    }
 
+    private RelationshipDef getGovernedRelationship()
+    {
+        final String guid            = "1b8fea93-0de9-4d75-9702-5179863321db";
+        final String name            = "GovernedRelationship";
+        final String description     = "Defines a relationship that is governed by a steward.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                name,
+                null,
+                description,
+                descriptionGUID,
+                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "relatedEntity";
+        final String                     end1AttributeDescription     = "One side of the relationship that is governed.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                end1AttributeName,
+                end1AttributeDescription,
+                end1AttributeDescriptionGUID,
+                end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "relatedEntity";
+        final String                     end2AttributeDescription     = "Other side of the relationship that is governed.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                end2AttributeName,
+                end2AttributeDescription,
+                end2AttributeDescriptionGUID,
+                end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "steward";
+        final String attribute1Description     = "Person responsible for the relationship.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+    private void update0320CategoryHierarchy()
+    {
+        this.archiveBuilder.addTypeDefPatch(addGovernedRelationshipAsSuperType("LibraryCategoryReference"));
+    }
+
+    private void update0330Terms()
+    {
+        this.archiveBuilder.addTypeDefPatch(addGovernedRelationshipAsSuperType("LibraryTermReference"));
+    }
+
+    private void update0350RelatedTerms()
+    {
+        this.archiveBuilder.addTypeDefPatch(addGovernedRelationshipAsSuperType("RelatedTerm"));
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("Synonym"));
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("Antonym"));
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("PreferredTerm"));
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("ReplacementTerm"));
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("Translation"));
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("ISARelationship"));
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("ValidValue"));
+    }
+
+    private void update0360Contexts()
+    {
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("UsedInContext"));
+    }
+
+    private void update0370SemanticAssignment()
+    {
+        this.archiveBuilder.addTypeDefPatch(addGovernedRelationshipAsSuperType("SemanticAssignment"));
+    }
+
+    private void update0380SpineObjects()
+    {
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("TermHASARelationship"));
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("TermISATypeOFRelationship"));
+        this.archiveBuilder.addTypeDefPatch(addSuperTypeToTermToTermRelationship("TermTYPEDBYRelationship"));
+    }
+
+    private void update0534RelationalSchemas()
+    {
+        this.archiveBuilder.addTypeDefPatch(addGovernedRelationshipAsSuperType("ForeignKey"));
+    }
+
+    private void update0540DataClasses()
+    {
+        this.archiveBuilder.addTypeDefPatch(addGovernedRelationshipAsSuperType("DataClassAssignment"));
+    }
+
+    private void update0545ReferenceData()
+    {
+        this.archiveBuilder.addTypeDefPatch(addGovernedRelationshipAsSuperType("ValidValuesMapping"));
+        this.archiveBuilder.addTypeDefPatch(addGovernedRelationshipAsSuperType("ReferenceValueAssignment"));
+    }
+
+    private void update0465DuplicateProcessing()
+    {
+        this.archiveBuilder.addTypeDefPatch(addGovernedRelationshipAsSuperType("KnownDuplicateLink"));
+    }
+
+    private TypeDefPatch addGovernedRelationshipAsSuperType(String typeName)
+    {
+        final String superTypeName = "GovernedRelationship";
+
+        TypeDef superType = archiveBuilder.getTypeDefByName(superTypeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(superType);
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch addSuperTypeToTermToTermRelationship(String typeName)
+    {
+        final String superTypeName = "RelatedTerm";
+
+        TypeDef superType = archiveBuilder.getTypeDefByName(superTypeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(superType);
+
+        return typeDefPatch;
+    }
 
 }
-

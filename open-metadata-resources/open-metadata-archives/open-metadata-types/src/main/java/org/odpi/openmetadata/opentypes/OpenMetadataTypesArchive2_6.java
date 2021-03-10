@@ -2095,9 +2095,10 @@ public class OpenMetadataTypesArchive2_6
         final String attribute2Name            = "status";
         final String attribute2Description     = "Status of the duplicate processing.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
+        // REMOVED by #4724 -- relationship supertypes
+        /*final String attribute3Name            = "steward";
         final String attribute3Description     = "Person responsible for maintaining this classification.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3DescriptionGUID = null;*/
         final String attribute4Name            = "source";
         final String attribute4Description     = "Source of the classification.";
         final String attribute4DescriptionGUID = null;
@@ -2115,10 +2116,11 @@ public class OpenMetadataTypesArchive2_6
                                                          attribute2Description,
                                                          attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+        // REMOVED by #4724 -- relationship supertypes
+        /*property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(property);*/
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);

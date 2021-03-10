@@ -11110,9 +11110,10 @@ public class OpenMetadataTypesArchive1_2
         final String attribute2Name            = "description";
         final String attribute2Description     = "Description of the corresponding element from the external glossary.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
+        // REMOVED by #4724 -- relationship supertypes
+        /*final String attribute3Name            = "steward";
         final String attribute3Description     = "Person who established the link to the external glossary.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3DescriptionGUID = null;*/
         final String attribute4Name            = "lastVerified";
         final String attribute4Description     = "Date when this reference was last checked.";
         final String attribute4DescriptionGUID = null;
@@ -11125,10 +11126,11 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+        // REMOVED by #4724 -- relationship supertypes
+        /*property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(property);*/
         property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
                                                          attribute4Description,
                                                          attribute4DescriptionGUID);
@@ -11540,9 +11542,10 @@ public class OpenMetadataTypesArchive1_2
         final String attribute2Name            = "description";
         final String attribute2Description     = "Description of the corresponding element from the external glossary.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
+        // REMOVED by #4724 -- relationship supertypes
+        /*final String attribute3Name            = "steward";
         final String attribute3Description     = "Person who established the link to the external glossary.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3DescriptionGUID = null;*/
         final String attribute4Name            = "lastVerified";
         final String attribute4Description     = "Date when this reference was last checked.";
         final String attribute4DescriptionGUID = null;
@@ -11555,10 +11558,11 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+        // REMOVED by #4724 -- relationship supertypes
+        /*property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(property);*/
         property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
                                                          attribute4Description,
                                                          attribute4DescriptionGUID);
@@ -11837,9 +11841,10 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
+        // REMOVED by #4724 -- relationship supertypes
+        /*final String attribute4Name            = "steward";
         final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4DescriptionGUID = null;*/
         final String attribute5Name            = "source";
         final String attribute5Description     = "Person, organization or automated process that created the relationship.";
         final String attribute5DescriptionGUID = null;
@@ -11857,10 +11862,11 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+        // REMOVED by #4724 -- relationship supertypes
+        /*property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
-        properties.add(property);
+        properties.add(property);*/
         property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
                                                            attribute5Description,
                                                            attribute5DescriptionGUID);
@@ -11926,7 +11932,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -11967,7 +11974,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -12027,7 +12034,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -12068,7 +12076,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -12128,7 +12136,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -12169,7 +12178,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -12229,7 +12238,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -12270,7 +12280,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -12330,7 +12340,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -12371,7 +12382,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -12431,7 +12442,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -12472,7 +12484,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -12532,7 +12544,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -12573,7 +12586,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -12649,7 +12662,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -12690,7 +12704,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -12921,9 +12935,10 @@ public class OpenMetadataTypesArchive1_2
         final String attribute4Name            = "confidence";
         final String attribute4Description     = "Level of confidence in the correctness of the relationship.";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "steward";
+        // REMOVED by #4724 -- relationship supertypes
+        /*final String attribute5Name            = "steward";
         final String attribute5Description     = "Person responsible for the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute5DescriptionGUID = null;*/
         final String attribute6Name            = "source";
         final String attribute6Description     = "Person, organization or automated process that created the relationship.";
         final String attribute6DescriptionGUID = null;
@@ -12945,10 +12960,11 @@ public class OpenMetadataTypesArchive1_2
                                                         attribute4Description,
                                                         attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+        // REMOVED by #4724 -- relationship supertypes
+        /*property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
                                                            attribute5Description,
                                                            attribute5DescriptionGUID);
-        properties.add(property);
+        properties.add(property);*/
         property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
                                                            attribute6Description,
                                                            attribute6DescriptionGUID);
@@ -13034,7 +13050,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -13068,7 +13085,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -13128,7 +13145,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -13162,7 +13180,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -13222,7 +13240,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the attributes
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
+        // REMOVED by #4724 -- relationship supertypes
+        /*List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
         final String attribute1Name            = "description";
@@ -13256,7 +13275,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute5DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        relationshipDef.setPropertiesDefinition(properties);*/
 
         return relationshipDef;
     }
@@ -19828,9 +19847,10 @@ public class OpenMetadataTypesArchive1_2
         final String attribute2Name            = "confidence";
         final String attribute2Description     = "Level of confidence in the correctness of the relationship.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
+        // REMOVED by #4724 -- relationship supertypes
+        /*final String attribute3Name            = "steward";
         final String attribute3Description     = "Person responsible for the relationship.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3DescriptionGUID = null;*/
         final String attribute4Name            = "source";
         final String attribute4Description     = "Person, organization or automated process that created the relationship.";
         final String attribute4DescriptionGUID = null;
@@ -19846,10 +19866,11 @@ public class OpenMetadataTypesArchive1_2
                                                         attribute2Description,
                                                         attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+        // REMOVED by #4724 -- relationship supertypes
+        /*property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(property);*/
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
@@ -20587,9 +20608,10 @@ public class OpenMetadataTypesArchive1_2
         final String attribute6Name            = "valueFrequency";
         final String attribute6Description     = "How often does the data class specification match the data values.";
         final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "steward";
+        // REMOVED by #4724 -- relationship supertypes
+        /*final String attribute7Name            = "steward";
         final String attribute7Description     = "Person responsible for validating the data class assignment.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute7DescriptionGUID = null;*/
         final String attribute8Name            = "source";
         final String attribute8Description     = "Person, organization or automated process that created the data class assignment.";
         final String attribute8DescriptionGUID = null;
@@ -20619,10 +20641,11 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute6Description,
                                                          attribute6DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+        // REMOVED by #4724 -- relationship supertypes
+        /*property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
                                                            attribute7Description,
                                                            attribute7DescriptionGUID);
-        properties.add(property);
+        properties.add(property);*/
         property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
                                                            attribute8Description,
                                                            attribute8DescriptionGUID);

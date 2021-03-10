@@ -1494,9 +1494,10 @@ public class OpenMetadataTypesArchive1_7
         final String attribute2Name            = "confidence";
         final String attribute2Description     = "Number between 0 and 100 indicating the confidence that the match is correct.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
+        // REMOVED by #4724 -- relationship supertypes
+        /*final String attribute3Name            = "steward";
         final String attribute3Description     = "Person responsible for the mapping.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3DescriptionGUID = null;*/
         final String attribute4Name            = "notes";
         final String attribute4Description     = "Additional notes on the mapping.";
         final String attribute4DescriptionGUID = null;
@@ -1509,10 +1510,11 @@ public class OpenMetadataTypesArchive1_7
                                                         attribute2Description,
                                                         attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+        // REMOVED by #4724 -- relationship supertypes
+        /*property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(property);*/
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
@@ -1590,9 +1592,10 @@ public class OpenMetadataTypesArchive1_7
         final String attribute2Name            = "confidence";
         final String attribute2Description     = "Number between 0 and 100 indicating the confidence that the match is correct.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
+        // REMOVED by #4724 -- relationship supertypes
+        /*final String attribute3Name            = "steward";
         final String attribute3Description     = "Person responsible for the mapping.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3DescriptionGUID = null;*/
         final String attribute4Name            = "notes";
         final String attribute4Description     = "Additional notes on the mapping.";
         final String attribute4DescriptionGUID = null;
@@ -1601,10 +1604,11 @@ public class OpenMetadataTypesArchive1_7
                                                         attribute2Description,
                                                         attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+        // REMOVED by #4724 -- relationship supertypes
+        /*property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(property);*/
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
