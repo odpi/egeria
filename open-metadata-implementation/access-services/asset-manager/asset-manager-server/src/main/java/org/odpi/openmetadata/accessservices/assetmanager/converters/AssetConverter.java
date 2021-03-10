@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 /**
  * AssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into an AssetElement bean.
+ * EntityDetail object into an DataAssetElement bean.
  */
 public class AssetConverter<B> extends AssetManagerOMASConverter<B>
 {
@@ -56,10 +56,10 @@ public class AssetConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof AssetElement)
+            if (returnBean instanceof DataAssetElement)
             {
-                AssetElement    bean            = (AssetElement) returnBean;
-                AssetProperties assetProperties = new AssetProperties();
+                DataAssetElement    bean            = (DataAssetElement) returnBean;
+                DataAssetProperties assetProperties = new DataAssetProperties();
 
                 if (entity != null)
                 {
@@ -108,7 +108,7 @@ public class AssetConverter<B> extends AssetManagerOMASConverter<B>
                     assetProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
                     assetProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
-                    bean.setAssetProperties(assetProperties);
+                    bean.setDataAssetProperties(assetProperties);
                 }
                 else
                 {

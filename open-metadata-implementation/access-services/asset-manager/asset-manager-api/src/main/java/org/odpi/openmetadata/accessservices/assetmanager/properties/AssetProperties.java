@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * AssetProperties is a java bean used to create assets associated with the external asset manager.
+ * DataAssetProperties is a java bean used to create assets associated with the external asset manager.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -36,7 +36,6 @@ public class AssetProperties extends SupplementaryProperties
     private String              originOrganizationGUID       = null;
     private String              originBusinessCapabilityGUID = null;
     private Map<String, String> otherOriginValues            = null;
-    private boolean             isReferenceAsset             = false;
 
 
     /**
@@ -272,28 +271,6 @@ public class AssetProperties extends SupplementaryProperties
 
 
     /**
-     * Return whether this being used as a reference data set.
-     *
-     * @return boolean flag
-     */
-    public boolean getIsReferenceAsset()
-    {
-        return isReferenceAsset;
-    }
-
-
-    /**
-     * Set up whether this asset is being used as a reference data set.
-     *
-     * @param referenceAsset boolean flag
-     */
-    public void setIsReferenceAsset(boolean referenceAsset)
-    {
-        isReferenceAsset = referenceAsset;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -301,7 +278,7 @@ public class AssetProperties extends SupplementaryProperties
     @Override
     public String toString()
     {
-        return "AssetProperties{" +
+        return "DataAssetProperties{" +
                        "technicalName='" + technicalName + '\'' +
                        ", technicalDescription='" + technicalDescription + '\'' +
                        ", owner='" + owner + '\'' +
@@ -310,7 +287,6 @@ public class AssetProperties extends SupplementaryProperties
                        ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
                        ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
                        ", otherOriginValues=" + otherOriginValues +
-                       ", isReferenceAsset=" + isReferenceAsset +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +
                        ", description='" + getDescription() + '\'' +
@@ -347,8 +323,7 @@ public class AssetProperties extends SupplementaryProperties
             return false;
         }
         AssetProperties that = (AssetProperties) objectToCompare;
-        return isReferenceAsset == that.isReferenceAsset &&
-                       Objects.equals(getTechnicalName(), that.getTechnicalName()) &&
+        return Objects.equals(getTechnicalName(), that.getTechnicalName()) &&
                        Objects.equals(getTechnicalDescription(), that.getTechnicalDescription()) &&
                        Objects.equals(getOwner(), that.getOwner()) &&
                        getOwnerCategory() == that.getOwnerCategory() &&
