@@ -158,6 +158,7 @@ public class OpenMetadataTypesArchive
         update0025Locations();
         update0030HostsAndOperatingPlatforms();
         update0050Applications();
+        update0440OrganizationControls();
     }
 
 
@@ -302,6 +303,71 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
 
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * The BusinessCapability entity is superfluous - can use ServerAssetUse since Application is a SoftwareServerCapability.
+     */
+    private void update0440OrganizationControls()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityEntity());
+    }
+
+
+    /**
+     * Deprecate deployedImplementationType and replace with businessCapabilityType.
+     * @return the type def patch
+     */
+    private TypeDefPatch updateBusinessCapabilityEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "BusinessCapability";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "deployedImplementationType";
+        final String attribute1Description     = "Deprecated attribute. Use the businessCapabilityType attribute to describe the type of business capability.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "deployedImplementationType";
+
+        property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
+                                                         attribute1Name,
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        property.setReplacedByAttribute(attribute1ReplacedBy);
+        properties.add(property);
+
+        final String attribute2Name            = "businessCapabilityType";
+        final String attribute2Description     = "Type of business capability.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
 }
