@@ -105,52 +105,39 @@ is very welcome !
 
 ## Example script to launch Egeria
 
-The following linux/macOS script shows how the Egeria Platform may be started making use
-of specified certificates. In this example we are running from the Egeria Source tree, and using
-certificates already provided in that build tree.
+Example certs are provided [here](../../../../open-metadata-resources/open-metadata-deployment/certificates) 
 
-```bash
-#!/bin/sh
+As an example of running the Egeria server chassis with the certificates generated above, add
+the following options when launching the Egeria server chass jar file:
 
-# Location of my source tree
-BUILD=~/src/egeria
+ * -Dserver.ssl.key-store=${KS} 
+ * -Dserver.ssl.key-alias=EgeriaServerChassis
+ * -Dserver.ssl.key-store-password=egeria
+ * -Dserver.ssl.trust-store=EgeriaCA.p12
+ * -Dserver.ssl.trust-store-password=egeria
+ * -Djavax.net.ssl.keyStore=EgeriaServerChassis 
+ * -Djavax.net.ssl.keyStorePassword=egeria
+ * -Djavax.net.ssl.trustStore=EgeriaCA.p12
+ * -Djavax.net.ssl.trustStorePassword=egeria 
+  
+We have to use both server.ssl and javax.net values since the former controls how the server chassis works when accepting inbound connections
+as the server chassis, and the latter are needed any time code running in that chassis acts as a client, such as connecting to another 
+repository.
 
-# Use the certs in the build, with the default passwords of 'egeria' and a server alias of 'tomcat'
-KS=${BUILD}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12
-TS=${BUILD}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12
-KSP=egeria
-TSP=egeria
-SKEY=tomcat
+We have assumed the default keystore passwords, and also that we will use the same key regardless of whether it is the one
+that the chassis sends back to it's client after they connect, or the one the chassis may send to those other repositories. They
+could be distinct if needed.
 
-# version
-VER=2.4-SNAPSHOT
-
-# Launch the server chassis
-JAR=${BUILD}/open-metadata-implementation/server-chassis/server-chassis-spring/build/libs/server-chassis-spring-${VER}.jar
-
-# Based on this for a fully specified launch of the chassis we would therefore use:
-java \
-    -Dserver.ssl.key-store=${KS} \
-    -Dserver.ssl.key-alias=${SKEY} \
-    -Dserver.ssl.key-store-password=${KSP} \
-    -Dserver.ssl.trust-store=${TS} \
-    -Dserver.ssl.trust-store-password=${TSP} \
-    -Djavax.net.ssl.keyStore=${KS} \
-    -Djavax.net.ssl.keyStorePassword=${KSP} \
-    -Djavax.net.ssl.trustStore=${KS} \
-    -Djavax.net.ssl.trustStorePassword=${KSP} \
-    -jar ${JAR}
-```
 ## Creating your own certificates
 
-Example configurations and scripts can be found [here](../../../../open-metadata-resources/open-metadata-deployment/certificates)
+Example configurations and scripts can be found in [open-metadata-resources/open-metadata-deployment/certificates](../../../../open-metadata-resources/open-metadata-deployment/certificates)
 
-An example script to create certificates is provided in `gensamplecerts.sh`. It is intended only as an example
-and is not run in the build.
+An example script (MacOS/Linux)to create certificates is provided in `gensamplecerts.sh`. It is intended only as an example.
+It requires the openssl tool & keytool. Deployment frameworks in cloud services may also offer support to
+generate certificates and it's likely an enterprise process will be place in larger organizations.
 
-The script creates a Certificate Authority and then specific certificates for the Egeria Server Platform for 
-both client and server roles. It could be extended to create certificates for other clients especially if
-using 2 way SSL.
+The script creates a Certificate Authority and then specific certificates for different Egeria components.
+It could be extended to create certificates for other clients especially if using 2 way SSL.
 
 When the script is run it also makes use of the configuration template `openssl.cnf.`
 

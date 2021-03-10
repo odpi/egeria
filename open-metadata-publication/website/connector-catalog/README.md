@@ -100,11 +100,18 @@ They run in the
 hosted by the
 [Engine Host OMAG Server](../../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md).
 
-* [Monitor for New Assets Governance Action Service](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors)
-  listens for new assets and initiates other governance actions that ensure the asset is properly set up.
+* [Generic Element Watchdog Governance Action Service](generic-element-watchdog-governance-action-service.md)
+  listens for changing metadata elements and initiates governance action processes when certain events occur.
+  
+* [Generic Folder Watchdog Governance Action Service](generic-folder-watchdog-governance-action-service.md)
+  listens for changing assets linked to a DataFolder element.  This may be for DataFiles directly linked to the folder or
+  in sub-folders.  It initiates governance action processes when specific events occur.
   
 * [Move/Copy File Provisioning Governance Action Service](move-copy-file-provisioning-governance-action-service.md)
   moves or copied files from one location to another and maintains the lineage of the action.
+  
+* [Origin Seeker Remediation Governance Action Service](origin-seeker-remediation-governance-action-service.md) walks
+  backwards through the lineage mappings to 
 
 ### Event Bus Connectors
 

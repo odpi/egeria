@@ -12,7 +12,7 @@
 * ConnectorProviderClassName: `org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericElementWatchdogGovernanceActionProvider`
 
 
-The **Generic Element Watchdog Governance Action Service** detects changes to requested elements and initiates a governance action process when they
+The **Generic Element Watchdog** Governance Action Service detects changes to requested elements and initiates a governance action process when they
 occur.  It has two modes of operation: 
 
 - listening for a single event and then terminating when it occurs or 

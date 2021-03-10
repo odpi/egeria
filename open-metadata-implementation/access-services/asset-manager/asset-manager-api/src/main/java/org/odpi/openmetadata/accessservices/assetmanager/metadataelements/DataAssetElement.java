@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,24 +16,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetElement contains the properties and header for an  asset retrieved from the metadata repository.
+ * DataAssetElement contains the properties and header for an  asset retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetElement implements MetadataElement, Serializable
+public class DataAssetElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private AssetProperties                 assetProperties    = null;
-    private List<MetadataCorrelationHeader> correlationHeaders = null;
-    private ElementHeader                   elementHeader      = null;
+    private DataAssetProperties             dataAssetProperties = null;
+    private List<MetadataCorrelationHeader> correlationHeaders  = null;
+    private ElementHeader                   elementHeader       = null;
 
 
     /**
      * Default constructor
      */
-    public AssetElement()
+    public DataAssetElement()
     {
         super();
     }
@@ -44,13 +44,13 @@ public class AssetElement implements MetadataElement, Serializable
      *
      * @param template object to copy
      */
-    public AssetElement(AssetElement template)
+    public DataAssetElement(DataAssetElement template)
     {
         if (template != null)
         {
             elementHeader = template.getElementHeader();
             correlationHeaders = template.getCorrelationHeaders();
-            assetProperties = template.getAssetProperties();
+            dataAssetProperties = template.getDataAssetProperties();
         }
     }
 
@@ -121,20 +121,20 @@ public class AssetElement implements MetadataElement, Serializable
      *
      * @return asset properties (using appropriate subclass)
      */
-    public AssetProperties getAssetProperties()
+    public DataAssetProperties getDataAssetProperties()
     {
-        return assetProperties;
+        return dataAssetProperties;
     }
 
 
     /**
      * Set up the properties for the asset.
      *
-     * @param assetProperties asset properties
+     * @param dataAssetProperties asset properties
      */
-    public void setAssetProperties(AssetProperties assetProperties)
+    public void setDataAssetProperties(DataAssetProperties dataAssetProperties)
     {
-        this.assetProperties = assetProperties;
+        this.dataAssetProperties = dataAssetProperties;
     }
 
 
@@ -146,8 +146,8 @@ public class AssetElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "AssetElement{" +
-                       "assetProperties=" + assetProperties +
+        return "DataAssetElement{" +
+                       "dataAssetProperties=" + dataAssetProperties +
                        ", correlationHeaders=" + correlationHeaders +
                        ", elementHeader=" + elementHeader +
                        '}';
@@ -171,8 +171,8 @@ public class AssetElement implements MetadataElement, Serializable
         {
             return false;
         }
-        AssetElement that = (AssetElement) objectToCompare;
-        return Objects.equals(getAssetProperties(), that.getAssetProperties()) &&
+        DataAssetElement that = (DataAssetElement) objectToCompare;
+        return Objects.equals(getDataAssetProperties(), that.getDataAssetProperties()) &&
                        Objects.equals(getCorrelationHeaders(), that.getCorrelationHeaders()) &&
                        Objects.equals(getElementHeader(), that.getElementHeader());
     }
@@ -186,6 +186,6 @@ public class AssetElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, assetProperties);
+        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, dataAssetProperties);
     }
 }

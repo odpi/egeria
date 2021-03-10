@@ -3456,6 +3456,18 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                                       elementGUID,
                                                                                                       methodName));
                         initialClassifications.add(classification);
+
+                        classification = repositoryHelper.getNewClassification(serviceName,
+                                                                               null,
+                                                                               null,
+                                                                               InstanceProvenanceType.LOCAL_COHORT,
+                                                                               userId,
+                                                                               OpenMetadataAPIMapper.ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME,
+                                                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                               ClassificationOrigin.ASSIGNED,
+                                                                               null,
+                                                                               null);
+                        initialClassifications.add(classification);
                     }
                     catch (TypeErrorException error)
                     {
