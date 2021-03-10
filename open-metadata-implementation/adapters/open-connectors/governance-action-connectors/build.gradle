@@ -14,7 +14,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
     testImplementation 'org.testng:testng'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 description = 'Governance Action Connectors'

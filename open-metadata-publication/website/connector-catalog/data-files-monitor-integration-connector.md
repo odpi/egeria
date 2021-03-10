@@ -11,7 +11,7 @@
 
 ## Overview
 
-The data files monitor integration connector monitors changes in a file directory (folder) and updates the open metadata
+The **Data Files Monitor** integration connector monitors changes in a file directory (folder) and updates the open metadata
 repository/repositories to reflect the changes to both the files and folders underneath it.
 
 Specifically, a [DataFile](../open-metadata-types/0220-Files-and-Folders.md) asset is created and then maintained for each file in the folder (or any sub-folder).

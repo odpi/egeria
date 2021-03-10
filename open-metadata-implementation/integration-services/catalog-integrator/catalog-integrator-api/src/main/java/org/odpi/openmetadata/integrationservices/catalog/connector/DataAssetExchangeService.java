@@ -5,7 +5,7 @@ package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -74,31 +74,31 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createAsset(boolean             assetManagerIsHome,
-                              String              assetExternalIdentifier,
-                              String              assetExternalIdentifierName,
-                              String              assetExternalIdentifierUsage,
-                              KeyPattern          assetExternalIdentifierKeyPattern,
-                              Map<String, String> mappingProperties,
-                              AssetProperties     assetProperties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public String createDataAsset(boolean             assetManagerIsHome,
+                                  String              assetExternalIdentifier,
+                                  String              assetExternalIdentifierName,
+                                  String              assetExternalIdentifierUsage,
+                                  KeyPattern          assetExternalIdentifierKeyPattern,
+                                  Map<String, String> mappingProperties,
+                                  DataAssetProperties assetProperties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        final String methodName = "createAsset";
+        final String methodName = "createDataAsset";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            return dataAssetExchangeClient.createAsset(userId,
-                                                       assetManagerGUID,
-                                                       assetManagerName,
-                                                       assetManagerIsHome,
-                                                       assetExternalIdentifier,
-                                                       assetExternalIdentifierName,
-                                                       assetExternalIdentifierUsage,
-                                                       connectorName,
-                                                       assetExternalIdentifierKeyPattern,
-                                                       mappingProperties,
-                                                       assetProperties);
+            return dataAssetExchangeClient.createDataAsset(userId,
+                                                           assetManagerGUID,
+                                                           assetManagerName,
+                                                           assetManagerIsHome,
+                                                           assetExternalIdentifier,
+                                                           assetExternalIdentifierName,
+                                                           assetExternalIdentifierUsage,
+                                                           connectorName,
+                                                           assetExternalIdentifierKeyPattern,
+                                                           mappingProperties,
+                                                           assetProperties);
         }
         else
         {
@@ -132,33 +132,33 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createAssetFromTemplate(boolean             assetManagerIsHome,
-                                          String              templateGUID,
-                                          String              assetExternalIdentifier,
-                                          String              assetExternalIdentifierName,
-                                          String              assetExternalIdentifierUsage,
-                                          KeyPattern          assetExternalIdentifierKeyPattern,
-                                          Map<String, String> mappingProperties,
-                                          TemplateProperties  templateProperties) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public String createDataAssetFromTemplate(boolean             assetManagerIsHome,
+                                              String              templateGUID,
+                                              String              assetExternalIdentifier,
+                                              String              assetExternalIdentifierName,
+                                              String              assetExternalIdentifierUsage,
+                                              KeyPattern          assetExternalIdentifierKeyPattern,
+                                              Map<String, String> mappingProperties,
+                                              TemplateProperties  templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
-        final String methodName = "createAssetFromTemplate";
+        final String methodName = "createDataAssetFromTemplate";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            return dataAssetExchangeClient.createAssetFromTemplate(userId,
-                                                                   assetManagerGUID,
-                                                                   assetManagerName,
-                                                                   assetManagerIsHome,
-                                                                   templateGUID,
-                                                                   assetExternalIdentifier,
-                                                                   assetExternalIdentifierName,
-                                                                   assetExternalIdentifierUsage,
-                                                                   connectorName,
-                                                                   assetExternalIdentifierKeyPattern,
-                                                                   mappingProperties,
-                                                                   templateProperties);
+            return dataAssetExchangeClient.createDataAssetFromTemplate(userId,
+                                                                       assetManagerGUID,
+                                                                       assetManagerName,
+                                                                       assetManagerIsHome,
+                                                                       templateGUID,
+                                                                       assetExternalIdentifier,
+                                                                       assetExternalIdentifierName,
+                                                                       assetExternalIdentifierUsage,
+                                                                       connectorName,
+                                                                       assetExternalIdentifierKeyPattern,
+                                                                       mappingProperties,
+                                                                       templateProperties);
         }
         else
         {
@@ -188,27 +188,27 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateAsset(String          userId,
-                            String          assetManagerGUID,
-                            String          assetManagerName,
-                            String          assetGUID,
-                            String          assetExternalIdentifier,
-                            boolean         isMergeUpdate,
-                            AssetProperties assetProperties) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void updateDataAsset(String              userId,
+                                String              assetManagerGUID,
+                                String              assetManagerName,
+                                String              assetGUID,
+                                String              assetExternalIdentifier,
+                                boolean             isMergeUpdate,
+                                DataAssetProperties assetProperties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        final String methodName = "updateAsset";
+        final String methodName = "updateDataAsset";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.updateAsset(userId,
-                                                assetManagerGUID,
-                                                assetManagerName,
-                                                assetGUID,
-                                                assetExternalIdentifier,
-                                                isMergeUpdate,
-                                                assetProperties);
+            dataAssetExchangeClient.updateDataAsset(userId,
+                                                    assetManagerGUID,
+                                                    assetManagerName,
+                                                    assetGUID,
+                                                    assetExternalIdentifier,
+                                                    isMergeUpdate,
+                                                    assetProperties);
         }
         else
         {
@@ -235,16 +235,16 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishAsset(String userId,
-                             String assetGUID) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException
+    public void publishDataAsset(String userId,
+                                 String assetGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
-        final String methodName = "publishAsset";
+        final String methodName = "publishDataAsset";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.publishAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
+            dataAssetExchangeClient.publishDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
         }
         else
         {
@@ -271,16 +271,16 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawAsset(String userId,
-                              String assetGUID) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException
+    public void withdrawDataAsset(String userId,
+                                  String assetGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
-        final String methodName = "withdrawAsset";
+        final String methodName = "withdrawDataAsset";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.publishAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
+            dataAssetExchangeClient.publishDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID);
         }
         else
         {
@@ -309,19 +309,19 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeAsset(String userId,
-                            String assetManagerGUID,
-                            String assetManagerName,
-                            String assetGUID,
-                            String assetExternalIdentifier) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void removeDataAsset(String userId,
+                                String assetManagerGUID,
+                                String assetManagerName,
+                                String assetGUID,
+                                String assetExternalIdentifier) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
-        final String methodName = "removeAsset";
+        final String methodName = "removeDataAsset";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.removeAsset(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
+            dataAssetExchangeClient.removeDataAsset(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
         }
         else
         {
@@ -349,19 +349,19 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setAssetAsReferenceData(String userId,
-                                        String assetManagerGUID,
-                                        String assetManagerName,
-                                        String assetGUID,
-                                        String assetExternalIdentifier) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public void setDataAssetAsReferenceData(String userId,
+                                            String assetManagerGUID,
+                                            String assetManagerName,
+                                            String assetGUID,
+                                            String assetExternalIdentifier) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        final String methodName = "setAssetAsReferenceData";
+        final String methodName = "setDataAssetAsReferenceData";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.setAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
+            dataAssetExchangeClient.setDataAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
         }
         else
         {
@@ -389,19 +389,19 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearAssetAsReferenceData(String userId,
-                                          String assetManagerGUID,
-                                          String assetManagerName,
-                                          String assetGUID,
-                                          String assetExternalIdentifier) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public void clearDataAssetAsReferenceData(String userId,
+                                              String assetManagerGUID,
+                                              String assetManagerName,
+                                              String assetGUID,
+                                              String assetExternalIdentifier) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        final String methodName = "clearAssetAsReferenceData";
+        final String methodName = "clearDataAssetAsReferenceData";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            dataAssetExchangeClient.clearAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
+            dataAssetExchangeClient.clearDataAssetAsReferenceData(userId, assetManagerGUID, assetManagerName, assetGUID, assetExternalIdentifier);
         }
         else
         {
@@ -430,13 +430,13 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement> findAssets(String searchString,
-                                         int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public List<DataAssetElement> findDataAssets(String searchString,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
-        return dataAssetExchangeClient.findAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return dataAssetExchangeClient.findDataAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
     }
 
 
@@ -454,13 +454,13 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement>   getAssetsByName(String name,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<DataAssetElement> getDataAssetsByName(String name,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return dataAssetExchangeClient.getAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return dataAssetExchangeClient.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
     }
 
 
@@ -476,12 +476,12 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement>   getAssetsForAssetManager(int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<DataAssetElement> getDataAssetsForAssetManager(int startFrom,
+                                                               int pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
-        return dataAssetExchangeClient.getAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+        return dataAssetExchangeClient.getDataAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
     }
 
 
@@ -499,13 +499,13 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetElement getAssetByGUID(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String openMetadataGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public DataAssetElement getDataAssetByGUID(String userId,
+                                               String assetManagerGUID,
+                                               String assetManagerName,
+                                               String openMetadataGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
-        return dataAssetExchangeClient.getAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
+        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
     }
 }
