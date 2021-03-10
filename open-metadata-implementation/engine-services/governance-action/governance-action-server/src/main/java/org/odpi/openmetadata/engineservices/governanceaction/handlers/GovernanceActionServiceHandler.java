@@ -318,7 +318,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 if (completionStatus == null)
                 {
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null, null);
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null);
                 }
             }
             catch (Throwable statusError)

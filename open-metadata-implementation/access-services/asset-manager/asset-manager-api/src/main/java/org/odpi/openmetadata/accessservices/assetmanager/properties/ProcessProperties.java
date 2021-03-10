@@ -110,7 +110,6 @@ public class ProcessProperties extends AssetProperties
                        ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
                        ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
                        ", otherOriginValues=" + getOtherOriginValues() +
-                       ", isReferenceAsset=" + getIsReferenceAsset() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +
                        ", description='" + getDescription() + '\'' +

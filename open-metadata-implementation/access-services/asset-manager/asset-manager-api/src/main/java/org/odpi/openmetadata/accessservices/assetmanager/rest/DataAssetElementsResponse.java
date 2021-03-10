@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,23 +17,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetElementsResponse is a response object for passing back a a list of glossaries
+ * DataAssetElementsResponse is a response object for passing back a a list of glossaries
  * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetElementsResponse extends AssetManagerOMASAPIResponse
+public class DataAssetElementsResponse extends AssetManagerOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<AssetElement> elementList = null;
+    private List<DataAssetElement> elementList = null;
 
 
     /**
      * Default constructor
      */
-    public AssetElementsResponse()
+    public DataAssetElementsResponse()
     {
     }
 
@@ -43,7 +43,7 @@ public class AssetElementsResponse extends AssetManagerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public AssetElementsResponse(AssetElementsResponse template)
+    public DataAssetElementsResponse(DataAssetElementsResponse template)
     {
         super(template);
 
@@ -59,7 +59,7 @@ public class AssetElementsResponse extends AssetManagerOMASAPIResponse
      *
      * @return result object
      */
-    public List<AssetElement> getElementList()
+    public List<DataAssetElement> getElementList()
     {
         if (elementList == null)
         {
@@ -81,7 +81,7 @@ public class AssetElementsResponse extends AssetManagerOMASAPIResponse
      *
      * @param elementList result object
      */
-    public void setElementList(List<AssetElement> elementList)
+    public void setElementList(List<DataAssetElement> elementList)
     {
         this.elementList = elementList;
     }
@@ -95,7 +95,7 @@ public class AssetElementsResponse extends AssetManagerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "AssetElementsResponse{" +
+        return "DataAssetElementsResponse{" +
                 "elementList=" + elementList +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -131,7 +131,7 @@ public class AssetElementsResponse extends AssetManagerOMASAPIResponse
         {
             return false;
         }
-        AssetElementsResponse that = (AssetElementsResponse) objectToCompare;
+        DataAssetElementsResponse that = (DataAssetElementsResponse) objectToCompare;
         return Objects.equals(elementList, that.elementList);
     }
 

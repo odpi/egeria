@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -153,6 +154,28 @@ public class GovernanceContext
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
+     *                                     action service completion status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public synchronized  void recordCompletionStatus(CompletionStatus    status,
+                                                     List<String>        outputGuards) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        this.completionStatus = status;
+
+        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, null);
+    }
+
+
+    /**
+     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     *
+     * @param status completion status enum value
+     * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
      *
      * @throws InvalidParameterException the completion status is null
@@ -160,15 +183,53 @@ public class GovernanceContext
      *                                     action service completion status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public synchronized  void recordCompletionStatus(CompletionStatus status,
-                                                     List<String>     outputGuards,
-                                                     List<String>     newActionTargetGUIDs) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public synchronized  void recordCompletionStatus(CompletionStatus    status,
+                                                     List<String>        outputGuards,
+                                                     List<String>        newActionTargetGUIDs) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         this.completionStatus = status;
 
         openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargetGUIDs);
+    }
+
+
+    /**
+     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     *
+     * @param status completion status enum value
+     * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newRequestParameters additional request parameters.  These override/augment any request parameters defined for the next invoked service
+     * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
+     *                                     action service completion status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public synchronized  void recordCompletionStatus(CompletionStatus    status,
+                                                     List<String>        outputGuards,
+                                                     Map<String, String> newRequestParameters,
+                                                     List<String>        newActionTargetGUIDs) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        this.completionStatus = status;
+
+        Map<String, String> combinedRequestParameters = new HashMap<>();
+
+        if (requestParameters != null)
+        {
+            combinedRequestParameters.putAll(requestParameters);
+        }
+
+        if (newRequestParameters != null)
+        {
+            combinedRequestParameters.putAll(newRequestParameters);
+        }
+
+        openMetadataStore.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargetGUIDs);
     }
 
 
