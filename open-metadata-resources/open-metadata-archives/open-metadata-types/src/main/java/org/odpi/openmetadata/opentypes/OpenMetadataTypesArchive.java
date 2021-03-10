@@ -155,7 +155,127 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        update0025Locations();
+        update0030HostsAndOperatingPlatforms();
+        update0050Applications();
+    }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0025Locations()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateFixedLocation());
+        this.archiveBuilder.addTypeDefPatch(updateCyberLocation());
+    }
+
+
+    private TypeDefPatch updateFixedLocation()
+    {
+        final String typeName = "FixedLocation";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "address";
+        final String attribute1Description     = "Postal address of the location (Deprecated).";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "postalAddress";
+        final String attribute2Description     = "Postal address of the location.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "mapProjection";
+        final String attribute3Description     = "The scheme used to define the meaning of the coordinates.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch updateCyberLocation()
+    {
+        final String typeName = "CyberLocation";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "address";
+        final String attribute1Description     = "Address of the location (Deprecated).";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "networkAddress";
+        final String attribute2Description     = "Base network address used to connect to the location's endpoint(s).";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * The HostLocation relationship is superfluous - can use AssetLocation since Host is an Asset
+     */
+    private void update0030HostsAndOperatingPlatforms()
+    {
+        this.archiveBuilder.addTypeDefPatch(deprecateHostLocation());
+    }
+
+    private TypeDefPatch deprecateHostLocation()
+    {
+        final String typeName = "HostLocation";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
     }
 
 
@@ -164,5 +284,25 @@ public class OpenMetadataTypesArchive
      */
 
 
+    /**
+     * The RuntimeForProcess relationship is superfluous - can use ServerAssetUse since Application is a SoftwareServerCapability.
+     */
+    private void update0050Applications()
+    {
+        this.archiveBuilder.addTypeDefPatch(deprecateRuntimeForProcess());
+    }
+
+    private TypeDefPatch deprecateRuntimeForProcess()
+    {
+        final String typeName = "RuntimeForProcess";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
 }
 

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -16,23 +16,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * AssetElementResponse is the response structure used on the OMAS REST API calls that return the properties
+ * DataAssetElementResponse is the response structure used on the OMAS REST API calls that return the properties
  * for a element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetElementResponse extends AssetManagerOMASAPIResponse
+public class DataAssetElementResponse extends AssetManagerOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private AssetElement element = null;
+    private DataAssetElement element = null;
 
 
     /**
      * Default constructor
      */
-    public AssetElementResponse()
+    public DataAssetElementResponse()
     {
         super();
     }
@@ -43,7 +43,7 @@ public class AssetElementResponse extends AssetManagerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public AssetElementResponse(AssetElementResponse template)
+    public DataAssetElementResponse(DataAssetElementResponse template)
     {
         super(template);
 
@@ -59,7 +59,7 @@ public class AssetElementResponse extends AssetManagerOMASAPIResponse
      *
      * @return bean
      */
-    public AssetElement getElement()
+    public DataAssetElement getElement()
     {
         return element;
     }
@@ -70,7 +70,7 @@ public class AssetElementResponse extends AssetManagerOMASAPIResponse
      *
      * @param element  bean
      */
-    public void setElement(AssetElement element)
+    public void setElement(DataAssetElement element)
     {
         this.element = element;
     }
@@ -84,7 +84,7 @@ public class AssetElementResponse extends AssetManagerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "AssetElementResponse{" +
+        return "DataAssetElementResponse{" +
                 "element=" + element +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -113,7 +113,7 @@ public class AssetElementResponse extends AssetManagerOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetElementResponse))
+        if (!(objectToCompare instanceof DataAssetElementResponse))
         {
             return false;
         }
@@ -121,7 +121,7 @@ public class AssetElementResponse extends AssetManagerOMASAPIResponse
         {
             return false;
         }
-        AssetElementResponse that = (AssetElementResponse) objectToCompare;
+        DataAssetElementResponse that = (DataAssetElementResponse) objectToCompare;
         return Objects.equals(element, that.element);
     }
 

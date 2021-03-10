@@ -175,7 +175,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
                 List<String> outputGuards = new ArrayList<>();
 
                 outputGuards.add(GenericElementWatchdogGovernanceActionProvider.MONITORING_FAILED);
-                governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null);
+                governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards);
             }
             catch (Exception nestedError)
             {
@@ -362,7 +362,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
                     List<String> outputGuards = new ArrayList<>();
                     outputGuards.add(GenericElementWatchdogGovernanceActionProvider.MONITORING_FAILED);
 
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null);
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards);
                 }
                 catch (Exception contextError)
                 {

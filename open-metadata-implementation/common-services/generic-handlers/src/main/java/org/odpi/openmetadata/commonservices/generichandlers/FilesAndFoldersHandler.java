@@ -255,7 +255,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             {
                 int startingToken = 0;
 
-                if ("".equals(tokens[startingToken]))
+                if (tokens[startingToken].length() == 0)
                 {
                     startingToken = 1;
                 }

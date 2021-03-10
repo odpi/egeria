@@ -421,7 +421,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         try
         {
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null,null);
         }
         catch (OCFCheckedExceptionBase error)
         {

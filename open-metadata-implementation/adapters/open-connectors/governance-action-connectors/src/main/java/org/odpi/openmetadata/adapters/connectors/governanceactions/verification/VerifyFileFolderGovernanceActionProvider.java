@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.verification;
 
 
-import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionConnector;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MoveCopyFileGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
+ * VerifyFileFolderGovernanceActionProvider is the OCF connector provider for the Move or Copy File Provisioning Governance Action Service.
  * This is a Provisioning Governance Action Service.
  */
 public class VerifyFileFolderGovernanceActionProvider extends GovernanceActionServiceProviderBase
