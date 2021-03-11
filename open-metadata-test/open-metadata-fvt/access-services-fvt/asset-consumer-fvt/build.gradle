@@ -12,11 +12,6 @@ plugins {
 apply plugin: "com.github.hesch.execfork"
 apply plugin: 'groovy'
 
-test {
-    useJUnitPlatform()
-}
-
-
 dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-api')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
@@ -41,22 +36,24 @@ dependencies {
 
 description = 'Asset Consumer OMAS FVT'
 
+// JavaDoc is needed for Publishing POMS to Maven Central
 java {
     withJavadocJar()
 }
 
+// Local properties to use
 ext
 {
-    distdir="../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz" }
+    distdir="../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
+}
 
-// Integration testing
 
 // Build the groovy test script
 sourceSets.test.java.srcDirs = []
 sourceSets.test.groovy.srcDirs = ["src/test/java", "src/test/script"]
 
 // Initially we launch as an app -- though there may be a better way of running this in the existing jvm
-task startServer(dependsOn: [':open-metadata-distribution:open-metadata-assemblies:egeriaomagDistTar'], type: com.github.psxpaul.task.ExecFork) {
+task startServer(dependsOn: [':open-metadata-distribution:open-metadata-assemblies:egeriaomagDistTar','cleanData'], type: com.github.psxpaul.task.ExecFork) {
     // Start some external service
     executable = "java"
     workingDir = "${buildDir}"
@@ -76,6 +73,7 @@ task startServer(dependsOn: [':open-metadata-distribution:open-metadata-assembli
     //waitForOutput = 'has started'
 }
 
+// Configuration of the platform
 task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
             main = 'configureStartServer'
             classpath = sourceSets.test.runtimeClasspath
@@ -88,29 +86,20 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
             ]
         }
 
-// Run the tests
-task integrationTest(dependsOn: ['configServer'] , type: Test) {
+task cleanData(type: Delete) {
+    delete files("${buildDir}/data")
+}
+
+// The actual tests (Integration only)
+test {
     description 'Run Integration Tests'
     group = 'verification'
     outputs.upToDateWhen {return false}
     systemProperties = [
-    'fvt.url': 'https://localhost:10443'
-   ] 
+            'fvt.url': 'https://localhost:10443'
+    ]
     useJUnitPlatform()
-
-    //useTestNG {
-    //    excludeGroups 'toExclude'
-    //    useDefaultListeners = true
-        //reports.html.enabled = false
-
-    //}
-    //testLogging {
-    //    events "PASSED", "FAILED", "SKIPPED"
-    //}
     testLogging.showStandardStreams = true
-
+    dependsOn configServer
+    finalizedBy stopServer
 }
-//build.finalizedBy integration
-check.dependsOn integrationTest
-integrationTest.finalizedBy stopServer
-
