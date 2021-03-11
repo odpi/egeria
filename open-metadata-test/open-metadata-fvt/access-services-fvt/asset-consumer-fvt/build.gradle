@@ -37,7 +37,6 @@ dependencies {
     compile localGroovy()
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     testImplementation 'org.apache.commons:commons-lang3'
-
 }
 
 description = 'Asset Consumer OMAS FVT'
