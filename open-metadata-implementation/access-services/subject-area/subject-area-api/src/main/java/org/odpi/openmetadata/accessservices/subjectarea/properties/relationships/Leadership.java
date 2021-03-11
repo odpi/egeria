@@ -34,21 +34,21 @@ public class Leadership extends Line {
     /*
      * Set up end 1.
      */
-     protected static final String END_1_NODE_TYPE = "TeamLeader";
-     protected static final String END_1_ATTRIBUTE_NAME = "teamLeaders";
-     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "The leaders of the team.";
-     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     private static final String END_1_NODE_TYPE = "TeamLeader";
+     private static final String END_1_ATTRIBUTE_NAME = "teamLeaders";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "The leaders of the team.";
+     private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-     protected static final String END_2_NODE_TYPE = "Team";
-     protected static final String END_2_ATTRIBUTE_NAME = "leadsTeam";
-     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "The team lead by this team leader.";
-     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     private static final String END_2_NODE_TYPE = "Team";
+     private static final String END_2_ATTRIBUTE_NAME = "leadsTeam";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "The team lead by this team leader.";
+     private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     public Leadership() {

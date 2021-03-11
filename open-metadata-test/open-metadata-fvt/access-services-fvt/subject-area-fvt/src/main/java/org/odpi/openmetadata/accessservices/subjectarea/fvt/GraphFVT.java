@@ -227,8 +227,9 @@ public class GraphFVT
                 null,
                 3);
         checkGraphContent(graph,2,1);
-        checkNodesContainNodeType(graph.getNodes(),NodeType.Taxonomy);
-        checkNodesContainNodeType(graph.getNodes(),NodeType.SubjectAreaDefinition);
+
+        checkNodesContainNodeType(graph,NodeType.Taxonomy);
+        checkNodesContainNodeType(graph,NodeType.SubjectAreaDefinition);
         // delete the term, category and subject area we created.
         subjectAreaFVT.deleteSubjectAreaDefinition(subjectAreaDefinition.getSystemAttributes().getGUID());
         categoryFVT.deleteCategory(category.getSystemAttributes().getGUID());
@@ -239,9 +240,15 @@ public class GraphFVT
         glossaryFVT.deleteGlossary(glossaryGuid);
     }
 
-    private void checkNodesContainNodeType(Set<? extends Node> nodes, NodeType nodeTypeToCheck) throws SubjectAreaFVTCheckedException {
+    private void checkNodesContainNodeType(Graph graph, NodeType nodeTypeToCheck) throws SubjectAreaFVTCheckedException {
         boolean found = false;
-        for (Node node:nodes) {
+        if (graph == null || graph.getNodes() == null || graph.getNodes().size() == 0 ) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected to find "+nodeTypeToCheck.name() + "but there were no nodes in the graph");
+        }
+        Map<String, Node> nodes =graph.getNodes();
+        Set<String> guids = nodes.keySet();
+        for (String guid:guids) {
+            Node node = nodes.get(guid);
             if (node.getNodeType() == nodeTypeToCheck) {
                 found = true;
             }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.initialization;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraphClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
@@ -97,6 +98,24 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
         GlossaryAuthorViewServicesInstance instance = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
         return instance.getSubjectAreaConfigClient();
     }
+
+
+    /**
+     * This method returns the object for the tenant to use to work with the
+     * subject area graph API
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return SubjectAreaNodeClients subject area graph API objects
+     */
+    public SubjectAreaGraphClient getSubjectAreaGraphClient(String serverName, String userId, String serviceOperationName)
+    throws
+    InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        GlossaryAuthorViewServicesInstance instance = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
+        return instance.getSubjectAreaGraphClient();
+    }
+
     public int getGlossaryViewMaxPageSize(String serverName, String userId, String serviceOperationName)
     throws
     InvalidParameterException, PropertyServerException, UserNotAuthorizedException
@@ -104,4 +123,5 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
         GlossaryAuthorViewServicesInstance instance = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
         return instance.getGlossaryViewMaxPageSize();
     }
+
 }
