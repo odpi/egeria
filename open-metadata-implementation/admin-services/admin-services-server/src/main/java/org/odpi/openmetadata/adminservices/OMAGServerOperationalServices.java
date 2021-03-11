@@ -155,7 +155,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -565,7 +565,7 @@ public class OMAGServerOperationalServices
             exceptionHandler.captureNotAuthorizedException(response, error);
             cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
             cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
@@ -705,7 +705,7 @@ public class OMAGServerOperationalServices
                                                   error);
                             throw error;
                         }
-                        catch (Throwable error)
+                        catch (Exception error)
                         {
                             auditLog.logException(methodName,
                                                   OMAGAdminAuditCode.ACCESS_SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(),
@@ -820,7 +820,7 @@ public class OMAGServerOperationalServices
                                               error);
                         throw error;
                     }
-                    catch (Throwable error)
+                    catch (Exception error)
                     {
                         auditLog.logException(methodName,
                                               OMAGAdminAuditCode.VIEW_SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(),
@@ -898,7 +898,7 @@ public class OMAGServerOperationalServices
                                                           methodName,
                                                           error);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logException(methodName,
                                       OMAGAdminAuditCode.BAD_ACCESS_SERVICE_ADMIN_CLASS.getMessageDefinition(accessServiceConfig.getAccessServiceName(),
@@ -964,7 +964,7 @@ public class OMAGServerOperationalServices
                                                           methodName,
                                                           error);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logException(methodName,
                                       OMAGAdminAuditCode.BAD_VIEW_SERVICE_ADMIN_CLASS.getMessageDefinition(viewServiceConfig.getViewServiceName(),
@@ -1342,7 +1342,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1408,7 +1408,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.capturePropertyServerException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1466,7 +1466,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1526,7 +1526,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1583,7 +1583,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }

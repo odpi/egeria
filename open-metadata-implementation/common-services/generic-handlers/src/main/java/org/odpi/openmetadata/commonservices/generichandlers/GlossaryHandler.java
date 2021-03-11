@@ -127,6 +127,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                               language,
                                                               usage,
                                                               additionalProperties,
+                                                              typeGUID,
+                                                              typeName,
                                                               extendedProperties,
                                                               repositoryHelper,
                                                               serviceName,
@@ -200,6 +202,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            methodName);
     }
 
+
     /**
      * Create the anchor object that all elements in a glossary (terms and categories) are linked to.
      *
@@ -253,6 +256,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                               language,
                                                               usage,
                                                               additionalProperties,
+                                                              typeGUID,
+                                                              typeName,
                                                               extendedProperties,
                                                               repositoryHelper,
                                                               serviceName,

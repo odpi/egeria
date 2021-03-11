@@ -116,6 +116,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 service.setGovernanceContext(context);
                 service.setAuditLog(auditLog);
+                service.setGovernanceServiceName(governanceServiceName);
 
                 this.governanceContext = context;
                 this.governanceActionService = service;
@@ -135,6 +136,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 service.setGovernanceContext(context);
                 service.setAuditLog(auditLog);
+                service.setGovernanceServiceName(governanceServiceName);
 
                 this.governanceContext = context;
                 this.governanceActionService = service;
@@ -154,6 +156,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 service.setGovernanceContext(context);
                 service.setAuditLog(auditLog);
+                service.setGovernanceServiceName(governanceServiceName);
 
                 this.governanceContext = context;
                 this.governanceActionService = service;
@@ -173,6 +176,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 service.setGovernanceContext(context);
                 service.setAuditLog(auditLog);
+                service.setGovernanceServiceName(governanceServiceName);
 
                 this.governanceContext = context;
                 this.governanceActionService = service;
@@ -192,6 +196,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 service.setGovernanceContext(context);
                 service.setAuditLog(auditLog);
+                service.setGovernanceServiceName(governanceServiceName);
 
                 this.governanceContext = context;
                 this.governanceActionService = service;
@@ -291,10 +296,11 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                     GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_COMPLETE.getMessageDefinition(governanceActionServiceType,
                                                                                                                       governanceServiceName,
                                                                                                                       requestType,
+                                                                                                                      completionStatus.getName(),
                                                                                                                       Long.toString(endTime.getTime() - startTime.getTime())));
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             auditLog.logException(actionDescription,
                                   GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_FAILED.getMessageDefinition(governanceActionServiceType,
@@ -312,7 +318,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 if (completionStatus == null)
                 {
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null, null);
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null);
                 }
             }
             catch (Throwable statusError)

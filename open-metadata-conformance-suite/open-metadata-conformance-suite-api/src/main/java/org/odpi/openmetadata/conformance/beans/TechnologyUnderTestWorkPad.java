@@ -35,10 +35,94 @@ public class TechnologyUnderTestWorkPad
 
 
     /**
+     * Requests the list of all profiles (names) registered across all workpads.
+     *
+     * @return the list of all profiles across all workpads
+     */
+    public List<String> getProfileNames()
+    {
+        List<String> profileNames = new ArrayList<>();
+        if (workbenchWorkPads != null)
+        {
+            for (OpenMetadataConformanceWorkbenchWorkPad workbenchWorkPad : workbenchWorkPads)
+            {
+                if (workbenchWorkPad != null)
+                {
+                    profileNames.addAll(workbenchWorkPad.getProfileNames());
+                }
+            }
+        }
+        return profileNames;
+    }
+
+
+    /**
+     * Requests the list of all test cases (IDs) registered across all workpads.
+     *
+     * @return the list of all test case IDs across all workpads
+     */
+    public List<String> getTestCaseIds()
+    {
+        List<String> testCaseIds = new ArrayList<>();
+        if (workbenchWorkPads != null)
+        {
+            for (OpenMetadataConformanceWorkbenchWorkPad workbenchWorkPad : workbenchWorkPads)
+            {
+                if (workbenchWorkPad != null)
+                {
+                    testCaseIds.addAll(workbenchWorkPad.getTestCaseIds());
+                }
+            }
+        }
+        return testCaseIds;
+    }
+
+
+    /**
+     * Requests detailed information on the execution of a specific profile.
+     * Null is returned if the profile has not run.
+     *
+     * @param profileName of the profile for which to obtain a detailed report.
+     * @return Profile Report
+     * @throws InvalidParameterException the profile name is not known
+     */
+    public OpenMetadataConformanceProfileResults getProfileReport(String profileName) throws InvalidParameterException
+    {
+        final String   methodName    = "getProfileReport";
+        final String   parameterName = "profileName";
+
+        if (workbenchWorkPads != null)
+        {
+            for (OpenMetadataConformanceWorkbenchWorkPad workBenchWorkPad : workbenchWorkPads)
+            {
+                if (workBenchWorkPad != null)
+                {
+                    return workBenchWorkPad.getProfileResults(profileName);
+                }
+            }
+        }
+
+        /*
+         * None of the workbenches know about this profile name.
+         */
+        ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.UNKNOWN_PROFILE_NAME;
+        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(profileName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction(),
+                parameterName);
+    }
+
+
+    /**
      * Requests detailed information on the execution of a specific test case.
      * Null is returned if the test case has not run.
      *
-     * @param testCaseId technology under test server name.
+     * @param testCaseId of the test case for which to obtain a detailed report.
      * @return Test Case Report
      * @throws InvalidParameterException the test case id is not known
      */
@@ -223,6 +307,36 @@ public class TechnologyUnderTestWorkPad
         }
 
         return testLabResults;
+    }
+
+
+    /**
+     * Request a full report on the conformance of the technology under test.
+     *
+     * @return test lab results
+     */
+    public OpenMetadataConformanceTestLabSummary getTestLabSummary()
+    {
+        List<OpenMetadataConformanceWorkbenchSummary> workbenchSummaries = new ArrayList<>();
+
+        if (workbenchWorkPads != null)
+        {
+            for (OpenMetadataConformanceWorkbenchWorkPad workBenchWorkPad : workbenchWorkPads)
+            {
+                if (workBenchWorkPad != null)
+                {
+                    workbenchSummaries.add(workBenchWorkPad.getWorkbenchSummary());
+                }
+            }
+        }
+
+        OpenMetadataConformanceTestLabSummary summary = new OpenMetadataConformanceTestLabSummary();
+        if (! workbenchSummaries.isEmpty())
+        {
+            summary.setTestSummariesFromWorkbenches(workbenchSummaries);
+        }
+
+        return summary;
     }
 
 

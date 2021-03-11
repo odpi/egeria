@@ -3,12 +3,8 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.Map;
 
@@ -32,6 +28,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
      * @param language the language used in the definitions with in the glossary
      * @param usage intended usage of the glossary
      * @param additionalProperties additional properties for a glossary
+     * @param typeGUID unique identifier of this element's type
+     * @param typeName unique name of this element's type
      * @param extendedProperties  properties for a glossary subtype
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
@@ -43,6 +41,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
                     String               language,
                     String               usage,
                     Map<String, String>  additionalProperties,
+                    String               typeGUID,
+                    String               typeName,
                     Map<String, Object>  extendedProperties,
                     OMRSRepositoryHelper repositoryHelper,
                     String               serviceName,
@@ -50,8 +50,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
-              OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+              typeGUID,
+              typeName,
               extendedProperties,
               repositoryHelper,
               serviceName,

@@ -18,7 +18,7 @@ It focuses on providing five types of integration interfaces.
   of which are crafted for particular types of technology.  These interfaces
   support both synchronous APIs, inbound event notifications and outbound
   asynchronous events.
-  [Learn more ...](../../../open-metadata-implementation/access-services/docs/us)
+  [Learn more ...](../../../open-metadata-implementation/access-services/docs/user)
   
 * Connectors for accessing popular type of data sources that also retrieve
   open metadata about the data source.  This allows applications and tools to 

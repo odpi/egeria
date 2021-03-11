@@ -135,7 +135,7 @@ public class UserIdentityHandler
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -199,7 +199,7 @@ public class UserIdentityHandler
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }

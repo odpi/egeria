@@ -202,6 +202,7 @@ public class RelationalDataHandler<DATABASE,
      * @param originOrganizationGUID the properties that characterize where this database is from
      * @param originBusinessCapabilityGUID the properties that characterize where this database is from
      * @param otherOriginValues the properties that characterize where this database is from
+     * @param pathName the fully qualified physical location of the data store
      * @param createTime the time that the database was created
      * @param modifiedTime the last known time the data store was modified
      * @param encodingType the name of the encoding style used in the database
@@ -236,6 +237,7 @@ public class RelationalDataHandler<DATABASE,
                                  String               originOrganizationGUID,
                                  String               originBusinessCapabilityGUID,
                                  Map<String, String>  otherOriginValues,
+                                 String               pathName,
                                  Date                 createTime,
                                  Date                 modifiedTime,
                                  String               encodingType,
@@ -282,6 +284,7 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
+        assetExtendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
         assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
         assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
         assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME, databaseType);
@@ -407,7 +410,8 @@ public class RelationalDataHandler<DATABASE,
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for this database - must not be null
      * @param displayName the stored display name property for the database - if null, the value from the template is used
-     * @param description the stored description property associated with the database - if null, the value from the template is used.
+     * @param description the stored description property associated with the database - if null, the value from the template is used
+     * @param networkAddress physical location of the database - used to connect to it
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -423,6 +427,7 @@ public class RelationalDataHandler<DATABASE,
                                              String               qualifiedName,
                                              String               displayName,
                                              String               description,
+                                             String               networkAddress,
                                              String               methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -445,6 +450,7 @@ public class RelationalDataHandler<DATABASE,
                                                     qualifiedNameParameterName,
                                                     displayName,
                                                     description,
+                                                    networkAddress,
                                                     methodName);
     }
 
@@ -1094,6 +1100,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                qualifiedNameParameterName,
                                                                                displayName,
                                                                                description,
+                                                                               null,
                                                                                methodName);
 
         /*

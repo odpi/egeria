@@ -101,6 +101,15 @@ public class MetadataContainer extends AnalyticsMetadata {
 	public void convertProperties() {
 		
 	}
+	
+	/**
+	 * The function to save custom properties as additional properties.
+	 */
+	@Override
+	protected void prepareCustomProperties() {
+		// container does not have any custom property yet
+	}
+
 
 	
 

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGrap
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +71,9 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Graph> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaGraphHandler handler = instanceHandler.getSubjectAreaGraphHandler(userId, serverName, methodName);
             response = handler.getGraph(
                                         userId,
@@ -83,6 +86,8 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);

@@ -44,7 +44,7 @@ public class DataManagerOutTopicServerConnector extends OpenMetadataTopicSenderC
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             throw new ConnectorCheckedException(DataManagerErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
                                                                                                                    event.toString(),

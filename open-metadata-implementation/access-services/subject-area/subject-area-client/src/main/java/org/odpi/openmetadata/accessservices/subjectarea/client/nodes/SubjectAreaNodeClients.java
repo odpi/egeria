@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeCl
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProjectClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
@@ -42,4 +43,5 @@ public interface SubjectAreaNodeClients {
      * @return subject area project API class
      */
     <P extends Project> SubjectAreaNodeClient<P> projects();
+
 }
