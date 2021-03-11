@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraphClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
@@ -24,6 +25,7 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
     private final SubjectAreaNodeClients nodeClients;
     private final SubjectAreaRelationshipClients subjectAreaRelationshipClients;
     private final SubjectAreaConfigClient subjectAreaConfigClient;
+    private final SubjectAreaGraphClient subjectAreaGraphClient;
 
     /**
      * Set up the Glossary Author OMVS instance
@@ -48,6 +50,7 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
         this.subjectAreaRelationshipClients = subjectArea.relationshipClients();
         this.nodeClients = subjectArea.nodeClients();
         this.subjectAreaConfigClient = subjectArea.subjectAreaConfigClient();
+        this.subjectAreaGraphClient = subjectArea.subjectAreaGraphClient();
     }
 
     public String getViewServiceName()
@@ -63,6 +66,9 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
 
     public SubjectAreaConfigClient getSubjectAreaConfigClient() {
         return subjectAreaConfigClient;
+    }
+    public SubjectAreaGraphClient getSubjectAreaGraphClient() {
+        return subjectAreaGraphClient;
     }
     public int getGlossaryViewMaxPageSize() {
         return maxPageSize;

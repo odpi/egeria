@@ -28,10 +28,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 )
 public class LineEnd implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
-    private String nodeGuid;
-    private String nodeType;
-    private String name;
-    private String description;
+    private String nodeGuid =null;
+    private String nodeType = null;
+    private String name = null;
+    private String description = null;
     private RelationshipEndCardinality cardinality;
 
     /**
@@ -40,11 +40,30 @@ public class LineEnd implements Serializable, OmasObject {
     public LineEnd() {
     }
 
+    /**
+     * constructor
+     * @param nodeType node type associated with this end of the line
+     * @param name name of the end
+     * @param description description of the end
+     * @param cardinality cardinality of the end
+     */
     public LineEnd(String nodeType, String name, String description, RelationshipEndCardinality cardinality ) {
         this.setNodeType(nodeType);
         this.setName(name);
         this.setDescription(description);
         this.setCardinality(cardinality);
+        this.setNodeGuid(null);
+    }
+    /**
+     * Copy constructor
+     * @param endToCopy LineEnd to copy
+     */
+    public LineEnd(LineEnd endToCopy) {
+        this.setNodeType(endToCopy.getNodeType());
+        this.setName(endToCopy.getName());
+        this.setDescription(endToCopy.getDescription());
+        this.setCardinality(endToCopy.getCardinality());
+        this.setNodeGuid(endToCopy.getNodeGuid());
     }
 
     public String getNodeGuid() {
