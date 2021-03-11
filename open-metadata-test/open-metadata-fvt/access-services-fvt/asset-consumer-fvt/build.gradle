@@ -6,10 +6,15 @@
 plugins {
     // Include plug-in for starting a new process
     id 'com.github.hesch.execfork'
+    id 'java'
 }
 
 apply plugin: "com.github.hesch.execfork"
 apply plugin: 'groovy'
+
+test {
+    useJUnitPlatform()
+}
 
 
 dependencies {
@@ -26,10 +31,12 @@ dependencies {
     implementation project(':open-metadata-test:open-metadata-fvt:fvt-utilities')
     testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     compile localGroovy()
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    testImplementation 'org.apache.commons:commons-lang3'
 
 }
 
@@ -85,16 +92,19 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
 // Run the tests
 task integrationTest(dependsOn: ['configServer'] , type: Test) {
     description 'Run Integration Tests'
+    group = 'verification'
     outputs.upToDateWhen {return false}
     systemProperties = [
     'fvt.url': 'https://localhost:10443'
    ] 
-    useTestNG {
-        excludeGroups 'toExclude'
-        useDefaultListeners = true
+    useJUnitPlatform()
+
+    //useTestNG {
+    //    excludeGroups 'toExclude'
+    //    useDefaultListeners = true
         //reports.html.enabled = false
 
-    }
+    //}
     //testLogging {
     //    events "PASSED", "FAILED", "SKIPPED"
     //}
