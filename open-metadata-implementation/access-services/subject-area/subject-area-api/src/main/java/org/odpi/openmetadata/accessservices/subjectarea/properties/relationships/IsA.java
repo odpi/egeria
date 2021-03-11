@@ -50,7 +50,7 @@ public class IsA extends Line {
     private String source;
 
     public IsA() {
-        super("Isa", "50fab7c7-68bc-452f-b8eb-ec76829cac85", LINE_END_1, LINE_END_2);
+        super("IsA", "50fab7c7-68bc-452f-b8eb-ec76829cac85", LINE_END_1, LINE_END_2);
     }
 
     /**
