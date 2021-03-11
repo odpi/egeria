@@ -86,7 +86,8 @@ public class TypeDefLink extends TypeDefElementHeader
      *
      * @return String guid
      */
-    public String getGUID() {
+    public String getGUID()
+    {
         return guid;
     }
 
@@ -109,7 +110,8 @@ public class TypeDefLink extends TypeDefElementHeader
      *
      * @return String name
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -212,10 +214,10 @@ public class TypeDefLink extends TypeDefElementHeader
 
 
     /**
-     * Validated that the GUID, name and version number of a TypeDef are equal.
+     * Validate that an object is equal depending on their stored values.
      *
-     * @param objectToCompare to test
-     * @return boolean flag to say object is the same TypeDefSummary
+     * @param objectToCompare object
+     * @return boolean result
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -230,21 +232,21 @@ public class TypeDefLink extends TypeDefElementHeader
         }
         TypeDefLink that = (TypeDefLink) objectToCompare;
         return Objects.equals(guid, that.guid) &&
-                Objects.equals(name, that.name) &&
-                status == that.status &&
-                Objects.equals(replacedByTypeGUID, that.replacedByTypeGUID) &&
-                Objects.equals(replacedByTypeName, that.replacedByTypeName);
+                       Objects.equals(name, that.name) &&
+                       status == that.status &&
+                       Objects.equals(replacedByTypeGUID, that.replacedByTypeGUID) &&
+                       Objects.equals(replacedByTypeName, that.replacedByTypeName);
     }
 
 
     /**
-     * Using the GUID as a hashcode. It should be unique if all connected metadata repositories are behaving properly.
+     * Return a hash code based on the values of this object.
      *
-     * @return int hash code
+     * @return in hash code
      */
     @Override
     public int hashCode()
     {
-        return guid != null ? guid.hashCode() : 0;
+        return Objects.hash(guid, name, status, replacedByTypeGUID, replacedByTypeName);
     }
 }

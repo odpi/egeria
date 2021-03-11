@@ -56,6 +56,7 @@ public class InMemoryOpenMetadataTopicConnector extends OpenMetadataTopicConnect
      *
      * @param event  OMRSEvent object containing the event properties.
      */
+    @Override
     public void sendEvent(String event)
     {
         this.putEvent(event);
@@ -68,6 +69,8 @@ public class InMemoryOpenMetadataTopicConnector extends OpenMetadataTopicConnect
      *
      * @return a list of received events or null
      */
+    @SuppressWarnings(value = "deprecation")
+    @Override
     protected List<String> checkForEvents()
     {
         return this.getEvents();
@@ -79,6 +82,7 @@ public class InMemoryOpenMetadataTopicConnector extends OpenMetadataTopicConnect
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -90,6 +94,7 @@ public class InMemoryOpenMetadataTopicConnector extends OpenMetadataTopicConnect
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

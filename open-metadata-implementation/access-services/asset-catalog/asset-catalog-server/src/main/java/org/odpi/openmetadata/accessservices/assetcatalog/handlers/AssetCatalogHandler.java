@@ -20,13 +20,17 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -38,7 +42,12 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*;
@@ -59,7 +68,7 @@ public class AssetCatalogHandler {
     private final RepositoryErrorHandler errorHandler;
     private final CommonHandler commonHandler;
     private AssetConverter assetConverter;
-    private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
+    private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_TYPE_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
     private List<String> supportedTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
 
     private List<String> supportedZones;
@@ -407,6 +416,11 @@ public class AssetCatalogHandler {
                 log.debug("This asset if a different zone: {}", entityDetail.getGUID());
             }
         }
+        SequencingOrder sequencingOrder = searchParameters.getSequencingOrder();
+        String sequencingProperty = searchParameters.getSequencingProperty();
+
+        list.sort((firstAsset, secondAsset) ->
+                orderElements(firstAsset, secondAsset, sequencingProperty, sequencingOrder));
         return list;
     }
 
@@ -538,7 +552,7 @@ public class AssetCatalogHandler {
                                                              List<String> types)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, PropertyErrorException,
-            TypeErrorException, PagingErrorException, RepositoryErrorException {
+            TypeErrorException, PagingErrorException, RepositoryErrorException, InvalidParameterException {
         List<EntityDetail> result = new ArrayList<>();
 
         OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
@@ -1368,11 +1382,25 @@ public class AssetCatalogHandler {
                                                       SearchParameters searchParameters, OMRSMetadataCollection metadataCollection)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-            PropertyErrorException, TypeErrorException, PagingErrorException, RepositoryErrorException {
+            PropertyErrorException, TypeErrorException, PagingErrorException, RepositoryErrorException, InvalidParameterException {
 
-        List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByPropertyValue(userId,
+        InstanceProperties matchProperties = new InstanceProperties();
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitivePropertyValue.setPrimitiveValue(searchCriteria);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+        if (commonHandler.hasDisplayName(userId, entityTypeGUID)) {
+            matchProperties.setProperty(DISPLAY_NAME, primitivePropertyValue);
+        } else {
+            matchProperties.setProperty(NAME, primitivePropertyValue);
+        }
+        List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByProperty(userId,
                 entityTypeGUID,
-                searchCriteria,
+                matchProperties,
+                MatchCriteria.ANY,
                 searchParameters.getFrom(),
                 Collections.singletonList(InstanceStatus.ACTIVE),
                 searchParameters.getLimitResultsByClassification(),
@@ -1380,6 +1408,7 @@ public class AssetCatalogHandler {
                 searchParameters.getSequencingProperty(),
                 searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
                 searchParameters.getPageSize());
+
         if (CollectionUtils.isNotEmpty(entitiesByPropertyValue)) {
             return entitiesByPropertyValue;
         }
@@ -1456,5 +1485,52 @@ public class AssetCatalogHandler {
             }
         }
         return response;
+    }
+
+    private int orderElements(AssetElements firstAsset, AssetElements secondAsset, String sequencingProperty, SequencingOrder sequencingOrder) {
+        String firstField;
+        String secondField;
+        if (TYPE_SEQUENCING.equals(sequencingProperty)) {
+            if (firstAsset.getType() == null || secondAsset.getType() == null) {
+                return 0;
+            }
+            firstField = firstAsset.getType().getName();
+            secondField = secondAsset.getType().getName();
+        } else {
+            if (firstAsset.getProperties() == null || secondAsset.getProperties() == null) {
+                return 0;
+            }
+            firstField = firstAsset.getProperties().get(sequencingProperty);
+            secondField = secondAsset.getProperties().get(sequencingProperty);
+            if (DISPLAY_NAME.equals(sequencingProperty)) {
+                if (firstField == null) {
+                    firstField = firstAsset.getProperties().get(NAME);
+                }
+                if (secondField == null) {
+                    secondField = secondAsset.getProperties().get(NAME);
+                }
+            }
+        }
+
+        return compareFields(firstField, secondField, sequencingOrder);
+
+
+    }
+
+    private int compareFields(String firstComparedProperty, String secondComparedProperty, SequencingOrder sequencingOrder) {
+        if (firstComparedProperty != null && secondComparedProperty != null) {
+            if (sequencingOrder == SequencingOrder.PROPERTY_ASCENDING) {
+                return firstComparedProperty.toLowerCase().compareTo(secondComparedProperty.toLowerCase());
+            } else if (sequencingOrder == SequencingOrder.PROPERTY_DESCENDING) {
+                return secondComparedProperty.toLowerCase().compareTo(firstComparedProperty.toLowerCase());
+            }
+        }
+        if (firstComparedProperty == null && secondComparedProperty != null) {
+            return 1;
+        }
+        if (firstComparedProperty != null &&  secondComparedProperty == null) {
+            return -1;
+        }
+        return 0;
     }
 }

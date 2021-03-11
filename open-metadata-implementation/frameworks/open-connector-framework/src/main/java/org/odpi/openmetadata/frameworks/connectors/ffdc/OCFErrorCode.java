@@ -156,7 +156,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
             "The system is unable to create the requested connector instance because the Connector's class is failing to load in the JVM.  This has resulted in an exception in the class loader.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process. Then retry the request."),
     INVALID_CONNECTOR(500, "OCF-CONNECTION-500-010",
-            "Invalid Connector class {0}",
+            "Invalid Connector class {0} for connector {1}; resulting exception {2} produced message {3}",
             "The system is unable to create the requested connector instance because the Connector's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Then retry the request."),
     NULL_CONNECTOR(500, "OCF-CONNECTION-500-011",
@@ -269,6 +269,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -281,10 +282,25 @@ public enum OCFErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "OCFErrorCode{" +
+                       "messageDefinition=" + messageDefinition +
+                       '}';
     }
 }

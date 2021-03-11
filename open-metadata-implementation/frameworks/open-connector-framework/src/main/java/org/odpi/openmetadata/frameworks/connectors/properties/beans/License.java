@@ -380,7 +380,7 @@ public class License extends Referenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof License))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -390,15 +390,28 @@ public class License extends Referenceable
         }
         License license = (License) objectToCompare;
         return Objects.equals(getLicenseGUID(), license.getLicenseGUID()) &&
-                Objects.equals(licenseTypeName, license.licenseTypeName) &&
-                Objects.equals(getLicensee(), license.getLicensee()) &&
-                Objects.equals(getSummary(), license.getSummary()) &&
-                Objects.equals(getLink(), license.getLink()) &&
-                Objects.equals(getStartDate(), license.getStartDate()) &&
-                Objects.equals(getEndDate(), license.getEndDate()) &&
-                Objects.equals(getLicenseConditions(), license.getLicenseConditions()) &&
-                Objects.equals(getCreatedBy(), license.getCreatedBy()) &&
-                Objects.equals(getCustodian(), license.getCustodian()) &&
-                Objects.equals(getNotes(), license.getNotes());
+                       Objects.equals(getLicenseTypeName(), license.getLicenseTypeName()) &&
+                       Objects.equals(getLicensee(), license.getLicensee()) &&
+                       Objects.equals(getSummary(), license.getSummary()) &&
+                       Objects.equals(getLink(), license.getLink()) &&
+                       Objects.equals(getStartDate(), license.getStartDate()) &&
+                       Objects.equals(getEndDate(), license.getEndDate()) &&
+                       Objects.equals(getLicenseConditions(), license.getLicenseConditions()) &&
+                       Objects.equals(getCreatedBy(), license.getCreatedBy()) &&
+                       Objects.equals(getCustodian(), license.getCustodian()) &&
+                       Objects.equals(getNotes(), license.getNotes());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getLicenseGUID(), getLicenseTypeName(), getLicensee(), getSummary(), getLink(), getStartDate(),
+                            getEndDate(), getLicenseConditions(), getCreatedBy(), getCustodian(), getNotes());
     }
 }

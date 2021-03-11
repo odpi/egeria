@@ -307,4 +307,16 @@ public class AssetSchemaAttribute extends AssetReferenceable
         AssetSchemaAttribute that = (AssetSchemaAttribute) objectToCompare;
         return Objects.equals(schemaAttributeBean, that.schemaAttributeBean);
     }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), schemaAttributeBean);
+    }
 }

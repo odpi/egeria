@@ -41,6 +41,12 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
     }
 
 
+    /**
+     * Retrieve the archive store information from the endpoint.
+     *
+     * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
+     * @param connectionProperties   POJO for the configuration used to create the connector.
+     */
     @Override
     public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
     {
@@ -65,6 +71,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
      *
      * @return OpenMetadataArchive object
      */
+    @Override
     public OpenMetadataArchive getArchiveContents()
     {
         File                archiveStoreFile     = new File(archiveStoreName);
@@ -100,6 +107,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
      *
      * @param archiveContents   OpenMetadataArchive object
      */
+    @Override
     public void setArchiveContents(OpenMetadataArchive   archiveContents)
     {
         File    archiveStoreFile = new File(archiveStoreName);
@@ -133,6 +141,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -144,6 +153,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

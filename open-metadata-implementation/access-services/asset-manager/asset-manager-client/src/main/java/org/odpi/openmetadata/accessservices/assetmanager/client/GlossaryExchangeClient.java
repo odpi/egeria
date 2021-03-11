@@ -145,6 +145,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createGlossary(String              userId,
                                  String              assetManagerGUID,
                                  String              assetManagerName,
@@ -215,6 +216,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createGlossaryFromTemplate(String              userId,
                                              String              assetManagerGUID,
                                              String              assetManagerName,
@@ -278,6 +280,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateGlossary(String             userId,
                                String             assetManagerGUID,
                                String             assetManagerName,
@@ -334,6 +337,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setGlossaryAsTaxonomy(String userId,
                                       String assetManagerGUID,
                                       String assetManagerName,
@@ -380,6 +384,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearGlossaryAsTaxonomy(String userId,
                                         String assetManagerGUID,
                                         String assetManagerName,
@@ -426,6 +431,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setGlossaryAsCanonical(String userId,
                                        String assetManagerGUID,
                                        String assetManagerName,
@@ -472,6 +478,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearGlossaryAsCanonical(String userId,
                                          String assetManagerGUID,
                                          String assetManagerName,
@@ -515,6 +522,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeGlossary(String userId,
                                String assetManagerGUID,
                                String assetManagerName,
@@ -560,6 +568,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryElement>   findGlossaries(String userId,
                                                   String assetManagerGUID,
                                                   String assetManagerName,
@@ -613,6 +622,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryElement>   getGlossariesByName(String userId,
                                                        String assetManagerGUID,
                                                        String assetManagerName,
@@ -665,6 +675,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryElement>   getGlossariesForAssetManager(String userId,
                                                                 String assetManagerGUID,
                                                                 String assetManagerName,
@@ -707,6 +718,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public GlossaryElement getGlossaryByGUID(String userId,
                                              String assetManagerGUID,
                                              String assetManagerName,
@@ -761,6 +773,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createGlossaryCategory(String                     userId,
                                          String                     assetManagerGUID,
                                          String                     assetManagerName,
@@ -832,6 +845,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createGlossaryCategoryFromTemplate(String              userId,
                                                      String              assetManagerGUID,
                                                      String              assetManagerName,
@@ -895,6 +909,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateGlossaryCategory(String                     userId,
                                        String                     assetManagerGUID,
                                        String                     assetManagerName,
@@ -945,6 +960,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupCategoryParent(String userId,
                                     String assetManagerGUID,
                                     String assetManagerName,
@@ -987,6 +1003,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearCategoryParent(String userId,
                                     String assetManagerGUID,
                                     String assetManagerName,
@@ -1028,6 +1045,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeGlossaryCategory(String userId,
                                        String assetManagerGUID,
                                        String assetManagerName,
@@ -1073,6 +1091,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryCategoryElement>   findGlossaryCategories(String userId,
                                                                   String assetManagerGUID,
                                                                   String assetManagerName,
@@ -1124,6 +1143,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryCategoryElement>   getCategoriesForGlossary(String userId,
                                                                     String assetManagerGUID,
                                                                     String assetManagerName,
@@ -1173,6 +1193,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryCategoryElement>   getGlossaryCategoriesByName(String userId,
                                                                        String assetManagerGUID,
                                                                        String assetManagerName,
@@ -1223,6 +1244,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public GlossaryCategoryElement getGlossaryCategoryByGUID(String userId,
                                                              String assetManagerGUID,
                                                              String assetManagerName,
@@ -1264,6 +1286,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public GlossaryCategoryElement getGlossaryCategoryParent(String userId,
                                                              String assetManagerGUID,
                                                              String assetManagerName,
@@ -1307,6 +1330,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryCategoryElement> getGlossarySubCategories(String userId,
                                                                   String assetManagerGUID,
                                                                   String assetManagerName,
@@ -1364,6 +1388,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createGlossaryTerm(String                 userId,
                                      String                 assetManagerGUID,
                                      String                 assetManagerName,
@@ -1435,6 +1460,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createControlledGlossaryTerm(String                 userId,
                                                String                 assetManagerGUID,
                                                String                 assetManagerName,
@@ -1508,6 +1534,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createGlossaryTermFromTemplate(String              userId,
                                                  String              assetManagerGUID,
                                                  String              assetManagerName,
@@ -1571,6 +1598,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateGlossaryTerm(String                 userId,
                                    String                 assetManagerGUID,
                                    String                 assetManagerName,
@@ -1623,6 +1651,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateGlossaryTermStatus(String             userId,
                                          String             assetManagerGUID,
                                          String             assetManagerName,
@@ -1672,6 +1701,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupTermCategory(String                     userId,
                                   String                     assetManagerGUID,
                                   String                     assetManagerName,
@@ -1719,6 +1749,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearTermCategory(String userId,
                                   String assetManagerGUID,
                                   String assetManagerName,
@@ -1762,6 +1793,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupTermRelationship(String                   userId,
                                       String                   assetManagerGUID,
                                       String                   assetManagerName,
@@ -1815,6 +1847,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateTermRelationship(String                   userId,
                                        String                   assetManagerGUID,
                                        String                   assetManagerName,
@@ -1865,6 +1898,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearTermRelationship(String userId,
                                       String assetManagerGUID,
                                       String assetManagerName,
@@ -1909,6 +1943,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setTermAsAbstractConcept(String userId,
                                          String assetManagerGUID,
                                          String assetManagerName,
@@ -1950,6 +1985,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearTermAsAbstractConcept(String userId,
                                            String assetManagerGUID,
                                            String assetManagerName,
@@ -1991,6 +2027,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setTermAsDataValue(String userId,
                                    String assetManagerGUID,
                                    String assetManagerName,
@@ -2032,6 +2069,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearTermAsDataValue(String userId,
                                      String assetManagerGUID,
                                      String assetManagerName,
@@ -2074,6 +2112,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setTermAsActivity(String                   userId,
                                   String                   assetManagerGUID,
                                   String                   assetManagerName,
@@ -2120,6 +2159,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearTermAsActivity(String userId,
                                     String assetManagerGUID,
                                     String assetManagerName,
@@ -2162,6 +2202,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setTermAsContext(String                        userId,
                                  String                        assetManagerGUID,
                                  String                        assetManagerName,
@@ -2208,6 +2249,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearTermAsContext(String userId,
                                    String assetManagerGUID,
                                    String assetManagerName,
@@ -2249,6 +2291,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setTermAsSpineObject(String userId,
                                      String assetManagerGUID,
                                      String assetManagerName,
@@ -2290,6 +2333,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearTermAsSpineObject(String userId,
                                        String assetManagerGUID,
                                        String assetManagerName,
@@ -2332,6 +2376,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setTermAsSpineAttribute(String userId,
                                         String assetManagerGUID,
                                         String assetManagerName,
@@ -2373,6 +2418,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearTermAsSpineAttribute(String userId,
                                           String assetManagerGUID,
                                           String assetManagerName,
@@ -2414,6 +2460,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setTermAsObjectIdentifier(String userId,
                                           String assetManagerGUID,
                                           String assetManagerName,
@@ -2455,6 +2502,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void clearTermAsObjectIdentifier(String userId,
                                             String assetManagerGUID,
                                             String assetManagerName,
@@ -2496,6 +2544,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeGlossaryTerm(String userId,
                                    String assetManagerGUID,
                                    String assetManagerName,
@@ -2541,6 +2590,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryTermElement>   findGlossaryTerms(String userId,
                                                          String assetManagerGUID,
                                                          String assetManagerName,
@@ -2593,6 +2643,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryTermElement>    getTermsForGlossary(String userId,
                                                             String assetManagerGUID,
                                                             String assetManagerName,
@@ -2642,6 +2693,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryTermElement>    getTermsForGlossaryCategory(String userId,
                                                                     String assetManagerGUID,
                                                                     String assetManagerName,
@@ -2691,6 +2743,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryTermElement>   getGlossaryTermsByName(String userId,
                                                               String assetManagerGUID,
                                                               String assetManagerName,
@@ -2741,6 +2794,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public GlossaryTermElement getGlossaryTermByGUID(String userId,
                                                      String assetManagerGUID,
                                                      String assetManagerName,
@@ -2791,6 +2845,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public String createExternalGlossaryLink(String                         userId,
                                              String                         assetManagerGUID,
                                              String                         assetManagerName,
@@ -2834,6 +2889,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void updateExternalGlossaryLink(String                         userId,
                                            String                         assetManagerGUID,
                                            String                         assetManagerName,
@@ -2878,6 +2934,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void removeExternalGlossaryLink(String userId,
                                            String assetManagerGUID,
                                            String assetManagerName,
@@ -2915,6 +2972,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void attachExternalLinkToGlossary(String userId,
                                              String assetManagerGUID,
                                              String assetManagerName,
@@ -2956,6 +3014,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void detachExternalLinkFromGlossary(String userId,
                                                String assetManagerGUID,
                                                String assetManagerName,
@@ -2998,6 +3057,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<ExternalGlossaryLinkElement> getExternalLinksForGlossary(String userId,
                                                                          String glossaryGUID,
                                                                          int    startFrom,
@@ -3042,6 +3102,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<GlossaryElement> getGlossariesForExternalLink(String userId,
                                                               String assetManagerGUID,
                                                               String assetManagerName,
@@ -3089,6 +3150,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void attachExternalCategoryLink(String                                userId,
                                            String                                assetManagerGUID,
                                            String                                assetManagerName,
@@ -3136,6 +3198,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void detachExternalCategoryLink(String userId,
                                            String assetManagerGUID,
                                            String assetManagerName,
@@ -3179,6 +3242,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void attachExternalTermLink(String                                userId,
                                        String                                assetManagerGUID,
                                        String                                assetManagerName,
@@ -3226,6 +3290,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void detachExternalTermLink(String userId,
                                        String assetManagerGUID,
                                        String assetManagerName,

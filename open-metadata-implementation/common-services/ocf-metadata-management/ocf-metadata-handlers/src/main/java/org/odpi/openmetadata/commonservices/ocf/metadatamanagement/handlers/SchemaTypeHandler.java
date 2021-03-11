@@ -1150,12 +1150,13 @@ public class SchemaTypeHandler extends RootHandler
 
 
     /**
-     * Update a stored schemaType.  This method is deprecated bacuse it does no pass provenance information -
+     * Update a stored schemaType.  This method is deprecated because it does not pass provenance information -
      * assuming local cohort provenance.
      *
      * @param userId                 userId
      * @param existingSchemaTypeGUID unique identifier of the existing schemaType entity
      * @param schemaType             new schemaType values
+     * @return GUID of existing schema type
      * @throws InvalidParameterException  the schemaType bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server

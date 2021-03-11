@@ -212,7 +212,7 @@ public class EndpointProperties extends ReferenceableProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof EndpointProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -220,12 +220,23 @@ public class EndpointProperties extends ReferenceableProperties
         {
             return false;
         }
-        EndpointProperties endpoint = (EndpointProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), endpoint.getDisplayName()) &&
-                Objects.equals(getDescription(), endpoint.getDescription()) &&
-                Objects.equals(getAddress(), endpoint.getAddress()) &&
-                Objects.equals(getProtocol(), endpoint.getProtocol()) &&
-                Objects.equals(getEncryptionMethod(), endpoint.getEncryptionMethod());
+        EndpointProperties that = (EndpointProperties) objectToCompare;
+        return Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(address, that.address) &&
+                       Objects.equals(protocol, that.protocol) &&
+                       Objects.equals(encryptionMethod, that.encryptionMethod);
     }
 
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), displayName, description, address, protocol, encryptionMethod);
+    }
 }

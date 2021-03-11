@@ -46,18 +46,19 @@ public class OpenLineageService {
     private static final String TRANSFORMATION_PROJECT = "transformationProject";
     private static final String TRANSFORMATION_PROJECT_NAME_PATTERN = "transformation_project\\)=(.*?)::";
     private final OpenLineageClient openLineageClient;
+    private final LineageGraphDisplayRulesService lineageGraphDisplayRulesService;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     /**
      * @param openLineageClient client to connect to open lineage services
+     * @param lineageGraphDisplayRulesService the rules for display
      */
     @Autowired
-    public OpenLineageService(OpenLineageClient openLineageClient) {
+    public OpenLineageService(OpenLineageClient openLineageClient, LineageGraphDisplayRulesService lineageGraphDisplayRulesService) {
         this.openLineageClient = openLineageClient;
+        this.lineageGraphDisplayRulesService = lineageGraphDisplayRulesService;
     }
 
-    @Autowired
-    private LineageGraphDisplayRulesService lineageGraphDisplayRulesService;
 
     /**
      * @param userId           id of the user triggering the request
@@ -136,6 +137,22 @@ public class OpenLineageService {
     }
 
     /**
+     * Gets node details.
+     *
+     * @param userId the user id
+     * @param guid   the guid
+     * @return the node details
+     */
+    public LineageVertex getEntityDetails(String userId, String guid) {
+        try {
+        return openLineageClient.getEntityDetails(userId, guid);
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error("Cannot get node details for guid {}", guid);
+            throw new RuntimeException("entity details error", e);
+        }
+    }
+
+    /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
      * @param includeProcesses if true includes processes in the response
@@ -157,12 +174,12 @@ public class OpenLineageService {
 
     /**
      * @param response string returned from Open Lineage Services to be processed
+     * @param guid the guid to process
      * @return map of nodes and edges describing the end to end flow
      */
     private Graph processResponse(LineageVerticesAndEdges response, String guid) {
         List<Edge> edges = new ArrayList<>();
         List<Node> nodes = new ArrayList<>();
-
         LOG.debug("Received response from open lineage service: {}", response);
         if (response == null || CollectionUtils.isEmpty(response.getLineageVertices())) {
             return new Graph(nodes, edges);
@@ -202,6 +219,9 @@ public class OpenLineageService {
 
 
     private void extractTransformationProjectFromQualifiedName(Node node) {
+        if (node.getProperties() == null) {
+            return;
+        }
         String qualifiedName = node.getProperties().get(VERTEX_INSTANCE_PROPQUALIFIED_NAME);
         if (qualifiedName == null) {
             return;

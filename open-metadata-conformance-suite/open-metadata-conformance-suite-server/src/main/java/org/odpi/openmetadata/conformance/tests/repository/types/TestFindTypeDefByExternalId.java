@@ -171,38 +171,50 @@ public class TestFindTypeDefByExternalId extends RepositoryConformanceTestCase
              */
             for (String  standard : standardsToTypeDefs.keySet())
             {
+                long start = System.currentTimeMillis();
                 List<TypeDef> returnedTypeDefs = metadataCollection.findTypesByExternalID(workPad.getLocalServerUserId(), standard, null, null);
+                long elapsedTime = System.currentTimeMillis() - start;
                 List<TypeDef> expectedTypeDefs = standardsToTypeDefs.get(standard);
 
                 verifyCondition(((returnedTypeDefs != null) && (returnedTypeDefs.size() == expectedTypeDefs.size())),
                                 assertion1,
                                 assertionMsg1 + standard,
                                 RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
-                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId(),
+                                "findTypesByExternalID",
+                                elapsedTime);
             }
 
             for (String  organization : orgToTypeDefs.keySet())
             {
+                long start = System.currentTimeMillis();
                 List<TypeDef> returnedTypeDefs = metadataCollection.findTypesByExternalID(workPad.getLocalServerUserId(), null, organization, null);
+                long elapsedTime = System.currentTimeMillis() - start;
                 List<TypeDef> expectedTypeDefs = standardsToTypeDefs.get(organization);
 
                 verifyCondition(((returnedTypeDefs != null) && (returnedTypeDefs.size() == expectedTypeDefs.size())),
                                 assertion2,
                                 assertionMsg2 + organization,
                                 RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
-                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId(),
+                                "findTypesByExternalID",
+                                elapsedTime);
             }
 
             for (String  identifier : idToTypeDefs.keySet())
             {
+                long start = System.currentTimeMillis();
                 List<TypeDef> returnedTypeDefs = metadataCollection.findTypesByExternalID(workPad.getLocalServerUserId(), null, null, identifier);
+                long elapsedTime = System.currentTimeMillis() - start;
                 List<TypeDef> expectedTypeDefs = standardsToTypeDefs.get(identifier);
 
                 verifyCondition(((returnedTypeDefs != null) && (returnedTypeDefs.size() == expectedTypeDefs.size())),
                                 assertion3,
                                 assertionMsg3 + identifier,
                                 RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
-                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId(),
+                                "findTypesByExternalID",
+                                elapsedTime);
             }
         }
 

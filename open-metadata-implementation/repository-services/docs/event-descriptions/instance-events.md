@@ -10,6 +10,11 @@ to exchange information about changes to metadata instances.
 > ![Figure 1](instance-event-formats.png)
 > Figure 1: Different formats of an instance event
 
+
+
+----
+* Return to [repository services event descriptions](.)
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

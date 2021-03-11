@@ -92,33 +92,6 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
 
 
     /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        LiteralSchemaTypeProperties that = (LiteralSchemaTypeProperties) objectToCompare;
-        return Objects.equals(dataType, that.dataType) &&
-                Objects.equals(fixedValue, that.fixedValue);
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -141,5 +114,44 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        LiteralSchemaTypeProperties that = (LiteralSchemaTypeProperties) objectToCompare;
+        return Objects.equals(dataType, that.dataType) &&
+                       Objects.equals(fixedValue, that.fixedValue);
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), dataType, fixedValue);
     }
 }

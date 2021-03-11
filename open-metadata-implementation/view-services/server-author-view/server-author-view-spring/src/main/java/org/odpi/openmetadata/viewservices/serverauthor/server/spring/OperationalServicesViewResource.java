@@ -4,7 +4,6 @@ package org.odpi.openmetadata.viewservices.serverauthor.server.spring;/* SPDX-Li
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorConfigurationResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.services.ServerAuthorViewRESTServices;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/server-author/users/{userId}/servers/{serverToBeConfiguredName}")
 
 @Tag(name="Administration Services - Operational",
-        description="The operational administration services support the management" +
+        description="The operational administration services support the management " +
                 "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
         externalDocs=@ExternalDocumentation(description="Further information",
                 url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/operating-omag-server.html"))
@@ -113,6 +112,7 @@ public class OperationalServicesViewResource
 
 
     /*
+    /*deploy
      * =============================================================
      * Operational status and control
      */
@@ -133,7 +133,7 @@ public class OperationalServicesViewResource
     @GetMapping(path = "/instance/configuration")
 
     @Operation(summary="Retrieve active server's running configuration",
-            description="Retrieve the configuration document used to start a running instance of a server.  The stored configuration" +
+            description="Retrieve the configuration document used to start a running instance of a server. The stored configuration " +
                     "document may have changed since the server was started.  This operation makes it possible to verify the " +
                     "configuration values actually being used in the running server. \n" +
                     "\n" +

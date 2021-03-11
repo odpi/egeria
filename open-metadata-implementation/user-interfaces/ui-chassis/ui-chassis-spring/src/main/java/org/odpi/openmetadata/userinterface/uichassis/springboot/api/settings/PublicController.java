@@ -22,6 +22,7 @@ public class PublicController {
 
     /**
      *
+     * @param request the http servlet request
      * @return an AppBean that contains the app build information
      */
     @GetMapping( path = "/app/info")
@@ -33,11 +34,13 @@ public class PublicController {
      *
      * @return a redirectView to the theme URI css file
      */
+    @Deprecated
     @GetMapping( path = "/css/theme")
     public RedirectView getThemeCss(){
         return new RedirectView("/themes/" + theme + "/css/style.css", true);
     }
 
+    @Deprecated
     @GetMapping( path = "/js/global")
     public String getRootPath(HttpServletRequest request){
         return "window.MyAppGlobals = { rootPath: '" + request.getContextPath() + "/' };";

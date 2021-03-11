@@ -22,6 +22,7 @@ public class EndpointConverter extends ReferenceableConverter
      * @param endpointEntity properties to convert
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
+     * @param serverName called server
      */
     public EndpointConverter(EntityDetail             endpointEntity,
                              OMRSRepositoryHelper     repositoryHelper,
@@ -41,6 +42,7 @@ public class EndpointConverter extends ReferenceableConverter
      *
      * @return output bean
      */
+    @Override
     public Endpoint getBean()
     {
         final String  methodName = "getBean";

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.3
+# Release 1.3 (January 2020)
 
 Release 1.3 focuses on the support for open metadata archives, and formal versioning of open metadata types.
 It includes much of the ground-work for
@@ -51,6 +51,16 @@ Below are the highlights of the 1.3 release:
 
       * Improvements to HTTP response checking and reporting of errors
 
+## Egeria Implementation Status at Release 1.3
+ 
+![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-1.3.png#pagewidth)
+ 
+ Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
+ Open Metadata and Governance vision, strategy and content.
+ 
+----
+ * Return to [Release Notes](.)
+         
    
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

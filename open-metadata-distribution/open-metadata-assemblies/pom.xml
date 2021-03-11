@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-distribution</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.6-SNAPSHOT</version>
+        <version>2.8-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Assemblies</name>
@@ -68,10 +68,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>cassandra-metadata-extractor-connector</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>cohort-registry-file-store-connector</artifactId>
         </dependency>
         <dependency>
@@ -97,6 +93,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-service-connectors</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>files-integration-connectors</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -129,10 +129,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-metadata-security-samples</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>readonly-repository-connector</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -184,6 +180,10 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-lineage-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-owner-client</artifactId>
         </dependency>
         <dependency>
@@ -232,10 +232,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>information-view-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>project-management-client</artifactId>
         </dependency>
         <dependency>
@@ -245,10 +241,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>software-developer-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>stewardship-action-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -281,7 +273,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-service-sample</artifactId>
+            <artifactId>governance-services-sample</artifactId>
         </dependency>
 
         <!-- Technically this is a dependency as we consume license/readme files. However parent is always done
@@ -289,12 +281,6 @@
         <!--dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>egeria</artifactId>
-        </dependency-->
-
-        <!-- For the current node based UI we also need: (currently disabled whilst p.s. being developed) -->
-        <!--dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>presentation-server</artifactId>
         </dependency-->
 
         <!-- Deployment assembly needs some artifacts, but currently they are only pulled from source, so no binary dependency -->
@@ -314,8 +300,6 @@
                             <descriptors>
                                 <descriptor>src/main/assemblies/egeria-omag.xml</descriptor>
                                 <descriptor>src/main/assemblies/egeria-deploy.xml</descriptor>
-                                <!--disabled whilst being developed -->
-                                <descriptor>src/main/assemblies/egeria-presentation-server.xml</descriptor>
                             </descriptors>
                             <finalName>egeria-${open-metadata.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>

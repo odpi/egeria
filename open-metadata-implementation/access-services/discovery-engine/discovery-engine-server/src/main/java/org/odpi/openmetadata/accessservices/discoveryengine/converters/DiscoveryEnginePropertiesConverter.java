@@ -42,6 +42,7 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -73,8 +74,8 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
                 bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                 bean.setDisplayName(this.removeName(instanceProperties));
                 bean.setDescription(this.removeDescription(instanceProperties));
-                bean.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                bean.setVersion(this.removeVersion(instanceProperties));
+                bean.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                bean.setVersion(this.removeCapabilityVersion(instanceProperties));
                 bean.setPatchLevel(this.removePatchLevel(instanceProperties));
                 bean.setSource(this.removeSource(instanceProperties));
 
@@ -108,6 +109,7 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,

@@ -10,14 +10,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
+import org.odpi.openmetadata.frameworks.discovery.properties.*;
 import org.slf4j.LoggerFactory;
+
 
 
 /**
@@ -48,21 +43,18 @@ public class DiscoveryEngineRESTServices
      * @param userId calling user
      * @param startFrom starting point of the query
      * @param pageSize maximum number of results to return
-     * @param requestBody null request body
      * @return list of unique identifiers for located assets or
      *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    @SuppressWarnings(value = "unused")
     public GUIDListResponse getAssets(String          serverName,
                                       String          userId,
                                       int             startFrom,
-                                      int             pageSize,
-                                      NullRequestBody requestBody)
+                                      int             pageSize)
     {
-        final String   methodName = "getAssets";
+        final String methodName = "getAssets";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -82,21 +74,9 @@ public class DiscoveryEngineRESTServices
                                                          pageSize,
                                                          methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -125,8 +105,8 @@ public class DiscoveryEngineRESTServices
                                                       int      startFrom,
                                                       int      pageSize)
     {
-        final String   methodName = "getAssetsByQualifiedName";
-        final String   nameParameterName = "name";
+        final String methodName = "getAssetsByQualifiedName";
+        final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -148,21 +128,9 @@ public class DiscoveryEngineRESTServices
                                                                   pageSize,
                                                                   methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -191,8 +159,8 @@ public class DiscoveryEngineRESTServices
                                              int      startFrom,
                                              int      pageSize)
     {
-        final String   methodName = "getAssetsByName";
-        final String   nameParameterName = "name";
+        final String methodName = "getAssetsByName";
+        final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -214,21 +182,9 @@ public class DiscoveryEngineRESTServices
                                                           pageSize,
                                                           methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -258,8 +214,8 @@ public class DiscoveryEngineRESTServices
                                         int      startFrom,
                                         int      pageSize)
     {
-        final String   methodName = "findAssets";
-        final String   searchStringParameterName = "findAssets";
+        final String methodName = "findAssets";
+        final String searchStringParameterName = "findAssets";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -281,21 +237,9 @@ public class DiscoveryEngineRESTServices
                                                     pageSize,
                                                     methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -317,14 +261,14 @@ public class DiscoveryEngineRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
-    public  GUIDListResponse getAssetsByEndpoint(String   serverName,
-                                                 String   userId,
-                                                 String   networkAddress,
-                                                 int      startFrom,
-                                                 int      pageSize)
+    public  GUIDListResponse findAssetsByEndpoint(String   serverName,
+                                                  String   userId,
+                                                  String   networkAddress,
+                                                  int      startFrom,
+                                                  int      pageSize)
     {
-        final String   methodName = "findAssetsByEndpoint";
-        final String   networkAddressParameterName = "findAssetsByEndpoint";
+        final String methodName = "findAssetsByEndpoint";
+        final String networkAddressParameterName = "networkAddress";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -344,21 +288,9 @@ public class DiscoveryEngineRESTServices
                                                               pageSize,
                                                               methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -386,7 +318,7 @@ public class DiscoveryEngineRESTServices
                                              String    discoveryService,
                                              String    message)
     {
-        final String   methodName = "logAssetAuditMessage";
+        final String methodName = "logAssetAuditMessage";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -399,21 +331,9 @@ public class DiscoveryEngineRESTServices
 
             auditLog.logMessage(methodName, DiscoveryEngineAuditCode.ASSET_AUDIT_LOG.getMessageDefinition(assetGUID, discoveryService, message));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -440,7 +360,7 @@ public class DiscoveryEngineRESTServices
                                                       String                             assetGUID,
                                                       DiscoveryAnalysisReportRequestBody requestBody)
     {
-        final String   methodName = "createDiscoveryAnalysisReport";
+        final String methodName = "createDiscoveryAnalysisReport";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -481,21 +401,9 @@ public class DiscoveryEngineRESTServices
                                                                        methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -522,7 +430,7 @@ public class DiscoveryEngineRESTServices
                                                       String                  discoveryReportGUID,
                                                       DiscoveryAnalysisReport requestBody)
     {
-        final String   methodName = "updateDiscoveryAnalysisReport";
+        final String methodName = "updateDiscoveryAnalysisReport";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -561,21 +469,9 @@ public class DiscoveryEngineRESTServices
                                                       methodName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -600,7 +496,7 @@ public class DiscoveryEngineRESTServices
                                                                       String   userId,
                                                                       String   discoveryReportGUID)
     {
-        final String   methodName = "getDiscoveryAnalysisReport";
+        final String methodName = "getDiscoveryAnalysisReport";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -619,21 +515,9 @@ public class DiscoveryEngineRESTServices
                                                                           discoveryReportGUID,
                                                                           methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -654,7 +538,7 @@ public class DiscoveryEngineRESTServices
     public NameListResponse getTypesOfAnnotation(String serverName,
                                                  String userId)
     {
-        final String   methodName = "getTypesOfAnnotation";
+        final String methodName = "getTypesOfAnnotation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -668,9 +552,9 @@ public class DiscoveryEngineRESTServices
 
             response.setNames(handler.getTypesOfAnnotation());
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -690,7 +574,7 @@ public class DiscoveryEngineRESTServices
      */
     public StringMapResponse getTypesOfAnnotationWithDescriptions(String serverName, String userId)
     {
-        final String   methodName = "getTypesOfAnnotationWithDescriptions";
+        final String methodName = "getTypesOfAnnotationWithDescriptions";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -704,9 +588,9 @@ public class DiscoveryEngineRESTServices
 
             response.setStringMap(handler.getTypesOfAnnotationDescriptions());
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -739,7 +623,7 @@ public class DiscoveryEngineRESTServices
                                                                  int               maximumResults,
                                                                  StatusRequestBody requestBody)
     {
-        final String   methodName = "getAnnotationsForAssetByStatus";
+        final String methodName = "getAnnotationsForAssetByStatus";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -776,21 +660,9 @@ public class DiscoveryEngineRESTServices
                                                                                methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -819,7 +691,7 @@ public class DiscoveryEngineRESTServices
                                                                 int      startingFrom,
                                                                 int      maximumResults)
     {
-        final String   methodName = "getDiscoveryReportAnnotations";
+        final String methodName = "getDiscoveryReportAnnotations";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -838,21 +710,9 @@ public class DiscoveryEngineRESTServices
                                                                           maximumResults,
                                                                           methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -865,7 +725,7 @@ public class DiscoveryEngineRESTServices
      *
      * @param serverName name of server instance to route request to
      * @param userId identifier of calling user
-     * @param annotationGUID anchor annotation
+     * @param annotationGUID parent annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
      *
@@ -881,7 +741,7 @@ public class DiscoveryEngineRESTServices
                                                            int      startingFrom,
                                                            int      maximumResults)
     {
-        final String   methodName = "getExtendedAnnotations";
+        final String methodName = "getExtendedAnnotations";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -900,21 +760,9 @@ public class DiscoveryEngineRESTServices
                                                                    maximumResults,
                                                                    methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -940,7 +788,7 @@ public class DiscoveryEngineRESTServices
                                              String   userId,
                                              String   annotationGUID)
     {
-        final String   methodName = "getAnnotation";
+        final String methodName = "getAnnotation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -955,21 +803,9 @@ public class DiscoveryEngineRESTServices
 
             response.setAnnotation(handler.getAnnotation(userId, annotationGUID, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -996,7 +832,7 @@ public class DiscoveryEngineRESTServices
                                                          String     discoveryReportGUID,
                                                          Annotation requestBody)
     {
-        final String   methodName = "addAnnotationToDiscoveryReport";
+        final String methodName = "addAnnotationToDiscoveryReport";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1019,21 +855,9 @@ public class DiscoveryEngineRESTServices
                                                                     requestBody,
                                                                     methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1046,7 +870,7 @@ public class DiscoveryEngineRESTServices
      *
      * @param serverName name of server instance to route request to
      * @param userId identifier of calling user
-     * @param anchorAnnotationGUID unique identifier of the annotation that this new one os to be attached to
+     * @param parentAnnotationGUID unique identifier of the annotation that this new one os to be attached to
      * @param requestBody annotation object
      *
      * @return unique identifier of new annotation or
@@ -1057,10 +881,10 @@ public class DiscoveryEngineRESTServices
      */
     public  GUIDResponse  addAnnotationToAnnotation(String     serverName,
                                                     String     userId,
-                                                    String     anchorAnnotationGUID,
+                                                    String     parentAnnotationGUID,
                                                     Annotation requestBody)
     {
-        final String   methodName = "addAnnotationToAnnotation";
+        final String methodName = "addAnnotationToAnnotation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1074,25 +898,13 @@ public class DiscoveryEngineRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUID(handler.addAnnotationToAnnotation(userId,
-                                                               anchorAnnotationGUID,
+                                                               parentAnnotationGUID,
                                                                requestBody,
                                                                methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1119,7 +931,7 @@ public class DiscoveryEngineRESTServices
                                           String     annotationGUID,
                                           Annotation requestBody)
     {
-        final String   methodName = "updateAnnotation";
+        final String methodName = "updateAnnotation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1134,21 +946,9 @@ public class DiscoveryEngineRESTServices
 
             handler.updateAnnotation(userId, annotationGUID, requestBody, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1176,7 +976,7 @@ public class DiscoveryEngineRESTServices
                                           String          annotationGUID, 
                                           NullRequestBody requestBody)
     {
-        final String   methodName = "deleteAnnotation";
+        final String methodName = "deleteAnnotation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1185,32 +985,508 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             handler.deleteAnnotation(userId, annotationGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the list of data fields from previous runs of the discovery service.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param discoveryReportGUID unique identifier of the discovery analysis report
+     * @param startingFrom starting position in the list.
+     * @param maximumResults maximum number of elements that can be returned
+     *
+     * @return list of data fields (or null if none are registered) or
+     *
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem retrieving data fields from the annotation store.
+     */
+    public DataFieldListResponse getPreviousDataFieldsForAsset(String serverName,
+                                                               String userId,
+                                                               String discoveryReportGUID,
+                                                               int    startingFrom,
+                                                               int    maximumResults)
+    {
+        final String methodName = "getPreviousDataFieldsForAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog              auditLog = null;
+        DataFieldListResponse response = new DataFieldListResponse();
+
+        try
+        {
+            DataFieldHandler<DataField> handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            handler.getPreviousDataFieldsForAsset(userId, discoveryReportGUID, startingFrom, maximumResults, methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the current list of data fields for this discovery run.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param discoveryReportGUID unique identifier of the discovery analysis report
+     * @param startingFrom starting position in the list.
+     * @param maximumResults maximum number of elements that can be returned
+     *
+     * @return list of data fields (or null if none are registered) or
+     *
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem retrieving data fields from the annotation store.
+     */
+    public DataFieldListResponse getNewDataFieldsForAsset(String serverName,
+                                                          String userId,
+                                                          String discoveryReportGUID,
+                                                          int    startingFrom,
+                                                          int    maximumResults)
+    {
+        final String methodName = "getNewDataFieldsForAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog              auditLog = null;
+        DataFieldListResponse response = new DataFieldListResponse();
+
+        try
+        {
+            DataFieldHandler<DataField> handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            handler.getNewDataFieldsForAsset(userId, discoveryReportGUID, startingFrom, maximumResults, methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return any annotations attached to this annotation.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param parentDataFieldGUID parent data field identifier
+     * @param startingFrom starting position in the list
+     * @param maximumResults maximum number of annotations that can be returned.
+     *
+     * @return list of DataField objects or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem that occurred within the property server.
+     */
+    public DataFieldListResponse getNestedDataFields(String serverName,
+                                                     String userId,
+                                                     String parentDataFieldGUID,
+                                                     int    startingFrom,
+                                                     int    maximumResults)
+    {
+        final String methodName = "getNestedDataFields";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog              auditLog = null;
+        DataFieldListResponse response = new DataFieldListResponse();
+
+        try
+        {
+            DataFieldHandler<DataField> handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            handler.getNestedDataFields(userId, parentDataFieldGUID, startingFrom, maximumResults, methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a specific data field stored in the annotation store (previous or new).
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param dataFieldGUID unique identifier of the data field
+     *
+     * @return data field object or
+     *
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem retrieving the data field from the annotation store.
+     */
+    public DataFieldResponse  getDataField(String serverName,
+                                           String userId,
+                                           String dataFieldGUID)
+    {
+        final String   methodName = "getDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog          auditLog = null;
+        DataFieldResponse response = new DataFieldResponse();
+
+        try
+        {
+            DataFieldHandler<DataField> handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            handler.getDataField(userId, dataFieldGUID, methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Add a new data field to the Annotation store linked off of an annotation (typically SchemaAnalysisAnnotation).
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param annotationGUID unique identifier of the annotation that the data field is to be linked to
+     * @param dataField dataField object
+     *
+     * @return unique identifier of new data field or
+     *
+     *  InvalidParameterException the dataField is invalid or the annotation GUID points to an annotation
+     *                                   that can not be associated with a data field.
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem  adding the data field to the Annotation store.
+     */
+    public GUIDResponse  addDataFieldToDiscoveryReport(String    serverName,
+                                                       String    userId,
+                                                       String    annotationGUID,
+                                                       DataField dataField)
+    {
+        final String   methodName = "addDataFieldToDiscoveryReport";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog     auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+        try
+        {
+            if (dataField != null)
+            {
+                DataFieldHandler<DataField> handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                int dataFieldSortOrder = 0;
+
+                if (dataField.getDataFieldSortOrder() != null)
+                {
+                    dataFieldSortOrder = dataField.getDataFieldSortOrder().getOpenTypeOrdinal();
+                }
+
+                handler.addDataFieldToDiscoveryReport(userId,
+                                                      null,
+                                                      null,
+                                                      annotationGUID,
+                                                      dataField.getDataFieldPosition(),
+                                                      dataField.getDataFieldName(),
+                                                      dataField.getDataFieldType(),
+                                                      dataField.getDataFieldDescription(),
+                                                      dataField.getDataFieldAliases(),
+                                                      dataFieldSortOrder,
+                                                      dataField.getDefaultValue(),
+                                                      dataField.getAdditionalProperties(),
+                                                      methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Add a new data field and link it to an existing data field.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param dataField data field object
+     *
+     * @return unique identifier of new data field or
+     *
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    public GUIDResponse  addDataFieldToDataField(String    serverName,
+                                                 String    userId,
+                                                 String    parentDataFieldGUID,
+                                                 DataField dataField)
+    {
+        final String   methodName = "addDataFieldToDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog     auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+        try
+        {
+            if (dataField != null)
+            {
+                DataFieldHandler<DataField> handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                int dataFieldSortOrder = 0;
+
+                if (dataField.getDataFieldSortOrder() != null)
+                {
+                    dataFieldSortOrder = dataField.getDataFieldSortOrder().getOpenTypeOrdinal();
+                }
+
+                handler.addDataFieldToDataField(userId,
+                                                null,
+                                                null,
+                                                parentDataFieldGUID,
+                                                dataField.getDataFieldPosition(),
+                                                dataField.getDataFieldName(),
+                                                dataField.getDataFieldType(),
+                                                dataField.getDataFieldDescription(),
+                                                dataField.getDataFieldAliases(),
+                                                dataFieldSortOrder,
+                                                dataField.getDefaultValue(),
+                                                dataField.getAdditionalProperties(),
+                                                methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Add a new annotation and link it to an existing data field.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param annotation data field object
+     * @return unique identifier of new annotation or
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    public GUIDResponse addAnnotationToDataField(String     serverName,
+                                                 String     userId,
+                                                 String     parentDataFieldGUID,
+                                                 Annotation annotation)
+    {
+        final String   methodName = "addAnnotationToDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog     auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+        try
+        {
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (annotation != null)
+            {
+                response.setGUID(handler.addAnnotationToDataField(userId,
+                                                                  parentDataFieldGUID,
+                                                                  annotation,
+                                                                  methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Replace the current properties of a data field.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param dataFieldGUID unique identifier of the data field
+     * @param dataField new properties
+     *
+     * @return fully filled out data field or
+     *  InvalidParameterException one of the parameters is invalid
+     *  UserNotAuthorizedException the user id not authorized to issue this request
+     *  PropertyServerException there was a problem updating the data field in the annotation store.
+     */
+    public VoidResponse updateDataField(String    serverName,
+                                        String    userId,
+                                        String    dataFieldGUID,
+                                        DataField dataField)
+    {
+        final String   methodName = "updateDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            DataFieldHandler<DataField> handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            int dataFieldSortOrder = 0;
+
+            if (dataField.getDataFieldSortOrder() != null)
+            {
+                dataFieldSortOrder = dataField.getDataFieldSortOrder().getOpenTypeOrdinal();
+            }
+
+            handler.updateDataField(userId,
+                                    null,
+                                    null,
+                                    dataFieldGUID,
+                                    false,
+                                    dataField.getDataFieldName(),
+                                    dataField.getDataFieldType(),
+                                    dataField.getDataFieldDescription(),
+                                    dataField.getDataFieldAliases(),
+                                    dataFieldSortOrder,
+                                    dataField.getDefaultValue(),
+                                    dataField.getAdditionalProperties(),
+                                    methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove a data field from the annotation store.
+     *
+     * @param serverName name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is invalid or
+     *  UserNotAuthorizedException the user id not authorized to issue this request or
+     *  PropertyServerException there was a problem deleting the data field from the annotation store.
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse  deleteDataField(String          serverName,
+                                         String          userId,
+                                         String          dataFieldGUID,
+                                         NullRequestBody requestBody)
+    {
+        final String   methodName = "deleteDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            DataFieldHandler<DataField> handler = instanceHandler.getDataFieldHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            handler.deleteDataField(userId,
+                                    null,
+                                    null,
+                                    dataFieldGUID,
+                                    methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
         return response;
     }
 }

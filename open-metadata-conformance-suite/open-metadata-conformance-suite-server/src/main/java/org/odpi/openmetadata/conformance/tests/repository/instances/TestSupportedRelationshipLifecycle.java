@@ -321,20 +321,26 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
         Relationship newRelationship = null;
         InstanceProperties relationshipInstanceProperties = null;
 
+        long start;
+        long elapsedTime;
         try {
 
+            start = System.currentTimeMillis();
             newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
                                                                  relationshipDef.getGUID(),
                                                                  super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
                                                                  end1.getGUID(),
                                                                  end2.getGUID(),
                                                                  null);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion28,
                             testTypeName + assertionMsg28,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                            "addRelationship",
+                            elapsedTime);
 
             createdRelationships.add(newRelationship);
 
@@ -450,21 +456,31 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
         try {
 
+            start = System.currentTimeMillis();
+            Relationship knownRelationship = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), newRelationship.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
+
             retrievalOperationName = "isRelationshipKnown";
-            verifyCondition((newRelationship.equals(metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(),
-                                                                                           newRelationship.getGUID()))),
+            verifyCondition((newRelationship.equals(knownRelationship)),
                             assertion9,
                             testTypeName + assertionMsg9,
                             RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
-                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
+                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId(),
+                            "isRelationshipKnown",
+                            elapsedTime);
+
+            start = System.currentTimeMillis();
+            Relationship retrievedRelationship = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             retrievalOperationName = "getRelationship";
-            verifyCondition((newRelationship.equals(metadataCollection.getRelationship(workPad.getLocalServerUserId(),
-                                                                                       newRelationship.getGUID()))),
+            verifyCondition((newRelationship.equals(retrievedRelationship)),
                             assertion10,
                             testTypeName + assertionMsg10,
                             RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
-                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
+                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId(),
+                            "getRelationship",
+                            elapsedTime);
 
         } catch (Exception exc) {
             /*
@@ -493,7 +509,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
                 try {
 
+                    start = System.currentTimeMillis();
                     updatedRelationship = metadataCollection.updateRelationshipStatus(workPad.getLocalServerUserId(), newRelationship.getGUID(), validInstanceStatus);
+                    elapsedTime = System.currentTimeMillis() - start;
 
                 } catch (Exception exc) {
                     /*
@@ -516,7 +534,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                                 assertion11,
                                 testTypeName + assertionMsg11,
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                                "updateRelationshipStatus",
+                                elapsedTime);
 
                 assertCondition((updatedRelationship.getStatus() == validInstanceStatus),
                                 assertion12,
@@ -538,20 +558,28 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
         try {
 
+            start = System.currentTimeMillis();
             metadataCollection.updateRelationshipStatus(workPad.getLocalServerUserId(), newRelationship.getGUID(), InstanceStatus.DELETED);
+            elapsedTime = System.currentTimeMillis() - start;
+
             verifyCondition((false),
                             assertion14,
                             testTypeName + assertionMsg14,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                            "updateRelationshipStatus-negative",
+                            elapsedTime);
 
         } catch (StatusNotSupportedException exception) {
 
+            elapsedTime = System.currentTimeMillis() - start;
             verifyCondition((true),
                             assertion14,
                             testTypeName + assertionMsg14,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                            "updateRelationshipStatus-negative",
+                            elapsedTime);
 
         } catch (Exception exc) {
             /*
@@ -585,10 +613,11 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
             Relationship minPropertiesRelationship = null;
 
             try {
+                start = System.currentTimeMillis();
                 minPropertiesRelationship = metadataCollection.updateRelationshipProperties(workPad.getLocalServerUserId(),
                                                                                             newRelationship.getGUID(),
                                                                                             minRelationshipProps);
-
+                elapsedTime = System.currentTimeMillis() - start;
             } catch (Exception exc) {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -618,7 +647,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                             assertion15,
                             testTypeName + assertionMsg15,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                            "updateRelationshipProperties",
+                            elapsedTime);
 
             /*
              * Check that the returned relationship has the new version number...
@@ -639,13 +670,17 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
             try {
 
+                start = System.currentTimeMillis();
                 undoneRelationship = metadataCollection.undoRelationshipUpdate(workPad.getLocalServerUserId(), newRelationship.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
 
                 assertCondition(true,
                                 assertion29,
                                 testTypeName + assertionMsg29,
                                 RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId(),
+                                "undoRelationshipUpdate",
+                                elapsedTime);
 
 
                 assertCondition(((undoneRelationship != null) && (undoneRelationship.getProperties() != null)),
@@ -726,16 +761,20 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
         try {
 
+            start = System.currentTimeMillis();
             deletedRelationship = metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
                                                                         newRelationship.getType().getTypeDefGUID(),
                                                                         newRelationship.getType().getTypeDefName(),
                                                                         newRelationship.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition(true,
                             assertion30,
                             testTypeName + assertionMsg30,
                             RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId(),
+                            "deleteRelationship",
+                            elapsedTime);
 
             verifyCondition(((deletedRelationship != null) && (deletedRelationship.getVersion() >= nextVersion)),
                             assertion19,
@@ -747,21 +786,28 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
             try {
 
+                start = System.currentTimeMillis();
                 metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
 
                 verifyCondition((false),
                                 assertion20,
                                 testTypeName + assertionMsg20,
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId(),
+                                "getRelationship-negative",
+                                elapsedTime);
 
             } catch (RelationshipNotKnownException exception) {
 
+                elapsedTime = System.currentTimeMillis() - start;
                 verifyCondition((true),
                                 assertion20,
                                 testTypeName + assertionMsg20,
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId(),
+                                "getRelationship-negative",
+                                elapsedTime);
 
             } catch (Exception exc) {
                 /*
@@ -787,7 +833,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
             try {
 
+                start = System.currentTimeMillis();
                 restoredRelationship = metadataCollection.restoreRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
 
             } catch (Exception exc) {
                 /*
@@ -808,7 +856,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                             assertion21,
                             testTypeName + assertionMsg21,
                             RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId(),
+                            "restoreRelationship",
+                            elapsedTime);
 
             verifyCondition((restoredRelationship.getVersion() >= nextVersion),
                             assertion22,
@@ -823,11 +873,16 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
             try {
 
-                verifyCondition((restoredRelationship.equals(metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), restoredRelationship.getGUID()))),
+                start = System.currentTimeMillis();
+                Relationship knownRelationship = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), restoredRelationship.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
+                verifyCondition((restoredRelationship.equals(knownRelationship)),
                                 assertion23,
                                 testTypeName + assertionMsg23,
                                 RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId(),
+                                "isRelationshipKnown",
+                                elapsedTime);
 
             }
             catch (Exception exc) {
@@ -911,10 +966,12 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
         try {
 
+            start = System.currentTimeMillis();
             metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
                                                  newRelationship.getType().getTypeDefGUID(),
                                                  newRelationship.getType().getTypeDefName(),
                                                  newRelationship.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
         }
         catch (Exception exc) {
@@ -942,7 +999,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                             assertion24,
                             testTypeName + assertionMsg24,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                            "purgeRelationship",
+                            elapsedTime);
 
         } catch (RelationshipNotKnownException exception) {
 
@@ -950,7 +1009,9 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                             assertion24,
                             testTypeName + assertionMsg24,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                            "purgeRelationship",
+                            elapsedTime);
         }
         catch (Exception exc) {
             /*
@@ -969,11 +1030,13 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
 
         /*
-         * Perform a historic get of the relationship - this should return the relationship even though it has now been [deleted and] purged
+         * Perform a historic get of the relationship - this should not return the relationship since it has now been [deleted and] purged
          * The time for the query is the time set just before the delete operation above.
          */
         try {
+            start = System.currentTimeMillis();
             Relationship earlierRelationship = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID(), preDeleteDate);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition(true,
                             assertion31,
@@ -983,24 +1046,31 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
 
 
             /*
-             * Check that the earlierRelationship is not null and that the relationship matches the copy saved at preDeleteDate.
+             * Check that the earlierRelationship is null (really it should be the RelationshipNotKnownException below that handles)
              */
-            assertCondition(((earlierRelationship != null) && earlierRelationship.equals(preDeleteRelationship)),
+            assertCondition((earlierRelationship == null),
                             assertion25,
                             testTypeName + assertionMsg25,
                             RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId(),
+                            "getRelationship-negative",
+                            elapsedTime);
 
 
         } catch (RelationshipNotKnownException exception) {
             /*
-             * If it supports historical retrieval, the repository should have returned the relationship, hence fail the test
+             * Even if it supports historical retrieval, the repository should not return any version of a purged relationship,
+             * as the relationship and all of its history should have been purged. Therefore this exception being thrown
+             * indicates success -- so we do not need to handle it any further.
              */
-            assertCondition((false),
-                            assertion25,
-                            testTypeName + assertionMsg25,
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+            elapsedTime = System.currentTimeMillis() - start;
+            assertCondition((true),
+                    assertion25,
+                    testTypeName + assertionMsg25,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId(),
+                    "getRelationship-negative",
+                    elapsedTime);
 
         } catch (FunctionNotSupportedException exception) {
 

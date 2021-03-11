@@ -42,6 +42,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -68,8 +69,8 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
                     databaseManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     databaseManagerProperties.setDisplayName(this.removeName(instanceProperties));
                     databaseManagerProperties.setDescription(this.removeDescription(instanceProperties));
-                    databaseManagerProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                    databaseManagerProperties.setVersion(this.removeVersion(instanceProperties));
+                    databaseManagerProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                    databaseManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     databaseManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     databaseManagerProperties.setSource(this.removeSource(instanceProperties));
 
@@ -112,6 +113,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,

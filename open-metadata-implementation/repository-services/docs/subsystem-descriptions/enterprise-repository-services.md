@@ -21,6 +21,11 @@ supported by these repositories.
 The enterprise repository services are enabled automatically in a metadata server when one or more
 [Open Metadata Access Services (OMASs)](../../../access-services) are configured.
 
+
+
+----
+* Return to [repository services subsystem descriptions](.)
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

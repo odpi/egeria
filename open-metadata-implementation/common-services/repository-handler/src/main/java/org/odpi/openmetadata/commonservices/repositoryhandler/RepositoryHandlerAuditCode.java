@@ -40,10 +40,10 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                           "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service {2} on " +
                                   "server {3}; message was {0}",
                           "The system is unable to process the request because of an internal error.",
-                          "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the ODPi Egeria community for help."),
+                          "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the Egeria community for help."),
 
     UNABLE_TO_SET_ANCHORS("OMAG-REPOSITORY-HANDLER-0004",
-                          OMRSAuditLogRecordSeverity.ERROR,
+                          OMRSAuditLogRecordSeverity.EXCEPTION,
                           "The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of type {1} during method {2}." +
                                   " The resulting exception was {3} with error message {4}",
                           "The server was attempting to add Anchors classifications to a collection of metadata instances that are " +
@@ -96,6 +96,7 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
         return new AuditLogMessageDefinition(logMessageId,
@@ -112,6 +113,7 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
         AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,

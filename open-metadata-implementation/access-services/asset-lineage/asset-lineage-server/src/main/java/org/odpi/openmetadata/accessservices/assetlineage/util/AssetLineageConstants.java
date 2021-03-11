@@ -57,6 +57,7 @@ public final class AssetLineageConstants {
     public static final String CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     public static final String CLASSIFICATION_NAME_SUBJECT_AREA = "SubjectArea";
     public static final String CLASSIFICATION_NAME_ASSET_OWNERSHIP = "AssetOwnership";
+    public static final String UPDATE_TIME = "updateTime";
 
     public static final Set<String> immutableValidLineageRelationshipTypes;
     public static final Set<String> immutableDefaultLineageClassifications;

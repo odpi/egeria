@@ -36,6 +36,44 @@ public class AssetConsumerRESTServices
     }
 
 
+    /**
+     * Return the connection object for the Discovery Engine OMAS's out topic.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId identifier of calling user.
+     * @param callerId unique identifier of the caller
+     *
+     * @return connection object for the out topic or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    public ConnectionResponse getOutTopicConnection(String serverName,
+                                                    String userId,
+                                                    String callerId)
+    {
+        final String        methodName = "getOutTopicConnection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ConnectionResponse response = new ConnectionResponse();
+        AuditLog           auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setConnection(instanceHandler.getOutTopicConnection(userId, serverName, methodName, callerId));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
     /*
      * ===========================================
      * AssetConsumerAssetInterface
@@ -76,9 +114,9 @@ public class AssetConsumerRESTServices
 
             response.setGUID(handler.getAssetForConnectionName(userId, connectionName, connectionNameParameterName, methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -123,9 +161,9 @@ public class AssetConsumerRESTServices
 
             response.setGUIDs(handler.findAssetGUIDs(userId, searchString, searchStringParameter, startFrom, pageSize, methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -175,9 +213,9 @@ public class AssetConsumerRESTServices
                                                           pageSize,
                                                           methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -224,7 +262,7 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
+                RatingHandler<RatingElement> handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
 
                 int starRating = StarRating.NO_RECOMMENDATION.getOpenTypeOrdinal();
 
@@ -249,9 +287,9 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -299,9 +337,9 @@ public class AssetConsumerRESTServices
                                  guidParameterName,
                                  methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -356,9 +394,9 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -396,7 +434,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
+            LikeHandler<LikeElement> handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeLike(userId,
@@ -406,9 +444,9 @@ public class AssetConsumerRESTServices
                                guidParameterName,
                                methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -472,9 +510,9 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -541,9 +579,9 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -591,7 +629,7 @@ public class AssetConsumerRESTServices
                     commentType = requestBody.getCommentType().getOpenTypeOrdinal();
                 }
 
-                CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+                CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.updateComment(userId,
@@ -609,9 +647,9 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -651,7 +689,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeCommentFromElement(userId,
@@ -661,9 +699,9 @@ public class AssetConsumerRESTServices
                                              guidParameterName,
                                              methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -710,9 +748,9 @@ public class AssetConsumerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setMeaning(glossaryTermHandler.getTerm(userId, guid, guidParameterName, methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -761,9 +799,9 @@ public class AssetConsumerRESTServices
                                                                     methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -812,9 +850,9 @@ public class AssetConsumerRESTServices
                                                                methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -867,9 +905,9 @@ public class AssetConsumerRESTServices
                                                               pageSize,
                                                               methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -935,9 +973,9 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -995,9 +1033,9 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1051,9 +1089,9 @@ public class AssetConsumerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1100,9 +1138,9 @@ public class AssetConsumerRESTServices
                               tagGUIDParameterName,
                               methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1144,9 +1182,9 @@ public class AssetConsumerRESTServices
                                            guidParameterName,
                                            methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1195,9 +1233,9 @@ public class AssetConsumerRESTServices
                                                    methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1246,9 +1284,9 @@ public class AssetConsumerRESTServices
                                                      methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1297,9 +1335,9 @@ public class AssetConsumerRESTServices
                                               methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1348,9 +1386,9 @@ public class AssetConsumerRESTServices
                                                 methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1411,9 +1449,9 @@ public class AssetConsumerRESTServices
                                     isPublic,
                                     methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1474,9 +1512,9 @@ public class AssetConsumerRESTServices
                                     isPublic,
                                     methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1531,9 +1569,9 @@ public class AssetConsumerRESTServices
                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
                                          methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1589,9 +1627,9 @@ public class AssetConsumerRESTServices
                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
                                          methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1640,9 +1678,9 @@ public class AssetConsumerRESTServices
                                                          pageSize,
                                                          methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

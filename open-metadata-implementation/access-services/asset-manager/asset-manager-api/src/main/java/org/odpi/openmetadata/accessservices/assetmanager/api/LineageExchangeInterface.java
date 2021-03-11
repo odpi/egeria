@@ -65,6 +65,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
      * @param processExternalIdentifier unique identifier of the process in the external asset manager
      * @param processExternalIdentifierName name of property for the external identifier in the external asset manager
@@ -84,6 +85,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
     String createProcessFromTemplate(String              userId,
                                      String              assetManagerGUID,
                                      String              assetManagerName,
+                                     boolean             assetManagerIsHome,
                                      String              templateGUID,
                                      String              processExternalIdentifier,
                                      String              processExternalIdentifierName,
@@ -1096,7 +1098,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param nextStepGUID unique identifier of the next step
+     * @param currentStepGUID unique identifier of the current step
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1107,9 +1109,9 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
     List<ControlFlowElement> getControlFlowNextSteps(String userId,
                                                      String assetManagerGUID,
                                                      String assetManagerName,
-                                                     String nextStepGUID) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException;
+                                                     String currentStepGUID) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 
 
     /**
@@ -1118,7 +1120,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param currentStepGUID unique identifier of the previous step
+     * @param currentStepGUID unique identifier of the current step
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1336,6 +1338,8 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @param assetManagerName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
      *
+     * @return list of lineage mapping relationships
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1354,6 +1358,8 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param destinationElementGUID unique identifier of the destination
+     *
+     * @return list of lineage mapping relationships
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request

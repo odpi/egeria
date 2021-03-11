@@ -5,10 +5,12 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -113,6 +115,27 @@ public class AssetLineageInstanceHandler extends OMASServiceInstanceHandler
     }
 
     /**
+     * Retrieve helper handler for the access service.
+     *
+     * @param userId               the user id
+     * @param serverName           the server name
+     * @param serviceOperationName the service operation name
+     * @return the classification handler
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     * @throws PropertyServerException    the property server exception
+     */
+    public HandlerHelper getHandlerHelper(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        if (instance != null) {
+            return instance.getHandlerHelper();
+        }
+
+        return null;
+    }
+
+    /**
      * Retrieve the Asset Lineage Publisher available for the existing Asset Lineage OMAS OMRS Topic registred
      *
      * @param userId               the user id
@@ -131,6 +154,30 @@ public class AssetLineageInstanceHandler extends OMASServiceInstanceHandler
             return instance.getAssetLineagePublisher();
         }
 
+        return null;
+    }
+
+
+    /**
+     * Retrieve the AuditLog from the service instance.
+     *
+     * @param userId               calling userId
+     * @param serverName           name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return
+     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException
+     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException
+     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException
+     */
+    public AuditLog getAuditLog(String userId, String serverName, String serviceOperationName)
+            throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
+            org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException,
+            org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException {
+
+        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        if (instance != null) {
+            return instance.getAuditLog();
+        }
         return null;
     }
 }

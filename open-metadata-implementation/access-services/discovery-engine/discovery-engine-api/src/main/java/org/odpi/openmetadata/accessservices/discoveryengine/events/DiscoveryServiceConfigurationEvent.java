@@ -24,7 +24,7 @@ public class DiscoveryServiceConfigurationEvent extends DiscoveryEngineConfigura
     private static final long serialVersionUID = 1L;
 
     private String              registeredDiscoveryServiceGUID = null;
-    private List<String>        discoveryRequestTypes          = null;
+    private String              discoveryRequestType           = null;
     private Map<String, String> defaultAnalysisParameters      = null;
 
 
@@ -48,7 +48,7 @@ public class DiscoveryServiceConfigurationEvent extends DiscoveryEngineConfigura
         if (template != null)
         {
             registeredDiscoveryServiceGUID = template.getRegisteredDiscoveryServiceGUID();
-            discoveryRequestTypes          = template.getDiscoveryRequestTypes();
+            discoveryRequestType = template.getDiscoveryRequestType();
             defaultAnalysisParameters      = template.getDefaultAnalysisParameters();
         }
     }
@@ -77,33 +77,24 @@ public class DiscoveryServiceConfigurationEvent extends DiscoveryEngineConfigura
 
 
     /**
-     * Return the list of discovery request types for the discovery service affected by the change.
+     * Return a discovery request type for the discovery service affected by the change.
      *
-     * @return list of discovery request types
+     * @return a discovery request type
      */
-    public List<String> getDiscoveryRequestTypes()
+    public String getDiscoveryRequestType()
     {
-        if (discoveryRequestTypes == null)
-        {
-            return null;
-        }
-        else if (discoveryRequestTypes.isEmpty())
-        {
-            return  null;
-        }
-
-        return new ArrayList<>(discoveryRequestTypes);
+        return discoveryRequestType;
     }
 
 
     /**
-     * Set up the list of discovery request types for the discovery service affected by the change.
+     * Set up the discovery request type for the discovery service affected by the change.
      *
-     * @param discoveryRequestTypes list of discovery request types
+     * @param discoveryRequestType a discovery request type
      */
-    public void setDiscoveryRequestTypes(List<String> discoveryRequestTypes)
+    public void setDiscoveryRequestType(String discoveryRequestType)
     {
-        this.discoveryRequestTypes = discoveryRequestTypes;
+        this.discoveryRequestType = discoveryRequestType;
     }
 
 
@@ -148,7 +139,7 @@ public class DiscoveryServiceConfigurationEvent extends DiscoveryEngineConfigura
     {
         return "DiscoveryServiceConfigurationEvent{" +
                 "registeredDiscoveryServiceGUID='" + registeredDiscoveryServiceGUID + '\'' +
-                ", discoveryRequestTypes=" + discoveryRequestTypes +
+                ", discoveryRequestType=" + discoveryRequestType +
                 ", defaultAnalysisParameters=" + defaultAnalysisParameters +
                 '}';
     }
@@ -176,7 +167,7 @@ public class DiscoveryServiceConfigurationEvent extends DiscoveryEngineConfigura
         }
         DiscoveryServiceConfigurationEvent that = (DiscoveryServiceConfigurationEvent) objectToCompare;
         return Objects.equals(registeredDiscoveryServiceGUID, that.registeredDiscoveryServiceGUID) &&
-                Objects.equals(discoveryRequestTypes, that.discoveryRequestTypes) &&
+                Objects.equals(discoveryRequestType, that.discoveryRequestType) &&
                 Objects.equals(defaultAnalysisParameters, that.defaultAnalysisParameters);
     }
 
@@ -189,6 +180,6 @@ public class DiscoveryServiceConfigurationEvent extends DiscoveryEngineConfigura
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), registeredDiscoveryServiceGUID, discoveryRequestTypes, defaultAnalysisParameters);
+        return Objects.hash(super.hashCode(), registeredDiscoveryServiceGUID, discoveryRequestType, defaultAnalysisParameters);
     }
 }

@@ -24,6 +24,7 @@ public class ServerStatusResponse extends FFDCResponseBase
     private static final long    serialVersionUID = 1L;
 
     private String                          serverName      = null;
+    private String                          serverType      = null;
     private boolean                         isActive        = true;
     private Date                            serverStartTime = null;
     private Date                            serverEndTime   = null;
@@ -77,6 +78,28 @@ public class ServerStatusResponse extends FFDCResponseBase
     public void setServerName(String serverName)
     {
         this.serverName = serverName;
+    }
+
+
+    /**
+     * Return the type of server that is hosting these services.
+     *
+     * @return string name
+     */
+    public String getServerType()
+    {
+        return serverType;
+    }
+
+
+    /**
+     * Set up the type of server that is hosting these services.
+     *
+     * @param serverType string name
+     */
+    public void setServerType(String serverType)
+    {
+        this.serverType = serverType;
     }
 
 

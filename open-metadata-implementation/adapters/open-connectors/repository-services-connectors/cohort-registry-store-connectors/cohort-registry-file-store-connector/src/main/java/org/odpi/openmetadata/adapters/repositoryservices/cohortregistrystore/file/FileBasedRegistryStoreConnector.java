@@ -77,6 +77,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      *
      * @param localRegistration - details of the local repository's registration with the metadata cohort.
      */
+    @Override
     public synchronized void saveLocalRegistration(MemberRegistration localRegistration)
     {
         if (localRegistration != null)
@@ -108,6 +109,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * @return MemberRegistration object containing details for the local repository's registration with the
      * metadata cohort (may be null if no registration has taken place).
      */
+    @Override
     public synchronized MemberRegistration retrieveLocalRegistration()
     {
         CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
@@ -142,6 +144,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * There is a side-effect that all of the remote registrations are removed to since the local repository is
      * no longer a member of this cohort.
      */
+    @Override
     public synchronized void removeLocalRegistration()
     {
         log.debug("Removing local repository from  cohort registry store.");
@@ -187,6 +190,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      *
      * @param remoteRegistration - details of a remote repository in the metadata repository cohort.
      */
+    @Override
     public synchronized void saveRemoteRegistration(MemberRegistration  remoteRegistration)
     {
         if ((remoteRegistration != null) && (remoteRegistration.getMetadataCollectionId() != null))
@@ -234,6 +238,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      *
      * @return Remote registrations list
      */
+    @Override
     public synchronized List<MemberRegistration> retrieveRemoteRegistrations()
     {
         /*
@@ -260,6 +265,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * @param metadataCollectionId - unique identifier for the repository
      * @return MemberRegistration object containing details of the remote metadata repository. (null if not found)
      */
+    @Override
     public synchronized MemberRegistration retrieveRemoteRegistration(String    metadataCollectionId)
     {
         MemberRegistration    remoteRegistration = null;
@@ -300,6 +306,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      *
      * @param metadataCollectionId - unique identifier for the repository
      */
+    @Override
     public synchronized void removeRemoteRegistration(String    metadataCollectionId)
     {
         if (metadataCollectionId != null)
@@ -352,6 +359,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * Remove the local and remote registrations from the cohort registry store since the local server has
      * unregistered from the cohort.
      */
+    @Override
     public void clearAllRegistrations()
     {
         writeRegistryStoreProperties(null);
@@ -361,6 +369,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
     /**
      * Close the config file
      */
+    @Override
     public void disconnect()
     {
         try
@@ -438,7 +447,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
             if (testMember != null)
             {
-                if ((testMember.getMetadataCollectionId() == null) || ("".equals(testMember.getMetadataCollectionId())))
+                if ((testMember.getMetadataCollectionId() == null) || (testMember.getMetadataCollectionId().length() == 0))
                 {
                     auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_REGISTERED_MC_ID.getMessageDefinition(testMember.getServerName()));
                 }
@@ -457,7 +466,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                 }
 
 
-                if ((testMember.getServerName() == null) || ("".equals(testMember.getServerName())))
+                if ((testMember.getServerName() == null) || (testMember.getServerName().length() == 0))
                 {
                     auditLog.logMessage(actionDescription,
                                         OMRSAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getMetadataCollectionId()),
@@ -619,6 +628,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
     /**
      * Flush all changes and close the registry store.
      */
+    @Override
     public void close()
     {
         this.disconnect();

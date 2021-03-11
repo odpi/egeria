@@ -1,9 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-# Asset Manager Integrator Open Metadata Integration Service (OMIS)
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
 
-The Asset Manager Integrator integration service supports the exchange of asset information between a
+# Catalog Integrator Open Metadata Integration Service (OMIS)
+
+The Catalog Integrator integration service supports the exchange of asset information between a
 third party asset management system and the open metadata ecosystem.
 
 This involves:
@@ -15,11 +17,11 @@ to the open metadata APIs and types.
 
 The modules are as follows:
 
-* [asset-manager-integrator-api](asset-manager-integrator-api) - defines the interface for an integration
-connector that is supported by the Asset Manager Integrator integration service. This includes the implementation
+* [catalog-integrator-api](catalog-integrator-api) - defines the interface for an integration
+connector that is supported by the Catalog Integrator integration service. This includes the implementation
 of the context that wraps the Asset Manager OMAS's clients.
 
-* [asset-manager-integrator-server](asset-manager-integrator-server) - implements the context manager for
+* [catalog-integrator-server](catalog-integrator-server) - implements the context manager for
 the Asset Manager Integrator integration service.
 
 This integration service is paired with the [Asset Manager](../../access-services/asset-manager)

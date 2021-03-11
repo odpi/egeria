@@ -126,7 +126,28 @@ public class ClassificationDef extends TypeDef
      */
     public void setValidEntityDefs(List<TypeDefLink> validEntityDefs)
     {
-        this.validEntityDefs = validEntityDefs;
+        if (validEntityDefs == null)
+        {
+            this.validEntityDefs = null;
+        }
+        else if (validEntityDefs.isEmpty())
+        {
+            this.validEntityDefs = null;
+        }
+        else
+        {
+            List<TypeDefLink> resultList = new ArrayList<>();
+
+            for (TypeDefLink  typeDefLink : validEntityDefs)
+            {
+                if (typeDefLink != null)
+                {
+                    resultList.add(new TypeDefLink(typeDefLink));
+                }
+            }
+
+            this.validEntityDefs = resultList;
+        }
     }
 
 
@@ -188,10 +209,10 @@ public class ClassificationDef extends TypeDef
 
 
     /**
-     * Verify that supplied object has the same properties.
+     * Validate that an object is equal depending on their stored values.
      *
-     * @param objectToCompare object to test
-     * @return result
+     * @param objectToCompare object
+     * @return boolean result
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -200,7 +221,7 @@ public class ClassificationDef extends TypeDef
         {
             return true;
         }
-        if (!(objectToCompare instanceof ClassificationDef))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -209,7 +230,19 @@ public class ClassificationDef extends TypeDef
             return false;
         }
         ClassificationDef that = (ClassificationDef) objectToCompare;
-        return isPropagatable() == that.isPropagatable() &&
-                Objects.equals(getValidEntityDefs(), that.getValidEntityDefs());
+        return propagatable == that.propagatable &&
+                       Objects.equals(validEntityDefs, that.validEntityDefs);
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), validEntityDefs, propagatable);
     }
 }

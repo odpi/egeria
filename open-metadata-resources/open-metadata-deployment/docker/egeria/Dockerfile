@@ -1,10 +1,20 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 
+# Usage: docker run -d -p 9443:9443 odpi/egeria
+# 
+# All dynamic data is stored under /deployments/data, so map a volume or k8s pvc to this 
+# to persist egeria configuration, local graph repo etc ie
+# docker run -v source=egeria-data,target=/deployments/data odpi/egeria:latest 
+#
+# See readme in source tree or on docker hub for more info
+
 # Based on RedHat UBI image.
 # https://catalog.redhat.com/software/containers/ubi8/openjdk-11/5dd6a4b45a13461646f677f4?container-tabs=gti&gti-tabs=unauthenticated
+
+
 FROM registry.access.redhat.com/ubi8/openjdk-11
-ARG version=2.6-SNAPSHOT
+ARG version=2.8-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
@@ -38,8 +48,13 @@ EXPOSE 9443 5005
 
 # By default, we run the server chassis
 ENV JAVA_APP_JAR=server/server-chassis-spring-${version}.jar
-ENV JAVA_LIBDIR=${JAVA_APP_DIR}/server/lib
-ENV LOADER_PATH=${LOADER_PATH}
+
+# This is used with regular class loader, ie any client code etc
+# ENV JAVA_LIBDIR=/deployments/lib
+
+# This is used when running a spring app such as the server chassis (default)
+# Extend this accordingly via the environment, or within a new Dockerfile as needed
+ENV LOADER_PATH=/deployments/server/lib
 
 # Joloka will be removed shortly. For now disable to avoid errors
 ENV AB_JOLOKIA_OFF=true

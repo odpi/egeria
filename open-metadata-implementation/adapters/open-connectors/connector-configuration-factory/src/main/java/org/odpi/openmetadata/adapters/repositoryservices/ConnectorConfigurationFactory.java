@@ -2,30 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
-import org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider;
-import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider;
+
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
-import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorClassName;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +35,22 @@ public class ConnectorConfigurationFactory
     private static final String defaultEnterpriseTopicConnectorRootName = defaultTopicRootName + "enterprise.";
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
 
+
+    private static final String ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER          = "org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider";
+    private static final String IN_MEMORY_OPEN_METADATA_TOPIC_PROVIDER                     = "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider";
+    private static final String KAFKA_OPEN_METADATA_TOPIC_PROVIDER                         = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
+    private static final String FILE_BASED_OPEN_METADATA_ARCHIVE_STORE_PROVIDER            = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider";
+    private static final String CONSOLE_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider";
+    private static final String EVENT_TOPIC_AUDIT_LOG_STORE_PROVIDER                       = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider";
+    private static final String FILE_BASED_AUDIT_LOG_STORE_PROVIDER                        = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider";
+    private static final String SLF_4_J_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider";
+    private static final String FILE_BASED_REGISTRY_STORE_PROVIDER                         = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
+    private static final String GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER                   = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
+    private static final String IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
+    private static final String READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
+    private static final String OMRSREST_REPOSITORY_CONNECTOR_PROVIDER                     = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
+    private static final String OMRS_TOPIC_PROVIDER                                        = "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider";
+
     private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
 
 
@@ -69,13 +71,25 @@ public class ConnectorConfigurationFactory
     public Connection getServerConfigConnection(String    serverName)
     {
         Endpoint   endpoint = new Endpoint();
-        endpoint.setAddress("omag.server." + serverName + ".config");
+        endpoint.setAddress("data/servers/" + serverName + "/config/" + serverName + ".config");
 
         Connection connection = new Connection();
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(EncryptedFileBasedServerConfigStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
         connection.setQualifiedName(endpoint.getAddress());
 
+        return connection;
+    }
+
+    /**
+     * Returns the connection for the open metadata server configuration retrieve all.
+     *
+     * @return Connection object
+     */
+   public Connection getServerConfigConnectionForRetrieveAll()
+    {
+        Connection connection = new Connection();
+        connection.setConnectorType(getConnectorType(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
         return connection;
     }
 
@@ -129,14 +143,14 @@ public class ConnectorConfigurationFactory
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return OCF Connection used to create the stdout console audit logger
      */
-    public Connection getConsoleAuditLogConnection(List<String> supportedSeverities)
+   public Connection getConsoleAuditLogConnection(List<String> supportedSeverities)
     {
         final String destinationName = "Console";
 
         Connection connection = new Connection();
 
         connection.setDisplayName(destinationName);
-        connection.setConnectorType(getConnectorType(ConsoleAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(CONSOLE_AUDIT_LOG_STORE_PROVIDER));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
 
@@ -157,7 +171,7 @@ public class ConnectorConfigurationFactory
     {
         final String destinationName = "Files";
 
-        String endpointAddress = "omag.server." + localServerName + ".auditlog";
+        String endpointAddress = "data/servers/" + localServerName + "/logs/auditlog";
 
         Endpoint endpoint = new Endpoint();
 
@@ -167,7 +181,7 @@ public class ConnectorConfigurationFactory
 
         connection.setDisplayName(destinationName + " in " + endpointAddress);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(FileBasedAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(FILE_BASED_AUDIT_LOG_STORE_PROVIDER));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
 
@@ -189,7 +203,7 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
 
         connection.setDisplayName(destinationName);
-        connection.setConnectorType(getConnectorType(SLF4JAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(SLF_4_J_AUDIT_LOG_STORE_PROVIDER));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
 
@@ -222,7 +236,7 @@ public class ConnectorConfigurationFactory
         VirtualConnection connection = new VirtualConnection();
 
         connection.setDisplayName(destinationName + " " + topicName);
-        connection.setConnectorType(getConnectorType(EventTopicAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(EVENT_TOPIC_AUDIT_LOG_STORE_PROVIDER));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection(localServerName + " Audit Log Event Topic Destination",
                                                                         null,
                                                                         eventBusConnectorProviderClassName,
@@ -252,7 +266,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
-        connection.setConnectorType(getConnectorType(FileBasedOpenMetadataArchiveStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(FILE_BASED_OPEN_METADATA_ARCHIVE_STORE_PROVIDER));
         connection.setEndpoint(endpoint);
 
         return connection;
@@ -268,7 +282,7 @@ public class ConnectorConfigurationFactory
      */
     public Connection getDefaultCohortRegistryConnection(String localServerName, String cohortName)
     {
-        String endpointAddress = localServerName + "." + cohortName + ".registrystore";
+        String endpointAddress = "./data/servers/" + localServerName + "/cohorts/" + cohortName + ".registrystore";
 
         Endpoint endpoint = new Endpoint();
 
@@ -277,7 +291,7 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
 
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(FileBasedRegistryStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(FILE_BASED_REGISTRY_STORE_PROVIDER));
 
         return connection;
     }
@@ -314,7 +328,7 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
 
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(OMRSRESTRepositoryConnectorProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(OMRSREST_REPOSITORY_CONNECTOR_PROVIDER));
 
         return connection;
     }
@@ -333,7 +347,7 @@ public class ConnectorConfigurationFactory
     {
         Connection connection = new Connection();
 
-        connection.setConnectorType(getConnectorType(GraphOMRSRepositoryConnectorProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
         connection.setConfigurationProperties(storageProperties);
 
         return connection;
@@ -349,7 +363,7 @@ public class ConnectorConfigurationFactory
     {
         Connection connection = new Connection();
 
-        connection.setConnectorType(getConnectorType(InMemoryOMRSRepositoryConnectorProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
 
         return connection;
     }
@@ -364,7 +378,7 @@ public class ConnectorConfigurationFactory
     {
         Connection connection = new Connection();
 
-        connection.setConnectorType(getConnectorType(ReadOnlyOMRSRepositoryConnectorProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
 
         return connection;
     }
@@ -381,9 +395,9 @@ public class ConnectorConfigurationFactory
      * @throws InstantiationException when the provided class cannot be instantiated
      * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
-    public Connection  getRepositoryProxyConnection(String              connectorProviderClassName,
-                                                    String              url,
-                                                    Map<String, Object> configurationProperties) throws ClassNotFoundException,
+    public Connection getRepositoryConnection(String              connectorProviderClassName,
+                                              String              url,
+                                              Map<String, Object> configurationProperties) throws ClassNotFoundException,
                                                                                                         InstantiationException,
                                                                                                         IllegalAccessException
     {
@@ -484,9 +498,9 @@ public class ConnectorConfigurationFactory
             }
         }
 
-        String connectorTypeJavaClassName = KafkaOpenMetadataTopicProvider.class.getName();
+        String connectorTypeJavaClassName = KAFKA_OPEN_METADATA_TOPIC_PROVIDER;
 
-        if ((connectorProviderClassName != null) && (! "".equals(connectorProviderClassName)))
+        if ((connectorProviderClassName != null) && (connectorProviderClassName.length() > 0))
         {
             connectorTypeJavaClassName = connectorProviderClassName;
         }
@@ -496,7 +510,7 @@ public class ConnectorConfigurationFactory
             configurationProperties = new HashMap<>();
         }
 
-        configurationProperties.put(KafkaOpenMetadataTopicProvider.serverIdPropertyName, serverId);
+        configurationProperties.put("local.server.id", serverId);
 
         Connection connection = new Connection();
 
@@ -522,10 +536,10 @@ public class ConnectorConfigurationFactory
 
         VirtualConnection connection = new VirtualConnection();
 
-        connection.setConnectorType(getConnectorType(OMRSTopicProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(OMRS_TOPIC_PROVIDER));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection("Enterprise OMRS Events",
                                                                         null,
-                                                                        InMemoryOpenMetadataTopicProvider.class.getName(),
+                                                                        IN_MEMORY_OPEN_METADATA_TOPIC_PROVIDER,
                                                                         localServerName,
                                                                         topicName,
                                                                         serverId,
@@ -557,7 +571,7 @@ public class ConnectorConfigurationFactory
 
         VirtualConnection connection = new VirtualConnection();
 
-        connection.setConnectorType(getConnectorType(OMRSTopicProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(OMRS_TOPIC_PROVIDER));
         connection.setConfigurationProperties(configurationProperties);
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection(cohortName + " OMRS Topic",
                                                                         null,
@@ -601,80 +615,6 @@ public class ConnectorConfigurationFactory
 
         return connection;
     }
-
-
-    /**
-     * Return the connection.  This is using the RangerConnector.
-     *
-     * @param url  url for the Security Server
-     * @param configurationProperties name value pairs for the connection
-     * @return Connection object
-     */
-    public Connection getSecuritySyncServerConnection(String              url,
-                                                      Map<String, Object> configurationProperties)
-    {
-        Endpoint endpoint = new Endpoint();
-
-        endpoint.setAddress(url);
-
-        Connection connection = new Connection();
-
-        connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(RangerSecurityServiceConnectorProvider.class.getName()));
-        connection.setConfigurationProperties(configurationProperties);
-
-        return connection;
-    }
-
-
-    /**
-     * Return the connection. This is used by view generator connectors
-     *
-     * @param connectorProviderClassName the class name of the
-     * @param virtualizationSolutionConfig related configuration
-     * @return connection object
-     */
-    public Connection getVirtualizationSolutionConnection (String              connectorProviderClassName,
-                                                           Map<String, Object> virtualizationSolutionConfig)
-    {
-        Connection connection = new Connection();
-        Map<String, String> additionalProperties = new HashMap<>();
-        Endpoint endpoint = new Endpoint();
-
-
-        if (ConnectorClassName.GAIAN_DB_CONNECTOR.equals(connectorProviderClassName))
-        {
-            endpoint.setAddress(virtualizationSolutionConfig.get("serverAddress").toString());
-
-            Map<String, String> endpointProperties = new HashMap<>();
-            endpointProperties.put("timeoutInSecond", virtualizationSolutionConfig.get("timeoutInSecond").toString());
-            endpointProperties.put("create", virtualizationSolutionConfig.get("create").toString());
-            endpointProperties.put("connectorProviderName", connectorProviderClassName);
-
-            endpoint.setAdditionalProperties(endpointProperties);
-
-            connection.setUserId(virtualizationSolutionConfig.get("username").toString());
-            connection.setClearPassword(virtualizationSolutionConfig.get("password").toString());
-            connection.setEndpoint(endpoint);
-
-            additionalProperties.put("gdbNode", virtualizationSolutionConfig.get("gdbNode").toString());
-            additionalProperties.put("logicTableName",virtualizationSolutionConfig.get("logicTableName").toString());
-            additionalProperties.put("logicTableDefinition", virtualizationSolutionConfig.get("logicTableDefinition").toString());
-            additionalProperties.put("getLogicTables", virtualizationSolutionConfig.get("getLogicTables").toString());
-            additionalProperties.put("frontendName", virtualizationSolutionConfig.get("frontendName").toString());
-            additionalProperties.put("dataSchema", virtualizationSolutionConfig.get("schema").toString());
-            additionalProperties.put("databaseName", virtualizationSolutionConfig.get("databaseName").toString());
-
-            connection.setAdditionalProperties(additionalProperties);
-        }
-        else
-        {
-            log.error("Provided connector class is not registered in virtualizer api or implemented.");
-        }
-
-        return connection;
-    }
-
 
 
     /**

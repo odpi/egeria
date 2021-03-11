@@ -50,7 +50,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     public ConnectorCheckedException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Map<String, Object> relatedProperties)
+                                     Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, relatedProperties);
     }
@@ -180,6 +180,19 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
      */
     public ConnectorCheckedException(String                    errorMessage,
                                      ConnectorCheckedException template)
+    {
+        super(errorMessage, template);
+    }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param errorMessage associated message
+     * @param template   object to copy
+     */
+    public ConnectorCheckedException(String                  errorMessage,
+                                     OCFCheckedExceptionBase template)
     {
         super(errorMessage, template);
     }

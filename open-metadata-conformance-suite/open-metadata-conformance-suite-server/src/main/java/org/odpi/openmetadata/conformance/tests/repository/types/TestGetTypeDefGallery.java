@@ -55,12 +55,16 @@ public class TestGetTypeDefGallery extends RepositoryConformanceTestCase
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
+        long start = System.currentTimeMillis();
         TypeDefGallery  typeDefGallery = metadataCollection.getAllTypes(workPad.getLocalServerUserId());
+        long elapsedTime = System.currentTimeMillis() - start;
         assertCondition((true),
                         assertion1,
                         assertionMsg1,
                         RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
+                        RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId(),
+                        "getAllTypes",
+                        elapsedTime);
 
         if (typeDefGallery == null)
         {

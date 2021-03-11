@@ -214,24 +214,25 @@ public class Asset extends Referenceable
     public String toString()
     {
         return "Asset{" +
-                "typeGUID='" + getTypeGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerType=" + ownerType +
-                ", zoneMembership=" + zoneMembership +
-                ", origin=" + origin +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", securityLabels=" + getSecurityLabels() +
-                ", securityProperties=" + getSecurityProperties() +
-                ", confidentiality=" + getConfidentiality() +
-                ", confidence=" + getConfidence() +
-                ", criticality=" + getCriticality() +
-                ", retention=" + getRetention() +
-                '}';
+                       "typeGUID='" + getTypeGUID() + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", owner='" + owner + '\'' +
+                       ", ownerType=" + ownerType +
+                       ", zoneMembership=" + zoneMembership +
+                       ", origin=" + origin +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", securityLabels=" + getSecurityLabels() +
+                       ", securityProperties=" + getSecurityProperties() +
+                       ", confidentiality=" + getConfidentiality() +
+                       ", confidence=" + getConfidence() +
+                       ", impact=" + getImpact() +
+                       ", criticality=" + getCriticality() +
+                       ", retention=" + getRetention() +
+                       '}';
     }
 
 

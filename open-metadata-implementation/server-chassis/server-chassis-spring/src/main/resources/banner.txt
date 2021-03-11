@@ -1,4 +1,4 @@
-${AnsiColor.CYAN} ODPi Egeria
+${AnsiColor.CYAN} Project Egeria - Open Metadata and Governance
 ${AnsiColor.CYAN}    ____   __  ___ ___    ______   _____                                 ____   _         _     ___
 ${AnsiColor.CYAN}   / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
 ${AnsiColor.CYAN}  / / / // /|_/ // /| | / / __    \__ \ / _ \ / __/| | / // _ \ / __/  / /_/ // //   |  / _\ / /_ /  | /  _// || |

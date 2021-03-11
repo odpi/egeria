@@ -3,15 +3,19 @@
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
 import java.time.Duration;
-import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.kafka.clients.consumer.CommitFailedException;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -33,19 +37,18 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 {
     private static final Logger log      = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
 
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
     private final long recoverySleepTimeSec; 
     private final long pollTimeout;
     private final long maxQueueSize;
 
     private              KafkaConsumer<String, String>   consumer;
-    private              String                          topicToSubscribe;
-    private              String                          localServerId;
+    private final              String                    topicToSubscribe;
+    private final              String                    localServerId;
 
-    private              KafkaOpenMetadataTopicConnector connector;
+    private final        KafkaOpenMetadataTopicConnector connector;
 
-    private Map<TopicPartition, OffsetAndMetadata> currentOffsets = Collections.synchronizedMap(new HashMap<>());
     private long nextMessageProcessingStatusCheckTime = System.currentTimeMillis();
     private long maxNextPollTimestampToAvoidConsumerTimeout = 0;
     private final long maxMsBetweenPolls;
@@ -58,11 +61,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     
     private final long messageProcessingStatusCheckIntervalMs;
     private final long messageProcessingTimeoutMs;
-    private final Map<TopicPartition, Queue<KafkaIncomingEvent>> unprocessedEventQueues = new HashMap<>();
-    
 
-    
-    private Boolean running = true;
+    private final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new ConcurrentHashMap<>();
+    private final Map<TopicPartition, BlockingDeque<KafkaIncomingEvent>> unprocessedEventQueues = new ConcurrentHashMap<>();
+
+    private final AtomicBoolean running = new AtomicBoolean(true);
     
     private final boolean isAutoCommitEnabled;
 
@@ -97,7 +100,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                                     (Integer.toString(kafkaConsumerProperties.size()), topicName),
                             kafkaConsumerProperties.toString());
         
-        maxMsBetweenPolls = new KafkaConfigurationWrapper(kafkaConsumerProperties).getMaxPollIntervalMs();
+        this.maxMsBetweenPolls = new KafkaConfigurationWrapper(kafkaConsumerProperties).getMaxPollIntervalMs();
         this.recoverySleepTimeSec = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.RECOVERY_SLEEP_TIME);
         this.maxQueueSize = config.getIntProperty(KafkaOpenMetadataEventConsumerProperty.MAX_QUEUE_SIZE);
         this.consumerTimeoutPreventionSafetyWindowMs = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.CONSUMER_TIMEOUT_PREVENTION_SAFETY_WINDOW_MS);
@@ -142,7 +145,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                 
             	//if we are close to the timeout, force a poll to avoid having the consumer
             	//be marked as dead because we have not polled often enough
-            	boolean pollRequired = System.currentTimeMillis() > maxNextPollTimestampToAvoidConsumerTimeout;
+            	final boolean pollRequired = System.currentTimeMillis() > maxNextPollTimestampToAvoidConsumerTimeout;
             
             
                 	
@@ -160,15 +163,15 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
             	updateNextMaxPollTimestamp();
 
-                Duration pollDuration = Duration.ofMillis(pollTimeout);
-                ConsumerRecords<String, String> records = consumer.poll(pollDuration);
+                final Duration pollDuration = Duration.ofMillis(pollTimeout);
+                final ConsumerRecords<String, String> records = consumer.poll(pollDuration);
                 
                 log.debug("Found records: " + records.count());
                 for (ConsumerRecord<String, String> record : records)
                 {
                     String json = record.value();
                     log.debug("Received message: " + json);
-                    KafkaIncomingEvent event = new KafkaIncomingEvent(json, record.offset());
+                    final KafkaIncomingEvent event = new KafkaIncomingEvent(json, record.offset());
                     if (! localServerId.equals(record.key()))
                     {
                         try
@@ -204,7 +207,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                         //If auto-commit is disabled, the offset for a message is only committed when
                         //the message has been completely processed by all consumers.  That
                         //is handled by the call to checkForFullyProcessedMessagesIfNeeded().
-                        TopicPartition partition = new TopicPartition(record.topic(), record.partition());
+                        final TopicPartition partition = new TopicPartition(record.topic(), record.partition());
                         currentOffsets.put(partition, new OffsetAndMetadata(record.offset() + 1));
                     
                     }
@@ -240,7 +243,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             {
                 //Check for fully processed messages one last time before
                 //shutting down the consumer
-                boolean changesCommitted = checkForFullyProcessedMessages();
+                final boolean changesCommitted = checkForFullyProcessedMessages();
                 if (! changesCommitted) {
                     //Figure out why no changes were committed.  There are 3 possibilities:
                     // 1) Auto commit is enabled
@@ -248,7 +251,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     // 3) We are waiting for some event to finish processing
                     
                     if (! isAutoCommitEnabled) {
-                        int nUnprocessedMessages = getNumberOfUnprocessedMessages();
+                        final int nUnprocessedMessages = getNumberOfUnprocessedMessages();
                         if (nUnprocessedMessages > 0) {
                             log.error("Consumer was shut down before all message processing has completed!  There are " + nUnprocessedMessages + " messages whose processing is incomplete.");
                         }
@@ -293,16 +296,13 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         if (isAutoCommitEnabled) {
             return;
         }
-        TopicPartition key = new TopicPartition(topic, partition);
-        Queue<KafkaIncomingEvent> queue = unprocessedEventQueues.get(key);
+        final TopicPartition key = new TopicPartition(topic, partition);
+        BlockingDeque<KafkaIncomingEvent> queue = unprocessedEventQueues.get(key);
         if (queue == null) {
-            queue = new SynchronizedQueue<>(new ArrayDeque<KafkaIncomingEvent>());
-            synchronized (unprocessedEventQueues) {
-                unprocessedEventQueues.put(key, queue);
-            }
+            queue = new LinkedBlockingDeque<>();
+            unprocessedEventQueues.put(key, queue);
         }
         queue.add(event);
-        
     }
 
     /**
@@ -340,20 +340,10 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         }
         log.info("Checking for fully processed messages whose offsets need to be committed");
 
-        Map<TopicPartition, Queue<KafkaIncomingEvent>> mapToCheck = null;
-        
-        //Make a copy to minimize the amount of time we need to spent
-        //holding a lock on the map.  If we do not synchronize here, a
-        //concurrent modification exception will be thrown if an
-        //attempt is made to update the map while we are iterating though it
-        synchronized(unprocessedEventQueues) {
-            mapToCheck = new HashMap<TopicPartition, Queue<KafkaIncomingEvent>>(unprocessedEventQueues);
-        }
-        
         //Check all the queues to see they have events initial events
         //that are fully processed
         Map<TopicPartition, OffsetAndMetadata> commitData = new HashMap<>();
-        for(Map.Entry<TopicPartition, Queue<KafkaIncomingEvent>> entry : mapToCheck.entrySet()) {
+        for(Map.Entry<TopicPartition, BlockingDeque<KafkaIncomingEvent>> entry : unprocessedEventQueues.entrySet()) {
             Queue<KafkaIncomingEvent> queue = entry.getValue();
            
             KafkaIncomingEvent mostRecentProcessedEvent = removeFullyProcessedEventsFromBeginningOfQueue(queue);
@@ -446,18 +436,9 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         if (isAutoCommitEnabled) {
             return 0;
         }
-        Map<TopicPartition, Queue<KafkaIncomingEvent>> mapToCheck = null;
-        
-        //make a copy to minimize the amount of time we need to spent
-        //holding a lock on the map.  If we do not synchronize here, a
-        //concurrent modification exception will be thrown if an
-        //attempt is made to update the map while we are iterating though it
-        synchronized(unprocessedEventQueues) {
-            mapToCheck = new HashMap<TopicPartition, Queue<KafkaIncomingEvent>>(unprocessedEventQueues);
-        }
-        
+
         int result = 0;
-        for(Queue<KafkaIncomingEvent> queue : mapToCheck.values()) {
+        for(Queue<KafkaIncomingEvent> queue : unprocessedEventQueues.values()) {
             if (! queue.isEmpty()) {
                 result++;
             }
@@ -515,18 +496,18 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      *
      * @return boolean
      */
-    private synchronized  boolean isRunning()
+    private boolean isRunning()
     {
-        return running;
+        return running.get();
     }
 
 
     /**
      * Flip the switch to stop the thread.
      */
-    private synchronized void stopRunning()
+    private void stopRunning()
     {
-        running = false;
+        running.set(false);
     }
 
 
@@ -543,26 +524,40 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
         public void onPartitionsRevoked(Collection<TopicPartition> partitions)
         {
-            log.info("Lost partitions in rebalance. Committing current offsets:" + currentOffsets);
-            try {
-                consumer.commitSync(currentOffsets);
-            }
-            catch( WakeupException error)
+            final String methodName = "onPartitionsRevoked.commitSync";
+            if( !currentOffsets.isEmpty() )
             {
-                //ignore
-            }
-            catch( Exception error)
-            {
-                if (auditLog != null)
+                log.info("Lost partitions in rebalance. Committing current offsets:" + currentOffsets);
+                try
                 {
-                    auditLog.logException("onPartitionsRevoked.commitSync",
-                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
-                                                                                                                       topicToSubscribe,
-                                                                                                                       error.getMessage()),
-                            error);
+                    consumer.commitSync(currentOffsets);
+                } catch (WakeupException error)
+                {
+                    /*
+                    This has occurred because a client was woken up to poll for new messages
+                    and can safely be ignored.
+                     */
                 }
+                catch (CommitFailedException error )
+                {
+                    /*
+                    This is usually encountered during development because a debug session has prevented the kafka client
+                    from honouring the heartbeat configuration.
+                     */
+                    auditLog.logMessage( methodName, KafkaOpenMetadataTopicConnectorAuditCode.FAILED_TO_COMMIT_CONSUMED_EVENTS.getMessageDefinition());
+                }
+                catch (Exception error)
+                {
+                    if (auditLog != null)
+                    {
+                        auditLog.logException(methodName,
+                                KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                        topicToSubscribe,
+                                        error.getMessage()),
+                                error);
+                    }
 
-
+                }
             }
         }
     }

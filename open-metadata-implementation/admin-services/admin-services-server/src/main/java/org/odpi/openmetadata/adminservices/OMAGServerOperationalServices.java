@@ -21,23 +21,18 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
-import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerOperationalServices;
+import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
-import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
-import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
-import org.odpi.openmetadata.securitysyncservices.registration.SecuritySyncOperationalServices;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -160,7 +155,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -240,6 +235,7 @@ public class OMAGServerOperationalServices
              * support in Egeria.
              */
             instance = new OMAGOperationalServicesInstance(serverName,
+                                                           serverTypeClassification,
                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName(),
                                                            configuration.getMaxPageSize());
 
@@ -429,6 +425,7 @@ public class OMAGServerOperationalServices
                     }
                 }
             }
+
             else if (ServerTypeClassification.VIEW_SERVER.equals(serverTypeClassification))
             {
                 /*
@@ -568,7 +565,7 @@ public class OMAGServerOperationalServices
             exceptionHandler.captureNotAuthorizedException(response, error);
             cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
             cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
@@ -708,7 +705,7 @@ public class OMAGServerOperationalServices
                                                   error);
                             throw error;
                         }
-                        catch (Throwable error)
+                        catch (Exception error)
                         {
                             auditLog.logException(methodName,
                                                   OMAGAdminAuditCode.ACCESS_SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(),
@@ -745,6 +742,8 @@ public class OMAGServerOperationalServices
          */
         instance.setOperationalAccessServiceAdminList(operationalAccessServiceAdminList);
     }
+
+
 
     /**
      * Start up the view services.
@@ -821,7 +820,7 @@ public class OMAGServerOperationalServices
                                               error);
                         throw error;
                     }
-                    catch (Throwable error)
+                    catch (Exception error)
                     {
                         auditLog.logException(methodName,
                                               OMAGAdminAuditCode.VIEW_SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(),
@@ -899,7 +898,7 @@ public class OMAGServerOperationalServices
                                                           methodName,
                                                           error);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logException(methodName,
                                       OMAGAdminAuditCode.BAD_ACCESS_SERVICE_ADMIN_CLASS.getMessageDefinition(accessServiceConfig.getAccessServiceName(),
@@ -965,7 +964,7 @@ public class OMAGServerOperationalServices
                                                           methodName,
                                                           error);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logException(methodName,
                                       OMAGAdminAuditCode.BAD_VIEW_SERVICE_ADMIN_CLASS.getMessageDefinition(viewServiceConfig.getViewServiceName(),
@@ -1009,30 +1008,11 @@ public class OMAGServerOperationalServices
                                               OMRSOperationalServices         operationalRepositoryServices,
                                               List<String>                    activatedServiceList) throws OMAGConfigurationErrorException
     {
-        if (ServerTypeClassification.DATA_PLATFORM_SERVER.equals(serverTypeClassification))
-        {
-            DataPlatformOperationalServices dataPlatformOperationalServices
-                    = new DataPlatformOperationalServices(configuration.getLocalServerName(),
-                                                          configuration.getLocalServerUserId(),
-                                                          configuration.getLocalServerType(),
-                                                          configuration.getLocalServerURL());
-
-            instance.setOperationalDataPlatformServices(dataPlatformOperationalServices);
-            dataPlatformOperationalServices.initialize(configuration.getDataPlatformServicesConfig(),
-                                                       operationalRepositoryServices.getAuditLog(
-                                                               GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceCode(),
-                                                               GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
-                                                               GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceDescription(),
-                                                               GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceWiki()));
-
-            activatedServiceList.add(GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName());
-        }
-
         /*
          * Initialize the Data Engine Proxy Services.  This is a governance server that extracts metadata about processes from
          * a data engine.
          */
-        else if (ServerTypeClassification.DATA_ENGINE_PROXY.equals(serverTypeClassification))
+        if (ServerTypeClassification.DATA_ENGINE_PROXY.equals(serverTypeClassification))
         {
             DataEngineProxyOperationalServices operationalDataEngineProxyServices
                     = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
@@ -1052,29 +1032,32 @@ public class OMAGServerOperationalServices
         }
 
         /*
-         * Initialize the Discovery Engine Services for discovery server.  This is a governance server for running automated metadata discovery.
+         * Initialize the Engine Host Services for the Engine Host OMAG server.  This is a governance server for running governance engines.
          */
-        else if (ServerTypeClassification.DISCOVERY_SERVER.equals(serverTypeClassification))
+        else if (ServerTypeClassification.ENGINE_HOST.equals(serverTypeClassification))
         {
-            DiscoveryServerOperationalServices operationalDiscoveryServer
-                    = new DiscoveryServerOperationalServices(configuration.getLocalServerName(),
-                                                             configuration.getLocalServerUserId(),
-                                                             configuration.getLocalServerPassword(),
-                                                             configuration.getMaxPageSize());
+            EngineHostOperationalServices engineHostOperationalServices
+                    = new EngineHostOperationalServices(configuration.getLocalServerName(),
+                                                        configuration.getLocalServerId(),
+                                                        configuration.getLocalServerUserId(),
+                                                        configuration.getLocalServerPassword(),
+                                                        configuration.getMaxPageSize());
 
-            instance.setOperationalDiscoveryServer(operationalDiscoveryServer);
-            operationalDiscoveryServer.initialize(configuration.getDiscoveryEngineServicesConfig(),
-                                                  operationalRepositoryServices.getAuditLog(
-                                                          GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceCode(),
-                                                          GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                          GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceDescription(),
-                                                          GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceWiki()));
+            instance.setOperationalEngineHost(engineHostOperationalServices);
+            List<String> engineServices = engineHostOperationalServices.initialize(configuration.getEngineHostServicesConfig(),
+                                                            operationalRepositoryServices.getAuditLog(
+                                                                    GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceCode(),
+                                                                    GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(),
+                                                                    GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceDescription(),
+                                                                    GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceWiki()));
 
-            activatedServiceList.add(GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName());
+            activatedServiceList.addAll(engineServices);
+            activatedServiceList.add(GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName());
         }
 
         /*
-         * Initialize the Discovery Engine Services for discovery server.  This is a governance server for running automated metadata discovery.
+         * Initialize the Integration Daemon Services for the Integration Daemon OMAG Server.  This is a governance server for exchanging
+         * metadata with third party technologies.
          */
         else if (ServerTypeClassification.INTEGRATION_DAEMON.equals(serverTypeClassification))
         {
@@ -1085,13 +1068,14 @@ public class OMAGServerOperationalServices
                                                                configuration.getMaxPageSize());
 
             instance.setOperationalIntegrationDaemon(integrationDaemonOperationalServices);
-            integrationDaemonOperationalServices.initialize(configuration.getIntegrationServicesConfig(),
+            List<String> integrationServices = integrationDaemonOperationalServices.initialize(configuration.getIntegrationServicesConfig(),
                                                             operationalRepositoryServices.getAuditLog(
                                                                GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceCode(),
                                                                GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(),
                                                                GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDescription(),
                                                                GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceWiki()));
 
+            activatedServiceList.addAll(integrationServices);
             activatedServiceList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
         }
 
@@ -1115,100 +1099,7 @@ public class OMAGServerOperationalServices
 
             activatedServiceList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
         }
-
-        /*
-         * Initialize the Security Officer Services.  This is a governance server for maintaining the configuration
-         * in security officer engines.
-         */
-        else if (ServerTypeClassification.SECURITY_OFFICER_SERVER.equals(serverTypeClassification))
-        {
-            SecurityOfficerOperationalServices operationalSecurityOfficer = new SecurityOfficerOperationalServices(configuration.getLocalServerName(),
-                                                                                                                   configuration.getLocalServerType(),
-                                                                                                                   configuration.getOrganizationName(),
-                                                                                                                   configuration.getLocalServerUserId(),
-                                                                                                                   configuration.getLocalServerURL(),
-                                                                                                                   configuration.getMaxPageSize());
-            instance.setOperationalSecurityOfficerService(operationalSecurityOfficer);
-            operationalSecurityOfficer.initialize(configuration.getSecurityOfficerConfig(),
-                                                  operationalRepositoryServices.getAuditLog(
-                                                          GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceCode(),
-                                                          GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                          GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceDescription(),
-                                                          GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceWiki()));
-
-            activatedServiceList.add(GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName());
-        }
-
-        /*
-         * Initialize the Security Sync Services.  This is a governance server for maintaining the configuration
-         * in security oriented governance engines.
-         */
-        else if (ServerTypeClassification.SECURITY_SYNC_SERVER.equals(serverTypeClassification))
-        {
-            SecuritySyncOperationalServices operationalSecuritySync
-                    = new SecuritySyncOperationalServices(configuration.getLocalServerName(),
-                                                          configuration.getLocalServerType(),
-                                                          configuration.getOrganizationName(),
-                                                          configuration.getLocalServerUserId(),
-                                                          configuration.getLocalServerURL(),
-                                                          configuration.getMaxPageSize());
-
-            instance.setOperationalSecuritySyncServices(operationalSecuritySync);
-            operationalSecuritySync.initialize(configuration.getSecuritySyncConfig(),
-                                               operationalRepositoryServices.getAuditLog(
-                                                       GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceCode(),
-                                                       GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                       GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceDescription(),
-                                                       GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceWiki()));
-
-            activatedServiceList.add(GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName());
-        }
-
-        /*
-         * Initialize the Stewardship Engine Services.  This is a governance daemon for running automated stewardship actions.
-         */
-        else if (ServerTypeClassification.STEWARDSHIP_SERVER.equals(serverTypeClassification))
-        {
-            StewardshipOperationalServices
-                    operationalStewardshipServices = new StewardshipOperationalServices(configuration.getLocalServerName(),
-                                                                                        configuration.getLocalServerUserId(),
-                                                                                        configuration.getMaxPageSize());
-            instance.setOperationalStewardshipServices(operationalStewardshipServices);
-            operationalStewardshipServices.initialize(configuration.getStewardshipEngineServicesConfig(),
-                                                      operationalRepositoryServices.getAuditLog(
-                                                              GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceCode(),
-                                                              GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                              GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceDescription(),
-                                                              GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceWiki()));
-
-            activatedServiceList.add(GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName());
-        }
-
-        /*
-         * Initialize the Virtualization Services.  This is a governance server for automatically configuring a data virtualization
-         * platform with views over new relational assets and maintaining views when existing relational assets change.
-         */
-        else if (ServerTypeClassification.VIRTUALIZER_SERVER.equals(serverTypeClassification))
-        {
-            VirtualizationOperationalServices operationalVirtualizationServices
-                    = new VirtualizationOperationalServices(configuration.getLocalServerName(),
-                                                            configuration.getLocalServerType(),
-                                                            configuration.getOrganizationName(),
-                                                            configuration.getLocalServerUserId(),
-                                                            configuration.getLocalServerURL());
-
-            instance.setOperationalVirtualizationServices(operationalVirtualizationServices);
-            operationalVirtualizationServices.initialize(configuration.getVirtualizationConfig(),
-                                                         operationalRepositoryServices.getAuditLog(
-                                                                 GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceCode(),
-                                                                 GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                                 GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceDescription(),
-                                                                 GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceWiki()));
-
-            activatedServiceList.add(GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName());
-        }
     }
-
 
 
     /**
@@ -1236,7 +1127,6 @@ public class OMAGServerOperationalServices
              */
         }
     }
-
 
 
     /**
@@ -1272,7 +1162,6 @@ public class OMAGServerOperationalServices
 
             try
             {
-
                 /*
                  * Shutdown the data engine proxy services
                  */
@@ -1309,7 +1198,6 @@ public class OMAGServerOperationalServices
                     }
                 }
 
-
                 /*
                  * Shutdown the OCF metadata management services
                  */
@@ -1319,11 +1207,11 @@ public class OMAGServerOperationalServices
                 }
 
                 /*
-                 * Shutdown the discovery engine
+                 * Shutdown the engine host
                  */
-                if (instance.getOperationalDiscoveryServer() != null)
+                if (instance.getOperationalEngineHost() != null)
                 {
-                    instance.getOperationalDiscoveryServer().terminate();
+                    instance.getOperationalEngineHost().terminate();
                 }
 
                 /*
@@ -1340,47 +1228,6 @@ public class OMAGServerOperationalServices
                 if (instance.getOpenLineageOperationalServices() != null)
                 {
                     instance.getOpenLineageOperationalServices().shutdown();
-                }
-
-                /*
-                 * Shutdown the security sync
-                 */
-                if (instance.getOperationalSecuritySyncServices() != null)
-                {
-                    instance.getOperationalSecuritySyncServices().disconnect();
-                }
-
-                /*
-                 * Shutdown the security officer
-                 */
-                if (instance.getOperationalSecurityOfficerService() != null)
-                {
-                    instance.getOperationalSecurityOfficerService().disconnect();
-                }
-
-                /*
-                 * Shutdown the virtualizer
-                 */
-                if (instance.getOperationalVirtualizationServices() != null)
-                {
-                    instance.getOperationalVirtualizationServices().disconnect(permanentDeactivation);
-                }
-
-
-                /*
-                 * Shutdown the stewardship services
-                 */
-                if (instance.getOperationalStewardshipServices() != null)
-                {
-                    instance.getOperationalStewardshipServices().terminate(permanentDeactivation);
-                }
-
-                /*
-                 * Shutdown the data platform services
-                 */
-                if (instance.getOperationalDataPlatformServices() != null)
-                {
-                    instance.getOperationalDataPlatformServices().disconnect(permanentDeactivation);
                 }
 
                 /*
@@ -1495,7 +1342,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1561,7 +1408,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.capturePropertyServerException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1619,7 +1466,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1679,7 +1526,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1713,7 +1560,7 @@ public class OMAGServerOperationalServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateConnection(connection, serverName, methodName);
+            errorHandler.validateServerConnection(connection, serverName, methodName);
 
             OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
@@ -1736,7 +1583,7 @@ public class OMAGServerOperationalServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }

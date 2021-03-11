@@ -1875,7 +1875,7 @@ public class OpenMetadataTypesArchive2_4
     /**
      * 05xx - Deprecate RelationalView classification and replace it with CalculatedValue.  This is because the expression
      * rally belongs on the SchemaType and calculated values are possible on other types of schema.  Also enable
-     * all schema types to begin in a TypeEmbeddedAttribute classification.
+     * all schema types to be in a TypeEmbeddedAttribute classification.
      */
     private void update05xxSchemaAttributes()
     {
@@ -3744,18 +3744,6 @@ public class OpenMetadataTypesArchive2_4
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
-
-        final String attribute1Name            = "version";
-        final String attribute1Description     = "Deprecated attribute. Use the protocolVersion attribute to define the version number of the protocol supported by the cohort registry.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "protocolVersion";
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
-        properties.add(property);
 
         final String attribute2Name            = "protocolVersion";
         final String attribute2Description     = "Version number of the protocol supported by the cohort registry.";

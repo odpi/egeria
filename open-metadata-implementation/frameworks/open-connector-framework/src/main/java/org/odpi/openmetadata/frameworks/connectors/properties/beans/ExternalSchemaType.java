@@ -150,7 +150,7 @@ public class ExternalSchemaType extends SchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof ExternalSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -160,5 +160,17 @@ public class ExternalSchemaType extends SchemaType
         }
         ExternalSchemaType that = (ExternalSchemaType) objectToCompare;
         return Objects.equals(getLinkedSchemaType(), that.getLinkedSchemaType());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getLinkedSchemaType());
     }
 }

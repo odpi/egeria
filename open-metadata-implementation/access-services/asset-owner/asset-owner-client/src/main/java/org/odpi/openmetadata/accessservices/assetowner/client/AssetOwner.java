@@ -161,6 +161,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String>  getTypesOfAsset(String userId) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
@@ -188,6 +189,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public Map<String, String>  getTypesOfAssetWithDescriptions(String userId) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -228,6 +230,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public String  addAssetToCatalog(String               userId,
                                      String               typeName,
                                      String               qualifiedName,
@@ -269,6 +272,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public String  addAssetToCatalog(String          userId,
                                      AssetProperties assetProperties) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
@@ -315,6 +319,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public String   addCombinedSchemaToAsset(String                          userId,
                                              String                          assetGUID,
                                              SchemaTypeProperties            schemaType,
@@ -362,6 +367,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public String   addSchemaTypeToAsset(String               userId,
                                          String               assetGUID,
                                          SchemaTypeProperties schemaType) throws InvalidParameterException,
@@ -401,6 +407,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void   attachSchemaTypeToAsset(String            userId,
                                           String            assetGUID,
                                           String            schemaTypeGUID) throws InvalidParameterException,
@@ -439,6 +446,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public String detachSchemaTypeFromAsset(String          userId,
                                             String          assetGUID) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
@@ -473,6 +481,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void  deleteAssetSchemaType(String          userId,
                                        String          assetGUID) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
@@ -509,6 +518,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void addSchemaAttributes(String                          serverName,
                                     String                          userId,
                                     String                          assetGUID,
@@ -556,6 +566,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public String addSchemaAttribute(String                    serverName,
                                      String                    userId,
                                      String                    assetGUID,
@@ -602,6 +613,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void addConnectionToAsset(String     userId,
                                      String     assetGUID,
                                      String     assetSummary,
@@ -652,6 +664,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void  addSemanticAssignment(String    userId,
                                        String    assetGUID,
                                        String    glossaryTermGUID,
@@ -694,6 +707,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void  removeSemanticAssignment(String    userId,
                                           String    assetGUID,
                                           String    glossaryTermGUID,
@@ -734,6 +748,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void  addAssetOrigin(String                userId,
                                 String                assetGUID,
                                 String                organizationGUID,
@@ -771,6 +786,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void  removeAssetOrigin(String                userId,
                                    String                assetGUID) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
@@ -801,6 +817,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void publishAsset(String                userId,
                              String                assetGUID) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
@@ -831,6 +848,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void withdrawAsset(String                userId,
                               String                assetGUID) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
@@ -853,6 +871,81 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
 
     /**
+     * Update the zones for a specific asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param assetZones list of zones for the asset - these values override the current values - null means belongs
+     *                   to no zones.
+     * @throws InvalidParameterException guid or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void updateAssetZones(String        userId,
+                                 String        assetGUID,
+                                 List<String>  assetZones) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String   methodName = "updateAssetZones";
+
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/governance-zones";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        assetZones,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
+    }
+
+
+    /**
+     * Update the owner information for a specific asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param ownerId userId or profileGUID of the owner - or null to clear the field
+     * @param ownerType indicator of the type of Id provides above - or null to clear the field
+     * @throws InvalidParameterException userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void updateAssetOwner(String    userId,
+                                 String    assetGUID,
+                                 String    ownerId,
+                                 OwnerType ownerType) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        final String   methodName = "updateAssetOwner";
+
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/owner";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        OwnerRequestBody requestBody = new OwnerRequestBody();
+        requestBody.setOwnerId(ownerId);
+        requestBody.setOwnerType(ownerType);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
+    }
+
+
+    /**
      * Add or replace the security tags for an asset or one of its elements.
      *
      * @param userId calling user
@@ -865,6 +958,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void  addSecurityTags(String                userId,
                                  String                assetGUID,
                                  String                assetElementGUID,
@@ -907,13 +1001,14 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void  removeSecurityTags(String                userId,
                                     String                assetGUID,
                                     String                assetElementGUID) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        final String   methodName = "addSecurityTags";
+        final String   methodName = "removeSecurityTags";
         final String   assetGUIDParameter = "assetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -934,33 +1029,43 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
 
     /**
-     * Update the zones for a specific asset.
+     * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
      *
      * @param userId calling user
-     * @param assetGUID unique identifier for the asset to update
-     * @param assetZones list of zones for the asset - these values override the current values - null means belongs
-     *                   to no zones.
-     * @throws InvalidParameterException guid or userId is null
+     * @param assetGUID unique identifier of the asset to classify
+     * @param name name of the template
+     * @param description description of when, where and how to use the template
+     * @param additionalProperties any additional properties
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void updateAssetZones(String        userId,
-                                 String        assetGUID,
-                                 List<String>  assetZones) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void addTemplateClassification(String              userId,
+                                          String              assetGUID,
+                                          String              name,
+                                          String              description,
+                                          Map<String, String> additionalProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
-        final String   methodName = "updateAssetZones";
-
+        final String   methodName = "addTemplateClassification";
         final String   assetGUIDParameter = "assetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/governance-zones";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/template-classification";
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setDescription(description);
+        requestBody.setAdditionalProperties(additionalProperties);
+
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        assetZones,
+                                        requestBody,
                                         serverName,
                                         userId,
                                         assetGUID);
@@ -968,38 +1073,31 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
 
     /**
-     * Update the owner information for a specific asset.
+     * Remove the classification that indicates that this asset can be used as a template.
      *
      * @param userId calling user
-     * @param assetGUID unique identifier for the asset to update
-     * @param ownerId userId or profileGUID of the owner - or null to clear the field
-     * @param ownerType indicator of the type of Id provides above - or null to clear the field
-     * @throws InvalidParameterException userId is null
+     * @param assetGUID unique identifier of the asset to declassify
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void updateAssetOwner(String    userId,
-                                 String    assetGUID,
-                                 String    ownerId,
-                                 OwnerType ownerType) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void removeTemplateClassification(String userId,
+                                             String assetGUID) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        final String   methodName = "updateAssetOwner";
-
+        final String   methodName = "removeTemplateClassification";
         final String   assetGUIDParameter = "assetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/owner";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        OwnerRequestBody requestBody = new OwnerRequestBody();
-        requestBody.setOwnerId(ownerId);
-        requestBody.setOwnerType(ownerType);
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/template-classification/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        requestBody,
+                                        nullRequestBody,
                                         serverName,
                                         userId,
                                         assetGUID);
@@ -1027,6 +1125,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
+    @Override
     public List<AssetElement> getAssetsByName(String   userId,
                                               String   name,
                                               int      startFrom,
@@ -1068,6 +1167,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
+    @Override
     public List<AssetElement>  findAssets(String   userId,
                                           String   searchString,
                                           int      startFrom,
@@ -1104,6 +1204,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
+    @Override
     public AssetElement getAssetSummary(String  userId,
                                         String  assetGUID) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -1139,6 +1240,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public AssetUniverse getAssetProperties(String userId,
                                             String assetGUID) throws InvalidParameterException,
                                                                      PropertyServerException,
@@ -1158,6 +1260,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
+    @Override
     public Connector getConnectorToAsset(String  userId,
                                          String  assetGUID) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
@@ -1202,6 +1305,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
+    @Override
     public List<DiscoveryAnalysisReport>   getDiscoveryAnalysisReports(String  userId,
                                                                        String  assetGUID,
                                                                        int     startingFrom,
@@ -1239,6 +1343,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public List<String>  getTypesOfAnnotation(String userId) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -1266,6 +1371,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public Map<String, String>  getTypesOfAnnotationWithDescriptions(String userId) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
@@ -1299,6 +1405,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
+    @Override
     public List<Annotation> getDiscoveryReportAnnotations(String           userId,
                                                           String           discoveryReportGUID,
                                                           AnnotationStatus annotationStatus,
@@ -1348,6 +1455,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
+    @Override
     public List<Annotation>  getExtendedAnnotations(String           userId,
                                                     String           annotationGUID,
                                                     AnnotationStatus annotationStatus,
@@ -1400,6 +1508,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void deleteAsset(String        userId,
                             String        assetGUID) throws InvalidParameterException,
                                                             UserNotAuthorizedException,

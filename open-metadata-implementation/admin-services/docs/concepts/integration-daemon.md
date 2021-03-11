@@ -105,7 +105,7 @@ the [OMAG Server Platform](omag-server-platform.md).
 It is properties are defined in a [Configuration Document](configuration-document.md)
 as shown in Figure 5:
 
-![Figure 5](integration-daemon-config.png)
+![Figure 5](integration-daemon-config.png#pagewidth)
 > **Figure 5:** The configuration document contents for an integration daemon
 
 The links below take you to the sections that describe the commands for each part of the configuration document:
@@ -120,10 +120,12 @@ Once it is configured, the integration daemon can be started using the
 
 ## Further Information
 
+* For help in fixing any error you find using the integration daemon, visit the
+[Integration Daemon Diagnostic Guide](../../../../open-metadata-publication/website/diagnostic-guide/integration-daemon-diagnostic-guide.md).
 * Link to the [Egeria Solutions](../../../../open-metadata-publication/website/solutions) to see the integration
 daemon in action.
 * Link to the [Integration Daemon Services](../../../governance-servers/integration-daemon-services) to
-understand how the integration daemon is implemented
+understand how the integration daemon is implemented.
 
 ----
 * Return to the [Governance Server](governance-server-types.md) types.

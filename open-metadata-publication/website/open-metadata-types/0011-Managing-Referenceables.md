@@ -20,8 +20,8 @@ without this classification as templates.  The Template classification is simply
 to enable templates to be found.  
 
 When one referenceable is created by using another referencable as
-as a template, the **qualifiedName** must be changed
-in the new referenceable as it has to be a unique name - often the **displayName** changes too.
+a template, the **qualifiedName** must be changed
+in the new referenceable to give it a unique name - often the **displayName** changes too.
 This makes it hard to identify which referenceables have been created from a template.
 The **SourcedFrom** relationship is used to show the provenance of the information from the template.
 This is useful to help trace where information has come from and to help understand any

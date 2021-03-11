@@ -17,7 +17,9 @@ spec:
   ports:
     - port: 8888
       targetPort: 8888
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.jupyter }}
+      {{- end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -84,6 +86,8 @@ spec:
               value: "{{ .Release.Name }}-kafka:9092"
             - name: uiExternalURL
               value: "https://localhost:18443"
+            - name: repositoryType
+              value: {{ .Values.egeria.repositoryType}}
           ports:
             - containerPort: 8888
           readinessProbe:

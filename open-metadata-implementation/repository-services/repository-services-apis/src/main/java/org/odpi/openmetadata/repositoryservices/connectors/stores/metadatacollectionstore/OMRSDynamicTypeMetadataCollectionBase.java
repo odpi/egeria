@@ -61,6 +61,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public void addTypeDef(String  userId,
                            TypeDef newTypeDef) throws InvalidParameterException,
                                                       RepositoryErrorException,
@@ -105,6 +106,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  void addAttributeTypeDef(String             userId,
                                      AttributeTypeDef newAttributeTypeDef) throws InvalidParameterException,
                                                                                   RepositoryErrorException,
@@ -149,6 +151,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public boolean verifyTypeDef(String       userId,
                                  TypeDef      typeDef) throws InvalidParameterException,
                                                               RepositoryErrorException,
@@ -200,6 +203,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  boolean verifyAttributeTypeDef(String            userId,
                                            AttributeTypeDef  attributeTypeDef) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
@@ -250,6 +254,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @throws PatchErrorException the TypeDef can not be updated because the supplied patch is incompatible
      *                               with the stored TypeDef.
      */
+    @Override
     public TypeDef updateTypeDef(String       userId,
                                  TypeDefPatch typeDefPatch) throws InvalidParameterException,
                                                                    RepositoryErrorException,
@@ -288,6 +293,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      *                                 TypeDef can be deleted.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public void deleteTypeDef(String    userId,
                               String    obsoleteTypeDefGUID,
                               String    obsoleteTypeDefName) throws InvalidParameterException,
@@ -340,6 +346,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      *                                 AttributeTypeDef can be deleted.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public void deleteAttributeTypeDef(String    userId,
                                        String    obsoleteTypeDefGUID,
                                        String    obsoleteTypeDefName) throws InvalidParameterException,
@@ -394,6 +401,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      *                                    in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  TypeDef reIdentifyTypeDef(String     userId,
                                       String     originalTypeDefGUID,
                                       String     originalTypeDefName,
@@ -464,6 +472,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      *                                    found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  AttributeTypeDef reIdentifyAttributeTypeDef(String     userId,
                                                         String     originalAttributeTypeDefGUID,
                                                         String     originalAttributeTypeDefName,
@@ -530,6 +539,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
      * @throws FunctionNotSupportedException this method is not supported
      */
+    @Override
     public List<Classification> getHomeClassifications(String userId,
                                                        String entityGUID) throws InvalidParameterException,
                                                                                  RepositoryErrorException,
@@ -575,6 +585,7 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
      * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
      * @throws FunctionNotSupportedException this method is not supported
      */
+    @Override
     public List<Classification> getHomeClassifications(String userId,
                                                        String entityGUID,
                                                        Date asOfTime) throws InvalidParameterException,

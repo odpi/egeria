@@ -22,7 +22,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>2.6-SNAPSHOT</version>
+    <version>2.8-SNAPSHOT</version>
 
     <url>https://egeria.odpi.org</url>
 
@@ -40,8 +40,8 @@
     </licenses>
 
     <organization>
-        <name>ODPi</name>
-        <url>http://www.odpi.org</url>
+        <name>LF AI &amp; Data Foundation</name>
+        <url>https://lfaidata.foundation/</url>
     </organization>
 
     <issueManagement>
@@ -54,10 +54,10 @@
     <mailingLists>
         <mailingList>
             <name>odpi-egeria</name>
-            <subscribe>odpi-project-egeria+subscribe@lists.odpi.org</subscribe>
-            <unsubscribe>odpi-project-egeria+unsubscribe@lists.odpi.org</unsubscribe>
-            <archive>https://lists.odpi.org/g/odpi-project-egeria</archive>
-            <post>odpi-project-egeria@lists.odpi.org</post>
+            <subscribe>egeria-technical-discuss+subscribe@lists.lfaidata.foundation</subscribe>
+            <unsubscribe>egeria-technical-discuss+unsubscribe@lists.lfaidata.foundation</unsubscribe>
+            <archive>https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics</archive>
+            <post>egeria-technical-discuss@lists.lfaidata.foundation</post>
         </mailingList>
     </mailingLists>
 
@@ -138,7 +138,6 @@
 
 
     <modules>
-
         <module>open-metadata-implementation</module>
         <module>open-metadata-conformance-suite</module>
         <module>open-metadata-distribution</module>
@@ -161,32 +160,36 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.7.0</junit.platform.version>
-        <junit.jupiter.version>5.7.0</junit.jupiter.version>
-        <junit.version>4.13.1</junit.version>
+        <junit.jupiter.version>5.7.1</junit.jupiter.version>
+        <junit.platform.version>1.7.1</junit.platform.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <junit.version>4.13.2</junit.version>
         <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
-        <mockito.version>3.6.0</mockito.version>
-        <testng.version>7.3.0</testng.version>
+        <mockito.version>3.8.0</mockito.version>
+        <testng.version>7.4.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <jackson.version>2.11.3</jackson.version>
+        <jackson.version>2.12.2</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <kafka.version>2.6.0</kafka.version>
-        <janus.version>0.5.2</janus.version>
-        <gremlin.version>3.4.8</gremlin.version>
-        <netty.version>4.1.53.Final</netty.version>
+        <kafka.version>2.7.0</kafka.version>
+        <janus.version>0.5.3</janus.version>
+        <gremlin.version>3.4.10</gremlin.version>
+        <netty.version>4.1.59.Final</netty.version>
 
         <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
-        <spring.version>5.3.0</spring.version>
+        <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
+        <spring.version>5.3.1</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
-        <spring-data.version>2.4.0</spring-data.version>
-        <servo-core.version>0.13.0</servo-core.version>
-        <netflix-zuul.version>2.2.5.RELEASE</netflix-zuul.version>
-        <tomcat.version>9.0.39</tomcat.version>
+        <spring-data.version>2.4.1</spring-data.version>
+        <springdoc.version>1.4.6</springdoc.version>
+        <servo-core.version>0.13.2</servo-core.version>
+        <springdoc-plugin.version>1.2</springdoc-plugin.version>
+        <netflix-zuul.version>2.2.6.RELEASE</netflix-zuul.version>
+        <tomcat.version>9.0.40</tomcat.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <jena.version>3.16.0</jena.version>
-        <commons-lang.version>3.11</commons-lang.version>
+        <jena.version>3.17.0</jena.version>
+        <commons-lang.version>3.12.0</commons-lang.version>
         <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
@@ -195,7 +198,7 @@
         <jakarta-annotation.version>1.3.5</jakarta-annotation.version>
         <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
         <gaian.version>2.1.8</gaian.version>
-        <avro.version>1.10.0</avro.version>
+        <avro.version>1.10.1</avro.version>
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
@@ -203,52 +206,54 @@
         <quartz.version>2.3.2</quartz.version>
         <lucene.version>8.4.1</lucene.version>
         <lucene-analyzers-common.version>8.6.0</lucene-analyzers-common.version>
-        <guava.version>30.0-jre</guava.version>
+        <guava.version>30.1-jre</guava.version>
         <tink.version>1.5.0</tink.version>
         <jsonld.version>0.13.2</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.15</commons-codec.version>
-        <json-sanitizer.version>1.2.1</json-sanitizer.version>
+        <json-sanitizer.version>1.2.2</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.9.0</oss.version>
-        <spotbugs-annotations.version>4.1.4</spotbugs-annotations.version>
+        <oss.version>4.10.0</oss.version>
+        <spotbugs-annotations.version>4.2.2</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
-        <joda.version>2.10.8</joda.version>
-        <jackson-asl.version>1.9.13</jackson-asl.version>
+        <joda.version>2.10.10</joda.version>
+        <jackson-asl.version>1.9.13-atlassian-2</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
-        <snappy.version>1.1.8</snappy.version>
-        <snakeyaml.version>1.27</snakeyaml.version>
-        <springdoc.version>1.4.6</springdoc.version>
-        <classgraph.version>4.8.90</classgraph.version>
-        <swagger.version>2.1.5</swagger.version>
-        <groovy.version>3.0.6</groovy.version>
-        <micrometer-registry-prometheus.version>1.6.0</micrometer-registry-prometheus.version>
+        <snappy.version>1.1.8.4</snappy.version>
+        <snakeyaml.version>1.28</snakeyaml.version>
+        <classgraph.version>4.8.102</classgraph.version>
+        <swagger.version>2.1.7</swagger.version>
+        <groovy.version>3.0.7</groovy.version>
+        <micrometer-registry-prometheus.version>1.6.2</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
         <javassist.version>3.27.0-GA</javassist.version>
-        <httpcore.version>4.4.13</httpcore.version>
+        <httpcore.version>4.4.14</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
+        <lettuce.version>6.0.2.RELEASE</lettuce.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-reports-plugin.version>3.1.1</maven-reports-plugin.version>
+        <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-shade.version>3.2.4</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-        <maven-pmd.version>3.13.0</maven-pmd.version>
-        <owasp.version>6.0.2</owasp.version>
-        <spotbugs-maven.version>4.1.4</spotbugs-maven.version>
-        <maven-download.version>1.6.0</maven-download.version>
+        <maven-pmd.version>3.14.0</maven-pmd.version>
+        <owasp.version>6.1.1</owasp.version>
+        <spotbugs-maven.version>4.2.0</spotbugs-maven.version>
+        <maven-download.version>1.6.1</maven-download.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.6</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <frontend.plugin.version>1.10.3</frontend.plugin.version>
+        <frontend.plugin.version>1.11.2</frontend.plugin.version>
         <exec.plugin.version>3.0.0</exec.plugin.version>
         <resources.plugin.version>3.2.0</resources.plugin.version>
         <rat-plugin.version>0.13</rat-plugin.version>
@@ -258,12 +263,12 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
-        <springdoc-plugin.version>1.1</springdoc-plugin.version>
         <build-helper.version>3.2.0</build-helper.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
         <git-commit-plugin.version>4.0.3</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
+        <properties.plugin.version>1.0.0</properties.plugin.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -664,6 +669,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <scope>test</scope>
@@ -792,6 +804,34 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-analysis-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-analysis-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-analysis-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-analysis-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-catalog-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -834,6 +874,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-consumer-topic-connectors</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-consumer-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -849,6 +896,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-lineage-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-lineage-client</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -974,7 +1028,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>catalog-integrator-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>catalog-integrator-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>catalog-integrator-spring</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1205,7 +1273,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>database-integrator-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>database-integrator-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>database-integrator-spring</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1359,7 +1441,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-connectors</artifactId>
+                <artifactId>discovery-engine-topic-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1374,34 +1456,6 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>discovery-engine-spring</artifactId>
-                <scope>runtime</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-services-api</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-services-client</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-services-server</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-services-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1429,7 +1483,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>files-integrator-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>files-integrator-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>files-integrator-spring</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1492,6 +1560,34 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-action-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-action-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-action-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-action-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>governance-engine-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1500,6 +1596,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>governance-engine-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-engine-topic-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1603,6 +1706,40 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-registration</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>engine-host-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
@@ -1851,7 +1988,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>lineage-integrator-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>lineage-integrator-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>lineage-integrator-spring</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1865,7 +2016,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>organization-integrator-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>organization-integrator-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>organization-integrator-spring</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1998,6 +2163,34 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-integrator-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-integrator-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-integrator-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-integrator-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>security-officer-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2012,14 +2205,14 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>security-officer-server</artifactId>
+                <artifactId>security-officer-topic-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>security-officer-services-server</artifactId>
+                <artifactId>security-officer-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2034,13 +2227,6 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>security-officer-tag-connector</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>security-sync-services-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2110,34 +2296,6 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-engine-services-api</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-engine-services-client</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-engine-services-server</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>stewardship-engine-services-spring</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-lineage-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2174,6 +2332,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId> data-folder-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>files-integration-connectors</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2283,25 +2448,9 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-
-
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>view-generator-connectors</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>virtualization-services-api</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>virtualization-services-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -2336,13 +2485,6 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-platform-services-server</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
                 <artifactId>server-author-view-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2369,6 +2511,12 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>virtualization-services-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
@@ -2376,21 +2524,25 @@
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-lineage-janus-connector</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-connector-archives</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-create-avro-sample</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-create-csv-sample</artifactId>
@@ -2453,14 +2605,10 @@
                 <artifactId>open-metadata-labs</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>presentation-server</artifactId>
-                <version>${open-metadata.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-service-sample</artifactId>
+                <artifactId>governance-services-sample</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
             <!-- End of POM dependency versions -->
@@ -2529,6 +2677,18 @@
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-test</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
@@ -2536,6 +2696,12 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
 
@@ -2585,6 +2751,12 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-ldap</artifactId>
                 <version>${spring-security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.ldap</groupId>
+                <artifactId>spring-ldap-core</artifactId>
+                <version>${spring.ldap.core}</version>
             </dependency>
 
             <dependency>
@@ -2837,6 +3009,12 @@
                 <version>${httpclient.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>io.lettuce</groupId>
+                <artifactId>lettuce-core</artifactId>
+                <version>${lettuce.version}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -2997,29 +3175,24 @@
                             <org.slf4j.simpleLogger.defaultLogLevel>INFO</org.slf4j.simpleLogger.defaultLogLevel>
                         </systemPropertyVariables>
                     </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.junit.jupiter</groupId>
-                            <artifactId>junit-jupiter-engine</artifactId>
-                            <version>${junit.jupiter.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.junit.jupiter</groupId>
-                            <artifactId>junit-jupiter-api</artifactId>
-                            <version>${junit.jupiter.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.mockito</groupId>
-                            <artifactId>mockito-inline</artifactId>
-                            <version>${mockito.version}</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven-reports-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven-site-plugin.version}</version>
                 </plugin>
 
                 <plugin>
@@ -3088,6 +3261,12 @@
                     <version>${groovy-plugin.version}</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>${properties.plugin.version}</version>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>
@@ -3115,6 +3294,12 @@
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <failOnWarning>false</failOnWarning>
                 </configuration>
+            </plugin>
+
+            <!-- Use surefire for unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
 
             <!-- Validates maven & java versions -->
@@ -3209,7 +3394,9 @@
                         <exclude>**/**.code-workspace</exclude>
                         <exclude>config</exclude>
                         <exclude>**/LICENSE*.txt</exclude>
-                        <exclude>**/presentation-server/**</exclude>
+                        <exclude>data/**</exclude>
+                        <exclude>**/certificates/**</exclude>
+                        <exclude>**/*.p12</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -3374,47 +3561,31 @@
         </plugins>
     </build>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>default</id>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <profiles>
-        <profile>
-            <id>release</id>
-            <properties>
-                <gpg.executable>gpg2</gpg.executable>
-            </properties>
-            <build>
-                <plugins>
-
-                    <!-- Request that distributed artifacts are signed before flowing to Maven Central distributions -->
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- Request that the artifacts are pushed to Maven Central's staging area -->
-
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>findBugs</id>
             <activation>
@@ -3678,6 +3849,68 @@
                                 <goals>
                                     <goal>install-file</goal>
                                 </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>dist-github</id>
+            <activation>
+                <property>
+                    <name>useGitHub</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub Packages</name>
+                    <url>https://maven.pkg.github.com/odpi/egeria</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>dist-oss</id>
+            <activation>
+                <property>
+                    <name>useMavenCentral</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>ossrh</id>
+                    <name>Central Repository OSSRH - Staging</name>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+                  </repository>
+                  <snapshotRepository>
+                    <id>ossrh</id>
+                    <name>Central Repository OSSRH - Snapshots</name>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                  </snapshotRepository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <passphrase>${env.GPG_PASSPHRASE}</passphrase>
+                                    <gpgArguments>
+                                        <arg>--batch</arg>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

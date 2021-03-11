@@ -61,32 +61,38 @@ public class DataEngineRegistrationHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String createOrUpdateExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws
-                                                                                                                     InvalidParameterException,
-                                                                                                                     UserNotAuthorizedException,
-                                                                                                                     PropertyServerException {
-        final String methodName = "createExternalDataEngine";
+    public String upsertExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            PropertyServerException {
+        final String methodName = "upsertExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(softwareServerCapability.getQualifiedName(), DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 methodName);
 
-        ExternalDataEnginePropertiesBuilder builder = new ExternalDataEnginePropertiesBuilder(softwareServerCapability.getQualifiedName(),
-                softwareServerCapability.getDisplayName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
-                softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
-                null, null, repositoryHelper, serviceName, serverName);
+        ExternalDataEnginePropertiesBuilder builder = getExternalDataEnginePropertiesBuilder(softwareServerCapability);
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
 
-        String externalEngineGUID = getExternalDataEngineByQualifiedName(userId, softwareServerCapability.getQualifiedName());
+        String externalEngineName = softwareServerCapability.getQualifiedName();
+        String externalEngineGUID = getExternalDataEngineByQualifiedName(userId, externalEngineName);
         if (externalEngineGUID == null) {
-            externalEngineGUID = repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties, methodName);
+            externalEngineGUID = repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(),
+                    null, externalEngineName, properties, methodName);
         } else {
-            repositoryHandler.updateEntity(userId, externalEngineGUID, entityTypeDef.getGUID(), entityTypeDef.getName(), properties, methodName);
+            repositoryHandler.updateEntity(userId, externalEngineGUID, externalEngineName, externalEngineGUID,
+                    entityTypeDef.getGUID(), entityTypeDef.getName(), properties, null, methodName);
         }
 
         return externalEngineGUID;
+    }
+
+    ExternalDataEnginePropertiesBuilder getExternalDataEnginePropertiesBuilder(SoftwareServerCapability softwareServerCapability) {
+        return new ExternalDataEnginePropertiesBuilder(softwareServerCapability.getQualifiedName(),
+                softwareServerCapability.getDisplayName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
+                softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
+                null, repositoryHelper, serviceName, serverName);
     }
 
     /**

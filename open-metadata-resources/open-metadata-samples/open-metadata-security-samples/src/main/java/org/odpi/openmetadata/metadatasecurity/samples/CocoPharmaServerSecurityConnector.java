@@ -115,17 +115,22 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         /*
          * System (NPA) accounts
          */
-        final String archiverUserId   = "archiver01";
-        final String etlEngineUserId  = "dlETL";
-        final String cocoMDS1UserId   = "cocoMDS1npa";
-        final String cocoMDS2UserId   = "cocoMDS2npa";
-        final String cocoMDS3UserId   = "cocoMDS3npa";
-        final String cocoMDS4UserId   = "cocoMDS4npa";
-        final String cocoMDS5UserId   = "cocoMDS5npa";
-        final String cocoMDS6UserId   = "cocoMDS6npa";
-        final String cocoMDSxUserId   = "cocoMDSxnpa";
-        final String findItDL01UserId = "findItDL01npa";
-        final String fixItDL01UserId  = "fixItDL01npa";
+
+        final String cocoMDS1UserId     = "cocoMDS1npa";
+        final String cocoMDS2UserId     = "cocoMDS2npa";
+        final String cocoMDS3UserId     = "cocoMDS3npa";
+        final String cocoMDS4UserId     = "cocoMDS4npa";
+        final String cocoMDS5UserId     = "cocoMDS5npa";
+        final String cocoMDS6UserId     = "cocoMDS6npa";
+        final String cocoMDSxUserId     = "cocoMDSxnpa";
+        final String archiverUserId     = "archiver01";
+        final String etlEngineUserId    = "dlETL";
+        final String governDL01UserId   = "governDL01npa";
+        final String exchangeDL01UserId = "exchangeDL01npa";
+        final String findItDL01UserId   = "findItDL01npa";
+        final String fixItDL01UserId    = "fixItDL01npa";
+        final String onboardDL01UserId  = "onboardDL01npa";
+        final String monitorDL01UserId  = "monitorDL01npa";
 
         /*
          * Set up default zone membership
@@ -171,8 +176,12 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         allUsers.add(cocoMDS5UserId);
         allUsers.add(cocoMDS6UserId);
         allUsers.add(cocoMDSxUserId);
+        allUsers.add(governDL01UserId);
+        allUsers.add(exchangeDL01UserId);
         allUsers.add(findItDL01UserId);
         allUsers.add(fixItDL01UserId);
+        allUsers.add(onboardDL01UserId);
+        allUsers.add(monitorDL01UserId);
 
         allEmployees.add(zachNowUserId);
         allEmployees.add(steveStarterUserId);
@@ -227,6 +236,10 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         npaAccounts.add(cocoMDSxUserId);
         npaAccounts.add(findItDL01UserId);
         npaAccounts.add(fixItDL01UserId);
+        npaAccounts.add(governDL01UserId);
+        npaAccounts.add(exchangeDL01UserId);
+        npaAccounts.add(onboardDL01UserId);
+        npaAccounts.add(monitorDL01UserId);
         assetOnboarding.addAll(npaAccounts);
 
         List<String> zoneSetUp = new ArrayList<>();
@@ -482,6 +495,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @return selected connection or null (pretend there are no connections attached to the asset) or
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
+    @Override
     public Connection validateUserForAssetConnectionList(String           userId,
                                                          Asset            asset,
                                                          List<Connection> connections) throws UserNotAuthorizedException
@@ -837,6 +851,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @throws InvalidParameterException one of the parameter values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Override
     public List<String> setSupportedZonesForUser(List<String>  supportedZones,
                                                  String        serviceName,
                                                  String        user) throws InvalidParameterException,

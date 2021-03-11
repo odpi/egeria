@@ -24,6 +24,9 @@ services:
             - '12181:2181'
         networks:
             - cocopharma
+        # Persistence
+        #volumes:
+        #    - zookeeper-data:/bitnami/zookeeper
 
     kafka:
         depends_on:
@@ -37,6 +40,9 @@ services:
             - '19092:9092'
         networks:
             - cocopharma
+        # Persistence
+        #volumes:
+        #    - kafka-data:/bitnami/kafka
 
     notebook:
         image: '${egeria_repo}/jupyter:${egeria_version}'
@@ -74,6 +80,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
+        # Persistence
+        #volumes:
+        #    - core-data:/deployments/data
 
     datalake:
         depends_on:
@@ -85,6 +94,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
+        # Persistence
+        #volumes:
+        #    - datalake-data:/deployments/data
 
     dev:
         depends_on:
@@ -96,6 +108,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
+        # Persistence
+        #volumes:
+        #    - dev-data:/deployments/data
 
     factory:
         depends_on:
@@ -107,6 +122,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
+        # Persistence
+        #volumes:
+        #    - factory-data:/deployments/data
 
     ui:
         depends_on:
@@ -140,9 +158,9 @@ services:
     presentation:
         depends_on:
             - datalake
-        image: '${egeria_repo}/egeria-presentation-server:${egeria_version}'
+        image: '${egeria_repo}/egeria-react-ui:${egeria_react_ui_version}'
         environment:
-          - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"https://datalake:9443"}
+            - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"https://datalake:9443"}
         ports:
             - '18091:8091'
         networks:
@@ -151,3 +169,22 @@ services:
             - '.env'
 networks:
     cocopharma:
+
+# Persistence:
+# These are the persistent volumes used by each of the egeria servers. See the README.md for further information
+#
+# Change external to true and create volumes manually if you wish to persist between runs
+#
+#volumes:
+#    core-data:
+#        external: false
+#    datalake-data:
+#        external: false
+#    dev-data:
+#        external: false
+#    factory-data:
+#        external: false
+#    zookeeper-data:
+#        external: false
+#    kafka-data:
+#        external: false

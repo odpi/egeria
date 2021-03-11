@@ -56,7 +56,7 @@ public class OMAGServerAdminForIntegrationServices
     public RegisteredOMAGServicesResponse getRegisteredIntegrationServices(String userId,
                                                                            String serverName)
     {
-        final String methodName = "getConfiguredIntegrationServices";
+        final String methodName = "getRegisteredIntegrationServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -113,7 +113,7 @@ public class OMAGServerAdminForIntegrationServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -164,7 +164,7 @@ public class OMAGServerAdminForIntegrationServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -190,6 +190,7 @@ public class OMAGServerAdminForIntegrationServices
                                                                                String serviceURLMarker)
     {
         final String methodName = "getIntegrationServiceConfiguration";
+        final String serviceURLMarkerParameterName = "serviceURLMarker";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -202,6 +203,7 @@ public class OMAGServerAdminForIntegrationServices
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(serviceURLMarker, serviceURLMarkerParameterName, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -229,7 +231,7 @@ public class OMAGServerAdminForIntegrationServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -268,10 +270,11 @@ public class OMAGServerAdminForIntegrationServices
         try
         {
             /*
-             * Validate and set up the userName and server name.
+             * Validate the incoming parameters
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateIntegrationServiceConfig(serverName, requestBody, methodName);
 
             /*
              * Get the configuration information for this integration service.
@@ -279,13 +282,10 @@ public class OMAGServerAdminForIntegrationServices
             IntegrationServiceConfig serviceConfig = IntegrationServiceRegistry.getIntegrationServiceConfig(serviceURLMarker, serverName, methodName);
             serviceConfig.setIntegrationServiceOperationalStatus(ServiceOperationalStatus.ENABLED);
 
-            if (requestBody != null)
-            {
-                serviceConfig.setOMAGServerPlatformRootURL(requestBody.getOMAGServerPlatformRootURL());
-                serviceConfig.setOMAGServerName(requestBody.getOMAGServerName());
-                serviceConfig.setIntegrationConnectorConfigs(requestBody.getIntegrationConnectorConfigs());
-                serviceConfig.setIntegrationServiceOptions(requestBody.getIntegrationServiceOptions());
-            }
+            serviceConfig.setOMAGServerPlatformRootURL(requestBody.getOMAGServerPlatformRootURL());
+            serviceConfig.setOMAGServerName(requestBody.getOMAGServerName());
+            serviceConfig.setIntegrationConnectorConfigs(requestBody.getIntegrationConnectorConfigs());
+            serviceConfig.setIntegrationServiceOptions(requestBody.getIntegrationServiceOptions());
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -305,7 +305,7 @@ public class OMAGServerAdminForIntegrationServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -365,7 +365,7 @@ public class OMAGServerAdminForIntegrationServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -529,7 +529,7 @@ public class OMAGServerAdminForIntegrationServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -602,7 +602,7 @@ public class OMAGServerAdminForIntegrationServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }

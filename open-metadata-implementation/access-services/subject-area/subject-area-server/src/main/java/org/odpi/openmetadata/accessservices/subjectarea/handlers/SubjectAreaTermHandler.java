@@ -378,11 +378,29 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 EntityDetail forUpdate = termMapper.map(currentTerm);
                 Optional<EntityDetail> updatedEntity = oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, forUpdate);
                 if (updatedEntity.isPresent()) {
-                    List<Classification> classifications = forUpdate.getClassifications();
-                    if (CollectionUtils.isNotEmpty(classifications)) {
-                        for (Classification classification : classifications) {
-                            oMRSAPIHelper.callOMRSClassifyEntity(methodName, userId, guid, classification);
-                            currentClassificationNames.remove(classification.getName());
+                    List<Classification> suppliedClassifications = forUpdate.getClassifications();
+                    List<Classification> storedClassifications = updatedEntity.get().getClassifications();
+                    Map<String, Classification> storedClassificationMap = null;
+
+                    if ((storedClassifications != null) && (! storedClassifications.isEmpty())) {
+                        storedClassificationMap = new HashMap<>();
+                        for (Classification storedClassification : storedClassifications) {
+                            if (storedClassification != null) {
+                                storedClassificationMap.put(storedClassification.getName(), storedClassification);
+                            }
+                        }
+                    }
+
+                    if (CollectionUtils.isNotEmpty(suppliedClassifications)) {
+                        for (Classification suppliedClassification : suppliedClassifications) {
+                            if (suppliedClassification != null) {
+                                if ((storedClassificationMap == null) || (! storedClassificationMap.keySet().contains(suppliedClassification.getName()))) {
+                                    oMRSAPIHelper.callOMRSClassifyEntity(methodName, userId, guid, suppliedClassification);
+                                } else {
+                                    oMRSAPIHelper.callOMRSUpdateClassification(methodName, userId, guid, storedClassificationMap.get(suppliedClassification.getName()), suppliedClassification.getProperties());
+                                }
+                                currentClassificationNames.remove(suppliedClassification.getName());
+                            }
                         }
 
                         for (String deClassifyName : currentClassificationNames) {
@@ -400,6 +418,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             }
 
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+            response = new SubjectAreaOMASAPIResponse<>();
             response.setExceptionInfo(e, className);
         }
 

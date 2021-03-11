@@ -40,7 +40,8 @@ public abstract class ConnectorBase extends Connector
     protected ConnectionProperties     connectionProperties     = null;
     protected Connection               connectionBean           = null;
     protected ConnectedAssetProperties connectedAssetProperties = null;
-    protected boolean                  isActive                 = false;
+
+    private volatile boolean           isActive                 = false;
 
     /*
      * Secured properties are protected properties from the connection.  They are retrieved as a protected
@@ -74,6 +75,7 @@ public abstract class ConnectorBase extends Connector
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
      * @param connectionProperties   POJO for the configuration used to create the connector.
      */
+    @Override
     public void initialize(String               connectorInstanceId,
                            ConnectionProperties connectionProperties)
     {
@@ -97,6 +99,7 @@ public abstract class ConnectorBase extends Connector
      *
      * @return guid for the connector instance
      */
+    @Override
     public String getConnectorInstanceId()
     {
         return connectorInstanceId;
@@ -110,6 +113,7 @@ public abstract class ConnectorBase extends Connector
      *
      * @return connection properties object
      */
+    @Override
     public ConnectionProperties getConnection()
     {
         return connectionProperties;
@@ -122,6 +126,7 @@ public abstract class ConnectorBase extends Connector
      *
      * @param connectedAssetProperties   properties of the connected asset
      */
+    @Override
     public void initializeConnectedAssetProperties(ConnectedAssetProperties connectedAssetProperties)
     {
         this.connectedAssetProperties = connectedAssetProperties;
@@ -140,6 +145,7 @@ public abstract class ConnectorBase extends Connector
      * @throws PropertyServerException indicates a problem retrieving properties from a metadata repository
      * @throws UserNotAuthorizedException indicates that the user is not authorized to access the asset properties.
      */
+    @Override
     public ConnectedAssetProperties getConnectedAssetProperties(String userId) throws PropertyServerException, UserNotAuthorizedException
     {
         log.debug("ConnectedAssetProperties requested: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
@@ -158,7 +164,8 @@ public abstract class ConnectorBase extends Connector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    public void start() throws ConnectorCheckedException
+    @Override
+    public synchronized void start() throws ConnectorCheckedException
     {
         isActive = true;
     }
@@ -169,10 +176,13 @@ public abstract class ConnectorBase extends Connector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    public  void disconnect() throws ConnectorCheckedException
+    @Override
+    public  synchronized void disconnect() throws ConnectorCheckedException
     {
         isActive = false;
     }
+
+
 
 
     /**
@@ -181,7 +191,7 @@ public abstract class ConnectorBase extends Connector
      *
      * @return isActive flag
      */
-    public boolean isActive()
+    public synchronized boolean isActive()
     {
         return isActive;
     }
@@ -194,6 +204,7 @@ public abstract class ConnectorBase extends Connector
      *
      * @return random UUID as hashcode
      */
+    @Override
     public int hashCode()
     {
         return hashCode;
@@ -263,6 +274,7 @@ public abstract class ConnectorBase extends Connector
          *
          * @return secured properties   typically user credentials for the connection
          */
+        @Override
         protected Map<String, String> getSecuredProperties()
         {
             return super.getConnectionBean().getSecuredProperties();
@@ -274,6 +286,7 @@ public abstract class ConnectorBase extends Connector
          *
          * @return Connection bean
          */
+        @Override
         protected Connection getConnectionBean()
         {
             return super.getConnectionBean();

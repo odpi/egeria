@@ -43,6 +43,7 @@ public abstract class AccessServiceAdmin
     protected String   supportedZonesPropertyName      = "SupportedZones";      /* Common */
     protected String   defaultZonesPropertyName        = "DefaultZones";        /* Common */
     protected String   publishZonesPropertyName        = "PublishZones";        /* Common */
+    protected String   archiveZonesPropertyName        = "ArchiveZones";        /* Common */
     protected String   karmaPointPlateauPropertyName   = "KarmaPointPlateau";   /* Community Profile OMAS */
     protected String   karmaPointIncrementPropertyName = "KarmaPointIncrement"; /* Community Profile OMAS */
 
@@ -135,7 +136,7 @@ public abstract class AccessServiceAdmin
                     auditLog.logMessage(methodName, OMAGAdminAuditCode.SUPPORTED_ZONES.getMessageDefinition(accessServiceFullName, zoneList.toString()));
                     return zoneList;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            supportedZonesPropertyName,
@@ -190,7 +191,7 @@ public abstract class AccessServiceAdmin
                     auditLog.logMessage(methodName, OMAGAdminAuditCode.PUBLISH_ZONES.getMessageDefinition(accessServiceFullName, zoneList.toString()));
                     return zoneList;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            publishZonesPropertyName,
@@ -245,7 +246,7 @@ public abstract class AccessServiceAdmin
                     auditLog.logMessage(methodName, OMAGAdminAuditCode.DEFAULT_ZONES.getMessageDefinition(accessServiceFullName, zoneList.toString()));
                     return zoneList;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            defaultZonesPropertyName,
@@ -300,7 +301,7 @@ public abstract class AccessServiceAdmin
 
                     return increment;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            karmaPointIncrementPropertyName,
@@ -374,7 +375,7 @@ public abstract class AccessServiceAdmin
 
                     return plateauThreshold;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            karmaPointPlateauPropertyName,

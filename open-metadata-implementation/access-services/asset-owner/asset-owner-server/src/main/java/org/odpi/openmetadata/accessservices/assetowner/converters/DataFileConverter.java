@@ -43,6 +43,7 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -74,6 +75,9 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
                     fileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     fileProperties.setDisplayName(this.removeName(instanceProperties));
                     fileProperties.setDescription(this.removeDescription(instanceProperties));
+                    fileProperties.setPathName(this.removePathName(instanceProperties));
+                    fileProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
+                    fileProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
 
                     /* Note this value should be in the classification */
                     fileProperties.setOwner(this.removeOwner(instanceProperties));
@@ -145,6 +149,7 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,

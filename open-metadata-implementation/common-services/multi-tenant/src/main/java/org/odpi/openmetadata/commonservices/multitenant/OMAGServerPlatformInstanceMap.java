@@ -12,7 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
@@ -111,6 +111,55 @@ public class OMAGServerPlatformInstanceMap
                                                            registration.getAccessServiceURLMarker(),
                                                            registration.getAccessServiceDescription(),
                                                            registration.getAccessServiceWiki()));
+                    }
+                }
+            }
+
+        }
+
+        if (response.isEmpty())
+        {
+            return null;
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of engine services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in an engine hosting OMAG server.
+     *
+     * @param userId calling user
+     * @return list of engine service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredEngineServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        /*
+         * Get the list of Engine Services implemented in this server.
+         */
+        List<EngineServiceRegistration> engineServiceRegistrationList = OMAGEngineServiceRegistration.getEngineServiceRegistrationList();
+
+        /*
+         * Set up the available engine services.
+         */
+        if ((engineServiceRegistrationList != null) && (! engineServiceRegistrationList.isEmpty()))
+        {
+            for (EngineServiceRegistration registration : engineServiceRegistrationList)
+            {
+                if (registration != null)
+                {
+                    if (registration.getEngineServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                    {
+                        response.add(getServiceDescription(registration.getEngineServiceName(),
+                                                           registration.getEngineServiceURLMarker(),
+                                                           registration.getEngineServiceDescription(),
+                                                           registration.getEngineServiceWiki()));
                     }
                 }
             }
@@ -378,16 +427,22 @@ public class OMAGServerPlatformInstanceMap
      * Add a new service instance to the server map.
      *
      * @param serverName name of the server
+     * @param serverType type of server (or null if the registering service does not know)
      * @param serviceName name of the service running on the server
      * @param instance instance object
      */
     private static synchronized void  setInstanceForPlatform(String                    serverName,
+                                                             String                    serverType,
                                                              String                    serviceName,
                                                              OMAGServerServiceInstance instance)
     {
         OMAGServerInstance  serverInstance = getActiveServerInstance(serverName);
 
         serverInstance.registerService(serviceName, instance);
+        if (serverType != null)
+        {
+            serverInstance.setServerType(serverType);
+        }
     }
 
 
@@ -410,6 +465,42 @@ public class OMAGServerPlatformInstanceMap
 
         serverInstance.initialize();
         return serverInstance.registerSecurityValidator(localServerUserId, auditLog, connection);
+    }
+
+
+    /**
+     * Return the type of server.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @param serviceOperationName calling method
+     *
+     * @return boolean
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws InvalidParameterException the server name is not known
+     */
+    private static synchronized String getServerInstanceType(String  userId,
+                                                             String  serverName,
+                                                             String  serviceOperationName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        OMAGServerInstance serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance != null)
+        {
+            return serverInstance.getServerType();
+        }
+        else
+        {
+            handleBadServerName(userId, serverName, serviceOperationName);
+
+            /*
+             * Note, this return is unreachable because handleBadServerName always throws an exception.
+             */
+            return null;
+        }
     }
 
 
@@ -867,6 +958,25 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
+     * Return the type of server.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return string name
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public String getServerType(String  userId,
+                                String  serverName,
+                                String  serviceOperationName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.getServerInstanceType(userId, serverName, serviceOperationName);
+    }
+
+
+    /**
      * Return whether a particular server is active (running) in the platform.
      * This is used by the admin services when there being no instance is not an error.
      *
@@ -955,14 +1065,16 @@ public class OMAGServerPlatformInstanceMap
      * Add a new service instance to the server map.
      *
      * @param serverName name of the server
+     * @param serverType type of server (or null if the registering service does not know)
      * @param serviceName name of the service running on the server
      * @param instance instance object
      */
     void  addServiceInstanceToPlatform(String                    serverName,
+                                       String                    serverType,
                                        String                    serviceName,
                                        OMAGServerServiceInstance instance)
     {
-        OMAGServerPlatformInstanceMap.setInstanceForPlatform(serverName, serviceName, instance);
+        OMAGServerPlatformInstanceMap.setInstanceForPlatform(serverName, serverType, serviceName, instance);
     }
 
 

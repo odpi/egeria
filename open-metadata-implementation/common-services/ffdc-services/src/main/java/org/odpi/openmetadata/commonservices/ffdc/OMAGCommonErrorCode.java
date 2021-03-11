@@ -104,9 +104,12 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                 "Correct the code in the caller to provide the object."),
 
     UNEXPECTED_EXCEPTION(400, "OMAG-COMMON-400-016",
-              "An unexpected {0} exception was caught by {1}; error message was {2}",
-              "The system is unable to process the request.",
-              "Review the error message and other diagnostics created at the same time."),
+                         "An unexpected {0} exception was caught by {1}; error message was {2}",
+                         "The system is unable to process the request and has returned an exception to the caller.",
+                         "Review the error message.  Also look up its full message definition which includes the system action " +
+                                 "and user action.  This is most likely to describe the correct action to take to resolve the error.  " +
+                                 "If that does not help, look for other diagnostics created at the same time.  Also validate that the " +
+                                 "caller is a valid client of this server and is operating correctly."),
 
     NO_REQUEST_BODY(400, "OMAG-COMMON-400-017",
                     "An request by user {0} to method {1} on server {2} had no request body",
@@ -160,10 +163,18 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                         "situations is true in this case.  Use the values in this message to determine the type of API " +
                         "and metadata collection values necessary to make the request successful."),
 
-    BAD_ANCHOR_GUID(400, "OMAG-COMMON-400-026",
-               "The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}",
-               "The system is unable to process the request because the requested object is anchored to a different element.",
-               "Correct the code in the caller to provide either the correct identifier of the object or the correct anchor identifier."),
+    WRONG_ANCHOR_GUID(400, "OMAG-COMMON-400-026",
+               "The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}. Method {4} is unable to proceed",
+               "The system is unable to process the request because the requested object is not anchored to the expected element.",
+               "Check the code in the caller to verify it is providing either the correct identifier of the object or the correct" +
+                       "anchor identifier since this is the most likely cause of the error.  However, it is possible that there is an " +
+                       "error in the way that the anchor GUID was set up in the element.  If this is the case, it is necessary to trace " +
+                       "back to find how the element was created and then look at where the error was introduced."),
+
+    NOT_ANCHOR_ELEMENT(400, "OMAG-COMMON-400-027",
+                    "The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}. Method {3} is unable to proceed",
+                    "The system is unable to process the request because the requested object is not an anchor entity.",
+                    "Correct the code in the caller to issue the request against this element's anchor object and retry."),
 
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",
@@ -181,7 +192,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
     METHOD_NOT_IMPLEMENTED(500, "OMAG-COMMON-500-001",
                            "Method {0} called by user {1} to OMAG Server {2} is not implemented in service {3}",
                            "The user has issued a valid call to an open metadata REST API that is currently not yet implemented.",
-                           "Look to become a contributor or advocate for the ODPi Egeria community to help get this method implemented as soon as possible."),
+                           "Look to become a contributor or advocate for the Egeria community to help get this method implemented as soon as possible."),
 
     CLIENT_SIDE_REST_API_ERROR(503, "OMAG-COMMON-503-001",
                                "A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}",
@@ -220,6 +231,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -232,6 +244,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
         messageDefinition.setMessageParameters(params);

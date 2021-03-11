@@ -311,7 +311,12 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public TypeDefLink getSuperType()
     {
-        return superType;
+        if (superType == null)
+        {
+            return null;
+        }
+
+        return new TypeDefLink(superType);
     }
 
 
@@ -322,7 +327,14 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public void setSuperType(TypeDefLink superType)
     {
-        this.superType = superType;
+        if (superType == null)
+        {
+            this.superType = null;
+        }
+        else
+        {
+            this.superType = new TypeDefLink(superType);
+        }
     }
 
 
@@ -601,10 +613,10 @@ public class TypeDefPatch extends TypeDefElementHeader
 
 
     /**
-     * Validated that the GUID, name and version of a TypeDef are equal.
+     * Validate that an object is equal depending on their stored values.
      *
-     * @param objectToCompare to test
-     * @return boolean flag to say object is the same TypeDefPatch
+     * @param objectToCompare object
+     * @return boolean result
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -618,36 +630,39 @@ public class TypeDefPatch extends TypeDefElementHeader
             return false;
         }
         TypeDefPatch that = (TypeDefPatch) objectToCompare;
-        return getApplyToVersion() == that.getApplyToVersion() &&
-                       getUpdateToVersion() == that.getUpdateToVersion() &&
-                       Objects.equals(getTypeDefGUID(), that.getTypeDefGUID()) &&
-                       Objects.equals(getTypeDefName(), that.getTypeDefName()) &&
-                       getTypeDefStatus() == that.getTypeDefStatus() &&
-                       Objects.equals(getNewVersionName(), that.getNewVersionName()) &&
-                       Objects.equals(getUpdatedBy(), that.getUpdatedBy()) &&
-                       Objects.equals(getUpdateTime(), that.getUpdateTime()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getDescriptionGUID(), that.getDescriptionGUID()) &&
-                       Objects.equals(getSuperType(), that.getSuperType()) &&
-                       Objects.equals(getPropertyDefinitions(), that.getPropertyDefinitions()) &&
-                       Objects.equals(getTypeDefOptions(), that.getTypeDefOptions()) &&
-                       Objects.equals(getExternalStandardMappings(), that.getExternalStandardMappings()) &&
-                       Objects.equals(getValidInstanceStatusList(), that.getValidInstanceStatusList()) &&
-                       getInitialStatus() == that.getInitialStatus() &&
-                       Objects.equals(getValidEntityDefs(), that.getValidEntityDefs()) &&
-                       Objects.equals(getEndDef1(), that.getEndDef1()) &&
-                       Objects.equals(getEndDef2(), that.getEndDef2());
+        return applyToVersion == that.applyToVersion &&
+                       updateToVersion == that.updateToVersion &&
+                       Objects.equals(typeDefGUID, that.typeDefGUID) &&
+                       Objects.equals(typeDefName, that.typeDefName) &&
+                       typeDefStatus == that.typeDefStatus &&
+                       Objects.equals(newVersionName, that.newVersionName) &&
+                       Objects.equals(updatedBy, that.updatedBy) &&
+                       Objects.equals(updateTime, that.updateTime) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(descriptionGUID, that.descriptionGUID) &&
+                       Objects.equals(superType, that.superType) &&
+                       Objects.equals(propertyDefinitions, that.propertyDefinitions) &&
+                       Objects.equals(typeDefOptions, that.typeDefOptions) &&
+                       Objects.equals(externalStandardMappings, that.externalStandardMappings) &&
+                       Objects.equals(validInstanceStatusList, that.validInstanceStatusList) &&
+                       initialStatus == that.initialStatus &&
+                       Objects.equals(validEntityDefs, that.validEntityDefs) &&
+                       Objects.equals(endDef1, that.endDef1) &&
+                       Objects.equals(endDef2, that.endDef2);
     }
 
 
     /**
-     * Using the GUID as a hashcode.  It should be unique if all connected metadata repositories are behaving properly.
+     * Return a hash code based on the values of this object.
      *
-     * @return int hash code
+     * @return in hash code
      */
     @Override
     public int hashCode()
     {
-        return typeDefGUID != null ? typeDefGUID.hashCode() : 0;
+        return Objects.hash(typeDefGUID, typeDefName, typeDefStatus, applyToVersion, updateToVersion, newVersionName, updatedBy, updateTime,
+                            description,
+                            descriptionGUID, superType, propertyDefinitions, typeDefOptions, externalStandardMappings, validInstanceStatusList,
+                            initialStatus, validEntityDefs, endDef1, endDef2);
     }
 }

@@ -164,6 +164,7 @@ public class SoftwareServerCapabilityBuilder extends ReferenceableBuilder
         }
     }
 
+
     /**
      * Return the supplied bean properties in an InstanceProperties object.
      *
@@ -171,63 +172,43 @@ public class SoftwareServerCapabilityBuilder extends ReferenceableBuilder
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
      */
+    @Override
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
-        if (type != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME,
-                                                                      type,
-                                                                      methodName);
-        }
-
-        if (version != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.VERSION_PROPERTY_NAME,
-                                                                      version,
-                                                                      methodName);
-        }
-
-        if (patchLevel != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.CAPABILITY_PATCH_LEVEL_PROPERTY_NAME,
-                                                                      patchLevel,
-                                                                      methodName);
-        }
-
-        if (source != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.CAPABILITY_SOURCE_PROPERTY_NAME,
-                                                                      source,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                  type,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME,
+                                                                  version,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.PATCH_LEVEL_PROPERTY_NAME,
+                                                                  patchLevel,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  source,
+                                                                  methodName);
 
         return properties;
     }

@@ -70,7 +70,7 @@ public class OMAGServerAdminSecurityServices
             }
             else
             {
-                errorHandler.validateConnection(requestBody.getPlatformSecurityConnection(), methodName);
+                errorHandler.validatePlatformConnection(requestBody.getPlatformSecurityConnection(), methodName);
 
                 OpenMetadataPlatformSecurityVerifier.setPlatformSecurityConnection(userId,
                                                                                    requestBody.getUrlRoot(),
@@ -85,7 +85,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -118,7 +118,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -152,7 +152,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -185,7 +185,7 @@ public class OMAGServerAdminSecurityServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateConnection(connection, serverName, methodName);
+            errorHandler.validateServerConnection(connection, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -212,7 +212,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -252,7 +252,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -307,7 +307,7 @@ public class OMAGServerAdminSecurityServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }

@@ -52,6 +52,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog   auditLog)
     {
         this.auditLog = auditLog;
@@ -66,6 +67,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *                            events from.  The repository connector is used to retrieve additional information
      *                            necessary to fill out the OMRS Events.
      */
+    @Override
     public void initialize(String                      repositoryEventMapperName,
                            OMRSRepositoryConnector     repositoryConnector)
     {
@@ -79,6 +81,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @param repositoryHelper helper object for building TypeDefs and metadata instances.
      */
+    @Override
     public void setRepositoryHelper(OMRSRepositoryHelper repositoryHelper)
     {
         this.repositoryHelper = repositoryHelper;
@@ -90,6 +93,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @param repositoryValidator validator object to check the validity of TypeDefs and metadata instances.
      */
+    @Override
     public void setRepositoryValidator(OMRSRepositoryValidator repositoryValidator)
     {
         this.repositoryValidator = repositoryValidator;
@@ -101,6 +105,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @param serverName String name
      */
+    @Override
     public void  setServerName(String      serverName)
     {
         this.localServerName = serverName;
@@ -113,6 +118,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @param serverType String server type
      */
+    @Override
     public void setServerType(String serverType)
     {
         this.localServerType = serverType;
@@ -124,6 +130,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @param organizationName String organization name
      */
+    @Override
     public void setOrganizationName(String organizationName)
     {
         this.localOrganizationName = organizationName;
@@ -136,6 +143,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @param localServerUserId string user id
      */
+    @Override
     public void setServerUserId(String localServerUserId)
     {
         this.localServerUserId = localServerUserId;
@@ -147,6 +155,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @param metadataCollectionId String unique Id
      */
+    @Override
     public void setMetadataCollectionId(String         metadataCollectionId)
     {
         this.localMetadataCollectionId = metadataCollectionId;
@@ -162,6 +171,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *                                changes to metadata types and instances to the rest of the
      *                                open metadata repository cluster.
      */
+    @Override
     public void setRepositoryEventProcessor(OMRSRepositoryEventProcessor repositoryEventProcessor)
     {
         this.repositoryEventProcessor = repositoryEventProcessor;
@@ -173,6 +183,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -201,6 +212,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         final String            methodName = "Disconnect Event Mapper";

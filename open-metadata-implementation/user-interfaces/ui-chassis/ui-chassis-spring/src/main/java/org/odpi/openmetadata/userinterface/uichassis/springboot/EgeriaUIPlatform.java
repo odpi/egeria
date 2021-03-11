@@ -6,9 +6,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClient;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.http.HttpHelper;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SessionAuthService;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenAuthService;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.*;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.LineageGraphDisplayRulesService;
 import org.slf4j.Logger;
@@ -18,18 +16,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.PostConstruct;
 
 @EnableZuulProxy
 @SpringBootApplication
-@ComponentScan({"org.odpi.openmetadata.*"})
+@ComponentScan(basePackages = {"${scan.packages}"})
 @Configuration
 @EnableConfigurationProperties({ComponentService.class, LineageGraphDisplayRulesService.class})
 public class EgeriaUIPlatform {
@@ -40,6 +41,9 @@ public class EgeriaUIPlatform {
 
     @Value("${strict.ssl}")
     Boolean strictSSL;
+
+    @Value("${cors.allowed-origins}")
+    String[] allowedOrigins;
 
     public static void main(String[] args) {
         SpringApplication.run(EgeriaUIPlatform.class, args);
@@ -55,6 +59,22 @@ public class EgeriaUIPlatform {
             }
         };
     }
+
+
+    @Bean
+    @ConditionalOnProperty(value = "cors.allowed-origins")
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                if(allowedOrigins.length>0) {
+                    registry.addMapping("/**")
+                            .allowedOrigins(allowedOrigins);
+                }
+            }
+        };
+    }
+
 
 
     @Bean
@@ -76,11 +96,20 @@ public class EgeriaUIPlatform {
     }
 
     @Bean
-    public AuthService getAuthService(@Value("${authentication.mode}") String authenticationMode)  {
-        if(null == authenticationMode || authenticationMode.isEmpty() || "token".equals(authenticationMode)){
+    public AuthService getAuthService(@Value("${authentication.mode:token}") String authenticationMode)  {
+        if( "token".equals(authenticationMode) ){
             return new TokenAuthService();
+        }else if( "redis".equals(authenticationMode) ){
+            return new RedisAuthService();
         }
         return new SessionAuthService();
+    }
+
+    @Bean(value = "tokenClient")
+    @ConditionalOnProperty(value = "authentication.mode", havingValue = "token", matchIfMissing = true)
+    public TokenClient stateLessTokenClient(){
+        return new TokenClient() {
+        };
     }
 
     @PostConstruct

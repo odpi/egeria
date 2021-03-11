@@ -151,7 +151,7 @@ public class PersonalProfileOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -160,7 +160,7 @@ public class PersonalProfileOutboundEventTest
         {
             validateResultObject(objectMapper.readValue(jsonString, PersonalProfileOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -174,7 +174,7 @@ public class PersonalProfileOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -183,7 +183,7 @@ public class PersonalProfileOutboundEventTest
         {
             validateResultObject((PersonalProfileOutboundEvent) objectMapper.readValue(jsonString, CommunityProfileOutboundEvent.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -197,7 +197,7 @@ public class PersonalProfileOutboundEventTest
         {
             jsonString = objectMapper.writeValueAsString(superSuperObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -206,7 +206,7 @@ public class PersonalProfileOutboundEventTest
         {
             validateResultObject((PersonalProfileOutboundEvent) objectMapper.readValue(jsonString, CommunityProfileEventHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConfidentialityGovernanceClassification extends GovernanceClassificationBase
 {
+    private static final long     serialVersionUID = 1L;
+
     private int confidentialityLevel = 0;
 
     /**

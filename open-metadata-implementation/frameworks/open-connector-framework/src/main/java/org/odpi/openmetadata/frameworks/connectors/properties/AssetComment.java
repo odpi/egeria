@@ -224,7 +224,7 @@ public class AssetComment extends AssetElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetComment))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -233,7 +233,19 @@ public class AssetComment extends AssetElementHeader
             return false;
         }
         AssetComment that = (AssetComment) objectToCompare;
-        return Objects.equals(getCommentBean(), that.getCommentBean()) &&
-                Objects.equals(getCommentReplies(), that.getCommentReplies());
+        return Objects.equals(commentBean, that.commentBean) &&
+                       Objects.equals(commentReplies, that.commentReplies);
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), commentBean, commentReplies);
     }
 }

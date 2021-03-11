@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationSummary;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 
 import java.util.List;
@@ -32,8 +33,15 @@ public class ServerOverview {
     private ServerTypeClassificationSummary serverClassification;
     private boolean                         isActive;
     private Map<String,ServerCohortDetails> cohortDetails;
-    private ServerStatus serverStatus;
-    private List<String>                    serverServicesList;
+    private ServerStatus                    serverStatus;
+    private List<RegisteredOMAGService>     integrationServices;
+    private List<RegisteredOMAGService>     engineServices;
+    private List<RegisteredOMAGService>     accessServices;
+    private List<RegisteredOMAGService>     viewServices;
+    //private List<RegisteredOMAGService>     commonServices;
+    //private List<RegisteredOMAGService>     governanceServices;
+
+
 
 
 
@@ -57,7 +65,14 @@ public class ServerOverview {
                           boolean                         isActive,
                           Map<String,ServerCohortDetails> cohortDetails,
                           ServerStatus                    serverStatus,
-                          List<String>                    serverServicesList) {
+                          List<RegisteredOMAGService>     integrationServices,
+                          List<RegisteredOMAGService>     engineServices,
+                          List<RegisteredOMAGService>     accessServices,
+                          List<RegisteredOMAGService>     viewServices
+                          //List<RegisteredOMAGService>     commonServices,
+                          //List<RegisteredOMAGService>     governanceServices,
+
+                          ) {
 
         this.serverInstanceName          = serverInstanceName;
         this.serverName                  = serverName;
@@ -68,7 +83,14 @@ public class ServerOverview {
         this.isActive                    = isActive;
         this.cohortDetails               = cohortDetails;
         this.serverStatus                = serverStatus;
-        this.serverServicesList          = serverServicesList;
+        this.integrationServices         = integrationServices;
+        this.engineServices              = engineServices;
+        this.accessServices              = accessServices;
+        this.viewServices                = viewServices;
+        //this.commonServices              = commonServices;
+        //this.governanceServices          = governanceServices;
+
+
     }
 
 
@@ -154,13 +176,38 @@ public class ServerOverview {
         this.serverStatus = serverStatus;
     }
 
-    public List<String> getServerServicesList() {
-        return serverServicesList;
+    public List<RegisteredOMAGService> getIntegrationServices() {
+        return integrationServices;
     }
 
-    public void setServerServicesList(List<String> serverServicesList) {
-        this.serverServicesList = serverServicesList;
+    public void setIntegrationServices(List<RegisteredOMAGService> integrationServices) {
+        this.integrationServices = integrationServices;
     }
+
+    public List<RegisteredOMAGService> getEngineServices() {
+        return engineServices;
+    }
+
+    public void setEngineServices(List<RegisteredOMAGService> engineServices) {
+        this.engineServices = engineServices;
+    }
+
+    public List<RegisteredOMAGService> getAccessServices() {
+        return accessServices;
+    }
+
+    public void setAccessServices(List<RegisteredOMAGService> accessServices) {
+        this.accessServices = accessServices;
+    }
+
+    public List<RegisteredOMAGService> getViewServices() {
+        return viewServices;
+    }
+
+    public void setViewServices(List<RegisteredOMAGService> viewServices) {
+        this.viewServices = viewServices;
+    }
+
 
     /**
      * Standard toString method.
@@ -180,7 +227,10 @@ public class ServerOverview {
                 ", isActive=" + isActive +'\'' +
                 ", cohortDetails=" + cohortDetails +'\'' +
                 ", serverStatus=" + serverStatus +'\'' +
-                ", serverServicesList=" + serverServicesList +'\'' +
+                ", integrationServices=" + integrationServices +'\'' +
+                ", engineServices=" + engineServices +'\'' +
+                ", accessServices=" + accessServices +'\'' +
+                ", viewServices=" + viewServices +'\'' +
                 '}';
     }
 
@@ -210,6 +260,10 @@ public class ServerOverview {
                 Objects.equals(getServerOrigin(), that.getServerOrigin()) &&
                 Objects.equals(getIsActive(), that.getIsActive()) &&
                 Objects.equals(getCohortDetails(), that.getCohortDetails()) &&
+                Objects.equals(getIntegrationServices(), that.getIntegrationServices()) &&
+                Objects.equals(getEngineServices(), that.getEngineServices()) &&
+                Objects.equals(getAccessServices(), that.getAccessServices()) &&
+                Objects.equals(getViewServices(), that.getViewServices()) &&
                 Objects.equals(getServerStatus(), that.getServerStatus());
     }
 
@@ -222,7 +276,9 @@ public class ServerOverview {
     @Override
     public int hashCode()
     {
-        return Objects.hash(getServerInstanceName(), getDescription(), getPlatformRootURL(), getServerName(),  getServerOrigin(), getIsActive(), getCohortDetails(), getServerStatus());
+        return Objects.hash(getServerInstanceName(), getDescription(), getPlatformRootURL(), getServerName(),
+                            getServerOrigin(), getIsActive(), getCohortDetails(), getServerStatus(),
+                            getIntegrationServices(), getAccessServices(), getViewServices(), getEngineServices());
     }
 
 }

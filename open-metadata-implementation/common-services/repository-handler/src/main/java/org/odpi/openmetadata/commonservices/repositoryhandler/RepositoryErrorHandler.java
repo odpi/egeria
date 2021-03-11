@@ -165,7 +165,8 @@ public class RepositoryErrorHandler
             return;
         }
 
-        if (instanceHeader.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
+        if ((instanceHeader.getInstanceProvenanceType() == null) ||
+            (instanceHeader.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT))
         {
             /*
              * Local cohort instances can be updated by any caller provided they have the right security (tested elsewhere).
@@ -461,11 +462,12 @@ public class RepositoryErrorHandler
                                              String     methodName,
                                              String     typeName)
     {
-        auditLog.logMessage(methodName, RepositoryHandlerAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
-                                                                                                              typeName,
-                                                                                                              methodName,
-                                                                                                              error.getClass().getName(),
-                                                                                                              error.getMessage()));
+        auditLog.logException(methodName, RepositoryHandlerAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
+                                                                                                                typeName,
+                                                                                                                methodName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                error.getMessage()),
+                              error);
     }
 
 
@@ -526,7 +528,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if there is a problem with the asset guid
+     * Throw an exception if there is a problem with the entity guid
      *
      * @param error  caught exception
      * @param entityGUID  unique identifier for the requested entity
@@ -548,6 +550,44 @@ public class RepositoryErrorHandler
                                                                                                            serviceName,
                                                                                                            serverName,
                                                                                                            error.getMessage()),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            error,
+                                            guidParameterName);
+
+    }
+
+
+    /**
+     * Throw an exception if there is a problem with the relationship guid
+     *
+     * @param error  caught exception
+     * @param relationshipGUID  unique identifier for the requested entity
+     * @param relationshipTypeName expected type of asset
+     * @param methodName  name of the method making the call
+     * @param guidParameterName name of the parameter that passed the GUID.
+     *
+     * @throws InvalidParameterException unexpected exception from property server
+     */
+    public void handleUnknownRelationship(Throwable error,
+                                          String    relationshipGUID,
+                                          String    relationshipTypeName,
+                                          String    methodName,
+                                          String    guidParameterName) throws InvalidParameterException
+    {
+        String typeName = "<Unknown>";
+
+        if (relationshipTypeName != null)
+        {
+            typeName = relationshipTypeName;
+        }
+
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.UNKNOWN_RELATIONSHIP.getMessageDefinition(typeName,
+                                                                                                                 relationshipGUID,
+                                                                                                                 methodName,
+                                                                                                                 serviceName,
+                                                                                                                 serverName,
+                                                                                                                 error.getMessage()),
                                             this.getClass().getName(),
                                             methodName,
                                             error,

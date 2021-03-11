@@ -17,6 +17,11 @@ events to the OMRS Topic.
 This may be the OMRS Topic for a cohort, or the OMRS Topic used by the Open Metadata Access Services (OMAS).
 
 
+
+
+----
+* Return to [repository services subsystem descriptions](.)
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

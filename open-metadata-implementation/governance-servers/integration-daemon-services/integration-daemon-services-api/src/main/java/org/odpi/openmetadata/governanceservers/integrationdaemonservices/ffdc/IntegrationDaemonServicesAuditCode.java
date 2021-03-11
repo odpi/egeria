@@ -134,6 +134,18 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                "The integration daemon shuts down and this error is reported to the caller as a configuration exception.",
                        "Update the configuration for the integration service to include a value for the default permitted synchronization."),
 
+    DAEMON_CONNECTOR_CONFIG_PROPS_UPDATE("INTEGRATION-DAEMON-SERVICES-0015",
+                                         OMRSAuditLogRecordSeverity.INFO,
+                                         "User {0} has updated the following configuration properties for the integration connector {1} in integration daemon {2}: {3}",
+                                         "The connector will be restarted once the new properties are in place.",
+                                         "Ensure that the connector does not report any errors during the restart processing as it operated on its new properties."),
+
+    DAEMON_CONNECTOR_CONFIG_PROPS_CLEARED("INTEGRATION-DAEMON-SERVICES-0016",
+                                          OMRSAuditLogRecordSeverity.INFO,
+                                          "User {0} has cleared all of the configuration properties for the integration connector {1} in integration daemon {2}",
+                                          "The connector will be restarted once the properties are cleared.",
+                                          "Ensure that the connector does not report any errors during the restart processing as it operated on its default properties."),
+
     SERVER_SHUTTING_DOWN("INTEGRATION-DAEMON-SERVICES-0020",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The integration daemon {0} is shutting down",
@@ -193,7 +205,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
 
     CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0031",
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                     "The integration connector {0} method {1} has returned with a {2} exception containing message {4}",
+                     "The integration connector {0} method {1} has returned with a {2} exception containing message {3}",
                               "The server will change the integration connector's status to failed.",
                               "Use the message from the exception and knowledge of the integration connector's behavior to " +
                             "track down and resolve the cause of the error and then restart the connector."),
@@ -266,6 +278,13 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                            "The thread will stop calling refresh() on the integration connectors hosted in this daemon and stop running.",
                            "Ensure that the thread terminates without errors."),
 
+    DAEMON_THREAD_CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0044",
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    "The integration daemon thread for integration daemon {0} caught a {1} exception from an integration connector containing message {2}",
+                    "The integration daemon thread will move to the next connector and revisit this connector at the next refresh time.",
+                    "Use the message from the exception and knowledge of the integration connector's behavior to " +
+                            "track down and resolve the cause of the error and then restart the connector.  The integration daemon thread will then continue to call the connector."),
+
     SERVER_NOT_AUTHORIZED("INTEGRATION-DAEMON-SERVICES-0050",
                           OMRSAuditLogRecordSeverity.SECURITY,
                           "Integration service {0} is not authorized to call its partner " +
@@ -321,6 +340,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
      *
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -333,6 +353,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
         messageDefinition.setMessageParameters(params);

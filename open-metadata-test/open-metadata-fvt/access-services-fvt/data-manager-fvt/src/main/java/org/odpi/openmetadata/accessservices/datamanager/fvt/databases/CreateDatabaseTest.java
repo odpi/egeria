@@ -258,7 +258,7 @@ public class CreateDatabaseTest
             }
             if (! databaseType.equals(retrievedDatabase.getDatabaseType()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from Retrieve " + retrievedDatabase.getDatabaseType() + ")");
             }
             if (! databaseVersion.equals(retrievedDatabase.getDatabaseVersion()))
             {
@@ -304,6 +304,13 @@ public class CreateDatabaseTest
             if (! databaseVersion.equals(retrievedDatabase.getDatabaseVersion()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from RetrieveByName)");
+            }
+
+            databaseList = client.getDatabasesByName(userId, databaseName, 1, maxPageSize);
+
+            if (databaseList != null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no Database for RetrieveByName)");
             }
 
             return databaseGUID;

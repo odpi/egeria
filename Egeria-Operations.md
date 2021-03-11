@@ -86,8 +86,8 @@ working on the project (approximately 1.25 business days per week).
 New maintainers are voted onto the maintainers list by the existing maintainers - see
 [maintainer list](./MAINTAINERS.md).
 
-A person wishing to become a maintainer sends a note to the existing maintainers
-at odpi-project-egeria-maintainers@lists.odpi.org, listing their Egeria contributions to date and
+A person wishing to become a maintainer sends a note to the existing mailing list
+at egeria-technical-discuss@lists.lfaidata.foundation, listing their Egeria contributions to date and
 requesting to be made a maintainer.
 The maintainers vote and if a majority agree then the requester
 is added to the maintainers list and given write access to the
@@ -124,16 +124,21 @@ Or a meeting may be at an organization's offices that are required to maintain a
 
 ## Egeria on Slack
 
-Egeria uses the [ODPi's Slack community](http://slack.odpi.org/) to provide an ongoing dialogue between members.
+Egeria uses the [LF AI & Data Slack community](http://slack.lfai.foundation) to provide an ongoing dialogue between members.
 This creates a recorded discussion of design decisions and discussions that complement the project meetings.
-This is the main slack channel for the Egeria project:
-[https://odpi.slack.com/messages/CAZDMLTFF](https://odpi.slack.com/messages/CAZDMLTFF]).
-Additional channels will be added as new workgroups and discussion topics are established.
+
+Follow the link above and register with the LF AI & Data slack service using your email address.
+Once signed in you can see all of the active slack channels.
+The main slack channel for the Egeria project is called [#egeria-discussion](https://lfaifoundation.slack.com/archives/C01F40J2XA8)
+
+Additional channels are added from time to time as new workgroups and discussion topics are established. For Egeria these
+channel names will begin with '#egeria', you can also view slack channels from other LF AI & Data projects.
 
 ## Egeria email
 
-Egeria uses the [following distribution list](https://lists.odpi.org/g/odpi-project-egeria)
-to advertise events and news for the community.
+Egeria uses the [announce list](https://lists.lfaidata.foundation/g/egeria-announce/topics)
+to advertise events and news for the community, in addition to the [discussion list](https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics)
+for more general discussion.
 
 ## Egeria content management tools
 

@@ -225,8 +225,13 @@ The types of classifiers are:
   its data fields/operations.  This is effectively a way of crowd sourcing knowledge about
   the asset.
   
+* Search keywords are typically attached to an asset by the asset owner to improve
+  the findability of an asset - particularly if it has a name that is difficult to
+  remember.
+  
 * Governance classifications provide formal classifiers for confidentiality,
-  retention, confidence and criticality for the asset.
+  retention, confidence and criticality for the asset. The impact classification
+  is typically used with reports that link to the asst such as incident reports.
 
 
 #### Usage
@@ -330,7 +335,8 @@ part of.  Digital Services are anchors for information about the digital service
 (also known as offerings or products) that the organization is operating.
 This is a business view of the service that the asset is a part of.
 
-Finally, the asset can include identifiers of other metadata elements from the catalog.
+Finally, the asset can include identifiers of other metadata elements from the catalog and related
+properties in the **AssetOrigin** Classification.
 This includes:
 * Unique identifier (GUID) of the business capability that owns the asset.  Examples of 
 a business capabilities include "Finance", "Human Resources", "Manufacturing", "Sales", etc 

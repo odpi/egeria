@@ -43,6 +43,7 @@ public class FileSystemConverter<B> extends DataManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -72,8 +73,8 @@ public class FileSystemConverter<B> extends DataManagerOMASConverter<B>
                     fileSystemProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     fileSystemProperties.setDisplayName(this.removeName(instanceProperties));
                     fileSystemProperties.setDescription(this.removeDescription(instanceProperties));
-                    fileSystemProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                    fileSystemProperties.setVersion(this.removeVersion(instanceProperties));
+                    fileSystemProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                    fileSystemProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     fileSystemProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     fileSystemProperties.setSource(this.removeSource(instanceProperties));
 
@@ -119,6 +120,7 @@ public class FileSystemConverter<B> extends DataManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,

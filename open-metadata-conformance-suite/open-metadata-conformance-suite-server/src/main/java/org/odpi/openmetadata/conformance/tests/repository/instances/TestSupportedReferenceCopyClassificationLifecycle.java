@@ -115,17 +115,21 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), testEntityDef);
 
+            long start = System.currentTimeMillis();
             newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                      testEntityDef.getGUID(),
                                                      instProps,
                                                      null,
                                                      null);
+            long elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion6,
                             testTypeName + assertionMsg6,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "addEntity",
+                            elapsedTime);
 
             createdEntitiesTUT.add(newEntity);
 
@@ -265,14 +269,17 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
         try {
 
+            long start = System.currentTimeMillis();
             metadataCollection.saveEntityReferenceCopy(workPad.getLocalServerUserId(), remoteEntity);
-
+            long elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion7,
                             testTypeName + assertionMsg7,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                            "saveEntityReferenceCopy",
+                            elapsedTime);
 
             createdEntityRefCopiesTUT.add(remoteEntity);
 
@@ -280,8 +287,9 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
             EntityDetail retrievedReferenceCopy = null;
 
             try {
-
+                start = System.currentTimeMillis();
                 retrievedReferenceCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
+                elapsedTime = System.currentTimeMillis() - start;
             }
             catch (Exception exc) {
                 /*
@@ -302,18 +310,20 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                             assertion1,
                             assertionMsg1 + testEntityDef.getName(),
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
-
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                            "getEntityDetail",
+                            elapsedTime);
 
             EntityDetail classifiedEntity = null;
 
             try {
 
-
+                start = System.currentTimeMillis();
                 classifiedEntity = metadataCollection.classifyEntity(workPad.getLocalServerUserId(),
                                                                      remoteEntity.getGUID(),
                                                                      classificationDef.getName(),
                                                                      null);
+                elapsedTime = System.currentTimeMillis() - start;
 
             }
             catch (Exception exc) {
@@ -337,7 +347,9 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                             assertion2,
                             testEntityDef.getName() + assertionMsg2,
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                            "classifyEntity",
+                            elapsedTime);
 
             Classification initialClassification = null;
 
@@ -363,11 +375,12 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
                 try {
 
-
+                    start = System.currentTimeMillis();
                     reclassifiedEntity = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
                                                                                        remoteEntity.getGUID(),
                                                                                        classificationDef.getName(),
                                                                                        classificationProperties);
+                    elapsedTime = System.currentTimeMillis() - start;
 
                 }
                 catch (Exception exc) {
@@ -400,7 +413,9 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                                 assertion4,
                                 testTypeName + assertionMsg4 + testEntityDef.getName(),
                                 RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                                "updateEntityClassification",
+                                elapsedTime);
             }
 
 
@@ -408,9 +423,11 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             try {
 
+                start = System.currentTimeMillis();
                 declassifiedEntity = metadataCollection.declassifyEntity(workPad.getLocalServerUserId(),
                                                                          remoteEntity.getGUID(),
                                                                          classificationDef.getName());
+                elapsedTime = System.currentTimeMillis() - start;
 
             }
             catch (Exception exc) {
@@ -433,7 +450,9 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                             assertion5,
                             testTypeName + assertionMsg5 + testEntityDef.getName(),
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                            "declassifyEntity",
+                            elapsedTime);
 
 
 

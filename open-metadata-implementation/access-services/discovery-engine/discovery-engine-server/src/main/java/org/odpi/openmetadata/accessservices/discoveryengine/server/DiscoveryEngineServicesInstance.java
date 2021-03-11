@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.server;
 
 
+import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
 import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -46,7 +47,8 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize max number of results to return on single request.
-     * @param outTopicConnection connection to send to client if they which to listen on the out topic.
+     * @param outTopicEventBusConnection inner event bus connection to use to build topic connection to send to client if they which
+     *                                   to listen on the out topic.
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
@@ -57,7 +59,7 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
                                            AuditLog                auditLog,
                                            String                  localServerUserId,
                                            int                     maxPageSize,
-                                           Connection              outTopicConnection) throws NewInstanceException
+                                           Connection              outTopicEventBusConnection) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
@@ -66,11 +68,15 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
               publishedZones,
               auditLog,
               localServerUserId,
-              maxPageSize);
+              maxPageSize,
+              null,
+              null,
+              DiscoveryEngineOutTopicClientProvider.class.getName(),
+              outTopicEventBusConnection);
 
         final String methodName = "new ServiceInstance";
 
-        this.outTopicConnection = outTopicConnection;
+        this.outTopicConnection = outTopicEventBusConnection;
 
         if (repositoryHandler != null)
         {
@@ -93,14 +99,6 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
                                            methodName);
         }
     }
-
-
-    /**
-     * Return the connection used in the client to create a connector to access events from the out topic.
-     *
-     * @return connection object for client
-     */
-    Connection getOutTopicConnection() { return outTopicConnection; }
 
 
     /**

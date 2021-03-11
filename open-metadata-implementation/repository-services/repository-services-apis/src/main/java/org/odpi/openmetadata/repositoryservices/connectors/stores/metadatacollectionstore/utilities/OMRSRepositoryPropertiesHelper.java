@@ -406,7 +406,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied property to an instance properties object.  If the instance property object
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
@@ -478,7 +478,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied property to an instance properties object.  If the instance property object
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
@@ -536,7 +536,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied array property to an instance properties object.  The supplied array is stored as a single
+     * If the supplied array property is not null, add it to an instance properties object.  The supplied array is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -574,7 +574,7 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
@@ -593,8 +593,66 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addBooleanMapPropertyToInstance(String               sourceName,
+                                                       InstanceProperties   properties,
+                                                       String               propertyName,
+                                                       Map<String, Boolean> mapValues,
+                                                       String               methodName);
+
+
+    /**
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addLongMapPropertyToInstance(String             sourceName,
+                                                    InstanceProperties properties,
+                                                    String             propertyName,
+                                                    Map<String, Long>  mapValues,
+                                                    String             methodName);
+
+
+    /**
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addIntMapPropertyToInstance(String               sourceName,
+                                                   InstanceProperties   properties,
+                                                   String               propertyName,
+                                                   Map<String, Integer> mapValues,
+                                                   String               methodName);
+
+
+
+    /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -613,7 +671,7 @@ public interface OMRSRepositoryPropertiesHelper
 
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
-     * as a separate property in instance properties.  If the instance properties object
+     * as a separate property in instance properties unless it is null.  If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -622,13 +680,70 @@ public interface OMRSRepositoryPropertiesHelper
      * @param mapValues contents of the map
      * @param methodName calling method name
      * @return instance properties object.
-     * @throws InvalidParameterException invalid property value
      */
     InstanceProperties addStringPropertyMapToInstance(String              sourceName,
                                                       InstanceProperties  properties,
                                                       String              propertyName,
                                                       Map<String, String> mapValues,
-                                                      String              methodName) throws InvalidParameterException;
+                                                      String              methodName);
+
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties unless it is null.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addBooleanPropertyMapToInstance(String              sourceName,
+                                                      InstanceProperties   properties,
+                                                      String               propertyName,
+                                                      Map<String, Boolean> mapValues,
+                                                      String               methodName);
+
+
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties unless it is null.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addLongPropertyMapToInstance(String              sourceName,
+                                                    InstanceProperties  properties,
+                                                    String              propertyName,
+                                                    Map<String, Long>   mapValues,
+                                                    String              methodName);
+
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties unless it is null.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addIntPropertyMapToInstance(String               sourceName,
+                                                   InstanceProperties   properties,
+                                                   String               propertyName,
+                                                   Map<String, Integer> mapValues,
+                                                   String               methodName);
 
 
     /**

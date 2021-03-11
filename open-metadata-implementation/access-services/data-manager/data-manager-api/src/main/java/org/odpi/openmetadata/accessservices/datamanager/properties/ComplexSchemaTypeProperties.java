@@ -18,6 +18,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+                      @JsonSubTypes.Type(value = TabularSchemaTypeProperties.class, name = "TabularSchemaTypeProperties"),
+              })
 public class ComplexSchemaTypeProperties extends SchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
@@ -103,7 +110,7 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof ComplexSchemaTypeProperties))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -112,6 +119,18 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
             return false;
         }
         ComplexSchemaTypeProperties that = (ComplexSchemaTypeProperties) objectToCompare;
-        return Objects.equals(getAttributeCount(), that.getAttributeCount());
+        return attributeCount == that.attributeCount;
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), attributeCount);
     }
 }

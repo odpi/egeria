@@ -3,7 +3,13 @@
 ---
 
 service:
-  type: NodePort
+  # Change this to 'NodePort' if you want externalized addresses for our services.
+  # If not, expose the service manually after deployment ie using a LoadBalancer
+  #
+  # For example to expose the egeria lab stateful set you might use:
+  # kubectl expose odpi-egeria-lab-dev --name egeria-dev
+  type: ClusterIP
+  #type: NodePort
   nodeport:
     jupyter: 30888
     core: 30080
@@ -24,7 +30,9 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: "2.6-SNAPSHOT"
+  version: "2.8-SNAPSHOT"
+  #repositoryType: "local-graph-repository"
+  repositoryType: "in-memory-repository"
 
 debug:
   egeriaJVM: false
@@ -49,7 +57,8 @@ image:
   egeria:
     name: egeria
   presentation:
-    name: egeria-presentation-server
+    name: egeria-react-ui
+    tag: latest
   configure:
     name: egeria-configure
   jupyter:
@@ -57,7 +66,26 @@ image:
   uistatic:
     name: egeria-uistatic
 
+# --- 
+# Persistence
+# 
+# If you enable persistence 
+#  - Any metadata servers configured by the notebooks will be configured to use the graph repository
+#  - A persistent volume (pvc) will be used to store all cohort registry, server config, and graph data
+#  - the name of the volume is based on the helm 'release' so same release will mean the data will remain on redeployment
+#    or starting
+#  - Note that the 'config' notebook will actually start servers if config is found, and you may get unexpected results
+#  - This config is provided to help with those using the lab environment as a base for further work
+#  - You may also wish to look at the 'egeria-base' helm chart for a single persistent server
+#  - You should also set all the kafka persistence settings below to 'true'
+#  - You should also set the value of egeria.repositoryType above in 'in-memory-repository'
+
+
+persistence:
+  enabled: false
+
 # When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
+# See https://github.com/bitnami/charts/tree/master/bitnami/kafka for more info
 kafka:
     #volumePermissions:
     #enabled: true
@@ -67,6 +95,8 @@ kafka:
         persistence: 
             enabled: false
     persistence: 
+        enabled: false
+    logpersistence: 
         enabled: false
     #can be enabled if external kafka access is required
     #service:

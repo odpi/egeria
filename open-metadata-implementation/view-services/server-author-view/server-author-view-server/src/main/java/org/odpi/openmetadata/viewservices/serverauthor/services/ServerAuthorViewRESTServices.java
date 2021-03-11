@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorExce
 import org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorViewServiceException;
 import org.odpi.openmetadata.viewservices.serverauthor.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorConfigurationResponse;
+import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorPlatformsResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorResourceEndpointListResponse;
 import org.odpi.openmetadata.viewservices.serverauthor.handlers.ServerAuthorViewHandler;
 import org.odpi.openmetadata.viewservices.serverauthor.initialization.ServerAuthorViewInstanceHandler;
@@ -64,9 +66,11 @@ public class ServerAuthorViewRESTServices {
 
         ServerAuthorResourceEndpointListResponse response = new ServerAuthorResourceEndpointListResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
-            Map<String, List<ResourceEndpoint>> lists = handler.getResourceEndpoints(userId, methodName);
+            Map<String, List<ResourceEndpoint>> lists = handler.getResourceEndpoints();
             List<ResourceEndpoint> platformList = null;
             if (lists != null) {
                 platformList = lists.get("platformList");
@@ -79,7 +83,9 @@ public class ServerAuthorViewRESTServices {
             restExceptionHandler.capturePropertyServerException(response, error);
         } catch (UserNotAuthorizedException error) {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+    }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -103,19 +109,16 @@ public class ServerAuthorViewRESTServices {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         FFDCResponseBase response = new ServerAuthorConfigurationResponse();
-
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.setInMemLocalRepository(className, methodName, serverToBeConfiguredName);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -140,18 +143,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         FFDCResponseBase response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.setGraphLocalRepository(className, methodName, serverToBeConfiguredName, storageProperties);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -175,18 +176,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         FFDCResponseBase response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.setReadOnlyLocalRepository(className, methodName, serverToBeConfiguredName);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -208,20 +207,17 @@ public class ServerAuthorViewRESTServices {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
-
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             OMAGServerConfig config = serverAuthorViewHandler.getStoredConfiguration(className, methodName, serverToBeRetrievedName);
             response = new ServerAuthorConfigurationResponse();
             response.setOmagServerConfig(config);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -246,18 +242,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.deployOMAGServerConfig(className, methodName, destinationPlatformName, serverToBeConfiguredName);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -280,8 +274,9 @@ public class ServerAuthorViewRESTServices {
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
-
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.setOMAGServerConfig(className, methodName, serverToBeConfiguredName, omagServerConfig);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
@@ -318,18 +313,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.configureAccessService(className, methodName, serverToBeConfiguredName, serviceURLMarker, accessServiceOptions);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -355,18 +348,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.configureAllAccessServices(className, methodName, serverToBeConfiguredName, accessServiceOptions);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -394,18 +385,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.setEnterpriseAccessConfig(className, methodName, serverToBeConfiguredName, enterpriseAccessConfig);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -437,18 +426,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.setEventBus(className, methodName, serverToBeConfiguredName, connectorProvider, topicURLRoot, configurationProperties);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -471,18 +458,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.setDefaultAuditLog(className, methodName, serverToBeConfiguredName);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -505,7 +490,9 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.addConsoleAuditLogDestination(className, methodName, serverToBeConfiguredName, supportedSeverities);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
@@ -540,18 +527,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.addSLF4JAuditLogDestination(className, methodName, serverToBeConfiguredName, supportedSeverities);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -575,18 +560,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.addFileAuditLogDestination(className, methodName, serverToBeConfiguredName, supportedSeverities);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -610,18 +593,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.addEventTopicAuditLogDestination(className, methodName, serverToBeConfiguredName, supportedSeverities);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -645,18 +626,16 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.addAuditLogDestination(className, methodName, serverToBeConfiguredName, connection);
             response = getStoredConfiguration(userId, serverName, serverToBeConfiguredName);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -681,19 +660,17 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.activateWithStoredConfig(className, methodName, destinationPlatformName, serverToBeActivatedName);
             OMAGServerConfig config = serverAuthorViewHandler.getActiveConfiguration(className, methodName, serverToBeActivatedName);
             response.setOmagServerConfig(config);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -717,19 +694,17 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.deactivateServerTemporarily(className, methodName, destinationPlatformName, serverToBeDeactivatedName);
             OMAGServerConfig config = serverAuthorViewHandler.getStoredConfiguration(className, methodName, serverToBeDeactivatedName);
             response.setOmagServerConfig(config);
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -754,7 +729,9 @@ public class ServerAuthorViewRESTServices {
         SuccessMessageResponse response = new SuccessMessageResponse();
         response.setSuccessMessage("Activate the server");
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             serverAuthorViewHandler.deactivateServerPermanently(className, methodName, destinationPlatformName, serverToBeDeactivatedName);
         } catch (InvalidParameterException error) {
@@ -789,7 +766,9 @@ public class ServerAuthorViewRESTServices {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         ServerAuthorConfigurationResponse response = new ServerAuthorConfigurationResponse();
 
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ServerAuthorViewHandler serverAuthorViewHandler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
             OMAGServerConfig config = serverAuthorViewHandler.getActiveConfiguration(className, methodName, serverToBeConfiguredName);
             response.setOmagServerConfig(config);
@@ -802,6 +781,37 @@ public class ServerAuthorViewRESTServices {
         } catch (ServerAuthorViewServiceException error) {
             ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
         }
+        return response;
+    }
+
+    /**
+     * Get the server configurations associated with the platforms that this view service knows about.
+     * @param userId                  user that is issuing the request
+     * @param serverName              local server name
+     * @return the known platforms, which if active will include he servers that are configured or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the server name is invalid or
+     * ServerAuthorViewServiceException The Server Author has detected an error.
+     */
+    public ServerAuthorPlatformsResponse getKnownPlatforms(String userId,String serverName) {
+        String methodName = "getKnownPlatforms";
+
+        ServerAuthorPlatformsResponse response = new ServerAuthorPlatformsResponse();
+
+        AuditLog auditLog = null;
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            // get the defined platforms from the config
+            ServerAuthorViewHandler handler = instanceHandler.getServerAuthorViewHandler(userId, serverName, methodName);
+            response.setPlatforms(handler.getKnownPlatforms(userId, methodName));
+        } catch (ServerAuthorViewServiceException error) {
+            ServerAuthorExceptionHandler.captureCheckedException(response, error, className);
+        } catch (Exception exception) {
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 }

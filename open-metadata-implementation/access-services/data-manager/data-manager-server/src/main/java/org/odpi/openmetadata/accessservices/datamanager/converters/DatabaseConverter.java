@@ -41,6 +41,7 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -70,6 +71,14 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                     databaseProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     databaseProperties.setDisplayName(this.removeName(instanceProperties));
                     databaseProperties.setDescription(this.removeDescription(instanceProperties));
+                    databaseProperties.setPathName(this.removePathName(instanceProperties));
+                    databaseProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
+                    databaseProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
+
+                    databaseProperties.setDatabaseType(this.removeDatabaseType(instanceProperties));
+                    databaseProperties.setDatabaseVersion(this.removeDatabaseVersion(instanceProperties));
+                    databaseProperties.setDatabaseInstance(this.removeDatabaseInstance(instanceProperties));
+                    databaseProperties.setDatabaseImportedFrom(this.removeDatabaseImportedFrom(instanceProperties));
 
                     /* Note this value should be in the classification */
                     databaseProperties.setOwner(this.removeOwner(instanceProperties));
@@ -141,6 +150,7 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,

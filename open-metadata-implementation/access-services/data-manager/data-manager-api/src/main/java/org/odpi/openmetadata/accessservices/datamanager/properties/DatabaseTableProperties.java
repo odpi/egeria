@@ -5,6 +5,9 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -20,9 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = DatabaseViewProperties.class, name = "DatabaseViewProperties"),
         })
-public class DatabaseTableProperties extends SchemaAttributeProperties
+public class DatabaseTableProperties extends SchemaElementProperties
 {
     private static final long    serialVersionUID = 1L;
+
+    private List<String> aliases = null;
 
 
     /**
@@ -42,6 +47,38 @@ public class DatabaseTableProperties extends SchemaAttributeProperties
     public DatabaseTableProperties(DatabaseTableProperties template)
     {
         super(template);
+
+    }
+
+
+    /**
+     * Return a list of alternative names for the table.
+     *
+     * @return list of names
+     */
+    public List<String> getAliases()
+    {
+        if (aliases == null)
+        {
+            return null;
+        }
+        else if (aliases.isEmpty())
+        {
+            return null;
+        }
+
+        return new ArrayList<>(aliases);
+    }
+
+
+    /**
+     * Set up a list of alternative names for the table.
+     *
+     * @param aliases list of names
+     */
+    public void setAliases(List<String> aliases)
+    {
+        this.aliases = aliases;
     }
 
 
@@ -54,27 +91,15 @@ public class DatabaseTableProperties extends SchemaAttributeProperties
     public String toString()
     {
         return "DatabaseTableProperties{" +
-                "elementPosition=" + getElementPosition() +
-                ", minCardinality=" + getMinCardinality() +
-                ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
-                ", orderedValues=" + getOrderedValues() +
-                ", sortOrder=" + getSortOrder() +
-                ", minimumLength=" + getMinimumLength() +
-                ", length=" + getLength() +
-                ", significantDigits=" + getPrecision() +
-                ", nullable=" + getIsNullable() +
-                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
-                ", aliases=" + getAliases() +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "aliases=" + aliases +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

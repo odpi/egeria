@@ -124,8 +124,16 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
             "An unexpected error {0} was encountered while committing consumed event offsets to topic {1}: error message is {2}",
             "Depending on the nature of the error, events may no longer be exchanged with the topic.",
             "Check the OMAG Server's audit log and Kafka error logs for related messages that " +
-                                         "indicate the cause of this error.  Work to clear the underlying error.  " +
-                                         "Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka.")
+                    "indicate the cause of this error.  Work to clear the underlying error.  " +
+                    "Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka."),
+    FAILED_TO_COMMIT_CONSUMED_EVENTS("OCF-KAFKA-TOPIC-CONNECTOR-0018",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Egeria client was rebalanced by Kafka and failed to commit already consumed events",
+            "If this was experienced in a production environment check the kafka heartbeat and batch processing settings.",
+            "Check the OMAG Server's audit log and Kafka error logs for related messages that " +
+                    "indicate the cause of this error.  Work to clear the underlying error.  " +
+                    "Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka."),
+
     ;
 
     private final AuditLogMessageDefinition messageDefinition;
@@ -164,6 +172,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
      *
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
         return messageDefinition;
@@ -176,6 +185,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
      * @return message definition object.
      */
+    @Override
     public AuditLogMessageDefinition getMessageDefinition(String ...params)
     {
         messageDefinition.setMessageParameters(params);

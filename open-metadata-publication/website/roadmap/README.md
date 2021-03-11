@@ -62,7 +62,7 @@ following third party connectors:
 * [Apache Atlas](https://github.com/odpi/egeria-connector-hadoop-ecosystem)
 
 Through 2020, our focus has shifted to the integration platform as we add
-[connector implementations](../developer-guide/extending-egeria-using-connectors.md) for popular third party
+[connector implementations](../developer-guide/what-is-a-connector.md) for popular third party
 technologies and standards and build out the integration user interface (UI) that will
 enable an organization to:
 * configure OMAG Servers on OMAG Server Platforms.

@@ -150,26 +150,31 @@ public class DatabaseProperties extends DataStoreProperties
     public String toString()
     {
         return "DatabaseProperties{" +
-                "databaseType='" + databaseType + '\'' +
-                ", databaseVersion='" + databaseVersion + '\'' +
-                ", databaseInstance='" + databaseInstance + '\'' +
-                ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encoding='" + getEncodingType() + '\'' +
-                ", language='" + getEncodingLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOtherOriginValues() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "databaseType='" + databaseType + '\'' +
+                       ", databaseVersion='" + databaseVersion + '\'' +
+                       ", databaseInstance='" + databaseInstance + '\'' +
+                       ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                       ", pathName='" + getPathName() + '\'' +
+                       ", createTime=" + getCreateTime() +
+                       ", modifiedTime=" + getModifiedTime() +
+                       ", encodingType='" + getEncodingType() + '\'' +
+                       ", encodingLanguage='" + getEncodingLanguage() + '\'' +
+                       ", encodingDescription='" + getEncodingDescription() + '\'' +
+                       ", encodingProperties=" + getEncodingProperties() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", owner='" + getOwner() + '\'' +
+                       ", ownerCategory=" + getOwnerCategory() +
+                       ", zoneMembership=" + getZoneMembership() +
+                       ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
+                       ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
+                       ", otherOriginValues=" + getOtherOriginValues() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

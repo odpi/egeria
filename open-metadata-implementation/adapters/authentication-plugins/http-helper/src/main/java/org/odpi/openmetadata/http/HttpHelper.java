@@ -49,4 +49,17 @@ public class HttpHelper {
         }
     }
 
+    /**
+     * Allows using self signed certificates https connections
+     * makes all the clients and servers trusted no matter the certificate
+     * Only if the override property strict.ssl is set
+     */
+    public static void noStrictSSLIfConfigured() {
+        if ("false".equalsIgnoreCase(System.getProperty("strict.ssl")))
+        {
+            noStrictSSL();
+        }
+
+    }
+
 }

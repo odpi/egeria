@@ -49,7 +49,7 @@
 * [Discovery Context](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-context.md)
 * [Discovery Engine](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-engine.md)
 * [Discovery Pipeline](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-pipeline.md)
-* [Discovery Server](../../open-metadata-implementation/admin-services/docs/concepts/discovery-server.md)
+* [Discovery Server](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-server.md)
 * [Discovery Service](../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-service.md)
 
 ## E
@@ -61,7 +61,7 @@
 * [Event Bus](../../open-metadata-implementation/admin-services/docs/concepts/event-bus.md)
 * [Event Management Services Subsystem (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/event-management-services.md)
 * [Events (OMRS)](../../open-metadata-implementation/repository-services/docs/event-descriptions)
-
+* [External Identifiers](external-identifiers)
 
 ## F
 
@@ -93,6 +93,7 @@
 
 * [Informal Tag](../../open-metadata-implementation/access-services/docs/concepts/attachments/informal-tags.md)
 * [Information View OMAS](../../open-metadata-implementation/access-services/information-view)
+* [Instance Security](../../open-metadata-implementation/common-services/metadata-security)
 * Instances
    * [Metadata Instances](../../open-metadata-implementation/repository-services/docs/metadata-instances.md)
      * [Instance Events](../../open-metadata-implementation/repository-services/docs/event-descriptions/instance-events.md)
@@ -115,6 +116,7 @@
 ## L
 
 * [Likes](../../open-metadata-implementation/access-services/docs/concepts/feedback/likes.md)
+* [Lineage](lineage)
 * [Local Metadata Collection Id](../../open-metadata-implementation/repository-services/docs/metadata-collection-id.md)
 * [Local Repository Services (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/local-repository-services.md)
 
@@ -122,6 +124,7 @@
 ## M
 
 * [Master Data Manager](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities/master-data-manager.md)
+* [Memento Classification](open-metadata-types/0010-Base-Model.md)
 * [Metadata Access Point](../../open-metadata-implementation/admin-services/docs/concepts/metadata-access-point.md)
 * [Metadata Archives](../../open-metadata-resources/open-metadata-archives)
 * [Metadata Catalog](../../open-metadata-implementation/access-services/asset-catalog)
@@ -162,6 +165,8 @@
 
 ## P
 
+* [Platform Security](../../open-metadata-implementation/common-services/metadata-security)
+* [Platform URL Root](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 * [Projects](../../open-metadata-implementation/access-services/docs/concepts/projects)
 * [Provenance of metadata](../../open-metadata-publication/website/metadata-provenance)
 
@@ -181,17 +186,22 @@
 * [Resource](../../open-metadata-implementation/access-services/docs/concepts/resource.md)
 * [REST Repository Connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)
 * [Reviews](../../open-metadata-implementation/access-services/docs/concepts/feedback/reviews-and-star-ratings.md)
+* [Root URL](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 
 ## S
 
+* [Security](../../open-metadata-implementation/common-services/metadata-security)
 * [Security Officer Server](../../open-metadata-implementation/admin-services/docs/concepts/security-officer-server.md)
 * [Security Sync Server](../../open-metadata-implementation/admin-services/docs/concepts/security-sync-server.md)
 * [Server Capabilities](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities)
 * [Server Chassis](../../open-metadata-implementation/server-chassis)
 * [Servers for Governance](../../open-metadata-implementation/governance-servers)
-* [Server Personalities (Types)](../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
+* [Server Name](../../open-metadata-implementation/admin-services/docs/concepts/server-name.md)
+* [Server Security](../../open-metadata-implementation/common-services/metadata-security)
+* [Server Types](../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
+* [Server URL Root](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 * [Star Ratings](../../open-metadata-implementation/access-services/docs/concepts/feedback/reviews-and-star-ratings.md)
-* [Stewardship Engine](../../open-metadata-implementation/frameworks/governance-action-framework/docs/stewardship-engine.md)
+* [Stewardship Engine](../../open-metadata-implementation/frameworks/governance-action-framework/docs/governance-action-engine.md)
 * [Stewardship Server](../../open-metadata-implementation/admin-services/docs/concepts/stewardship-server.md)
 * [Supported Zones](../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
 
@@ -200,6 +210,7 @@
 
 * [Tagging](../../open-metadata-implementation/access-services/docs/concepts/attachments/tagging.md)
 * [Tool](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities/tool.md)
+* Tombstone - see Memento
 * Topics
   * [InTopic](../../open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.md)
   * [OMRS Topic](../../open-metadata-implementation/repository-services/docs/omrs-event-topic.md)
@@ -212,6 +223,7 @@
 
 ## U
 
+* [URL Root](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 * [User Identity](../../open-metadata-implementation/access-services/docs/concepts/users/user-identity.md)
 * [User Roles](../../open-metadata-implementation/access-services/docs/concepts/user-roles)
 * [Users](../../open-metadata-implementation/access-services/docs/concepts/users)

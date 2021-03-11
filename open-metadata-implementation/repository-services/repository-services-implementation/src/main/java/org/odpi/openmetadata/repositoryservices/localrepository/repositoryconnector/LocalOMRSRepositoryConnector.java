@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryMode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
@@ -59,6 +60,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      * @param saveExchangeRule rule to determine what events to save to the local repository.
      */
     protected LocalOMRSRepositoryConnector(OMRSRepositoryConnector            realLocalConnector,
+                                           LocalRepositoryMode                localRepositoryMode,
                                            OMRSRepositoryEventMapperConnector realEventMapper,
                                            OMRSRepositoryEventManager         outboundRepositoryEventManager,
                                            OMRSRepositoryContentManager       repositoryContentManager,
@@ -88,18 +90,27 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                          outboundRepositoryEventManager);
         }
 
+
         /*
-         * The realEventMapper is a plug-in component that handles repository events for
-         * repository that have additional APIs for managing metadata and need their own mechanism for
-         * sending OMRS Repository Events.  If there is no realEventMapper then the localOMRSMetadataCollection
-         * will send the outbound repository events.
+         * The local repository is not allowed to produce events for a repository proxy.
+         * The event mapper is optional and only ever activated in a repository proxy.
          */
-        if (realEventMapper != null)
+        if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY)
         {
-            realEventMapper.initialize(repositoryEventMapperName,
-                                       realLocalConnector);
-            realEventMapper.setRepositoryEventProcessor(outboundRepositoryEventManager);
             produceEventsForRealConnector = false;
+
+            /*
+             * The realEventMapper is a plug-in component that handles repository events for
+             * repository that have additional APIs for managing metadata and need their own mechanism for
+             * sending OMRS Repository Events.  If there is no realEventMapper then the localOMRSMetadataCollection
+             * will send the outbound repository events.
+             */
+            if (realEventMapper != null)
+            {
+                realEventMapper.initialize(repositoryEventMapperName,
+                                           realLocalConnector);
+                realEventMapper.setRepositoryEventProcessor(outboundRepositoryEventManager);
+            }
         }
 
     }
@@ -134,6 +145,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -155,6 +167,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();
@@ -223,6 +236,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @param maxPageSize maximum number of elements that can be retrieved on a request.
      */
+    @Override
     public void setMaxPageSize(int    maxPageSize)
     {
         super.setMaxPageSize(maxPageSize);
@@ -239,6 +253,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @param serverName String name
      */
+    @Override
     public void  setServerName(String      serverName)
     {
         super.setServerName(serverName);
@@ -261,6 +276,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @param serverType String server type
      */
+    @Override
     public void setServerType(String serverType)
     {
         super.setServerType(serverType);
@@ -283,6 +299,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @param organizationName String organization name
      */
+    @Override
     public void setOrganizationName(String organizationName)
     {
         super.setOrganizationName(organizationName);
@@ -305,6 +322,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @param localServerUserId string user id
      */
+    @Override
     public void setServerUserId(String localServerUserId)
     {
         super.setServerUserId(localServerUserId);
@@ -341,6 +359,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @param metadataCollectionId String unique Id
      */
+    @Override
     public void setMetadataCollectionId(String     metadataCollectionId)
     {
         final String methodName = "setMetadataCollectionId";
@@ -403,6 +422,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @param metadataCollectionName display name of the metadata collection.
      */
+    @Override
     public void setMetadataCollectionName(String metadataCollectionName)
     {
         super.setMetadataCollectionName(metadataCollectionName);
@@ -421,6 +441,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      * @return OMRSMetadataInstanceStore metadata information retrieved from the metadata repository.
      * @throws RepositoryErrorException no metadata collection
      */
+    @Override
     public OMRSMetadataCollection getMetadataCollection() throws RepositoryErrorException
     {
         final String      methodName = "getMetadataCollection";
@@ -445,6 +466,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @return String guid
      */
+    @Override
     public String getMetadataCollectionId()
     {
         return super.metadataCollectionId;
@@ -457,6 +479,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @return Connection object
      */
+    @Override
     public Connection getLocalRepositoryRemoteConnection()
     {
         return new Connection(super.connectionBean);
@@ -468,6 +491,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @return outbound repository event manager
      */
+    @Override
     public OMRSRepositoryEventManager getOutboundRepositoryEventManager()
     {
         return outboundRepositoryEventManager;
@@ -480,6 +504,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @return OMRSTypeDefEventProcessor for the local repository.
      */
+    @Override
     public OMRSTypeDefEventProcessor getIncomingTypeDefEventProcessor()
     {
         return incomingTypeDefEventProcessor;
@@ -492,6 +517,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @return OMRSInstanceEventProcessor for the local repository.
      */
+    @Override
     public OMRSInstanceEventProcessor getIncomingInstanceEventProcessor()
     {
         return incomingInstanceEventProcessor;
@@ -515,6 +541,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @return String name
      */
+    @Override
     public String getLocalServerName() { return super.serverName; }
 
 
@@ -523,6 +550,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @return String name
      */
+    @Override
     public String getLocalServerType() { return super.serverType; }
 
 
@@ -531,5 +559,6 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @return String name
      */
+    @Override
     public String getOrganizationName() { return super.organizationName; }
 }

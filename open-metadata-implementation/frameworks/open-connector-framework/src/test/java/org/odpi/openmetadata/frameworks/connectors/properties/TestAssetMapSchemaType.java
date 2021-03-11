@@ -104,7 +104,6 @@ public class TestAssetMapSchemaType
         testBean.setAuthor("TestAuthor");
         testBean.setEncodingStandard("TestEncodingStandard");
         testBean.setUsage("TestUsage");
-        testBean.setVersionNumber("TestVersionNumber");
 
         return new AssetMapSchemaType(testBean);
     }

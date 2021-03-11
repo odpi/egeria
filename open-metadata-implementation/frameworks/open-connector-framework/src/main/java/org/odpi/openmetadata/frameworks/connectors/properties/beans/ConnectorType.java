@@ -46,6 +46,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         new connector instances.
  *     </li>
  *     <li>
+ *         recognizedAdditionalProperties - these are the Connection additional properties recognized by the connector implementation
+ *     </li>
+ *     <li>
+ *         recognizedConfigurationProperties - these are the Connection configuration properties recognized by the connector implementation
+ *     </li>
+ *     <li>
+ *         recognizedSecuredProperties - these are the Connection secured properties recognized by the connector implementation
+ *     </li>
+ *     <li>
  *         additionalProperties - Any additional properties that the connector provider needs to know in order to
  *         create connector instances.
  *     </li>
@@ -344,7 +353,7 @@ public class ConnectorType extends Referenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof ConnectorType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -354,9 +363,24 @@ public class ConnectorType extends Referenceable
         }
         ConnectorType that = (ConnectorType) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getConnectorProviderClassName(), that.getConnectorProviderClassName()) &&
-                Objects.equals(getRecognizedAdditionalProperties(), that.getRecognizedAdditionalProperties()) &&
-                Objects.equals(getRecognizedSecuredProperties(), that.getRecognizedSecuredProperties());
+                       Objects.equals(getDescription(), that.getDescription()) &&
+                       Objects.equals(getConnectorProviderClassName(), that.getConnectorProviderClassName()) &&
+                       Objects.equals(getRecognizedAdditionalProperties(), that.getRecognizedAdditionalProperties()) &&
+                       Objects.equals(getRecognizedConfigurationProperties(), that.getRecognizedConfigurationProperties()) &&
+                       Objects.equals(getRecognizedSecuredProperties(), that.getRecognizedSecuredProperties());
+    }
+
+
+    /**
+     * Hash of properties
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getConnectorProviderClassName(),
+                            getRecognizedAdditionalProperties(),
+                            getRecognizedConfigurationProperties(), getRecognizedSecuredProperties());
     }
 }

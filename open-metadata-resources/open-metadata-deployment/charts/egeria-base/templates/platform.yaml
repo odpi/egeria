@@ -1,0 +1,139 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: platform
+  name: {{ .Release.Name }}-platform
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 9443
+      targetPort: 9443
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
+      nodePort: {{ .Values.service.nodeport.platform }}
+      {{- end }}
+  {{ if .Values.egeria.debug }}
+    - name: debug
+      port: 5005
+      targetPort: 5005
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
+      nodePort: {{ .Values.service.nodeport.platformdebug }}
+      {{- end }}
+  {{ end }}
+  selector:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: platform
+...
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: null
+  name: {{ include "myapp.name" . }}-platform
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: platform
+
+spec:
+  replicas: 1
+  serviceName: {{ .Release.Name }}-platform
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: platform
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: platform
+    spec:
+    {{- include "egeria.security" . | nindent 6 }}
+      containers:
+        - name: egeria
+          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.egeria.name }}\
+                  :{{ .Values.image.egeria.tag | default .Values.egeria.version }}"
+          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-env
+            - configMapRef:
+                name: {{ .Release.Name }}-autostart
+          env:
+            {{ if .Values.egeria.debug }}
+            - name: JAVA_DEBUG
+              value:  "true"
+            {{ end }}
+          ports:
+            - containerPort: 9443
+          {{ if .Values.egeria.debug }}
+            - containerPort: 5005
+          {{ end }}
+          # No other checks until this passes
+          startupProbe:
+            tcpSocket:
+              port: 9443
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 25
+          # Is pod ready to service network requests - it will pause (for replicas, others will take the load)
+          readinessProbe:
+            httpGet:
+              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/origin
+              port: 9443
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          # Is pod doing useful work - if not we will restart it
+          livenessProbe:
+            httpGet:
+              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/origin
+              port: 9443
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          resources: {}
+          {{ if .Values.egeria.persistence }}
+          volumeMounts:
+            - mountPath: "/deployments/data"
+              # NO need to include release name in template - included as a SS
+              name: data
+          {{ end }}
+            - name: extlib
+              mountPath: /extlib
+      restartPolicy: Always
+      volumes:
+        - name: extlib
+          configMap:
+            name: {{ .Release.Name }}-extlib
+  {{ if .Values.egeria.persistence }}
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.egeria.storageSize}}
+      {{ if .Values.egeria.storageClass }}
+      storageClassName: {{ .Values.egeria.StorageClass }}
+      {{ end }}
+  {{ end }}
+...

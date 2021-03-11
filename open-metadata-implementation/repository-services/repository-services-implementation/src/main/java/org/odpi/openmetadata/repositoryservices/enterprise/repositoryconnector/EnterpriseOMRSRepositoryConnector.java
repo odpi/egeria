@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.OMRSInstanceRetrievalEventProcessor;
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorConsumer;
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorManager;
@@ -69,6 +67,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      *
      * @param metadataCollectionId String unique Id
      */
+    @Override
     public void setMetadataCollectionId(String     metadataCollectionId)
     {
         super.metadataCollectionId = metadataCollectionId;
@@ -112,6 +111,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException
     {
         super.start();
@@ -143,6 +143,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      *
      * @throws ConnectorCheckedException there is a problem disconnecting the connector.
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();
@@ -165,6 +166,32 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
+     * Returns the metadata collection to the repository where the supplied classification can be updated, ie its home repository.
+     *
+     * @param instance instance to test
+     * @param methodName name of method making the request (used for logging)
+     * @return repository connector
+     * @throws RepositoryErrorException home metadata collection is null
+     */
+    synchronized OMRSMetadataCollection getHomeMetadataCollection(Classification instance,
+                                                                  String         methodName) throws RepositoryErrorException
+    {
+        OMRSRepositoryConnector repositoryConnector = this.getHomeConnector(instance, methodName);
+
+        if (repositoryConnector != null)
+        {
+            return repositoryConnector.getMetadataCollection();
+        }
+
+        throw new RepositoryErrorException(OMRSErrorCode.NO_HOME_FOR_CLASSIFICATION.getMessageDefinition(methodName,
+                                                                                                   instance.getName(),
+                                                                                                   instance.getMetadataCollectionId()),
+                                           this.getClass().getName(),
+                                           methodName);
+    }
+
+
+    /**
      * Returns the metadata collection to the repository where the supplied instance can be updated, ie its home repository.
      *
      * @param instance instance to test
@@ -172,8 +199,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @return repository connector
      * @throws RepositoryErrorException home metadata collection is null
      */
-    OMRSMetadataCollection  getHomeMetadataCollection(InstanceHeader instance,
-                                                      String         methodName) throws RepositoryErrorException
+    synchronized OMRSMetadataCollection getHomeMetadataCollection(InstanceHeader instance,
+                                                                  String         methodName) throws RepositoryErrorException
     {
         OMRSRepositoryConnector repositoryConnector = this.getHomeConnector(instance, methodName);
 
@@ -185,6 +212,68 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         throw new RepositoryErrorException(OMRSErrorCode.NO_HOME_FOR_INSTANCE.getMessageDefinition(methodName,
                                                                                                    instance.getGUID(),
                                                                                                    instance.getMetadataCollectionId()),
+                                           this.getClass().getName(),
+                                           methodName);
+    }
+
+
+    /**
+     * Returns the connector to the repository where the supplied classification can be updated, ie its home repository.
+     *
+     * @param classification classification to test
+     * @param methodName name of method making the request (used for logging)
+     * @return repository connector
+     * @throws RepositoryErrorException home metadata collection is null
+     */
+    private OMRSRepositoryConnector  getHomeConnector(Classification classification,
+                                                      String         methodName) throws RepositoryErrorException
+    {
+        this.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, classification, methodName);
+
+        String  instanceMetadataCollectionId = classification.getMetadataCollectionId();
+
+        if (localMetadataCollectionId != null)
+        {
+            if (localMetadataCollectionId.equals(instanceMetadataCollectionId))
+            {
+                return localConnector;
+            }
+
+            if (classification.getReplicatedBy() != null)
+            {
+                if (localMetadataCollectionId.equals(classification.getReplicatedBy()))
+                {
+                    return localConnector;
+                }
+            }
+        }
+
+        for (FederatedConnector   remoteCohortConnector : remoteCohortConnectors)
+        {
+            if (remoteCohortConnector != null)
+            {
+                String remoteMetadataCollectionId = remoteCohortConnector.getMetadataCollectionId();
+
+                if (remoteMetadataCollectionId != null)
+                {
+                    if (remoteMetadataCollectionId.equals(instanceMetadataCollectionId))
+                    {
+                        return remoteCohortConnector.getConnector();
+                    }
+
+                    if (remoteMetadataCollectionId.equals(classification.getReplicatedBy()))
+                    {
+                        return remoteCohortConnector.getConnector();
+                    }
+                }
+            }
+        }
+
+        throw new RepositoryErrorException(OMRSErrorCode.NO_HOME_FOR_INSTANCE.getMessageDefinition(methodName,
+                                                                                                   classification.getName(),
+                                                                                                   instanceMetadataCollectionId),
                                            this.getClass().getName(),
                                            methodName);
     }
@@ -260,8 +349,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @return list of repository connectors
      * @throws RepositoryErrorException home metadata collection is null
      */
-    List<OMRSRepositoryConnector>  getHomeLocalRemoteConnectors(InstanceHeader instance,
-                                                                String         methodName) throws RepositoryErrorException
+    synchronized List<OMRSRepositoryConnector> getHomeLocalRemoteConnectors(InstanceHeader instance,
+                                                                            String         methodName) throws RepositoryErrorException
     {
         this.validateRepositoryIsActive(methodName);
 
@@ -359,7 +448,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @return OMRSRepositoryConnector List
      * @throws RepositoryErrorException the enterprise services are not available
      */
-    List<OMRSRepositoryConnector> getCohortConnectors(String     methodName) throws RepositoryErrorException
+    synchronized List<OMRSRepositoryConnector> getCohortConnectors(String methodName) throws RepositoryErrorException
     {
         this.validateRepositoryIsActive(methodName);
 
@@ -435,8 +524,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @param metadataCollectionId Unique identifier for the metadata collection.
      * @param localConnector OMRSRepositoryConnector object for the local repository.
      */
-    public void setLocalConnector(String                       metadataCollectionId,
-                                  LocalOMRSRepositoryConnector localConnector)
+    @Override
+    public synchronized void setLocalConnector(String                       metadataCollectionId,
+                                               LocalOMRSRepositoryConnector localConnector)
     {
         this.localMetadataCollectionId = metadataCollectionId;
         this.localConnector = localConnector;
@@ -454,8 +544,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @param metadataCollectionId Unique identifier for the metadata collection.
      * @param remoteConnector OMRSRepositoryConnector object providing access to the remote repository.
      */
-    public void addRemoteConnector(String                  metadataCollectionId,
-                                   OMRSRepositoryConnector remoteConnector)
+    @Override
+    public synchronized void addRemoteConnector(String                  metadataCollectionId,
+                                                OMRSRepositoryConnector remoteConnector)
     {
         if (remoteConnector != null)
         {
@@ -496,7 +587,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      *
      * @param metadataCollectionId identifier of the metadata collection that is no longer available.
      */
-    public void removeRemoteConnector(String  metadataCollectionId)
+    @Override
+    public synchronized void removeRemoteConnector(String  metadataCollectionId)
     {
         Iterator<FederatedConnector> iterator = remoteCohortConnectors.iterator();
 
@@ -527,7 +619,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * Call disconnect on all registered remote connectors and stop calling them.
      * There is no need to disconnect the local connector - that is handled by the EnterpriseConnectorManager
      */
-    public void disconnectAllConnectors()
+    @Override
+    public synchronized void disconnectAllConnectors()
     {
         try
         {

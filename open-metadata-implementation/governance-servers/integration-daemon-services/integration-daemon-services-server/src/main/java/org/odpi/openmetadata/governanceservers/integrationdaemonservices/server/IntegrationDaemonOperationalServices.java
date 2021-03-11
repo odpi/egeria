@@ -11,8 +11,8 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.context
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationDaemonHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,10 +60,12 @@ public class IntegrationDaemonOperationalServices
      *
      * @param configuration config properties
      * @param auditLog destination for audit log messages.
+     *
+     * @return activated services list
      * @throws OMAGConfigurationErrorException error in configuration preventing startup
      */
-    public void initialize(List<IntegrationServiceConfig> configuration,
-                           AuditLog                       auditLog) throws OMAGConfigurationErrorException
+    public List<String> initialize(List<IntegrationServiceConfig> configuration,
+                                   AuditLog                       auditLog) throws OMAGConfigurationErrorException
     {
         final String             actionDescription = "initialize";
         final String             methodName = "initialize";
@@ -94,6 +96,7 @@ public class IntegrationDaemonOperationalServices
              * Initialize each of the integration services and accumulate the integration connector handlers for the
              * integration daemon handler.
              */
+            List<String>                           activatedServicesList = new ArrayList<>();
             List<IntegrationConnectorHandler>      daemonConnectorHandlers = new ArrayList<>();
             Map<String, IntegrationServiceHandler> integrationServiceHandlerMap = new HashMap<>();
 
@@ -138,13 +141,18 @@ public class IntegrationDaemonOperationalServices
                     }
 
                     integrationServiceHandlerMap.put(integrationServiceURLMarker, integrationServiceHandler);
+                    activatedServicesList.add(integrationServiceConfig.getIntegrationServiceFullName());
                 }
             }
 
             /*
-             * Create the integration daemon handler
+             * Create the thread that calls refresh on all of the connectors.
              */
-            IntegrationDaemonHandler integrationDaemonHandler = new IntegrationDaemonHandler(daemonConnectorHandlers);
+            IntegrationDaemonThread integrationDaemonThread = new IntegrationDaemonThread(localServerName,
+                                                                                          daemonConnectorHandlers,
+                                                                                          auditLog);
+
+            integrationDaemonThread.start();
 
             /*
              * Create the integration daemon instance.
@@ -154,11 +162,14 @@ public class IntegrationDaemonOperationalServices
                                                                       auditLog,
                                                                       localServerUserId,
                                                                       maxPageSize,
-                                                                      integrationDaemonHandler,
+                                                                      integrationDaemonThread,
                                                                       integrationServiceHandlerMap);
+
+
 
             auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));
 
+            return activatedServicesList;
         }
         catch (InvalidParameterException error)
         {
@@ -325,7 +336,7 @@ public class IntegrationDaemonOperationalServices
         final String serviceURLMarkerPropertyName = "integrationServiceURLMarker";
         final String unknownValue                 = "???";
 
-        if ("".equals(integrationServiceConfig.getIntegrationServiceName()) || (integrationServiceConfig.getIntegrationServiceName() == null))
+        if ((integrationServiceConfig.getIntegrationServiceName() == null) || (integrationServiceConfig.getIntegrationServiceName().length() == 0))
         {
             throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NULL_SERVICE_CONFIG_VALUE.getMessageDefinition(serviceNamePropertyName,
                                                                                                                                         unknownValue,
@@ -334,7 +345,7 @@ public class IntegrationDaemonOperationalServices
                                                       methodName);
         }
 
-        if ("".equals(integrationServiceConfig.getIntegrationServiceFullName()) || (integrationServiceConfig.getIntegrationServiceFullName() == null))
+        if ((integrationServiceConfig.getIntegrationServiceFullName() == null) || (integrationServiceConfig.getIntegrationServiceFullName().length() == 0))
         {
             throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NULL_SERVICE_CONFIG_VALUE.getMessageDefinition(serviceFullNamePropertyName,
                                                                                                                                         integrationServiceConfig.getIntegrationServiceName(),
@@ -343,7 +354,7 @@ public class IntegrationDaemonOperationalServices
                                                       methodName);
         }
 
-        if ("".equals(integrationServiceConfig.getIntegrationServiceURLMarker()) || (integrationServiceConfig.getIntegrationServiceURLMarker() == null))
+        if ((integrationServiceConfig.getIntegrationServiceURLMarker() == null) || (integrationServiceConfig.getIntegrationServiceURLMarker().length() == 0))
         {
             throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NULL_SERVICE_CONFIG_VALUE.getMessageDefinition(serviceURLMarkerPropertyName,
                                                                                                                                         integrationServiceConfig.getIntegrationServiceFullName(),

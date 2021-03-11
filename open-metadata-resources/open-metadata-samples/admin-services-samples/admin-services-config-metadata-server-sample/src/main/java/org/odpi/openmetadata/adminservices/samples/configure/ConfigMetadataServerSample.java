@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.http.HttpHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class ConfigMetadataServerSample
     private static final String defaultAdminPlatformURLRoot = "https://localhost:9443";
     private static final String defaultAdminUserId          = "garygeeke";
     private static final String eventBusURLRoot             = "localhost:9092";
-    private static final String metadataServerName          = "cocoMDS1";
+    private static final String metadataServerName          = "cocoMDS10";
     private static final String metadataServerPlatform      = "https://localhost:9444";
     private static final String metadataServerUserId        = "cocoMDS1npa";
     private static final String metadataServerPassword      = "cocoMDS1passw0rd";
@@ -151,7 +152,6 @@ public class ConfigMetadataServerSample
         configurationClient.configureAccessService("stewardship-action", accessServiceOptions);
         configurationClient.configureAccessService("data-engine", accessServiceOptions);
         configurationClient.configureAccessService("data-manager", accessServiceOptions);
-        configurationClient.configureAccessService("information-view", accessServiceOptions);
 
         accessServiceOptions = new HashMap<>();
         accessServiceOptions.put("KarmaPointPlateau", 500);
@@ -189,6 +189,8 @@ public class ConfigMetadataServerSample
         {
             adminUserId = args[1];
         }
+
+        HttpHelper.noStrictSSLIfConfigured();
 
         if (args.length > 3)
         {

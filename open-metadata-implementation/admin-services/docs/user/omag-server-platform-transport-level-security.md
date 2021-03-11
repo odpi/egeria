@@ -70,6 +70,10 @@ to be set:
 * `server.ssl.trust-store`              Used by tomcat/spring boot to understand what clients it can trust (2 way SSL)
 * `server.ssl.trust-store-password`     Used by tomcat/spring boot  for the password of the truststore (2 way SSL)
 
+In addition an additional parameter is provided which causes ssl verification to be skipped:
+
+* `strict.ssl`                          true / false : If set to true skips checks on certificate
+
 For further details on these & other less common configuration options, refer to the Spring Docs
 
 Since the Egeria Server Chassis is also a network client the settings in the next section for 
@@ -77,74 +81,63 @@ clients are also required.
 
 ## Egeria Java Clients
 
-Standard java properties  need to be set:
+Standard java properties  need to be set within the JVM being used for the Egeria client code:
 
-`javax.net.ssl.keyStore`                keyStore for client to use (2 way SSL needs this)
-`javax.net.ssl.keyStorePassword`        password for the keystore  (2 way SSL needs this)
-`javax.net.ssl.trustStore`              trustStore for the client to use (always needs setting as egeria makes client calls)
-`javax.net.ssl.trustStorePassword`      password for the truststore (always - as above)
+* `javax.net.ssl.keyStore`                keyStore for client to use (2 way SSL needs this)
+* `javax.net.ssl.keyStorePassword`        password for the keystore  (2 way SSL needs this)
+* `javax.net.ssl.trustStore`              trustStore for the client to use (always needs setting as egeria makes client calls)
+* `javax.net.ssl.trustStorePassword`      password for the truststore (always - as above)
+
+In addition, for any executable jars provided by egeria - such as samples, an additional
+parameter will cause ssl verification to be skipped. This is only recommended for test
+and development
+
+* `strict.ssl`                            true / false : If set to true skips checks on certificate
+
+Note that in the case of Java Clients, these are system properties, and do
+not use spring conventions. 
 
 ## Other clients
 
 Similar principles to those documented for java should apply. If you need further assistance please
-contact the team on our slack channel at slack.odpi.org . A Pull Request (or issue) with contributed documentation
+contact the team on our slack channel at http://slack.lfai.foundation . A Pull Request (or issue) with contributed documentation
 is very welcome !
-
-## Caveat on SSL verification
-
-From Release 2.0, and continuing through at least 2.3 all client connections made within the egeria
-clients AND server bypass strict ssl checking for a transition period. See [#3869](https://github.com/odpi/egeria/issues/3869)
-
-When addressed an additional configuration option will be available which may aid in development scenarios.
 
 ## Example script to launch Egeria
 
-The following linux/macOS script shows how the Egeria Platform may be started making use
-of specified certificates. In this example we are running from the Egeria Source tree, and using
-certificates already provided in that build tree.
+Example certs are provided [here](../../../../open-metadata-resources/open-metadata-deployment/certificates) 
 
-```bash
-#!/bin/sh
+As an example of running the Egeria server chassis with the certificates generated above, add
+the following options when launching the Egeria server chass jar file:
 
-# Location of my source tree
-BUILD=~/src/egeria
+ * -Dserver.ssl.key-store=${KS} 
+ * -Dserver.ssl.key-alias=EgeriaServerChassis
+ * -Dserver.ssl.key-store-password=egeria
+ * -Dserver.ssl.trust-store=EgeriaCA.p12
+ * -Dserver.ssl.trust-store-password=egeria
+ * -Djavax.net.ssl.keyStore=EgeriaServerChassis 
+ * -Djavax.net.ssl.keyStorePassword=egeria
+ * -Djavax.net.ssl.trustStore=EgeriaCA.p12
+ * -Djavax.net.ssl.trustStorePassword=egeria 
+  
+We have to use both server.ssl and javax.net values since the former controls how the server chassis works when accepting inbound connections
+as the server chassis, and the latter are needed any time code running in that chassis acts as a client, such as connecting to another 
+repository.
 
-# Use the certs in the build, with the default passwords of 'egeria' and a server alias of 'tomcat'
-KS=${BUILD}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12
-TS=${BUILD}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12
-KSP=egeria
-TSP=egeria
-SKEY=tomcat
+We have assumed the default keystore passwords, and also that we will use the same key regardless of whether it is the one
+that the chassis sends back to it's client after they connect, or the one the chassis may send to those other repositories. They
+could be distinct if needed.
 
-# version
-VER=2.4-SNAPSHOT
-
-# Launch the server chassis
-JAR=${BUILD}/open-metadata-implementation/server-chassis/server-chassis-spring/build/libs/server-chassis-spring-${VER}.jar
-
-# Based on this for a fully specified launch of the chassis we would therefore use:
-java \
-    -Dserver.ssl.key-store=${KS} \
-    -Dserver.ssl.key-alias=${SKEY} \
-    -Dserver.ssl.key-store-password=${KSP} \
-    -Dserver.ssl.trust-store=${TS} \
-    -Dserver.ssl.trust-store-password=${TSP} \
-    -Djavax.net.ssl.keyStore=${KS} \
-    -Djavax.net.ssl.keyStorePassword=${KSP} \
-    -Djavax.net.ssl.trustStore=${KS} \
-    -Djavax.net.ssl.trustStorePassword=${KSP} \
-    -jar ${JAR}
-```
 ## Creating your own certificates
 
-Example configurations and scripts can be found [here](../../../../open-metadata-resources/open-metadata-deployment/certificates)
+Example configurations and scripts can be found in [open-metadata-resources/open-metadata-deployment/certificates](../../../../open-metadata-resources/open-metadata-deployment/certificates)
 
-An example script to create certificates is provided in `gensamplecerts.sh`. It is intended only as an example
-and is not run in the build.
+An example script (MacOS/Linux)to create certificates is provided in `gensamplecerts.sh`. It is intended only as an example.
+It requires the openssl tool & keytool. Deployment frameworks in cloud services may also offer support to
+generate certificates and it's likely an enterprise process will be place in larger organizations.
 
-The script creates a Certificate Authority and then specific certificates for the Egeria Server Platform for 
-both client and server roles. It could be extended to create certificates for other clients especially if
-using 2 way SSL.
+The script creates a Certificate Authority and then specific certificates for different Egeria components.
+It could be extended to create certificates for other clients especially if using 2 way SSL.
 
 When the script is run it also makes use of the configuration template `openssl.cnf.`
 
@@ -153,3 +146,11 @@ especially with current browsers
  - ensuring basicConstraints are specified
  - ensuring the certificate expiry time is not too far in the future
  - ensuring subjectAltName is specified.
+
+
+----
+* Return to [Configuring an OMAG Server](configuring-the-omag-server-platform.md)
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

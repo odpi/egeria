@@ -4,12 +4,10 @@
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.OwnerType;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
@@ -22,12 +20,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,9 +83,9 @@ public class AssetOwnerRESTServices
 
             response.setNames(handler.getTypesOfAssetList());
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -121,9 +120,9 @@ public class AssetOwnerRESTServices
 
             response.setStringMap(handler.getTypesOfAssetDescriptions());
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -212,9 +211,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -290,9 +289,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -343,9 +342,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -406,9 +405,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -442,28 +441,12 @@ public class AssetOwnerRESTServices
 
         SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
 
-        String typeId = invalidParameterHandler.validateTypeName(schemaType.getTypeName(),
-                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                 instanceHandler.getServiceName(),
-                                                                 methodName,
-                                                                 instanceHandler.getRepositoryHelper(userId, serverName, methodName));
+        SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType,
+                                                                   handler.getRepositoryHelper(),
+                                                                   handler.getServiceName(),
+                                                                   serverName,
+                                                                   methodName);
 
-        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(schemaType.getQualifiedName(),
-                                                                    schemaType.getDisplayName(),
-                                                                    schemaType.getDescription(),
-                                                                    schemaType.getVersionNumber(),
-                                                                    schemaType.getIsDeprecated(),
-                                                                    schemaType.getAuthor(),
-                                                                    schemaType.getUsage(),
-                                                                    schemaType.getEncodingStandard(),
-                                                                    schemaType.getNamespace(),
-                                                                    schemaType.getAdditionalProperties(),
-                                                                    typeId,
-                                                                    schemaType.getTypeName(),
-                                                                    schemaType.getExtendedProperties(),
-                                                                    handler.getRepositoryHelper(),
-                                                                    handler.getServiceName(),
-                                                                    serverName);
         if (assetGUID != null)
         {
             schemaTypeBuilder.setAnchors(userId, assetGUID, methodName);
@@ -493,6 +476,140 @@ public class AssetOwnerRESTServices
         }
 
         return schemaTypeGUID;
+    }
+
+
+    /**
+     * Recursively navigate through the schema type loading up the a new schema type builder to pass to the
+     * schemaTypeHandler.
+     *
+     * @param schemaType supplied schema type
+     * @param repositoryHelper repository helper for this server
+     * @param serviceName calling service name
+     * @param serverName this server instance
+     * @param methodName calling method
+     *
+     * @return schema type builder
+     * @throws InvalidParameterException invalid type in one of the schema types
+     */
+    private SchemaTypeBuilder getSchemaTypeBuilder(SchemaTypeProperties schemaType,
+                                                   OMRSRepositoryHelper repositoryHelper,
+                                                   String               serviceName,
+                                                   String               serverName,
+                                                   String               methodName) throws InvalidParameterException
+    {
+        String typeName = OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+
+        if (schemaType.getTypeName() != null)
+        {
+            typeName = schemaType.getTypeName();
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(schemaType.getQualifiedName(),
+                                                                    schemaType.getDisplayName(),
+                                                                    schemaType.getDescription(),
+                                                                    schemaType.getVersionNumber(),
+                                                                    schemaType.getIsDeprecated(),
+                                                                    schemaType.getAuthor(),
+                                                                    schemaType.getUsage(),
+                                                                    schemaType.getEncodingStandard(),
+                                                                    schemaType.getNamespace(),
+                                                                    schemaType.getAdditionalProperties(),
+                                                                    typeGUID,
+                                                                    typeName,
+                                                                    schemaType.getExtendedProperties(),
+                                                                    repositoryHelper,
+                                                                    serviceName,
+                                                                    serverName);
+
+        if (schemaType instanceof LiteralSchemaTypeProperties)
+        {
+            LiteralSchemaTypeProperties literalSchemaTypeProperties = (LiteralSchemaTypeProperties)schemaType;
+
+            schemaTypeBuilder.setDataType(literalSchemaTypeProperties.getDataType());
+            schemaTypeBuilder.setFixedValue(literalSchemaTypeProperties.getFixedValue());
+        }
+        else if (schemaType instanceof SimpleSchemaTypeProperties)
+        {
+            SimpleSchemaTypeProperties simpleSchemaTypeProperties = (SimpleSchemaTypeProperties)schemaType;
+
+            schemaTypeBuilder.setDataType(simpleSchemaTypeProperties.getDataType());
+            schemaTypeBuilder.setDefaultValue(simpleSchemaTypeProperties.getDefaultValue());
+
+            if (schemaType instanceof EnumSchemaTypeProperties)
+            {
+                EnumSchemaTypeProperties enumSchemaTypeProperties = (EnumSchemaTypeProperties)schemaType;
+
+                schemaTypeBuilder.setValidValuesSetGUID(enumSchemaTypeProperties.getValidValueSetGUID());
+            }
+            else if (schemaType instanceof ExternalSchemaTypeProperties)
+            {
+                ExternalSchemaTypeProperties externalSchemaTypeProperties = (ExternalSchemaTypeProperties)schemaType;
+
+                schemaTypeBuilder.setExternalSchemaTypeGUID(externalSchemaTypeProperties.getExternalSchemaTypeGUID());
+            }
+        }
+        else if (schemaType instanceof SchemaTypeChoiceProperties)
+        {
+            SchemaTypeChoiceProperties schemaTypeChoiceProperties = (SchemaTypeChoiceProperties)schemaType;
+
+            if (schemaTypeChoiceProperties.getSchemaOptions() != null)
+            {
+                List<SchemaTypeBuilder> schemaOptionBuilders = new ArrayList<>();
+
+                for (SchemaTypeProperties schemaOption : schemaTypeChoiceProperties.getSchemaOptions())
+                {
+                    if (schemaOption != null)
+                    {
+                        schemaOptionBuilders.add(this.getSchemaTypeBuilder(schemaOption,
+                                                                           repositoryHelper,
+                                                                           serviceName,
+                                                                           serverName,
+                                                                           methodName));
+                    }
+                }
+
+                if (! schemaOptionBuilders.isEmpty())
+                {
+                    schemaTypeBuilder.setSchemaOptions(schemaOptionBuilders);
+                }
+            }
+        }
+        else if (schemaType instanceof MapSchemaTypeProperties)
+        {
+            MapSchemaTypeProperties mapSchemaTypeProperties = (MapSchemaTypeProperties)schemaType;
+
+            SchemaTypeBuilder mapFromBuilder = null;
+            SchemaTypeBuilder mapToBuilder = null;
+
+            if (mapSchemaTypeProperties.getMapFromElement() != null)
+            {
+                mapFromBuilder = this.getSchemaTypeBuilder(mapSchemaTypeProperties.getMapFromElement(),
+                                                           repositoryHelper,
+                                                           serviceName,
+                                                           serverName,
+                                                           methodName);
+            }
+
+            if (mapSchemaTypeProperties.getMapToElement() != null)
+            {
+                mapToBuilder = this.getSchemaTypeBuilder(mapSchemaTypeProperties.getMapToElement(),
+                                                         repositoryHelper,
+                                                         serviceName,
+                                                         serverName,
+                                                         methodName);
+            }
+
+            schemaTypeBuilder.setMapTypes(mapFromBuilder, mapToBuilder);
+        }
+
+        return schemaTypeBuilder;
     }
 
 
@@ -598,8 +715,8 @@ public class AssetOwnerRESTServices
                                                                           schemaTypeGUID,
                                                                           schemaTypeGUIDParameterName,
                                                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                           schemaAttribute.getQualifiedName(),
                                                                           qualifiedNameParameterName,
                                                                           schemaAttributeBuilder,
@@ -664,9 +781,9 @@ public class AssetOwnerRESTServices
                                             schemaTypeGUIDParameterName,
                                             methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -714,9 +831,9 @@ public class AssetOwnerRESTServices
                                                                assetGUIDParameterName,
                                                                methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -764,9 +881,9 @@ public class AssetOwnerRESTServices
                                                assetGUIDParameterName,
                                                methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -826,9 +943,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -886,9 +1003,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -943,9 +1060,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1019,9 +1136,9 @@ public class AssetOwnerRESTServices
             }
 
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1069,7 +1186,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.saveSemanticAssignment(userId,
                                            null,
@@ -1080,9 +1197,9 @@ public class AssetOwnerRESTServices
                                            glossaryTermGUIDParameterName,
                                            methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1126,7 +1243,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.saveSemanticAssignment(userId,
                                            null,
@@ -1138,9 +1255,9 @@ public class AssetOwnerRESTServices
                                            methodName);
 
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1180,7 +1297,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.removeSemanticAssignment(userId,
                                              null,
@@ -1190,9 +1307,9 @@ public class AssetOwnerRESTServices
                                              methodName);
 
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1234,7 +1351,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.removeSemanticAssignment(userId,
                                              null,
@@ -1244,9 +1361,9 @@ public class AssetOwnerRESTServices
                                              methodName);
 
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1287,7 +1404,7 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement>  handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 handler.addAssetOrigin(userId,
                                        assetGUID,
@@ -1304,9 +1421,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1345,7 +1462,7 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 handler.removeAssetOrigin(userId, assetGUID, assetGUIDParameterName, methodName);
             }
@@ -1354,9 +1471,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1394,13 +1511,13 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.publishAsset(userId, assetGUID, assetGUIDParameterName, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1438,13 +1555,13 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.withdrawAsset(userId, assetGUID, assetGUIDParameterName, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1482,7 +1599,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.updateAssetZones(userId,
                                      assetGUID,
@@ -1490,9 +1607,9 @@ public class AssetOwnerRESTServices
                                      assetZones,
                                      methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1531,7 +1648,7 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
                 int ownerType = OwnerType.USER_ID.getOpenTypeOrdinal();
 
@@ -1552,9 +1669,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1580,8 +1697,9 @@ public class AssetOwnerRESTServices
                                          String                  assetGUID,
                                          SecurityTagsRequestBody requestBody)
     {
-        final String   assetGUIDParameterName = "assetGUID";
-        final String   methodName = "addSecurityTags";
+        final String methodName = "addSecurityTags";
+        final String assetGUIDParameterName = "assetGUID";
+        final String assetTypeName = "Asset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1593,11 +1711,12 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                ReferenceableHandler<ReferenceableElement> handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
 
                 handler.addSecurityTags(userId,
                                         assetGUID,
                                         assetGUIDParameterName,
+                                        assetTypeName,
                                         requestBody.getSecurityLabels(),
                                         requestBody.getSecurityProperties(),
                                         methodName);
@@ -1607,9 +1726,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1638,8 +1757,9 @@ public class AssetOwnerRESTServices
                                          String                  assetElementGUID,
                                          SecurityTagsRequestBody requestBody)
     {
-        final String   assetElementGUIDParameterName = "assetElementGUID";
-        final String   methodName = "addSecurityTags";
+        final String assetElementGUIDParameterName = "assetElementGUID";
+        final String assetElementTypeName          = "Referenceable";
+        final String methodName                    = "addSecurityTags";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1651,11 +1771,12 @@ public class AssetOwnerRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+                ReferenceableHandler<ReferenceableElement> handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
 
                 handler.addSecurityTags(userId,
                                         assetElementGUID,
                                         assetElementGUIDParameterName,
+                                        assetElementTypeName,
                                         requestBody.getSecurityLabels(),
                                         requestBody.getSecurityProperties(),
                                         methodName);
@@ -1665,9 +1786,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1694,8 +1815,9 @@ public class AssetOwnerRESTServices
                                             String                assetGUID,
                                             NullRequestBody       requestBody)
     {
-        final String   assetGUIDParameterName = "assetGUID";
-        final String   methodName = "removeSecurityTags";
+        final String methodName = "removeSecurityTags";
+        final String assetGUIDParameterName = "assetGUID";
+        final String assetTypeName = "Asset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1705,16 +1827,17 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ReferenceableHandler<ReferenceableElement> handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
 
             handler.removeSecurityTags(userId,
                                        assetGUID,
                                        assetGUIDParameterName,
+                                       assetTypeName,
                                        methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1743,8 +1866,9 @@ public class AssetOwnerRESTServices
                                             String                assetElementGUID,
                                             NullRequestBody       requestBody)
     {
-        final String   assetElementGUIDParameterName = "assetElementGUID";
-        final String   methodName                    = "removeSecurityTags";
+        final String methodName                    = "removeSecurityTags";
+        final String assetElementGUIDParameterName = "assetElementGUID";
+        final String assetElementTypeName          = "Referenceable";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1754,16 +1878,132 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ReferenceableHandler<ReferenceableElement> handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
 
             handler.removeSecurityTags(userId,
                                        assetElementGUID,
                                        assetElementGUIDParameterName,
+                                       assetElementTypeName,
                                        methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to classify
+     * @param requestBody  properties of the template
+     *
+     * @return void or
+     *  InvalidParameterException asset or element not known, null userId or guid or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addTemplateClassification(String              serverName,
+                                                  String              userId,
+                                                  String              assetGUID,
+                                                  TemplateRequestBody requestBody)
+    {
+        final String methodName = "addTemplateClassification";
+        final String assetGUIDParameterName = "assetGUID";
+        final String assetTypeName = "Asset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ReferenceableElement> handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.addTemplateClassification(userId,
+                                                  assetGUID,
+                                                  assetGUIDParameterName,
+                                                  assetTypeName,
+                                                  requestBody.getName(),
+                                                  requestBody.getDescription(),
+                                                  requestBody.getAdditionalProperties(),
+                                                  methodName);
+            }
+            else
+            {
+                handler.addTemplateClassification(userId,
+                                                  assetGUID,
+                                                  assetGUIDParameterName,
+                                                  assetTypeName,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the classification that indicates that this asset can be used as a template.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to declassify
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException asset or element not known, null userId or guid or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse removeTemplateClassification(String          serverName,
+                                                     String          userId,
+                                                     String          assetGUID,
+                                                     NullRequestBody requestBody)
+    {
+        final String methodName = "removeTemplateClassification";
+        final String assetGUIDParameterName = "assetGUID";
+        final String assetTypeName = "Asset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ReferenceableElement> handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
+
+            handler.removeTemplateClassification(userId,
+                                                 assetGUID,
+                                                 assetGUIDParameterName,
+                                                 assetTypeName,
+                                                 methodName);
+
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1821,9 +2061,9 @@ public class AssetOwnerRESTServices
                                                        methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1868,9 +2108,9 @@ public class AssetOwnerRESTServices
             response.setAssets(handler.findAssets(userId, searchString, searchStringParameter, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1911,9 +2151,9 @@ public class AssetOwnerRESTServices
                                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                             methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1959,9 +2199,9 @@ public class AssetOwnerRESTServices
                                                                                      maxPageSize,
                                                                                      methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2023,9 +2263,9 @@ public class AssetOwnerRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2081,9 +2321,9 @@ public class AssetOwnerRESTServices
                                                                    maximumResults,
                                                                    methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -2131,7 +2371,7 @@ public class AssetOwnerRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.deleteBeanInRepository(userId,
                                            null,
@@ -2144,9 +2384,9 @@ public class AssetOwnerRESTServices
                                            null,
                                            methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
