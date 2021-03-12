@@ -49,7 +49,7 @@ public class HasA extends Line {
     private String source;
 
     public HasA() {
-        super("HasA","d67f16d1-5348-419e-ba38-b0bb6fe4ad6c", LINE_END_1, LINE_END_2);
+        super("HasA", LINE_END_1, LINE_END_2);
     }
 
     /**

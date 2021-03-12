@@ -44,7 +44,7 @@ public class ProjectScope extends Line {
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     public ProjectScope() {
-        super("ProjectScope", "bc63ac45-b4d0-4fba-b583-92859de77dd8", LINE_END_1, LINE_END_2);
+        super("ProjectScope", LINE_END_1, LINE_END_2);
     }
 
     @Override

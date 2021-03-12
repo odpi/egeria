@@ -50,7 +50,7 @@ public class PreferredTerm extends Line {
     private String source;
 
     public PreferredTerm() {
-        super("PreferredTerm", "8ac8f9de-9cdd-4103-8a33-4cb204b78c2a", LINE_END_1, LINE_END_2);
+        super("PreferredTerm", LINE_END_1, LINE_END_2);
     }
 
     /**

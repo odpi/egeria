@@ -51,7 +51,7 @@ public class Translation extends Line {
     private String source;
 
     public Translation() {
-        super("Translation", "6ae42e95-efc5-4256-bfa8-801140a29d2a", LINE_END_1, LINE_END_2);
+        super("Translation", LINE_END_1, LINE_END_2);
     }
 
     /**

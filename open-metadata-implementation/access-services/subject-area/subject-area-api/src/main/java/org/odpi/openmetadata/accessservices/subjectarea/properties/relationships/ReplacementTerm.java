@@ -50,7 +50,7 @@ public class ReplacementTerm extends Line {
     private String source;
 
     public ReplacementTerm() {
-        super("ReplacementTerm", "3bac5f35-328b-4bbd-bfc9-3b3c9ba5e0ed", LINE_END_1, LINE_END_2);
+        super("ReplacementTerm", LINE_END_1, LINE_END_2);
     }
 
     /**
