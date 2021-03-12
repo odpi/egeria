@@ -65,6 +65,7 @@ sourceSets.test.groovy.srcDirs = ["src/test/java", "src/test/script"]
     errorOutput = "${buildDir}/chassis-error.log"
     //stopAfter = verify
     waitForPort = 10448
+    timeout = 180
     //waitForOutput = 'has started'
 }*/
 

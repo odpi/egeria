@@ -70,6 +70,7 @@ task startServer(dependsOn: [':open-metadata-distribution:open-metadata-assembli
     errorOutput = "${buildDir}/chassis-error.log"
     //stopAfter = verify
     waitForPort = 10443
+    timeout = 180
     //waitForOutput = 'has started'
 }
 
