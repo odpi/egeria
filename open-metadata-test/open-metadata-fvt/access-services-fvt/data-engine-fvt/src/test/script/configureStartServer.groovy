@@ -14,14 +14,18 @@ import javax.net.ssl.X509TrustManager
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+System.exit(-1) // still need to fix this
 
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
-user = properties["user"]
-baseURL = properties["baseURL"] + ":" + properties["serverPort"]
-serverMem = properties["serverInMemory"]
-serverGraph = properties["serverLocalGraph"]
-maxRetries = Integer.parseInt(properties["retries"] as String)
-delay = Integer.parseInt(properties["delay"] as String)
+
+// Retrieve configuration - with defaults to aid in local testing (using default ports)
+// Maven plugin works best with properties, gradle with system properties, so use either
+user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
+baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
+serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
+serverGraph=(properties["servergraph"] ?: System.properties["servergraph"]) ?: "servergraph";
+maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 12 as String)
+delay=Integer.parseInt((properties["delay"] ?: System.properties["delay"]) ?: 10 as String)
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [

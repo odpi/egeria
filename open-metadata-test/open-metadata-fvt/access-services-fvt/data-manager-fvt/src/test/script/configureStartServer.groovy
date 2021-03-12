@@ -15,12 +15,13 @@ import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
-user=properties["user"] ?: "garygeeke";
-baseURL=properties["baseURL"] ?: "https://localhost:9443";
-serverMem=properties["servermem"] ?: "serverinmem";
-serverGraph=properties["servergraph"] ?: "servergraph";
-retries=properties["retries"] ?: 12;
-delay=properties["delay"] ?: 10;
+// Maven plugin works best with properties, gradle with system properties, so use either
+user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
+baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
+serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
+serverGraph=(properties["servergraph"] ?: System.properties["servergraph"]) ?: "servergraph";
+retries=(properties["retries"] ?: System.properties["retries"]) ?: 12;
+delay=(properties["delay"] ?: System.properties["delay"]) ?: 10;
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [
