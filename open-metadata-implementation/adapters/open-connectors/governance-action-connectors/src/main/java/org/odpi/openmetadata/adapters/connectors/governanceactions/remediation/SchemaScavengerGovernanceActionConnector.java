@@ -4,15 +4,15 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 /**
- * ActionDiscoveryAnnotations is currently a placeholder for a governance action that will convert schema
+ * SchemaScavengerGovernanceActionConnector is currently a placeholder for a governance action that will convert schema
  * annotations from a discovery report into a structure of schema elements attached to the asset.
  */
-public class ActionDiscoveryAnnotations
+public class SchemaScavengerGovernanceActionConnector
 {
     /**
      * Default constructor
      */
-    public ActionDiscoveryAnnotations()
+    public SchemaScavengerGovernanceActionConnector()
     {
     }
 }

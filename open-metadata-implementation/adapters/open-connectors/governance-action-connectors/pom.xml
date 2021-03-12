@@ -50,10 +50,21 @@
             <artifactId>repository-services-apis</artifactId>
         </dependency>
 
-      <dependency>
+        <dependency>
            <groupId>commons-io</groupId>
            <artifactId>commons-io</artifactId>
-       </dependency>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
        <!-- Test framework -->
 

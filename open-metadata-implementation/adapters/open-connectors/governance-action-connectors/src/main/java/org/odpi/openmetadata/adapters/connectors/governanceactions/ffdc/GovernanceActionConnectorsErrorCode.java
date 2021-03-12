@@ -82,6 +82,10 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
                                 "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
                                         "and follow its instructions."),
 
+    UNEXPECTED_EXCEPTION(500, "GOVERNANCE-ACTION-CONNECTORS-500-004",
+                                  "The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}",
+                                  "The governance action returns an exception to the Governance Action Engine.",
+                                  "Use details from the error message to determine the cause of the error and retry the service call once it is resolved."),
     ;
 
 

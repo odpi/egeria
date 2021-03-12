@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.security.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -69,13 +69,13 @@ public class SecurityIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement> findAssets(String searchString,
-                                         int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
+    public List<DataAssetElement> findAssets(String searchString,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        return dataAssetExchangeClient.findAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return dataAssetExchangeClient.findDataAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
     }
 
 
@@ -93,13 +93,13 @@ public class SecurityIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement>   getAssetsByName(String name,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
+    public List<DataAssetElement>   getAssetsByName(String name,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        return dataAssetExchangeClient.getAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return dataAssetExchangeClient.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
     }
 
 
@@ -115,12 +115,12 @@ public class SecurityIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<AssetElement>   scanAssets(int startFrom,
-                                           int pageSize) throws InvalidParameterException,
+    public List<DataAssetElement>   scanAssets(int startFrom,
+                                               int pageSize) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        return dataAssetExchangeClient.scanAssets(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+        return dataAssetExchangeClient.scanDataAssets(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
     }
 
 
@@ -138,13 +138,13 @@ public class SecurityIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetElement getAssetByGUID(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String openMetadataGUID) throws InvalidParameterException,
+    public DataAssetElement getAssetByGUID(String userId,
+                                           String assetManagerGUID,
+                                           String assetManagerName,
+                                           String openMetadataGUID) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return dataAssetExchangeClient.getAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
+        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID);
     }
 }
