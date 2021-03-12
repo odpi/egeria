@@ -50,7 +50,7 @@ public class LibraryTermReference extends Line {
     private Date lastVerified;
 
     public LibraryTermReference() {
-        super("LibraryTermReference", "38c346e4-ddd2-42ef-b4aa-55d53c078d22", LINE_END_1, LINE_END_2);
+        super("LibraryTermReference", LINE_END_1, LINE_END_2);
     }
 
     /**

@@ -50,7 +50,7 @@ public class ValidValue extends Line {
     private String source;
 
     public ValidValue() {
-        super("ValidValue", "707a156b-e579-4482-89a5-de5889da1971", LINE_END_1, LINE_END_2);
+        super("ValidValue", LINE_END_1, LINE_END_2);
     }
 
     /**

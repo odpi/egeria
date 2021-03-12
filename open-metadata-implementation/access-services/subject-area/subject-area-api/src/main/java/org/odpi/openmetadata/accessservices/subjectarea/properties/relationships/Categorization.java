@@ -47,7 +47,7 @@ public class Categorization extends Line {
     private TermRelationshipStatus status;
 
     public Categorization() {
-        super("TermCategorization", "696a81f5-ac60-46c7-b9fd-6979a1e7ad27", LINE_END_1, LINE_END_2);
+        super("TermCategorization", LINE_END_1, LINE_END_2);
     }
 
     /**
