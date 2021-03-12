@@ -14,7 +14,6 @@ import javax.net.ssl.X509TrustManager
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
-System.exit(-1) // still need to fix this
 
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
 

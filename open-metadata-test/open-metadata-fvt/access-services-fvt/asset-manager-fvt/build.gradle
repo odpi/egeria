@@ -81,7 +81,9 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
     systemProperties = [
             'name': 'Egeria chassis',
             'baseURL': 'https://localhost:10444',
-            'server': 'fvtServer',
+            'servermem': 'serverinmem',
+            'servergraph': 'servergraph',
+            'delay': '10',
             'user': 'testUser'
     ]
 }
