@@ -21,8 +21,8 @@ import java.security.cert.X509Certificate
 // Maven plugin works best with properties, gradle with system properties, so use either
 user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
 baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
-serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
-serverGraph=(properties["servergraph"] ?: System.properties["servergraph"]) ?: "servergraph";
+serverMem=(properties["serverInMemory"] ?: System.properties["serverInMemory"]) ?: "serverinmem";
+serverGraph=(properties["serverLocalGraph"] ?: System.properties["serverLocalGraph"]) ?: "servergraph";
 maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 12 as String)
 delay=Integer.parseInt((properties["delay"] ?: System.properties["delay"]) ?: 10 as String)
 
