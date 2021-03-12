@@ -37,9 +37,9 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
  */
 public class GlossaryContextHandler {
 
-    private InvalidParameterHandler invalidParameterHandler;
-    private HandlerHelper handlerHelper;
-    private AssetContextHandler assetContextHandler;
+    private final InvalidParameterHandler invalidParameterHandler;
+    private final HandlerHelper handlerHelper;
+    private final AssetContextHandler assetContextHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services

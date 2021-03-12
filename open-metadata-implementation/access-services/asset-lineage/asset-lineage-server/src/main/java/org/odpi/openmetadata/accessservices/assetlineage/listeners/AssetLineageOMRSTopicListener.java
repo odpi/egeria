@@ -50,11 +50,11 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private static final String PROCESSING_RELATIONSHIP_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning relationship {} ";
     private static final String PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning entity {} ";
 
-    private AssetLineagePublisher publisher;
-    private AuditLog auditLog;
-    private Converter converter;
-    private Set<String> lineageClassificationTypes;
-    private String serverName;
+    private final AssetLineagePublisher publisher;
+    private final AuditLog auditLog;
+    private final Converter converter;
+    private final Set<String> lineageClassificationTypes;
+    private final String serverName;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS

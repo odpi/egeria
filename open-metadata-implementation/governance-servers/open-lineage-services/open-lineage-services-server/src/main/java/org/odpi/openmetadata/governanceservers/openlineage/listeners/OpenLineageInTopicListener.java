@@ -69,7 +69,6 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
 
         LineageRelationshipEvent lineageRelationshipEvent;
         LineageEntityEvent lineageEntityEvent;
-        ProcessLineageEvent processLineageEvent;
         LineageRelationshipsEvent lineageRelationshipsEvent;
 
         switch (assetLineageEventHeader.getAssetLineageEventType()) {

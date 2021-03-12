@@ -14,7 +14,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEvent
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
@@ -44,11 +43,11 @@ public class AssetLineagePublisher {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
-    private OpenMetadataTopicConnector outTopicConnector;
-    private String serverUserName;
-    private ProcessContextHandler processContextHandler;
-    private ClassificationHandler classificationHandler;
-    private GlossaryContextHandler glossaryHandler;
+    private final OpenMetadataTopicConnector outTopicConnector;
+    private final String serverUserName;
+    private final ProcessContextHandler processContextHandler;
+    private final ClassificationHandler classificationHandler;
+    private final GlossaryContextHandler glossaryHandler;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
