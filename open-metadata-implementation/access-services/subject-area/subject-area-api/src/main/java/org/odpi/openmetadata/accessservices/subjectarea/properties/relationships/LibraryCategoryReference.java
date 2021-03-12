@@ -51,7 +51,7 @@ public class LibraryCategoryReference extends Line {
     private Date lastVerified;
 
     public LibraryCategoryReference() {
-        super("LibraryCategoryReference", "3da21cc9-3cdc-4d87-89b5-c501740f00b2", LINE_END_1, LINE_END_2);
+        super("LibraryCategoryReference", LINE_END_1, LINE_END_2);
     }
 
     /**
