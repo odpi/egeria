@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 
-import java.util.Map;
 import java.util.Set;
 
 public interface LineageGraph extends OpenLineageGraphConnector {
@@ -75,4 +74,11 @@ public interface LineageGraph extends OpenLineageGraphConnector {
      */
     void schedulerTask();
 
+    /**
+     * Returns whether an entity exists in the graph or not
+     *
+     * @param guid the lineage entity guid
+     * @return the boolean
+     */
+    boolean isPresentInGraph(String guid);
 }

@@ -23,11 +23,13 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_ENDPOINT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_TO_ASSET;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_CONTENT_FOR_DATA_SET;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 
 /**
@@ -118,19 +120,12 @@ public class AssetContextHandler {
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
-            case TABULAR_COLUMN:
-                EntityDetail schemaType = handlerHelper.getNextEntityDetail(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA);
-                EntityDetail dataFile = handlerHelper.getNextEntityDetail(userId, schemaType, ASSET_SCHEMA_TYPE);
-                if (dataFile != null) {
-                    context = buildDataFileContext(userId, dataFile);
-                }
+            case DATA_FILE:
+                context = buildDataFileContext(userId, entityDetail);
                 break;
 
-            case RELATIONAL_COLUMN:
-                EntityDetail relationalTable = handlerHelper.getNextEntityDetail(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE);
-                if (relationalTable != null) {
-                    context = buildRelationalTableContext(userId, relationalTable);
-                }
+            case RELATIONAL_TABLE:
+                context = buildRelationalTableContext(userId, entityDetail);
                 break;
         }
 

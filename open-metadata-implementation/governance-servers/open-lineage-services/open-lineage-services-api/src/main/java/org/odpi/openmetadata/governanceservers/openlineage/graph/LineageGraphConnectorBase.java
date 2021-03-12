@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 
-import java.util.Map;
 import java.util.Set;
 
 public abstract class LineageGraphConnectorBase extends ConnectorBase implements LineageGraph {
@@ -41,4 +40,6 @@ public abstract class LineageGraphConnectorBase extends ConnectorBase implements
     @Override
     public abstract void deleteEntity(String guid,Object version);
 
+    @Override
+    public abstract boolean isPresentInGraph(String guid);
 }

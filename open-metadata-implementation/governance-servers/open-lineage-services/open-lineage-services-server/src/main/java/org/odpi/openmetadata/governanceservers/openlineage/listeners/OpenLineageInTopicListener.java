@@ -6,10 +6,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
+import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageAssetContextHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -17,15 +23,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+import java.util.Set;
+
 public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageInTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
     private StoringServices storingServices;
+    private OpenLineageAssetContextHandler assetContextHandler;
 
-    public OpenLineageInTopicListener(StoringServices storingServices, OMRSAuditLog auditLog) {
+    public OpenLineageInTopicListener(StoringServices storingServices, OpenLineageAssetContextHandler assetContextHandler,
+                                      OMRSAuditLog auditLog) {
         this.storingServices = storingServices;
+        this.assetContextHandler = assetContextHandler;
         this.auditLog = auditLog;
     }
 
@@ -60,7 +72,8 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
 
     }
 
-    private void processEventBasedOnType(String assetLineageEvent) throws JsonProcessingException {
+    private void processEventBasedOnType(String assetLineageEvent) throws JsonProcessingException, InvalidParameterException,
+            PropertyServerException, UserNotAuthorizedException {
         AssetLineageEventHeader assetLineageEventHeader = OBJECT_MAPPER.readValue(assetLineageEvent, AssetLineageEventHeader.class);
 
         if (assetLineageEventHeader == null) {
@@ -82,9 +95,21 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
             case TERM_CATEGORIZATIONS_EVENT:
             case TERM_ANCHORS_EVENT:
             case CATEGORY_ANCHORS_EVENT:
-            case COLUMN_CONTEXT_EVENT:
             case LINEAGE_MAPPINGS_EVENT:
                 lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                storingServices.addEntityContext(lineageRelationshipsEvent);
+                break;
+            case COLUMN_CONTEXT_EVENT:
+                lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                Optional<LineageEntity> optionalEntity = assetContextHandler.getTableOrFileLineageEntityFromEvent(lineageRelationshipsEvent);
+                if(optionalEntity.isPresent()) {
+                    LineageEntity entity = optionalEntity.get();
+                    String guid = entity.getGuid();
+                    if(!storingServices.isPresentInGraph(guid)) {
+                        Set<GraphContext> relationships = assetContextHandler.getAssetContextForEntity(guid, entity.getTypeDefName());
+                        storingServices.addEntityContext(relationships);
+                    }
+                }
                 storingServices.addEntityContext(lineageRelationshipsEvent);
                 break;
             case NEW_RELATIONSHIP_EVENT:

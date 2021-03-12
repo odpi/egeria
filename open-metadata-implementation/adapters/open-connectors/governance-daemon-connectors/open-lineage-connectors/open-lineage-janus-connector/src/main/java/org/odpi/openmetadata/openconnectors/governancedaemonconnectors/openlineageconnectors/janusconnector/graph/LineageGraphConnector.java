@@ -790,5 +790,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         return new LineageVertexResponse(lineageVertex);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isPresentInGraph(String guid) {
+        return !g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).toList().isEmpty();
+    }
 }
 

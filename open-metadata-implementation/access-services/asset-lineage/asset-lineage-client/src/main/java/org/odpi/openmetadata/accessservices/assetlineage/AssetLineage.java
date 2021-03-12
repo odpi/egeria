@@ -19,8 +19,9 @@ import java.util.List;
 public class AssetLineage extends FFDCRESTClient implements AssetLineageInterface {
 
     private static final String BASE_PATH = "/servers/{0}/open-metadata/access-services/asset-lineage/users/{1}/";
-    private static final String PUBLISH_ENTITIES = "/publish-entities/{2}";
-    private static final String PROVIDE_CONTEXT = "/provide-context/{2}";
+    private static final String PUBLISH_ENTITIES = "publish-entities/{2}";
+    private static final String PROVIDE_CONTEXT = "provide-context/{2}/{3}";
+    private String userId;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -47,6 +48,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
     public AssetLineage(String serverName, String serverPlatformURLRoot, String userId, String password)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         super(serverName, serverPlatformURLRoot, userId, password);
+        this.userId = userId;
     }
 
     /**
@@ -76,7 +78,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
      * {@inheritDoc}
      */
     @Override
-    public RelationshipsContext provideAssetContext(String serverName, String userId, String guid, String entityType)
+    public RelationshipsContext provideAssetContext(String guid, String entityType)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "provideAssetContext";
 
@@ -84,7 +86,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
 
         String urlTemplate = serverPlatformURLRoot + BASE_PATH + PROVIDE_CONTEXT;
         AssetContextResponse response = callGetRESTCall(methodName, AssetContextResponse.class, urlTemplate, serverName,
-                userId, entityType);
+                userId, entityType, guid);
 
         exceptionHandler.detectAndThrowInvalidParameterException(response);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(response);
