@@ -16,7 +16,7 @@ import java.security.cert.X509Certificate
 
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
 user = properties["user"]
-baseURL = properties["baseURL"] + properties["serverPort"]
+baseURL = properties["baseURL"] + ":" + properties["serverPort"]
 serverMem = properties["serverInMemory"]
 serverGraph = properties["serverLocalGraph"]
 maxRetries = Integer.parseInt(properties["retries"] as String)
