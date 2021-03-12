@@ -93,7 +93,7 @@ distributions {
         contents {
             into('server') {
                 // Just the chassis
-                from { project(':open-metadata-implementation:server-chassis:server-chassis-spring').jar }
+                from { project(':open-metadata-implementation:server-chassis:server-chassis-spring').bootJar }
                 fileMode = 0755
             }
             into('server/lib') {
@@ -221,6 +221,10 @@ sourceSets {
         output.dir("${project.buildDir}/distributions")
     }
 }
+
+// Only complete when unzip is done
+build.dependsOn unzip
+
 
 
 
