@@ -28,21 +28,21 @@ public class Translation extends Line {
     /*
      * Set up end 1.
      */
-     protected static final String END_1_NODE_TYPE = "Term";
-     protected static final String END_1_ATTRIBUTE_NAME = "translations";
-     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Translations of glossary term.";
-     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     private static final String END_1_NODE_TYPE = "Term";
+     private static final String END_1_ATTRIBUTE_NAME = "translations";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Translations of glossary term.";
+     private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-     protected static final String END_2_NODE_TYPE = "Term";
-     protected static final String END_2_ATTRIBUTE_NAME = "translations";
-     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Translations of glossary term.";
-     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     private static final String END_2_NODE_TYPE = "Term";
+     private static final String END_2_ATTRIBUTE_NAME = "translations";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Translations of glossary term.";
+     private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String expression;
@@ -51,7 +51,7 @@ public class Translation extends Line {
     private String source;
 
     public Translation() {
-        super("Translation", "6ae42e95-efc5-4256-bfa8-801140a29d2a", LINE_END_1, LINE_END_2);
+        super("Translation", LINE_END_1, LINE_END_2);
     }
 
     /**

@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 
 /**
- * Static mapping methods to map between the antonym and the equivalent generated OMRSRelationshipBean
+ * Static mapping methods to map between the Line and the equivalent generated OMRSRelationshipBean
  */
 public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
     protected final OMRSAPIHelper omrsapiHelper;

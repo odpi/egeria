@@ -27,21 +27,21 @@ public class IsA extends Line {
     /*
      * Set up end 1.
      */
-     protected static final String END_1_NODE_TYPE = "Term";
-     protected static final String END_1_ATTRIBUTE_NAME = "classifies";
-     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "More specific glossary terms.";
-     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     private static final String END_1_NODE_TYPE = "Term";
+     private static final String END_1_ATTRIBUTE_NAME = "classifies";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "More specific glossary terms.";
+     private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-     protected static final String END_2_NODE_TYPE = "Term";
-     protected static final String END_2_ATTRIBUTE_NAME = "isA";
-     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "More general glossary terms.";
-     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     private static final String END_2_NODE_TYPE = "Term";
+     private static final String END_2_ATTRIBUTE_NAME = "isA";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "More general glossary terms.";
+     private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String expression;
@@ -50,7 +50,7 @@ public class IsA extends Line {
     private String source;
 
     public IsA() {
-        super("Isa", "50fab7c7-68bc-452f-b8eb-ec76829cac85", LINE_END_1, LINE_END_2);
+        super("IsA", LINE_END_1, LINE_END_2);
     }
 
     /**

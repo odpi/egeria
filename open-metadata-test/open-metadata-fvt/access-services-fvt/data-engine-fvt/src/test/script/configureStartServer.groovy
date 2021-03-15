@@ -12,40 +12,43 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 import java.security.SecureRandom
+import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
-user = properties["user"]
-baseURL = properties["baseURL"] + properties["serverPort"]
-serverMem = properties["serverInMemory"]
-serverGraph = properties["serverLocalGraph"]
-maxRetries = Integer.parseInt(properties["retries"] as String)
-delay = Integer.parseInt(properties["delay"] as String)
+// Maven plugin works best with properties, gradle with system properties, so use either
+user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
+baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
+serverMem=(properties["serverInMemory"] ?: System.properties["serverInMemory"]) ?: "serverinmem";
+serverGraph=(properties["serverLocalGraph"] ?: System.properties["serverLocalGraph"]) ?: "servergraph";
+maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 12 as String)
+delay=Integer.parseInt((properties["delay"] ?: System.properties["delay"]) ?: 10 as String)
 
 // SSL setup to avoid self-signed errors for testing
-TrustManager[] trustAllCerts = new TrustManager[] {
+def trustAllCerts = [
         new X509TrustManager() {
-
             public X509Certificate[] getAcceptedIssuers() {
-                return null;
+                return null
             }
-            public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                //No need to implement.
+
+            public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
             }
-            public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                //No need to implement.
+
+            public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
             }
         }
-}
+] as TrustManager[]
 
-try {
-    SSLContext sc = SSLContext.getInstance("SSL")
-    sc.init(null, trustAllCerts, new SecureRandom())
-    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory())
+try
+{
+    SSLContext sc = SSLContext.getInstance("SSL");
+    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 }
-catch (Exception e) {
-    System.out.println(e)
-    System.exit(-1)
+catch (Exception e)
+{
+    System.out.println(e);
+    System.exit(-1);
 }
 
 // Wait until the platform is ready
