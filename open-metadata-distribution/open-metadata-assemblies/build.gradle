@@ -9,6 +9,7 @@ plugins {
 
 apply plugin: 'distribution'
 
+jar.enabled=false
 
 description = 'Open Metadata Assemblies'
 
@@ -88,11 +89,11 @@ dependencies {
 
 distributions {
     egeriaomag {
-        distributionBaseName = "${rootProject.name}-distribution"
+        //distributionBaseName = "${rootProject.name}-distribution"
         contents {
             into('server') {
                 // Just the chassis
-                from { project(':open-metadata-implementation:server-chassis:server-chassis-spring').jar }
+                from { project(':open-metadata-implementation:server-chassis:server-chassis-spring').bootJar }
                 fileMode = 0755
             }
             into('server/lib') {
@@ -160,7 +161,7 @@ distributions {
         }
     }
     deploy {
-        distributionBaseName = "${rootProject.name}-deploy"
+        //distributionBaseName = "${rootProject.name}-deploy"
         contents {
             into('notebooks') {
                 from("${project(':open-metadata-resources:open-metadata-labs').projectDir}")
@@ -193,17 +194,36 @@ distributions {
 }
 // Override the distribution filenames to match what we use with maven (replaces baseName above)
 egeriaomagDistTar.compression = Compression.GZIP
-egeriaomagDistTar.archiveExtension = 'tar.gz'
+//egeriaomagDistTar.archiveExtension = 'tar.gz'
 egeriaomagDistTar.archiveFileName = (rootProject.name + '-' + rootProject.version + '-distribution.tar.gz')
 egeriaomagDistZip.enabled=false // TODO: does not seem to work
 
 // Ditto for the deploy distribution
 deployDistTar.compression = Compression.GZIP
-deployDistTar.archiveExtension = 'tar.gz'
+//deployDistTar.archiveExtension = 'tar.gz'
 deployDistTar.archiveFileName = (rootProject.name + '-' + rootProject.version + '-deploy.tar.gz')
 deployDistZip.enabled=false // TODO: does not seem to work
 
+task unzip(type: Copy) {
+    String zipFile = "${project.buildDir}/distributions/${rootProject.name}-${rootProject.version}-distribution.tar.gz"
+    //def zipFile = (project.buildDir + '/distributions/' + rootProject.name + '-' + rootProject.version + '-distribution.tar.gz')
+    def outputDir = file("${buildDir}/unpacked")
 
+    from tarTree(zipFile)
+    into outputDir
+}
+
+egeriaomagDistTar.finalizedBy unzip
+
+// Define the output from this module - in this case our distributions
+sourceSets {
+    main {
+        output.dir("${project.buildDir}/distributions")
+    }
+}
+
+// Only complete when unzip is done
+build.dependsOn unzip
 
 
 

@@ -161,7 +161,7 @@
                         <configuration>
                             <defaults>
                                 <name>Egeria chassis</name>
-                                <baseURL>https://localhost</baseURL>
+                                <baseURL>https://localhost:${serverPort}</baseURL>
                                 <serverPort>${server.port}</serverPort>
                                 <serverInMemory>${server.in-memory-graph.name}</serverInMemory>
                                 <serverLocalGraph>${server.local-graph.name}</serverLocalGraph>
