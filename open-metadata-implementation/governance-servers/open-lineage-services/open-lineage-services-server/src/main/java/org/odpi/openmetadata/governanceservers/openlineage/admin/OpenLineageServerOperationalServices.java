@@ -223,9 +223,8 @@ public class OpenLineageServerOperationalServices {
         inTopicConnector.setAuditLog(auditLog);
         StoringServices storingServices = new StoringServices(lineageGraphConnector);
         OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
-        AssetLineage assetLineage = new AssetLineage(accessServiceConfig.getServerName(), accessServiceConfig.getServerPlatformUrlRoot(),
-                accessServiceConfig.getUser(), accessServiceConfig.getPassword());
-        OpenLineageAssetContextHandler assetContextHandler = new OpenLineageAssetContextHandler(assetLineage);
+        AssetLineage assetLineage = new AssetLineage(accessServiceConfig.getServerName(), accessServiceConfig.getServerPlatformUrlRoot());
+        OpenLineageAssetContextHandler assetContextHandler = new OpenLineageAssetContextHandler(localServerUserId, assetLineage);
         OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices,
                 assetContextHandler, auditLog);
         inTopicConnector.registerListener(openLineageInTopicListener);

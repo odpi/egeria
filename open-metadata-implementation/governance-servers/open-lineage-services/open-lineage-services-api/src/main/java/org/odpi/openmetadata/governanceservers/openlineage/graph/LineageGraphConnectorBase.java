@@ -41,5 +41,5 @@ public abstract class LineageGraphConnectorBase extends ConnectorBase implements
     public abstract void deleteEntity(String guid,Object version);
 
     @Override
-    public abstract boolean isPresentInGraph(String guid);
+    public abstract boolean isEntityInGraph(String guid);
 }

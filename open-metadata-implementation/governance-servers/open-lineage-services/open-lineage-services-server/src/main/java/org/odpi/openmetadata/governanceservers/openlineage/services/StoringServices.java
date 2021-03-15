@@ -106,8 +106,8 @@ public class StoringServices {
      * @param guid the guid
      * @return the boolean
      */
-    public boolean isPresentInGraph(String guid) {
-        return lineageGraph.isPresentInGraph(guid);
+    public boolean isEntityInGraph(String guid) {
+        return lineageGraph.isEntityInGraph(guid);
     }
 
 }

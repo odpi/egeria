@@ -78,7 +78,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
      * {@inheritDoc}
      */
     @Override
-    public RelationshipsContext provideAssetContext(String guid, String entityType)
+    public RelationshipsContext provideAssetContext(String userId, String guid, String entityType)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "provideAssetContext";
 

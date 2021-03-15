@@ -80,5 +80,5 @@ public interface LineageGraph extends OpenLineageGraphConnector {
      * @param guid the lineage entity guid
      * @return the boolean
      */
-    boolean isPresentInGraph(String guid);
+    boolean isEntityInGraph(String guid);
 }

@@ -101,11 +101,11 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                 break;
             case COLUMN_CONTEXT_EVENT:
                 lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
-                Optional<LineageEntity> optionalEntity = assetContextHandler.getTableOrFileLineageEntityFromEvent(lineageRelationshipsEvent);
+                Optional<LineageEntity> optionalEntity = assetContextHandler.getAssetLineageEntity(lineageRelationshipsEvent);
                 if(optionalEntity.isPresent()) {
                     LineageEntity entity = optionalEntity.get();
                     String guid = entity.getGuid();
-                    if(!storingServices.isPresentInGraph(guid)) {
+                    if(!storingServices.isEntityInGraph(guid)) {
                         Set<GraphContext> relationships = assetContextHandler.getAssetContextForEntity(guid, entity.getTypeDefName());
                         storingServices.addEntityContext(relationships);
                     }

@@ -10,18 +10,32 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 public class OpenLineageAssetContextHandler {
     private static final String DATA_FILE = "DataFile";
+    private static final String AVRO_FILE = "AvroFile";
+    private static final String CSV_FILE = "CSVFile";
+    private static final String JSON_FILE = "JSONFile";
+    private static final String KEYSTORE_FILE = "KeystoreFile";
+    private static final String LOG_FILE = "LogFile";
+    private static final String MEDIA_FILE = "MediaFile";
+    private static final String DOCUMENT = "Document";
+    private static final List<String> DATA_FILE_TYPES = Arrays.asList(DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
+            KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
     private static final String RELATIONAL_TABLE = "RelationalTable";
     private static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
     private static final String ASSET_SCHEMA_TYPE = "AssetSchemaType";
 
+    private final String localServerUserId;
     private final AssetLineage assetLineageClient;
 
-    public OpenLineageAssetContextHandler(AssetLineage assetLineageClient) {
+    public OpenLineageAssetContextHandler(String localServerUserId, AssetLineage assetLineageClient) {
+        this.localServerUserId = localServerUserId;
         this.assetLineageClient = assetLineageClient;
     }
 
@@ -37,7 +51,7 @@ public class OpenLineageAssetContextHandler {
      */
     public Set<GraphContext> getAssetContextForEntity(String guid, String typeDefName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        return assetLineageClient.provideAssetContext(guid, typeDefName).getRelationships();
+        return assetLineageClient.provideAssetContext(localServerUserId, guid, typeDefName).getRelationships();
     }
 
     /**
@@ -47,13 +61,14 @@ public class OpenLineageAssetContextHandler {
      * @param lineageRelationshipsEvent the lineage relationships event
      * @return the lineage entity
      */
-    public Optional<LineageEntity> getTableOrFileLineageEntityFromEvent(LineageRelationshipsEvent lineageRelationshipsEvent) {
+    public Optional<LineageEntity> getAssetLineageEntity(LineageRelationshipsEvent lineageRelationshipsEvent) {
         Set<GraphContext> relationships = lineageRelationshipsEvent.getRelationshipsContext().getRelationships();
 
-        Optional<LineageEntity> entity = getEntityByEntityTypeFromRelationships(relationships, NESTED_SCHEMA_ATTRIBUTE, RELATIONAL_TABLE);
+        Optional<LineageEntity> entity = getEntityByEntityTypeFromRelationships(relationships, NESTED_SCHEMA_ATTRIBUTE,
+                Collections.singletonList(RELATIONAL_TABLE));
 
         if(!entity.isPresent()) {
-            entity = getEntityByEntityTypeFromRelationships(relationships, ASSET_SCHEMA_TYPE, DATA_FILE);
+            entity = getEntityByEntityTypeFromRelationships(relationships, ASSET_SCHEMA_TYPE, DATA_FILE_TYPES);
         }
         return entity;
     }
@@ -64,27 +79,27 @@ public class OpenLineageAssetContextHandler {
      *
      * @param relationships    the relationships
      * @param relationshipType the relationship type
-     * @param entityType       the entity type
+     * @param entityTypes       the entity types
      * @return the entity by entity type from relationships
      */
     private Optional<LineageEntity> getEntityByEntityTypeFromRelationships(Set<GraphContext> relationships,
-                                                                          String relationshipType, String entityType) {
+                                                                          String relationshipType, List<String> entityTypes) {
         return relationships
                 .stream()
                 .filter(relationship -> relationshipType.equals(relationship.getRelationshipType()))
-                .map(relationship -> getEntityByEntityType(entityType, relationship))
+                .map(relationship -> getEntityByEntityType(entityTypes, relationship))
                 .findFirst();
     }
 
     /**
      * Given a relationship, it gets the entity by entity type from the two vertices (to and from).
      *
-     * @param entityType   the entity type
+     * @param entityTypes   the entity type
      * @param relationship the relationship
      * @return the entity by entity type
      */
-    private LineageEntity getEntityByEntityType(String entityType, GraphContext relationship) {
-        return entityType.equals(relationship.getToVertex().getTypeDefName()) ? relationship.getToVertex() : relationship.getFromVertex();
+    private LineageEntity getEntityByEntityType(List<String> entityTypes, GraphContext relationship) {
+        return entityTypes.contains(relationship.getToVertex().getTypeDefName()) ? relationship.getToVertex() : relationship.getFromVertex();
     }
 
 }

@@ -33,7 +33,7 @@ public interface AssetLineageInterface {
 
     /**
      * Provide the asset context of an entity - used for data files and relational tables.
-     *
+     * @param userId     the caller user Id
      * @param guid       the guid
      * @param entityType the entity type
      * @return the map
@@ -41,7 +41,7 @@ public interface AssetLineageInterface {
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
      */
-    RelationshipsContext provideAssetContext(String guid, String entityType)
+    RelationshipsContext provideAssetContext(String userId, String guid, String entityType)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 
 }
