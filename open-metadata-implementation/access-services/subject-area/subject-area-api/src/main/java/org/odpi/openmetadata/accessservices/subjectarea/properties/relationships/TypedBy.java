@@ -49,7 +49,7 @@ public class TypedBy extends Line {
     private String source;
 
     public TypedBy() {
-        super("TypedBy", "669e8aa4-c671-4ee7-8d03-f37d09b9d006", LINE_END_1, LINE_END_2);
+        super("TypedBy", LINE_END_1, LINE_END_2);
     }
 
     /**

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.apache.commons.lang3.StringUtils;
+import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.accessservices.subjectarea.fvt.GraphFVT;
 import org.odpi.openmetadata.http.HttpHelper;
 
@@ -21,6 +23,6 @@ public class GraphIT {
     @ParameterizedTest
     @ValueSource(strings = {"serverinmem","servergraph"})
     public void testGraph(String server) {
-        assertDoesNotThrow(() -> GraphFVT.runIt("https://localhost:10443", server, "garygeeke"));
+        assertDoesNotThrow(() -> GraphFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));
     }
 }

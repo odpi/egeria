@@ -47,7 +47,7 @@ public class MediaReference extends Line {
     private String mediaId;
 
     public MediaReference() {
-        super("MediaReference", "1353400f-b0ab-4ab9-ab09-3045dd8a7140", LINE_END_1, LINE_END_2);
+        super("MediaReference", LINE_END_1, LINE_END_2);
     }
 
     /**
