@@ -50,7 +50,7 @@ public class Antonym extends Line {
     private String source;
 
     public Antonym() {
-        super("Antonym", "ea5e126a-a8fa-4a43-bcfa-309a98aa0185", LINE_END_1, LINE_END_2);
+        super("Antonym", LINE_END_1, LINE_END_2);
     }
 
     /**

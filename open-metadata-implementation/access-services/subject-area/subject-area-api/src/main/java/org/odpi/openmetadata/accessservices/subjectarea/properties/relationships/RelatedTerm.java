@@ -51,7 +51,7 @@ public class RelatedTerm extends Line {
     private String source;
 
     public RelatedTerm() {
-        super("RelatedTerm", "b1161696-e563-4cf9-9fd9-c0c76e47d063", LINE_END_1, LINE_END_2);
+        super("RelatedTerm", LINE_END_1, LINE_END_2);
     }
 
     /**

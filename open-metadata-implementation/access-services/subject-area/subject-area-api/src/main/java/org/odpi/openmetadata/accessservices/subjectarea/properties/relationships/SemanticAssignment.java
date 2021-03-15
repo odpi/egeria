@@ -51,7 +51,7 @@ public class SemanticAssignment extends Line {
     private String source;
 
     public SemanticAssignment() {
-        super("SemanticAssignment", "e6670973-645f-441a-bec7-6f5570345b92", LINE_END_1, LINE_END_2);
+        super("SemanticAssignment", LINE_END_1, LINE_END_2);
     }
 
     /**

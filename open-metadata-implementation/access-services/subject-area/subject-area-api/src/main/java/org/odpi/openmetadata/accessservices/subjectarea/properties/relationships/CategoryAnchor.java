@@ -45,7 +45,7 @@ public class CategoryAnchor extends Line {
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     public CategoryAnchor() {
-        super("CategoryAnchor", "c628938e-815e-47db-8d1c-59bb2e84e028", LINE_END_1, LINE_END_2);
+        super("CategoryAnchor", LINE_END_1, LINE_END_2);
     }
 
     @Override

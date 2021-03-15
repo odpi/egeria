@@ -50,7 +50,7 @@ public class IsATypeOf extends Line {
     private String source;
 
     public IsATypeOf() {
-        super("IsaTypeOf", "d5d588c3-46c9-420c-adff-6031802a7e51", LINE_END_1, LINE_END_2);
+        super("IsaTypeOf", LINE_END_1, LINE_END_2);
     }
 
     /**
