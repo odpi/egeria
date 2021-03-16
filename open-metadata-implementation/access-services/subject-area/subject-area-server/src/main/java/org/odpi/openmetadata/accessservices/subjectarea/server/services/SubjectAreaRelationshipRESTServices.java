@@ -1919,47 +1919,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     }
 
     /**
-     * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the SemanticAssignment relationship to get
-     * @return response which when successful contains the SemanticAssignment relationship with the requested guid
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<SemanticAssignment> getSemanticAssignmentRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "getSemanticAssignmentRelationship";
-        return getLine(serverName, restAPIName, userId, SemanticAssignmentMapper.class, guid);
-    }
-
-    /**
-     * Update a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
-     *
-     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId                userId under which the request is performed
-     * @param guid                  guid of the CategoryHierarchyLink relationship
-     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
-     * @param isReplace             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated categoryHierarchyLink
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryHierarchyLink(String serverName, String userId, String guid, CategoryHierarchyLink categoryHierarchyLink, Boolean isReplace) {
-        String restAPIName = "updateCategoryHierarchyLink";
-        return updateLine(serverName,restAPIName, userId, guid, CategoryHierarchyLinkMapper.class, categoryHierarchyLink, isReplace);
-    }
-
-    /**
      * Create a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
      *
      * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -1995,6 +1954,26 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> getCategoryHierarchyLink(String serverName, String userId, String guid) {
         String restAPIName = "getCategoryHierarchyLink";
         return getLine(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid);
+    }
+    /**
+     * Update a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
+     * @param guid                  guid of the CategoryHierarchyLink relationship
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @param isReplace             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated categoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryHierarchyLink(String serverName, String userId, String guid, CategoryHierarchyLink categoryHierarchyLink, Boolean isReplace) {
+        String restAPIName = "updateCategoryHierarchyLink";
+        return updateLine(serverName,restAPIName, userId, guid, CategoryHierarchyLinkMapper.class, categoryHierarchyLink, isReplace);
     }
 
     /**
@@ -2038,4 +2017,24 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         String restAPIName = "restoreCategoryHierarchyLink";
         return restoreLine(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid);
     }
+    /**
+     * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the SemanticAssignment relationship to get
+     * @return response which when successful contains the SemanticAssignment relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<SemanticAssignment> getSemanticAssignmentRelationship(String serverName, String userId, String guid) {
+        String restAPIName = "getSemanticAssignmentRelationship";
+        return getLine(serverName, restAPIName, userId, SemanticAssignmentMapper.class, guid);
+    }
+
 }
