@@ -11,6 +11,8 @@ pluginManagement {
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
         id 'com.github.johnrengelman.shadow' version '6.1.0'
         id 'org.siouan.frontend-jdk11' version '4.0.1'
+        id 'com.github.hesch.execfork' version '0.1.14'
+
 
         // For reference we use these, but they are internal so no version spec needed
         //id 'java' version
@@ -388,6 +390,7 @@ include(':open-metadata-test:open-metadata-ut')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-consumer-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-manager-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-owner-fvt')
+include(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-engine-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-manager-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-architecture-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt')
@@ -765,6 +768,7 @@ project(':open-metadata-test:open-metadata-ut').projectDir = file('open-metadata
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-consumer-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/asset-consumer-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-manager-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/asset-manager-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-owner-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/asset-owner-fvt')
+project(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-engine-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/data-engine-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-manager-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/data-manager-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-architecture-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/digital-architecture-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/subject-area-fvt')

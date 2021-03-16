@@ -29,21 +29,21 @@ public class LibraryCategoryReference extends Line {
     /*
      * Set up end 1.
      */
-     protected static final String END_1_NODE_TYPE = "Category";
-     protected static final String END_1_ATTRIBUTE_NAME = "localCategories";
-     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Related local glossary categories.";
-     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     private static final String END_1_NODE_TYPE = "Category";
+     private static final String END_1_ATTRIBUTE_NAME = "localCategories";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Related local glossary categories.";
+     private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-     protected static final String END_2_NODE_TYPE = "ExternalGlossaryLink";
-     protected static final String END_2_ATTRIBUTE_NAME = "externalGlossaryCategories";
-     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Links to related external glossaries.";
-     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     private static final String END_2_NODE_TYPE = "ExternalGlossaryLink";
+     private static final String END_2_ATTRIBUTE_NAME = "externalGlossaryCategories";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Links to related external glossaries.";
+     private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String identifier;
@@ -51,7 +51,7 @@ public class LibraryCategoryReference extends Line {
     private Date lastVerified;
 
     public LibraryCategoryReference() {
-        super("LibraryCategoryReference", "3da21cc9-3cdc-4d87-89b5-c501740f00b2", LINE_END_1, LINE_END_2);
+        super("LibraryCategoryReference", LINE_END_1, LINE_END_2);
     }
 
     /**

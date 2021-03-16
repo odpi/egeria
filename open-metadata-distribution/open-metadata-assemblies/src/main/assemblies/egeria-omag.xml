@@ -104,7 +104,6 @@
                 <include>org.odpi.egeria:cloud-information-model:*</include>
                 <include>org.odpi.egeria:glossary-canonical-model:*</include>
                 <include>org.odpi.egeria:open-metadata-types:*</include>
-                <include>org.odpi.egeria:open-connector-archives:*</include>
             </includes>
             <binaries>
                 <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
@@ -126,7 +125,6 @@
                 <include>org.odpi.egeria:governance-leadership-sample:*</include>
                 <include>org.odpi.egeria:governance-zone-create-sample:*</include>
                 <include>org.odpi.egeria:subject-area-definition-sample:*</include>
-                <include>org.odpi.egeria:open-connector-archives:*</include>
             </includes>
             <binaries>
                 <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>

@@ -27,21 +27,21 @@ public class HasA extends Line {
     /*
      * Set up end 1.
      */
-     protected static final String END_1_NODE_TYPE = "Term";
-     protected static final String END_1_ATTRIBUTE_NAME = "objects";
-     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Objects where this attribute may occur.";
-     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     private static final String END_1_NODE_TYPE = "Term";
+     private static final String END_1_ATTRIBUTE_NAME = "objects";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Objects where this attribute may occur.";
+     private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-     protected static final String END_2_NODE_TYPE = "Term";
-     protected static final String END_2_ATTRIBUTE_NAME = "attributes";
-     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Typical attributes for this object.";
-     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     private static final String END_2_NODE_TYPE = "Term";
+     private static final String END_2_ATTRIBUTE_NAME = "attributes";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Typical attributes for this object.";
+     private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private TermRelationshipStatus status;
@@ -49,7 +49,7 @@ public class HasA extends Line {
     private String source;
 
     public HasA() {
-        super("HasA","d67f16d1-5348-419e-ba38-b0bb6fe4ad6c", LINE_END_1, LINE_END_2);
+        super("HasA", LINE_END_1, LINE_END_2);
     }
 
     /**

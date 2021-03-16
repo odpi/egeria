@@ -54,18 +54,16 @@ abstract public class Line implements Serializable, OmasObject {
     private Date effectiveFromTime = null;
     private Date effectiveToTime = null;
     private Map<String, String> additionalProperties;
-    protected String typeDefGuid;
     protected LineType lineType;
     // this is the line name
     protected String name;
     protected LineEnd end1;
     protected LineEnd end2;
 
-    protected Line(String name, String typeDefGuid, LineEnd end1, LineEnd end2) {
-        this.end1 = end1;
-        this.end2 = end2;
+    protected Line(String name, LineEnd end1, LineEnd end2) {
+        this.end1 = new LineEnd(end1);
+        this.end2 = new LineEnd(end2);
         this.name = name;
-        this.typeDefGuid = typeDefGuid;
         initialise();
     }
 
