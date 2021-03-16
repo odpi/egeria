@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Thread.sleep;
+
 /**
  * GovernanceEngineOMRSTopicListener is the listener that registers with the repository services (OMRS)
  * to monitor changes to the metadata.  This class is looking for changes to the governance engines
@@ -190,19 +192,36 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                     {
                         try
                         {
-                            GovernanceActionElement element = governanceActionHandler.getGovernanceAction(userId, entity.getGUID(), methodName);
+                            int attempt = 0;
+                            int sleepTime = 1000;
 
-                            if (element.getProperties().getGovernanceEngineName() != null)
+                            GovernanceActionElement element = null;
+
+                            while (attempt < 5)
                             {
-                                eventPublisher.publishNewGovernanceAction(element.getProperties().getGovernanceEngineGUID(),
-                                                                          element.getProperties().getGovernanceEngineName(),
-                                                                          element);
+                                element = governanceActionHandler.getGovernanceAction(userId, entity.getGUID(), methodName);
+
+                                if (element.getProperties().getGovernanceEngineName() != null)
+                                {
+                                    eventPublisher.publishNewGovernanceAction(element.getProperties().getGovernanceEngineGUID(),
+                                                                              element.getProperties().getGovernanceEngineName(),
+                                                                              element);
+
+                                    return true;
+                                }
+
+                                /*
+                                 * The governance action is being set up so need to give the metadata server more time.
+                                 */
+                                attempt ++;
+                                sleep(sleepTime);
+                                sleepTime = sleepTime * 2;
                             }
-                            else
-                            {
-                                auditLog.logMessage(methodName,
-                                                    GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(element.toString()));
-                            }
+
+                            /*
+                             * Given up waiting
+                             */
+                            auditLog.logMessage(methodName, GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(element.toString()));
                         }
                         catch (Exception error)
                         {
