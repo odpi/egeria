@@ -38,10 +38,10 @@ import org.slf4j.LoggerFactory;
 public class OpenLineageServerOperationalServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerOperationalServices.class);
 
-    private String localServerName;
-    private String localServerUserId;
-    private String localServerPassword;
-    private int maxPageSize;
+    private final String localServerName;
+    private final String localServerUserId;
+    private final String localServerPassword;
+    private final int maxPageSize;
 
     private OpenLineageServerConfig openLineageServerConfig;
     private OpenLineageServerInstance openLineageServerInstance;

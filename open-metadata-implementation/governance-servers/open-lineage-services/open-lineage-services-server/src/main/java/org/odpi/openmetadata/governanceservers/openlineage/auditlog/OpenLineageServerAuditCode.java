@@ -97,6 +97,12 @@ public enum OpenLineageServerAuditCode {
             "An error occured while disconnecting the LineageGraph connector",
             "Please verify that the Open Lineage Services have shut down properly."),
 
+    ASSET_CONTEXT_EXCEPTION("OPEN-LINEAGE-SERVICES-0018",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Asset Context for entity {0} could not be retrieved from Asset Lineage server. Error: {1}",
+            "The system is unable to process the request.",
+            "Verify Open Lineage Services configuration for Asset Lineage server or the Asset Lineage server's health."),
+
     ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR("OPEN-LINEAGE-SERVICES-0019",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Open Lineage Services server {0} encountered an error while disconnecting the In-topic connector",
