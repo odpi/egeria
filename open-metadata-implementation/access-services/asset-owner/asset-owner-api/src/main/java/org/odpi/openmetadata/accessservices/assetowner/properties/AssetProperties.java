@@ -34,10 +34,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
  *     <li>origin - origin identifiers describing the source of the asset.
  *     (Sourced from classification AssetOrigin attached to Asset - model 0440)</li>
- *     <li>latestChange - description of last update to the asset.
- *     (Sourced from classification LatestChange attached to Asset - model 0010)</li>
- *     <li>isReferenceData - flag to show if asset contains reference data.
- *     (Sourced from classification ReferenceData within Asset - model 0524)</li>
  *     <li>classifications - list of all classifications assigned to the asset</li>
  *     <li>extendedProperties - list of properties assigned to the asset from the Asset subclasses</li>
  *     <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
@@ -306,19 +302,19 @@ public class AssetProperties extends ReferenceableProperties
     public String toString()
     {
         return "AssetProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerCategory=" + ownerType +
-                ", zoneMembership=" + zoneMembership +
-                ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                ", otherOriginValues=" + otherOriginValues +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", owner='" + owner + '\'' +
+                       ", ownerType=" + ownerType +
+                       ", zoneMembership=" + zoneMembership +
+                       ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
+                       ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
+                       ", otherOriginValues=" + otherOriginValues +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

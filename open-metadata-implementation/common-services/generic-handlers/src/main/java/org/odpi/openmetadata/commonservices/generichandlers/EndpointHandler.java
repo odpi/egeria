@@ -340,6 +340,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                                       true,
                                                                       null,
                                                                       null,
+                                                                      false,
                                                                       supportedZones,
                                                                       0,
                                                                       invalidParameterHandler.getMaxPagingSize(),

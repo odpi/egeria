@@ -2,9 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.dino.handlers;
 
-
-
-import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement;
@@ -513,40 +510,6 @@ public class DinoViewHandler {
         }
     }
 
-    /**
-     * getDiscoveryConfigurationClient
-     *
-     * This method will get the above client object, which then provides access to all the methods of the
-     * Repository Services Audit Log Services interface.
-     *
-     * @param userId - name of the user performing the operation
-     * @param serverName - name of the server to connect to
-     * @param platformRootURL - the root URL to connect to the server
-     * @throws DinoViewServiceException - an invalid parameter was detected and reported
-     */
-    private DiscoveryConfigurationClient getDiscoveryConfigurationClient(String userId,
-                                                                         String serverName,
-                                                                         String platformRootURL)
-
-    throws DinoViewServiceException
-
-    {
-
-        String methodName = "getDiscoveryConfigurationClient";
-
-        try
-        {
-
-            return new DiscoveryConfigurationClient(serverName, platformRootURL, userId );
-
-        }
-        catch(InvalidParameterException e)
-        {
-            throw DinoExceptionHandler.mapInvalidParameterException(this.getClass().getName(), methodName, e);
-        }
-    }
-
-
 
     /**
      * getGovernanceEngineConfigurationClient
@@ -764,7 +727,7 @@ public class DinoViewHandler {
 
                 serverNames.forEach(serverName -> {
                     DinoServerInstance dinoServerInstance = new DinoServerInstance();
-                    // Try to locate the serverName and plaformRootURL in the configured serverInstances. If found include the serverInstanceName,
+                    // Try to locate the serverName and platformRootURL in the configured serverInstances. If found include the serverInstanceName,
                     // else ensure it is set to null.
                     String configuredInstanceName = null;
 

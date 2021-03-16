@@ -1383,6 +1383,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                          true,
                                                                           null,
                                                                          null,
+                                                                         false,
                                                                          supportedZones,
                                                                          0,
                                                                          invalidParameterHandler.getMaxPagingSize(),
