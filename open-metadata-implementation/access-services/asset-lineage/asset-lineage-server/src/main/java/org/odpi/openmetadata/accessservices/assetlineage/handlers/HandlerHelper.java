@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
@@ -96,11 +95,12 @@ public class HandlerHelper {
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId, entityGUID, entityTypeName, typeGuid,
                 relationshipTypeName, methodName);
 
-        if (relationships != null) {
-            return relationships;
+        if (CollectionUtils.isEmpty(relationships)) {
+            return Collections.emptyList();
         }
 
-        return Collections.emptyList();
+        return relationships.stream().filter(relationship -> relationship.getEntityOneProxy() != null && relationship.getEntityTwoProxy() != null)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -176,75 +176,20 @@ public class HandlerHelper {
      * @param entityTypeName         the name of the entity type
      * @param searchProperties       searchProperties used in the filtering
      * @param findEntitiesParameters filtering used to reduce the scope of the search
+     *
      * @return a list with entities matching the supplied parameters;
+     *
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
      */
-    public List<EntityDetail> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties, FindEntitiesParameters findEntitiesParameters)
+    public List<EntityDetail> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
+                                                 FindEntitiesParameters findEntitiesParameters)
             throws UserNotAuthorizedException, PropertyServerException {
         final String methodName = "findEntitiesByType";
         String typeDefGUID = getTypeByName(userId, entityTypeName);
         return repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
                 findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName);
-    }
-
-    /**
-     * Adds entities and relationships for the process Context structure
-     *
-     * @param userId       the user Id of user making request.
-     * @param startEntity  parent entity of the relationship
-     * @param relationship the relationship of the parent node
-     * @param graph        the graph
-     *
-     * @return Entity which is the child of the relationship, null if there is no Entity
-     *
-     * @throws InvalidParameterException  the invalid parameter exception
-     * @throws PropertyServerException    the property server exception
-     * @throws UserNotAuthorizedException the user not authorized exception
-     */
-    EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity, Relationship relationship, AssetContext graph) throws
-                                                                                                                                      OCFCheckedExceptionBase {
-
-        Converter converter = new Converter(repositoryHelper);
-        EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
-
-        if (endEntity == null) return null;
-
-        LineageEntity startVertex;
-        LineageEntity endVertex;
-
-        if (startEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID())) {
-            startVertex = converter.createLineageEntity(endEntity);
-            endVertex = converter.createLineageEntity(startEntity);
-        } else {
-            startVertex = converter.createLineageEntity(startEntity);
-            endVertex = converter.createLineageEntity(endEntity);
-        }
-
-
-        enhanceGraphContext(relationship, graph, startVertex, endVertex);
-        return endEntity;
-
-    }
-
-    private void enhanceGraphContext(Relationship relationship, AssetContext graph, LineageEntity startVertex, LineageEntity endVertex) {
-
-        GraphContext relationshipContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
-
-        if (graph.getNeighbors().containsKey(relationshipContext.getRelationshipGuid())) {
-            return;
-        }
-        for (GraphContext context : graph.getGraphContexts()) {
-            if (relationshipContext.getRelationshipGuid().equals(context.getRelationshipGuid())) {
-                return;
-            }
-        }
-
-        graph.addVertex(startVertex);
-        graph.addVertex(endVertex);
-        graph.addGraphContext(relationshipContext);
-
     }
 
     /**
@@ -275,18 +220,6 @@ public class HandlerHelper {
         return Collections.emptyList();
     }
 
-    /**
-     * Adds the classification context to the asset context.
-     *
-     * @param assetContext the context of the asset that is to be updated
-     * @param entity       the entity with its classifications
-     */
-    public void addLineageClassificationToContext(EntityDetail entity, AssetContext assetContext) {
-        List<Classification> classifications = filterLineageClassifications(entity.getClassifications());
-        if (CollectionUtils.isNotEmpty(classifications)) {
-            addClassificationsToGraphContext(classifications, assetContext, entity);
-        }
-    }
 
     /**
      * Extract the lineage classifications from the list of classifications assigned
@@ -304,29 +237,6 @@ public class HandlerHelper {
         } else {
             return Collections.emptyList();
         }
-    }
-
-    /**
-     * Add lineage classification to the graph context object
-     *
-     * @param classifications the list of classifications
-     * @param assetContext    the asset context object
-     * @param entityDetail    the entity object that is converted to lineage entity
-     */
-    private void addClassificationsToGraphContext(List<Classification> classifications, AssetContext assetContext, EntityDetail entityDetail) {
-        Converter converter = new Converter(repositoryHelper);
-        LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
-        assetContext.addVertex(originalEntityVertex);
-
-        String entityGUID = entityDetail.getGUID();
-        for (Classification classification : classifications) {
-            LineageEntity classificationVertex = getClassificationVertex(classification, entityGUID);
-            assetContext.addVertex(classificationVertex);
-            GraphContext graphContext = new GraphContext(CLASSIFICATION, classificationVertex.getGuid(),
-                    originalEntityVertex, classificationVertex);
-            assetContext.addGraphContext(graphContext);
-        }
-
     }
 
     private LineageEntity getClassificationVertex(Classification classification, String entityGUID) {
@@ -353,9 +263,11 @@ public class HandlerHelper {
 
     /**
      * Creat the search body for find entities searching entities updated after the given time
+     *
      * @param time date in milliseconds after which the entities were updated
+     *
      * @return the search properties having the condition updateTime greater than the provided time
-    * */
+     */
     public SearchProperties getSearchPropertiesAfterUpdateTime(Long time) {
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
@@ -377,9 +289,9 @@ public class HandlerHelper {
     /**
      * Builds the relationships context for an entity
      *
-     * @param userId           the unique identifier for the user
-     * @param entityGUID       the guid of the entity
-     * @param relationships    the list of relationships for which the context is built
+     * @param userId        the unique identifier for the user
+     * @param entityGUID    the guid of the entity
+     * @param relationships the list of relationships for which the context is built
      *
      * @return a set of {@link GraphContext} containing the lineage context for the relationships
      *
@@ -388,9 +300,9 @@ public class HandlerHelper {
      * @throws UserNotAuthorizedException the user not authorized exception
      */
     public RelationshipsContext buildContextForRelationships(String userId, String entityGUID, List<Relationship> relationships) throws
-                                                                                                                                       UserNotAuthorizedException,
-                                                                                                                                       PropertyServerException,
-                                                                                                                                       InvalidParameterException {
+                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                 PropertyServerException,
+                                                                                                                                 InvalidParameterException {
         Set<GraphContext> lineageRelationships = new HashSet<>();
 
         Converter converter = new Converter(repositoryHelper);
@@ -445,17 +357,26 @@ public class HandlerHelper {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-     EntityDetail addContextForRelationships(String userId, EntityDetail startEntity, String relationshipTypeName,
-                                                    Set<GraphContext> context) throws OCFCheckedExceptionBase {
+    protected EntityDetail addContextForRelationships(String userId, EntityDetail startEntity, String relationshipTypeName,
+                                                      Set<GraphContext> context) throws OCFCheckedExceptionBase {
         if (startEntity == null) {
             return null;
         }
 
         context.addAll(buildContextForLineageClassifications(startEntity).getRelationships());
 
-        List<Relationship> relationships = getRelationshipsByRelationshipType(userId, startEntity, relationshipTypeName);
-        if (relationships == null) {
+        List<Relationship> relationships = getRelationshipsByType(userId, startEntity.getGUID(), relationshipTypeName,
+                startEntity.getType().getTypeDefName());
+        if (CollectionUtils.isEmpty(relationships)) {
             return null;
+        }
+
+        if (startEntity.getType().getTypeDefName().equals(FILE_FOLDER)) {
+            relationships = relationships.stream().filter(relationship ->
+                    relationship.getEntityTwoProxy().getGUID().equals(startEntity.getGUID())).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(relationships)) {
+                return null;
+            }
         }
 
         context.addAll(buildContextForRelationships(userId, startEntity.getGUID(), relationships).getRelationships());
@@ -463,53 +384,6 @@ public class HandlerHelper {
         return getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
     }
 
-    /**
-     * Using the start entity it gets all the relationships it has by the given type. If the type is "FileFolder"
-     * then it filters only those there the start entity is the entity two proxy.
-     *
-     * @param userId               the user id
-     * @param startEntity          the start entity
-     * @param relationshipTypeName the relationship type name
-     * @return the entity one proxy by relationship type
-     * @throws OCFCheckedExceptionBase the ocf checked exception base
-     */
-    public List<Relationship> getRelationshipsByRelationshipType(String userId, EntityDetail startEntity, String relationshipTypeName) throws OCFCheckedExceptionBase {
-        String guid = startEntity.getGUID();
-        String typeDefName = startEntity.getType().getTypeDefName();
-        List<Relationship> relationships = getRelationshipsByType(userId, guid, relationshipTypeName, typeDefName);
-        if (CollectionUtils.isEmpty(relationships)) {
-            return null;
-        }
-
-        if (typeDefName.equals(FILE_FOLDER)) {
-            relationships = relationships.stream().filter(relationship ->
-                    relationship.getEntityTwoProxy().getGUID().equals(guid)).collect(Collectors.toList());
-            if (CollectionUtils.isEmpty(relationships)) {
-                return null;
-            }
-        }
-        return relationships;
-    }
-
-    /**
-     * Gets next entity detail using relationships.
-     *
-     * @param userId           the user id
-     * @param entityDetail     the entity detail
-     * @param relationshipType the relationship type
-     * @return the next entity detail
-     * @throws OCFCheckedExceptionBase the ocf checked exception base
-     */
-    public EntityDetail getNextEntityDetail(String userId, EntityDetail entityDetail, String relationshipType) throws OCFCheckedExceptionBase {
-        if(entityDetail == null) {
-            return null;
-        }
-        List<Relationship> relationships = getRelationshipsByRelationshipType(userId, entityDetail, relationshipType);
-        if (relationships == null) {
-            return null;
-        }
-        return getEntityAtTheEnd(userId, entityDetail.getGUID(), relationships.get(0));
-    }
 
     /**
      * Validate asset's GUID and it being in the specific supported zones.

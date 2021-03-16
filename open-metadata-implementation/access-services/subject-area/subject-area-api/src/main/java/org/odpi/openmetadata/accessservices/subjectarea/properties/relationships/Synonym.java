@@ -50,7 +50,7 @@ public class Synonym extends Line {
     private String source;
 
     public Synonym() {
-        super("Synonym", "74f4094d-dba2-4ad9-874e-d422b69947e2", LINE_END_1, LINE_END_2);
+        super("Synonym", LINE_END_1, LINE_END_2);
     }
 
     /**

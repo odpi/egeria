@@ -50,7 +50,7 @@ public class UsedInContext extends Line {
     private String source;
 
     public UsedInContext() {
-        super("UsedInContext", "2dc524d2-e29f-4186-9081-72ea956c75de", LINE_END_1, LINE_END_2);
+        super("UsedInContext", LINE_END_1, LINE_END_2);
     }
 
     /**

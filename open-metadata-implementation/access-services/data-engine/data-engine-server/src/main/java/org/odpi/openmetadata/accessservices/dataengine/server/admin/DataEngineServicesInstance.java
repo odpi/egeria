@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
@@ -21,7 +22,6 @@ import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -37,9 +37,6 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private final DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private final DataEnginePortHandler dataEnginePortHandler;
-    private final AssetHandler<Process> assetHandler;
-    private final SchemaTypeHandler<SchemaType> schemaTypeHandler;
-    private final SchemaAttributeHandler<SchemaAttribute, SchemaType> schemaAttributeHandler;
     private final Connection inTopicConnection;
 
     /**
@@ -65,16 +62,18 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
         if (repositoryHandler != null) {
 
-            assetHandler = new AssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName), Process.class,
+            AssetHandler<Process> assetHandler = new AssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName), Process.class,
                     serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
                     securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
-            schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
+            SchemaTypeHandler<SchemaType> schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,
+                    serverName),
                     SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
-            schemaAttributeHandler = new SchemaAttributeHandler<>(new SchemaAttributeConverter<>(repositoryHelper, serviceName, serverName),
-                    SchemaAttribute.class, new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
+            SchemaAttributeHandler<Attribute, SchemaType> schemaAttributeHandler =
+                    new SchemaAttributeHandler<>(new SchemaAttributeConverter<>(repositoryHelper, serviceName, serverName),
+                    Attribute.class, new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
                     SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 

@@ -2,14 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.HashMap;
@@ -18,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ANCHOR_GUID;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_ENDPOINT;
@@ -25,9 +29,9 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_CONTENT_FOR_DATA_SET;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
@@ -78,18 +82,18 @@ public class AssetContextHandler {
         Map<String, RelationshipsContext> context = new HashMap<>();
         Set<GraphContext> columnContext = new HashSet<>();
 
-        context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(), buildLineageMappingsContext(userId, entityDetail));
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
             case TABULAR_COLUMN:
-                EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
+                if (!isInternalTabularColumn(userId, entityDetail)) {
+                    EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
 
-                handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
+                    handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
 
-                context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
-                        columnContext));
+                    context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
+                            columnContext));
+                }
                 break;
-
             case RELATIONAL_COLUMN:
                 handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
 
@@ -133,20 +137,27 @@ public class AssetContextHandler {
     }
 
     /**
-     * Builds the lineage mappings context for a schema element.
+     * Validates that an entity is internal to DataEngine OMAS
      *
-     * @param userId       the unique identifier for the user
-     * @param entityDetail the entity for which the context is build
+     * @param userId        the unique identifier for the user
+     * @param tabularColumn the column to validate
      *
-     * @return the lineage mappings context of the schema element
+     * @return true if it's internal, false otherwise
      *
-     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
      */
-    private RelationshipsContext buildLineageMappingsContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
-        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING,
-                entityDetail.getType().getTypeDefName());
+    private boolean isInternalTabularColumn(String userId, EntityDetail tabularColumn) throws InvalidParameterException, PropertyServerException,
+                                                                                              UserNotAuthorizedException {
+        String methodName = "isInternalTabularColumn";
 
-        return handlerHelper.buildContextForRelationships(userId, entityDetail.getGUID(), relationships);
+        String anchorGUID = tabularColumn.getProperties().getPropertyValue(ANCHOR_GUID).valueAsString();
+        if (StringUtils.isEmpty(anchorGUID)) {
+            return false;
+        }
+
+        return repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, PROCESS, methodName);
     }
 
     /**
@@ -237,5 +248,4 @@ public class AssetContextHandler {
             addConnectionToAssetContext(userId, entityDetail, context);
         }
     }
-
 }

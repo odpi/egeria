@@ -44,7 +44,7 @@ public class CategoryHierarchyLink extends Line {
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     public CategoryHierarchyLink() {
-        super("CategoryHierarchyLink", "71e4b6fb-3412-4193-aff3-a16eccd87e8e", LINE_END_1, LINE_END_2);
+        super("CategoryHierarchyLink", LINE_END_1, LINE_END_2);
     }
 
     @Override

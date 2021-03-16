@@ -45,7 +45,7 @@ public class TermAnchor extends Line {
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     public TermAnchor() {
-        super("TermAnchor","1d43d661-bdc7-4a91-a996-3239b8f82e56", LINE_END_1, LINE_END_2);
+        super("TermAnchor", LINE_END_1, LINE_END_2);
     }
 
     @Override
