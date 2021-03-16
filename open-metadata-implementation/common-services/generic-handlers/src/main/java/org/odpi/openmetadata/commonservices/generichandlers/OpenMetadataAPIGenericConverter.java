@@ -2819,20 +2819,20 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the supported property from the supplied instance properties.
+     * Extract and delete the producedGuards property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return array of guards
      */
-    protected List<String> removeSupportedGuards(InstanceProperties instanceProperties)
+    protected List<String> removeProducedGuards(InstanceProperties instanceProperties)
 
     {
-        final String methodName = "removeSupportedGuards";
+        final String methodName = "removeProducedGuards";
 
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataAPIMapper.SUPPORTED_GUARDS_PROPERTY_NAME,
+                                                              OpenMetadataAPIMapper.PRODUCED_GUARDS_PROPERTY_NAME,
                                                               instanceProperties,
                                                               methodName);
         }
