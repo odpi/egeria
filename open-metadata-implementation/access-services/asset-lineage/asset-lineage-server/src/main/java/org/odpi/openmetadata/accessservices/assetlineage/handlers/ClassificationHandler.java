@@ -20,8 +20,8 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
  */
 public class ClassificationHandler {
 
-    private InvalidParameterHandler invalidParameterHandler;
-    private HandlerHelper handlerHelper;
+    private final InvalidParameterHandler invalidParameterHandler;
+    private final HandlerHelper handlerHelper;
 
     /**
      * Instantiates a new Classification handler.

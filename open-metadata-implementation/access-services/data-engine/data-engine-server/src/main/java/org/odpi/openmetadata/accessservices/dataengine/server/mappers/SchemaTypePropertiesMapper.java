@@ -24,6 +24,8 @@ public class SchemaTypePropertiesMapper {
 
     public static final String TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME = "AttributeForSchema";
 
+    public static final String ANCHOR_GUID = "anchorGUID";
+
     private SchemaTypePropertiesMapper() {
     }
 }
