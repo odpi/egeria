@@ -112,22 +112,27 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
 
         SubjectAreaGraphClient graphClient = instanceHandler.getSubjectAreaGraphClient(serverName, userId, methodName);
         final Stream<NodeType> allNodeTypesStream = Arrays.stream(NodeType.values());
-        Set<NodeType> nodeTypes =  allNodeTypesStream.collect(Collectors.toSet());
-        // remove Unknown
-        nodeTypes.remove(NodeType.Unknown);
-        if (nodeFilterStr != null) {
+        Set<NodeType> nodeTypes;
+        if (nodeFilterStr == null) {
+
+            nodeTypes = allNodeTypesStream.collect(Collectors.toSet());
+            // remove Unknown
+            nodeTypes.remove(NodeType.Unknown);
+        } else {
             Set<String> typeNames = allNodeTypesStream.map(NodeType::name).collect(Collectors.toSet());
             nodeTypes = Arrays.stream(nodeFilterStr.split(","))
                     .filter(typeNames::contains)
                     .map(NodeType::valueOf)
                     .collect(Collectors.toSet());
         }
+        Set<LineType> lineTypes;
         final Stream<LineType> allLineTypesStream = Arrays.stream(LineType.values());
-        Set<LineType> lineTypes =  allLineTypesStream.collect(Collectors.toSet());
-        if (lineTypes.contains(LineType.Unknown)) {
-            lineTypes.remove(LineType.Unknown);
-        }
-        if (lineFilterStr != null) {
+        if (lineFilterStr == null) {
+            lineTypes = allLineTypesStream.collect(Collectors.toSet());
+            if (lineTypes.contains(LineType.Unknown)) {
+                lineTypes.remove(LineType.Unknown);
+            }
+        } else {
             Set<String> typeNames = allLineTypesStream.map(LineType::name).collect(Collectors.toSet());
             lineTypes = Arrays.stream(lineFilterStr.split(","))
                     .filter(typeNames::contains)
