@@ -136,7 +136,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                 outputGuards.add(OriginSeekerGovernanceActionProvider.MULTIPLE_TARGETS_DETECTED_GUARD);
             }
 
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards, newRequestParameters,null);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, newRequestParameters, null);
         }
         catch (OCFCheckedExceptionBase error)
         {
