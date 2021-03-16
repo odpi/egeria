@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -744,9 +743,10 @@ public class LineageGraphConnectorHelper {
 
 
     private boolean needsAdditionalNodeContext(LineageVertex lineageVertex) {
-        Collection<String> types = Arrays.asList(RELATIONAL_TABLE, GLOSSARY_TERM, GLOSSARY_CATEGORY, PROCESS,
-                TABULAR_COLUMN, RELATIONAL_COLUMN, NODE_LABEL_SUB_PROCESS);
+        List<String> types = new ArrayList<>();
         types.addAll(DATA_FILE_AND_SUBTYPES);
+        types.addAll(Arrays.asList(RELATIONAL_TABLE, GLOSSARY_TERM, GLOSSARY_CATEGORY, PROCESS,
+                TABULAR_COLUMN, RELATIONAL_COLUMN, NODE_LABEL_SUB_PROCESS));
         return types.contains(lineageVertex.getNodeType());
     }
 
