@@ -57,10 +57,10 @@ Try the following command (replace 9443 accordingly if using a non standard port
 
 ```bash
 $ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/test/server-platform/origin
-ODPi Egeria OMAG Server Platform
+Egeria OMAG Server Platform
 ```
 
-This calls the OMAG server platform using a REST API call.  The response **ODPi Egeria OMAG Server Platform**
+This calls the OMAG server platform using a REST API call.  The response **Egeria OMAG Server Platform**
 means the curl command communicated with a running OMAG server platform instance.
 
 The OMAG server platform has many REST APIs.  Enter **https://localhost:9443/swagger-ui.html** into your browser to see the list of

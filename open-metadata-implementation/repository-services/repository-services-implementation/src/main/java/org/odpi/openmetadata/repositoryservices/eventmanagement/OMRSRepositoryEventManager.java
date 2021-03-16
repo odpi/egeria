@@ -299,7 +299,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     		
     		for (EntityDetail entity: eventEntities)
     		{
-    			if(exchangeRule.processInstanceEvent(entity))
+    			if (exchangeRule.processInstanceEvent(entity))
     			{
     				validEntities.add(entity);
     			}

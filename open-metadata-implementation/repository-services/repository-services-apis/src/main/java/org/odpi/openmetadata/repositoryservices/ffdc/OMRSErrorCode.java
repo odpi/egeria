@@ -188,7 +188,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Incompatible TypeDef unique identifiers (name={0}, guid{1}) have been passed on a {2} request for instance {3} to open metadata " +
                     "repository {4}",
             "The system is unable to perform the request because the unique identifiers are needed.",
-            "Correct the caller's code to provide compatible identidiers and retry the request."),
+            "Correct the caller's code to provide compatible type identifiers and retry the request."),
     BAD_PROPERTY_FOR_INSTANCE(400, "OMRS-REPOSITORY-400-040",
             "An invalid property has been found in a metadata instance stored in repository {0} during the {1} operation",
             "The system is unable to perform the request because the unique identifier must be provided.",
@@ -222,7 +222,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is unable to perform the request since the instance is in the wrong state.",
             "Try again with a different request or specify a different instance."),
     INVALID_RELATIONSHIP_ENDS(400, "OMRS-REPOSITORY-400-047",
-            "A {0} request has been made to repository {1} for a relationship that has one or more ends of the wrong or invalid type.  Relationship type is {2}; entity proxy for end 1 is {3} and entity proxy for end 2 is {4}",
+            "A {0} request has been made to repository {1} for a relationship that has one or more ends of the wrong or invalid type.  Relationship type is {2}; entity proxy {3} for end 1 is of type {4} rather than {5} and entity proxy {6} for end 2 is of type {7} rather than {8}",
             "The system is unable to perform the request because the instance has invalid values.",
             "Correct the caller's code and attempt the request again."),
     ENTITY_NOT_CLASSIFIED(400, "OMRS-REPOSITORY-400-048",
@@ -379,6 +379,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
                          "The system is unable to proceed with processing this classification update request because it does not know which repository to call.",
                          "This error suggests there is a logic error in either this repository, or the home repository for the classification. " +
                                  "Note this may be different from the home repository for the entity.  Raise a Github issue in order to get this fixed."),
+    INVALID_TIME_RANGE(400, "OMRS-REPOSITORY-400-083",
+            "The OMRS repository connector operation {0} does not allow a time range from {1} to {2}",
+            "The system is unable continue processing the request because the time range provided does not overlap.",
+            "Correct the code in the caller's method (potentially just reverse the times) and retry the request."),
 
     NULL_USER_NAME(400, "OMRS-REST-API-400-001",
             "The OMRS REST API for server {0} has been called with a null user name (userId)",

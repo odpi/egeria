@@ -183,7 +183,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    @GetMapping(path = "/users/{userId}/glossaries/{guid}/terms")
+    @GetMapping(path = "/{guid}/terms")
     public SubjectAreaOMASAPIResponse<Term> getGlossaryTerms(@PathVariable String serverName,
                                                              @PathVariable String userId,
                                                              @PathVariable String guid,
@@ -195,6 +195,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
                                                              @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty) {
         return restAPI.getTerms(serverName, userId, guid, searchCriteria,asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
+
 
     /**
      * Get the Categories owned by this glossary. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
@@ -215,7 +216,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    @GetMapping(path = "/users/{userId}/glossaries/{guid}/categories")
+    @GetMapping(path = "/{guid}/categories")
     public SubjectAreaOMASAPIResponse<Category> getGlossaryCategories(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,

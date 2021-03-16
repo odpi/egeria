@@ -109,7 +109,6 @@
             <modules>
                 <module>configure</module>
                 <module>egeria</module>
-                <module>egeria-uistatic</module>
                 <module>jupyter</module>
             </modules>
         </profile>
