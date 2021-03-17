@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
@@ -147,7 +148,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                     int startFrom = 0;
                     int pageSize  = 100;
 
-                    List<DataFileElement> cataloguedFiles = context.getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
+                    List<DataFileElement> cataloguedFiles = this.getContext().getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
 
                     while ((cataloguedFiles != null) && (! cataloguedFiles.isEmpty()))
                     {
@@ -178,7 +179,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         }
 
                         startFrom = startFrom + cataloguedFiles.size();
-                        cataloguedFiles = context.getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
+                        cataloguedFiles = this.getContext().getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
                     }
                 }
             }
@@ -222,19 +223,22 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
         {
             try
             {
-                DataFileElement cataloguedElement = context.getFileByPathName(file.getAbsolutePath());
+                DataFileElement cataloguedElement = this.getContext().getFileByPathName(file.getAbsolutePath());
 
                 if (cataloguedElement == null)
                 {
                     if (templateQualifiedName == null)
                     {
+                        String fileExtension = FilenameUtils.getExtension(file.getAbsolutePath());
+
                         DataFileProperties properties = new DataFileProperties();
 
+                        properties.setTypeName(this.getAssetTypeName(fileExtension));
                         properties.setQualifiedName(file.getAbsolutePath());
                         properties.setDisplayName(file.getName());
                         properties.setModifiedTime(new Date(file.lastModified()));
 
-                        List<String> guids = context.addDataFileToCatalog(properties, null);
+                        List<String> guids = this.getContext().addDataFileToCatalog(properties, null);
 
                         if ((guids != null) && (!guids.isEmpty()) && (auditLog != null))
                         {
@@ -249,7 +253,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                     {
                         if (templateGUID == null)
                         {
-                            DataFileElement templateElement = context.getFileByPathName(templateQualifiedName);
+                            DataFileElement templateElement = this.getContext().getFileByPathName(templateQualifiedName);
 
                             if (templateElement != null)
                             {
@@ -287,7 +291,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                             properties.setDisplayName(file.getName());
                             properties.setNetworkAddress(file.getAbsolutePath());
 
-                            List<String> guids = context.addDataFileToCatalogFromTemplate(templateGUID, properties);
+                            List<String> guids = this.getContext().addDataFileToCatalogFromTemplate(templateGUID, properties);
 
                             if ((guids != null) && (!guids.isEmpty()) && (auditLog != null))
                             {
@@ -322,6 +326,58 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 
 
     /**
+     * Determine the open metadata type to use based on the file extension from the file name.  If no file extension, or it is unrecognized
+     * then the default is "DataFile".
+     *
+     * @param fileExtension file extension extracted from the file name
+     * @return asset type name to use
+     */
+    private String getAssetTypeName(String fileExtension)
+    {
+        String assetTypeName = "DataFile";
+
+        if (fileExtension != null)
+        {
+            switch (fileExtension)
+            {
+                case "csv":
+                    assetTypeName = "CSVFile";
+                    break;
+
+                case "json":
+                    assetTypeName = "JSONFile";
+                    break;
+
+                case "avro":
+                    assetTypeName = "AvroFileName";
+                    break;
+
+                case "pdf":
+                case "doc":
+                case "docx":
+                case "ppt":
+                case "pptx":
+                case "xls":
+                case "xlsx":
+                case "md":
+                    assetTypeName = "Document";
+                    break;
+
+                case "jpg":
+                case "jpeg":
+                case "png":
+                case "gif":
+                case "mp3":
+                case "mp4":
+                    assetTypeName = "MediaFile";
+                    break;
+            }
+        }
+
+        return assetTypeName;
+    }
+
+    /**
      * The file no longer exists so this method updates the metadata catalog. This may be a delete or an archive action
      * depending on the setting of the allowCatalogDelete configuration property.
      *
@@ -341,7 +397,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 
                 if (cataloguedElement == null)
                 {
-                    cataloguedElement = context.getFileByPathName(file.getAbsolutePath());
+                    cataloguedElement = this.getContext().getFileByPathName(file.getAbsolutePath());
                 }
 
                 if (cataloguedElement == null)
@@ -354,8 +410,8 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                 {
                     if (allowCatalogDelete)
                     {
-                        context.deleteDataFileFromCatalog(cataloguedElement.getElementHeader().getGUID(),
-                                                          cataloguedElement.getDataFileProperties().getQualifiedName());
+                        this.getContext().deleteDataFileFromCatalog(cataloguedElement.getElementHeader().getGUID(),
+                                                                    cataloguedElement.getDataFileProperties().getQualifiedName());
 
                         if (auditLog != null)
                         {
@@ -372,7 +428,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         archiveProperties.setArchiveDate(new Date());
                         archiveProperties.setArchiveProcess(connectorName);
 
-                        context.archiveDataFileInCatalog(cataloguedElement.getElementHeader().getGUID(), archiveProperties);
+                        this.getContext().archiveDataFileInCatalog(cataloguedElement.getElementHeader().getGUID(), archiveProperties);
 
                         if (auditLog != null)
                         {
@@ -423,7 +479,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 
             try
             {
-                DataFileElement dataFileInCatalog = context.getFileByPathName(file.getAbsolutePath());
+                DataFileElement dataFileInCatalog = this.getContext().getFileByPathName(file.getAbsolutePath());
 
                 if (dataFileInCatalog != null)
                 {
@@ -434,7 +490,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 
                         properties.setModifiedTime(new Date(file.lastModified()));
 
-                        context.updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
+                        this.getContext().updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
 
                         if (auditLog != null)
                         {

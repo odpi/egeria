@@ -475,20 +475,24 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @param userId calling user
      * @param asset asset being accessed
+     * @param propertyName name of property that is missing
      * @param methodName calling method
      * @throws UserNotAuthorizedException the authorization check failed
      */
     protected void throwIncompleteAsset(String   userId,
                                         Asset    asset,
+                                        String   propertyName,
                                         String   methodName) throws UserNotAuthorizedException
     {
         if (auditLog != null)
         {
             auditLog.logMessage(methodName,
-                                OpenMetadataSecurityAuditCode.INCOMPLETE_ASSET.getMessageDefinition(userId, this.getAssetGUID(asset)));
+                                OpenMetadataSecurityAuditCode.INCOMPLETE_ASSET.getMessageDefinition(userId, this.getAssetGUID(asset), propertyName));
         }
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.INCOMPLETE_ASSET.getMessageDefinition(userId, this.getAssetGUID(asset)),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.INCOMPLETE_ASSET.getMessageDefinition(userId,
+                                                                                                                 this.getAssetGUID(asset),
+                                                                                                                 propertyName),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);

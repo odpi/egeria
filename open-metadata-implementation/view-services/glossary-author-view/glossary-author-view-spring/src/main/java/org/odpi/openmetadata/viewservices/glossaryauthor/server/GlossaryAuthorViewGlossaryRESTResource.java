@@ -175,6 +175,8 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * @param searchCriteria String expression matching child Term property values.
      * @param startingFrom the starting element number for this set of results. This is used when retrieving elements
      * @param pageSize Return the maximum number of elements that can be returned on this request.
+     * @param sequencingOrder sequencing order
+     * @param sequencingProperty property used for sequencing.
      * @return A list of terms owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -205,9 +207,12 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * @param guid         guid of the glossary to get terms
      * @param searchCriteria String expression matching child Category property values.
      * @param asOfTime     the categories returned as they were at this time. null indicates at the current time.
+     * @param onlyTop      when only the top categories (those categories without parents) are returned.
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
-     * @param onlyTop      when only the top categories (those categories without parents) are returned.
+     * @param sequencingOrder    the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     *
      * @return A list of categories owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>

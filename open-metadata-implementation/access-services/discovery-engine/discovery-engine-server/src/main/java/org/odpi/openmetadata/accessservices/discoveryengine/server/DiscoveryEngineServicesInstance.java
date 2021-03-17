@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.server;
 
 
-import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicClientProvider;
+import org.odpi.openmetadata.accessservices.discoveryengine.converters.AnnotationConverter;
+import org.odpi.openmetadata.accessservices.discoveryengine.converters.DataFieldConverter;
+import org.odpi.openmetadata.accessservices.discoveryengine.converters.DiscoveryAnalysisReportConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
 import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -31,7 +33,7 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
 
     private AssetHandler<OpenMetadataAPIDummyBean>                  assetHandler;
     private AnnotationHandler<Annotation>                           annotationHandler;
-    private DataFieldHandler<DataField>                             dataFieldHandler;
+    private DataFieldHandler                                        dataFieldHandler;
     private DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> discoveryAnalysisReportHandler;
     private DiscoveryConfigurationHandler                           discoveryConfigurationHandler;
     private Connection                                              outTopicConnection;
@@ -43,43 +45,86 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
      * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
-     * @param defaultZones list of zones that discovery engine can use to make a discovery service visible.
+     * @param publishZones list of zones that discovery engine can use to make a discovery service visible.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize max number of results to return on single request.
-     * @param outTopicEventBusConnection inner event bus connection to use to build topic connection to send to client if they which
-     *                                   to listen on the out topic.
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
     public DiscoveryEngineServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                            List<String>            supportedZones,
                                            List<String>            defaultZones,
-                                           List<String>            publishedZones,
+                                           List<String>            publishZones,
                                            AuditLog                auditLog,
                                            String                  localServerUserId,
-                                           int                     maxPageSize,
-                                           Connection              outTopicEventBusConnection) throws NewInstanceException
+                                           int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
               supportedZones,
               defaultZones,
-              publishedZones,
+              publishZones,
               auditLog,
               localServerUserId,
-              maxPageSize,
-              null,
-              null,
-              DiscoveryEngineOutTopicClientProvider.class.getName(),
-              outTopicEventBusConnection);
+              maxPageSize);
 
         final String methodName = "new ServiceInstance";
 
-        this.outTopicConnection = outTopicEventBusConnection;
-
         if (repositoryHandler != null)
         {
+            this.assetHandler = new AssetHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                   OpenMetadataAPIDummyBean.class,
+                                                   serviceName,
+                                                   serverName,
+                                                   invalidParameterHandler,
+                                                   repositoryHandler,
+                                                   repositoryHelper,
+                                                   localServerUserId,
+                                                   securityVerifier,
+                                                   supportedZones,
+                                                   defaultZones,
+                                                   publishZones,
+                                                   auditLog);
+            this.annotationHandler = new AnnotationHandler<>(new AnnotationConverter<>(repositoryHelper, serviceName, serverName),
+                                                             Annotation.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
+            this.dataFieldHandler = new DataFieldHandler<>(new DataFieldConverter<>(repositoryHelper, serviceName, serverName),
+                                                           DataField.class,
+                                                           serviceName,
+                                                           serverName,
+                                                           invalidParameterHandler,
+                                                           repositoryHandler,
+                                                           repositoryHelper,
+                                                           localServerUserId,
+                                                           securityVerifier,
+                                                           supportedZones,
+                                                           defaultZones,
+                                                           publishZones,
+                                                           auditLog);
+            this.discoveryAnalysisReportHandler = new DiscoveryAnalysisReportHandler<>(new DiscoveryAnalysisReportConverter<>(repositoryHelper, serviceName, serverName),
+                                                                                       DiscoveryAnalysisReport.class,
+                                                                                       serviceName,
+                                                                                       serverName,
+                                                                                       invalidParameterHandler,
+                                                                                       repositoryHandler,
+                                                                                       repositoryHelper,
+                                                                                       localServerUserId,
+                                                                                       securityVerifier,
+                                                                                       supportedZones,
+                                                                                       defaultZones,
+                                                                                       publishZones,
+                                                                                       auditLog);
             this.discoveryConfigurationHandler = new DiscoveryConfigurationHandler(serviceName,
                                                                                    serverName,
                                                                                    invalidParameterHandler,

@@ -52,17 +52,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-topic-connectors</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-api</artifactId>
         </dependency>
 
         <dependency>

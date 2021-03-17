@@ -31,9 +31,15 @@ public enum FilesIntegratorErrorCode implements ExceptionMessageSet
     INVALID_CONNECTOR(400,"OMIS-FILES-INTEGRATOR-400-001",
                   "Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}",
                   "The integration service fails to start and this in turn causes the integration daemon to fail.",
-                  "The connector was configured through the administration calls for the integration service." +
+                  "The connector was configured through the administration calls for the integration service. " +
                               "Either move it to an appropriate integration service or update the connector implementation " +
                               "to inherit from the correct class."),
+
+    NULL_CONTEXT(400,"OMIS-FILES-INTEGRATOR-500-001",
+                      "Integration connector {0} has a null context",
+                      "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
+                      "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                              "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
 
    ;
 
