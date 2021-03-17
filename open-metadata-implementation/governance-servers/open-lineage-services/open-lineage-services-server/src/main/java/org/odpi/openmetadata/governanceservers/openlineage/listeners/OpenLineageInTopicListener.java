@@ -4,11 +4,11 @@ package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -140,7 +140,9 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
             if(!storingServices.isEntityInGraph(guid)) {
                 try {
                     Set<GraphContext> relationships = assetContextHandler.getAssetContextForEntity(guid, entity.getTypeDefName());
-                    storingServices.addEntityContext(relationships);
+                    if(!CollectionUtils.isEmpty(relationships)) {
+                        storingServices.addEntityContext(relationships);
+                    }
                 } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
                     OpenLineageServerAuditCode errorCode = OpenLineageServerAuditCode.ASSET_CONTEXT_EXCEPTION;
                     auditLog.logException("retrieving Asset Context exception", errorCode.getLogMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,

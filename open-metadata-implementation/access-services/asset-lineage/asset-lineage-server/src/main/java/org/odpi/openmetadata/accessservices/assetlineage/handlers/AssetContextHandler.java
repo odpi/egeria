@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.HashMap;
@@ -152,7 +153,12 @@ public class AssetContextHandler {
                                                                                               UserNotAuthorizedException {
         String methodName = "isInternalTabularColumn";
 
-        String anchorGUID = tabularColumn.getProperties().getPropertyValue(ANCHOR_GUID).valueAsString();
+        InstancePropertyValue anchorGUIDProperty = tabularColumn.getProperties().getPropertyValue(ANCHOR_GUID);
+        if (anchorGUIDProperty == null) {
+            return false;
+        }
+
+        String anchorGUID = anchorGUIDProperty.valueAsString();
         if (StringUtils.isEmpty(anchorGUID)) {
             return false;
         }

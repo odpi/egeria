@@ -17,7 +17,7 @@ public class StoringServices {
 
     private static final Logger log = LoggerFactory.getLogger(StoringServices.class);
 
-    private LineageGraph lineageGraph;
+    private final LineageGraph lineageGraph;
 
     public StoringServices(LineageGraph graphStore) {
         this.lineageGraph = graphStore;
