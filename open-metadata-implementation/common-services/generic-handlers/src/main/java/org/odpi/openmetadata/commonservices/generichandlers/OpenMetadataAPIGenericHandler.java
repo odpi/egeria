@@ -2813,7 +2813,10 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param isUpdate         is this an update request?
      * @param suppliedSupportedZones list of supported zones from the caller.
      * @param methodName       calling method
-     * @return anchor entity or null.  The anchor entity is used by the caller to set the LatestChange classification
+     *
+     * @return anchor entity or null if this entity is an anchor or does not have an anchor.  The anchor entity is used by the
+     * caller to set the LatestChange classification
+     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem accessing the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -2898,7 +2901,7 @@ public class OpenMetadataAPIGenericHandler<B>
         if (anchorGUID == null)
         {
             /*
-             * The classification is missing - so walk the relationships to find the anchor
+             * The classification is missing - so walk the relationships to find the anchor if it exists.
              */
             anchorGUID = deriveAnchorGUID(connectToGUID, connectToEntity.getType().getTypeDefName(), methodName);
 
@@ -2912,18 +2915,21 @@ public class OpenMetadataAPIGenericHandler<B>
         }
 
         /*
-         * If an anchor GUID has been found then validate it by retrieving the identified entity.  Note - anchorGUID is null if the connectToEntity
+         * If an anchor GUID has been found then validate it by retrieving the identified entity.  Note - anchorGUID may be null if the connectToEntity
          * is actually an anchor.
          */
         if (anchorGUID != null)
         {
             final String anchorGUIDParameterName = "anchorGUID";
 
-            anchorEntity = repositoryHandler.getEntityByGUID(userId,
-                                                             anchorGUID,
-                                                             anchorGUIDParameterName,
-                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                             methodName);
+            if (! anchorGUID.equals(connectToEntity.getGUID()))
+            {
+                anchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                 anchorGUID,
+                                                                 anchorGUIDParameterName,
+                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 methodName);
+            }
         }
 
         /*
@@ -3002,17 +3008,23 @@ public class OpenMetadataAPIGenericHandler<B>
             List<String> propertyNames = new ArrayList<>();
             propertyNames.add(uniqueParameterName);
 
-            List<B> existingBeans = this.getBeansByValue(userId,
-                                                         uniqueParameterValue,
-                                                         uniqueParameterName,
-                                                         entityTypeGUID,
-                                                         entityTypeName,
-                                                         propertyNames,
-                                                         true,
-                                                         null,
-                                                         0,
-                                                         invalidParameterHandler.getMaxPagingSize(),
-                                                         methodName);
+            /*
+             * An entity with the Memento classification set is ignored
+             */
+            List<EntityDetail> existingBeans = this.getEntitiesByValue(userId,
+                                                                       uniqueParameterValue,
+                                                                       uniqueParameterName,
+                                                                       entityTypeGUID,
+                                                                       entityTypeName,
+                                                                       propertyNames,
+                                                                       true,
+                                                                       null,
+                                                                       null,
+                                                                       false,
+                                                                       supportedZones,
+                                                                       0,
+                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                       methodName);
 
             if ((existingBeans != null) && (!existingBeans.isEmpty()))
             {
@@ -3636,6 +3648,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       relationshipTypeGUID,
                                       relationshipTypeName,
                                       resultingElementTypeName,
+                                      false,
                                       supportedZones,
                                       methodName);
     }
@@ -3652,6 +3665,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeGUID unique identifier of the attachment's relationship type
      * @param relationshipTypeName unique name of the attachment's relationship type
      * @param resultingElementTypeName unique name of the attached entity's type
+     * @param forLineage is this part of al lineage request?
      * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
@@ -3668,6 +3682,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           String       relationshipTypeGUID,
                                           String       relationshipTypeName,
                                           String       resultingElementTypeName,
+                                          boolean      forLineage,
                                           List<String> serviceSupportedZones,
                                           String       methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
@@ -3693,6 +3708,10 @@ public class OpenMetadataAPIGenericHandler<B>
 
             if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), resultingElementTypeName))
             {
+                if (! forLineage)
+                {
+
+                }
                 return entity;
             }
         }
@@ -3743,6 +3762,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    resultingElementTypeName,
                                    null,
                                    null,
+                                   false,
                                    supportedZones,
                                    startingFrom,
                                    pageSize,
@@ -3794,6 +3814,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    resultingElementTypeName,
                                    null,
                                    null,
+                                   false,
                                    serviceSupportedZones,
                                    startingFrom,
                                    pageSize,
@@ -3813,6 +3834,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultingElementTypeName unique name of the attached entity's type
      * @param requiredClassificationName name of a classification that must be on the entity for a match
      * @param omittedClassificationName name of a classification that must NOT be on the entity for a match
+     * @param forLineage is this part of a lineage request?
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
@@ -3833,6 +3855,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   String       resultingElementTypeName,
                                                   String       requiredClassificationName,
                                                   String       omittedClassificationName,
+                                                  boolean      forLineage,
                                                   List<String> serviceSupportedZones,
                                                   int          startingFrom,
                                                   int          pageSize,
@@ -3885,6 +3908,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              resultingElementTypeName,
                                                                              requiredClassificationName,
                                                                              omittedClassificationName,
+                                                                             forLineage,
                                                                              supportedZones,
                                                                              methodName));
                         }
@@ -6666,6 +6690,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                      attachmentEntityTypeName,
                                                      requiredClassificationName,
                                                      omittedClassificationName,
+                                                     false,
                                                      selectionEnd,
                                                      serviceSupportedZones,
                                                      methodName);
@@ -6781,6 +6806,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                      attachmentEntityTypeName,
                                                      requiredClassificationName,
                                                      omittedClassificationName,
+                                                     false,
                                                      selectionEnd,
                                                      serviceSupportedZones,
                                                      methodName);
@@ -6817,8 +6843,9 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param startingTypeName name of the type of object being attached to
      * @param relationship relationship between the requested element and the related keyword
      * @param attachmentEntityTypeName unique name of the attached entity's type
-     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
-     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param forLineage is this request part of lineage?
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
      * @param serviceSupportedZones supported zones for calling service
      * @param methodName   calling method
@@ -6835,6 +6862,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                  String        attachmentEntityTypeName,
                                  String        requiredClassificationName,
                                  String        omittedClassificationName,
+                                 boolean       forLineage,
                                  int           selectionEnd,
                                  List<String>  serviceSupportedZones,
                                  String        methodName) throws InvalidParameterException,
@@ -6903,12 +6931,29 @@ public class OpenMetadataAPIGenericHandler<B>
                     }
                 }
 
-
                 if (omittedClassificationName != null)
                 {
                     try
                     {
                         if (repositoryHelper.getClassificationFromEntity(serviceName, entity, omittedClassificationName, methodName) != null)
+                        {
+                            beanValid = false;
+                        }
+                    }
+                    catch (ClassificationErrorException error)
+                    {
+                        /*
+                         * Since this classification is not supported, it can not be attached to the entity
+                         */
+                    }
+                }
+
+
+                if (! forLineage)
+                {
+                    try
+                    {
+                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
                         {
                             beanValid = false;
                         }
@@ -6963,6 +7008,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                             requestedEntityTypeName,
                                             null,
                                             null,
+                                            false,
                                             supportedZones,
                                             methodName);
     }
@@ -7000,6 +7046,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                             requestedEntityTypeName,
                                             requiredClassificationName,
                                             omittedClassificationName,
+                                            false,
                                             supportedZones,
                                             methodName);
     }
@@ -7028,6 +7075,47 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 String       requestedEntityTypeName,
                                                 String       requiredClassificationName,
                                                 String       omittedClassificationName,
+                                                List<String> serviceSupportedZones,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        return getEntityFromRepository(userId,
+                                       requestedEntityGUID,
+                                       requestedEntityGUIDParameterName,
+                                       requestedEntityTypeName,
+                                       requiredClassificationName,
+                                       omittedClassificationName,
+                                       false,
+                                       serviceSupportedZones,
+                                       methodName);
+    }
+
+
+    /**
+     * Return the entity for the supplied unique identifier (guid).  An exception is thrown if the entity does not exist.
+     *
+     * @param userId userId of the user making the request
+     * @param requestedEntityGUID unique identifier of the entity to retrieve from the repository
+     * @param requestedEntityGUIDParameterName name of the parameter supplying the GUID
+     * @param requestedEntityTypeName name of type of entity to retrieve
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
+     * @param serviceSupportedZones supported zones for calling service
+     * @param methodName calling method
+     *
+     * @return retrieved entity
+     * @throws InvalidParameterException the userId is null or invalid, the entity does not exist.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail getEntityFromRepository(String       userId,
+                                                String       requestedEntityGUID,
+                                                String       requestedEntityGUIDParameterName,
+                                                String       requestedEntityTypeName,
+                                                String       requiredClassificationName,
+                                                String       omittedClassificationName,
+                                                boolean      forLineage,
                                                 List<String> serviceSupportedZones,
                                                 String       methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
@@ -8166,115 +8254,104 @@ public class OpenMetadataAPIGenericHandler<B>
                                    int          startFrom,
                                    int          pageSize,
                                    String       methodName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(value, valueParameterName, methodName);
+        return this.getBeansByValue(userId,
+                                    value,
+                                    valueParameterName,
+                                    resultTypeGUID,
+                                    resultTypeName,
+                                    specificMatchPropertyNames,
+                                    exactValueMatch,
+                                    requiredClassificationName,
+                                    omittedClassificationName,
+                                    false,
+                                    serviceSupportedZones,
+                                    startFrom,
+                                    pageSize,
+                                    methodName);
+    }
 
-        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
-                                                                         value,
-                                                                         resultTypeGUID,
-                                                                         resultTypeName,
-                                                                         specificMatchPropertyNames,
-                                                                         exactValueMatch,
-                                                                         startFrom,
-                                                                         queryPageSize,
-                                                                         methodName);
+    /**
+     * Return the list of beans of the requested type that match the supplied value.
+     *
+     * @param userId the calling user
+     * @param value value to search
+     * @param valueParameterName parameter providing value
+     * @param resultTypeGUID unique identifier of the type that the results should match with
+     * @param resultTypeName unique value of the type that the results should match with
+     * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
+     *                        RegEx partial match
+     * @param requiredClassificationName  String the name of the classification that must be on the entity.
+     * @param omittedClassificationName   String the name of a classification that must not be on the entity.
+     * @param forLineage the query is to support lineage retrieval
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return
+     * @param methodName calling method
+     *
+     * @return list of beans
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<B> getBeansByValue(String       userId,
+                                   String       value,
+                                   String       valueParameterName,
+                                   String       resultTypeGUID,
+                                   String       resultTypeName,
+                                   List<String> specificMatchPropertyNames,
+                                   boolean      exactValueMatch,
+                                   String       requiredClassificationName,
+                                   String       omittedClassificationName,
+                                   boolean      forLineage,
+                                   List<String> serviceSupportedZones,
+                                   int          startFrom,
+                                   int          pageSize,
+                                   String       methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        List<EntityDetail> entities = getEntitiesByValue(userId,
+                                                         value,
+                                                         valueParameterName,
+                                                         resultTypeGUID,
+                                                         resultTypeName,
+                                                         specificMatchPropertyNames,
+                                                         exactValueMatch,
+                                                         requiredClassificationName,
+                                                         omittedClassificationName,
+                                                         forLineage,
+                                                         serviceSupportedZones,
+                                                         startFrom,
+                                                         pageSize,
+                                                         methodName);
 
-        /*
-         * The loop is necessary because some of the entities returned may not be visible to the calling user.
-         * Once they are filtered out, more entities need to be retrieved to fill the gaps.
-         */
-        List<B>  results = new ArrayList<>();
-        String entityParameterName = "Entity from search of value " + value;
 
-        while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+        if (entities != null)
         {
-            EntityDetail entity = iterator.getNext();
+            List<B> results = new ArrayList<>();
 
-            if (entity != null)
+            for (EntityDetail entity : entities)
             {
-                try
+                if (entity != null)
                 {
-                    validateAnchorEntity(userId,
-                                         entity.getGUID(),
-                                         resultTypeName,
-                                         entity,
-                                         entityParameterName,
-                                         false,
-                                         serviceSupportedZones,
-                                         methodName);
+                    B bean = converter.getNewBean(beanClass, entity, methodName);
 
-                    boolean beanValid = true;
-
-                    if (requiredClassificationName != null)
-                    {
-                        try
-                        {
-                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, requiredClassificationName, methodName) == null)
-                            {
-                                beanValid = false;
-                            }
-                        }
-                        catch (ClassificationErrorException error)
-                        {
-                            /*
-                             * Since this classification is not supported, it can not be attached to the entity
-                             */
-                            beanValid = false;
-                        }
-                    }
-
-
-                    if (omittedClassificationName != null)
-                    {
-                        try
-                        {
-                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, omittedClassificationName, methodName) != null)
-                            {
-                                beanValid = false;
-                            }
-                        }
-                        catch (ClassificationErrorException error)
-                        {
-                            /*
-                             * Since this classification is not supported, it can not be attached to the entity
-                             */
-                        }
-                    }
-
-                    if (beanValid)
-                    {
-                        /*
-                         * Valid entity to return since no exception occurred.
-                         */
-                        B bean = converter.getNewBean(beanClass, entity, methodName);
-                        if (bean != null)
-                        {
-                            results.add(bean);
-                        }
-                    }
+                    results.add(bean);
                 }
-                catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                {
-                    /*
-                     * Skipping entity
-                     */
-                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return  results;
             }
         }
 
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
+        return null;
     }
 
 
@@ -8342,10 +8419,33 @@ public class OpenMetadataAPIGenericHandler<B>
                                          serviceSupportedZones,
                                          methodName);
 
-                    /*
-                     * Valid entity to return since no exception occurred.
-                     */
-                    results.add(entity);
+                    boolean beanArchived = false;
+
+                    try
+                    {
+                        /*
+                         * The Memento classification means the entity is archived and should only be returned for lineage requests.
+                         * This method is not to be used for lineage requests.
+                         */
+                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
+                        {
+                            beanArchived = true;
+                        }
+                    }
+                    catch (ClassificationErrorException error)
+                    {
+                        /*
+                         * Since this classification is not supported, it can not be attached to the entity.
+                         */
+                    }
+
+                    if (! beanArchived)
+                    {
+                        /*
+                         * Valid entity to return since no exception occurred and it is not archived.
+                         */
+                        results.add(entity);
+                    }
                 }
                 catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
                 {
@@ -8410,6 +8510,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        false,
                                        requiredClassificationName,
                                        omittedClassificationName,
+                                       false,
                                        supportedZones,
                                        startFrom,
                                        pageSize,
@@ -8463,11 +8564,13 @@ public class OpenMetadataAPIGenericHandler<B>
                                        exactValueMatch,
                                        requiredClassificationName,
                                        omittedClassificationName,
+                                       false,
                                        supportedZones,
                                        startFrom,
                                        pageSize,
                                        methodName);
     }
+
 
     /**
      * Return the list of entities of the requested type that match the supplied value.
@@ -8482,6 +8585,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        RegEx partial match
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
+     * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not.
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
@@ -8501,6 +8605,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  boolean      exactValueMatch,
                                                  String       requiredClassificationName,
                                                  String       omittedClassificationName,
+                                                 boolean      forLineage,
                                                  List<String> serviceSupportedZones,
                                                  int          startFrom,
                                                  int          pageSize,
@@ -8587,7 +8692,23 @@ public class OpenMetadataAPIGenericHandler<B>
                         }
                     }
 
-
+                    if (! forLineage)
+                    {
+                        try
+                        {
+                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
+                            {
+                                beanValid = false;
+                            }
+                        }
+                        catch (ClassificationErrorException error)
+                        {
+                            /*
+                             * Since this classification is not supported, it can not be attached to the entity
+                             */
+                            beanValid = true;
+                        }
+                    }
                 }
                 catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
                 {
@@ -8612,6 +8733,84 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             return results;
         }
+    }
+
+
+    /**
+     * Return the list of entities of the requested type that match the supplied value.
+     *
+     * @param userId the calling user
+     * @param value value to search
+     * @param valueParameterName parameter providing value
+     * @param resultTypeGUID unique identifier of the type that the results should match with
+     * @param resultTypeName unique value of the type that the results should match with
+     * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
+     *                        RegEx partial match
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
+     * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not.
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return
+     * @param methodName calling method
+     *
+     * @return list of beans
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<String> getEntityGUIDsByValue(String       userId,
+                                              String       value,
+                                              String       valueParameterName,
+                                              String       resultTypeGUID,
+                                              String       resultTypeName,
+                                              List<String> specificMatchPropertyNames,
+                                              boolean      exactValueMatch,
+                                              String       requiredClassificationName,
+                                              String       omittedClassificationName,
+                                              boolean      forLineage,
+                                              List<String> serviceSupportedZones,
+                                              int          startFrom,
+                                              int          pageSize,
+                                              String       methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        List<EntityDetail> entities = this.getEntitiesByValue(userId,
+                                                              value,
+                                                              valueParameterName,
+                                                              resultTypeGUID,
+                                                              resultTypeName,
+                                                              specificMatchPropertyNames,
+                                                              exactValueMatch,
+                                                              requiredClassificationName,
+                                                              omittedClassificationName,
+                                                              forLineage,
+                                                              serviceSupportedZones,
+                                                              startFrom,
+                                                              pageSize,
+                                                              methodName);
+
+        if (entities != null)
+        {
+            List<String> results = new ArrayList<>();
+
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    results.add(entity.getGUID());
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
     }
 
 
@@ -8650,6 +8849,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              true,
                                                              null,
                                                              null,
+                                                             false,
+                                                             supportedZones,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
                                                              methodName);
@@ -8701,39 +8902,18 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        List<EntityDetail> results = this.getEntitiesByValue(userId,
-                                                             value,
-                                                             valueParameterName,
-                                                             resultTypeGUID,
-                                                             resultTypeName,
-                                                             specificMatchPropertyNames,
-                                                             true,
-                                                             null,
-                                                             null,
-                                                             0,
-                                                             invalidParameterHandler.getMaxPagingSize(),
-                                                             methodName);
+        EntityDetail result = this.getEntityByValue(userId,
+                                                    value,
+                                                    valueParameterName,
+                                                    resultTypeGUID,
+                                                    resultTypeName,
+                                                    specificMatchPropertyNames,
+                                                    methodName);
 
 
-        if (results != null)
+        if (result != null)
         {
-            if (results.size() == 1)
-            {
-                EntityDetail entity = results.get(0);
-
-                if (entity != null)
-                {
-                    return entity.getGUID();
-                }
-            }
-            else
-            {
-                errorHandler.handleAmbiguousEntityName(value,
-                                                       valueParameterName,
-                                                       resultTypeName,
-                                                       results,
-                                                       methodName);
-            }
+            return result.getGUID();
         }
 
         return null;
@@ -8768,17 +8948,20 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
-        return this.getBeanGUIDsByValue(userId,
-                                        searchString,
-                                        searchStringParameterName,
-                                        resultTypeGUID,
-                                        resultTypeName,
-                                        null,
-                                        false,
-                                        supportedZones,
-                                        startFrom,
-                                        pageSize,
-                                        methodName);
+        return this.getEntityGUIDsByValue(userId,
+                                          searchString,
+                                          searchStringParameterName,
+                                          resultTypeGUID,
+                                          resultTypeName,
+                                          null,
+                                          false,
+                                          null,
+                                          null,
+                                          false,
+                                          supportedZones,
+                                          startFrom,
+                                          pageSize,
+                                          methodName);
     }
 
 
@@ -8817,67 +9000,20 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(value, valueParameterName, methodName);
-
-        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
-                                                                         value,
-                                                                         resultTypeGUID,
-                                                                         resultTypeName,
-                                                                         specificMatchPropertyNames,
-                                                                         exactValueMatch,
-                                                                         startFrom,
-                                                                         queryPageSize,
-                                                                         methodName);
-
-        /*
-         * The loop is necessary because some of the entities returned may not be visible to the calling user.
-         * Once they are filtered out, more entities need to be retrieved to fill the gaps.
-         */
-        List<String>  results = new ArrayList<>();
-        String entityParameterName = "Entity from search of value " + value;
-
-        while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
-        {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
-            {
-                try
-                {
-                    validateAnchorEntity(userId,
-                                         entity.getGUID(),
-                                         resultTypeName,
-                                         entity,
-                                         entityParameterName,
-                                         false,
-                                         serviceSupportedZones,
-                                         methodName);
-
-                    /*
-                     * Valid entity to return since no exception occurred.
-                     */
-                    results.add(entity.getGUID());
-                }
-                catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                {
-                    /*
-                     * Skipping entity
-                     */
-                }
-            }
-        }
-
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
+        return this.getEntityGUIDsByValue(userId,
+                                          value,
+                                          valueParameterName,
+                                          resultTypeGUID,
+                                          resultTypeName,
+                                          specificMatchPropertyNames,
+                                          exactValueMatch,
+                                          null,
+                                          null,
+                                          false,
+                                          serviceSupportedZones,
+                                          startFrom,
+                                          pageSize,
+                                          methodName);
     }
 
 
@@ -8959,13 +9095,36 @@ public class OpenMetadataAPIGenericHandler<B>
                                              serviceSupportedZones,
                                              methodName);
 
+                        boolean beanArchived = false;
+
+                        try
+                        {
+                            /*
+                             * The Memento classification means the entity is archived and should only be returned for lineage requests.
+                             * This method is not to be used for lineage requests.
+                             */
+                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
+                            {
+                                beanArchived = true;
+                            }
+                        }
+                        catch (ClassificationErrorException error)
+                        {
+                            /*
+                             * Since this classification is not supported, it can not be attached to the entity.
+                             */
+                        }
+
                         /*
                          * Valid entity to return since no exception occurred.
                          */
-                        B bean = converter.getNewBean(beanClass, entity, methodName);
-                        if (bean != null)
+                        if (! beanArchived)
                         {
-                            results.add(bean);
+                            B bean = converter.getNewBean(beanClass, entity, methodName);
+                            if (bean != null)
+                            {
+                                results.add(bean);
+                            }
                         }
                     }
                     catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)

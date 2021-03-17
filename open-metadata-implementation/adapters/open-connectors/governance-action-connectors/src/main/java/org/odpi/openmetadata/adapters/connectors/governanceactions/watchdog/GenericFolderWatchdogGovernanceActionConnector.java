@@ -77,6 +77,9 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
             {
                 if (requestParameterName != null)
                 {
+                    /*
+                     * The process names and interesting type name will be processed in the super class start method (see getProperty() method).
+                     */
                     if (GenericFolderWatchdogGovernanceActionProvider.FOLDER_NAME_PROPERTY.equals(requestParameterName))
                     {
                         folderName = requestParameters.get(requestParameterName);
@@ -151,13 +154,13 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                     actionTargetGUIDs.add(fileGUID);
 
-                    if (metadataElementEvent.getEventType() != WatchdogEventType.NEW_ELEMENT)
+                    if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
                     {
                         initiateProcess(newElementProcessName,
                                         null,
                                         actionTargetGUIDs);
                     }
-                    else if (metadataElementEvent.getEventType() != WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
+                    else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
                     {
                         ElementProperties previousElementProperties = null;
 
@@ -173,7 +176,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                                         requestParameters,
                                         actionTargetGUIDs);
                     }
-                    else if (metadataElementEvent.getEventType() != WatchdogEventType.DELETED_ELEMENT)
+                    else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
                     {
                         initiateProcess(deletedElementProcessName,
                                         null,
@@ -185,13 +188,13 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                         requestParameters.put("ClassificationName", classificationEvent.getChangedClassification().getClassificationName());
 
-                        if (metadataElementEvent.getEventType() != WatchdogEventType.NEW_CLASSIFICATION)
+                        if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_CLASSIFICATION)
                         {
                             initiateProcess(classifiedElementProcessName,
                                             requestParameters,
                                             actionTargetGUIDs);
                         }
-                        else if (metadataElementEvent.getEventType() != WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
+                        else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
                         {
                             ElementProperties previousElementProperties = null;
 
@@ -208,7 +211,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                                             requestParameters,
                                             actionTargetGUIDs);
                         }
-                        else if (metadataElementEvent.getEventType() != WatchdogEventType.DELETED_CLASSIFICATION)
+                        else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_CLASSIFICATION)
                         {
                             initiateProcess(declassifiedElementProcessName,
                                             requestParameters,
@@ -266,10 +269,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
             if (GenericFolderWatchdogGovernanceActionProvider.DIRECT_REQUEST_TYPE.equals(governanceContext.getRequestType()))
             {
-                if (parentFolderGUID.equals(folderGUID))
-                {
-                    return true;
-                }
+                return parentFolderGUID.equals(folderGUID);
             }
             else
             {

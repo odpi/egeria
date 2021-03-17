@@ -154,7 +154,7 @@ public class AssetContextHandler {
         String methodName = "isInternalTabularColumn";
 
         InstancePropertyValue anchorGUIDProperty = tabularColumn.getProperties().getPropertyValue(ANCHOR_GUID);
-        if (anchorGUIDProperty == null) {
+        if(anchorGUIDProperty == null) {
             return false;
         }
 

@@ -29,13 +29,29 @@ public class NodeLineStats {
      * Getters for Jackson
      */
 
-
+    /**
+     * get the name
+     * @return name
+     */
     public String getNodeOrLineTypeName() { return nodeOrLineTypeName; }
+
+    /**
+     * get the count for a type
+     * @return count
+     */
     public Integer getCount() { return count; }
 
 
-
+    /**
+     * St the type name
+     * @param nodeOrLineTypeName name to set
+     */
     public void setNodeOrLineTypeName(String nodeOrLineTypeName) { this.nodeOrLineTypeName = nodeOrLineTypeName; }
+
+    /**
+     * Set the could
+     * @param count supplied count
+     */
     public void setCount(Integer count) { this.count = count; }
 
 

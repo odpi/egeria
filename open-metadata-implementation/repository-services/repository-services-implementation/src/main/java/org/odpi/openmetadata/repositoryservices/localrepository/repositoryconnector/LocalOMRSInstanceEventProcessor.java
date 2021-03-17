@@ -46,6 +46,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     private OMRSRepositoryValidator         repositoryValidator;
     private OMRSRepositoryEventExchangeRule saveExchangeRule;
     private OMRSMetadataCollection          localMetadataCollection = null;
+    private boolean                         produceRefreshEvents;
     private OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor;
 
     /*
@@ -67,6 +68,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param repositoryHelper                 helper class for building instances
      * @param repositoryValidator              helper class for validating instances
      * @param saveExchangeRule                 rule that determines which events to process.
+     * @param produceRefreshEvents             flag indicating whether the local connector should respond to refresh events
      * @param outboundRepositoryEventProcessor event processor
      * @param auditLog                         audit log for this component.
      */
@@ -76,6 +78,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                     OMRSRepositoryHelper            repositoryHelper,
                                     OMRSRepositoryValidator         repositoryValidator,
                                     OMRSRepositoryEventExchangeRule saveExchangeRule,
+                                    boolean                         produceRefreshEvents,
                                     OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor,
                                     AuditLog                        auditLog)
     {
@@ -89,6 +92,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
         this.saveExchangeRule = saveExchangeRule;
+        this.produceRefreshEvents = produceRefreshEvents;
         this.outboundRepositoryEventProcessor = outboundRepositoryEventProcessor;
         this.auditLog = auditLog;
 
@@ -1218,7 +1222,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         {
             verifyEventProcessor(methodName);
 
-            if (localMetadataCollectionId.equals(homeMetadataCollectionId))
+            if (produceRefreshEvents && (localMetadataCollectionId.equals(homeMetadataCollectionId)))
             {
                 EntityDetail entity = localMetadataCollection.isEntityKnown(localRepositoryConnector.getServerUserId(),
                                                                             instanceGUID);
@@ -1667,7 +1671,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         {
             verifyEventProcessor(methodName);
 
-            if (localMetadataCollectionId.equals(homeMetadataCollectionId))
+            if (produceRefreshEvents && (localMetadataCollectionId.equals(homeMetadataCollectionId)))
             {
                 Relationship relationship = localMetadataCollection.isRelationshipKnown(localRepositoryConnector.getServerUserId(),
                                                                                         instanceGUID);
