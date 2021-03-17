@@ -401,6 +401,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                           super.repositoryHelper,
                                                           super.repositoryValidator,
                                                           saveExchangeRule,
+                                                          produceEventsForRealConnector,
                                                           outboundRepositoryEventManager,
                                                           auditLog.createNewAuditLog(OMRSAuditingComponent.INSTANCE_EVENT_PROCESSOR));
 

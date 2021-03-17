@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.converters;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.SchemaAttribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -48,10 +48,8 @@ public class SchemaAttributeConverter<B> extends OpenMetadataAPIGenericConverter
         try {
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof SchemaAttribute) {
-                SchemaAttribute bean = (SchemaAttribute) returnBean;
-
-                bean.setGUID(schemaAttributeEntity.getGUID());
+            if (returnBean instanceof Attribute) {
+                Attribute bean = (Attribute) returnBean;
 
                 InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
 

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -120,7 +119,7 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.SUPPORTED_GUARDS_PROPERTY_NAME,
+                                                                       OpenMetadataAPIMapper.PRODUCED_GUARDS_PROPERTY_NAME,
                                                                        supportedGuards,
                                                                        methodName);
 

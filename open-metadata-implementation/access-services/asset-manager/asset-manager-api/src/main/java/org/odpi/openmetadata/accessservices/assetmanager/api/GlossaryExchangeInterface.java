@@ -141,7 +141,7 @@ public interface GlossaryExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryGUID unique identifier of the metadata element to classify
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param organizingPrinciple description of how the glossary is organized
      *
@@ -165,7 +165,7 @@ public interface GlossaryExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryGUID unique identifier of the metadata element to unclassify
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -191,7 +191,7 @@ public interface GlossaryExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryGUID unique identifier of the metadata element to classify
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param scope description of the situations where this glossary is relevant.
      *
@@ -215,7 +215,7 @@ public interface GlossaryExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryGUID unique identifier of the metadata element to unclassify
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid

@@ -3521,16 +3521,16 @@ public class RelationalDataHandler<DATABASE,
         }
 
         databaseColumnHandler.setClassificationInRepository(userId,
-                                                               databaseManagerGUID,
-                                                               databaseManagerName,
-                                                               OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
-                                                               OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
-                                                               databaseColumnGUID,
-                                                               parentElementGUIDParameterName,
-                                                               OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                               properties,
-                                                               false,
-                                                               methodName);
+                                                            databaseManagerGUID,
+                                                            databaseManagerName,
+                                                            databaseColumnGUID,
+                                                            parentElementGUIDParameterName,
+                                                            OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                            OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
+                                                            OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
+                                                            properties,
+                                                            false,
+                                                            methodName);
     }
 
 

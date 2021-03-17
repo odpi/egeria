@@ -113,7 +113,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
 
     INCOMPLETE_ASSET(         "OPEN-METADATA-SECURITY-0014",
                               OMRSAuditLogRecordSeverity.SECURITY,
-                              "User {0} is not authorized to change asset {1} because it has missing properties",
+                              "User {0} is not authorized to change asset {1} because it has missing properties: {2}",
                               "The system is unable to process a request from the user because the asset is not correctly or completely filled out.",
                               "The request fails with a UserNotAuthorizedException exception."),
 
