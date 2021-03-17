@@ -96,6 +96,11 @@
             <artifactId>jackson-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
+
     </dependencies>
 
 
