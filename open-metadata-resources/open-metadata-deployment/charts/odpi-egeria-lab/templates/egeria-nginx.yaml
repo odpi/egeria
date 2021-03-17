@@ -1,0 +1,107 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: nginx
+  name: {{ .Release.Name }}-nginx
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 80
+      targetPort: 80
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
+      nodePort: {{ .Values.service.nodeport.nginx }}
+      {{- end }}
+  selector:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: nginx
+...
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: {{ include "myapp.fullname" . }}-nginx
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: nginx
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: nginx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: nginx
+    spec:
+      containers:
+        - name: nginx
+          # Note we don't include the default namespace here as this is a standard docker image with no namespace
+          image: "{{ if (.Values.image.nginx.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.nginx.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.nginx.namespace) }}{{ .Values.image.nginx.namespace }}/{{ end }}\
+                  {{ .Values.image.nginx.name }}\
+                  {{ if (.Values.image.nginx.tag) }}:{{ .Values.image.nginx.tag }}{{ end }}"
+          imagePullPolicy: {{ .Values.image.nginx.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          resources: {}
+          env:
+            - name: UI_STATIC
+              value: http://{{ .Release.Name }}-uistatic:80
+            - name: UI_API
+              value: https://{{ .Release.Name }}-ui:8443
+          volumeMounts:
+            - name: etc-vol
+              mountPath: /etc/nginx/templates
+      restartPolicy: Always
+      volumes:
+        - name: etc-vol
+          configMap:
+            name: {{ .Release.Name }}-etc-configmap
+
+status: {}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: etc
+  name: {{ .Release.Name }}-etc-configmap
+{{- if and (.Files.Glob "etc/**") }}
+binaryData:
+  {{- $root := . }}
+  {{- range $path, $bytes := .Files.Glob "etc/**" }}
+  {{ base $path }}: {{ $root.Files.Get $path | b64enc | quote }}
+  {{- end }}
+  {{- end }}
+...
