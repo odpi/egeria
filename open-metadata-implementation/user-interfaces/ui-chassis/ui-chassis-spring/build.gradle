@@ -12,6 +12,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-test'
     implementation 'org.springframework.security:spring-security-ldap'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
     implementation 'io.jsonwebtoken:jjwt'
     implementation 'com.h2database:h2'
     implementation 'io.lettuce:lettuce-core'
