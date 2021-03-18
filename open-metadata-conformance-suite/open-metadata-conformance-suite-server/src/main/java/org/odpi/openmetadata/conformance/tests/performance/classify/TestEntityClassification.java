@@ -145,7 +145,6 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
                             classificationDef.getName(),
                             instProps);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    performanceWorkPad.incrementEntitiesCreated(1);
 
                     assertCondition(result != null,
                             A_CLASSIFY,
@@ -238,7 +237,6 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
                     long start = System.nanoTime();
                     metadataCollection.saveClassificationReferenceCopy(workPad.getLocalServerUserId(), toClassify, classification);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    performanceWorkPad.incrementRelationshipsCreated(1);
 
                     assertCondition(true,
                             A_SAVE_CLASSIFICATION_RC,
