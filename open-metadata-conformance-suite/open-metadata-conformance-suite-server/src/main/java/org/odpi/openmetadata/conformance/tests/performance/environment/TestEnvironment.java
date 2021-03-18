@@ -38,6 +38,11 @@ public class TestEnvironment extends OpenMetadataPerformanceTestCase
      */
     protected void run() throws Exception
     {
+        assertCondition(true,
+                "repository-performance-environment-properties",
+                "Environmental information for the OMAG Platform running the performance test CTS.",
+                PerformanceProfile.ENVIRONMENT.getProfileId(),
+                null);
         addTestConfigProperties();
         addInstanceCountProperties();
         addSystemInfoProperties();
