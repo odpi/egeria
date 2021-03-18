@@ -81,7 +81,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param guid                 unique identifier of the Line
+     * @param guid                 unique identifier of the Relationship
      * @param termHasARelationship the HasA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TermHasARelationship
@@ -197,7 +197,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param guid                    unique identifier of the Line
+     * @param guid                    unique identifier of the Relationship
      * @param relatedTermRelationship the related term  relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created RelatedTerm
@@ -315,7 +315,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param synonym    the synonym  relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created SynonymRelationship
@@ -433,7 +433,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param antonym    the antonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created AntonymRelationship
@@ -551,7 +551,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName  serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId      userId under which the request is performed
-     * @param guid        unique identifier of the Line
+     * @param guid        unique identifier of the Relationship
      * @param translation the translation relationship
      * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TranslationRelationship
@@ -669,7 +669,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId        userId under which the request is performed
-     * @param guid          unique identifier of the Line
+     * @param guid          unique identifier of the Relationship
      * @param usedInContext the used in context relationship
      * @param isReplace     flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created UsedInContextRelationship
@@ -787,7 +787,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId        userId under which the request is performed
-     * @param guid          unique identifier of the Line
+     * @param guid          unique identifier of the Relationship
      * @param preferredTerm the preferred term relationship
      * @param isReplace     flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created PreferredTermRelationship
@@ -910,7 +910,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param validValue the valid value relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ValidValueRelationship
@@ -1029,7 +1029,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId          userId under which the request is performed
-     * @param guid            unique identifier of the Line
+     * @param guid            unique identifier of the Relationship
      * @param replacementTerm the replacement term relationship
      * @param isReplace       flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ReplacementTermRelationship
@@ -1147,7 +1147,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param guid                    unique identifier of the Line
+     * @param guid                    unique identifier of the Relationship
      * @param termTYPEDBYRelationship the typed by relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TermTYPEDBYRelationshipRelationship
@@ -1265,7 +1265,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param isa        the is-a relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created IsARelationshipRelationship
@@ -1382,7 +1382,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param isatypeof  the is-a-type-of relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created IsARelationshipRelationship
@@ -1502,7 +1502,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param isatypeof  the is-a-type-of relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created termCategorization Relationship
@@ -1856,7 +1856,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
-     * @param guid         unique identifier of the Line
+     * @param guid         unique identifier of the Relationship
      * @param projectScope the projectScope relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ProjectScopeRelationship

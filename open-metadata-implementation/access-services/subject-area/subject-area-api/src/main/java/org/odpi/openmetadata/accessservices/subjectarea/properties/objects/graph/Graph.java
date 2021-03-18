@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * A Node is a Glossary Artifact in the subject area omas that has a type {@code  NodeType}, name, qualified name and description.
  * A node may be in one or more projects.
  * <p>
- * Nodes can be connected with {@code Line }s to form graphs. As they may be visualised, so a node has an associated
+ * Nodes can be connected with {@code Relationship}s to form graphs. As they may be visualised, so a node has an associated
  * icon.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
@@ -27,10 +27,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Graph implements Serializable {
     private Map<String, Node> nodes = null;
-    private Map<String, Line> lines = null;
+    private Map<String, Relationship> relationships = null;
     private String rootNodeGuid = null;
     private String nodeFilter = null;
-    private String lineFilter = null;
+    private String relationshipFilter = null;
     /**
      * Get the nodes that are in the neighbourhood of the root node
      *
@@ -50,21 +50,21 @@ public class Graph implements Serializable {
     }
 
     /**
-     * Get the lines that are in the neighbourhood of the root node
+     * Get the relationships that are in the neighbourhood of the root node
      *
-     * @return the lines
+     * @return the relationships
      */
-    public Map<String, Line> getLines() {
-        return lines;
+    public Map<String, Relationship> getRelationships() {
+        return relationships;
     }
 
     /**
-     * Set the lines that are in the neighbourhood of the root node
+     * Set the relationships that are in the neighbourhood of the root node
      *
-     * @param lines supply the nodes associated with the root node
+     * @param relationships supply the nodes associated with the root node
      */
-    public void setLines(Map<String, Line> lines) {
-        this.lines = lines;
+    public void setRelationships(Map<String, Relationship> relationships) {
+        this.relationships = relationships;
     }
 
     /**
@@ -101,19 +101,19 @@ public class Graph implements Serializable {
     }
 
     /**
-     * Get the line type filters as a comma separated string
-     * @return string of line types
+     * Get the relationship type filters as a comma separated string
+     * @return string of relationship types
      */
-    public String getLineFilter() {
-        return lineFilter;
+    public String getRelationshipFilter() {
+        return relationshipFilter;
     }
 
     /**
-     * Set the line type filters as a comma separated string
-     * @param lineFilter the node type filters
+     * Set the relationship type filters as a comma separated string
+     * @param relationshipFilter the node type filters
      */
-    public void setLineFilter(String lineFilter) {
-        this.lineFilter = lineFilter;
+    public void setRelationshipFilter(String relationshipFilter) {
+        this.relationshipFilter = relationshipFilter;
     }
 
     public String toString(StringBuilder sb) {
@@ -122,7 +122,7 @@ public class Graph implements Serializable {
         }
         sb.append("NodeGUID=" + rootNodeGuid + "\n");
         sb.append(("NodeTypeFilter=" + nodeFilter == null || nodeFilter == "") ? "none" : nodeFilter + "\n");
-        sb.append(("LineTypeFilter=" + lineFilter == null || lineFilter == "") ? "none" : lineFilter + "\n");
+        sb.append(("relationshipTypeFilter=" + relationshipFilter == null || relationshipFilter == "") ? "none" : relationshipFilter + "\n");
         if (nodes != null && !nodes.isEmpty()) {
 
             sb.append("Nodes= [\n");
@@ -132,11 +132,11 @@ public class Graph implements Serializable {
             }
             sb.append("]\n");
         }
-        if (lines != null && !lines.isEmpty()) {
-            sb.append("Lines= [\n");
-            Set<String> guids = lines.keySet();
+        if (relationships != null && !relationships.isEmpty()) {
+            sb.append("Relationships= [\n");
+            Set<String> guids = relationships.keySet();
             for (String guid : guids) {
-                lines.get(guid).toString(sb);
+                relationships.get(guid).toString(sb);
             }
             sb.append("]\n");
         }
@@ -158,12 +158,12 @@ public class Graph implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Graph graph = (Graph) o;
         return Objects.equals(rootNodeGuid, graph.getRootNodeGuid()) && Objects.equals(nodes, graph.nodes) &&
-                Objects.equals(lines, graph.lines) &&  Objects.equals(nodeFilter, graph.nodeFilter) &&
-                Objects.equals(lineFilter, graph.lineFilter);
+                Objects.equals(relationships, graph.relationships) &&  Objects.equals(nodeFilter, graph.nodeFilter) &&
+                Objects.equals(relationshipFilter, graph.relationshipFilter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rootNodeGuid, nodes, lines, nodeFilter, lineFilter);
+        return Objects.hash(rootNodeGuid, nodes, relationships, nodeFilter, relationshipFilter);
     }
 }

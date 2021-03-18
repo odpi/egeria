@@ -3,14 +3,11 @@
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfig;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.DefaultSubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraphClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaLine;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
@@ -46,12 +43,12 @@ public class SubjectAreaImpl implements SubjectArea {
         try {
             SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, omasServerURL);
             DefaultSubjectAreaNodeClients subjectAreaNode = new DefaultSubjectAreaNodeClients(client);
-            SubjectAreaLine subjectAreaLine = new SubjectAreaLine(client);
+            SubjectAreaRelationship subjectAreaRelationship = new SubjectAreaRelationship(client);
             SubjectAreaGraphClient subjectAreaGraph = new SubjectAreaGraphClient(client);
             SubjectAreaConfigClient subjectAreaConfig = new SubjectAreaConfigClient(client);
 
             this.nodeClients = subjectAreaNode;
-            this.relationshipAPI = subjectAreaLine;
+            this.relationshipAPI = subjectAreaRelationship;
             this.graphAPI = subjectAreaGraph;
             this.configAPI = subjectAreaConfig;
 

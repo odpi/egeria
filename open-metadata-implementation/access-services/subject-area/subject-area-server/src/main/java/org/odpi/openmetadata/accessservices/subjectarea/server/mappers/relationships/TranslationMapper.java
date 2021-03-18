@@ -14,7 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the translation and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class TranslationMapper extends LineMapper<Translation> {
+public class TranslationMapper extends RelationshipMapper<Translation> {
     public static final String TRANSLATION = "Translation";
 
     public TranslationMapper(OMRSAPIHelper omrsapiHelper) {
@@ -22,13 +22,13 @@ public class TranslationMapper extends LineMapper<Translation> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param translation        supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param translation        supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(Translation translation, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(Translation translation, InstanceProperties instanceProperties) {
         if (translation.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getDescription(), "description");
         }
@@ -51,13 +51,13 @@ public class TranslationMapper extends LineMapper<Translation> {
     /**
      * Map a primitive omrs property to the translation object.
      *
-     * @param translation  the glossary to be updated
+     * @param translation  the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(Translation translation, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(Translation translation, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -85,7 +85,7 @@ public class TranslationMapper extends LineMapper<Translation> {
     }
 
     @Override
-    protected Translation getLineInstance() {
+    protected Translation getRelationshipInstance() {
         return new Translation();
     }
 

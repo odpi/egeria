@@ -3,14 +3,14 @@
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 
 import java.util.List;
 
 /**
- * Client class for subject area relationships {@link Line}
+ * Client class for subject area relationships {@link Relationship}
  * */
-public interface SubjectAreaRelationshipClient<L extends Line>  extends SubjectAreaClient<L> {
+public interface SubjectAreaRelationshipClient<L extends Relationship> extends SubjectAreaClient<L> {
 
     /**
      * @throws UnsupportedOperationException - this method is until not supported
