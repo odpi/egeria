@@ -34,16 +34,16 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
     private static final String A_CLASSIFICATION_ALONE_MSG = "Repository performs search by classification alone (no properties), sorting by most recent creation date, of first page of instances for classification: ";
 
     private static final String A_FIND_BY_PROPERTY_ONE     = TEST_CASE_ID + "-findEntitiesByClassification-one";
-    private static final String A_FIND_BY_PROPERTY_ONE_MSG = "Repository performs search by a single classification property value, sorting by that property, of first page of instances for classification: ";
+    private static final String A_FIND_BY_PROPERTY_ONE_MSG = "Repository performs search by a single classification property value, sorting by oldest creation date, of first page of instances for classification: ";
 
     private static final String A_FIND_BY_PROPERTY_ALL     = TEST_CASE_ID + "-findEntitiesByClassification-all";
-    private static final String A_FIND_BY_PROPERTY_ALL_MSG = "Repository performs search for both of two classification property values, sorting by the second property, of first page of instances for classification: ";
+    private static final String A_FIND_BY_PROPERTY_ALL_MSG = "Repository performs search for both of two classification property values, sorting by most recent update date, of first page of instances for classification: ";
 
     private static final String A_FIND_BY_PROPERTY_ANY     = TEST_CASE_ID + "-findEntitiesByClassification-any";
-    private static final String A_FIND_BY_PROPERTY_ANY_MSG = "Repository performs search for either of two classification property values, sorting by the second property, of first page of instances for classification: ";
+    private static final String A_FIND_BY_PROPERTY_ANY_MSG = "Repository performs search for either of two classification property values, sorting by oldest update date, of first page of instances for classification: ";
 
     private static final String A_FIND_BY_PROPERTY_NONE     = TEST_CASE_ID + "-findEntitiesByProperty-none";
-    private static final String A_FIND_BY_PROPERTY_NONE_MSG = "Repository performs search for neither of two classification property values, sorting by the first property, of first page of instances for classification: ";
+    private static final String A_FIND_BY_PROPERTY_NONE_MSG = "Repository performs search for neither of two classification property values, sorting by entity GUID, of first page of instances for classification: ";
 
     private final ClassificationDef   classificationDef;
     private final String              testTypeName;
@@ -106,12 +106,15 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                 PrimitiveDef attribute = (PrimitiveDef) property.getAttributeType();
                 String propertyNameToSearch = property.getAttributeName();
                 PrimitivePropertyValue candidate = getPrimitivePropertyValue(propertyNameToSearch, attribute, property.isUnique(), 0);
+                if (attribute.getPrimitiveDefCategory().equals(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)) {
+                    candidate.setPrimitiveValue(repositoryHelper.getExactMatchRegex(candidate.valueAsString()));
+                }
                 if (oneMatch == null) {
                     oneMatch = candidate;
-                    oneName = repositoryHelper.getExactMatchRegex(propertyNameToSearch);
+                    oneName = propertyNameToSearch;
                 } else {
                     twoMatch = candidate;
-                    twoName = repositoryHelper.getExactMatchRegex(propertyNameToSearch);
+                    twoName = propertyNameToSearch;
                 }
             }
             if (oneMatch != null && twoMatch != null)
@@ -150,7 +153,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                         A_CLASSIFICATION_ALONE_MSG + testTypeName,
                         PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
                         null,
-                        "findEntitiesByClassification",
+                        methodName,
                         elapsedTime);
             }
         } catch (FunctionNotSupportedException exception) {
@@ -181,8 +184,8 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                         0,
                         null,
                         null,
-                        oneName,
-                        SequencingOrder.PROPERTY_ASCENDING,
+                        null,
+                        SequencingOrder.CREATION_DATE_OLDEST,
                         performanceWorkPad.getMaxSearchResults());
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
                 if (results != null && !results.isEmpty()) {
@@ -191,7 +194,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_PROPERTY_ONE_MSG + testTypeName,
                             PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByClassification",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -223,8 +226,8 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                         0,
                         null,
                         null,
-                        twoName,
-                        SequencingOrder.PROPERTY_DESCENDING,
+                        null,
+                        SequencingOrder.LAST_UPDATE_RECENT,
                         performanceWorkPad.getMaxSearchResults());
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
                 if (results != null && !results.isEmpty()) {
@@ -233,7 +236,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_PROPERTY_ALL_MSG + testTypeName,
                             PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByClassification",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -262,8 +265,8 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                         0,
                         null,
                         null,
-                        twoName,
-                        SequencingOrder.PROPERTY_ASCENDING,
+                        null,
+                        SequencingOrder.LAST_UPDATE_OLDEST,
                         performanceWorkPad.getMaxSearchResults());
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
                 if (results != null && !results.isEmpty()) {
@@ -272,7 +275,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_PROPERTY_ANY_MSG + testTypeName,
                             PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByClassification",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -301,8 +304,8 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                         0,
                         null,
                         null,
-                        oneName,
-                        SequencingOrder.PROPERTY_DESCENDING,
+                        null,
+                        SequencingOrder.GUID,
                         performanceWorkPad.getMaxSearchResults());
                 long elapsedTime = (System.nanoTime() - start) / 1000000;
                 if (results != null && !results.isEmpty()) {
@@ -311,7 +314,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_PROPERTY_NONE_MSG + testTypeName,
                             PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByClassification",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {

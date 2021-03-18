@@ -447,6 +447,9 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                 String propertyNameToSearch = property.getAttributeName();
                 PrimitiveDefCategory propertyType = attribute.getPrimitiveDefCategory();
                 PrimitivePropertyValue candidate = getPrimitivePropertyValue(propertyNameToSearch, attribute, property.isUnique(), 0);
+                if (attribute.getPrimitiveDefCategory().equals(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)) {
+                    candidate.setPrimitiveValue(repositoryHelper.getExactMatchRegex(candidate.valueAsString()));
+                }
                 if (!propertyType.equals(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)) {
                     if (oneMatch == null) {
                         oneMatch = candidate;
@@ -457,10 +460,10 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                     }
                 } else if (oneString == null) {
                     oneString = candidate;
-                    oneStringName = repositoryHelper.getExactMatchRegex(propertyNameToSearch);
+                    oneStringName = propertyNameToSearch;
                 } else if (twoString == null) {
                     twoString = candidate;
-                    twoStringName = repositoryHelper.getExactMatchRegex(propertyNameToSearch);
+                    twoStringName = propertyNameToSearch;
                 }
             }
             if (oneMatch != null && twoMatch != null) {
