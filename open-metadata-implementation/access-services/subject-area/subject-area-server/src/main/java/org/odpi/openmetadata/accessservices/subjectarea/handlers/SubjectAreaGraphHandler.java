@@ -107,6 +107,9 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                     level
             );
             Graph graph = new Graph();
+            graph.setRootNodeGuid(guid);
+            graph.setNodeFilter(nodeFilterStr);
+            graph.setLineFilter(lineFilterStr);
             if (CollectionUtils.isNotEmpty(instanceGraph.getRelationships())) {
                 List<Line> lines = getLinesFromRelationships(instanceGraph.getRelationships());
                 Map<String,Line> guidToLineMap = new HashMap<>();
