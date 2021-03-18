@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * A Node is an entity in the subject area omas that has a type {@code  NodeType}, name, qualified name and description.
  * A node may be in one or more projects.
  * <p>
- * Nodes can be connected with {@code Line }s to form graphs. As they may be visualised, so a node has an associated
+ * Nodes can be connected with {@code Relationship }s to form graphs. As they may be visualised, so a node has an associated
  * icon.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

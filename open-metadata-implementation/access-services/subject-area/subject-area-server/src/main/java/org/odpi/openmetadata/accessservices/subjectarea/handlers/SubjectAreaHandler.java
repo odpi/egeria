@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasO
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
@@ -17,7 +17,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.Mapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.MappersFactory;
@@ -32,7 +32,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 import java.util.*;
 
@@ -82,7 +81,7 @@ public abstract class SubjectAreaHandler {
      * Get glossary summary
      * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
-     * @param line glossary relationship {@link TermAnchor} or {@link CategoryAnchor}
+     * @param relationship glossary relationship {@link TermAnchor} or {@link CategoryAnchor}
      * @return Glossary summary
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -91,18 +90,18 @@ public abstract class SubjectAreaHandler {
      */
     GlossarySummary getGlossarySummary(String restAPIName,
                                        String userId,
-                                       Line line) throws UserNotAuthorizedException,
-                                                         PropertyServerException,
-                                                         InvalidParameterException,
-                                                         SubjectAreaCheckedException
+                                       Relationship relationship) throws UserNotAuthorizedException,
+                                                                 PropertyServerException,
+                                                                 InvalidParameterException,
+                                                                 SubjectAreaCheckedException
     {
-        String guid = SubjectAreaUtils.getGlossaryGuidFromAnchor(line);
+        String guid = SubjectAreaUtils.getGlossaryGuidFromAnchor(relationship);
         Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, GLOSSARY_TYPE_NAME, restAPIName);
         if (entityDetail.isPresent()) {
             GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
             Glossary glossary = glossaryMapper.map(entityDetail.get());
             // TODO sort out icons
-            return SubjectAreaUtils.extractGlossarySummaryFromGlossary(glossary, line);
+            return SubjectAreaUtils.extractGlossarySummaryFromGlossary(glossary, relationship);
         }
 
         return null;
@@ -111,7 +110,7 @@ public abstract class SubjectAreaHandler {
      * Get category summary
      * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
-     * @param line category relationship {@link TermAnchor} or {@link CategoryAnchor}
+     * @param relationship category relationship {@link TermAnchor} or {@link CategoryAnchor}
      * @return category summary
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -120,18 +119,18 @@ public abstract class SubjectAreaHandler {
      */
     CategorySummary getCategorySummary(String restAPIName,
                                        String userId,
-                                       Line line) throws UserNotAuthorizedException,
-                                                         PropertyServerException,
-                                                         InvalidParameterException,
-                                                         SubjectAreaCheckedException
+                                       Relationship relationship) throws UserNotAuthorizedException,
+                                                                 PropertyServerException,
+                                                                 InvalidParameterException,
+                                                                 SubjectAreaCheckedException
     {
-        String categoryGuid = line.getEnd1().getNodeGuid();
+        String categoryGuid = relationship.getEnd1().getNodeGuid();
         Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, categoryGuid, CATEGORY_TYPE_NAME, restAPIName);
         if (entityDetail.isPresent()) {
             CategoryMapper CategoryMapper = mappersFactory.get(CategoryMapper.class);
             Category category = CategoryMapper.map(entityDetail.get());
             // TODO sort out icons
-            return SubjectAreaUtils.extractCategorySummaryFromCategory(category, line);
+            return SubjectAreaUtils.extractCategorySummaryFromCategory(category, relationship);
         }
 
         return null;
@@ -248,18 +247,18 @@ public abstract class SubjectAreaHandler {
      * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested guid
      * */
-    public SubjectAreaOMASAPIResponse<Line> getAllRelationshipsForEntity(String methodName,
-                                                                         String userId,
-                                                                         String guid,
-                                                                         FindRequest findRequest)
+    public SubjectAreaOMASAPIResponse<Relationship> getAllRelationshipsForEntity(String methodName,
+                                                                                 String userId,
+                                                                                 String guid,
+                                                                                 FindRequest findRequest)
     {
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         try {
             if (findRequest.getPageSize() == null) {
                 findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
             }
             invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
-            response.addAllResults(getAllLineForEntity(methodName, userId, guid, findRequest));
+            response.addAllResults(getAllRelationshipForEntity(methodName, userId, guid, findRequest));
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException  e) {
             response.setExceptionInfo(e, className);
         }
@@ -274,28 +273,28 @@ public abstract class SubjectAreaHandler {
      * @param userId                  user identity
      * @param entityGuid              globally unique identifier
      * @param findRequest             {@link FindRequest}
-     * @return {@code List<Line>}
+     * @return {@code List<Relationship>}
      *
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws SubjectAreaCheckedException standard exception Subject Area OMAS services
      */
-    public List<Line> getAllLineForEntity(String restAPIName,
-                                           String userId,
-                                           String entityGuid,
-                                           FindRequest findRequest) throws SubjectAreaCheckedException,
+    public List<Relationship> getAllRelationshipForEntity(String restAPIName,
+                                                  String userId,
+                                                  String entityGuid,
+                                                  FindRequest findRequest) throws SubjectAreaCheckedException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         if (findRequest.getPageSize() == null) {
             findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
         }
         invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), restAPIName);
-        List<Relationship> relationships = oMRSAPIHelper.getAllRelationshipsForEntity(restAPIName, userId, entityGuid, findRequest);
-        return getLinesFromRelationships(relationships);
+        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships = oMRSAPIHelper.getAllRelationshipsForEntity(restAPIName, userId, entityGuid, findRequest);
+        return getRelationshipsFromRelationships(relationships);
     }
 
-    public List<Line> getLinesFromRelationships(Collection<Relationship> relationships) {
-        return convertOmrsToOmas(relationships, ILineMapper.class);
+    public List<Relationship> getRelationshipsFromRelationships(Collection<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships) {
+        return convertOmrsToOmas(relationships, IRelationshipMapper.class);
     }
 
     public List<Node> getNodesFromEntityDetails(Collection<EntityDetail> entityDetails){

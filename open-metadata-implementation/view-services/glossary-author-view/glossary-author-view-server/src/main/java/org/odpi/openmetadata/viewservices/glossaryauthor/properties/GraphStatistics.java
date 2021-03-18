@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * The GraphStatistics includes the nodeGUID of the node on which it is centered and the depth.
  * The GraphStatistics is formed from the result of a traversal with no filtering - it includes
  * 3 maps of type information - one per category - keyed by typeName, where each entry (value)
- * contains the nodeType or LineType name and number of instances of that type in the traversal, i.e:
+ * contains the nodeType or relationshipType name and number of instances of that type in the traversal, i.e:
  *   {  typeName --> { nodeTypeName : <string> , count : <int> } }
  */
 public class GraphStatistics {
@@ -33,14 +33,14 @@ public class GraphStatistics {
     // The GraphStatistics includes the nodeGUID of the node on which it is centered and the depth.
     // The GraphStatistics is formed from the result of a traversal with no filtering - it includes
     // 3 maps of type information - one per category - keyed by typeName, where each entry (value)
-    // contains the nodeType or LineType name and number of instances of that type in the traversal, i.e:
+    // contains the nodeType or relationshipType name and number of instances of that type in the traversal, i.e:
     //   {  typeName --> { nodeTypeName : <string> , count : <int> } }
     //
 
 
     private String                    nodeGUID;                    // must be non-null
-    private Map<String, NodeLineStats>  nodeCounts;       // a map from nodeType name to count
-    private Map<String, NodeLineStats>  lineCounts;       // a map from lineType name to count
+    private Map<String, NodeRelationshipStats>  nodeCounts;        // a map from nodeType name to count
+    private Map<String, NodeRelationshipStats> relationshipCounts; // a map from relationshipType name to count
     private Integer                   depth;                       // the depth of traversal
 
 
@@ -58,19 +58,19 @@ public class GraphStatistics {
 
     public String getNodeGUID() { return nodeGUID; }
 
-    public Map<String, NodeLineStats> getNodeCounts() { return nodeCounts; }
+    public Map<String, NodeRelationshipStats> getNodeCounts() { return nodeCounts; }
 
-    public Map<String, NodeLineStats> getLineCounts() {
-        return lineCounts;
+    public Map<String, NodeRelationshipStats> getRelationshipCounts() {
+        return relationshipCounts;
     }
 
     public Integer getDepth() { return depth; }
 
     public void setNodeGUID(String nodeGUID) { this.nodeGUID = nodeGUID; }
 
-    public void setNodeCounts(Map<String, NodeLineStats> nodeCounts) { this.nodeCounts = nodeCounts; }
+    public void setNodeCounts(Map<String, NodeRelationshipStats> nodeCounts) { this.nodeCounts = nodeCounts; }
 
-    public void setLineCounts(Map<String, NodeLineStats> lineCounts) { this.lineCounts = lineCounts; }
+    public void setRelationshipCounts(Map<String, NodeRelationshipStats> relationshipCounts) { this.relationshipCounts = relationshipCounts; }
 
     public void setDepth(Integer depth) { this.depth = depth; }
 
@@ -81,7 +81,7 @@ public class GraphStatistics {
                 ", nodeGUID=" + nodeGUID +
                 ", depth=" + depth +
                 ", nodeCounts=" + nodeCounts +
-                ", lineCounts=" + lineCounts +
+                ", relationshipCounts=" + relationshipCounts +
                 '}';
     }
 

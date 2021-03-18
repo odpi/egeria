@@ -9,8 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -292,7 +291,7 @@ public class GlossaryFVT {
         System.out.println("Purge succeeded");
     }
 
-    public List<Line> getGlossaryRelationships(Glossary glossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Relationship> getGlossaryRelationships(Glossary glossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaGlossary.getAllRelationships(this.userId, glossary.getSystemAttributes().getGUID());
     }
 

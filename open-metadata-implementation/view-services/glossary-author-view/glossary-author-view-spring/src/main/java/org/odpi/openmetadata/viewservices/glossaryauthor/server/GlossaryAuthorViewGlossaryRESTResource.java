@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -154,14 +154,14 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                                     @PathVariable String guid,
-                                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                     @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
-                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                             @PathVariable String guid,
+                                                                             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                             @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
+                                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                             @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+                                                                            ) {
         return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
