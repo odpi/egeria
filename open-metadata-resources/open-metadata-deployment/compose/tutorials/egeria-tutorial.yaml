@@ -138,7 +138,6 @@ services:
             - OPEN_LINEAGE_SERVER_NAME=open-lineage
             - OPEN_LINEAGE_GRAPH_SOURCE=MAIN
             - JAVA_APP_JAR=user-interface/ui-chassis-spring-${egeria_version}.jar
-            - ZUUL_ROUTES_UI_URL=http://uistatic:80
         ports:
             - '18443:8443'
         networks:
