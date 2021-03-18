@@ -2938,7 +2938,6 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
     public SubjectAreaOMASAPIResponse<ProjectScope> getProjectScope(String serverName, String userId, String guid)
     {
-
         String restAPIName = "getProjectScope";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
         SubjectAreaOMASAPIResponse<ProjectScope> response = new SubjectAreaOMASAPIResponse<>();
@@ -3073,6 +3072,185 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+    /**
+     * Create a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @return response, when successful contains the created categoryHierarchyLink relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> createCategoryHierarchyLink(String serverName, String userId, CategoryHierarchyLink categoryHierarchyLink) {
+        String restAPIName = "createCategoryHierarchyLink";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<CategoryHierarchyLink> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            CategoryHierarchyLink createdCategoryHierarchyLink = handler.createCategoryHierarchyLink(userId, categoryHierarchyLink);
+            response.addResult(createdCategoryHierarchyLink);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Get a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink Relationship to get
+     * @return response which when successful contains the CategoryHierarchyLink relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> getCategoryHierarchyLink(String serverName, String userId, String guid) {
+        String restAPIName = "getCategoryHierarchyLink";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<CategoryHierarchyLink> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            CategoryHierarchyLink categoryHierarchyLink = handler.getCategoryHierarchyLink(userId, guid);
+            response.addResult(categoryHierarchyLink);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+    /**
+     * Update a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
+     * @param guid                  guid of the CategoryHierarchyLink relationship
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @param isReplace             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated categoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryHierarchyLink(String serverName, String userId, String guid, CategoryHierarchyLink categoryHierarchyLink, Boolean isReplace) {
+        String restAPIName = "updateCategoryHierarchyLink";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<CategoryHierarchyLink> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            CategoryHierarchyLink updatedCategoryHierarchyLink;
+            if (isReplace) {
+                updatedCategoryHierarchyLink = handler.replaceCategoryHierarchyLink(userId, guid, categoryHierarchyLink);
+            } else {
+                updatedCategoryHierarchyLink = handler.updateCategoryHierarchyLink(userId, guid, categoryHierarchyLink);
+            }
+
+            response.addResult(updatedCategoryHierarchyLink);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;    }
+
+    /**
+     * Delete a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink relationship to delete
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @return response for a soft delete the response contains the deleted relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> deleteCategoryHierarchyLink(String serverName, String userId, String guid, Boolean isPurge) {
+        String restAPIName = "deleteCategoryHierarchyLink";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<CategoryHierarchyLink> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            if (isPurge) {
+                handler.purgeCategoryHierarchyLink(userId, guid);
+            } else {
+                handler.deleteCategoryHierarchyLink(userId, guid);
+            }
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Restore a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     * <p>
+     * Restore allows the deleted CategoryHierarchyLink Relationship to be made active again. Restore allows deletes to be undone.
+     * Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink Relationship to delete
+     * @return response which when successful contains the restored CategoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> restoreCategoryHierarchyLink(String serverName, String userId, String guid) {
+        String restAPIName = "restoreCategoryHierarchyLink";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
+        SubjectAreaOMASAPIResponse<CategoryHierarchyLink> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        // should not be called without a supplied relationship - the calling layer should not allow this.
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
+            RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            CategoryHierarchyLink restoredCategoryHierarchyLink = handler.restoreCategoryHierarchyLink(userId, guid);
+            response.addResult(restoredCategoryHierarchyLink);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, restAPIName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
      *

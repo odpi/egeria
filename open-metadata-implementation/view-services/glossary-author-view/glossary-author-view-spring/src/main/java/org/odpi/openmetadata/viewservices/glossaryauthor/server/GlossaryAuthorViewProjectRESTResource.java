@@ -5,7 +5,7 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -138,14 +138,14 @@ public class GlossaryAuthorViewProjectRESTResource {
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                                    @PathVariable String guid,
-                                                                    @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                    @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
-                                                                    @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                    @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                                    @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                            @PathVariable String guid,
+                                                                            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                            @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
+                                                                            @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+                                                                           ) {
         return restAPI.getProjectRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 

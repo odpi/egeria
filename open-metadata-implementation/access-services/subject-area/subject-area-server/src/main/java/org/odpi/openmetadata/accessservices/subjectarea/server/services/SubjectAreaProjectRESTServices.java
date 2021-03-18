@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaProjectHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -195,19 +195,19 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(String serverName,
-                                                                    String userId,
-                                                                    String guid,
-                                                                    Date asOfTime,
-                                                                    Integer startingFrom,
-                                                                    Integer pageSize,
-                                                                    SequencingOrder sequencingOrder,
-                                                                    String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Relationship> getProjectRelationships(String serverName,
+                                                                            String userId,
+                                                                            String guid,
+                                                                            Date asOfTime,
+                                                                            Integer startingFrom,
+                                                                            Integer pageSize,
+                                                                            SequencingOrder sequencingOrder,
+                                                                            String sequencingProperty) {
         String methodName = "getProjectRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);

@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * A relationship between 2 subject area OMAS Nodes. It is contains named attributes and has 2 Line ends.
+ * A relationship between 2 subject area OMAS Nodes. It is contains named attributes and has 2 relationship ends.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "class",
-        defaultImpl = Line.class,
+        defaultImpl = Relationship.class,
         visible = true
 )
 @JsonSubTypes({
@@ -48,40 +48,40 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = ProjectScope.class),
         @JsonSubTypes.Type(value = CategoryHierarchyLink.class)
 })
-abstract public class Line implements Serializable, OmasObject {
+abstract public class Relationship implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
     private Date effectiveFromTime = null;
     private Date effectiveToTime = null;
     private Map<String, String> additionalProperties;
-    protected LineType lineType;
-    // this is the line name
+    protected RelationshipType relationshipType;
+    // this is the relationship name
     protected String name;
-    protected LineEnd end1;
-    protected LineEnd end2;
+    protected RelationshipEnd end1;
+    protected RelationshipEnd end2;
 
-    protected Line(String name, LineEnd end1, LineEnd end2) {
-        this.end1 = new LineEnd(end1);
-        this.end2 = new LineEnd(end2);
+    protected Relationship(String name, RelationshipEnd end1, RelationshipEnd end2) {
+        this.end1 = new RelationshipEnd(end1);
+        this.end2 = new RelationshipEnd(end2);
         this.name = name;
         initialise();
     }
 
     protected void initialise() {
-        // set the LineType if this is a LineType enum value.
+        // set the RelationshipType if this is a RelationshipType enum value.
         try {
-            lineType = LineType.valueOf(name);
+            relationshipType = RelationshipType.valueOf(name);
         } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
+            relationshipType = RelationshipType.Unknown;
         }
     }
 
-    public LineType getLineType() {
-        return lineType;
+    public RelationshipType getRelationshipType() {
+        return relationshipType;
     }
 
-    public void setLineType(LineType lineType) {
-        this.lineType = lineType;
+    public void setRelationshipType(RelationshipType relationshipType) {
+        this.relationshipType = relationshipType;
     }
 
     public SystemAttributes getSystemAttributes() {
@@ -93,9 +93,9 @@ abstract public class Line implements Serializable, OmasObject {
     }
 
     /**
-     * Return the date/time that this line should start to be used (null means it can be used from creationTime).
+     * Return the date/time that this relationship should start to be used (null means it can be used from creationTime).
      *
-     * @return Date the line becomes effective.
+     * @return Date the relationship becomes effective.
      */
     public Date getEffectiveFromTime() {
         return effectiveFromTime;
@@ -106,9 +106,9 @@ abstract public class Line implements Serializable, OmasObject {
     }
 
     /**
-     * Return the date/time that this line should no longer be used.
+     * Return the date/time that this relationship should no longer be used.
      *
-     * @return Date the line stops being effective.
+     * @return Date the relationship stops being effective.
      */
     public Date getEffectiveToTime() {
         return effectiveToTime;
@@ -151,28 +151,28 @@ abstract public class Line implements Serializable, OmasObject {
     }
 
     /**
-     * Get line end 1. The child Line sets the appropriate values for its Line end 1
+     * Get relationship end 1. The child relationship sets the appropriate values for its relationship end 1
      *
-     * @return LineEnd Line end 1
+     * @return RelationshipEnd relationship end 1
      */
-    public LineEnd getEnd1() {
+    public RelationshipEnd getEnd1() {
         return end1;
     }
 
-    public void setEnd1(LineEnd end1) {
+    public void setEnd1(RelationshipEnd end1) {
         this.end1 = end1;
     }
 
     /**
-     * Get line end 1. The child Line sets the appropriate values for its Line end 1
+     * Get relationship end 1. The child relationship sets the appropriate values for its relationship end 1
      *
-     * @return LineEnd Line end 1
+     * @return RelationshipEnd relationship end 1
      */
-    public LineEnd getEnd2() {
+    public RelationshipEnd getEnd2() {
         return end2;
     }
 
-    public void setEnd2(LineEnd end2) {
+    public void setEnd2(RelationshipEnd end2) {
         this.end2 = end2;
     }
 
@@ -181,9 +181,9 @@ abstract public class Line implements Serializable, OmasObject {
             sb = new StringBuilder();
         }
 
-        sb.append("Line{");
+        sb.append("Relationship{");
 //        sb.append("typeDefGuid=").append(typeDefGuid).append(",");
-        sb.append("lineType=").append(lineType.name()).append(",");
+        sb.append("RelationshipType=").append(relationshipType.name()).append(",");
         sb.append("name=").append(name);
         if (this.systemAttributes != null) {
             sb.append("systemAttributes { ");

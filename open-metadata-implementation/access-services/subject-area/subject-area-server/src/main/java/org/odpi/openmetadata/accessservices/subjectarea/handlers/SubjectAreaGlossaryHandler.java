@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -168,7 +168,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(String userId, String guid, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Relationship> getGlossaryRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getGlossaryRelationships";
         return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
     }

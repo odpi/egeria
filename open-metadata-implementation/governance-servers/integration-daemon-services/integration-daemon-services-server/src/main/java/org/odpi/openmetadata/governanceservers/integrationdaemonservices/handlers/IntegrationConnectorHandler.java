@@ -211,7 +211,7 @@ public class IntegrationConnectorHandler implements Serializable
      *
      * @param actionDescription description of caller's operation
      */
-    void reinitializeConnector(String    actionDescription)
+    synchronized void reinitializeConnector(String    actionDescription)
     {
         final String operationName = "initialize";
 
@@ -232,14 +232,14 @@ public class IntegrationConnectorHandler implements Serializable
 
             integrationConnector = (IntegrationConnector)genericConnector;
 
-            this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
-
             contextManager.setContext(integrationConnectorId,
                                       integrationConnectorName,
                                       metadataSourceQualifiedName,
                                       integrationConnector,
                                       permittedSynchronization,
                                       integrationServiceOptions);
+
+            this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
 
             if (needDedicatedThread)
             {

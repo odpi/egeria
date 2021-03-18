@@ -1097,12 +1097,14 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                                             newAsset.getZoneMembership()))
                         {
                             /*
-                             * Perform special processing for quarantine zone.
-                             * The owner must be specified
+                             * Perform special processing for quarantine zone. The owner must be specified.
+                             * The quarantine zone can only be removed by NPA accounts or a different person
+                             * to the person who set up the asset.
                              */
-                            if ((newAsset.getOwner() != null) && (newAsset.getOwnerType() != 0))
+                            if (newAsset.getOwner() != null)
                             {
-                                if (validateSeparationOfDuties(userId, originalAssetAuditHeader))
+                                if (npaAccounts.contains(userId) ||
+                                            (validateSeparationOfDuties(userId, originalAssetAuditHeader)))
                                 {
                                     return;
                                 }
@@ -1117,9 +1119,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                             }
                             else
                             {
-                                super.throwIncompleteAsset(userId,
-                                                           newAsset,
-                                                           methodName);
+                                super.throwIncompleteAsset(userId, newAsset, "owner", methodName);
                             }
                         }
                         else
@@ -1129,9 +1129,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                     }
                     else
                     {
-                        super.throwIncompleteAsset(userId,
-                                                   newAsset,
-                                                   methodName);
+                        super.throwIncompleteAsset(userId, newAsset, "zoneMembership", methodName);
                     }
                 }
             }

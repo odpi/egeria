@@ -3,11 +3,10 @@
 package org.odpi.openmetadata.accessservices.subjectarea.client.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.reflections.Reflections;
@@ -18,9 +17,9 @@ import java.util.*;
 
 /**
  * The OMAS client library implementation of the Subject Area OMAS.
- * This interface provides relationship {@link Line} authoring interface for subject area experts.
+ * This interface provides relationship {@link Relationship} authoring interface for subject area experts.
  */
-public class SubjectAreaLine implements SubjectAreaRelationshipClients {
+public class SubjectAreaRelationship implements SubjectAreaRelationshipClients {
     private static final String HAS_A = "has-as";
     private static final String RELATED_TERM = "related-terms";
     private static final String SYNONYM = "synonyms";
@@ -40,20 +39,20 @@ public class SubjectAreaLine implements SubjectAreaRelationshipClients {
     private static final String PROJECT_SCOPE = "project-scopes";
     private static final String CATEGORY_HIERARCHY_LINK = "category-hierarchy-link";
 
-    private final Map<Class<?>, SubjectAreaRelationshipClient<?>> cache = new HashMap<>();
-    private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaLine.class.getPackage().getName();
+    private final Map<Class<?>, org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient> cache = new HashMap<>();
+    private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaRelationship.class.getPackage().getName();
 
     /**
-     * @param packagesToScan - search packages for finding classes placed by annotation {@link SubjectAreaLineClient}
+     * @param packagesToScan - search packages for finding classes placed by annotation {@link SubjectAreaRelationshipClient}
      * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
      * */
     @SuppressWarnings("rawtypes")
-    public SubjectAreaLine(SubjectAreaRestClient subjectAreaRestClient, String... packagesToScan) {
+    public SubjectAreaRelationship(SubjectAreaRestClient subjectAreaRestClient, String... packagesToScan) {
         Set<String> packages = new HashSet<>(Arrays.asList(packagesToScan));
         packages.add(DEFAULT_SCAN_PACKAGE);
 
         Reflections reflections = new Reflections(packages);
-        Set<Class<?>> clientClasses = reflections.getTypesAnnotatedWith(SubjectAreaLineClient.class);
+        Set<Class<?>> clientClasses = reflections.getTypesAnnotatedWith(SubjectAreaRelationshipClient.class);
         for (Class<?> declaredClass : clientClasses) {
             try {
                 if (AbstractSubjectAreaRelationship.class.isAssignableFrom(declaredClass)) {
@@ -68,7 +67,7 @@ public class SubjectAreaLine implements SubjectAreaRelationshipClients {
                     | InstantiationException
                     | InvocationTargetException e) {
                 throw new ExceptionInInitializerError(
-                        "During initialization `SubjectAreaLine` an error has occurred - "
+                        "During initialization `SubjectArearelationship` an error has occurred - "
                                 + e.getMessage()
                 );
             }
@@ -77,91 +76,91 @@ public class SubjectAreaLine implements SubjectAreaRelationshipClients {
 
     /**
      *  The constructor uses the current package to scan "org.odpi.openmetadata.accessservices.subjectarea.client.relationships"
-     *  to search for classes placed by annotation {@link SubjectAreaLineClient}.
+     *  to search for classes placed by annotation {@link SubjectAreaRelationshipClient}.
      *
      * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
      */
-    public SubjectAreaLine(SubjectAreaRestClient subjectAreaRestClient) {
+    public SubjectAreaRelationship(SubjectAreaRestClient subjectAreaRestClient) {
         this(subjectAreaRestClient, DEFAULT_SCAN_PACKAGE);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<HasA> hasA() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient hasA() {
         return getClient(HasA.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<RelatedTerm> relatedTerm() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient relatedTerm() {
         return getClient(RelatedTerm.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<TermAnchor> termAnchor() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient termAnchor() {
         return getClient(TermAnchor.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<ProjectScope> projectScope() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient projectScope() {
         return getClient(ProjectScope.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<Synonym> synonym() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient synonym() {
         return getClient(Synonym.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<Antonym> antonym() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient antonym() {
         return getClient(Antonym.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<Translation> translation() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient translation() {
         return getClient(Translation.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<UsedInContext> usedInContext() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient usedInContext() {
         return getClient(UsedInContext.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<PreferredTerm> preferredTerm() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient preferredTerm() {
         return getClient(PreferredTerm.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<ValidValue> validValue() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient validValue() {
         return getClient(ValidValue.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<ReplacementTerm> replacementTerm() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient replacementTerm() {
         return getClient(ReplacementTerm.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<TypedBy> typedBy() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient typedBy() {
         return getClient(TypedBy.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<IsA> isA() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient isA() {
         return getClient(IsA.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<IsATypeOf> isaTypeOf() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient isaTypeOf() {
         return getClient(IsATypeOf.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<Categorization> termCategorization() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient termCategorization() {
         return getClient(Categorization.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<SemanticAssignment> semanticAssignment() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient semanticAssignment() {
         return getClient(SemanticAssignment.class);
     }
 
@@ -171,114 +170,114 @@ public class SubjectAreaLine implements SubjectAreaRelationshipClients {
     }
 
     @Override
-    public SubjectAreaRelationshipClient<CategoryAnchor> categoryAnchor() {
+    public org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient categoryAnchor() {
         return getClient(CategoryAnchor.class);
     }
 
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaCategoryHierarchyLinkClient extends AbstractSubjectAreaRelationship<CategoryHierarchyLink> {
         protected SubjectAreaCategoryHierarchyLinkClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, CATEGORY_HIERARCHY_LINK);
         }
     }
 
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaTermAnchorClient extends AbstractSubjectAreaRelationship<TermAnchor> {
         protected SubjectAreaTermAnchorClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TERM_ANCHOR);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaRelatedTermClient extends AbstractSubjectAreaRelationship<RelatedTerm> {
         protected SubjectAreaRelatedTermClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, RELATED_TERM);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaHasaClient extends AbstractSubjectAreaRelationship<HasA> {
         protected SubjectAreaHasaClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, HAS_A);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaSynonymClient extends AbstractSubjectAreaRelationship<Synonym> {
         protected SubjectAreaSynonymClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, SYNONYM);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaAntonymClient extends AbstractSubjectAreaRelationship<Antonym> {
         protected SubjectAreaAntonymClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, ANTONYM);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaCategoryAnchorClient extends AbstractSubjectAreaRelationship<CategoryAnchor> {
         protected SubjectAreaCategoryAnchorClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, CATEGORY_ANCHOR);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaCategorizationClient extends AbstractSubjectAreaRelationship<Categorization> {
         protected SubjectAreaCategorizationClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TERM_CATEGORIZATION);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaTranslationClient extends AbstractSubjectAreaRelationship<Translation> {
         protected SubjectAreaTranslationClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TRANSLATION);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaUsedInContextClient extends AbstractSubjectAreaRelationship<UsedInContext> {
         protected SubjectAreaUsedInContextClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, USED_IN_CONTEXT);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaPreferredTermClient extends AbstractSubjectAreaRelationship<PreferredTerm> {
         protected SubjectAreaPreferredTermClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, PREFERRED_TERM);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaValidValueClient extends AbstractSubjectAreaRelationship<ValidValue> {
         protected SubjectAreaValidValueClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, VALID_VALUE);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaReplacementTermClient extends AbstractSubjectAreaRelationship<ReplacementTerm> {
         protected SubjectAreaReplacementTermClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, REPLACEMENT_TERM);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaSemanticAssignmentClient extends AbstractSubjectAreaRelationship<SemanticAssignment> {
         protected SubjectAreaSemanticAssignmentClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, SEMANTIC_ASSIGNMENT);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaTypedByClient extends AbstractSubjectAreaRelationship<TypedBy> {
         protected SubjectAreaTypedByClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TYPED_BY);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaIsaClient extends AbstractSubjectAreaRelationship<IsA> {
         protected SubjectAreaIsaClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaIsaTypeOfClient extends AbstractSubjectAreaRelationship<IsATypeOf> {
         protected SubjectAreaIsaTypeOfClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A_TYPE_OF);
         }
     }
-    @SubjectAreaLineClient
+    @SubjectAreaRelationshipClient
     static class SubjectAreaProjectScopeClient extends AbstractSubjectAreaRelationship<ProjectScope> {
         protected SubjectAreaProjectScopeClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, PROJECT_SCOPE);
@@ -286,15 +285,15 @@ public class SubjectAreaLine implements SubjectAreaRelationshipClients {
     }
 
     /**
-     * @param <T> - {@link Line} type of object
+     * @param <T> - {@link Relationship} type of object
      * @param clazz - the class for which you want to get the client from cache
      *
      * @return SubjectAreaRelationshipClient or null if this client is not present
      * */
     @SuppressWarnings("unchecked")
-    public <T extends Line> SubjectAreaRelationshipClient<T> getClient(Class<T> clazz) {
+    public <T extends Relationship> org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient getClient(Class<T> clazz) {
         if (cache.containsKey(clazz)) {
-            return (SubjectAreaRelationshipClient<T>) cache.get(clazz);
+            return (org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient) cache.get(clazz);
         }
         final ExceptionMessageDefinition messageDefinition =
                 SubjectAreaErrorCode.NOT_FOUND_CLIENT.getMessageDefinition(clazz.getName());
