@@ -30,13 +30,12 @@ public interface AssetLineageInterface {
             PropertyServerException,
             UserNotAuthorizedException;
 
-
     /**
      * Provide the asset context of an entity - used for data files and relational tables.
      * @param userId     the caller user Id
-     * @param guid       the guid
+     * @param guid       the guid of the entity
      * @param entityType the entity type
-     * @return the map
+     * @return a RelationshipsContext     object containing the relationships that describe the entity's context
      * @throws InvalidParameterException  the invalid parameter exception
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
