@@ -29,4 +29,20 @@ public class PublicController {
     public AppBean getAppTitle(HttpServletRequest request){
         return app;
     }
+
+    /**
+     *
+     * @return a redirectView to the theme URI css file
+     */
+    @Deprecated
+    @GetMapping( path = "/css/theme")
+    public RedirectView getThemeCss(){
+        return new RedirectView("/themes/" + theme + "/css/style.css", true);
+    }
+
+    @Deprecated
+    @GetMapping( path = "/js/global")
+    public String getRootPath(HttpServletRequest request){
+        return "window.MyAppGlobals = { rootPath: '" + request.getContextPath() + "/' };";
+    }
 }
