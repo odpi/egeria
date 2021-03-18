@@ -30,7 +30,7 @@ $ npm run build --api-url=http://api.production # or npm run start --api-url=htt
 ```
 
 ```bash
-$ mvn spring-boot:run -Dspring-boot.run.folders=/path/to/libs/ -Dspring-boot.run.arguments="--theme=default --omas.server.name= --omas.server.url= --open.lineage.server.url= --open.lineage.server.name= --server.ssl.trust-store=/path/to/truststore.p12 --cors.allowed-origins=*"
+$ mvn spring-boot:run -Dspring-boot.run.folders=/path/to/libs/ -Dspring-boot.run.arguments="--omas.server.name= --omas.server.url= --open.lineage.server.url= --open.lineage.server.name= --server.ssl.trust-store=/path/to/truststore.p12 --cors.allowed-origins=*"
 ```
 
 # Start in development mode
@@ -42,7 +42,7 @@ $ npm install
 $ npm run start --api-url=http://api.production # will start a static server on http://localhost:8081
 
 $ cd egeria/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/
-$ mvn spring-boot:run -Dspring-boot.run.folders=/path/to/libs/ -Dspring-boot.run.arguments="--theme=default --omas.server.name= --omas.server.url= --open.lineage.server.url= --open.lineage.server.name= --server.ssl.trust-store=/path/to/truststore.p12 --cors.allowed-origins=*"
+$ mvn spring-boot:run -Dspring-boot.run.folders=/path/to/libs/ -Dspring-boot.run.arguments="--omas.server.name= --omas.server.url= --open.lineage.server.url= --open.lineage.server.name= --server.ssl.trust-store=/path/to/truststore.p12 --cors.allowed-origins=*"
 ```
 
 ----
