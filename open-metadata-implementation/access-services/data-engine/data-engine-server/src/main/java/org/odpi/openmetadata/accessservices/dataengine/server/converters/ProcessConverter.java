@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.converters;
 
+import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
@@ -33,12 +34,14 @@ public class ProcessConverter<B> extends OpenMetadataAPIGenericConverter<B> {
 
     /**
      * Request the bean is extracted from the repository objects
+     *
      * @param processClass the process class
-     * @param entity the EntityDetail from which the bean is extracted
-     * @param methodName the name of the caller method
-     * @throws PropertyServerException problem accessing the property server
+     * @param entity       the EntityDetail from which the bean is extracted
+     * @param methodName   the name of the caller method
      *
      * @return output bean
+     *
+     * @throws PropertyServerException problem accessing the property server
      */
     public B getNewBean(Class<B> processClass, EntityDetail entity, String methodName) throws PropertyServerException {
         B returnBean;
@@ -90,29 +93,37 @@ public class ProcessConverter<B> extends OpenMetadataAPIGenericConverter<B> {
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
      * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
      * relationships between them.  The relationships may be omitted if they do not have any properties.
-     *
+     * <p>
      * TO BE IMPLEMENTED IN CASE OF NEED
      *
-     * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the content of the bean
+     * @param beanClass             name of the class to create
+     * @param primaryEntity         entity that is the root of the cluster of entities that make up the content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
-     * @param relationships relationships linking the entities
-     * @param methodName calling method
+     * @param relationships         relationships linking the entities
+     * @param methodName            calling method
+     *
      * @return bean populated with properties from the instances supplied
+     *
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-    public B getNewComplexBean(Class<B>           beanClass,
-                               EntityDetail       primaryEntity,
+    public B getNewComplexBean(Class<B> beanClass,
+                               EntityDetail primaryEntity,
                                List<EntityDetail> supplementaryEntities,
                                List<Relationship> relationships,
-                               String             methodName) throws PropertyServerException
-    {
-       return super.getNewComplexBean(beanClass, primaryEntity, supplementaryEntities,relationships, methodName);
+                               String methodName) throws PropertyServerException {
+        return super.getNewComplexBean(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
     }
 
-    int removeOwnerTypeFromProperties(InstanceProperties properties) {
-        int ownerType = this.getOwnerTypeFromProperties(properties);
+    /**
+     * Retrieve and delete the OwnerType enum property from the instance properties of an entity
+     *
+     * @param properties entity properties
+     *
+     * @return OwnerType  enum value
+     */
+    OwnerType removeOwnerTypeFromProperties(InstanceProperties properties) {
+        OwnerType ownerType = this.getOwnerTypeFromProperties(properties);
 
         if (properties != null) {
             Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
@@ -120,27 +131,50 @@ public class ProcessConverter<B> extends OpenMetadataAPIGenericConverter<B> {
             if (instancePropertiesMap != null) {
                 instancePropertiesMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
             }
+
             properties.setInstanceProperties(instancePropertiesMap);
         }
+
         return ownerType;
     }
 
-    int getOwnerTypeFromProperties(InstanceProperties properties) {
-        int ownerType = OWNER_TYPE_OTHER;
+
+    /**
+     * Retrieve the OwnerType enum property from the instance properties of an entity
+     *
+     * @param properties entity properties
+     *
+     * @return OwnerType  enum value
+     */
+    private OwnerType getOwnerTypeFromProperties(InstanceProperties properties) {
+        OwnerType ownerType = null;
 
         if (properties != null) {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+            InstancePropertyValue instancePropertyValue = properties.getPropertyValue(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
 
-            if (instancePropertiesMap != null) {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+            if (instancePropertyValue instanceof EnumPropertyValue) {
+                EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
 
-                if (instancePropertyValue instanceof EnumPropertyValue) {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+                switch (enumPropertyValue.getOrdinal()) {
+                    case 0:
+                        ownerType = OwnerType.USER_ID;
+                        break;
 
-                    ownerType = enumPropertyValue.getOrdinal();
+                    case 1:
+                        ownerType = OwnerType.PROFILE_ID;
+                        break;
+
+                    case 99:
+                        ownerType = OwnerType.OTHER;
+                        break;
                 }
             }
+
+            Map<String, InstancePropertyValue> instancePropertyValueMap = properties.getInstanceProperties();
+            instancePropertyValueMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+            properties.setInstanceProperties(instancePropertyValueMap);
         }
+
         return ownerType;
     }
 }

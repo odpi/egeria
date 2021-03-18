@@ -23,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PortAliasRequestBody.class, name = "portAlias"),
                 @JsonSubTypes.Type(value = ProcessesRequestBody.class, name = "processes"),
                 @JsonSubTypes.Type(value = SchemaTypeRequestBody.class, name = "schema"),
+                @JsonSubTypes.Type(value = DatabaseRequestBody.class, name = "database"),
         })
 
 public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializable {

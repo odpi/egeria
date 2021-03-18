@@ -106,14 +106,16 @@ public class DataEngineProcessHandler {
      * @param userId                the name of the calling user
      * @param originalProcessEntity the created process entity
      * @param updatedProcess        the new values of the process
-     * @param externalSourceName the external data engine
+     * @param externalSourceName    the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void updateProcess(String userId, EntityDetail originalProcessEntity, Process updatedProcess, String externalSourceName) throws InvalidParameterException,
-            UserNotAuthorizedException, PropertyServerException{
+    public void updateProcess(String userId, EntityDetail originalProcessEntity, Process updatedProcess, String externalSourceName) throws
+                                                                                                                                    InvalidParameterException,
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    PropertyServerException {
 
         final String methodName = "updateProcess";
 
@@ -172,8 +174,8 @@ public class DataEngineProcessHandler {
      */
     public void addProcessPortRelationship(String userId, String processGUID, String portGUID, String externalSourceName)
             throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+                   UserNotAuthorizedException,
+                   PropertyServerException {
         dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, portGUID,
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName,
                 null);
@@ -182,10 +184,10 @@ public class DataEngineProcessHandler {
     /**
      * Update the process instance status
      *
-     * @param userId                the name of the calling user
-     * @param processGUID           the process GUID
-     * @param instanceStatus        the status of the process
-     * @param externalSourceName    the external data engine
+     * @param userId             the name of the calling user
+     * @param processGUID        the process GUID
+     * @param instanceStatus     the status of the process
+     * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -193,8 +195,8 @@ public class DataEngineProcessHandler {
      */
     public void updateProcessStatus(String userId, String processGUID, InstanceStatus instanceStatus, String externalSourceName)
             throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+                   UserNotAuthorizedException,
+                   PropertyServerException {
 
         final String methodName = "updateProcessStatus";
         final String processGUIDParameterName = "processGUID";
@@ -250,9 +252,16 @@ public class DataEngineProcessHandler {
         invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
     }
 
+    //TODO check to see if we can refactor to remove builder - se Asset typeName set to process and process specific properties set to extended
+    // properties
     ProcessPropertiesBuilder getProcessPropertiesBuilder(Process process, String methodName, String userId) throws InvalidParameterException {
+        int ownerTypeOrdinal = 0;
+
+        if (process.getOwnerType() != null) {
+            ownerTypeOrdinal = process.getOwnerType().getOpenTypeOrdinal();
+        }
         return new ProcessPropertiesBuilder(process.getQualifiedName(), process.getDisplayName(), process.getName(),
-                process.getDescription(),process.getZoneMembership(), process.getOwner(), process.getOwnerType(),
+                process.getDescription(), process.getZoneMembership(), process.getOwner(), ownerTypeOrdinal,
                 ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
                 process.getAdditionalProperties(), process.getExtendedProperties(), InstanceStatus.DRAFT, repositoryHelper,
                 serverName, serviceName, userId, methodName);
@@ -260,8 +269,8 @@ public class DataEngineProcessHandler {
 
     public void upsertProcessHierarchyRelationship(String userId, ParentProcess parentProcess, String processGUID,
                                                    String externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException {
         final String methodName = "upsertProcessHierarchyRelationship";
 
         ProcessContainmentType processContainmentType = parentProcess.getProcessContainmentType();

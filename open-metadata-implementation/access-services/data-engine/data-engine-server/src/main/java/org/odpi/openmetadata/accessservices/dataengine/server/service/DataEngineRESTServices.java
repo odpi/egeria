@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
@@ -136,6 +137,7 @@ public class DataEngineRESTServices {
      * @param serverName            name of server instance to call
      * @param userId                the name of the calling user
      * @param schemaTypeRequestBody properties of the schema type
+     *
      * @return the unique identifier (guid) of the created schema type
      */
     public GUIDResponse upsertSchemaType(String userId, String serverName, SchemaTypeRequestBody schemaTypeRequestBody) {
@@ -171,6 +173,7 @@ public class DataEngineRESTServices {
      * @param serverName                    name of server instance to call
      * @param userId                        the name of the calling user
      * @param portImplementationRequestBody properties of the port
+     *
      * @return the unique identifier (guid) of the created port
      */
     public GUIDResponse upsertPortImplementation(String userId, String serverName,
@@ -206,6 +209,7 @@ public class DataEngineRESTServices {
      * @param serverName           name of server instance to call
      * @param userId               the name of the calling user
      * @param portAliasRequestBody properties of the port
+     *
      * @return the unique identifier (guid) of the created port
      */
     public GUIDResponse upsertPortAlias(String userId, String serverName, PortAliasRequestBody portAliasRequestBody) {
@@ -274,6 +278,7 @@ public class DataEngineRESTServices {
      * @param userId               the name of the calling user
      * @param serverName           name of server instance to call
      * @param processesRequestBody properties of the processes
+     *
      * @return a list unique identifiers (GUIDs) of the created/updated processes
      */
     public ProcessListResponse upsertProcesses(String userId, String serverName, ProcessesRequestBody processesRequestBody) {
@@ -310,9 +315,9 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertPortAliasWithDelegation(String userId, String serverName, PortAlias portAlias, String externalSourceName) throws
-            InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                                                                  InvalidParameterException,
+                                                                                                                                  PropertyServerException,
+                                                                                                                                  UserNotAuthorizedException {
         final String methodName = "upsertPortAliasWithDelegation";
 
         log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portAlias);
@@ -330,7 +335,8 @@ public class DataEngineRESTServices {
         }
 
         if (!StringUtils.isEmpty(portAlias.getDelegatesTo())) {
-            dataEnginePortHandler.addPortDelegationRelationship(userId, portAliasGUID, portAlias.getPortType(), portAlias.getDelegatesTo(), externalSourceName);
+            dataEnginePortHandler.addPortDelegationRelationship(userId, portAliasGUID, portAlias.getPortType(), portAlias.getDelegatesTo(),
+                    externalSourceName);
         }
 
         log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, portAliasGUID);
@@ -399,8 +405,8 @@ public class DataEngineRESTServices {
      */
     public String upsertPortImplementationWithSchemaType(String userId, String serverName, PortImplementation portImplementation,
                                                          String externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException {
         final String methodName = "upsertPortImplementationWithSchemaType";
 
         log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portImplementation);
@@ -413,7 +419,7 @@ public class DataEngineRESTServices {
 
         String portImplementationGUID;
         if (!portEntity.isPresent()) {
-             portImplementationGUID = dataEnginePortHandler.createPortImplementation(userId, portImplementation, externalSourceName);
+            portImplementationGUID = dataEnginePortHandler.createPortImplementation(userId, portImplementation, externalSourceName);
         } else {
             portImplementationGUID = portEntity.get().getGUID();
             dataEnginePortHandler.updatePortImplementation(userId, portEntity.get(), portImplementation, externalSourceName);
@@ -549,6 +555,7 @@ public class DataEngineRESTServices {
      * @param serverName         name of server instance to call
      * @param processes          list of processes to be created
      * @param externalSourceName the unique name of the external source
+     *
      * @return a list unique identifiers (GUIDs) of the created/updated processes
      */
     public ProcessListResponse upsertProcesses(String userId, String serverName, List<Process> processes, String externalSourceName) {
@@ -711,9 +718,9 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertSchemaType(String userId, String serverName, SchemaType schemaType, String externalSourceName) throws
-            InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+                                                                                                                       InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException {
         final String methodName = "upsertSchemaType";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, schemaType);
@@ -727,11 +734,145 @@ public class DataEngineRESTServices {
         return schemaTypeGUID;
     }
 
+    /**
+     * Create the Database with corresponding associated schema types and relationships
+     *
+     * @param serverName          name of server instance to call
+     * @param userId              the name of the calling user
+     * @param databaseRequestBody properties of the schema type
+     *
+     * @return the unique identifier (guid) of the created schema type
+     */
+    public GUIDResponse upsertDatabase(String userId, String serverName, DatabaseRequestBody databaseRequestBody) {
+        final String methodName = "upsertDatabase";
+
+        GUIDResponse response = new GUIDResponse();
+
+        try {
+            if (databaseRequestBody == null) {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                return response;
+            }
+
+            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(), databaseRequestBody.getExternalSourceName());
+
+            response.setGUID(databaseGUID);
+
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+    /**
+     * Create or update a Database
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param database           the schema type values
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the created schema type
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String upsertDatabase(String userId, String serverName, Database database, String externalSourceName) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException {
+        final String methodName = "upsertDatabase";
+
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
+
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler= instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+
+        String relationalTableGUID = dataEngineRelationalDataHandler.createDatabase(userId, database, externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
+
+        return relationalTableGUID;
+
+    }
+
+    /**
+     * Create the SchemaType with schema attributes and corresponding relationships
+     *
+     * @param serverName                 name of server instance to call
+     * @param userId                     the name of the calling user
+     * @param relationalTableRequestBody properties of the schema type
+     *
+     * @return the unique identifier (guid) of the created schema type
+     */
+    public GUIDResponse upsertRelationalTable(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody) {
+        final String methodName = "upsertRelationalTable";
+
+        GUIDResponse response = new GUIDResponse();
+
+        try {
+            if (relationalTableRequestBody == null) {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                return response;
+            }
+
+            String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getRelationalTable(),
+                    relationalTableRequestBody.getExternalSourceName());
+
+            response.setGUID(relationalTableGUID);
+
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+    /**
+     * Create or update a Relational Table
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param relationalTable    the schema type values
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the created schema type
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String upsertRelationalTable(String userId, String serverName, RelationalTable relationalTable, String externalSourceName) throws
+                                                                                                                                      InvalidParameterException,
+                                                                                                                                      UserNotAuthorizedException,
+                                                                                                                                      PropertyServerException {
+        final String methodName = "upsertRelationalTable";
+
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
+
+        DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
+
+//        String relationalTableGUID = dataEngineSchemaTypeHandler.upsertSchemaType(userId, relationalTable, externalSourceName);
+//
+//        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
+//
+//        return relationalTableGUID;
+        return null;
+    }
+
     private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeGUID, String oldSchemaTypeGUID,
                                           String externalSourceName) throws
-            InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+                                                                     InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException {
         final String methodName = "deleteObsoleteSchemaType";
 
         if (!oldSchemaTypeGUID.equalsIgnoreCase(schemaTypeGUID)) {
@@ -869,10 +1010,7 @@ public class DataEngineRESTServices {
     }
 
     private void addAnchorGUID(String userId, String serverName, String processGUID, List<Attribute> schemaAttributes,
-                               String externalSourceName) throws
-            InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                               String externalSourceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "addAnchorGUID";
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
@@ -932,8 +1070,8 @@ public class DataEngineRESTServices {
 
     private void deleteObsoletePorts(String userId, String serverName, Set<String> newPortGUIDs, String processGUID, String portTypeName,
                                      GUIDResponse response, String externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException {
         final String methodName = "deleteObsoletePorts";
 
         if (CollectionUtils.isEmpty(newPortGUIDs)) {

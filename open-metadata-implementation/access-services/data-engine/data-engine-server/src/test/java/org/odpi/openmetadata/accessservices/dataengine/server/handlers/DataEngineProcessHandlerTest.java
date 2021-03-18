@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessContainmentType;
@@ -25,7 +26,6 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -152,7 +152,7 @@ class DataEngineProcessHandlerTest {
     }
 
     @Test
-    void updateProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, TypeErrorException {
+    void updateProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String methodName = "updateProcess";
         EntityDetail mockedOriginalProcessEntity = Mockito.mock(EntityDetail.class);
         ProcessPropertiesBuilder mockedBuilder = Mockito.mock(ProcessPropertiesBuilder.class);
@@ -209,7 +209,7 @@ class DataEngineProcessHandlerTest {
 
     @Test
     void updateProcess_throwsUserNotAuthorizedException() throws UserNotAuthorizedException, PropertyServerException, InvocationTargetException,
-            NoSuchMethodException, InstantiationException, IllegalAccessException, InvalidParameterException, TypeErrorException {
+            NoSuchMethodException, InstantiationException, IllegalAccessException, InvalidParameterException {
         String methodName = "updateProcess";
         Process process = getProcess();
         process.setGUID(PROCESS_GUID);
@@ -406,7 +406,7 @@ class DataEngineProcessHandlerTest {
         process.setDescription(DESCRIPTION);
         process.setFormula(FORMULA);
         process.setOwner(OWNER);
-        process.setOwnerType(OwnerType.USER_ID.getOrdinal());
+        process.setOwnerType(OwnerType.USER_ID);
         process.setUpdateSemantic(UpdateSemantic.REPLACE);
 
         return process;
