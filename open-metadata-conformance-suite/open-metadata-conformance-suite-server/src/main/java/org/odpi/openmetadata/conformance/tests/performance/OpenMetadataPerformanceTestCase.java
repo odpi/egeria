@@ -31,7 +31,6 @@ public abstract class OpenMetadataPerformanceTestCase extends OpenMetadataTestCa
     private static final  String   assertion2    = "repository-performance-test-case-base-02";
     private static final  String   assertionMsg2 = "Metadata collection for repository connector supplied to performance suite.";
 
-    protected final String                 pretendExternalMetadataCollectionId = UUID.randomUUID().toString();
     protected PerformanceWorkPad           performanceWorkPad;
     protected OMRSRepositoryConnector      cohortRepositoryConnector = null;
 

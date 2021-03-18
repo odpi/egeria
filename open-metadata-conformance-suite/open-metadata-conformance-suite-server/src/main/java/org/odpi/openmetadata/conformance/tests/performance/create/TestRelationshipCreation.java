@@ -200,14 +200,14 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
             for (int i = 0; i < numInstances; i++)
             {
                 EntityProxy one = repositoryHelper.getNewEntityProxy(testCaseId,
-                        pretendExternalMetadataCollectionId,
+                        performanceWorkPad.getReferenceCopyMetadataCollectionId(),
                         InstanceProvenanceType.LOCAL_COHORT,
                         performanceWorkPad.getLocalServerUserId(),
                         relationshipDef.getEndDef1().getEntityType().getName(),
                         null,
                         null);
                 EntityProxy two = repositoryHelper.getNewEntityProxy(testCaseId,
-                        pretendExternalMetadataCollectionId,
+                        performanceWorkPad.getReferenceCopyMetadataCollectionId(),
                         InstanceProvenanceType.LOCAL_COHORT,
                         performanceWorkPad.getLocalServerUserId(),
                         relationshipDef.getEndDef2().getEntityType().getName(),
@@ -216,8 +216,8 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
 
                 instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), relationshipDef, i);
                 Relationship rc = repositoryHelper.getSkeletonRelationship(testCaseId,
-                        pretendExternalMetadataCollectionId,
-                        pretendExternalMetadataCollectionId,
+                        performanceWorkPad.getReferenceCopyMetadataCollectionId(),
+                        performanceWorkPad.getReferenceCopyMetadataCollectionId(),
                         InstanceProvenanceType.LOCAL_COHORT,
                         performanceWorkPad.getLocalServerUserId(),
                         relationshipDef.getName());

@@ -144,8 +144,8 @@ public class TestEntityCreation extends OpenMetadataPerformanceTestCase
             {
                 instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef, i);
                 EntityDetail rc = repositoryHelper.getSkeletonEntity(testCaseId,
-                        pretendExternalMetadataCollectionId,
-                        pretendExternalMetadataCollectionId,
+                        performanceWorkPad.getReferenceCopyMetadataCollectionId(),
+                        performanceWorkPad.getReferenceCopyMetadataCollectionId(),
                         InstanceProvenanceType.LOCAL_COHORT,
                         performanceWorkPad.getLocalServerUserId(),
                         entityDef.getName());

@@ -45,6 +45,8 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
     private long totalEntitiesFound        = 0L;
     private long totalRelationshipsFound   = 0L;
 
+    private static final String referenceCopyMetadataCollectionId = UUID.randomUUID().toString();
+
 
     /**
      * Constructor receives key information from the configuration services.
@@ -638,6 +640,16 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
         return totalRelationshipsFound;
     }
 
+
+    /**
+     * Return the external metadata collection ID that can be used for reference copies.
+     *
+     * @return a generated external metadata collection ID that will be consistent across all tests
+     */
+    public String getReferenceCopyMetadataCollectionId()
+    {
+        return referenceCopyMetadataCollectionId;
+    }
 
     /**
      * toString() JSON-style

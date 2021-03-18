@@ -193,7 +193,7 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
             InstanceProperties byMetadataCollectionId = repositoryHelper.addStringPropertyToInstance(testCaseId,
                     null,
                     "metadataCollectionId",
-                    pretendExternalMetadataCollectionId,
+                    repositoryHelper.getExactMatchRegex(performanceWorkPad.getReferenceCopyMetadataCollectionId()),
                     methodName);
             long start = System.nanoTime();
             entitiesToClassify = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
@@ -225,13 +225,13 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
                     EntityDetail toClassify = entitiesToClassify.get(i);
                     instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), classificationDef, i);
                     Classification classification = repositoryHelper.getNewClassification(testCaseId,
-                            pretendExternalMetadataCollectionId,
+                            performanceWorkPad.getReferenceCopyMetadataCollectionId(),
                             InstanceProvenanceType.LOCAL_COHORT,
                             performanceWorkPad.getLocalServerUserId(),
                             classificationDef.getName(),
                             entityTypeName,
                             ClassificationOrigin.ASSIGNED,
-                            pretendExternalMetadataCollectionId,
+                            performanceWorkPad.getReferenceCopyMetadataCollectionId(),
                             instProps);
 
                     long start = System.nanoTime();
