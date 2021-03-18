@@ -14,12 +14,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TemplateRequestBody carries the parameters for classifying an asset as suitable to use for a template.
+ * TemplateClassificationRequestBody carries the parameters for classifying an asset as suitable to use for a template.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TemplateRequestBody extends AssetOwnerOMASAPIRequestBody
+public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class TemplateRequestBody extends AssetOwnerOMASAPIRequestBody
     /**
      * Default constructor
      */
-    public TemplateRequestBody()
+    public TemplateClassificationRequestBody()
     {
         super();
     }
@@ -42,7 +42,7 @@ public class TemplateRequestBody extends AssetOwnerOMASAPIRequestBody
      *
      * @param template object to copy
      */
-    public TemplateRequestBody(TemplateRequestBody template)
+    public TemplateClassificationRequestBody(TemplateClassificationRequestBody template)
     {
         super(template);
 
@@ -144,7 +144,7 @@ public class TemplateRequestBody extends AssetOwnerOMASAPIRequestBody
     @Override
     public String toString()
     {
-        return "TemplateRequestBody{" +
+        return "TemplateClassificationRequestBody{" +
                        "name='" + name + '\'' +
                        ", description='" + description + '\'' +
                        ", additionalProperties=" + additionalProperties +
@@ -169,7 +169,7 @@ public class TemplateRequestBody extends AssetOwnerOMASAPIRequestBody
         {
             return false;
         }
-        TemplateRequestBody that = (TemplateRequestBody) objectToCompare;
+        TemplateClassificationRequestBody that = (TemplateClassificationRequestBody) objectToCompare;
         return Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(additionalProperties, that.additionalProperties);
