@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.viewservices.glossaryauthor.properties.NodeLineStats;
+import org.odpi.openmetadata.viewservices.glossaryauthor.properties.NodeRelationshipStats;
 import org.odpi.openmetadata.viewservices.glossaryauthor.properties.GraphStatistics;
 
 import java.util.*;
@@ -33,7 +33,7 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
 
     }
 
-    public SubjectAreaOMASAPIResponse<Graph> getGraph(String serverName, String userId, String guid, Date asOfTime, String nodeFilterStr, String lineFilterStr, StatusFilter statusFilter) {
+    public SubjectAreaOMASAPIResponse<Graph> getGraph(String serverName, String userId, String guid, Date asOfTime, String nodeFilterStr, String relationshipFilterStr, StatusFilter statusFilter) {
         final String methodName = "getGraph";
         SubjectAreaOMASAPIResponse<Graph> response = new SubjectAreaOMASAPIResponse<>();
 
@@ -43,7 +43,7 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            Graph graph = getGraphObject(serverName, userId, guid, asOfTime, nodeFilterStr, lineFilterStr, statusFilter, methodName);
+            Graph graph = getGraphObject(serverName, userId, guid, asOfTime, nodeFilterStr, relationshipFilterStr, statusFilter, methodName);
             response.addResult(graph);
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
@@ -52,7 +52,7 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
         return response;
     }
 
-    public SubjectAreaOMASAPIResponse<GraphStatistics> getGraphCounts(String serverName, String userId, String guid, Date asOfTime, String nodeFilterStr, String lineFilterStr, StatusFilter statusFilter) {
+    public SubjectAreaOMASAPIResponse<GraphStatistics> getGraphCounts(String serverName, String userId, String guid, Date asOfTime, String nodeFilterStr, String relationshipFilterStr, StatusFilter statusFilter) {
         final String methodName = "getGraphStatistics";
         SubjectAreaOMASAPIResponse<GraphStatistics> response = new SubjectAreaOMASAPIResponse<>();
 
@@ -62,43 +62,43 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            Graph graph = getGraphObject(serverName, userId, guid, asOfTime, nodeFilterStr, lineFilterStr, statusFilter, methodName);
+            Graph graph = getGraphObject(serverName, userId, guid, asOfTime, nodeFilterStr, relationshipFilterStr, statusFilter, methodName);
             // construct graph statistics from the graph
             GraphStatistics graphStatistics = new GraphStatistics(guid, 1);
 
             Map<String, Node> nodes= graph.getNodes();
-            Map<String, Line> lines= graph.getLines();
-            Map<String, NodeLineStats>  nodeCountsMap = new HashMap<>();
-            Map<String, NodeLineStats>  lineCountsMap = new HashMap<>();
+            Map<String, Relationship> relationships= graph.getRelationships();
+            Map<String, NodeRelationshipStats>  nodeCountsMap = new HashMap<>();
+            Map<String, NodeRelationshipStats>  relationshipCountsMap = new HashMap<>();
             if (nodes !=null) {
                 Set<String> nodeGuids = nodes.keySet();
                 for (String nodeGuid: nodeGuids) {
                     Node node = nodes.get(nodeGuid);
                     String typeName = node.getNodeType().name();
-                    NodeLineStats countForNodeOrLineType = nodeCountsMap.get(typeName);
+                    NodeRelationshipStats countForNodeOrRelationshipType = nodeCountsMap.get(typeName);
                     int count =0;
-                    if (countForNodeOrLineType != null) {
-                        count = countForNodeOrLineType.getCount();
+                    if (countForNodeOrRelationshipType != null) {
+                        count = countForNodeOrRelationshipType.getCount();
                     }
-                    countForNodeOrLineType = new NodeLineStats(typeName, count+1);
-                    nodeCountsMap.put(typeName, countForNodeOrLineType);
+                    countForNodeOrRelationshipType = new NodeRelationshipStats(typeName, count+1);
+                    nodeCountsMap.put(typeName, countForNodeOrRelationshipType);
                 }
             }
-            if (lines !=null) {
-                Set<String> lineGuids = lines.keySet();
-                for (String lineGuid: lineGuids) {
-                    Line line = lines.get(lineGuid);
-                    String typeName = line.getLineType().name();
-                    NodeLineStats countForNodeOrLineType = lineCountsMap.get(typeName);
+            if (relationships !=null) {
+                Set<String> relationshipGuids = relationships.keySet();
+                for (String relationshipGuid: relationshipGuids) {
+                    Relationship relationship = relationships.get(relationshipGuid);
+                    String typeName = relationship.getRelationshipType().name();
+                    NodeRelationshipStats countForNodeOrRelationshipType = relationshipCountsMap.get(typeName);
                     int count =0;
-                    if (countForNodeOrLineType != null) {
-                        count = countForNodeOrLineType.getCount();
+                    if (countForNodeOrRelationshipType != null) {
+                        count = countForNodeOrRelationshipType.getCount();
                     }
-                    countForNodeOrLineType = new NodeLineStats(typeName, count+1);
-                    lineCountsMap.put(typeName, countForNodeOrLineType);
+                    countForNodeOrRelationshipType = new NodeRelationshipStats(typeName, count+1);
+                    relationshipCountsMap.put(typeName, countForNodeOrRelationshipType);
                 }
             }
-            graphStatistics.setLineCounts(lineCountsMap);
+            graphStatistics.setRelationshipCounts(relationshipCountsMap);
             graphStatistics.setNodeCounts(nodeCountsMap);
             response.addResult(graphStatistics);
         }  catch (Exception exception) {
@@ -108,33 +108,38 @@ public class GlossaryAuthorViewGraphRESTServices extends BaseGlossaryAuthorView 
         return response;
 
     }
-    private Graph getGraphObject(String serverName, String userId, String guid, Date asOfTime, String nodeFilterStr, String lineFilterStr, StatusFilter statusFilter, String methodName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private Graph getGraphObject(String serverName, String userId, String guid, Date asOfTime, String nodeFilterStr, String relationshipFilterStr, StatusFilter statusFilter, String methodName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         SubjectAreaGraphClient graphClient = instanceHandler.getSubjectAreaGraphClient(serverName, userId, methodName);
         final Stream<NodeType> allNodeTypesStream = Arrays.stream(NodeType.values());
-        Set<NodeType> nodeTypes =  allNodeTypesStream.collect(Collectors.toSet());
-        // remove Unknown
-        nodeTypes.remove(NodeType.Unknown);
-        if (nodeFilterStr != null) {
+        Set<NodeType> nodeTypes;
+        if (nodeFilterStr == null) {
+
+            nodeTypes = allNodeTypesStream.collect(Collectors.toSet());
+            // remove Unknown
+            nodeTypes.remove(NodeType.Unknown);
+        } else {
             Set<String> typeNames = allNodeTypesStream.map(NodeType::name).collect(Collectors.toSet());
             nodeTypes = Arrays.stream(nodeFilterStr.split(","))
                     .filter(typeNames::contains)
                     .map(NodeType::valueOf)
                     .collect(Collectors.toSet());
         }
-        final Stream<LineType> allLineTypesStream = Arrays.stream(LineType.values());
-        Set<LineType> lineTypes =  allLineTypesStream.collect(Collectors.toSet());
-        if (lineTypes.contains(LineType.Unknown)) {
-            lineTypes.remove(LineType.Unknown);
-        }
-        if (lineFilterStr != null) {
-            Set<String> typeNames = allLineTypesStream.map(LineType::name).collect(Collectors.toSet());
-            lineTypes = Arrays.stream(lineFilterStr.split(","))
+        Set<RelationshipType> relationshipTypes;
+        final Stream<RelationshipType> allRelationshipTypesStream = Arrays.stream(RelationshipType.values());
+        if (relationshipFilterStr == null) {
+            relationshipTypes = allRelationshipTypesStream.collect(Collectors.toSet());
+            if (relationshipTypes.contains(RelationshipType.Unknown)) {
+                relationshipTypes.remove(RelationshipType.Unknown);
+            }
+        } else {
+            Set<String> typeNames = allRelationshipTypesStream.map(RelationshipType::name).collect(Collectors.toSet());
+            relationshipTypes = Arrays.stream(relationshipFilterStr.split(","))
                     .filter(typeNames::contains)
-                    .map(LineType::valueOf)
+                    .map(RelationshipType::valueOf)
                     .collect(Collectors.toSet());
         }
 
-        return graphClient.getGraph(userId, guid, asOfTime, nodeTypes, lineTypes, statusFilter, 1);
+        return graphClient.getGraph(userId, guid, asOfTime, nodeTypes, relationshipTypes, statusFilter, 1);
     }
 }

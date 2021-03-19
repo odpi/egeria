@@ -16,7 +16,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -560,11 +560,11 @@ public class TermFVT {
         System.out.println("Purge succeeded");
     }
 
-    public List<Line> getTermRelationships(Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Relationship> getTermRelationships(Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaTerm.getAllRelationships(this.userId, term.getSystemAttributes().getGUID());
     }
 
-    public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Relationship> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setAsOfTime(asOfTime);
         findRequest.setStartingFrom(offset);

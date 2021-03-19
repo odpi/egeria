@@ -1085,7 +1085,7 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_ACTION_TYPE_TYPE_NAME          = "GovernanceActionType";
     /* Reference */
 
-    public static final String SUPPORTED_GUARDS_PROPERTY_NAME            = "supportedGuards";     /* from GovernanceActionType entity */
+    public static final String PRODUCED_GUARDS_PROPERTY_NAME             = "producedGuards";     /* from GovernanceActionType entity */
 
     public static final String GOVERNANCE_ACTION_FLOW_TYPE_GUID          = "5f6ddee5-31ea-4d4f-9c3f-00ad2fcb2aa0";
     public static final String GOVERNANCE_ACTION_FLOW_TYPE_NAME          = "GovernanceActionFlow";

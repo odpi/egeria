@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 
 import java.io.Serializable;
@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class NeighborhoodHistoricalFindRequest implements Serializable {
     private Date asOfTime = null;
     private Set<NodeType> nodeFilter = null;
-    private Set<LineType> lineFilter = null;
+    private Set<RelationshipType> relationshipFilter = null;
     private StatusFilter statusFilter = StatusFilter.ACTIVE;
     private int level = 3;
 
@@ -57,16 +57,16 @@ public class NeighborhoodHistoricalFindRequest implements Serializable {
         this.nodeFilter = nodeFilter;
     }
 
-    public Set<LineType> getLineFilter() {
-        if (lineFilter == null) {
-            lineFilter =  new HashSet<>();
+    public Set<RelationshipType> getRelationshipFilter() {
+        if (relationshipFilter == null) {
+            relationshipFilter =  new HashSet<>();
         }
 
-        return lineFilter;
+        return relationshipFilter;
     }
 
-    public void setLineFilter(Set<LineType> lineFilter) {
-        this.lineFilter = lineFilter;
+    public void setRelationshipFilter(Set<RelationshipType> relationshipFilter) {
+        this.relationshipFilter = relationshipFilter;
     }
 
     public StatusFilter getStatusFilter() {
@@ -97,12 +97,12 @@ public class NeighborhoodHistoricalFindRequest implements Serializable {
         return level == that.level &&
                 Objects.equals(asOfTime, that.asOfTime) &&
                 Objects.equals(nodeFilter, that.nodeFilter) &&
-                Objects.equals(lineFilter, that.lineFilter) &&
+                Objects.equals(relationshipFilter, that.relationshipFilter) &&
                 statusFilter == that.statusFilter;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(asOfTime, nodeFilter, lineFilter, statusFilter, level);
+        return Objects.hash(asOfTime, nodeFilter, relationshipFilter, statusFilter, level);
     }
 }

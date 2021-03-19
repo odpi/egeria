@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * A Line end, that is associated with a Node.
+ * A Relationship end, that is associated with a Node.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,10 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "class",
-        defaultImpl = LineEnd.class,
+        defaultImpl = RelationshipEnd.class,
         visible = true
 )
-public class LineEnd implements Serializable, OmasObject {
+public class RelationshipEnd implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private String nodeGuid =null;
     private String nodeType = null;
@@ -37,17 +37,17 @@ public class LineEnd implements Serializable, OmasObject {
     /**
      * Default constructor
      */
-    public LineEnd() {
+    public RelationshipEnd() {
     }
 
     /**
      * constructor
-     * @param nodeType node type associated with this end of the line
+     * @param nodeType node type associated with this end of the relationship
      * @param name name of the end
      * @param description description of the end
      * @param cardinality cardinality of the end
      */
-    public LineEnd(String nodeType, String name, String description, RelationshipEndCardinality cardinality ) {
+    public RelationshipEnd(String nodeType, String name, String description, RelationshipEndCardinality cardinality) {
         this.setNodeType(nodeType);
         this.setName(name);
         this.setDescription(description);
@@ -56,9 +56,9 @@ public class LineEnd implements Serializable, OmasObject {
     }
     /**
      * Copy constructor
-     * @param endToCopy LineEnd to copy
+     * @param endToCopy relationshipEnd to copy
      */
-    public LineEnd(LineEnd endToCopy) {
+    public RelationshipEnd(RelationshipEnd endToCopy) {
         this.setNodeType(endToCopy.getNodeType());
         this.setName(endToCopy.getName());
         this.setDescription(endToCopy.getDescription());
@@ -111,7 +111,7 @@ public class LineEnd implements Serializable, OmasObject {
             sb = new StringBuilder();
         }
 
-        sb.append("LineEnd{");
+        sb.append("RelationshipEnd{");
         sb.append("nodeGuid=").append(nodeGuid).append(",");
         sb.append("nodeType=").append(nodeType).append(",");
         sb.append("name=").append(name).append(",");

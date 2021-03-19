@@ -14,14 +14,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 /**
- * This class holds a count associated with a node by NodeType name or a line by LineType name.
+ * This class holds a count associated with a node by NodeType name or a relationship by relationshipType name.
  */
-public class NodeLineStats {
-    private String nodeOrLineTypeName;
+public class NodeRelationshipStats {
+    private String nodeOrRelationshipTypeName;
     private Integer count;
 
-    public NodeLineStats(String nodeOrLineTypeName, Integer count) {
-       this.nodeOrLineTypeName = nodeOrLineTypeName;
+    public NodeRelationshipStats(String nodeOrRelationshipTypeName, Integer count) {
+       this.nodeOrRelationshipTypeName = nodeOrRelationshipTypeName;
        this.count = count;
     }
 
@@ -29,13 +29,29 @@ public class NodeLineStats {
      * Getters for Jackson
      */
 
+    /**
+     * get the name
+     * @return name
+     */
+    public String getNodeOrRelationshipTypeName() { return nodeOrRelationshipTypeName; }
 
-    public String getNodeOrLineTypeName() { return nodeOrLineTypeName; }
+    /**
+     * get the count for a type
+     * @return count
+     */
     public Integer getCount() { return count; }
 
 
+    /**
+     * St the type name
+     * @param nodeOrRelationshipTypeName name to set
+     */
+    public void setNodeOrRelationshipTypeName(String nodeOrRelationshipTypeName) { this.nodeOrRelationshipTypeName = nodeOrRelationshipTypeName; }
 
-    public void setNodeOrLineTypeName(String nodeOrLineTypeName) { this.nodeOrLineTypeName = nodeOrLineTypeName; }
+    /**
+     * Set the could
+     * @param count supplied count
+     */
     public void setCount(Integer count) { this.count = count; }
 
 
@@ -43,8 +59,8 @@ public class NodeLineStats {
     @Override
     public String toString()
     {
-        return "CountForNodeOrLineType{" +
-                ", nodeOrLineTypeName=" + nodeOrLineTypeName +
+        return "CountForNodeOrRelationshipType{" +
+                ", nodeOrRelationshipTypeName=" + nodeOrRelationshipTypeName +
                 ", count=" + count +
                 '}';
     }

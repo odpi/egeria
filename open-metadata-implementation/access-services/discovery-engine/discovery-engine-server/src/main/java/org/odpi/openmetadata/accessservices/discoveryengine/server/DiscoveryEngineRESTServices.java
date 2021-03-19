@@ -229,10 +229,10 @@ public class DiscoveryEngineRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.findBeanGUIDs(userId,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                     searchString,
                                                     searchStringParameterName,
+                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                     startFrom,
                                                     pageSize,
                                                     methodName));

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis.TokenRedisClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,13 @@ import org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -22,6 +30,9 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired(required = false)
     TokenClient tokenClient;
 
+    @Value("${cors.allowed-origins}")
+    List<String> allowedOrigins;
+
     public SecurityConfig() {
         super(true);
     }
@@ -29,6 +40,7 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .cors().and()
             .exceptionHandling().and()
             .anonymous().and()
             .authorizeRequests()
@@ -51,7 +63,23 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
                             authenticationManager(),
                             authService,
                             getAuthenticationExceptionHandler()),UsernamePasswordAuthenticationFilter.class)
+
         ;
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "cors.allowed-origins")
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        if( allowedOrigins!=null && allowedOrigins.size() > 0) {
+            configuration.setAllowedOrigins(allowedOrigins);
+            configuration.setAllowedMethods(Arrays.asList("*"));
+            configuration.addExposedHeader("x-auth-token");
+            configuration.setAllowedHeaders(Arrays.asList("*"));
+        }
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     public LogoutSuccessHandler logoutSuccessHandler() {
