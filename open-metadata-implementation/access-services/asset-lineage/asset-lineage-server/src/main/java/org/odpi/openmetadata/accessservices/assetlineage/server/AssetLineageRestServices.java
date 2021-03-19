@@ -260,6 +260,9 @@ public class AssetLineageRestServices {
             RelationshipsContext assetContext = assetContextHandler.buildAssetContext(userId, entity);
             response.setContext(assetContext);
 
+            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ASSET_CONTEXT_INFO.getMessageDefinition( guid, assetContext.toString()));
+
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (UserNotAuthorizedException e) {
