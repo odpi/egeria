@@ -83,6 +83,8 @@ spec:
               mountPath: /etc/nginx/templates
             - name: ssl-vol
               mountPath: /etc/nginx/ssl
+            - name: pass-vol
+              mountPath: /etc/nginx/pass
       restartPolicy: Always
       volumes:
         - name: template-vol
@@ -90,11 +92,18 @@ spec:
             name: {{ .Release.Name }}-template-configmap
         - name: ssl-vol
           secret:
-           secretName: {{ .Release.Name }}-nginx-ssl
-           items:
-             - key: tls.key
-               path: tls.crt
-
+            secretName: {{ .Release.Name }}-nginx-ssl
+            items:
+              - key: tls.key
+                path: tls.key
+              - key: tls.crt
+                path: tls.crt
+        - name: pass-vol
+          secret:
+            secretName: {{ .Release.Name }}-nginx-ssl-pass
+            items:
+              - key: pass.txt
+                path: pass.txt
 status: {}
 ---
 apiVersion: v1
@@ -114,6 +123,22 @@ binaryData:
   {{ base $path }}: {{ $root.Files.Get $path | b64enc | quote }}
   {{- end }}
   {{- end }}
+
+---
+# The built in tls type is fixed to key/cert. So we need another secret to manage the key password (if required)
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: nginx-ssl-pass
+  name: {{ .Release.Name }}-nginx-ssl-pass
+data:
+  # echo 'egeria' | base64
+  pass.txt: ZWdlcmlhCg==
 ---
 apiVersion: v1
 kind: Secret
