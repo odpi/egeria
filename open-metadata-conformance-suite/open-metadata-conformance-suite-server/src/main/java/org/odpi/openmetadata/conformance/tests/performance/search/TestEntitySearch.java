@@ -109,6 +109,8 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
     private void findEntities(OMRSMetadataCollection metadataCollection) throws Exception
     {
 
+        final String methodName = "findEntities";
+
         try {
 
             int fromElement = 0;
@@ -133,12 +135,9 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                         A_FIND_ENTITIES_ALL_MSG + testTypeName,
                         PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                         null,
-                        "findEntities",
+                        methodName,
                         elapsedTime);
             }
-
-            // Cache the first page of results into a Map keyed by TypeDef, for re-use in later tests
-            performanceWorkPad.addEntityInstances(entityDef.getName(), results);
 
             // Page the results to test paging performance + tally a running count of the total number of
             // instances in the environment (do this here rather than via create tests so that such counts also work
@@ -172,7 +171,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_ENTITIES_ALL_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntities",
+                            methodName,
                             elapsedTime);
                 }
             }
@@ -184,7 +183,6 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                     null);
             return;
         } catch (Exception exc) {
-            String methodName = "findEntities";
             String operationDescription = "search an entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", entityDef.getGUID());
@@ -249,7 +247,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_TEXT_EXACT_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByPropertyValue",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -286,7 +284,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_TEXT_START_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByPropertyValue",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -323,7 +321,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_TEXT_CONTAINS_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByPropertyValue",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -360,7 +358,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_TEXT_END_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByPropertyValue",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -397,7 +395,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_TEXT_REGEX_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByPropertyValue",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -514,7 +512,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_PROPERTY_ONE_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByProperty",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -556,7 +554,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_PROPERTY_ALL_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByProperty",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -595,7 +593,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_PROPERTY_ANY_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByProperty",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {
@@ -634,7 +632,7 @@ public class TestEntitySearch extends OpenMetadataPerformanceTestCase
                             A_FIND_BY_PROPERTY_NONE_MSG + testTypeName,
                             PerformanceProfile.ENTITY_SEARCH.getProfileId(),
                             null,
-                            "findEntitiesByProperty",
+                            methodName,
                             elapsedTime);
                 }
             } catch (FunctionNotSupportedException exception) {

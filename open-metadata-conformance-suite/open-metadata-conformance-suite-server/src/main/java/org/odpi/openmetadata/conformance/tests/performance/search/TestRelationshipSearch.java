@@ -135,9 +135,6 @@ public class TestRelationshipSearch extends OpenMetadataPerformanceTestCase
                         elapsedTime);
             }
 
-            // Cache the first page of results into a Map keyed by TypeDef, for re-use in later tests
-            performanceWorkPad.addRelationshipInstances(relationshipDef.getName(), results);
-
             // Page the results to test paging performance + tally a running count of the total number of
             // instances in the environment (do this here rather than via create tests so that such counts also work
             // for repositories that do not support write operations)

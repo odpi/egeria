@@ -5,8 +5,6 @@ package org.odpi.openmetadata.conformance.workbenches.performance;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryPerformanceWorkbenchConfig;
 import org.odpi.openmetadata.conformance.beans.*;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.*;
@@ -38,8 +36,6 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
     private String                  localMetadataCollectionId   = null;
     private OMRSRepositoryConnector localRepositoryConnector    = null;
 
-    private Map<String, List<EntityDetail>> entityInstancesByTypeDefName       = new TreeMap<>();
-    private Map<String, List<Relationship>> relationshipInstancesByTypeDefName = new TreeMap<>();
     private long totalEntitiesCreated      = 0L;
     private long totalRelationshipsCreated = 0L;
     private long totalEntitiesFound        = 0L;
@@ -502,54 +498,6 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
         {
             return summaryList;
         }
-    }
-
-
-    /**
-     * Remember a page worth of instances for a given entity type, for later use.
-     *
-     * @param typeName name of the type of the instances
-     * @param instances list of instances
-     */
-    public void addEntityInstances(String typeName, List<EntityDetail> instances)
-    {
-        this.entityInstancesByTypeDefName.put(typeName, instances);
-    }
-
-
-    /**
-     * Return the list of entities cached for the provided type.
-     *
-     * @param typeName of the cached entities to retrieve
-     * @return {@code List<EntityDetail>} of the cached entities of that type
-     */
-    public List<EntityDetail> getEntityInstancesByType(String typeName)
-    {
-        return this.entityInstancesByTypeDefName.get(typeName);
-    }
-
-
-    /**
-     * Remember a page worth of instances for a given relationship type, for later use.
-     *
-     * @param typeName name of the type of the instances
-     * @param instances list of instances
-     */
-    public void addRelationshipInstances(String typeName, List<Relationship> instances)
-    {
-        this.relationshipInstancesByTypeDefName.put(typeName, instances);
-    }
-
-
-    /**
-     * Return the list of relationships cached for the provided type.
-     *
-     * @param typeName of the cached relationships to retrieve
-     * @return {@code List<Relationship>} of the cached relationships of that type
-     */
-    public List<Relationship> getRelationshipInstancesByType(String typeName)
-    {
-        return this.relationshipInstancesByTypeDefName.get(typeName);
     }
 
 
