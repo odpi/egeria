@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -743,20 +745,24 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier (guid) of the created schema type
      */
-    public GUIDResponse upsertDatabase(String userId, String serverName, DatabaseRequestBody databaseRequestBody) {
+    public GUIDListResponse upsertDatabase(String userId, String serverName, DatabaseRequestBody databaseRequestBody) {
         final String methodName = "upsertDatabase";
 
-        GUIDResponse response = new GUIDResponse();
-
+        GUIDListResponse response = new GUIDListResponse();
         try {
             if (databaseRequestBody == null) {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
                 return response;
             }
 
-            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(), databaseRequestBody.getExternalSourceName());
+            Database database = databaseRequestBody.getDatabase();
+            String databaseGUID = upsertDatabase(userId, serverName, database, databaseRequestBody.getExternalSourceName());
 
-            response.setGUID(databaseGUID);
+            DatabaseSchema databaseSchema = database.getDatabaseSchema();
+            addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
+            String schemaGUID = upsertDatabaseSchema(userId, serverName, databaseGUID, databaseSchema, databaseRequestBody.getExternalSourceName());
+
+            response.setGUIDs(Arrays.asList(databaseGUID, schemaGUID));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -768,6 +774,7 @@ public class DataEngineRESTServices {
 
         return response;
     }
+
 
     /**
      * Create or update a Database
@@ -790,14 +797,12 @@ public class DataEngineRESTServices {
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
 
-        DataEngineRelationalDataHandler dataEngineRelationalDataHandler= instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, externalSourceName);
 
-        String relationalTableGUID = dataEngineRelationalDataHandler.createDatabase(userId, database, externalSourceName);
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
-
-        return relationalTableGUID;
-
+        return databaseGUID;
     }
 
     /**
@@ -868,6 +873,26 @@ public class DataEngineRESTServices {
         return null;
     }
 
+    private void addAssetProperties(DatabaseSchema databaseSchema, String owner, OwnerType ownerType, List<String> zoneMembership) {
+        databaseSchema.setOwner(owner);
+        databaseSchema.setOwnerType(ownerType);
+        databaseSchema.setZoneMembership(zoneMembership);
+    }
+
+    private String upsertDatabaseSchema(String userId, String serverName, String databaseGUID, DatabaseSchema databaseSchema,
+                                        String externalSourceName) throws InvalidParameterException, PropertyServerException,
+                                                                          UserNotAuthorizedException {
+        final String methodName = "upsertDatabaseSchema";
+
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, databaseSchema);
+
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+        String databaseSchemaGUID = dataEngineRelationalDataHandler.upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
+
+        return databaseSchemaGUID;
+    }
     private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeGUID, String oldSchemaTypeGUID,
                                           String externalSourceName) throws
                                                                      InvalidParameterException,

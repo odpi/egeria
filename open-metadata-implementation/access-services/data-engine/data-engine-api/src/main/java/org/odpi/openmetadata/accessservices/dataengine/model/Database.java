@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,13 +20,23 @@ public class Database extends DataStore {
     private String databaseInstance;
     private String databaseImportedFrom;
 
+    @JsonProperty("schema")
+    private DatabaseSchema databaseSchema;
+
+    public DatabaseSchema getDatabaseSchema() {
+        return databaseSchema;
+    }
+
+    public void setDatabaseSchema(DatabaseSchema databaseSchema) {
+        this.databaseSchema = databaseSchema;
+    }
+
     /**
      * Return a description of the database type.
      *
      * @return string type name
      */
-    public String getDatabaseType()
-    {
+    public String getDatabaseType() {
         return databaseType;
     }
 
@@ -35,8 +46,7 @@ public class Database extends DataStore {
      *
      * @param databaseType string type name
      */
-    public void setDatabaseType(String databaseType)
-    {
+    public void setDatabaseType(String databaseType) {
         this.databaseType = databaseType;
     }
 
@@ -46,8 +56,7 @@ public class Database extends DataStore {
      *
      * @return version name
      */
-    public String getDatabaseVersion()
-    {
+    public String getDatabaseVersion() {
         return databaseVersion;
     }
 
@@ -57,8 +66,7 @@ public class Database extends DataStore {
      *
      * @param databaseVersion version name
      */
-    public void setDatabaseVersion(String databaseVersion)
-    {
+    public void setDatabaseVersion(String databaseVersion) {
         this.databaseVersion = databaseVersion;
     }
 
@@ -68,8 +76,7 @@ public class Database extends DataStore {
      *
      * @return instance name
      */
-    public String getDatabaseInstance()
-    {
+    public String getDatabaseInstance() {
         return databaseInstance;
     }
 
@@ -79,8 +86,7 @@ public class Database extends DataStore {
      *
      * @param databaseInstance instance name
      */
-    public void setDatabaseInstance(String databaseInstance)
-    {
+    public void setDatabaseInstance(String databaseInstance) {
         this.databaseInstance = databaseInstance;
     }
 
@@ -90,19 +96,17 @@ public class Database extends DataStore {
      *
      * @return source name
      */
-    public String getDatabaseImportedFrom()
-    {
+    public String getDatabaseImportedFrom() {
         return databaseImportedFrom;
     }
 
 
     /**
-     *  Set up the the source (typically connection name) of the database information.
+     * Set up the the source (typically connection name) of the database information.
      *
      * @param databaseImportedFrom source name
      */
-    public void setDatabaseImportedFrom(String databaseImportedFrom)
-    {
+    public void setDatabaseImportedFrom(String databaseImportedFrom) {
         this.databaseImportedFrom = databaseImportedFrom;
     }
 
@@ -113,8 +117,7 @@ public class Database extends DataStore {
      * @return print out of variables in a JSON-style
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Database{" +
                 "databaseType='" + databaseType + '\'' +
                 ", databaseVersion='" + databaseVersion + '\'' +
