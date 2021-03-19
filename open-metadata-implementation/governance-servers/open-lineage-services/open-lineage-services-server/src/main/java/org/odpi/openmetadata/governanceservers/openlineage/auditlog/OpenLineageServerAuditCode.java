@@ -112,7 +112,7 @@ public enum OpenLineageServerAuditCode {
 
     ASSET_CONTEXT_INFO("OPEN-LINEAGE-SERVICES-0020",
             OMRSAuditLogRecordSeverity.INFO,
-            "Asset Context for entity {0} was stored in the graph: {1}",
+            "Asset Context for entity {0} was stored in the graph.",
             "Asset Context was stored in the graph.",
             "No action is required.");
 
