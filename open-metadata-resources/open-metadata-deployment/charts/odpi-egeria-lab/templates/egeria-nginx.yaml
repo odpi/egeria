@@ -76,14 +76,24 @@ spec:
               value: http://{{ .Release.Name }}-uistatic:80
             - name: UI_API
               value: https://{{ .Release.Name }}-ui:8443
+            - name: NGINX_SERVER_NAME
+              value: {{ .Release.Name}}-nginx
           volumeMounts:
-            - name: etc-vol
+            - name: template-vol
               mountPath: /etc/nginx/templates
+            - name: ssl-vol
+              mountPath: /etc/nginx/ssl
       restartPolicy: Always
       volumes:
-        - name: etc-vol
+        - name: template-vol
           configMap:
-            name: {{ .Release.Name }}-etc-configmap
+            name: {{ .Release.Name }}-template-configmap
+        - name: ssl-vol
+          secret:
+           secretName: {{ .Release.Name }}-nginx-ssl
+           items:
+             - key: tls.key
+               path: tls.crt
 
 status: {}
 ---
@@ -96,7 +106,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: etc
-  name: {{ .Release.Name }}-etc-configmap
+  name: {{ .Release.Name }}-template-configmap
 {{- if and (.Files.Glob "etc/**") }}
 binaryData:
   {{- $root := . }}
@@ -104,4 +114,24 @@ binaryData:
   {{ base $path }}: {{ $root.Files.Get $path | b64enc | quote }}
   {{- end }}
   {{- end }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: nginx-ssl
+  name: {{ .Release.Name }}-nginx-ssl
+type: kubernetes.io/tls
+# TODO - Initially hardcoded here to prove the k8s deployment/nginx config. Certs are copied from egeria master 17 Mar 2021
+# See open-metadata-resources/open-metadata-deployment/certificates . We're using the EgeriaClient certs
+# Also see https://stackoverflow.com/questions/51899844/nginx-ssl-no-start-line-expecting-trusted-certificate - for TRUSTED issue
+data:
+  # cat EgeriaClient.cert.pem | sed 's/CERTIFICATE/TRUSTED CERTIFICATE/g' | base64
+  tls.crt: LS0tLS1CRUdJTiBUUlVTVEVEIENFUlRJRklDQVRFLS0tLS0KTUlJRW5EQ0NBb1NnQXdJQkFnSUNFQVF3RFFZSktvWklodmNOQVFFTEJRQXdYakVMTUFrR0ExVUVCaE1DVlZNeApDekFKQmdOVkJBZ01Ba05CTVJFd0R3WURWUVFLREFoTVJrRkpSR0YwWVRFdk1DMEdBMVVFQXd3bVJXZGxjbWxoClNXNTBaWEp0WldScFlYUmxRMlZ5ZEdsbWFXTmhkR1ZCZFhSb2IzSnBkSGt3SGhjTk1qRXdNekExTVRVeE1EUTAKV2hjTk1qSXdNekUxTVRVeE1EUTBXakErTVFzd0NRWURWUVFHRXdKVlV6RUxNQWtHQTFVRUNBd0NRMEV4RVRBUApCZ05WQkFvTUNFeEdRVWxFWVhSaE1ROHdEUVlEVlFRRERBWkRiR2xsYm5Rd2dnRWlNQTBHQ1NxR1NJYjNEUUVCCkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDOTVsVmtQM1lKMnJqSUlyREFTV1ZWUXdyWWFzR2ZTUVBoTk9Mc2ZTbHcKT3IwYXByVlhITmZueGp3NHpZR0l2clFiUThzQ0J3ZXFyTFU4disxMUgxSW9UbUdJUmxrZndVdUYzSytUZXgxbApHOEdRenVtQktCOTVLTEcxSzJUdHJNbFQrcVowZUNGdXVLTHd6d01CQjVYSnJyNDdpSStvY0prTnNaemJ6QVZaClREQ1ZQdGc1YXJCVXBXNFp4NkRabEtPQ3lJS1puL3FNeDhVSnRpVlBLdDlFRGhybk5QWCtobm1ockxEWmpuU3kKM1NnWTVQbFRFb2pSTnVwVU9meUUwdG9xaklwSGtuVXN3Q3ZmVlhoMzZWRm5yWVNXQ2t5ZGxOWGhPdEFUQXNFUwpLMk13K1hwekJqajNEMEF2S0NNNjMwT2JoSlc0eElxbWFvSzZxNnJIMXRlaEFnTUJBQUdqZ1lNd2dZQXdFUVlKCllJWklBWWI0UWdFQkJBUURBZ1dnTUFrR0ExVWRFd1FDTUFBd0hRWURWUjBPQkJZRUZLN282eU5nLzlUVnVSdWIKM0hGUExmRjZsWmFwTUI4R0ExVWRJd1FZTUJhQUZIWFNqeFpnQTJJeCtkekY1c0d0cWxIdHpiSDRNQXNHQTFVZApEd1FFQXdJRjREQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBakFOQmdrcWhraUc5dzBCQVFzRkFBT0NBZ0VBCkIwRnV5ODc3dXZUcU9hYUdYQkp4VGNRSnJKWFhoZDZHc05wZVVVNkxadm16U1hTRnpJVTl0ZHp6Und3N2pKNzMKOTJRcDZ0MS9tWHNibHVZMmNBYXBmZkJDbk5JUTBGUTZ4dFBsaFprMFJSOUFENFpmc3hMU2pBMWZWa0N3WTFoYgpkK1plQVg1Zjd5aENDOXA0ckZsdGRkOGVnU1M0VlEyL0p5YWNVUHRCcWc4K3FwUktIcTBXRnFCdXN4R0pZYVBmCjhDeW8rNDl1MWIwcDFRdEk2aFlVemRZc0dLeHRaQzA5a25IZlFNSjZyL242bkgzcEJwZGh1VE1iMkJvV2RveTIKYjZXZnVSVlpRWmNYdVlxaVNzVlpJc3BBUUhrYm02TWpVOThqcTdsaWx3YTREWnM3eXhzSzlhRWdVRlpXcmwzaAo2Tm50QjBzQXZEdmdjWGJtRzA0VHpGTHVHeTRCUFk0RnJWaFEyajM5cDZwdEVCZWM4UFB6endJMkYzMzEzNVJVClFkaGZncE4wMkZnWVp5b2RDaE9ZenRWdGNtd0VwM2hxOWc5UE9Ua1JDeGcyaTJMVlZuVU04bHJCSjBUV1hiakUKT0E2QzRMTE1iTlI0bGdvY3hCekNtQzZ6YytkUnhVQ3RCOWZldy9vYzZ5aS90YzZpSnFJTU8vbmJER2U2ZTdTRwo2TFZVZ3cxOXFDd004c1lwd2FRYkIxcEZUOHRoWEFjQndoSStzK0poVThmNFA4cjhUMmgwd3c4YnFWemo2SngvCjJTejZ3ZllzcmN1Q3FGQTUzcjZCQ2dLUTdXYldRZVpLTUNmdjZESkxLazc0MHNVejFzOWFtc2FpdXV2TTlwV1cKNUxNeHBLcE1kL29BL2ZRMW9CWExVeUwzOEZYKzZpUWFmdFVpTlhqWHhUTT0KLS0tLS1FTkQgVFJVU1RFRCBDRVJUSUZJQ0FURS0tLS0tCg==
+  # cat EgeriaClient.key.pem | base64
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpQcm9jLVR5cGU6IDQsRU5DUllQVEVECkRFSy1JbmZvOiBBRVMtMjU2LUNCQywzNzAzOUVFOUUxQTMwRURDREJEMTEwRDAyQjM3MjZFQgoKZ014bENmQVhtc1JjVEN3MVVMTzNIdlBzQmhsRjNwMTZndGIrd1E4b1lPK0ZoeVhWcDBaQk11bXpyampQM1hVYgpwaTFXRjBvSjlaRVlGM3hWRkNmVUlEU2xGNzJHRnZRd0p6RnZMZTlCWGhCTDMwN0I0MjJ1eFZ2OTZKR04vMzIyCjBWWEpReUpreE5wTnRnYlhuU2ZpZElkYWUybnRoSERScDAwSi9USHZmQ1pBeHh3TlVyRXhxMUhkRVRlT1NTMEkKMkhJeDRtMW4xMzdJZEdKUTgvZVB4ZzBFOFhzVjNiWGhNdEhFSFYyUmZUUXk0QTZzLzZ2NTB5Y0RjZ0x3SzBKRgptSmlOemRZQnYvUkdJbGk2Nk5DaUtlUGhRenErTlZrQ0VRZ1Bsd2llQ3laWnNZb01MdDBGb2prcVJYMWlmdG1QCjIvRUsrcFRpaDRYWUk1OU9hcVRNSThKVmVnZW1RdjMrNHlQUUgrWTRER3dBNU5WQk9TNTMwL2FXa3VrdW54dDkKZEhvMlQvcnZCL2FWRXVPd1BZVS9zU1puYXhuVERxWUlrQlNMWE5DRWN6ZHJHZEdCem5ZQ3dtVGF2UVpEKzVpZApxNnVWRjhUUW5LaHlhSy92UGZtdVlUS3NoMm41N0pwZnJ0ZE1qd0tnY1NTTG1ZT25mVTV2bWZQcHY1enlrVDd3ClNXZDNxY3NYOVh6YkkxaVVGRHRxVmY4K0lUR2dsY3lNbXU0alNrQXl0eDJmWFh2MllHM0dvSTQ0cERKNjFVbm4Ka3ZXdW0wQU5HMHNqYUQwa1lpZUtldDRxZmE0L0hMU21EK1RVb2RxUHJXd0k4SlJlaWk5S2ZON1plRENhUjlyVwpCdmZxeUZjeW04ODlEVU5oQWwyQkxzbkZyeVhPRytvbUlwZXBlZG1FOG5wSDY2Q0t1VUc1RlNDbDNtSGYvZ2tJCjdtalhkZ2dDOE5TN25ORHc4TUJxWTJoazJDeEFRWFJnVkw0b3lSbk5DK1FNR09VRDRVU3MzOThERlFwYzdneUYKTDBwVjBEaHdmQWIxZXdrWXhIcktpcUZySitOV3FvYjFESGFsVGNCV0prZVBtdUphaEh4NkdOSXpTdlpVRmJibApsYnNBWDdVT2szZVdPV1hxdDZZSFB1TlNqZHh4MXRBYkVrNWZ0RldocHRvWXF4SVRzKzRWcWcwYWFycmZJNFRWCk5jZzNpQWo5WkhLTmE3N2lNTnJkbXVndVRpT3J4U1BmQ2xNVUp5UTFlSzFneC9yQjhxV3NhY3BicTVnSnJwWVUKb0kzUmcrdUV1VXFVVEFFVSs4YTdsSDVBalJmOThZSzZGa3N6TW1IZEJUMDhScE41UXlNNkNMRFZZcCtlcHdTYwpyVGRTNG9oZGYyMC9mcTNpU084eDF2YnNVditSWHdwV0hrZkNnR2VOS0Joc211UnBhdkpLc3FpVy9TeXFUdEU4CjVRMjdFYU82Zm91d1FkdUYwNVZjekNXUTVIRjl5Ym04Vk9OV3AxdjZGb0R2YUhoemlWYkpvSDZhZ1hScHVHUTgKTUd5a1hzNzVjR3pWRkZ5RWxzeDc0RFhmcW9vU3JBU3Q4R1ViVjBlZGxnSkZKM1pIZTR3cyt2YVVHT3hHZnM2egp5UWkvTFVjeDFGN3VjYXNySm9DY3FyN1ZrcVJaT3FxZjYvL28rK1RtRU9PMm9qNW45djJiQ3REY0tmaE5zWndlCjhhVXJxckNIOVdRUndxbVBKRzRhb3ZaRHMrcFVESTIya1VxN2tDWHZVdkZWOHNUTUh2N1VVQnAwVWhLUWUxUVkKOWJXTXNFT0p3Y1ZIdU95VlpNVzI4V2tFcFg3R3BpenZUNkQyY2VuVTNVSUpCRzNRZlF0K3pMSWFXTlJYYlRJQQpaejdEL1BzemJqdm9qMmdMeG5FS2dvODZ4UkViMlEvMllPZlJHK2dPc2ZEeldycVdmdWFFeUxCV3FIOGhNQ1RuCnRtVm9PMnpYZlhydHY2Y0lDN2I1R2d1MlphZ2tmaFV0dlF5eHUvaGt2c3JHWHNUdWJCVzNZQitpczcwYlk0OS8KbWlDVUpmWHlzbnU0cnUyb3JuVERMUW9lTlJ5eWQyMmdaOXRiRjBmS2s2WGpxNzRyZmlNMFdieUlYOEllQlp3cgotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
 ...

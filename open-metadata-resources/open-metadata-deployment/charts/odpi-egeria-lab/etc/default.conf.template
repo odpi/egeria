@@ -2,11 +2,11 @@
 # Copyright Contributors to the Egeria project.
 server {
 
-    #listen                443 ssl;
-    listen                 80;
-    #server_name           ##ENV_VAR_FE_SERVER_NAME##;
-    #ssl_certificate       ##ENV_VAR_PATH_TO_CRT_FILE##;
-    #ssl_certificate_key   ##ENV_VAR_PATH_TO_KEY_FILE##;
+    listen                443 ssl;
+    #listen                 80;
+    server_name           ${NGINX_SERVER_NAME};
+    ssl_certificate       /etc/nginx/ssl/tls.crt;
+    ssl_certificate_key   /etc/nginx/ssl/tls.key;
 
 
     #root /var/www/;
@@ -17,16 +17,16 @@ server {
         proxy_pass ${UI_API};
         proxy_set_header Host $http_host;
         proxy_ssl_verify       off;
-        #proxy_ssl_session_reuse on;
-        #proxy_ssl_server_name on;
+        proxy_ssl_session_reuse on;
+        proxy_ssl_server_name on;
     }
 
     location / {
         proxy_pass ${UI_STATIC};
         proxy_set_header Host $http_host;
-        #proxy_ssl_verify       off;
-        #proxy_ssl_session_reuse on;
-        #proxy_ssl_server_name on;
+        proxy_ssl_verify       off;
+        proxy_ssl_session_reuse on;
+        proxy_ssl_server_name on;
     }
 
 }
