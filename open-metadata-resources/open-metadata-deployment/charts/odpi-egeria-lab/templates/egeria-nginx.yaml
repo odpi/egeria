@@ -15,8 +15,8 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 443
+      targetPort: 443
       {{- if ( eq  .Values.service.type "NodePort" ) -}}
       nodePort: {{ .Values.service.nodeport.nginx }}
       {{- end }}
@@ -63,10 +63,10 @@ spec:
                   {{ if (.Values.image.nginx.tag) }}:{{ .Values.image.nginx.tag }}{{ end }}"
           imagePullPolicy: {{ .Values.image.nginx.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
-            - containerPort: 80
+            - containerPort: 443
           readinessProbe:
             tcpSocket:
-              port: 80
+              port: 443
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
