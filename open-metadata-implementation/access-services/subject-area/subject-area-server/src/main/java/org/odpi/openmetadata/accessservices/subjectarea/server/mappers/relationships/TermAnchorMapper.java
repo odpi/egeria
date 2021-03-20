@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
  * Mapping methods to map between the termAnchor and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class TermAnchorMapper extends LineMapper<TermAnchor> {
+public class TermAnchorMapper extends RelationshipMapper<TermAnchor> {
     public static final String TERM_ANCHOR = "TermAnchor";
 
     public TermAnchorMapper(OMRSAPIHelper omrsapiHelper) {
@@ -24,7 +24,7 @@ public class TermAnchorMapper extends LineMapper<TermAnchor> {
     }
 
     @Override
-    protected TermAnchor getLineInstance() {
+    protected TermAnchor getRelationshipInstance() {
         return new TermAnchor();
     }
 
