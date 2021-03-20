@@ -14,16 +14,14 @@ import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.metadatasecurity.properties.Connection;
-import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityConnector;
-import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider;
-import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityConnector;
-import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OpenMetadataEventsSecurity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,18 +33,18 @@ import java.util.List;
  * optional.
  */
 public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositorySecurity,
+                                                           OpenMetadataEventsSecurity,
                                                            OpenMetadataServerSecurity,
                                                            OpenMetadataServiceSecurity,
                                                            OpenMetadataConnectionSecurity,
                                                            OpenMetadataAssetSecurity
 {
-    private OpenMetadataServerSecurityConnector connector   = null;
-
-    // Todo remove - temporary workaround to bring connectors into class path
-    private CocoPharmaServerSecurityConnector   demoObject1 = null;
-    private CocoPharmaServerSecurityProvider    demoObject2 = null;
-    private CocoPharmaPlatformSecurityConnector demoObject3 = null;
-    private CocoPharmaPlatformSecurityProvider  demoObject4 = null;
+    private OpenMetadataRepositorySecurity repositorySecurityConnector = null;
+    private OpenMetadataEventsSecurity     eventsSecurityConnector     = null;
+    private OpenMetadataServerSecurity     serverSecurityConnector     = null;
+    private OpenMetadataServiceSecurity    serviceSecurityConnector    = null;
+    private OpenMetadataConnectionSecurity connectionSecurityConnector = null;
+    private OpenMetadataAssetSecurity      assetSecurityConnector      = null;
 
     /**
      * Default constructor
@@ -71,12 +69,39 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                         AuditLog                                                                  auditLog,
                                                         org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection   connection) throws InvalidParameterException
     {
+        OpenMetadataServerSecurityConnector connector;
+
         try
         {
-            this.connector = this.getServerSecurityConnector(localServerUserId,
-                                                             serverName,
-                                                             auditLog,
-                                                             connection);
+            connector = this.getServerSecurityConnector(localServerUserId,
+                                                        serverName,
+                                                        auditLog,
+                                                        connection);
+
+            if (connector instanceof OpenMetadataRepositorySecurity)
+            {
+                repositorySecurityConnector = (OpenMetadataRepositorySecurity)connector;
+            }
+            if (connector instanceof OpenMetadataEventsSecurity)
+            {
+                eventsSecurityConnector = (OpenMetadataEventsSecurity)connector;
+            }
+            if (connector instanceof OpenMetadataServerSecurity)
+            {
+                serverSecurityConnector = (OpenMetadataServerSecurity)connector;
+            }
+            if (connector instanceof OpenMetadataServiceSecurity)
+            {
+                serviceSecurityConnector = (OpenMetadataServiceSecurity)connector;
+            }
+            if (connector instanceof OpenMetadataConnectionSecurity)
+            {
+                connectionSecurityConnector = (OpenMetadataConnectionSecurity)connector;
+            }
+            if (connector instanceof OpenMetadataAssetSecurity)
+            {
+                assetSecurityConnector = (OpenMetadataAssetSecurity)connector;
+            }
         }
         catch (InvalidParameterException error)
         {
@@ -155,9 +180,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                  String        user) throws InvalidParameterException,
                                                                             PropertyServerException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            return connector.setSupportedZonesForUser(supportedZones, serviceName, user);
+            return assetSecurityConnector.setSupportedZonesForUser(supportedZones, serviceName, user);
         }
 
         return supportedZones;
@@ -178,6 +203,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Deprecated
     public List<String> initializeAssetZones(List<String>                                                       defaultZones,
                                              org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfAsset) throws InvalidParameterException,
                                                                                                                                  PropertyServerException
@@ -196,9 +222,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                 resultingZones = ocfAsset.getZoneMembership();
             }
 
-            if (connector != null)
+            if (assetSecurityConnector != null)
             {
-                return connector.setAssetZonesToDefault(resultingZones, asset);
+                return assetSecurityConnector.setAssetZonesToDefault(resultingZones, asset);
             }
         }
 
@@ -267,9 +293,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
             }
         }
 
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            return connector.setAssetZonesToDefault(resultingZones, asset);
+            return assetSecurityConnector.setAssetZonesToDefault(resultingZones, asset);
         }
 
         return resultingZones;
@@ -300,9 +326,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                          Asset         updatedAsset) throws InvalidParameterException,
                                                                             PropertyServerException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            return connector.verifyAssetZones(defaultZones, supportedZones, originalAsset, updatedAsset);
+            return assetSecurityConnector.verifyAssetZones(defaultZones, supportedZones, originalAsset, updatedAsset);
         }
 
         List<String>  resultingZones = null;
@@ -339,12 +365,12 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                          org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfUpdatedAsset) throws InvalidParameterException,
                                                                                                                                     PropertyServerException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
             Asset originalAsset = this.getAssetFromOCFAsset(ocfOriginalAsset);
             Asset updatedAsset = this.getAssetFromOCFAsset(ocfUpdatedAsset);
 
-            return connector.verifyAssetZones(defaultZones, supportedZones, null, originalAsset, updatedAsset);
+            return assetSecurityConnector.verifyAssetZones(defaultZones, supportedZones, null, originalAsset, updatedAsset);
         }
 
         List<String>  resultingZones = null;
@@ -383,9 +409,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                          Asset         updatedAsset) throws InvalidParameterException,
                                                                             PropertyServerException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            return connector.verifyAssetZones(defaultZones, supportedZones, publishZones, originalAsset, updatedAsset);
+            return assetSecurityConnector.verifyAssetZones(defaultZones, supportedZones, publishZones, originalAsset, updatedAsset);
         }
 
         List<String>  resultingZones = null;
@@ -409,9 +435,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     @Override
     public void  validateUserForServer(String   userId) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (serverSecurityConnector != null)
         {
-            connector.validateUserForServer(userId);
+            serverSecurityConnector.validateUserForServer(userId);
         }
     }
 
@@ -426,9 +452,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     @Override
     public void  validateUserAsServerAdmin(String   userId) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (serverSecurityConnector != null)
         {
-            connector.validateUserAsServerAdmin(userId);
+            serverSecurityConnector.validateUserAsServerAdmin(userId);
         }
     }
 
@@ -443,9 +469,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     @Override
     public void  validateUserAsServerOperator(String   userId) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (serverSecurityConnector != null)
         {
-            connector.validateUserAsServerOperator(userId);
+            serverSecurityConnector.validateUserAsServerOperator(userId);
         }
     }
 
@@ -460,9 +486,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     @Override
     public void  validateUserAsServerInvestigator(String   userId) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (serverSecurityConnector != null)
         {
-            connector.validateUserAsServerInvestigator(userId);
+            serverSecurityConnector.validateUserAsServerInvestigator(userId);
         }
     }
 
@@ -479,9 +505,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void  validateUserForService(String   userId,
                                         String   serviceName) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (serviceSecurityConnector != null)
         {
-            connector.validateUserForService(userId, serviceName);
+            serviceSecurityConnector.validateUserForService(userId, serviceName);
         }
     }
 
@@ -500,9 +526,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                  String   serviceName,
                                                  String   serviceOperationName) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (serviceSecurityConnector != null)
         {
-            connector.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
+            serviceSecurityConnector.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
         }
     }
 
@@ -518,9 +544,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void  validateUserForConnection(String     userId,
                                            Connection connection) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (connectionSecurityConnector != null)
         {
-            connector.validateUserForConnection(userId, new Connection(connection));
+            connectionSecurityConnector.validateUserForConnection(userId, new Connection(connection));
         }
     }
 
@@ -540,7 +566,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                          Asset            asset,
                                                          List<Connection> connections) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (connectionSecurityConnector != null)
         {
             List<Connection> clonedConnections;
             if ((connections == null) || (connections.isEmpty()))
@@ -557,9 +583,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                 }
             }
 
-            connector.validateUserForAssetConnectionList(userId,
-                                                         new Asset(asset),
-                                                         clonedConnections);
+            connectionSecurityConnector.validateUserForAssetConnectionList(userId, new Asset(asset), clonedConnections);
         }
         else
         {
@@ -594,11 +618,11 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void  validateUserForAssetCreate(String                                                             userId,
                                             org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfAsset) throws UserNotAuthorizedException
     {
-        if ((connector != null) && (ocfAsset != null))
+        if ((assetSecurityConnector != null) && (ocfAsset != null))
         {
             Asset asset = this.getAssetFromOCFAsset(ocfAsset);
 
-            connector.validateUserForAssetCreate(userId, asset);
+            assetSecurityConnector.validateUserForAssetCreate(userId, asset);
         }
     }
 
@@ -613,9 +637,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void  validateUserForAssetCreate(String     userId,
                                             Asset      asset) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            connector.validateUserForAssetCreate(userId, new Asset(asset));
+            assetSecurityConnector.validateUserForAssetCreate(userId, new Asset(asset));
         }
     }
 
@@ -630,9 +654,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void  validateUserForAssetRead(String     userId,
                                           Asset      asset) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            connector.validateUserForAssetRead(userId, new Asset(asset));
+            assetSecurityConnector.validateUserForAssetRead(userId, new Asset(asset));
         }
     }
 
@@ -654,12 +678,12 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                   AssetAuditHeader                                                   originalAssetAuditHeader,
                                                   org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfNewAsset) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
             Asset originalAsset = this.getAssetFromOCFAsset(ocfOriginalAsset);
             Asset newAsset = this.getAssetFromOCFAsset(ocfNewAsset);
 
-            connector.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, newAsset);
+            assetSecurityConnector.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, newAsset);
         }
     }
 
@@ -681,9 +705,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                   AssetAuditHeader originalAssetAuditHeader,
                                                   Asset            newAsset) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            connector.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, new Asset(newAsset));
+            assetSecurityConnector.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, new Asset(newAsset));
         }
     }
 
@@ -700,9 +724,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void  validateUserForAssetAttachmentUpdate(String     userId,
                                                       Asset      asset) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            connector.validateUserForAssetAttachmentUpdate(userId, new Asset(asset));
+            assetSecurityConnector.validateUserForAssetAttachmentUpdate(userId, new Asset(asset));
         }
     }
 
@@ -719,9 +743,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void  validateUserForAssetFeedback(String     userId,
                                               Asset      asset) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            connector.validateUserForAssetFeedback(userId, new Asset(asset));
+            assetSecurityConnector.validateUserForAssetFeedback(userId, new Asset(asset));
         }
     }
 
@@ -737,9 +761,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     public void  validateUserForAssetDelete(String     userId,
                                             Asset      asset) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (assetSecurityConnector != null)
         {
-            connector.validateUserForAssetDelete(userId, new Asset(asset));
+            assetSecurityConnector.validateUserForAssetDelete(userId, new Asset(asset));
         }
     }
 
@@ -762,9 +786,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                            String  metadataCollectionName,
                                            TypeDef typeDef) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForTypeCreate(userId, metadataCollectionName, typeDef);
+            repositorySecurityConnector.validateUserForTypeCreate(userId, metadataCollectionName, typeDef);
         }
     }
 
@@ -782,9 +806,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                            String           metadataCollectionName,
                                            AttributeTypeDef attributeTypeDef) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForTypeCreate(userId, metadataCollectionName, attributeTypeDef);
+            repositorySecurityConnector.validateUserForTypeCreate(userId, metadataCollectionName, attributeTypeDef);
         }
     }
 
@@ -802,9 +826,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                          String     metadataCollectionName,
                                          TypeDef    typeDef) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForTypeRead(userId, metadataCollectionName, typeDef);
+            repositorySecurityConnector.validateUserForTypeRead(userId, metadataCollectionName, typeDef);
         }
     }
 
@@ -822,9 +846,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                          String              metadataCollectionName,
                                          AttributeTypeDef    attributeTypeDef) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForTypeRead(userId, metadataCollectionName, attributeTypeDef);
+            repositorySecurityConnector.validateUserForTypeRead(userId, metadataCollectionName, attributeTypeDef);
         }
     }
 
@@ -844,9 +868,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                            TypeDef      typeDef,
                                            TypeDefPatch patch) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForTypeUpdate(userId, metadataCollectionName, typeDef, patch);
+            repositorySecurityConnector.validateUserForTypeUpdate(userId, metadataCollectionName, typeDef, patch);
         }
     }
 
@@ -864,9 +888,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                            String     metadataCollectionName,
                                            TypeDef    typeDef) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForTypeDelete(userId, metadataCollectionName, typeDef);
+            repositorySecurityConnector.validateUserForTypeDelete(userId, metadataCollectionName, typeDef);
         }
     }
 
@@ -884,9 +908,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                            String              metadataCollectionName,
                                            AttributeTypeDef    attributeTypeDef) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForTypeDelete(userId, metadataCollectionName, attributeTypeDef);
+            repositorySecurityConnector.validateUserForTypeDelete(userId, metadataCollectionName, attributeTypeDef);
         }
     }
 
@@ -908,9 +932,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                String  newTypeDefGUID,
                                                String  newTypeDefName) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForTypeReIdentify(userId, metadataCollectionName, originalTypeDef, newTypeDefGUID, newTypeDefName);
+            repositorySecurityConnector.validateUserForTypeReIdentify(userId, metadataCollectionName, originalTypeDef, newTypeDefGUID, newTypeDefName);
         }
     }
 
@@ -932,13 +956,13 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                String           newTypeDefGUID,
                                                String           newTypeDefName) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForTypeReIdentify(userId,
-                                                    metadataCollectionName,
-                                                    originalAttributeTypeDef,
-                                                    newTypeDefGUID,
-                                                    newTypeDefName);
+            repositorySecurityConnector.validateUserForTypeReIdentify(userId,
+                                                                      metadataCollectionName,
+                                                                      originalAttributeTypeDef,
+                                                                      newTypeDefGUID,
+                                                                      newTypeDefName);
         }
     }
 
@@ -971,14 +995,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                              List<Classification>       initialClassifications,
                                              InstanceStatus             initialStatus) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityCreate(userId,
-                                                  metadataCollectionName,
-                                                  entityTypeGUID,
-                                                  initialProperties,
-                                                  initialClassifications,
-                                                  initialStatus);
+            repositorySecurityConnector.validateUserForEntityCreate(userId,
+                                                                    metadataCollectionName,
+                                                                    entityTypeGUID,
+                                                                    initialProperties,
+                                                                    initialClassifications,
+                                                                    initialStatus);
         }
     }
 
@@ -989,17 +1013,20 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
+     * @return entity to return (may be altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
     @Override
-    public void  validateUserForEntityRead(String          userId,
-                                           String          metadataCollectionName,
-                                           EntityDetail    instance) throws UserNotAuthorizedException
+    public EntityDetail  validateUserForEntityRead(String          userId,
+                                                   String          metadataCollectionName,
+                                                   EntityDetail    instance) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityRead(userId, metadataCollectionName, new EntityDetail(instance));
+            return repositorySecurityConnector.validateUserForEntityRead(userId, metadataCollectionName, new EntityDetail(instance));
         }
+
+        return instance;
     }
 
 
@@ -1016,9 +1043,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                   String        metadataCollectionName,
                                                   EntitySummary instance) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntitySummaryRead(userId, metadataCollectionName, new EntitySummary(instance));
+            repositorySecurityConnector.validateUserForEntitySummaryRead(userId, metadataCollectionName, new EntitySummary(instance));
         }
     }
 
@@ -1036,9 +1063,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                 String      metadataCollectionName,
                                                 EntityProxy instance) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityProxyRead(userId, metadataCollectionName, new EntityProxy(instance));
+            repositorySecurityConnector.validateUserForEntityProxyRead(userId, metadataCollectionName, new EntityProxy(instance));
         }
     }
 
@@ -1056,9 +1083,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                              String          metadataCollectionName,
                                              EntityDetail    instance) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityUpdate(userId, metadataCollectionName, new EntityDetail(instance));
+            repositorySecurityConnector.validateUserForEntityUpdate(userId, metadataCollectionName, new EntityDetail(instance));
         }
     }
 
@@ -1081,9 +1108,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                         String               classificationName,
                                                         InstanceProperties   properties) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityClassificationAdd(userId,
+            repositorySecurityConnector.validateUserForEntityClassificationAdd(userId,
                                                              metadataCollectionName,
                                                              instance,
                                                              classificationName,
@@ -1110,9 +1137,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                            String               classificationName,
                                                            InstanceProperties   properties) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityClassificationUpdate(userId,
+            repositorySecurityConnector.validateUserForEntityClassificationUpdate(userId,
                                                                 metadataCollectionName,
                                                                 instance,
                                                                 classificationName,
@@ -1137,9 +1164,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                            EntityDetail         instance,
                                                            String               classificationName) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityClassificationDelete(userId,
+            repositorySecurityConnector.validateUserForEntityClassificationDelete(userId,
                                                                 metadataCollectionName,
                                                                 instance,
                                                                 classificationName);
@@ -1160,9 +1187,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                              String       metadataCollectionName,
                                              EntityDetail instance) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityDelete(userId, metadataCollectionName, new EntityDetail(instance));
+            repositorySecurityConnector.validateUserForEntityDelete(userId, metadataCollectionName, new EntityDetail(instance));
         }
     }
 
@@ -1180,9 +1207,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                               String       metadataCollectionName,
                                               String       deletedEntityGUID) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityRestore(userId, metadataCollectionName, deletedEntityGUID);
+            repositorySecurityConnector.validateUserForEntityRestore(userId, metadataCollectionName, deletedEntityGUID);
         }
     }
 
@@ -1202,9 +1229,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                        EntityDetail instance,
                                                        String       newGUID) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityReIdentification(userId, metadataCollectionName, instance, newGUID);
+            repositorySecurityConnector.validateUserForEntityReIdentification(userId, metadataCollectionName, instance, newGUID);
         }
     }
 
@@ -1224,9 +1251,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                EntityDetail   instance,
                                                TypeDefSummary newTypeDefSummary) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityReTyping(userId, metadataCollectionName, instance, newTypeDefSummary);
+            repositorySecurityConnector.validateUserForEntityReTyping(userId, metadataCollectionName, instance, newTypeDefSummary);
         }
     }
 
@@ -1248,9 +1275,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                String         newHomeMetadataCollectionId,
                                                String         newHomeMetadataCollectionName) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityReHoming(userId,
+            repositorySecurityConnector.validateUserForEntityReHoming(userId,
                                                     metadataCollectionName,
                                                     instance,
                                                     newHomeMetadataCollectionId,
@@ -1280,9 +1307,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                    EntitySummary        entityTwoSummary,
                                                    InstanceStatus       initialStatus) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForRelationshipCreate(userId,
+            repositorySecurityConnector.validateUserForRelationshipCreate(userId,
                                                         metadataCollectionName,
                                                         relationshipTypeGUID,
                                                         initialProperties,
@@ -1302,14 +1329,16 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
     @Override
-    public void  validateUserForRelationshipRead(String          userId,
-                                                 String          metadataCollectionName,
-                                                 Relationship    instance) throws UserNotAuthorizedException
+    public Relationship  validateUserForRelationshipRead(String          userId,
+                                                         String          metadataCollectionName,
+                                                         Relationship    instance) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForRelationshipRead(userId, metadataCollectionName, new Relationship(instance));
+            return repositorySecurityConnector.validateUserForRelationshipRead(userId, metadataCollectionName, new Relationship(instance));
         }
+
+        return instance;
     }
 
 
@@ -1326,9 +1355,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                    String          metadataCollectionName,
                                                    Relationship    instance) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForRelationshipUpdate(userId, metadataCollectionName, new Relationship(instance));
+            repositorySecurityConnector.validateUserForRelationshipUpdate(userId, metadataCollectionName, new Relationship(instance));
         }
     }
 
@@ -1346,9 +1375,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                    String       metadataCollectionName,
                                                    Relationship instance) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForRelationshipDelete(userId, metadataCollectionName, new Relationship(instance));
+            repositorySecurityConnector.validateUserForRelationshipDelete(userId, metadataCollectionName, new Relationship(instance));
         }
     }
 
@@ -1366,9 +1395,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                     String       metadataCollectionName,
                                                     String       deletedRelationshipGUID) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForEntityRestore(userId, metadataCollectionName, deletedRelationshipGUID);
+            repositorySecurityConnector.validateUserForEntityRestore(userId, metadataCollectionName, deletedRelationshipGUID);
         }
     }
 
@@ -1388,9 +1417,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                              Relationship instance,
                                                              String       newGUID) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForRelationshipReIdentification(userId, metadataCollectionName, instance, newGUID);
+            repositorySecurityConnector.validateUserForRelationshipReIdentification(userId, metadataCollectionName, instance, newGUID);
         }
     }
 
@@ -1410,9 +1439,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                      Relationship   instance,
                                                      TypeDefSummary newTypeDefSummary) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForRelationshipReTyping(userId, metadataCollectionName, instance, newTypeDefSummary);
+            repositorySecurityConnector.validateUserForRelationshipReTyping(userId, metadataCollectionName, instance, newTypeDefSummary);
         }
     }
 
@@ -1434,13 +1463,86 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                      String         newHomeMetadataCollectionId,
                                                      String         newHomeMetadataCollectionName) throws UserNotAuthorizedException
     {
-        if (connector != null)
+        if (repositorySecurityConnector != null)
         {
-            connector.validateUserForRelationshipReHoming(userId,
+            repositorySecurityConnector.validateUserForRelationshipReHoming(userId,
                                                           metadataCollectionName,
                                                           instance,
                                                           newHomeMetadataCollectionId,
                                                           newHomeMetadataCollectionName);
         }
+    }
+
+
+    /**
+     * Tests for whether a reference copy should be saved to the repository.
+     *
+     * @param instance instance details
+     * @return flag indicating whether the reference copy should be saved
+     */
+    public boolean  validateEntityReferenceCopySave(EntityDetail   instance)
+    {
+        if (repositorySecurityConnector != null)
+        {
+            return repositorySecurityConnector.validateEntityReferenceCopySave(instance);
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Tests for whether a reference copy should be saved to the repository.
+     *
+     * @param instance instance details
+     * @return flag indicating whether the reference copy should be saved
+     */
+    public boolean  validateRelationshipReferenceCopySave(Relationship   instance)
+    {
+        if (repositorySecurityConnector != null)
+        {
+            return repositorySecurityConnector.validateRelationshipReferenceCopySave(instance);
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Validate whether an event received from another member of the cohort should be processed
+     * by this server.
+     *
+     * @param cohortName name of the cohort
+     * @param event event that has been received
+     * @return inbound event to process (may be updated) or null to indicate that the event should be ignored
+     */
+    public OMRSInstanceEvent validateInboundEvent(String            cohortName,
+                                                  OMRSInstanceEvent event)
+    {
+        if (eventsSecurityConnector != null)
+        {
+            return eventsSecurityConnector.validateInboundEvent(cohortName, event);
+        }
+
+        return event;
+    }
+
+
+    /**
+     * Validate whether an event should be sent to the other members of the cohort by this server.
+     *
+     * @param cohortName name of the cohort
+     * @param event event that has been received
+     * @return outbound event to send (may be updated) or null to indicate that the event should be ignored
+     */
+    public OMRSInstanceEvent validateOutboundEvent(String            cohortName,
+                                                   OMRSInstanceEvent event)
+    {
+        if (eventsSecurityConnector != null)
+        {
+            return eventsSecurityConnector.validateOutboundEvent(cohortName, event);
+        }
+
+        return event;
     }
 }

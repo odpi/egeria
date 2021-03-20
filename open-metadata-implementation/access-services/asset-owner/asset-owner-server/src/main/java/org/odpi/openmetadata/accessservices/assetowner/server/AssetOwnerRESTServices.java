@@ -221,6 +221,69 @@ public class AssetOwnerRESTServices
     }
 
 
+    /**
+     * Create a new metadata element to represent an asset using an existing asset as a template.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier (guid) of the asset or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public GUIDResponse  addAssetToCatalogUsingTemplate(String             serverName,
+                                                        String             userId,
+                                                        String             templateGUID,
+                                                        TemplateProperties requestBody)
+    {
+        final String methodName = "addAssetToCatalogUsingTemplate";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.addAssetFromTemplate(userId,
+                                                                 null,
+                                                                 null,
+                                                                 templateGUID,
+                                                                 templateGUIDParameterName,
+                                                                 OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                 requestBody.getQualifiedName(),
+                                                                 qualifiedNameParameterName,
+                                                                 requestBody.getDisplayName(),
+                                                                 requestBody.getDescription(),
+                                                                 requestBody.getNetworkAddress(),
+                                                                 methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
 
     /**
      * Stores the supplied schema details in the catalog and attaches it to the asset.  If another schema is currently
@@ -1909,10 +1972,10 @@ public class AssetOwnerRESTServices
      *  PropertyServerException problem accessing property server or
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse addTemplateClassification(String              serverName,
-                                                  String              userId,
-                                                  String              assetGUID,
-                                                  TemplateRequestBody requestBody)
+    public VoidResponse addTemplateClassification(String                            serverName,
+                                                  String                            userId,
+                                                  String                            assetGUID,
+                                                  TemplateClassificationRequestBody requestBody)
     {
         final String methodName = "addTemplateClassification";
         final String assetGUIDParameterName = "assetGUID";

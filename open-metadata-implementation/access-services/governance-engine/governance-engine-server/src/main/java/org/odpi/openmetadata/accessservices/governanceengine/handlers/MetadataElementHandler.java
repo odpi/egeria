@@ -307,6 +307,17 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                             repositoryHelper);
         }
 
+        int attachmentAtEnd = 0;
+
+        if (startingAtEnd == 1)
+        {
+            attachmentAtEnd = 2;
+        }
+        else if (startingAtEnd == 2)
+        {
+            attachmentAtEnd = 1;
+        }
+
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     elementGUID,
                                                                     guidParameterName,
@@ -315,7 +326,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     relationshipTypeName,
                                                                     null,
                                                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                                                    startingAtEnd,
+                                                                    attachmentAtEnd,
                                                                     startFrom,
                                                                     pageSize,
                                                                     methodName);

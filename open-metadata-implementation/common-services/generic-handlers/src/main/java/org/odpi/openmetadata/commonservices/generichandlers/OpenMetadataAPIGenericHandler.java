@@ -4189,7 +4189,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
-     * @param attachmentEntityEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
      * @param methodName calling method
@@ -4516,6 +4516,19 @@ public class OpenMetadataAPIGenericHandler<B>
 
         if (templateProgress != null)
         {
+            /*
+             * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
+             * updated, there is a possibility of making complementary changes to the entities that were derived from it.
+             */
+            repositoryHandler.createRelationship(localServerUserId,
+                                                 OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 templateProgress.newBeanGUID,
+                                                 templateGUID,
+                                                 null,
+                                                 methodName);
+
             return templateProgress.newBeanGUID;
         }
 
@@ -4678,19 +4691,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                entityTypeName,
                                                                uniqueParameterValue,
                                                                methodName);
-
-            /*
-             * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
-             * updated, there is a possibility of making complementary changes to the entities that were derived from it.
-             */
-            repositoryHandler.createRelationship(localServerUserId,
-                                                 OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 newEntityGUID,
-                                                 templateGUID,
-                                                 null,
-                                                 methodName);
 
             templateProgress.newBeanGUID = newEntityGUID;
         }

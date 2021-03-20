@@ -8828,7 +8828,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "4cb88900-1446-4eb6-acea-29cd9da45e63";
         final String name            = "NestedFile";
-        final String description     = "The location of a data file within a file folder in.";
+        final String description     = "The link between a data file and its containing folder.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -8847,7 +8847,7 @@ public class OpenMetadataTypesArchive1_2
          */
         final String                     end1EntityType               = "FileFolder";
         final String                     end1AttributeName            = "homeFolder";
-        final String                     end1AttributeDescription     = "Identifies the location of this datafile.";
+        final String                     end1AttributeDescription     = "Identifies the containing folder of this datafile.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
