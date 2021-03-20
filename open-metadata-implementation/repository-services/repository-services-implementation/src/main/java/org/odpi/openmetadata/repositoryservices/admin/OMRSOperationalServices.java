@@ -464,7 +464,6 @@ public class OMRSOperationalServices
                                                        cohortConfigList);
         }
 
-
         /*
          * Set up the OMRS REST Services with the local repository so it is able to process incoming REST
          * calls.
@@ -479,19 +478,23 @@ public class OMRSOperationalServices
                                                          maxPageSize);
 
         /*
-         * The local repository (if configured) has been started while the archives were loaded and the
-         * cohorts initialized.  During this time, outbound repository events have been buffered.
-         * Calling start() releases these buffered events into the cohort(s).
+         * All done and no exceptions :)
          */
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZED.getMessageDefinition());
+    }
+
+
+    /**
+     * The local repository (if configured) has been started while the archives were loaded and the
+     * cohorts initialized.  During this time, outbound repository events have been buffered.
+     * Calling start() releases these buffered events into the cohort(s).
+     */
+    private void startOutboundEvents()
+    {
         if (localRepositoryEventManager != null)
         {
             localRepositoryEventManager.start();
         }
-
-        /*
-         * All done and no exceptions :)
-         */
-        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZED.getMessageDefinition());
     }
 
 
@@ -837,10 +840,18 @@ public class OMRSOperationalServices
         {
             if (localRepositoryConnector != null)
             {
-                this.localRepositoryConnector.setSecurityVerifier(securityVerifier);
+                localRepositoryConnector.setSecurityVerifier(securityVerifier);
+            }
+
+            if (metadataHighwayManager != null)
+            {
+                metadataHighwayManager.setSecurityVerifier(securityVerifier);
             }
         }
+
+        this.startOutboundEvents();
     }
+
 
     /**
      * Add an open metadata archive to the local repository.
