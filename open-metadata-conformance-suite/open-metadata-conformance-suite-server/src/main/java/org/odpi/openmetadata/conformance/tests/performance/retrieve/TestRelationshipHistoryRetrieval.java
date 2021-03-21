@@ -6,6 +6,7 @@ import org.odpi.openmetadata.conformance.tests.performance.OpenMetadataPerforman
 import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceProfile;
 import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -28,6 +29,9 @@ public class TestRelationshipHistoryRetrieval extends OpenMetadataPerformanceTes
 
     private static final String A_GET_HISTORY     = TEST_CASE_ID + "-getRelationship";
     private static final String A_GET_HISTORY_MSG = "Repository performs retrieval of historical instance of type: ";
+
+    private static final String A_GET_FULL_HISTORY     = TEST_CASE_ID + "-getRelationshipHistory";
+    private static final String A_GET_FULL_HISTORY_MSG = "Repository performs retrieval of full history of instance of type: ";
 
     private final RelationshipDef     relationshipDef;
     private final String              testTypeName;
@@ -70,6 +74,7 @@ public class TestRelationshipHistoryRetrieval extends OpenMetadataPerformanceTes
 
         Set<String> keysToRetrieve = getRelationshipKeys(metadataCollection, numInstances);
         getRelationship(metadataCollection, keysToRetrieve);
+        getRelationshipHistory(metadataCollection, keysToRetrieve);
 
         super.setSuccessMessage("Relationship history retrieval performance tests complete for: " + testTypeName);
     }
@@ -155,6 +160,51 @@ public class TestRelationshipHistoryRetrieval extends OpenMetadataPerformanceTes
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", relationshipDef.getGUID());
             parameters.put("asOfTime", asOfTime.toString());
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            throw new Exception(msg, exc);
+        }
+
+    }
+
+    /**
+     * Retrieve the full history of a number of instances.
+     * @param metadataCollection through which to call getRelationshipHistory
+     * @param keys GUIDs of instances to retrieve
+     * @throws Exception on any errors
+     */
+    private void getRelationshipHistory(OMRSMetadataCollection metadataCollection, Set<String> keys) throws Exception
+    {
+
+        final String methodName = "getRelationshipHistory";
+
+        try {
+            for (String guid : keys) {
+                long start = System.nanoTime();
+                List<Relationship> result = metadataCollection.getRelationshipHistory(workPad.getLocalServerUserId(),
+                        guid,
+                        null,
+                        null,
+                        0,
+                        performanceWorkPad.getMaxPageSize(),
+                        HistorySequencingOrder.BACKWARDS);
+                long elapsedTime = (System.nanoTime() - start) / 1000000;
+                assertCondition(result != null,
+                        A_GET_FULL_HISTORY,
+                        A_GET_FULL_HISTORY_MSG + testTypeName,
+                        PerformanceProfile.RELATIONSHIP_HISTORY_RETRIEVAL.getProfileId(),
+                        null,
+                        methodName,
+                        elapsedTime);
+            }
+        } catch (FunctionNotSupportedException exception) {
+            super.addNotSupportedAssertion(A_GET_FULL_HISTORY,
+                    A_GET_FULL_HISTORY_MSG + testTypeName,
+                    PerformanceProfile.RELATIONSHIP_HISTORY_RETRIEVAL.getProfileId(),
+                    null);
+        } catch (Exception exc) {
+            String operationDescription = "retrieve full history of instance of type " + relationshipDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("typeGUID", relationshipDef.getGUID());
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
             throw new Exception(msg, exc);
         }

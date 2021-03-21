@@ -66,6 +66,8 @@ public class TestEntityCreation extends OpenMetadataPerformanceTestCase
         int numInstances = super.getInstancesPerType();
 
         addEntities(metadataCollection, numInstances);
+        // TODO: addExternalEntities(metadataCollection, numInstances);
+        // TODO: addEntityProxy(metadataCollection, repositoryHelper, numInstances);
         saveEntityReferenceCopies(metadataCollection, repositoryHelper, numInstances);
 
         super.setSuccessMessage("Entity creation performance tests complete for: " + testTypeName);

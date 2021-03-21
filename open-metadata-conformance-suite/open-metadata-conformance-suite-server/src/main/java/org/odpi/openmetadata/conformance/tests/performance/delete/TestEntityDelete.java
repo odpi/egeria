@@ -12,10 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -28,7 +25,7 @@ public class TestEntityDelete extends OpenMetadataPerformanceTestCase
     private static final String TEST_CASE_ID   = "repository-entity-delete-performance";
     private static final String TEST_CASE_NAME = "Repository entity delete performance test case";
 
-    private static final String A_FIND_ENTITIES        = TEST_CASE_ID + "-findEntities";
+    private static final String A_FIND_ENTITIES        = TEST_CASE_ID + "-findEntitiesByProperty";
     private static final String A_FIND_ENTITIES_MSG    = "Repository performs search for unordered first instancesPerType homed instances of type: ";
 
     private static final String A_DELETE     = TEST_CASE_ID + "-deleteEntity";
@@ -89,13 +86,15 @@ public class TestEntityDelete extends OpenMetadataPerformanceTestCase
                 "metadataCollectionId",
                 repositoryHelper.getExactMatchRegex(performanceWorkPad.getTutMetadataCollectionId()),
                 methodName);
+        List<InstanceStatus> initial = new ArrayList<>();
+        initial.add(entityDef.getInitialStatus());
         long start = System.nanoTime();
         List<EntityDetail> entities = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
                 entityDef.getGUID(),
                 byMetadataCollectionId,
                 MatchCriteria.ALL,
                 0,
-                null,
+                initial,
                 null,
                 null,
                 null,

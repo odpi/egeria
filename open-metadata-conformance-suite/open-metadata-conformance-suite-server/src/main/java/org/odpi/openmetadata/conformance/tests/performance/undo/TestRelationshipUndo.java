@@ -30,7 +30,7 @@ public class TestRelationshipUndo extends OpenMetadataPerformanceTestCase
     private static final String TEST_CASE_NAME = "Repository relationship undo performance test case";
 
     private static final String A_FIND_RELATIONSHIPS        = TEST_CASE_ID + "-findRelationships";
-    private static final String A_FIND_RELATIONSHIPS_MSG    = "Repository performs search for unordered first instancesPerType instances, with a version greater than 1, of type: ";
+    private static final String A_FIND_RELATIONSHIPS_MSG    = "Repository performs search for unordered first instancesPerType homed instances, with a version greater than 1, of type: ";
 
     private static final String A_UNDO     = TEST_CASE_ID + "-undoRelationshipUpdate";
     private static final String A_UNDO_MSG = "Repository performs undo of last update to instance of type: ";
@@ -94,6 +94,15 @@ public class TestRelationshipUndo extends OpenMetadataPerformanceTestCase
         ppv.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
         ppv.setPrimitiveValue(1);
         byVersion.setValue(ppv);
+        conditions.add(byVersion);
+        PropertyCondition byMetadataCollectionId = new PropertyCondition();
+        byMetadataCollectionId.setProperty("metadataCollectionId");
+        byMetadataCollectionId.setOperator(PropertyComparisonOperator.EQ);
+        PrimitivePropertyValue ppvMetadataCollection = new PrimitivePropertyValue();
+        ppvMetadataCollection.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        ppvMetadataCollection.setPrimitiveValue(performanceWorkPad.getTutMetadataCollectionId());
+        byMetadataCollectionId.setValue(ppvMetadataCollection);
+        conditions.add(byMetadataCollectionId);
         searchProperties.setConditions(conditions);
 
         long start = System.nanoTime();
@@ -108,15 +117,16 @@ public class TestRelationshipUndo extends OpenMetadataPerformanceTestCase
                 null,
                 numInstances);
         long elapsedTime = (System.nanoTime() - start) / 1000000;
-        assertCondition(relationshipsToUndo != null,
-                A_FIND_RELATIONSHIPS,
-                A_FIND_RELATIONSHIPS_MSG + relationshipDef.getName(),
-                PerformanceProfile.RELATIONSHIP_SEARCH.getProfileId(),
-                null,
-                "findRelationships",
-                elapsedTime);
 
         if (relationshipsToUndo != null) {
+
+            assertCondition(true,
+                    A_FIND_RELATIONSHIPS,
+                    A_FIND_RELATIONSHIPS_MSG + relationshipDef.getName(),
+                    PerformanceProfile.RELATIONSHIP_SEARCH.getProfileId(),
+                    null,
+                    "findRelationships",
+                    elapsedTime);
 
             try {
                 for (Relationship relationship : relationshipsToUndo) {
@@ -140,7 +150,6 @@ public class TestRelationshipUndo extends OpenMetadataPerformanceTestCase
                         A_UNDO_MSG + testTypeName,
                         PerformanceProfile.RELATIONSHIP_UNDO.getProfileId(),
                         null);
-                return;
             } catch (Exception exc) {
                 String operationDescription = "undo a relationship update of type: " + relationshipDef.getName();
                 Map<String, String> parameters = new HashMap<>();

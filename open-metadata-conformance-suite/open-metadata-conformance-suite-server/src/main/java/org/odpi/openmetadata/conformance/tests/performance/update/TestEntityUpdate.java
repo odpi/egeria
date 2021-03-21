@@ -133,19 +133,21 @@ public class TestEntityUpdate extends OpenMetadataPerformanceTestCase
                 for (int i = 0; i < entitiesToUpdate.size(); i++) {
                     instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef, i);
 
-                    long start = System.nanoTime();
-                    EntityDetail result = metadataCollection.updateEntityProperties(workPad.getLocalServerUserId(),
-                            entitiesToUpdate.get(i).getGUID(),
-                            instProps);
-                    long elapsedTime = (System.nanoTime() - start) / 1000000;
+                    if (instProps != null) {
+                        long start = System.nanoTime();
+                        EntityDetail result = metadataCollection.updateEntityProperties(workPad.getLocalServerUserId(),
+                                entitiesToUpdate.get(i).getGUID(),
+                                instProps);
+                        long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                    assertCondition(result != null,
-                            A_UPDATE_PROPERTIES,
-                            A_UPDATE_PROPERTIES_MSG + testTypeName,
-                            PerformanceProfile.ENTITY_UPDATE.getProfileId(),
-                            null,
-                            methodName,
-                            elapsedTime);
+                        assertCondition(result != null,
+                                A_UPDATE_PROPERTIES,
+                                A_UPDATE_PROPERTIES_MSG + testTypeName,
+                                PerformanceProfile.ENTITY_UPDATE.getProfileId(),
+                                null,
+                                methodName,
+                                elapsedTime);
+                    }
                 }
 
             } catch (FunctionNotSupportedException exception) {

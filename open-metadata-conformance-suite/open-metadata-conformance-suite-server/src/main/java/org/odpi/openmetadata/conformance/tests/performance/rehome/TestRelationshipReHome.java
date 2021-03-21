@@ -29,7 +29,7 @@ public class TestRelationshipReHome extends OpenMetadataPerformanceTestCase
     private static final String A_FIND_RELATIONSHIPS_MSG    = "Repository performs search for unordered first instancesPerType reference copy instances of type: ";
 
     private static final String A_RE_HOME     = TEST_CASE_ID + "-reHomeRelationship";
-    private static final String A_RE_HOME_MSG = "Repository performs re-homing of instances of type: ";
+    private static final String A_RE_HOME_MSG = "Repository performs re-homing of reference copies of instances of type: ";
 
     private final RelationshipDef     relationshipDef;
     private final String              testTypeName;
@@ -65,7 +65,8 @@ public class TestRelationshipReHome extends OpenMetadataPerformanceTestCase
         String metadataCollectionName = getRepositoryConnector().getMetadataCollectionName();
         int numInstances = super.getInstancesPerType();
 
-        Set<String> keysToReHome = getRelationshipKeys(metadataCollection, numInstances);
+        // Only re-home half of the instances, so that we can test purging of the other half
+        Set<String> keysToReHome = getRelationshipKeys(metadataCollection, numInstances / 2);
         reHomeRelationships(metadataCollection, metadataCollectionName, keysToReHome);
 
         super.setSuccessMessage("Relationship re-home performance tests complete for: " + testTypeName);

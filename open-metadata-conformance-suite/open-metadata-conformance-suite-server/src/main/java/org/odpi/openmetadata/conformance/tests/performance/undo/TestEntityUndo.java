@@ -30,7 +30,7 @@ public class TestEntityUndo extends OpenMetadataPerformanceTestCase
     private static final String TEST_CASE_NAME = "Repository entity undo performance test case";
 
     private static final String A_FIND_ENTITIES        = TEST_CASE_ID + "-findEntities";
-    private static final String A_FIND_ENTITIES_MSG    = "Repository performs search for unordered first instancesPerType instances, with a version greater than 1, of type: ";
+    private static final String A_FIND_ENTITIES_MSG    = "Repository performs search for unordered first instancesPerType homed instances, with a version greater than 1, of type: ";
 
     private static final String A_UNDO     = TEST_CASE_ID + "-undoEntityUpdate";
     private static final String A_UNDO_MSG = "Repository performs undo of last update to instance of type: ";
@@ -94,6 +94,15 @@ public class TestEntityUndo extends OpenMetadataPerformanceTestCase
         ppv.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
         ppv.setPrimitiveValue(1);
         byVersion.setValue(ppv);
+        conditions.add(byVersion);
+        PropertyCondition byMetadataCollectionId = new PropertyCondition();
+        byMetadataCollectionId.setProperty("metadataCollectionId");
+        byMetadataCollectionId.setOperator(PropertyComparisonOperator.EQ);
+        PrimitivePropertyValue ppvMetadataCollection = new PrimitivePropertyValue();
+        ppvMetadataCollection.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        ppvMetadataCollection.setPrimitiveValue(performanceWorkPad.getTutMetadataCollectionId());
+        byMetadataCollectionId.setValue(ppvMetadataCollection);
+        conditions.add(byMetadataCollectionId);
         searchProperties.setConditions(conditions);
 
         long start = System.nanoTime();
@@ -109,15 +118,16 @@ public class TestEntityUndo extends OpenMetadataPerformanceTestCase
                 null,
                 numInstances);
         long elapsedTime = (System.nanoTime() - start) / 1000000;
-        assertCondition(entitiesToUndo != null,
-                A_FIND_ENTITIES,
-                A_FIND_ENTITIES_MSG + entityDef.getName(),
-                PerformanceProfile.ENTITY_SEARCH.getProfileId(),
-                null,
-                "findEntities",
-                elapsedTime);
 
         if (entitiesToUndo != null) {
+
+            assertCondition(true,
+                    A_FIND_ENTITIES,
+                    A_FIND_ENTITIES_MSG + entityDef.getName(),
+                    PerformanceProfile.ENTITY_SEARCH.getProfileId(),
+                    null,
+                    "findEntities",
+                    elapsedTime);
 
             try {
                 for (EntityDetail entityDetail : entitiesToUndo) {
@@ -141,7 +151,6 @@ public class TestEntityUndo extends OpenMetadataPerformanceTestCase
                         A_UNDO_MSG + testTypeName,
                         PerformanceProfile.ENTITY_UNDO.getProfileId(),
                         null);
-                return;
             } catch (Exception exc) {
                 String operationDescription = "undo an entity update of type: " + entityDef.getName();
                 Map<String, String> parameters = new HashMap<>();

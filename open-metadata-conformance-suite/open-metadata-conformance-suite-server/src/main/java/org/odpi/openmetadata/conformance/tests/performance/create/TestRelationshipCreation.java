@@ -70,6 +70,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
         int numInstances = super.getInstancesPerType();
 
         addRelationships(metadataCollection, numInstances);
+        // TODO: addExternalRelationship(metadataCollection, numInstances);
         saveRelationshipReferenceCopies(metadataCollection, repositoryHelper, numInstances);
 
         super.setSuccessMessage("Relationship creation performance tests complete for: " + testTypeName);
@@ -84,6 +85,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
     private void addRelationships(OMRSMetadataCollection metadataCollection, int numInstances) throws Exception
     {
 
+        final String methodName = "addRelationship";
         InstanceProperties instProps = null;
         try {
 
@@ -158,7 +160,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
                             A_ADD_RELATIONSHIP_MSG + testTypeName,
                             PerformanceProfile.RELATIONSHIP_CREATION.getProfileId(),
                             null,
-                            "addRelationship",
+                            methodName,
                             elapsedTime);
                 }
             }
@@ -168,9 +170,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
                     A_ADD_RELATIONSHIP_MSG + testTypeName,
                     PerformanceProfile.RELATIONSHIP_CREATION.getProfileId(),
                     null);
-            return;
         } catch (Exception exc) {
-            String methodName = "addRelationship";
             String operationDescription = "add a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", relationshipDef.getGUID());
@@ -194,6 +194,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
                                                  int numInstances) throws Exception
     {
 
+        final String methodName = "saveRelationshipReferenceCopy";
         InstanceProperties instProps = null;
         try {
 
@@ -235,7 +236,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
                         A_SAVE_RELATIONSHIP_RC_MSG + testTypeName,
                         PerformanceProfile.RELATIONSHIP_CREATION.getProfileId(),
                         null,
-                        "saveRelationshipReferenceCopy",
+                        methodName,
                         elapsedTime);
             }
 
@@ -244,9 +245,7 @@ public class TestRelationshipCreation extends OpenMetadataPerformanceTestCase
                     A_SAVE_RELATIONSHIP_RC_MSG + testTypeName,
                     PerformanceProfile.RELATIONSHIP_CREATION.getProfileId(),
                     null);
-            return;
         } catch (Exception exc) {
-            String methodName = "saveRelationshipReferenceCopy";
             String operationDescription = "add a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", relationshipDef.getGUID());

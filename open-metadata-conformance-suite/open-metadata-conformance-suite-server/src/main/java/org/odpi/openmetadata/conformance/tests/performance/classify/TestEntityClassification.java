@@ -76,6 +76,7 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
         int numInstances = super.getInstancesPerType();
 
         classifyEntities(metadataCollection, repositoryHelper, numInstances);
+        // TODO: classifyEntities(metadataCollection, repositoryHelper, numInstances); // from external source
         saveClassificationReferenceCopies(metadataCollection, repositoryHelper, numInstances);
 
         super.setSuccessMessage("Entity classification performance tests complete for: " + testTypeName);
@@ -160,7 +161,6 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
                         A_CLASSIFY_MSG + testTypeName,
                         PerformanceProfile.ENTITY_CLASSIFICATION.getProfileId(),
                         null);
-                return;
             } catch (Exception exc) {
                 String methodName = "classifyEntity";
                 String operationDescription = "classify an entity with " + classificationDef.getName();
@@ -186,7 +186,7 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
                                                    int numInstances) throws Exception
     {
 
-        final String methodName = "saveClassificationReferenceCopies";
+        final String methodName = "saveClassificationReferenceCopy";
 
         List<EntityDetail> entitiesToClassify = null;
         if (entityTypeName != null) {
@@ -231,7 +231,7 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
                             classificationDef.getName(),
                             entityTypeName,
                             ClassificationOrigin.ASSIGNED,
-                            performanceWorkPad.getReferenceCopyMetadataCollectionId(),
+                            null,
                             instProps);
 
                     long start = System.nanoTime();
@@ -252,7 +252,6 @@ public class TestEntityClassification extends OpenMetadataPerformanceTestCase
                         A_SAVE_CLASSIFICATION_RC_MSG + testTypeName,
                         PerformanceProfile.ENTITY_CLASSIFICATION.getProfileId(),
                         null);
-                return;
             } catch (Exception exc) {
                 String operationDescription = "classify a reference copy entity with " + classificationDef.getName();
                 Map<String, String> parameters = new HashMap<>();

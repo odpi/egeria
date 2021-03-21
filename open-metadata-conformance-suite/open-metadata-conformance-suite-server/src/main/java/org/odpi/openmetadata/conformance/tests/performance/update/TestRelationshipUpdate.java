@@ -132,19 +132,20 @@ public class TestRelationshipUpdate extends OpenMetadataPerformanceTestCase
                 for (int i = 0; i < relationshipsToUpdate.size(); i++) {
 
                     instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), relationshipDef, i);
-                    long start = System.nanoTime();
-                    Relationship result = metadataCollection.updateRelationshipProperties(workPad.getLocalServerUserId(),
-                            relationshipsToUpdate.get(i).getGUID(),
-                            instProps);
-                    long elapsedTime = (System.nanoTime() - start) / 1000000;
-
-                    assertCondition(result != null,
-                            A_UPDATE_PROPERTIES,
-                            A_UPDATE_PROPERTIES_MSG + testTypeName,
-                            PerformanceProfile.RELATIONSHIP_UPDATE.getProfileId(),
-                            null,
-                            methodName,
-                            elapsedTime);
+                    if (instProps != null) {
+                        long start = System.nanoTime();
+                        Relationship result = metadataCollection.updateRelationshipProperties(workPad.getLocalServerUserId(),
+                                relationshipsToUpdate.get(i).getGUID(),
+                                instProps);
+                        long elapsedTime = (System.nanoTime() - start) / 1000000;
+                        assertCondition(result != null,
+                                A_UPDATE_PROPERTIES,
+                                A_UPDATE_PROPERTIES_MSG + testTypeName,
+                                PerformanceProfile.RELATIONSHIP_UPDATE.getProfileId(),
+                                null,
+                                methodName,
+                                elapsedTime);
+                    }
                 }
 
             } catch (FunctionNotSupportedException exception) {

@@ -68,6 +68,7 @@ public class TestRelationshipHistorySearch extends OpenMetadataPerformanceTestCa
      *
      * @param workPad place for parameters and results
      * @param relationshipDef type of valid relationships
+     * @param asOfTime at which to search history
      */
     public TestRelationshipHistorySearch(PerformanceWorkPad workPad,
                                          RelationshipDef    relationshipDef,

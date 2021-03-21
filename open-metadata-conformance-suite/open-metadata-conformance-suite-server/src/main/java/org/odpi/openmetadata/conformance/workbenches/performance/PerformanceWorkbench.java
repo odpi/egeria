@@ -4,12 +4,30 @@ package org.odpi.openmetadata.conformance.workbenches.performance;
 
 import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.tests.performance.classify.TestEntityClassification;
+import org.odpi.openmetadata.conformance.tests.performance.classify.TestEntityDeclassification;
 import org.odpi.openmetadata.conformance.tests.performance.create.TestEntityCreation;
 import org.odpi.openmetadata.conformance.tests.performance.create.TestRelationshipCreation;
+import org.odpi.openmetadata.conformance.tests.performance.delete.TestEntityDelete;
+import org.odpi.openmetadata.conformance.tests.performance.delete.TestRelationshipDelete;
 import org.odpi.openmetadata.conformance.tests.performance.environment.TestEnvironment;
-import org.odpi.openmetadata.conformance.tests.performance.search.TestClassificationSearch;
-import org.odpi.openmetadata.conformance.tests.performance.search.TestEntitySearch;
-import org.odpi.openmetadata.conformance.tests.performance.search.TestRelationshipSearch;
+import org.odpi.openmetadata.conformance.tests.performance.graph.TestGraphHistoryQueries;
+import org.odpi.openmetadata.conformance.tests.performance.graph.TestGraphQueries;
+import org.odpi.openmetadata.conformance.tests.performance.purge.TestEntityPurge;
+import org.odpi.openmetadata.conformance.tests.performance.purge.TestRelationshipPurge;
+import org.odpi.openmetadata.conformance.tests.performance.rehome.TestEntityReHome;
+import org.odpi.openmetadata.conformance.tests.performance.rehome.TestRelationshipReHome;
+import org.odpi.openmetadata.conformance.tests.performance.restore.TestEntityRestore;
+import org.odpi.openmetadata.conformance.tests.performance.restore.TestRelationshipRestore;
+import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestEntityHistoryRetrieval;
+import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestEntityRetrieval;
+import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestRelationshipHistoryRetrieval;
+import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestRelationshipRetrieval;
+import org.odpi.openmetadata.conformance.tests.performance.search.*;
+import org.odpi.openmetadata.conformance.tests.performance.undo.TestEntityUndo;
+import org.odpi.openmetadata.conformance.tests.performance.undo.TestRelationshipUndo;
+import org.odpi.openmetadata.conformance.tests.performance.update.TestClassificationUpdate;
+import org.odpi.openmetadata.conformance.tests.performance.update.TestEntityUpdate;
+import org.odpi.openmetadata.conformance.tests.performance.update.TestRelationshipUpdate;
 import org.odpi.openmetadata.conformance.workbenches.OpenMetadataConformanceWorkbench;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -164,45 +182,29 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
             testClassificationSearch.executeTest();
         }
 
-        // TODO: 7. Update entity instances
+        // Record the date and time prior to any instance updates
+        Date priorToInstanceUpdates = new Date();
 
-        // TODO: 8. Update relationship instances
+        // 7. Update entity instances
+        for (EntityDef entityDef : entityDefs.values())
+        {
+            TestEntityUpdate testEntityUpdate = new TestEntityUpdate(workPad, entityDef);
+            testEntityUpdate.executeTest();
+        }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+        // 8. Update relationship instances
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+            TestRelationshipUpdate testRelationshipUpdate = new TestRelationshipUpdate(workPad, relationshipDef);
+            testRelationshipUpdate.executeTest();
+        }
 
-        // TODO: 9. Undo entity updates
-
-        // TODO: 10. Undo relationship updates
-
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
-        // TODO: 11. Get entity instances (detail, summary, history)
-
-        // TODO: 12. Get relationship instances (current, history)
-
-        // TODO: 13. Search historical entity instances
-
-        // TODO: 14. Search historical relationship instances
-
-        // TODO: 15. Graph query instances
-
-        // TODO: 16. Rehome entity instances
-
-        // TODO: 17. Rehome relationship instances
+        // 9. Update classification properties
+        for (ClassificationDef classificationDef : classificationDefs.values())
+        {
+            TestClassificationUpdate testClassificationUpdate = new TestClassificationUpdate(workPad, classificationDef);
+            testClassificationUpdate.executeTest();
+        }
 
         workPad.getAuditLog().logRecord(methodName,
                 waiting.getLogMessageId(),
@@ -213,33 +215,22 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 waiting.getUserAction());
         Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
-        // TODO: 18. Reidentify entity instances
+        // Record the date and time prior to any undo operations
+        Date priorToInstanceUndos = new Date();
 
-        // TODO: 19. Reidentify entity instances
+        // 10. Undo entity updates
+        for (EntityDef entityDef : entityDefs.values())
+        {
+            TestEntityUndo testEntityUndo = new TestEntityUndo(workPad, entityDef);
+            testEntityUndo.executeTest();
+        }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
-        // TODO: 20. Retype entity instances
-
-        // TODO: 21. Retype relationship instances
-
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
-        // TODO: 22. Declassify entity instances
+        // 11. Undo relationship updates
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+            TestRelationshipUndo testRelationshipUndo = new TestRelationshipUndo(workPad, relationshipDef);
+            testRelationshipUndo.executeTest();
+        }
 
         workPad.getAuditLog().logRecord(methodName,
                 waiting.getLogMessageId(),
@@ -250,9 +241,60 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 waiting.getUserAction());
         Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
-        // TODO: 23. Delete entity instances
+        // 12-13. Get entity instances (detail, summary, history)
+        for (EntityDef entityDef : entityDefs.values())
+        {
+            TestEntityRetrieval testEntityRetrieval = new TestEntityRetrieval(workPad, entityDef);
+            testEntityRetrieval.executeTest();
+            TestEntityHistoryRetrieval testEntityHistoryRetrieval = new TestEntityHistoryRetrieval(workPad, entityDef, priorToInstanceUpdates);
+            testEntityHistoryRetrieval.executeTest();
+        }
 
-        // TODO: 24. Delete relationship instances
+        // 14-15. Get relationship instances (current, history)
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+            TestRelationshipRetrieval testRelationshipRetrieval = new TestRelationshipRetrieval(workPad, relationshipDef);
+            testRelationshipRetrieval.executeTest();
+            TestRelationshipHistoryRetrieval testRelationshipHistoryRetrieval = new TestRelationshipHistoryRetrieval(workPad, relationshipDef, priorToInstanceUpdates);
+            testRelationshipHistoryRetrieval.executeTest();
+        }
+
+        // 16. Search historical entity instances
+        for (EntityDef entityDef : entityDefs.values())
+        {
+            TestEntityHistorySearch testEntityHistoricalSearch = new TestEntityHistorySearch(workPad, entityDef, priorToInstanceUpdates);
+            testEntityHistoricalSearch.executeTest();
+        }
+
+        // 17. Search historical relationship instances
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+            TestRelationshipHistorySearch testRelationshipHistorySearch = new TestRelationshipHistorySearch(workPad, relationshipDef, priorToInstanceUpdates);
+            testRelationshipHistorySearch.executeTest();
+        }
+
+        // 18-19. Graph query instances
+        for (EntityDef entityDef : entityDefs.values())
+        {
+            TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, entityDef);
+            testGraphQueries.executeTest();
+            TestGraphHistoryQueries testGraphHistoryQueries = new TestGraphHistoryQueries(workPad, entityDef, priorToInstanceUpdates);
+            testGraphHistoryQueries.executeTest();
+        }
+
+        // 20. Re-home entity instances
+        for (EntityDef entityDef : entityDefs.values())
+        {
+            TestEntityReHome testEntityReHome = new TestEntityReHome(workPad, entityDef);
+            testEntityReHome.executeTest();
+        }
+
+        // 21. Re-home relationship instances
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+            TestRelationshipReHome testRelationshipReHome = new TestRelationshipReHome(workPad, relationshipDef);
+            testRelationshipReHome.executeTest();
+        }
 
         workPad.getAuditLog().logRecord(methodName,
                 waiting.getLogMessageId(),
@@ -263,9 +305,12 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 waiting.getUserAction());
         Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
-        // TODO: 25. Restore entity instances
-
-        // TODO: 26. Restore relationship instances
+        // 22. Declassify entity instances
+        for (ClassificationDef classificationDef : classificationDefs.values())
+        {
+            TestEntityDeclassification testEntityDeclassification = new TestEntityDeclassification(workPad, classificationDef);
+            testEntityDeclassification.executeTest();
+        }
 
         workPad.getAuditLog().logRecord(methodName,
                 waiting.getLogMessageId(),
@@ -276,9 +321,107 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 waiting.getUserAction());
         Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
-        // TODO: 27. Purge entity instances
+        // TODO: 23. Retype entity instances
+        for (EntityDef entityDef : entityDefs.values())
+        {
 
-        // TODO: 28. Purge relationship instances
+        }
+
+        // TODO: 24. Retype relationship instances
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+
+        }
+
+        workPad.getAuditLog().logRecord(methodName,
+                waiting.getLogMessageId(),
+                waiting.getSeverity(),
+                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                null,
+                waiting.getSystemAction(),
+                waiting.getUserAction());
+        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+
+        // TODO: 25. Re-identify entity instances
+        for (EntityDef entityDef : entityDefs.values())
+        {
+
+        }
+
+        // TODO: 26. Re-identify relationship instances
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+
+        }
+
+        workPad.getAuditLog().logRecord(methodName,
+                waiting.getLogMessageId(),
+                waiting.getSeverity(),
+                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                null,
+                waiting.getSystemAction(),
+                waiting.getUserAction());
+        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+
+        // 27. Delete relationship instances
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+            TestRelationshipDelete testRelationshipDelete = new TestRelationshipDelete(workPad, relationshipDef);
+            testRelationshipDelete.executeTest();
+        }
+
+        // 28. Delete entity instances
+        for (EntityDef entityDef : entityDefs.values())
+        {
+            TestEntityDelete testEntityDelete = new TestEntityDelete(workPad, entityDef);
+            testEntityDelete.executeTest();
+        }
+
+        workPad.getAuditLog().logRecord(methodName,
+                waiting.getLogMessageId(),
+                waiting.getSeverity(),
+                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                null,
+                waiting.getSystemAction(),
+                waiting.getUserAction());
+        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+
+        // 29. Restore entity instances
+        for (EntityDef entityDef : entityDefs.values())
+        {
+            TestEntityRestore testEntityRestore = new TestEntityRestore(workPad, entityDef);
+            testEntityRestore.executeTest();
+        }
+
+        // 30. Restore relationship instances
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+            TestRelationshipRestore testRelationshipRestore = new TestRelationshipRestore(workPad, relationshipDef);
+            testRelationshipRestore.executeTest();
+        }
+
+        workPad.getAuditLog().logRecord(methodName,
+                waiting.getLogMessageId(),
+                waiting.getSeverity(),
+                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                null,
+                waiting.getSystemAction(),
+                waiting.getUserAction());
+        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+
+        // 31. Purge relationship instances
+        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        {
+            TestRelationshipPurge testRelationshipPurge = new TestRelationshipPurge(workPad, relationshipDef);
+            testRelationshipPurge.executeTest();
+        }
+
+        // 32. Purge entity instances
+        for (EntityDef entityDef : entityDefs.values())
+        {
+            TestEntityPurge testEntityPurge = new TestEntityPurge(workPad, entityDef);
+            testEntityPurge.executeTest();
+        }
 
         TestEnvironment testEnvironment = new TestEnvironment(workPad);
         testEnvironment.executeTest();

@@ -23,7 +23,7 @@ public class TestEntityRestore extends OpenMetadataPerformanceTestCase
     private static final String TEST_CASE_ID   = "repository-entity-restore-performance";
     private static final String TEST_CASE_NAME = "Repository entity restore performance test case";
 
-    private static final String A_FIND_ENTITIES        = TEST_CASE_ID + "-findEntities";
+    private static final String A_FIND_ENTITIES        = TEST_CASE_ID + "-findEntitiesByProperty";
     private static final String A_FIND_ENTITIES_MSG    = "Repository performs search for unordered first instancesPerType deleted instances of type: ";
 
     private static final String A_RESTORE     = TEST_CASE_ID + "-restoreEntity";
@@ -92,14 +92,17 @@ public class TestEntityRestore extends OpenMetadataPerformanceTestCase
                 null,
                 numInstances);
         long elapsedTime = (System.nanoTime() - start) / 1000000;
-        assertCondition(entities != null,
-                A_FIND_ENTITIES,
-                A_FIND_ENTITIES_MSG + testTypeName,
-                PerformanceProfile.ENTITY_SEARCH.getProfileId(),
-                null,
-                "findEntitiesByProperty",
-                elapsedTime);
-        return entities == null ? null : entities.stream().map(EntityDetail::getGUID).collect(Collectors.toSet());
+        if (entities != null) {
+            assertCondition(true,
+                    A_FIND_ENTITIES,
+                    A_FIND_ENTITIES_MSG + testTypeName,
+                    PerformanceProfile.ENTITY_SEARCH.getProfileId(),
+                    null,
+                    "findEntitiesByProperty",
+                    elapsedTime);
+            return entities.stream().map(EntityDetail::getGUID).collect(Collectors.toSet());
+        }
+        return null;
     }
 
     /**
@@ -113,32 +116,34 @@ public class TestEntityRestore extends OpenMetadataPerformanceTestCase
 
         final String methodName = "restoreEntity";
 
-        try {
-            for (String guid : keys) {
-                long start = System.nanoTime();
-                EntityDetail result = metadataCollection.restoreEntity(workPad.getLocalServerUserId(),
-                        guid);
-                long elapsedTime = (System.nanoTime() - start) / 1000000;
-                assertCondition(result != null,
-                        A_RESTORE,
+        if (keys != null) {
+            try {
+                for (String guid : keys) {
+                    long start = System.nanoTime();
+                    EntityDetail result = metadataCollection.restoreEntity(workPad.getLocalServerUserId(),
+                            guid);
+                    long elapsedTime = (System.nanoTime() - start) / 1000000;
+                    assertCondition(result != null,
+                            A_RESTORE,
+                            A_RESTORE_MSG + testTypeName,
+                            PerformanceProfile.ENTITY_RESTORE.getProfileId(),
+                            null,
+                            methodName,
+                            elapsedTime);
+                }
+            } catch (FunctionNotSupportedException exception) {
+                super.addNotSupportedAssertion(A_RESTORE,
                         A_RESTORE_MSG + testTypeName,
                         PerformanceProfile.ENTITY_RESTORE.getProfileId(),
-                        null,
-                        methodName,
-                        elapsedTime);
+                        null);
+                return;
+            } catch (Exception exc) {
+                String operationDescription = "restore deleted entity of type " + entityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("typeGUID", entityDef.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                throw new Exception(msg, exc);
             }
-        } catch (FunctionNotSupportedException exception) {
-            super.addNotSupportedAssertion(A_RESTORE,
-                    A_RESTORE_MSG + testTypeName,
-                    PerformanceProfile.ENTITY_RESTORE.getProfileId(),
-                    null);
-            return;
-        } catch (Exception exc) {
-            String operationDescription = "restore deleted entity of type " + entityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-            throw new Exception(msg, exc);
         }
 
     }
