@@ -2650,9 +2650,9 @@ public class LocalRepositoryServicesResource
      */
     @PostMapping(path = "instances/entities/classifications/reference-copy/purge")
 
-    public  VoidResponse purgeClassificationReferenceCopy(String                          serverName,
-                                                          String                          userId,
-                                                          ClassificationWithEntityRequest requestBody)
+    public  VoidResponse purgeClassificationReferenceCopy(@PathVariable String                          serverName,
+                                                          @PathVariable String                          userId,
+                                                          @RequestBody  ClassificationWithEntityRequest requestBody)
     {
         return restAPI.purgeClassificationReferenceCopy(serverName, userId, requestBody);
     }
