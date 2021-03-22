@@ -30,6 +30,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TRANSFORMATION_PROJECT_RELATIONSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableProcessRelationshipsTypes;
 
 /**
@@ -133,7 +134,8 @@ public class ProcessContextHandler {
                                                      EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
         List<EntityDetail> entityDetails = getRelationshipsBetweenEntities(userId, entityDetail, PROCESS_PORT);
-
+        // todo adjust a bit
+        List<EntityDetail> entityDetailsCuTransfProj = getRelationshipsBetweenEntities(userId, entityDetail, TRANSFORMATION_PROJECT_RELATIONSHIP);
         if (entityDetails.isEmpty()) {
             log.error("No relationships Process Port has been found for the entity with guid {}", entityDetail.getGUID());
 

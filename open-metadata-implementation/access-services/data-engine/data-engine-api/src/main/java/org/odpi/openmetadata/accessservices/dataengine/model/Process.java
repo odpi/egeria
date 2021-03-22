@@ -29,6 +29,7 @@ public class Process {
     private List<PortImplementation> portImplementations;
     private List<PortAlias> portAliases;
     private List<LineageMapping> lineageMappings;
+    private TransformationProject transformationProject;
     private UpdateSemantic updateSemantic;
     private List<ParentProcess> parentProcesses;
     private String displayName;
@@ -415,10 +416,19 @@ public class Process {
                 ", typeGUID='" + typeGUID + '\'' +
                 ", typeName='" + typeName + '\'' +
                 ", guid='" + GUID + '\'' +
+                ", transformationProject='" + transformationProject + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 ", extendedProperties=" + extendedProperties +
                 '}';
+    }
+
+    public TransformationProject getTransformationProject() {
+        return transformationProject;
+    }
+
+    public void setTransformationProject(TransformationProject transformationProject) {
+        this.transformationProject = transformationProject;
     }
 
     @Override
@@ -448,6 +458,7 @@ public class Process {
                 Objects.equals(GUID, process.GUID) &&
                 Objects.equals(qualifiedName, process.qualifiedName) &&
                 Objects.equals(additionalProperties, process.additionalProperties) &&
+                Objects.equals(transformationProject, process.transformationProject) &&
                 Objects.equals(extendedProperties, process.extendedProperties);
     }
 
@@ -455,6 +466,7 @@ public class Process {
     public int hashCode() {
         return Objects.hash(super.hashCode(), name, formula, portImplementations, portAliases, lineageMappings,
                 updateSemantic, parentProcesses, displayName, description, owner, ownerType, zoneMembership, origin,
-                typeGUID, typeName, GUID, qualifiedName, additionalProperties, extendedProperties);
+                typeGUID, typeName, GUID, qualifiedName, transformationProject,
+                additionalProperties, extendedProperties);
     }
 }

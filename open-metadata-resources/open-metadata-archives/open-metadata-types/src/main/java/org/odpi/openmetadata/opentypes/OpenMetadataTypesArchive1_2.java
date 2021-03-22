@@ -639,6 +639,42 @@ public class OpenMetadataTypesArchive1_2
         return entityDef;
     }
 
+    private EntityDef getTransformationProjectEntity()
+    {
+        /*
+         * Build the Entity
+         */
+        final String guid            = "fB4E00CF-37e4-88CE-1234-233BAdB84DA2";
+        final String name            = "TransformationProject";
+        final String description     = "Collection of processes";
+        final String descriptionGUID = null;
+        final String superTypeName   = "Collection";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                name,
+                this.archiveBuilder.getEntityDef(superTypeName),
+                description,
+                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "displayName";
+        final String attribute1Description     = "Display name of the transformation project";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+        return entityDef;
+    }
+
 
     /**
      * The DataSet entity describes a collection of related data.
@@ -4981,6 +5017,7 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEnumDef(getOrderByEnum());
 
         this.archiveBuilder.addEntityDef(getCollectionEntity());
+        this.archiveBuilder.addEntityDef(getTransformationProjectEntity());
 
         this.archiveBuilder.addRelationshipDef(getCollectionMembershipRelationship());
         this.archiveBuilder.addRelationshipDef(getResourceListRelationship());
@@ -10622,6 +10659,69 @@ public class OpenMetadataTypesArchive1_2
 
         return relationshipDef;
     }
+
+    /**
+     * The ProcessPort relationship describes the link between a port and the process used by the port.
+     * @return ProcessPort RelationshipDef
+     */
+    private RelationshipDef getTransformationProjectRelationship()
+    {
+        /*
+         * Build the relationship
+         */
+        final String guid            = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA1";
+        final String name            = "TransformationProjectRelationship";
+        final String description     = "A link between a process and a transformation project";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                name,
+                null,
+                description,
+                descriptionGUID,
+                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Process";
+        final String                     end1AttributeName            = "process";
+        final String                     end1AttributeDescription     = "Process linked to the port";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                end1AttributeName,
+                end1AttributeDescription,
+                end1AttributeDescriptionGUID,
+                end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "TransformationProject";
+        final String                     end2AttributeName            = "transformationProject";
+        final String                     end2AttributeDescription     = "The transformation project of the process";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                end2AttributeName,
+                end2AttributeDescription,
+                end2AttributeDescriptionGUID,
+                end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+
+        return relationshipDef;
+    }
+
 
     /*
      * ========================================
@@ -22245,6 +22345,7 @@ public class OpenMetadataTypesArchive1_2
 
         this.archiveBuilder.addRelationshipDef(getPortSchemaRelationship());
         this.archiveBuilder.addRelationshipDef(getLineageMappingRelationship());
+        this.archiveBuilder.addRelationshipDef(getTransformationProjectRelationship());
     }
 
     /**

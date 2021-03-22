@@ -29,6 +29,11 @@ public class OpenMetadataAPIMapper
     public static final String PROCESS_TYPE_NAME                         = "Process";
     /* Referenceable */
 
+    public static final String TRANSFORMATION_PROJECT_TYPE_GUID                         = "fB4E00CF-37e4-88CE-1234-233BAdB84DA2";
+    public static final String TRANSFORMATION_PROJECT_TYPE_NAME                         = "TransformationProject";
+    /*a collection */
+
+
     public static final String DATA_SET_TYPE_GUID                        = "1449911c-4f44-4c22-abc0-7540154feefb";  /* from Area 0 */
     public static final String DATA_SET_TYPE_NAME                        = "DataSet";
     /* Asset */
@@ -664,6 +669,13 @@ public class OpenMetadataAPIMapper
     public static final String PROCESS_PORT_TYPE_GUID                    = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA2";  /* from Area 2 */
     public static final String PROCESS_PORT_TYPE_NAME                    = "ProcessPort";
     /* End1 = Process; End 2 = Port */
+
+    /* TransformationProject */
+
+    public static final String TRANSFORMATION_PROJECT_RELATIONSHIP_TYPE_GUID                    = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA1";  /* from Area 2 */
+    public static final String TRANSFORMATION_PROJECT_RELATIONSHIP_TYPE_NAME                    = "TransformationProjectRelationship";
+    /* End1 = Process; End 2 = TransformationProject */
+
 
     public static final String PORT_DELEGATION_TYPE_GUID                 = "98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E";  /* from Area 2 */
     public static final String PORT_DELEGATION_TYPE_NAME                 = "PortDelegation";
