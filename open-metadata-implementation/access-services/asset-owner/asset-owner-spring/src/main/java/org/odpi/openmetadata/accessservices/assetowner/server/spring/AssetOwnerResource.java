@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -113,6 +114,30 @@ public class AssetOwnerResource
                                           @RequestBody  AssetProperties requestBody)
     {
         return restAPI.addAssetToCatalog(serverName, userId, typeName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an asset using an existing asset as a template.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier (guid) of the asset or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/from-template/{templateGUID}")
+
+    public GUIDResponse  addAssetToCatalogUsingTemplate(@PathVariable String             serverName,
+                                                        @PathVariable String             userId,
+                                                        @PathVariable String             templateGUID,
+                                                        @RequestBody  TemplateProperties requestBody)
+    {
+        return restAPI.addAssetToCatalogUsingTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -821,10 +846,10 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/template-classification")
 
-    public VoidResponse addTemplateClassification(@PathVariable                   String              serverName,
-                                                  @PathVariable                   String              userId,
-                                                  @PathVariable                   String              assetGUID,
-                                                  @RequestBody (required = false) TemplateRequestBody requestBody)
+    public VoidResponse addTemplateClassification(@PathVariable                   String                            serverName,
+                                                  @PathVariable                   String                            userId,
+                                                  @PathVariable                   String                            assetGUID,
+                                                  @RequestBody (required = false) TemplateClassificationRequestBody requestBody)
     {
         return restAPI.addTemplateClassification(serverName, userId, assetGUID, requestBody);
     }

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataSecurity;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataDefaultRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
@@ -37,7 +37,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     private OMRSRepositoryEventProcessor outboundRepositoryEventProcessor;
     private OMRSTypeDefManager           localTypeDefManager;
 
-    private OMRSMetadataSecurity securityVerifier = new OMRSMetadataSecurity();
+    /*
+     * The security verifier is initialized with a null security verifier.
+     */
+    private OpenMetadataRepositorySecurity securityVerifier = new OMRSMetadataDefaultRepositorySecurity();
 
 
     /**
@@ -116,7 +119,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     void setSecurityVerifier(OpenMetadataRepositorySecurity securityVerifier)
     {
-        this.securityVerifier.setSecurityVerifier(securityVerifier);
+        if (securityVerifier != null)
+        {
+            this.securityVerifier = securityVerifier;
+        }
     }
 
 
@@ -1509,22 +1515,15 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         else
         {
-            List<EntityDetail>   resultList = new ArrayList<>();
+            List<EntityDetail> resultList = new ArrayList<>();
 
-            for (EntityDetail   entity : instanceList)
+            for (EntityDetail entity : instanceList)
             {
-                if (entity != null)
-                {
-                    try
-                    {
-                        securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entity);
-                    }
-                    catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-                    {
-                        throw new UserNotAuthorizedException(error);
-                    }
+                EntityDetail validatedEntity = this.getValidatedEntity(userId, entity);
 
-                    resultList.add(entity);
+                if (validatedEntity != null)
+                {
+                    resultList.add(validatedEntity);
                 }
             }
 
@@ -1550,26 +1549,84 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         else
         {
-            List<Relationship>   resultList = new ArrayList<>();
+            List<Relationship> resultList = new ArrayList<>();
 
-            for (Relationship   relationship : instanceList)
+            for (Relationship relationship : instanceList)
             {
-                if (relationship != null)
-                {
-                    try
-                    {
-                        securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-                    }
-                    catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-                    {
-                        throw new UserNotAuthorizedException(error);
-                    }
+                Relationship validatedRelationship = this.getValidatedRelationship(userId, relationship);
 
-                    resultList.add(relationship);
+                if (validatedRelationship != null)
+                {
+                    resultList.add(validatedRelationship);
                 }
             }
 
             return resultList;
+        }
+    }
+
+
+    /**
+     * Set up the local provenance for an element retrieved from the local repository and call the security verifier
+     * to determine if the relationship should be retrieved.
+     *
+     * @param userId calling user
+     * @param retrievedEntity relationship retrieved from the real repository
+     * @return validated relationship or null (which means pretend this was not retrieved)
+     * @throws UserNotAuthorizedException the security connector prevented access to the relationship
+     */
+    private EntityDetail getValidatedEntity(String       userId,
+                                            EntityDetail retrievedEntity) throws UserNotAuthorizedException
+    {
+        if (retrievedEntity != null)
+        {
+            setLocalProvenanceThroughoutEntity(retrievedEntity);
+            setLocalProvenanceInEntityClassifications(retrievedEntity.getClassifications());
+
+            try
+            {
+                return securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, retrievedEntity);
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Set up the local provenance for an element retrieved from the local repository and call the security verifier
+     * to determine if the relationship should be retrieved.
+     *
+     * @param userId calling user
+     * @param retrievedRelationship relationship retrieved from the real repository
+     * @return validated relationship or null (which means pretend this was not retrieved)
+     * @throws UserNotAuthorizedException the security connector prevented access to the relationship
+     */
+    private Relationship getValidatedRelationship(String       userId,
+                                                  Relationship retrievedRelationship) throws UserNotAuthorizedException
+    {
+        if (retrievedRelationship != null)
+        {
+            setLocalProvenanceThroughoutRelationship(retrievedRelationship);
+
+            try
+            {
+                return securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, retrievedRelationship);
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+        }
+        else
+        {
+            return null;
         }
     }
 
@@ -1657,12 +1714,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public EntityDetail  isEntityKnown(String    userId,
-                                       String    guid) throws InvalidParameterException,
-                                                              RepositoryErrorException,
-                                                              UserNotAuthorizedException
+    public EntityDetail isEntityKnown(String userId,
+                                      String guid) throws InvalidParameterException,
+                                                          RepositoryErrorException,
+                                                          UserNotAuthorizedException
     {
-        final String  methodName = "isEntityKnown";
+        final String methodName = "isEntityKnown";
 
         /*
          * Validate parameters
@@ -1672,26 +1729,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Perform operation
          */
-
         EntityDetail entity = realMetadataCollection.isEntityKnown(userId, guid);
 
-        if (entity != null)
-        {
-            setLocalProvenanceThroughoutEntity(entity);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entity);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-        }
-
-        return entity;
+        return this.getValidatedEntity(userId, entity);
     }
 
 
@@ -1715,7 +1755,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                  EntityNotKnownException,
                                                                  UserNotAuthorizedException
     {
-        final String  methodName        = "getEntitySummary";
+        final String  methodName = "getEntitySummary";
 
         /*
          * Validate parameters
@@ -1725,11 +1765,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Perform operation
          */
-        EntitySummary entity =  realMetadataCollection.getEntitySummary(userId, guid);
+        EntitySummary entity = realMetadataCollection.getEntitySummary(userId, guid);
+
+        repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
         if (entity != null)
         {
-
             setLocalProvenance(entity);
             setLocalProvenanceInEntityClassifications(entity.getClassifications());
 
@@ -1739,11 +1780,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             try
             {
                 securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
-
         }
 
         return entity;
@@ -1783,24 +1824,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid);
 
-        if (entity != null)
-        {
+        repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
-            setLocalProvenanceThroughoutEntity(entity);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-        }
-
-        return entity;
+        return this.getValidatedEntity(userId, entity);
     }
 
 
@@ -1830,7 +1856,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     FunctionNotSupportedException,
                                                                     UserNotAuthorizedException
     {
-        final String  methodName        = "getEntityDetail";
+        final String methodName = "getEntityDetail";
 
         /*
          * Validate parameters
@@ -1840,28 +1866,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Perform operation
          */
+        EntityDetail entity = realMetadataCollection.getEntityDetail(userId, guid, asOfTime);
 
-        EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid, asOfTime);
+        repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
-        if (entity != null)
-        {
-
-            setLocalProvenanceThroughoutEntity(entity);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-
-        }
-
-        return entity;
+        return this.getValidatedEntity(userId, entity);
     }
 
 
@@ -2340,25 +2349,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         Relationship relationship = realMetadataCollection.isRelationshipKnown(userId, guid);
 
-        if (relationship != null)
-        {
-
-            setLocalProvenanceThroughoutRelationship(relationship);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-
-        }
-
-        return relationship;
+        return this.getValidatedRelationship(userId, relationship);
     }
 
 
@@ -2392,29 +2383,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Process operation
          */
-
         Relationship relationship = realMetadataCollection.getRelationship(userId, guid);
-
-        if (relationship != null)
-        {
-
-            setLocalProvenanceThroughoutRelationship(relationship);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-        }
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
-        return relationship;
+        return this.getValidatedRelationship(userId, relationship);
     }
 
 
@@ -2454,26 +2427,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         Relationship relationship = realMetadataCollection.getRelationship(userId, guid, asOfTime);
 
-        if (relationship != null)
-        {
-
-            setLocalProvenanceThroughoutRelationship(relationship);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-        }
-
         repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
-        return relationship;
+        return this.getValidatedRelationship(userId, relationship);
     }
 
 
@@ -3304,11 +3260,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param entityGUID unique identifier (guid) for the requested entity.
      * @param entityDetail the requested entity.
      * @param methodName calling method
-     * @return current entity
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      */
-    private EntityDetail validateEntityCanBeUpdatedByRepository(String           entityGUID,
+    private void validateEntityCanBeUpdatedByRepository(String           entityGUID,
                                                                 EntityDetail     entityDetail,
                                                                 String           methodName) throws InvalidParameterException,
                                                                                                     EntityNotKnownException
@@ -3319,14 +3274,14 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 if (metadataCollectionId.equals(entityDetail.getMetadataCollectionId()))
                 {
-                    return entityDetail;
+                    return;
                 }
             }
             else if (entityDetail.getInstanceProvenanceType() == InstanceProvenanceType.EXTERNAL_SOURCE)
             {
                 if (metadataCollectionId.equals(entityDetail.getReplicatedBy()))
                 {
-                    return entityDetail;
+                    return;
                 }
             }
 
@@ -6149,7 +6104,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             /*
              * Save entity
              */
-            realMetadataCollection.saveEntityReferenceCopy(userId, entity);
+            if (securityVerifier.validateEntityReferenceCopySave(entity))
+            {
+                realMetadataCollection.saveEntityReferenceCopy(userId, entity);
+            }
         }
     }
 
@@ -6445,6 +6403,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * Validate that the entity GUID is ok
          */
         EntityDetail entity = this.isEntityKnown(userId, entityGUID);
+
         if (entity != null)
         {
             if (metadataCollectionId.equals(entity.getMetadataCollectionId()))
@@ -6458,21 +6417,19 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        if (produceEventsForRealConnector)
-        {
-            /*
-             * Send refresh message
-             */
-            outboundRepositoryEventProcessor.processRefreshEntityRequested(repositoryName,
-                                                                           metadataCollectionId,
-                                                                           localServerName,
-                                                                           localServerType,
-                                                                           localOrganizationName,
-                                                                           typeDefGUID,
-                                                                           typeDefName,
-                                                                           entityGUID,
-                                                                           homeMetadataCollectionId);
-        }
+        /*
+         * Process refresh request - This event is always generated by the local metadata collection.
+         * The home repository can choose whether to reply.
+         */
+        outboundRepositoryEventProcessor.processRefreshEntityRequested(repositoryName,
+                                                                       metadataCollectionId,
+                                                                       localServerName,
+                                                                       localServerType,
+                                                                       localOrganizationName,
+                                                                       typeDefGUID,
+                                                                       typeDefName,
+                                                                       entityGUID,
+                                                                       homeMetadataCollectionId);
     }
 
 
@@ -6662,7 +6619,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             /*
              * Save relationship
              */
-            realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
+            if (securityVerifier.validateRelationshipReferenceCopySave(relationship))
+            {
+                realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
+            }
         }
     }
 
@@ -6884,21 +6844,19 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        if (produceEventsForRealConnector)
-        {
-            /*
-             * Process refresh request
-             */
-            outboundRepositoryEventProcessor.processRefreshRelationshipRequest(repositoryName,
-                                                                               metadataCollectionId,
-                                                                               localServerName,
-                                                                               localServerType,
-                                                                               localOrganizationName,
-                                                                               typeDefGUID,
-                                                                               typeDefName,
-                                                                               relationshipGUID,
-                                                                               homeMetadataCollectionId);
-        }
+        /*
+         * Process refresh request - This event is always generated by the local metadata collection.
+         * The home repository can choose whether to reply.
+         */
+        outboundRepositoryEventProcessor.processRefreshRelationshipRequest(repositoryName,
+                                                                           metadataCollectionId,
+                                                                           localServerName,
+                                                                           localServerType,
+                                                                           localOrganizationName,
+                                                                           typeDefGUID,
+                                                                           typeDefName,
+                                                                           relationshipGUID,
+                                                                           homeMetadataCollectionId);
     }
 
 
@@ -6939,9 +6897,69 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                               UserNotAuthorizedException,
                                                                               FunctionNotSupportedException
     {
-      
-        //delegate processing to the real metadata collection
-        realMetadataCollection.saveInstanceReferenceCopies(userId, instances);
-      
+        /*
+         * It is necessary to filter out all of the instances that should not be saved before passing the
+         * instances to the real connector.  The validated instances are packed back into an instance graph to
+         * pass on the batch so that the real repository connector can benefit from the batch.
+         */
+        if (instances != null)
+        {
+            InstanceGraph validatedInstances = null;
+
+            List<EntityDetail> entities = instances.getEntities();
+
+            if ((entities != null) && (! entities.isEmpty()))
+            {
+                List<EntityDetail> validatedEntities = new ArrayList<>();
+
+                for (EntityDetail entity : entities)
+                {
+                    if ((entity != null) && (securityVerifier.validateEntityReferenceCopySave(entity)))
+                    {
+                        validatedEntities.add(entity);
+                    }
+                }
+
+                if (! validatedEntities.isEmpty())
+                {
+                    validatedInstances = new InstanceGraph();
+
+                    validatedInstances.setEntities(validatedEntities);
+                }
+            }
+
+            List<Relationship> relationships = instances.getRelationships();
+
+            if ((relationships != null) && (! relationships.isEmpty()))
+            {
+                List<Relationship> validatedRelationships = new ArrayList<>();
+
+                for (Relationship relationship : relationships)
+                {
+                    if ((relationship != null) && (securityVerifier.validateRelationshipReferenceCopySave(relationship)))
+                    {
+                        validatedRelationships.add(relationship);
+                    }
+                }
+
+                if (! validatedRelationships.isEmpty())
+                {
+                    if (validatedInstances == null)
+                    {
+                        validatedInstances = new InstanceGraph();
+                    }
+
+                    validatedInstances.setRelationships(validatedRelationships);
+                }
+            }
+
+            if (validatedInstances != null)
+            {
+                /*
+                 * delegate processing to the real metadata collection
+                 */
+                realMetadataCollection.saveInstanceReferenceCopies(userId, validatedInstances);
+            }
+        }
     }
 }

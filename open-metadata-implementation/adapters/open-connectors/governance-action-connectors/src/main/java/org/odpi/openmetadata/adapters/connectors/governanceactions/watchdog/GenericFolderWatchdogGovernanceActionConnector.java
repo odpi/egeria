@@ -265,11 +265,14 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
         try
         {
-            String parentFolderGUID = getFolderGUID(fileGUID);
+            String parentFolderGUID = getFolderGUID(fileGUID, "NestedFile");
 
             if (GenericFolderWatchdogGovernanceActionProvider.DIRECT_REQUEST_TYPE.equals(governanceContext.getRequestType()))
             {
-                return parentFolderGUID.equals(folderGUID);
+                if (parentFolderGUID != null)
+                {
+                    return parentFolderGUID.equals(folderGUID);
+                }
             }
             else
             {
@@ -280,7 +283,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         return true;
                     }
 
-                    parentFolderGUID = getFolderGUID(parentFolderGUID);
+                    parentFolderGUID = getFolderGUID(parentFolderGUID, "FolderHierarchy");
                 }
             }
 
@@ -294,7 +297,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
 
     /**
-     * Return the unique identifier of a folder by navigating form the file.
+     * Return the unique identifier of a folder by navigating from the file.
      *
      * @param fileGUID file unique identifier
      *
@@ -303,15 +306,16 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
      * @throws UserNotAuthorizedException the userId for the connector does not have the authority it needs
      * @throws PropertyServerException there is a problem with the metadata server(s)
      */
-    private String getFolderGUID(String  fileGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    private String getFolderGUID(String  fileGUID,
+                                 String  relationshipName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         String folderGUID = null;
 
         List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                                                       2,
-                                                                                                                                      "NestedFile",
+                                                                                                                                      relationshipName,
                                                                                                                                       0,
                                                                                                                                       0);
 
@@ -328,6 +332,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
         return folderGUID;
     }
+
 
     /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
