@@ -134,7 +134,6 @@ public class TestRelationshipRestore extends OpenMetadataPerformanceTestCase
                     A_RESTORE_MSG + testTypeName,
                     PerformanceProfile.RELATIONSHIP_RESTORE.getProfileId(),
                     null);
-            return;
         } catch (Exception exc) {
             String operationDescription = "restore deleted relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();

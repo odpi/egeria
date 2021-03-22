@@ -25,7 +25,7 @@ public class TestRelationshipReHome extends OpenMetadataPerformanceTestCase
     private static final String TEST_CASE_ID   = "repository-relationship-re-home-performance";
     private static final String TEST_CASE_NAME = "Repository relationship re-home performance test case";
 
-    private static final String A_FIND_RELATIONSHIPS        = TEST_CASE_ID + "-findRelationships";
+    private static final String A_FIND_RELATIONSHIPS        = TEST_CASE_ID + "-findRelationshipsByProperty";
     private static final String A_FIND_RELATIONSHIPS_MSG    = "Repository performs search for unordered first instancesPerType reference copy instances of type: ";
 
     private static final String A_RE_HOME     = TEST_CASE_ID + "-reHomeRelationship";

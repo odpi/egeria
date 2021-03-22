@@ -136,7 +136,6 @@ public class TestEntityRestore extends OpenMetadataPerformanceTestCase
                         A_RESTORE_MSG + testTypeName,
                         PerformanceProfile.ENTITY_RESTORE.getProfileId(),
                         null);
-                return;
             } catch (Exception exc) {
                 String operationDescription = "restore deleted entity of type " + entityDef.getName();
                 Map<String, String> parameters = new HashMap<>();

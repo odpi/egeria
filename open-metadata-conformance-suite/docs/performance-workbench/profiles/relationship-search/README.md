@@ -1,20 +1,20 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Entity Search Profile
+# Relationship Search Profile
 
-The performance of programmatically searching for existing entity instances.
+The performance of programmatically searching for existing relationship instances.
 
 ## Description
 
 The Open Metadata Repository Services (OMRS) interface for a metadata
-repository defines optional methods for searching for entity instances.  These methods are called:
+repository defines optional methods for searching for relationship instances.  These methods are called:
 
-- `findEntities` - arbitrarily complex combinations of search criteria including ranges, nested conditions, etc
-- `findEntitiesByProperty` - searches for entity instances based on specific properties with specific values
-- `findEntitiesByPropertyValue` - searches for entity instances based on text that matches any textual property
+- `findRelationships` - arbitrarily complex combinations of search criteria including ranges, nested conditions, etc
+- `findRelationshipsByProperty` - searches for relationship instances based on specific properties with specific values
+- `findRelationshipsByPropertyValue` - searches for relationship instances based on text that matches any textual property
 
-This profile begins by interrogating the technology under test in its entirety, to discover every existing entity
+This profile begins by interrogating the technology under test in its entirety, to discover every existing relationship
 instance of every type known to Egeria. The total count of these is tallied to report later under the Environment
 profile. In this way, even for repositories that do not support write operations, we can still calculate some metrics
 about read performance (including search) while being able to understand that information in light of the volumes of
@@ -26,21 +26,21 @@ also exercising the efficiency of the technology under test to both sort and cyc
 The tests then proceed to exercise other search variations, but only ever retrieve the first page of results
 for each:
 
-- `findEntitiesByPropertyValue` for each entity type with the following variations:
+- `findRelationshipsByPropertyValue` for each relationship type with the following variations:
     - exact match to a value
     - starts with a value
     - contains a value
     - ends with a value
     - arbitrary regular expression match to a value
 
-- `findEntitiesByProperty` for each entity type, with the following variations -- in each case preferring non-string
+- `findRelationshipsByProperty` for each relationship type, with the following variations -- in each case preferring non-string
   properties (if any exist for the type), given the tests above heavily exercise string-based queries:
     - match a single value
     - match both of two values
     - match either of two values
     - match neither of two values
 
-In addition, these tests will record into the Environment profile the `totalEntitiesFound`.
+In addition, these tests will record into the Environment profile the `totalRelationshipsFound`.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -146,7 +146,6 @@ public class TestRelationshipDelete extends OpenMetadataPerformanceTestCase
                     A_DELETE_MSG + testTypeName,
                     PerformanceProfile.RELATIONSHIP_DELETE.getProfileId(),
                     null);
-            return;
         } catch (Exception exc) {
             String operationDescription = "delete relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();

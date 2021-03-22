@@ -26,7 +26,7 @@ public class TestRelationshipUpdate extends OpenMetadataPerformanceTestCase
     private static final String TEST_CASE_ID   = "repository-relationship-update-performance";
     private static final String TEST_CASE_NAME = "Repository relationship update performance test case";
 
-    private static final String A_FIND_RELATIONSHIPS        = TEST_CASE_ID + "-findRelationships";
+    private static final String A_FIND_RELATIONSHIPS        = TEST_CASE_ID + "-findRelationshipsByProperty";
     private static final String A_FIND_RELATIONSHIPS_MSG    = "Repository performs search for unordered first instancesPerType homed instances of type: ";
 
     private static final String A_UPDATE_PROPERTIES     = TEST_CASE_ID + "-updateRelationshipProperties";

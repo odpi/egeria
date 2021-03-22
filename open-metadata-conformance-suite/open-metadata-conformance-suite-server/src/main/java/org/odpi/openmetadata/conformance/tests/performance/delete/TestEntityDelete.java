@@ -143,7 +143,6 @@ public class TestEntityDelete extends OpenMetadataPerformanceTestCase
                     A_DELETE_MSG + testTypeName,
                     PerformanceProfile.ENTITY_DELETE.getProfileId(),
                     null);
-            return;
         } catch (Exception exc) {
             String operationDescription = "delete entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();

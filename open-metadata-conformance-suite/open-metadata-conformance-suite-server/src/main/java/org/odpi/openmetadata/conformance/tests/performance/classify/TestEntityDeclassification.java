@@ -117,7 +117,7 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
             assertCondition(true,
                     A_FIND_ENTITIES,
                     A_FIND_ENTITIES_MSG + testTypeName,
-                    PerformanceProfile.ENTITY_SEARCH.getProfileId(),
+                    PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
                     null,
                     "findEntitiesByClassification",
                     elapsedTime);
@@ -160,9 +160,9 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
         assertCondition(entities != null,
                 A_FIND_ENTITIES_RC,
                 A_FIND_ENTITIES_RC_MSG + testTypeName,
-                PerformanceProfile.ENTITY_SEARCH.getProfileId(),
+                PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
                 null,
-                "findEntitiesByProperty",
+                "findEntitiesByClassification",
                 elapsedTime);
         return entities;
     }

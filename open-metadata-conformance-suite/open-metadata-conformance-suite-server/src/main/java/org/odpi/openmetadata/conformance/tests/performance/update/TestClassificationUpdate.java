@@ -97,7 +97,7 @@ public class TestClassificationUpdate extends OpenMetadataPerformanceTestCase
             assertCondition(true,
                     A_FIND_ENTITIES,
                     A_FIND_ENTITIES_MSG + testTypeName,
-                    PerformanceProfile.ENTITY_SEARCH.getProfileId(),
+                    PerformanceProfile.CLASSIFICATION_SEARCH.getProfileId(),
                     null,
                     "findEntitiesByClassification",
                     elapsedTime);
@@ -147,7 +147,6 @@ public class TestClassificationUpdate extends OpenMetadataPerformanceTestCase
                     A_UPDATE_PROPERTIES_MSG + testTypeName,
                     PerformanceProfile.CLASSIFICATION_UPDATE.getProfileId(),
                     null);
-            return;
         } catch (Exception exc) {
             String operationDescription = "update properties of classification " + classificationDef.getName();
             Map<String, String> parameters = new HashMap<>();

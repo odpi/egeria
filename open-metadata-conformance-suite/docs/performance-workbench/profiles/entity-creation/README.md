@@ -27,6 +27,8 @@ The properties of each of these instances will be fully-populated with:
 - Any non-string properties will be randomly generated, in a simple attempt to represent data that is not entirely
   uniform
 
+In addition, these tests will record into the Environment profile the `totalEntitiesCreated`.
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
