@@ -34,7 +34,7 @@ public class TestEntityDeclassification extends OpenMetadataPerformanceTestCase
     private static final String A_FIND_ENTITIES_RC     = TEST_CASE_ID + "-findEntitiesByClassification-rc";
     private static final String A_FIND_ENTITIES_RC_MSG = "Repository performs search for unordered first instancesPerType reference copy classifications: ";
 
-    private static final String A_DECLASSIFY     = TEST_CASE_ID + "-classifyEntity";
+    private static final String A_DECLASSIFY     = TEST_CASE_ID + "-declassifyEntity";
     private static final String A_DECLASSIFY_MSG = "Repository performs declassification of instances with: ";
 
     private static final String A_PURGE_RC     = TEST_CASE_ID + "-purgeClassificationReferenceCopy";

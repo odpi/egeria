@@ -42,7 +42,7 @@ public class TestClassificationSearch extends OpenMetadataPerformanceTestCase
     private static final String A_FIND_BY_PROPERTY_ANY     = TEST_CASE_ID + "-findEntitiesByClassification-any";
     private static final String A_FIND_BY_PROPERTY_ANY_MSG = "Repository performs search for either of two classification property values, sorting by oldest update date, of first page of instances for classification: ";
 
-    private static final String A_FIND_BY_PROPERTY_NONE     = TEST_CASE_ID + "-findEntitiesByProperty-none";
+    private static final String A_FIND_BY_PROPERTY_NONE     = TEST_CASE_ID + "-findEntitiesByClassification-none";
     private static final String A_FIND_BY_PROPERTY_NONE_MSG = "Repository performs search for neither of two classification property values, sorting by entity GUID, of first page of instances for classification: ";
 
     private final ClassificationDef   classificationDef;
