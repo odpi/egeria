@@ -65,7 +65,8 @@ image:
   jupyter:
     name: jupyter
   uistatic:
-    name: egeria-uistatic
+    name: egeria-ui
+    tag: latest
   nginx:
     name: nginx
     namespace:
