@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetEle
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
@@ -301,6 +302,49 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
         return restResult.getGUID();
     }
+
+
+
+    /**
+     * Create a new metadata element to represent an asset using an existing asset as a template.
+     *
+     * @param userId calling user
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String addAssetToCatalogUsingTemplate(String             userId,
+                                                 String             templateGUID,
+                                                 TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String methodName                  = "createDatabaseFromTemplate";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String propertiesParameterName     = "templateProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+        final String urlTemplate                 = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/from-template/{2}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  templateProperties,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
+    }
+
 
 
     /**
@@ -1057,7 +1101,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/template-classification";
 
-        TemplateRequestBody requestBody = new TemplateRequestBody();
+        TemplateClassificationRequestBody requestBody = new TemplateClassificationRequestBody();
 
         requestBody.setName(name);
         requestBody.setDescription(description);
