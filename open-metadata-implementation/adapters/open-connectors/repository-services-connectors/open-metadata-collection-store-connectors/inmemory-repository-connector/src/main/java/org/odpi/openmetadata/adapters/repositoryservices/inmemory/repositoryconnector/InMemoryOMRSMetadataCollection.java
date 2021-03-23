@@ -3748,7 +3748,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 }
                 else
                 {
-                    repositoryStore.saveReferenceEntityToStore(entity);
+                    repositoryStore.saveReferenceEntityToStore(updatedEntity);
                 }
 
                 /*
