@@ -64,8 +64,8 @@ public class TestRelationshipReIdentify extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        Set<String> keysToReHome = getRelationshipKeys(metadataCollection, numInstances);
-        reHomeRelationships(metadataCollection, keysToReHome);
+        Set<String> keys = getRelationshipKeys(metadataCollection, numInstances);
+        reIdentifyRelationships(metadataCollection, keys);
 
         super.setSuccessMessage("Relationship re-identify performance tests complete for: " + testTypeName);
     }
@@ -126,8 +126,8 @@ public class TestRelationshipReIdentify extends OpenMetadataPerformanceTestCase
      * @param keys GUIDs of instances to re-identify
      * @throws Exception on any errors
      */
-    private void reHomeRelationships(OMRSMetadataCollection metadataCollection,
-                                     Set<String> keys) throws Exception
+    private void reIdentifyRelationships(OMRSMetadataCollection metadataCollection,
+                                        Set<String> keys) throws Exception
     {
 
         final String methodName = "reIdentifyRelationship";
@@ -150,7 +150,7 @@ public class TestRelationshipReIdentify extends OpenMetadataPerformanceTestCase
                         elapsedTime);
             }
         } catch (Exception exc) {
-            String operationDescription = "re-home relationship of type " + relationshipDef.getName();
+            String operationDescription = "re-identify relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeDefGUID", relationshipDef.getGUID());
             parameters.put("typeDefName", relationshipDef.getName());
