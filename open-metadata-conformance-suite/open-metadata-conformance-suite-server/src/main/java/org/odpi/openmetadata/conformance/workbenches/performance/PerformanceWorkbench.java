@@ -16,12 +16,16 @@ import org.odpi.openmetadata.conformance.tests.performance.purge.TestEntityPurge
 import org.odpi.openmetadata.conformance.tests.performance.purge.TestRelationshipPurge;
 import org.odpi.openmetadata.conformance.tests.performance.rehome.TestEntityReHome;
 import org.odpi.openmetadata.conformance.tests.performance.rehome.TestRelationshipReHome;
+import org.odpi.openmetadata.conformance.tests.performance.reidentify.TestEntityReIdentify;
+import org.odpi.openmetadata.conformance.tests.performance.reidentify.TestRelationshipReIdentify;
 import org.odpi.openmetadata.conformance.tests.performance.restore.TestEntityRestore;
 import org.odpi.openmetadata.conformance.tests.performance.restore.TestRelationshipRestore;
 import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestEntityHistoryRetrieval;
 import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestEntityRetrieval;
 import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestRelationshipHistoryRetrieval;
 import org.odpi.openmetadata.conformance.tests.performance.retrieve.TestRelationshipRetrieval;
+import org.odpi.openmetadata.conformance.tests.performance.retype.TestEntityRetype;
+import org.odpi.openmetadata.conformance.tests.performance.retype.TestRelationshipRetype;
 import org.odpi.openmetadata.conformance.tests.performance.search.*;
 import org.odpi.openmetadata.conformance.tests.performance.undo.TestEntityUndo;
 import org.odpi.openmetadata.conformance.tests.performance.undo.TestRelationshipUndo;
@@ -321,16 +325,18 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 waiting.getUserAction());
         Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
-        // TODO: 23. Retype entity instances
+        // 23. Retype entity instances
         for (EntityDef entityDef : entityDefs.values())
         {
-
+            TestEntityRetype testEntityRetype = new TestEntityRetype(workPad, entityDef);
+            testEntityRetype.executeTest();
         }
 
-        // TODO: 24. Retype relationship instances
+        // 24. Retype relationship instances
         for (RelationshipDef relationshipDef : relationshipDefs.values())
         {
-
+            TestRelationshipRetype testRelationshipRetype = new TestRelationshipRetype(workPad, relationshipDef);
+            testRelationshipRetype.executeTest();
         }
 
         workPad.getAuditLog().logRecord(methodName,
@@ -342,16 +348,18 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 waiting.getUserAction());
         Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
-        // TODO: 25. Re-identify entity instances
+        // 25. Re-identify entity instances
         for (EntityDef entityDef : entityDefs.values())
         {
-
+            TestEntityReIdentify testEntityReIdentify = new TestEntityReIdentify(workPad, entityDef);
+            testEntityReIdentify.executeTest();
         }
 
-        // TODO: 26. Re-identify relationship instances
+        // 26. Re-identify relationship instances
         for (RelationshipDef relationshipDef : relationshipDefs.values())
         {
-
+            TestRelationshipReIdentify testRelationshipReIdentify = new TestRelationshipReIdentify(workPad, relationshipDef);
+            testRelationshipReIdentify.executeTest();
         }
 
         workPad.getAuditLog().logRecord(methodName,

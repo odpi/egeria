@@ -33,10 +33,10 @@ This workbench runs the following profiles, in the following order:
 1. **[Entity Re-Home](profiles/entity-re-home)** tests the performance of `reHomeEntity` method
 1. **[Relationship Re-Home](profiles/relationship-re-home)** tests the performance of `reHomeRelationship` method
 1. **[Entity Declassify](profiles/entity-declassify)** tests the performance of `declassifyEntity` and `purgeClassificationReferenceCopy` methods
-1. **[Entity Re-Type](profiles/entity-re-type)** (TBC)
-1. **[Relationship Re-Type](profiles/relationship-re-type)** (TBC)
-1. **[Entity Re-Identify](profiles/relationship-re-identify)** (TBC)
-1. **[Relationship Re-Identify](profiles/relationship-re-identify)** (TBC)
+1. **[Entity Re-Type](profiles/entity-retype)** tests the performance of `reTypeEntity` method
+1. **[Relationship Re-Type](profiles/relationship-retype)** tests the performance of `reTypeRelationship` method
+1. **[Entity Re-Identify](profiles/entity-re-identify)** tests the performance of `reIdentifyEntity` method
+1. **[Relationship Re-Identify](profiles/relationship-re-identify)** tests the performance of `reIdentifyRelationship` method
 1. **[Relationship Delete](profiles/relationship-delete)** tests the performance of `deleteRelationship` method
 1. **[Entity Delete](profiles/entity-delete)** tests the performance of `deleteEntity` method
 1. **[Entity Restore](profiles/entity-restore)** tests the performance of `restoreEntity` method
