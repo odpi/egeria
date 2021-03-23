@@ -121,7 +121,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                             RepositoryErrorException,
                                                             UserNotAuthorizedException
     {
-        final String                       methodName = "getAllTypes";
+        final String methodName = "getAllTypes";
 
         /*
          * Validate parameters
@@ -3085,9 +3085,10 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                methodName);
 
         /*
-         * Locate entity
+         * Locate entity and check classification is not already present.
          */
         EntitySummary entity = this.getEntitySummary(userId, entityGUID);
+        repositoryHelper.checkEntityNotClassifiedEntity(repositoryName, entity, classificationName, methodName);
 
         /*
          * Validation complete, ok to continue with request
@@ -3169,9 +3170,10 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                methodName);
 
         /*
-         * Locate entity
+         * Locate entity and check classification is not already present.
          */
         EntitySummary entity = this.getEntitySummary(userId, entityGUID);
+        repositoryHelper.checkEntityNotClassifiedEntity(repositoryName, entity, classificationName, methodName);
 
         /*
          * Validation complete, ok to continue with request
@@ -3235,15 +3237,15 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
 
         /*
-         * Locate entity
+         * Locate entity and retrieve classification.
          */
-        EntitySummary     entity = this.getEntitySummary(userId, entityGUID);
+        EntitySummary entity = this.getEntitySummary(userId, entityGUID);
+        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName, entity, classificationName, methodName);
 
         /*
          * Validation complete, ok to make changes
          */
-        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(entity,
-                                                                                                        methodName);
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(classification, methodName);
         if (metadataCollection != null)
         {
             return metadataCollection.declassifyEntity(userId, entityGUID, classificationName);
@@ -3290,16 +3292,15 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         classifyEntityParameterValidation(userId, entityGUID, classificationName, properties, methodName);
 
         /*
-         * Locate entity
+         * Locate entity and retrieve classification.
          */
-
-        EntitySummary     entity = this.getEntitySummary(userId, entityGUID);
+        EntitySummary entity = this.getEntitySummary(userId, entityGUID);
+        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName, entity, classificationName, methodName);
 
         /*
          * Validation complete, ok to make changes
          */
-        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(entity,
-                                                                                                        methodName);
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(classification, methodName);
         if (metadataCollection != null)
         {
             return metadataCollection.updateEntityClassification(userId,

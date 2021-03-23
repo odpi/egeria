@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
  * Mapping methods to map between the categoryAnchor and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class CategoryAnchorMapper extends LineMapper<CategoryAnchor> {
+public class CategoryAnchorMapper extends RelationshipMapper<CategoryAnchor> {
     public static final String CATEGORY_ANCHOR = "CategoryAnchor";
 
     public CategoryAnchorMapper(OMRSAPIHelper omrsapiHelper) {
@@ -24,7 +24,7 @@ public class CategoryAnchorMapper extends LineMapper<CategoryAnchor> {
     }
 
     @Override
-    protected CategoryAnchor getLineInstance() {
+    protected CategoryAnchor getRelationshipInstance() {
         return new CategoryAnchor();
     }
 

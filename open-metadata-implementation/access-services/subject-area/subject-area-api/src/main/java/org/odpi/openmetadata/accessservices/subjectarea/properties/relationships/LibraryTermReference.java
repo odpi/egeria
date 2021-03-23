@@ -7,8 +7,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.relationship
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import java.util.Date;
@@ -22,35 +22,35 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LibraryTermReference extends Line {
+public class LibraryTermReference extends Relationship {
     private String description = "Links a glossary term to a glossary term in an external glossary.";
 
     /*
      * Set up end 1.
      */
-     protected static final String END_1_NODE_TYPE = "Term";
-     protected static final String END_1_ATTRIBUTE_NAME = "localTerms";
-     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Related local glossary categories.";
-     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
-            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
+     private static final String END_1_NODE_TYPE = "Term";
+     private static final String END_1_ATTRIBUTE_NAME = "localTerms";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Related local glossary categories.";
+     private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final RelationshipEnd RELATIONSHIP_END_1 = new RelationshipEnd(END_1_NODE_TYPE,
+                                                                           END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-     protected static final String END_2_NODE_TYPE = "ExternalGlossaryLink";
-     protected static final String END_2_ATTRIBUTE_NAME = "externalGlossaryTerms";
-     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Links to related external glossaries.";
-     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
-            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
+     private static final String END_2_NODE_TYPE = "ExternalGlossaryLink";
+     private static final String END_2_ATTRIBUTE_NAME = "externalGlossaryTerms";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Links to related external glossaries.";
+     private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final RelationshipEnd RELATIONSHIP_END_2 = new RelationshipEnd(END_2_NODE_TYPE,
+                                                                           END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String identifier;
     private String steward;
     private Date lastVerified;
 
     public LibraryTermReference() {
-        super("LibraryTermReference", "38c346e4-ddd2-42ef-b4aa-55d53c078d22", LINE_END_1, LINE_END_2);
+        super("LibraryTermReference", RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**

@@ -43,7 +43,7 @@ Figure 1 shows how these capabilities work together.
 ![Figure 1](docs/open-discovery-operation.png)
 > **Figure 1:** Interfaces of the Discovery Engine OMAS
 
-1. The discovery engine retrieves configuration from the Discovery Engine OMAS.
+1. The engine host server retrieves configuration from the Governance Engine OMAS.
 2. When a discovery engine receives a request to analyse an asset, it
    retrieves the annotations from previous analysis of this asset.
 3. While the discovery service is running, it is writing new annotations about
@@ -55,7 +55,7 @@ More details of this processing follows.
 
 The configuration of the discovery engines and the discovery services
 that they support are managed in the metadata server through
-the Discovery Engine OMAS.
+the [Governance Engine OMAS](../governance-engine).
 
 The [Engine Host OMAG Server](../../admin-services/docs/concepts/engine-host.md) is typically
 located close to the data assets to minimize the network traffic
@@ -71,14 +71,14 @@ The [Asset Analysis OMES](../../engine-services/asset-analysis) on the engine ho
 with the location of the metadata server where the Discovery Engine OMAS
 is running along with the names of the discovery engines it will host.
 The same discovery engine can simultaneously run on multiple
-discovery servers.  This means the Asset Analysis OMES
+engine host servers.  This means the Asset Analysis OMES
 can host all of the discovery engines it needs to analyse
 the assets at its location.
 
-When the Asset Analysis OMES starts in the engine host, it calls the Discovery
+When the Asset Analysis OMES starts in the engine host, it calls the Governance
 Engine OMAS to retrieve the configuration for each of its
 discovery engines (see Figure 1, number 1).
-It also connects to the Discovery Engine
+It also connects to the Governance Engine
 OMAS's out topic to receive any updates on this configuration
 while it is running.
 
@@ -131,9 +131,6 @@ access the Discovery Engine OMAS's REST API and out topic.
 Since the Open Discovery Framework (ODF) defines most of the
 interfaces for the Discovery Engine OMAS, this module only needs to provide the
 interfaces associated with the out topic.
-
-* [discovery-engine-topic-connectors](discovery-engine-topic-connectors) supports the 
-connector implementations for the out topic - both client side and server side.
 
 * [discovery-engine-server](discovery-engine-server) supports in implementation of the metadata interfaces
 defined by the Open Discovery Framework (ODF) and its related event management.

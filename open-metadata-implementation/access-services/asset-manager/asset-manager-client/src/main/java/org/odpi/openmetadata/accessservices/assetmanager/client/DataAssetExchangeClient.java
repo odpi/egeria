@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.DataAssetExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
@@ -147,21 +147,21 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createAsset(String              userId,
-                              String              assetManagerGUID,
-                              String              assetManagerName,
-                              boolean             assetManagerIsHome,
-                              String              assetExternalIdentifier,
-                              String              assetExternalIdentifierName,
-                              String              assetExternalIdentifierUsage,
-                              String              assetExternalIdentifierSource,
-                              KeyPattern          assetExternalIdentifierKeyPattern,
-                              Map<String, String> mappingProperties,
-                              AssetProperties     assetProperties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public String createDataAsset(String              userId,
+                                  String              assetManagerGUID,
+                                  String              assetManagerName,
+                                  boolean             assetManagerIsHome,
+                                  String              assetExternalIdentifier,
+                                  String              assetExternalIdentifierName,
+                                  String              assetExternalIdentifierUsage,
+                                  String              assetExternalIdentifierSource,
+                                  KeyPattern          assetExternalIdentifierKeyPattern,
+                                  Map<String, String> mappingProperties,
+                                  DataAssetProperties assetProperties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        final String methodName                  = "createAsset";
+        final String methodName                  = "createDataAsset";
         final String propertiesParameterName     = "assetProperties";
         final String qualifiedNameParameterName  = "assetProperties.qualifiedName";
 
@@ -169,7 +169,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
         invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        AssetRequestBody requestBody = new AssetRequestBody();
+        DataAssetRequestBody requestBody = new DataAssetRequestBody();
         requestBody.setElementProperties(assetProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
@@ -218,22 +218,22 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createAssetFromTemplate(String              userId,
-                                          String              assetManagerGUID,
-                                          String              assetManagerName,
-                                          boolean             assetManagerIsHome,
-                                          String              templateGUID,
-                                          String              assetExternalIdentifier,
-                                          String              assetExternalIdentifierName,
-                                          String              assetExternalIdentifierUsage,
-                                          String              assetExternalIdentifierSource,
-                                          KeyPattern          assetExternalIdentifierKeyPattern,
-                                          Map<String, String> mappingProperties,
-                                          TemplateProperties  templateProperties) throws InvalidParameterException,
+    public String createDataAssetFromTemplate(String              userId,
+                                              String              assetManagerGUID,
+                                              String              assetManagerName,
+                                              boolean             assetManagerIsHome,
+                                              String              templateGUID,
+                                              String              assetExternalIdentifier,
+                                              String              assetExternalIdentifierName,
+                                              String              assetExternalIdentifierUsage,
+                                              String              assetExternalIdentifierSource,
+                                              KeyPattern          assetExternalIdentifierKeyPattern,
+                                              Map<String, String> mappingProperties,
+                                              TemplateProperties  templateProperties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        final String methodName                  = "createAssetFromTemplate";
+        final String methodName                  = "createDataAssetFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
         final String propertiesParameterName     = "templateProperties";
         final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
@@ -285,17 +285,17 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateAsset(String          userId,
-                            String          assetManagerGUID,
-                            String          assetManagerName,
-                            String          assetGUID,
-                            String          assetExternalIdentifier,
-                            boolean         isMergeUpdate,
-                            AssetProperties assetProperties) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void updateDataAsset(String          userId,
+                                String          assetManagerGUID,
+                                String          assetManagerName,
+                                String          assetGUID,
+                                String          assetExternalIdentifier,
+                                boolean         isMergeUpdate,
+                                DataAssetProperties assetProperties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        final String methodName                  = "updateAsset";
+        final String methodName                  = "updateDataAsset";
         final String assetGUIDParameterName      = "assetGUID";
         final String propertiesParameterName     = "assetProperties";
         final String qualifiedNameParameterName  = "assetProperties.qualifiedName";
@@ -305,7 +305,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
         invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        AssetRequestBody requestBody = new AssetRequestBody();
+        DataAssetRequestBody requestBody = new DataAssetRequestBody();
         requestBody.setElementProperties(assetProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
@@ -339,14 +339,14 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void publishAsset(String userId,
-                             String assetManagerGUID,
-                             String assetManagerName,
-                             String assetGUID) throws InvalidParameterException,
+    public void publishDataAsset(String userId,
+                                 String assetManagerGUID,
+                                 String assetManagerName,
+                                 String assetGUID) throws InvalidParameterException,
                                                       UserNotAuthorizedException,
                                                       PropertyServerException
     {
-        final String methodName             = "publishAsset";
+        final String methodName             = "publishDataAsset";
         final String assetGUIDParameterName = "assetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -378,14 +378,14 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void withdrawAsset(String userId,
-                              String assetManagerGUID,
-                              String assetManagerName,
-                              String assetGUID) throws InvalidParameterException,
+    public void withdrawDataAsset(String userId,
+                                  String assetManagerGUID,
+                                  String assetManagerName,
+                                  String assetGUID) throws InvalidParameterException,
                                                        UserNotAuthorizedException,
                                                        PropertyServerException
     {
-        final String methodName               = "withdrawAsset";
+        final String methodName               = "withdrawDataAsset";
         final String assetGUIDParameterName   = "assetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -417,15 +417,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removeAsset(String userId,
-                            String assetManagerGUID,
-                            String assetManagerName,
-                            String assetGUID,
-                            String assetExternalIdentifier) throws InvalidParameterException,
+    public void removeDataAsset(String userId,
+                                String assetManagerGUID,
+                                String assetManagerName,
+                                String assetGUID,
+                                String assetExternalIdentifier) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        final String methodName               = "removeAsset";
+        final String methodName               = "removeDataAsset";
         final String assetGUIDParameterName   = "assetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -459,15 +459,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setAssetAsReferenceData(String userId,
-                                        String assetManagerGUID,
-                                        String assetManagerName,
-                                        String assetGUID,
-                                        String assetExternalIdentifier) throws InvalidParameterException,
+    public void setDataAssetAsReferenceData(String userId,
+                                            String assetManagerGUID,
+                                            String assetManagerName,
+                                            String assetGUID,
+                                            String assetExternalIdentifier) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        final String methodName             = "setAssetAsReferenceData";
+        final String methodName             = "setDataAssetAsReferenceData";
         final String assetGUIDParameterName = "assetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -501,15 +501,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearAssetAsReferenceData(String userId,
-                                          String assetManagerGUID,
-                                          String assetManagerName,
-                                          String assetGUID,
-                                          String assetExternalIdentifier) throws InvalidParameterException,
+    public void clearDataAssetAsReferenceData(String userId,
+                                              String assetManagerGUID,
+                                              String assetManagerName,
+                                              String assetGUID,
+                                              String assetExternalIdentifier) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        final String methodName = "clearAssetAsReferenceData";
+        final String methodName = "clearDataAssetAsReferenceData";
         final String assetGUIDParameterName = "assetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -547,16 +547,16 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<AssetElement> findAssets(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         String searchString,
-                                         int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
+    public List<DataAssetElement> findDataAssets(String userId,
+                                                 String assetManagerGUID,
+                                                 String assetManagerName,
+                                                 String searchString,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        final String methodName                = "findAssets";
+        final String methodName                = "findDataAssets";
         final String searchStringParameterName = "searchString";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -571,13 +571,13 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/by-search-string?startFrom={2}&pageSize={3}";
 
-        AssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 requestBody,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 startFrom,
-                                                                                 validatedPageSize);
+        DataAssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     requestBody,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     startFrom,
+                                                                                     validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -599,15 +599,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<AssetElement> scanAssets(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
+    public List<DataAssetElement> scanDataAssets(String userId,
+                                                 String assetManagerGUID,
+                                                 String assetManagerName,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        final String methodName = "scanAssets";
+        final String methodName = "scanDataAssets";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -618,13 +618,13 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/scan?startFrom={2}&pageSize={3}";
 
-        AssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 requestBody,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 startFrom,
-                                                                                 validatedPageSize);
+        DataAssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     requestBody,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     startFrom,
+                                                                                     validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -648,16 +648,16 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<AssetElement>   getAssetsByName(String userId,
-                                                String assetManagerGUID,
-                                                String assetManagerName,
-                                                String name,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
+    public List<DataAssetElement> getDataAssetsByName(String userId,
+                                                      String assetManagerGUID,
+                                                      String assetManagerName,
+                                                      String name,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        final String methodName        = "getAssetsByName";
+        final String methodName        = "getDataAssetsByName";
         final String nameParameterName = "name";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -673,13 +673,13 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/by-name?startFrom={2}&pageSize={3}";
 
-        AssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 requestBody,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 startFrom,
-                                                                                 validatedPageSize);
+        DataAssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     requestBody,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     startFrom,
+                                                                                     validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -701,15 +701,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<AssetElement>   getAssetsForAssetManager(String userId,
-                                                         String assetManagerGUID,
-                                                         String assetManagerName,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
+    public List<DataAssetElement> getDataAssetsForAssetManager(String userId,
+                                                               String assetManagerGUID,
+                                                               String assetManagerName,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        final String methodName = "getAssetsForAssetManager";
+        final String methodName = "getDataAssetsForAssetManager";
         final String assetManagerGUIDParameterName = "assetManagerGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -718,14 +718,14 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/by-asset-manager?startFrom={2}&pageSize={3}";
 
-        AssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+        DataAssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     getAssetManagerIdentifiersRequestBody(assetManagerGUID,
                                                                                                                        assetManagerName),
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 startFrom,
-                                                                                 validatedPageSize);
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     startFrom,
+                                                                                     validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -746,14 +746,14 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public AssetElement getAssetByGUID(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String openMetadataGUID) throws InvalidParameterException,
+    public DataAssetElement getDataAssetByGUID(String userId,
+                                               String assetManagerGUID,
+                                               String assetManagerName,
+                                               String openMetadataGUID) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        final String methodName = "getAssetByGUID";
+        final String methodName = "getDataAssetByGUID";
         final String guidParameterName = "openMetadataGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -761,13 +761,13 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}/retrieve";
 
-        AssetElementResponse restResult = restClient.callDataAssetPostRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+        DataAssetElementResponse restResult = restClient.callDataAssetPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID,
                                                                                                                      assetManagerName),
-                                                                               serverName,
-                                                                               userId,
-                                                                               openMetadataGUID);
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   openMetadataGUID);
 
         return restResult.getElement();
     }

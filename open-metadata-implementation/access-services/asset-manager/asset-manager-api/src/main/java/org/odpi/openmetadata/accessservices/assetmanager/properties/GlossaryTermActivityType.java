@@ -125,7 +125,7 @@ public enum GlossaryTermActivityType implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryTermRelationshipStatus{" +
+        return "GlossaryTermActivityType{" +
                        "openTypeOrdinal=" + openTypeOrdinal +
                        ", ordinal=" + ordinal +
                        ", name='" + name + '\'' +

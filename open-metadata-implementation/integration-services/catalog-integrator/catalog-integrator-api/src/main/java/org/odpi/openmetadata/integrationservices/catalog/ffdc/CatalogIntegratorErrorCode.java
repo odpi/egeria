@@ -53,6 +53,12 @@ public enum CatalogIntegratorErrorCode implements ExceptionMessageSet
                           "The {0} Open Metadata Integration Service (OMIS) has been passed an invalid value of {1} in the {2} property.  The resulting exception of {3} included the following message: {4}",
                           "The access service has not been passed valid configuration .",
                           "Correct the value of the failing configuration property and restart the server."),
+
+    NULL_CONTEXT(400,"OMIS-CATALOG-INTEGRATOR-500-001",
+                 "Integration connector {0} has a null context",
+                 "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
+                 "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                         "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
     ;
 
 

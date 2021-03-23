@@ -300,7 +300,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                                                                       Long.toString(endTime.getTime() - startTime.getTime())));
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             auditLog.logException(actionDescription,
                                   GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_FAILED.getMessageDefinition(governanceActionServiceType,
@@ -318,7 +318,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 if (completionStatus == null)
                 {
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null, null);
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null);
                 }
             }
             catch (Throwable statusError)

@@ -183,7 +183,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
         try
         {
-            FileFolderElement folderElement = context.getFolderByPathName(dataFolderFile.getAbsolutePath());
+            FileFolderElement folderElement = this.getContext().getFolderByPathName(dataFolderFile.getAbsolutePath());
 
             if (folderElement == null)
             {

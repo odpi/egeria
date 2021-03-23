@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
@@ -16,13 +19,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CATEGORY_ANCHOR;
@@ -38,9 +37,9 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
  */
 public class GlossaryContextHandler {
 
-    private RepositoryHandler repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-    private HandlerHelper handlerHelper;
+    private final InvalidParameterHandler invalidParameterHandler;
+    private final HandlerHelper handlerHelper;
+    private final AssetContextHandler assetContextHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -50,10 +49,11 @@ public class GlossaryContextHandler {
      * @param repositoryHandler       handler for calling the repository services
      */
     public GlossaryContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                                  RepositoryHandler repositoryHandler, Set<String> lineageClassificationTypes) {
+                                  RepositoryHandler repositoryHandler, AssetContextHandler assetContextHandler,
+                                  Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
+        this.assetContextHandler = assetContextHandler;
     }
 
     /**
@@ -84,7 +84,7 @@ public class GlossaryContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Map<String, RelationshipsContext> buildGlossaryTermContext(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
+    public Multimap<String, RelationshipsContext> buildGlossaryTermContext(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
         String methodName = "buildGlossaryTermContext";
 
         String glossaryTermGUID = glossaryTerm.getGUID();
@@ -94,23 +94,30 @@ public class GlossaryContextHandler {
         List<Relationship> termCategorizations = getTermCategorizations(userId, glossaryTermGUID, GLOSSARY_TERM);
         List<Relationship> glossaries = getTermAnchors(userId, glossaryTermGUID);
 
+        Multimap<String, RelationshipsContext> context = ArrayListMultimap.create();
         if (Stream.of(semanticAssignments, termCategorizations, glossaries).allMatch(CollectionUtils::isEmpty)) {
-            return Collections.emptyMap();
+            return context;
         }
 
-        Map<String, RelationshipsContext> context = new HashMap<>();
         context.put(AssetLineageEventType.SEMANTIC_ASSIGNMENTS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
                 glossaryTermGUID, semanticAssignments));
         context.put(AssetLineageEventType.TERM_CATEGORIZATIONS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
                 glossaryTermGUID, termCategorizations));
-        context.put(AssetLineageEventType.TERM_ANCHORS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId, glossaryTermGUID, glossaries));
+        context.put(AssetLineageEventType.TERM_ANCHORS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
+                glossaryTermGUID, glossaries));
 
         List<Relationship> glossariesForCategories = getGlossariesForCategories(userId, glossaryTermGUID, termCategorizations);
         context.put(AssetLineageEventType.CATEGORY_ANCHORS_EVENT.getEventTypeName(), handlerHelper.buildContextForRelationships(userId,
                 glossaryTermGUID, glossariesForCategories));
 
 
-        context.put(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT.getEventTypeName(), handlerHelper.buildContextForLineageClassifications(glossaryTerm));
+        context.put(AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT.getEventTypeName(),
+                handlerHelper.buildContextForLineageClassifications(glossaryTerm));
+
+        Set<EntityDetail> schemaElementsAttached = getSchemaElementsAttached(userId, glossaryTerm);
+        for (EntityDetail schemaElement : schemaElementsAttached) {
+            context.putAll(Multimaps.forMap(assetContextHandler.buildSchemaElementContext(userId, schemaElement)));
+        }
 
         return context;
     }
@@ -144,17 +151,15 @@ public class GlossaryContextHandler {
      * Fetch the Semantic Assignments Relationships for a Glossary Term
      *
      * @param userId         the unique identifier for the user
-     * @param entityTypeGUID the entity identifier
+     * @param entityGUID     the entity identifier
      * @param entityTypeName the entity type name
      *
      * @return the list of semantic assignments available for the given glossary term
      *
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    the property server exception
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private List<Relationship> getSemanticAssignments(String userId, String entityTypeGUID, String entityTypeName) throws UserNotAuthorizedException,
-                                                                                                                          PropertyServerException {
-        return getRelationshipsByTypeGUID(userId, entityTypeGUID, entityTypeName, SEMANTIC_ASSIGNMENT);
+    private List<Relationship> getSemanticAssignments(String userId, String entityGUID, String entityTypeName) throws OCFCheckedExceptionBase {
+        return handlerHelper.getRelationshipsByType(userId, entityGUID, SEMANTIC_ASSIGNMENT, entityTypeName);
     }
 
     /**
@@ -166,12 +171,10 @@ public class GlossaryContextHandler {
      *
      * @return the list of term categorization relationships available for the
      *
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    the property server exception
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private List<Relationship> getTermCategorizations(String userId, String entityGUID, String entityTypeName) throws UserNotAuthorizedException,
-                                                                                                                      PropertyServerException {
-        return getRelationshipsByTypeGUID(userId, entityGUID, entityTypeName, TERM_CATEGORIZATION);
+    private List<Relationship> getTermCategorizations(String userId, String entityGUID, String entityTypeName) throws OCFCheckedExceptionBase {
+        return handlerHelper.getRelationshipsByType(userId, entityGUID, TERM_CATEGORIZATION, entityTypeName);
     }
 
     /**
@@ -182,11 +185,10 @@ public class GlossaryContextHandler {
      *
      * @return the list of term categorization relationships available for the
      *
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    the property server exception
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private List<Relationship> getTermAnchors(String userId, String entityGUID) throws UserNotAuthorizedException, PropertyServerException {
-        return getRelationshipsByTypeGUID(userId, entityGUID, GLOSSARY_TERM, TERM_ANCHOR);
+    private List<Relationship> getTermAnchors(String userId, String entityGUID) throws OCFCheckedExceptionBase {
+        return handlerHelper.getRelationshipsByType(userId, entityGUID, TERM_ANCHOR, GLOSSARY_TERM);
     }
 
     /**
@@ -200,44 +202,8 @@ public class GlossaryContextHandler {
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    the property server exception
      */
-    private List<Relationship> getCategoryAnchor(String userId, String categoryGUID) throws UserNotAuthorizedException, PropertyServerException {
-        return getRelationshipsByTypeGUID(userId, categoryGUID, GLOSSARY_CATEGORY, CATEGORY_ANCHOR);
-    }
-
-    /**
-     * Fetch the relationships by name for a given entity
-     *
-     * @param userId               the unique identifier for the user
-     * @param entityGUID           the entity identifier
-     * @param entityTypeName       the entity type name
-     * @param relationshipTypeName the relationship type name
-     *
-     * @return the list of available relationships
-     *
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    the property server exception
-     */
-    private List<Relationship> getRelationshipsByTypeGUID(String userId, String entityGUID, String entityTypeName, String relationshipTypeName) throws
-                                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                                PropertyServerException {
-        String methodName = "getRelationshipsByTypeGUID";
-        String relationshipTypeGUID = handlerHelper.getTypeByName(userId, relationshipTypeName);
-
-        List<Relationship> relationshipsByType = repositoryHandler.getRelationshipsByType(userId,
-                entityGUID,
-                entityTypeName,
-                relationshipTypeGUID,
-                relationshipTypeName,
-                methodName);
-
-        if (CollectionUtils.isEmpty(relationshipsByType)) {
-            return Collections.emptyList();
-        }
-
-        return relationshipsByType
-                .stream()
-                .filter(relationship -> relationship.getEntityOneProxy() != null && relationship.getEntityTwoProxy() != null)
-                .collect(Collectors.toList());
+    private List<Relationship> getCategoryAnchor(String userId, String categoryGUID) throws OCFCheckedExceptionBase {
+        return handlerHelper.getRelationshipsByType(userId, categoryGUID, CATEGORY_ANCHOR, GLOSSARY_CATEGORY);
     }
 
     /**
@@ -248,11 +214,9 @@ public class GlossaryContextHandler {
      *
      * @return true if there are lineage relationships for the glossary term
      *
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    the property server exception
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public boolean hasGlossaryTermLineageRelationships(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
-                                                                                                        PropertyServerException {
+    public boolean hasGlossaryTermLineageRelationships(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         String typeDefName = entityDetail.getType().getTypeDefName();
         String entityDetailGUID = entityDetail.getGUID();
 

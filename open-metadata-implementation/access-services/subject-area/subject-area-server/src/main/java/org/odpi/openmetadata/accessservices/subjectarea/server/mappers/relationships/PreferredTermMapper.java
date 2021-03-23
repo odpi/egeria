@@ -3,23 +3,19 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.PreferredTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * Mapping methods to map between the preferredTerm and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class PreferredTermMapper extends LineMapper<PreferredTerm> {
+public class PreferredTermMapper extends RelationshipMapper<PreferredTerm> {
     public static final String PREFERRED_TERM = "PreferredTerm";
 
     public PreferredTermMapper(OMRSAPIHelper omrsapiHelper) {
@@ -28,13 +24,13 @@ public class PreferredTermMapper extends LineMapper<PreferredTerm> {
 
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param preferredTerm      supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param preferredTerm      supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(PreferredTerm preferredTerm, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(PreferredTerm preferredTerm, InstanceProperties instanceProperties) {
         if (preferredTerm.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, preferredTerm.getDescription(), "description");
         }
@@ -57,13 +53,13 @@ public class PreferredTermMapper extends LineMapper<PreferredTerm> {
     /**
      * Map a primitive omrs property to the preferredTerm object.
      *
-     * @param preferredTerm the glossary to be updated
+     * @param preferredTerm the omas relationship to be updated
      * @param propertyName  the omrs property name
      * @param value         the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(PreferredTerm preferredTerm, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(PreferredTerm preferredTerm, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -86,7 +82,7 @@ public class PreferredTermMapper extends LineMapper<PreferredTerm> {
     }
 
     @Override
-    protected boolean mapEnumToLine(PreferredTerm preferredTerm, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(PreferredTerm preferredTerm, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -102,7 +98,7 @@ public class PreferredTermMapper extends LineMapper<PreferredTerm> {
     }
 
     @Override
-    protected PreferredTerm getLineInstance() {
+    protected PreferredTerm getRelationshipInstance() {
         return new PreferredTerm();
     }
 

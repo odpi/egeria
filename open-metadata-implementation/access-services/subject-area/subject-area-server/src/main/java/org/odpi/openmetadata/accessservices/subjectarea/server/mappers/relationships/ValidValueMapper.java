@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the validValue and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class ValidValueMapper extends LineMapper<ValidValue> {
+public class ValidValueMapper extends RelationshipMapper<ValidValue> {
     public static final String VALID_VALUE = "ValidValue";
 
     public ValidValueMapper(OMRSAPIHelper omrsapiHelper) {
@@ -23,13 +23,13 @@ public class ValidValueMapper extends LineMapper<ValidValue> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param validValue               supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param validValue               supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(ValidValue validValue, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(ValidValue validValue, InstanceProperties instanceProperties) {
         if (validValue.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, validValue.getDescription(), "description");
         }
@@ -52,13 +52,13 @@ public class ValidValueMapper extends LineMapper<ValidValue> {
     /**
      * Map a primitive omrs property to the validValue object.
      *
-     * @param validValue         the glossary to be updated
+     * @param validValue   the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(ValidValue validValue, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(ValidValue validValue, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -81,7 +81,7 @@ public class ValidValueMapper extends LineMapper<ValidValue> {
     }
 
     @Override
-    protected boolean mapEnumToLine(ValidValue validValue, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(ValidValue validValue, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -97,7 +97,7 @@ public class ValidValueMapper extends LineMapper<ValidValue> {
     }
 
     @Override
-    protected ValidValue getLineInstance() {
+    protected ValidValue getRelationshipInstance() {
         return new ValidValue();
     }
 

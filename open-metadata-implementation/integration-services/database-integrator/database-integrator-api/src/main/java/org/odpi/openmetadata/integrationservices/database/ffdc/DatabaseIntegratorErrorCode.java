@@ -35,7 +35,12 @@ public enum DatabaseIntegratorErrorCode implements ExceptionMessageSet
                               "Either move it to an appropriate integration service or update the connector implementation " +
                               "to inherit from the correct class."),
 
-   ;
+    NULL_CONTEXT(400,"OMIS-DATABASE-INTEGRATOR-500-001",
+                 "Integration connector {0} has a null context",
+                 "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
+                 "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                         "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
+    ;
 
 
     private ExceptionMessageDefinition messageDefinition;

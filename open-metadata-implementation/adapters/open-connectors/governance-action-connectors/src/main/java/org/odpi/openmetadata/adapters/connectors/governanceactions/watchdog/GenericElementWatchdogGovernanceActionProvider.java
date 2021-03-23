@@ -16,10 +16,10 @@ import java.util.List;
  * sets up the default connector type for this service and the definitions of its request types, properties and guards that
  * define and control its behaviour.
  */
-public class GenericElementWatchdogGovernanceActionProvider extends GovernanceActionServiceProviderBase
+public class GenericElementWatchdogGovernanceActionProvider extends GenericWatchdogGovernanceActionProvider
 {
     private static final String  connectorTypeGUID = "8145967e-bb83-44b2-bc8c-68112c6a5a06";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Watchdog:GenericElementWatchdog";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Watchdog:GenericElement";
     private static final String  connectorTypeDisplayName = "Generic Element Watchdog Governance Action Service";
     private static final String  connectorTypeDescription =
             "A Watchdog Governance Action Service that detects changes to requested elements and initiates a governance action process when they " +
@@ -43,11 +43,6 @@ public class GenericElementWatchdogGovernanceActionProvider extends GovernanceAc
             "This service will only complete and produce a guard if it encounters an unrecoverable error or it is set up to listen for a single " +
             "event and that event occurs.";
 
-    /*
-     * This type name defined the type of element that this monitor is focused on.  The default value is
-     * "OpenMetadataTypeRoot" - effectively all elements with an open metadata type.
-     */
-    static final String INTERESTING_TYPE_NAME_PROPERTY = "interestingTypeName";
 
     /*
      * These request types indicate whether the monitor looks for a single event or multiple.
@@ -55,36 +50,9 @@ public class GenericElementWatchdogGovernanceActionProvider extends GovernanceAc
     static final String PROCESS_SINGLE_EVENT    = "process-single-event";
     static final String PROCESS_MULTIPLE_EVENTS = "process-multiple-events";
 
-    /*
-     * This value restricts the monitor to a single instance.
-     */
-    static final String INSTANCE_TO_MONITOR_PROPERTY    = "instanceToMonitor";
 
     /*
-     * These properties define which types of events to listen for and which process to kick off if
-     * the event occurs.  They can be set in the configuration properties of the connection.
-     * These values can be overridden in the requestParameters. If the value for one of these properties
-     * is null then the corresponding events are ignored.
-     */
-    static final String NEW_ELEMENT_PROCESS_NAME_PROPERTY          = "newElementProcessName";
-    static final String UPDATED_ELEMENT_PROCESS_NAME_PROPERTY      = "updatedElementProcessName";
-    static final String DELETED_ELEMENT_PROCESS_NAME_PROPERTY      = "deletedElementProcessName";
-    static final String CLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY   = "classifiedElementProcessName";
-    static final String RECLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY = "reclassifiedElementProcessName";
-    static final String DECLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY = "declassifiedElementProcessName";
-    static final String NEW_RELATIONSHIP_PROCESS_NAME_PROPERTY     = "newRelationshipProcessName";
-    static final String UPDATED_RELATIONSHIP_PROCESS_NAME_PROPERTY = "updatedRelationshipProcessName";
-    static final String DELETED_RELATIONSHIP_PROCESS_NAME_PROPERTY = "deletedRelationshipProcessName";
-
-    /*
-     * These are the guards that could be returned.  The monitor will only complete if it encounters an unrecoverable error
-     * or it is set up to listen for a single event and that event occurs.
-     */
-    static final String MONITORING_COMPLETE = "monitoring-complete"; /* requested single event occurred */
-    static final String MONITORING_FAILED   = "monitoring-failed";   /* monitor not configured correctly or failed */
-
-    /*
-     * This is the name of th connector that this provider will create
+     * This is the name of the connector that this provider will create
      */
     private static final String connectorClassName = GenericElementWatchdogGovernanceActionConnector.class.getName();
 
@@ -103,6 +71,7 @@ public class GenericElementWatchdogGovernanceActionProvider extends GovernanceAc
         supportedRequestTypes.add(PROCESS_MULTIPLE_EVENTS);
 
         supportedRequestParameters = new ArrayList<>();
+        supportedRequestParameters.add(CHANGED_PROPERTY_NAMES);
         supportedRequestParameters.add(INTERESTING_TYPE_NAME_PROPERTY);
         supportedRequestParameters.add(INSTANCE_TO_MONITOR_PROPERTY);
         supportedRequestParameters.add(NEW_ELEMENT_PROCESS_NAME_PROPERTY);

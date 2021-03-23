@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the synonym and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class SynonymMapper extends LineMapper<Synonym> {
+public class SynonymMapper extends RelationshipMapper<Synonym> {
     public static final String SYNONYM = "Synonym";
 
     public SynonymMapper(OMRSAPIHelper omrsapiHelper) {
@@ -23,13 +23,13 @@ public class SynonymMapper extends LineMapper<Synonym> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param synonym               supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param synonym               supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(Synonym synonym, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(Synonym synonym, InstanceProperties instanceProperties) {
         if (synonym.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, synonym.getDescription(), "description");
         }
@@ -52,13 +52,13 @@ public class SynonymMapper extends LineMapper<Synonym> {
     /**
      * Map a primitive omrs property to the synonym object.
      *
-     * @param synonym         the glossary to be updated
+     * @param synonym         the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(Synonym synonym, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(Synonym synonym, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -81,7 +81,7 @@ public class SynonymMapper extends LineMapper<Synonym> {
     }
 
     @Override
-    protected boolean mapEnumToLine(Synonym synonym, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(Synonym synonym, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -97,7 +97,7 @@ public class SynonymMapper extends LineMapper<Synonym> {
     }
 
     @Override
-    protected Synonym getLineInstance() {
+    protected Synonym getRelationshipInstance() {
         return new Synonym();
     }
 

@@ -20,8 +20,9 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
 {
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryEventPublisher.class);
 
-    private OMRSTopicConnector omrsTopicConnector;
-    private AuditLog           auditLog;
+    private OpenMetadataEventsSecurity securityVerifier = new OMRSMetadataDefaultEventsSecurity();
+    private OMRSTopicConnector         omrsTopicConnector;
+    private AuditLog                   auditLog;
 
 
     /**
@@ -59,6 +60,25 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
 
         log.debug("New Event Publisher: " + publisherName);
     }
+
+
+    /**
+     * Set up a new security verifier (the handler runs with a default verifier until this
+     * method is called).
+     *
+     * The security verifier provides authorization checks for whether individual events should be sent/received.
+     * Authorization checks are enabled through the OpenMetadataServerSecurityConnector.
+     *
+     * @param securityVerifier new security verifier
+     */
+    public void setSecurityVerifier(OpenMetadataEventsSecurity securityVerifier)
+    {
+        if (securityVerifier != null)
+        {
+            this.securityVerifier = securityVerifier;
+        }
+    }
+
 
 
     /**
@@ -112,7 +132,12 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
 
         try
         {
-            omrsTopicConnector.sendInstanceEvent(instanceEvent);
+            OMRSInstanceEvent validatedEvent = securityVerifier.validateOutboundEvent(eventProcessorName, instanceEvent);
+
+            if (validatedEvent != null)
+            {
+                omrsTopicConnector.sendInstanceEvent(instanceEvent);
+            }
         }
         catch (Throwable error)
         {

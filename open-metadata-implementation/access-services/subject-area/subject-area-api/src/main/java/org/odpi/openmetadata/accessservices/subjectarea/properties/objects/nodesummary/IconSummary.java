@@ -68,7 +68,7 @@ public class IconSummary {
     }
 
     /**
-     * The unique identifier of the associated Line (relationship)
+     * The unique identifier of the associated relationship
      *
      * @return relationship guid
      */

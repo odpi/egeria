@@ -117,7 +117,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
 
 
     /**
-     * Set up a new security verifier (the metadata collection runs with a default verifier until this
+     * Set up a new security verifier (the cohort manager runs with a default verifier until this
      * method is called).
      *
      * The security verifier provides authorization checks for access and maintenance
@@ -401,6 +401,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                           super.repositoryHelper,
                                                           super.repositoryValidator,
                                                           saveExchangeRule,
+                                                          produceEventsForRealConnector,
                                                           outboundRepositoryEventManager,
                                                           auditLog.createNewAuditLog(OMRSAuditingComponent.INSTANCE_EVENT_PROCESSOR));
 
