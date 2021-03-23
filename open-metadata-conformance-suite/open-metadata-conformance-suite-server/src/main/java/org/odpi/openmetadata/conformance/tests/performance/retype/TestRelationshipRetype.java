@@ -28,6 +28,9 @@ public class TestRelationshipRetype extends OpenMetadataPerformanceTestCase
     private static final String A_FIND_RELATIONSHIPS        = TEST_CASE_ID + "-findRelationshipsByProperty";
     private static final String A_FIND_RELATIONSHIPS_MSG    = "Repository performs search for unordered first instancesPerType homed instances of type: ";
 
+    private static final String A_REMOVE_PROPERTIES     = TEST_CASE_ID + "-updateRelationshipProperties-remove";
+    private static final String A_REMOVE_PROPERTIES_MSG = "Repository performs removal of all relationship properties of instance of type: ";
+
     private static final String A_RETYPE_SUB     = TEST_CASE_ID + "-reTypeRelationship-toSubtype";
     private static final String A_RETYPE_SUB_MSG = "Repository performs retyping of homed instances to each subtype of type: ";
 
@@ -140,6 +143,28 @@ public class TestRelationshipRetype extends OpenMetadataPerformanceTestCase
         if (subTypeNames != null && !subTypeNames.isEmpty()) {
             String subTypeName = subTypeNames.get(0);
             TypeDefSummary targetType = repositoryHelper.getTypeDefByName(testCaseId, subTypeName);
+            try {
+                for (String guid : keys) {
+                    long start = System.nanoTime();
+                    Relationship result = metadataCollection.updateRelationshipProperties(workPad.getLocalServerUserId(),
+                            guid,
+                            new InstanceProperties());
+                    long elapsedTime = (System.nanoTime() - start) / 1000000;
+                    assertCondition(result != null,
+                            A_REMOVE_PROPERTIES,
+                            A_REMOVE_PROPERTIES_MSG + testTypeName,
+                            PerformanceProfile.RELATIONSHIP_UPDATE.getProfileId(),
+                            null,
+                            methodName,
+                            elapsedTime);
+                }
+            } catch (Exception exc) {
+                String operationDescription = "remove properties of relationship of type " + relationshipDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("relationshipTypeGUID", relationshipDef.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                throw new Exception(msg, exc);
+            }
             try {
                 for (String guid : keys) {
                     long start = System.nanoTime();

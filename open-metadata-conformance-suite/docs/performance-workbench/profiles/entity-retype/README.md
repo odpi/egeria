@@ -16,6 +16,7 @@ For every entity type supported by the technology under test, this profile does 
 
 1. Searches for `instancesPerType` homed entity GUIDs of that type. (This uses `findEntitiesByProperty`
    with a condition on `metadataCollectionId` and its performance is recorded as part of the Entity Search profile.)
+1. For each of these entity GUIDs, `updateEntityProperties` is called to remove all the entity's properties (so it can be easily retyped).
 1. For each of these entity GUIDs, `reTypeEntity` is called to change the type of the entity to one of its subtypes.
 1. For each of these entity GUIDs, `reTypeEntity` is then called to change the type of the entity back to its original type.
 
