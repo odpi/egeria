@@ -30,15 +30,10 @@ public class TransformationProjectBuilder extends AssetBuilder {
     @Override
     public InstanceProperties getInstanceProperties(String methodName) throws InvalidParameterException {
         InstanceProperties properties = super.getInstanceProperties(methodName);
-
         if (transformationProjectName != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    ProcessPropertiesMapper.TRANSFORMATION_PROJECT_PROPERTY_NAME, transformationProjectName, methodName);
+                    ProcessPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, transformationProjectName, methodName);
         }
-//        if (transformationProject != null) {
-//            properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-//                    ProcessPropertiesMapper.TRANSFORMATION_PROJECT_PROPERTY_NAME, transformationProject, methodName);
-//        }
         return properties;
     }
 
