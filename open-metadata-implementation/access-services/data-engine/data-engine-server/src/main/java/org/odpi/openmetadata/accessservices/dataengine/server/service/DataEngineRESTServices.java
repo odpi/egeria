@@ -745,10 +745,10 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier (guid) of the created schema type
      */
-    public GUIDListResponse upsertDatabase(String userId, String serverName, DatabaseRequestBody databaseRequestBody) {
+    public GUIDResponse upsertDatabase(String userId, String serverName, DatabaseRequestBody databaseRequestBody) {
         final String methodName = "upsertDatabase";
 
-        GUIDListResponse response = new GUIDListResponse();
+        GUIDResponse response = new GUIDResponse();
         try {
             if (databaseRequestBody == null) {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
@@ -756,13 +756,16 @@ public class DataEngineRESTServices {
             }
 
             Database database = databaseRequestBody.getDatabase();
-            String databaseGUID = upsertDatabase(userId, serverName, database, databaseRequestBody.getExternalSourceName());
 
-            DatabaseSchema databaseSchema = database.getDatabaseSchema();
-            addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
-            String schemaGUID = upsertDatabaseSchema(userId, serverName, databaseGUID, databaseSchema, databaseRequestBody.getExternalSourceName());
+            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
 
-            response.setGUIDs(Arrays.asList(databaseGUID, schemaGUID));
+            DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
+                    methodName);
+            String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, databaseRequestBody.getExternalSourceName());
+
+            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
+
+            response.setGUID(databaseGUID);
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -773,36 +776,6 @@ public class DataEngineRESTServices {
         }
 
         return response;
-    }
-
-
-    /**
-     * Create or update a Database
-     *
-     * @param userId             the name of the calling user
-     * @param serverName         name of server instance to call
-     * @param database           the schema type values
-     * @param externalSourceName the unique name of the external source
-     *
-     * @return the unique identifier (guid) of the created schema type
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public String upsertDatabase(String userId, String serverName, Database database, String externalSourceName) throws InvalidParameterException,
-                                                                                                                        UserNotAuthorizedException,
-                                                                                                                        PropertyServerException {
-        final String methodName = "upsertDatabase";
-
-        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
-
-        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
-        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, externalSourceName);
-
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
-
-        return databaseGUID;
     }
 
     /**
@@ -867,7 +840,6 @@ public class DataEngineRESTServices {
         DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
 
-
         String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId, databaseQualifiedName, relationalTable,
                 externalSourceName);
 
@@ -876,26 +848,6 @@ public class DataEngineRESTServices {
         return relationalTableGUID;
     }
 
-    private void addAssetProperties(DatabaseSchema databaseSchema, String owner, OwnerType ownerType, List<String> zoneMembership) {
-        databaseSchema.setOwner(owner);
-        databaseSchema.setOwnerType(ownerType);
-        databaseSchema.setZoneMembership(zoneMembership);
-    }
-
-    private String upsertDatabaseSchema(String userId, String serverName, String databaseGUID, DatabaseSchema databaseSchema,
-                                        String externalSourceName) throws InvalidParameterException, PropertyServerException,
-                                                                          UserNotAuthorizedException {
-        final String methodName = "upsertDatabaseSchema";
-
-        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, databaseSchema);
-
-        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
-        String databaseSchemaGUID = dataEngineRelationalDataHandler.upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
-
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
-
-        return databaseSchemaGUID;
-    }
 
     private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeGUID, String oldSchemaTypeGUID,
                                           String externalSourceName) throws

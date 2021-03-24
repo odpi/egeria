@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
@@ -106,6 +107,13 @@ public class DataEngineRelationalDataHandler {
                     database.getExtendedProperties(), database.getVendorProperties(), methodName);
         }
 
+        DatabaseSchema databaseSchema = database.getDatabaseSchema();
+        if(databaseSchema == null) {
+            databaseSchema = createDefaultDatabaseSchema(database);
+        }
+        addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
+        upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
+
         return databaseGUID;
     }
 
@@ -121,13 +129,13 @@ public class DataEngineRelationalDataHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public Optional<EntityDetail> findDatabaseEntity(String userId, String qualifiedName) throws InvalidParameterException,
+    private Optional<EntityDetail> findDatabaseEntity(String userId, String qualifiedName) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataAPIMapper.DATABASE_TYPE_NAME);
     }
 
-    public String upsertDatabaseSchema(String userId, String databaseGUID, DatabaseSchema databaseSchema, String externalSourceName) throws
+    private void upsertDatabaseSchema(String userId, String databaseGUID, DatabaseSchema databaseSchema, String externalSourceName) throws
                                                                                                                                      InvalidParameterException,
                                                                                                                                      PropertyServerException,
                                                                                                                                      UserNotAuthorizedException {
@@ -139,16 +147,15 @@ public class DataEngineRelationalDataHandler {
                 OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
 
         int ownerTypeOrdinal = dataEngineCommonHandler.getOwnerTypeOrdinal(databaseSchema.getOwnerType());
-        String databaseSchemaGUID;
         if (!originalDatabaseSchemaEntity.isPresent()) {
-            databaseSchemaGUID = relationalDataHandler.createDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseGUID,
+            relationalDataHandler.createDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseGUID,
                     databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(), databaseSchema.getOwner(),
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                     databaseSchema.getAdditionalProperties(), OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                     databaseSchema.getExtendedProperties(), databaseSchema.getVendorProperties(), methodName);
         } else {
-            databaseSchemaGUID = originalDatabaseSchemaEntity.get().getGUID();
+            String databaseSchemaGUID = originalDatabaseSchemaEntity.get().getGUID();
             relationalDataHandler.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(), databaseSchema.getOwner(),
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
@@ -156,8 +163,6 @@ public class DataEngineRelationalDataHandler {
                     databaseSchema.getAdditionalProperties(), OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                     databaseSchema.getExtendedProperties(), databaseSchema.getVendorProperties(), methodName);
         }
-
-        return databaseSchemaGUID;
     }
 
     /**
@@ -190,12 +195,6 @@ public class DataEngineRelationalDataHandler {
         }
 
         return Optional.of(entity.getGUID());
-    }
-
-    private void validateParameters(String userId, String methodName, String qualifiedName, String displayName) throws InvalidParameterException {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
     }
 
     public String upsertRelationalTable(String userId, String databaseQualifiedName, RelationalTable relationalTable, String externalSourceName) throws
@@ -280,5 +279,26 @@ public class DataEngineRelationalDataHandler {
             }
         }
         return null;
+    }
+
+    private void addAssetProperties(DatabaseSchema databaseSchema, String owner, OwnerType ownerType, List<String> zoneMembership) {
+        databaseSchema.setOwner(owner);
+        databaseSchema.setOwnerType(ownerType);
+        databaseSchema.setZoneMembership(zoneMembership);
+    }
+
+    private DatabaseSchema createDefaultDatabaseSchema(Database database) {
+        String postfix = ":schema";
+        DatabaseSchema databaseSchema = new DatabaseSchema();
+        databaseSchema.setDisplayName(database.getDisplayName() + postfix);
+        databaseSchema.setQualifiedName(database.getQualifiedName() + postfix);
+
+        return databaseSchema;
+    }
+
+    private void validateParameters(String userId, String methodName, String qualifiedName, String displayName) throws InvalidParameterException {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
     }
 }

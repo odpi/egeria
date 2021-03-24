@@ -212,9 +212,9 @@ public class DataEngineResource {
      * @return unique identifier of the created entity
      */
     @PostMapping(path = "/databases")
-    public GUIDListResponse upsertDatabase(@PathVariable("userId") String userId,
-                                           @PathVariable("serverName") String serverName,
-                                           @RequestBody DatabaseRequestBody requestBody) {
+    public GUIDResponse upsertDatabase(@PathVariable("userId") String userId,
+                                       @PathVariable("serverName") String serverName,
+                                       @RequestBody DatabaseRequestBody requestBody) {
         return restAPI.upsertDatabase(userId, serverName, requestBody);
     }
 
