@@ -2,19 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ValidValueProperties;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.LocationProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
 /**
- * ValidValueConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from ValidValueElement.
+ * LocationConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a bean that inherits from LocationElement.
  */
-public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
+public class LocationConverter<B> extends DigitalArchitectureOMASConverter<B>
 {
     /**
      * Constructor
@@ -23,13 +25,12 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
      * @param serviceName name of this component
      * @param serverName local server name
      */
-    public ValidValueConverter(OMRSRepositoryHelper repositoryHelper,
-                               String serviceName,
-                               String serverName)
+    public LocationConverter(OMRSRepositoryHelper repositoryHelper,
+                             String serviceName,
+                             String serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
-
 
 
     /**
@@ -56,9 +57,9 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof ValidValueElement)
+            if (returnBean instanceof LocationElement)
             {
-                this.updateSimpleMetadataElement(beanClass, (ValidValueElement) returnBean, entity, methodName);
+                this.updateSimpleMetadataElement(beanClass, (LocationElement) returnBean, entity, methodName);
             }
 
             return returnBean;
@@ -94,9 +95,9 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof ValidValueElement)
+            if (returnBean instanceof  LocationElement)
             {
-                this.updateSimpleMetadataElement(beanClass, (ValidValueElement) returnBean, entity, methodName);
+                this.updateSimpleMetadataElement(beanClass, ( LocationElement) returnBean, entity, methodName);
             }
 
             return returnBean;
@@ -120,35 +121,31 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
      * @param methodName calling method
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    void updateSimpleMetadataElement(Class<B>          beanClass,
-                                     ValidValueElement bean,
-                                     EntityDetail      entity,
-                                     String            methodName)  throws PropertyServerException
+    void updateSimpleMetadataElement(Class<B>        beanClass,
+                                     LocationElement bean,
+                                     EntityDetail    entity,
+                                     String          methodName)  throws PropertyServerException
     {
         if (entity != null)
         {
             bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
-            ValidValueProperties validValueProperties = new ValidValueProperties();
+            LocationProperties locationProperties = new LocationProperties();
 
             InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-            validValueProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-            validValueProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-            validValueProperties.setDisplayName(this.removeName(instanceProperties));
-            validValueProperties.setDescription(this.removeDescription(instanceProperties));
-            validValueProperties.setUsage(this.removeUsage(instanceProperties));
-            validValueProperties.setScope(this.removeScope(instanceProperties));
-            validValueProperties.setPreferredValue(this.removePreferredValue(instanceProperties));
-            validValueProperties.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
+            locationProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+            locationProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+            locationProperties.setDisplayName(this.removeName(instanceProperties));
+            locationProperties.setDescription(this.removeDescription(instanceProperties));
 
             /*
              * Any remaining properties are returned in the extended properties.  They are
              * assumed to be defined in a subtype.
              */
-            validValueProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-            validValueProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+            locationProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+            locationProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-            bean.setValidValueProperties(validValueProperties);
+            bean.setLocationProperties(locationProperties);
         }
         else
         {

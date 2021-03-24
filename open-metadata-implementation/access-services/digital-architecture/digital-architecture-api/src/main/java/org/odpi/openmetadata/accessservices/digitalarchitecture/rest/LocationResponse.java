@@ -6,32 +6,31 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ValidValuesResponse is a response object for passing back a list of valid value objects.
+ * LocationResponse is a response object for passing back a single location object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
+public class LocationResponse extends DigitalArchitectureOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ValidValueElement> elementList = null;
+    private LocationElement element = null;
 
 
     /**
      * Default constructor
      */
-    public ValidValuesResponse()
+    public LocationResponse()
     {
     }
 
@@ -41,47 +40,36 @@ public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
      *
      * @param template object to copy
      */
-    public ValidValuesResponse(ValidValuesResponse template)
+    public LocationResponse(LocationResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            element = template.getElement();
         }
     }
 
 
     /**
-     * Return the list of metadata elements.
+     * Return the metadata element.
      *
      * @return result object
      */
-    public List<ValidValueElement> getElementList()
+    public LocationElement getElement()
     {
-        if (elementList == null)
-        {
-            return null;
-        }
-        else if (elementList.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return elementList;
-        }
+        return element;
     }
 
 
     /**
-     * Set up the list of metadata elements to return.
+     * Set up the metadata element to return.
      *
-     * @param elementList result object
+     * @param element result object
      */
-    public void setElementList(List<ValidValueElement> elementList)
+    public void setElement(LocationElement element)
     {
-        this.elementList = elementList;
+        this.element = element;
     }
 
 
@@ -93,8 +81,8 @@ public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ValidValuesResponse{" +
-                "element=" + elementList +
+        return "LocationResponse{" +
+                "element=" + element +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -130,8 +118,8 @@ public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
         {
             return false;
         }
-        ValidValuesResponse that = (ValidValuesResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        LocationResponse that = (LocationResponse) objectToCompare;
+        return Objects.equals(element, that.element);
     }
 
 
@@ -143,6 +131,6 @@ public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), element);
     }
 }

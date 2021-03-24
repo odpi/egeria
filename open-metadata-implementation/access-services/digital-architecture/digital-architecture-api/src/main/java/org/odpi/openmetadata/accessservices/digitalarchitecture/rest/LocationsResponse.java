@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,22 +16,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ValidValuesResponse is a response object for passing back a list of valid value objects.
+ * LocationsResponse is a response object for passing back a list of location objects.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
+public class LocationsResponse extends DigitalArchitectureOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ValidValueElement> elementList = null;
+    private List<LocationElement> elementList = null;
 
 
     /**
      * Default constructor
      */
-    public ValidValuesResponse()
+    public LocationsResponse()
     {
     }
 
@@ -41,7 +41,7 @@ public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
      *
      * @param template object to copy
      */
-    public ValidValuesResponse(ValidValuesResponse template)
+    public LocationsResponse(LocationsResponse template)
     {
         super(template);
 
@@ -57,7 +57,7 @@ public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
      *
      * @return result object
      */
-    public List<ValidValueElement> getElementList()
+    public List<LocationElement> getElementList()
     {
         if (elementList == null)
         {
@@ -79,7 +79,7 @@ public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
      *
      * @param elementList result object
      */
-    public void setElementList(List<ValidValueElement> elementList)
+    public void setElementList(List<LocationElement> elementList)
     {
         this.elementList = elementList;
     }
@@ -93,7 +93,7 @@ public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ValidValuesResponse{" +
+        return "LocationsResponse{" +
                 "element=" + elementList +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -130,7 +130,7 @@ public class ValidValuesResponse extends DigitalArchitectureOMASAPIResponse
         {
             return false;
         }
-        ValidValuesResponse that = (ValidValuesResponse) objectToCompare;
+        LocationsResponse that = (LocationsResponse) objectToCompare;
         return Objects.equals(elementList, that.elementList);
     }
 

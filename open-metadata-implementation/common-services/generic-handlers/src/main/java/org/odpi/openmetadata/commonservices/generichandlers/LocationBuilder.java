@@ -222,8 +222,8 @@ public class LocationBuilder extends ReferenceableBuilder
     {
         return repositoryHelper.addStringPropertyToInstance(serviceName,
                                                             null,
-                                                                  OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
-                                                                  description,
-                                                                  methodName);
+                                                            OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                            networkAddress,
+                                                            methodName);
     }
 }
