@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
@@ -102,24 +102,24 @@ public class SubjectAreaUtils {
      * Convert a Category to a CategorySummary
      *
      * @param category to convert
-     * @param line {@link Line}
+     * @param relationship {@link Relationship}
      * @return CategorySummary
      */
-    public static CategorySummary extractCategorySummaryFromCategory(Category category, Line line) {
+    public static CategorySummary extractCategorySummaryFromCategory(Category category, Relationship relationship) {
         CategorySummary categorySummary = new CategorySummary();
-        extractNodeSummary(category, line, categorySummary);
+        extractNodeSummary(category, relationship, categorySummary);
         return categorySummary;
     }
 
-    private static void extractNodeSummary(Node node, Line line, NodeSummary nodeSummary) {
+    private static void extractNodeSummary(Node node, Relationship relationship, NodeSummary nodeSummary) {
         nodeSummary.setQualifiedName(node.getQualifiedName());
         nodeSummary.setName(node.getName());
         nodeSummary.setGuid(node.getSystemAttributes().getGUID());
         nodeSummary.setFromEffectivityTime(node.getEffectiveFromTime());
         nodeSummary.setToEffectivityTime(node.getEffectiveToTime());
-        nodeSummary.setRelationshipguid(line.getGuid());
-        nodeSummary.setFromRelationshipEffectivityTime(line.getEffectiveFromTime());
-        nodeSummary.setToRelationshipEffectivityTime(line.getEffectiveToTime());
+        nodeSummary.setRelationshipguid(relationship.getGuid());
+        nodeSummary.setFromRelationshipEffectivityTime(relationship.getEffectiveFromTime());
+        nodeSummary.setToRelationshipEffectivityTime(relationship.getEffectiveToTime());
     }
 
     /**
@@ -142,26 +142,26 @@ public class SubjectAreaUtils {
      * Extract Glossary Summary
      *
      * @param glossary the glossary that is to be summarised
-     * @param line     the line to the glossary, which feeds part of the node summary
+     * @param relationship     the relationship to the glossary, which feeds part of the node summary
      * @return Glossary Summary or null
      */
-    public static GlossarySummary extractGlossarySummaryFromGlossary(Glossary glossary, Line line) {
+    public static GlossarySummary extractGlossarySummaryFromGlossary(Glossary glossary, Relationship relationship) {
         if (glossary == null) return null;
         GlossarySummary glossarySummary = new GlossarySummary();
-        extractNodeSummary(glossary, line, glossarySummary);
+        extractNodeSummary(glossary, relationship, glossarySummary);
         return glossarySummary;
     }
 
     /**
      * Get glossary guid from anchors
      *
-     * @param line - {@link TermAnchor} or {@link CategoryAnchor}
+     * @param relationship - {@link TermAnchor} or {@link CategoryAnchor}
      * @return glossaryGuid
      * */
-    public static String getGlossaryGuidFromAnchor(Line line) {
+    public static String getGlossaryGuidFromAnchor(Relationship relationship) {
         String glossaryGuid = null;
-        if (line instanceof  TermAnchor || line instanceof CategoryAnchor) {
-            glossaryGuid = line.getEnd1().getNodeGuid();
+        if (relationship instanceof  TermAnchor || relationship instanceof CategoryAnchor) {
+            glossaryGuid = relationship.getEnd1().getNodeGuid();
         }
         return glossaryGuid;
     }

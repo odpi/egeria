@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAr
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -189,7 +189,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(
+    public SubjectAreaOMASAPIResponse<Relationship> getProjectRelationships(
             String serverName,
             String userId,
             String guid,
@@ -200,11 +200,11 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             String sequencingProperty
 
 
-    ) {
+                                                                           ) {
         final String methodName = "getProjectRelationships";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             if (startingFrom == null) {
@@ -223,8 +223,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Line> lines =  clients.projects().getRelationships(userId, guid, findRequest);
-            response.addAllResults(lines);
+            List<Relationship> relationships =  clients.projects().getRelationships(userId, guid, findRequest);
+            response.addAllResults(relationships);
         }  catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }

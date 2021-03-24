@@ -44,6 +44,12 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
              "Check that this permitted synchronized value is as expected.  If it is not," +
                      "change the configuration for this connector and restart the integration daemon."),
 
+    NULL_CONTEXT("OMIS-LINEAGE-INTEGRATOR-0004",
+                 OMRSAuditLogRecordSeverity.ERROR,
+                 "Integration connector {0} has a null context",
+                 "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
+                 "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                         "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
     ;
 
 
