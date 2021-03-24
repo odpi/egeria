@@ -20,10 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = RelationalColumn.class, name = "RelationalColumn")
-        })
 public class Attribute extends Referenceable {
     private String displayName;
     private int minCardinality;
@@ -39,6 +35,17 @@ public class Attribute extends Referenceable {
     private List<String> aliases;
     private DataItemSortOrder sortOrder;
     private String description;
+    private int significantDigits;
+    private String precision;
+    private int length;
+    private int minimumLength;
+    private boolean isNullable;
+    private boolean isDeprecated;
+    private String fixedValue;
+    private String externalTypeGUID;
+    private String validValuesSetGUID;
+
+
     /**
      * Gets display name.
      *
@@ -219,19 +226,144 @@ public class Attribute extends Referenceable {
         this.anchorGUID = anchorGUID;
     }
 
+    public boolean isAllowsDuplicateValues() {
+        return allowsDuplicateValues;
+    }
+
+    public boolean isOrderedValues() {
+        return orderedValues;
+    }
+
+    public String getNativeClass() {
+        return nativeClass;
+    }
+
+    public void setNativeClass(String nativeClass) {
+        this.nativeClass = nativeClass;
+    }
+
+    public List<String> getAliases() {
+        return aliases;
+    }
+
+    public void setAliases(List<String> aliases) {
+        this.aliases = aliases;
+    }
+
+    public DataItemSortOrder getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(DataItemSortOrder sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getSignificantDigits() {
+        return significantDigits;
+    }
+
+    public void setSignificantDigits(int significantDigits) {
+        this.significantDigits = significantDigits;
+    }
+
+    public String getPrecision() {
+        return precision;
+    }
+
+    public void setPrecision(String precision) {
+        this.precision = precision;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getMinimumLength() {
+        return minimumLength;
+    }
+
+    public void setMinimumLength(int minimumLength) {
+        this.minimumLength = minimumLength;
+    }
+
+    public boolean isNullable() {
+        return isNullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        isNullable = nullable;
+    }
+
+    public boolean isDeprecated() {
+        return isDeprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        isDeprecated = deprecated;
+    }
+
+    public String getFixedValue() {
+        return fixedValue;
+    }
+
+    public void setFixedValue(String fixedValue) {
+        this.fixedValue = fixedValue;
+    }
+
+    public String getExternalTypeGUID() {
+        return externalTypeGUID;
+    }
+
+    public void setExternalTypeGUID(String externalTypeGUID) {
+        this.externalTypeGUID = externalTypeGUID;
+    }
+
+    public String getValidValuesSetGUID() {
+        return validValuesSetGUID;
+    }
+
+    public void setValidValuesSetGUID(String validValuesSetGUID) {
+        this.validValuesSetGUID = validValuesSetGUID;
+    }
+
     @Override
     public String toString() {
         return "Attribute{" +
-                ", displayName='" + displayName + '\'' +
-                ", minCardinality='" + minCardinality + '\'' +
-                ", maxCardinality='" + maxCardinality + '\'' +
-                ", allowsDuplicateValues='" + allowsDuplicateValues + '\'' +
-                ", orderedValues='" + orderedValues + '\'' +
-                ", position='" + position + '\'' +
+                "displayName='" + displayName + '\'' +
+                ", minCardinality=" + minCardinality +
+                ", maxCardinality=" + maxCardinality +
+                ", allowsDuplicateValues=" + allowsDuplicateValues +
+                ", orderedValues=" + orderedValues +
+                ", position=" + position +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
                 ", anchorGUID='" + anchorGUID + '\'' +
+                ", nativeClass='" + nativeClass + '\'' +
+                ", aliases=" + aliases +
+                ", sortOrder=" + sortOrder +
+                ", description='" + description + '\'' +
+                ", significantDigits=" + significantDigits +
+                ", precision='" + precision + '\'' +
+                ", length=" + length +
+                ", minimumLength=" + minimumLength +
+                ", isNullable=" + isNullable +
+                ", isDeprecated=" + isDeprecated +
+                ", fixedValue='" + fixedValue + '\'' +
+                ", externalTypeGUID='" + externalTypeGUID + '\'' +
+                ", validValuesSetGUID='" + validValuesSetGUID + '\'' +
                 '}';
     }
 
@@ -239,22 +371,36 @@ public class Attribute extends Referenceable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Attribute attribute = (Attribute) o;
-        return Objects.equals(displayName, attribute.displayName) &&
-                Objects.equals(minCardinality, attribute.minCardinality) &&
-                Objects.equals(maxCardinality, attribute.maxCardinality) &&
-                Objects.equals(allowsDuplicateValues, attribute.allowsDuplicateValues) &&
-                Objects.equals(orderedValues, attribute.orderedValues) &&
-                Objects.equals(position, attribute.position) &&
+        return minCardinality == attribute.minCardinality &&
+                maxCardinality == attribute.maxCardinality &&
+                allowsDuplicateValues == attribute.allowsDuplicateValues &&
+                orderedValues == attribute.orderedValues &&
+                position == attribute.position &&
+                significantDigits == attribute.significantDigits &&
+                length == attribute.length &&
+                minimumLength == attribute.minimumLength &&
+                isNullable == attribute.isNullable &&
+                isDeprecated == attribute.isDeprecated &&
+                Objects.equals(displayName, attribute.displayName) &&
                 Objects.equals(defaultValueOverride, attribute.defaultValueOverride) &&
                 Objects.equals(dataType, attribute.dataType) &&
                 Objects.equals(defaultValue, attribute.defaultValue) &&
-                Objects.equals(anchorGUID, attribute.anchorGUID);
+                Objects.equals(anchorGUID, attribute.anchorGUID) &&
+                Objects.equals(nativeClass, attribute.nativeClass) &&
+                Objects.equals(aliases, attribute.aliases) &&
+                sortOrder == attribute.sortOrder &&
+                Objects.equals(description, attribute.description) &&
+                Objects.equals(precision, attribute.precision) &&
+                Objects.equals(fixedValue, attribute.fixedValue) &&
+                Objects.equals(externalTypeGUID, attribute.externalTypeGUID) &&
+                Objects.equals(validValuesSetGUID, attribute.validValuesSetGUID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(displayName, minCardinality, maxCardinality, allowsDuplicateValues,
-                orderedValues, position, defaultValueOverride, dataType, defaultValue, anchorGUID);
+        return Objects.hash(super.hashCode(), displayName, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues, position,
+                defaultValueOverride, dataType, defaultValue, anchorGUID, nativeClass, aliases, sortOrder, description, significantDigits, precision, length, minimumLength, isNullable, isDeprecated, fixedValue, externalTypeGUID, validValuesSetGUID);
     }
 }

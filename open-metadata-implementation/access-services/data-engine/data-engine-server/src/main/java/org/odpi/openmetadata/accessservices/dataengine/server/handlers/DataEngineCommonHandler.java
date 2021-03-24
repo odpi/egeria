@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -268,6 +270,14 @@ public class DataEngineCommonHandler {
             ownerTypeOrdinal = ownerType.getOpenTypeOrdinal();
         }
         return ownerTypeOrdinal;
+    }
+
+    protected int getSortOrder(Attribute column) {
+        int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+        if (column.getSortOrder() != null) {
+            sortOrder = column.getSortOrder().getOpenTypeOrdinal();
+        }
+        return sortOrder;
     }
 
     protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws

@@ -26,6 +26,9 @@ public class Asset extends Referenceable {
     private Map<String, String> origin;
     private String typeGUID;
     private String GUID;
+    private String originOrganizationGUID;
+    private String originBusinessCapabilityGUID;
+    private Map<String, String> otherOriginValues;
 
     /**
      * Gets display name.
@@ -171,6 +174,31 @@ public class Asset extends Referenceable {
         this.GUID = GUID;
     }
 
+
+    public String getOriginOrganizationGUID() {
+        return originOrganizationGUID;
+    }
+
+    public void setOriginOrganizationGUID(String originOrganizationGUID) {
+        this.originOrganizationGUID = originOrganizationGUID;
+    }
+
+    public String getOriginBusinessCapabilityGUID() {
+        return originBusinessCapabilityGUID;
+    }
+
+    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID) {
+        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
+    }
+
+    public Map<String, String> getOtherOriginValues() {
+        return otherOriginValues;
+    }
+
+    public void setOtherOriginValues(Map<String, String> otherOriginValues) {
+        this.otherOriginValues = otherOriginValues;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -184,12 +212,15 @@ public class Asset extends Referenceable {
                 Objects.equals(zoneMembership, asset.zoneMembership) &&
                 Objects.equals(origin, asset.origin) &&
                 Objects.equals(typeGUID, asset.typeGUID) &&
-                Objects.equals(GUID, asset.GUID);
+                Objects.equals(GUID, asset.GUID) &&
+                Objects.equals(originOrganizationGUID, asset.originOrganizationGUID) &&
+                Objects.equals(originBusinessCapabilityGUID, asset.originBusinessCapabilityGUID) &&
+                Objects.equals(otherOriginValues, asset.otherOriginValues);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), displayName, description, owner, ownerType, zoneMembership, origin, typeGUID, GUID);
+        return Objects.hash(super.hashCode(), displayName, description, owner, ownerType, zoneMembership, origin, typeGUID, GUID, originOrganizationGUID, originBusinessCapabilityGUID, otherOriginValues);
     }
 
     @Override
@@ -203,6 +234,9 @@ public class Asset extends Referenceable {
                 ", origin=" + origin +
                 ", typeGUID='" + typeGUID + '\'' +
                 ", GUID='" + GUID + '\'' +
+                ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
+                ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
+                ", otherOriginValues=" + otherOriginValues +
                 '}';
     }
 }
