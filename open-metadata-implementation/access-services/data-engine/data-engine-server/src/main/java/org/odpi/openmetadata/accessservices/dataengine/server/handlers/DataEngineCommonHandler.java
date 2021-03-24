@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -258,6 +259,15 @@ public class DataEngineCommonHandler {
         repositoryHandler.removeEntity(userId, externalSourceGUID, externalSourceName, entityGUID,
                 "entityGUID", entityTypeDef.getGUID(), entityTypeDef.getName(),
                 null, null, methodName);
+    }
+
+    protected int getOwnerTypeOrdinal(OwnerType ownerType) {
+        int ownerTypeOrdinal = 0;
+
+        if (ownerType != null) {
+            ownerTypeOrdinal = ownerType.getOpenTypeOrdinal();
+        }
+        return ownerTypeOrdinal;
     }
 
     protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws

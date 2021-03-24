@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -17,9 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Asset implements Serializable {
+public class Asset extends Referenceable {
     private static final long serialVersionUID = 1L;
-
     private String displayName;
     private String description;
     private String owner;
@@ -27,11 +25,7 @@ public class Asset implements Serializable {
     private List<String> zoneMembership;
     private Map<String, String> origin;
     private String typeGUID;
-    private String typeName;
     private String GUID;
-    private String qualifiedName;
-    private Map<String, String> additionalProperties;
-    private Map<String, Object> extendedProperties;
 
     /**
      * Gets display name.
@@ -160,24 +154,6 @@ public class Asset implements Serializable {
     }
 
     /**
-     * Gets type name.
-     *
-     * @return the type name
-     */
-    public String getTypeName() {
-        return typeName;
-    }
-
-    /**
-     * Sets type name.
-     *
-     * @param typeName the type name
-     */
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    /**
      * Gets guid.
      *
      * @return the guid
@@ -195,82 +171,25 @@ public class Asset implements Serializable {
         this.GUID = GUID;
     }
 
-    /**
-     * Gets qualified name.
-     *
-     * @return the qualified name
-     */
-    public String getQualifiedName() {
-        return qualifiedName;
-    }
-
-    /**
-     * Sets qualified name.
-     *
-     * @param qualifiedName the qualified name
-     */
-    public void setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
-    }
-
-    /**
-     * Gets additional properties.
-     *
-     * @return the additional properties
-     */
-    public Map<String, String> getAdditionalProperties() {
-        return additionalProperties;
-    }
-
-    /**
-     * Sets additional properties.
-     *
-     * @param additionalProperties the additional properties
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-    }
-
-    /**
-     * Gets extended properties.
-     *
-     * @return the extended properties
-     */
-    public Map<String, Object> getExtendedProperties() {
-        return extendedProperties;
-    }
-
-    /**
-     * Sets extended properties.
-     *
-     * @param extendedProperties the extended properties
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties) {
-        this.extendedProperties = extendedProperties;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Asset asset = (Asset) o;
-        return ownerType == asset.ownerType &&
-                Objects.equals(displayName, asset.displayName) &&
+        return Objects.equals(displayName, asset.displayName) &&
                 Objects.equals(description, asset.description) &&
                 Objects.equals(owner, asset.owner) &&
+                ownerType == asset.ownerType &&
                 Objects.equals(zoneMembership, asset.zoneMembership) &&
                 Objects.equals(origin, asset.origin) &&
                 Objects.equals(typeGUID, asset.typeGUID) &&
-                Objects.equals(typeName, asset.typeName) &&
-                Objects.equals(GUID, asset.GUID) &&
-                Objects.equals(qualifiedName, asset.qualifiedName) &&
-                Objects.equals(additionalProperties, asset.additionalProperties) &&
-                Objects.equals(extendedProperties, asset.extendedProperties);
+                Objects.equals(GUID, asset.GUID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(displayName, description, owner, ownerType, zoneMembership, origin, typeGUID, typeName, GUID, qualifiedName, additionalProperties, extendedProperties);
+        return Objects.hash(super.hashCode(), displayName, description, owner, ownerType, zoneMembership, origin, typeGUID, GUID);
     }
 
     @Override
@@ -283,11 +202,7 @@ public class Asset implements Serializable {
                 ", zoneMembership=" + zoneMembership +
                 ", origin=" + origin +
                 ", typeGUID='" + typeGUID + '\'' +
-                ", typeName='" + typeName + '\'' +
                 ", GUID='" + GUID + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", extendedProperties=" + extendedProperties +
                 '}';
     }
 }

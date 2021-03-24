@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,9 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = RelationalColumn.class, name = "RelationalColumn")
         })
-public class Attribute implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private String qualifiedName;
+public class Attribute extends Referenceable {
     private String displayName;
     private int minCardinality;
     private int maxCardinality;
@@ -36,25 +35,10 @@ public class Attribute implements Serializable {
     private String dataType;
     private String defaultValue;
     private String anchorGUID;
-
-    /**
-     * Gets qualified name.
-     *
-     * @return the qualified name
-     */
-    public String getQualifiedName() {
-        return qualifiedName;
-    }
-
-    /**
-     * Sets qualified name.
-     *
-     * @param qualifiedName the qualified name
-     */
-    public void setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
-    }
-
+    private String nativeClass;
+    private List<String> aliases;
+    private DataItemSortOrder sortOrder;
+    private String description;
     /**
      * Gets display name.
      *
@@ -238,7 +222,6 @@ public class Attribute implements Serializable {
     @Override
     public String toString() {
         return "Attribute{" +
-                "qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", minCardinality='" + minCardinality + '\'' +
                 ", maxCardinality='" + maxCardinality + '\'' +
@@ -257,8 +240,7 @@ public class Attribute implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Attribute attribute = (Attribute) o;
-        return Objects.equals(qualifiedName, attribute.qualifiedName) &&
-                Objects.equals(displayName, attribute.displayName) &&
+        return Objects.equals(displayName, attribute.displayName) &&
                 Objects.equals(minCardinality, attribute.minCardinality) &&
                 Objects.equals(maxCardinality, attribute.maxCardinality) &&
                 Objects.equals(allowsDuplicateValues, attribute.allowsDuplicateValues) &&
@@ -272,7 +254,7 @@ public class Attribute implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, displayName, minCardinality, maxCardinality, allowsDuplicateValues,
+        return Objects.hash(displayName, minCardinality, maxCardinality, allowsDuplicateValues,
                 orderedValues, position, defaultValueOverride, dataType, defaultValue, anchorGUID);
     }
 }

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
-import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 
 import java.util.Objects;
 
@@ -21,6 +20,8 @@ public class RelationalTableRequestBody  extends DataEngineOMASAPIRequestBody {
     @JsonProperty("table")
     private RelationalTable relationalTable;
 
+    private String databaseQualifiedName;
+
     public RelationalTable getRelationalTable() {
         return relationalTable;
     }
@@ -29,10 +30,19 @@ public class RelationalTableRequestBody  extends DataEngineOMASAPIRequestBody {
         this.relationalTable = relationalTable;
     }
 
+    public String getDatabaseQualifiedName() {
+        return databaseQualifiedName;
+    }
+
+    public void setDatabaseQualifiedName(String databaseQualifiedName) {
+        this.databaseQualifiedName = databaseQualifiedName;
+    }
+
     @Override
     public String toString() {
-        return "SchemaTypeRequestBody{" +
-                "schemaType=" + relationalTable +
+        return "RelationalTableRequestBody{" +
+                "relationalTable=" + relationalTable +
+                ", databaseQualifiedName='" + databaseQualifiedName + '\'' +
                 '}';
     }
 
@@ -41,12 +51,13 @@ public class RelationalTableRequestBody  extends DataEngineOMASAPIRequestBody {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RelationalTableRequestBody that = (RelationalTableRequestBody) o;
-        return Objects.equals(relationalTable, that.relationalTable);
+        return Objects.equals(relationalTable, that.relationalTable) &&
+                Objects.equals(databaseQualifiedName, that.databaseQualifiedName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(relationalTable);
+        return Objects.hash(relationalTable, databaseQualifiedName);
     }
 }
 

@@ -825,8 +825,8 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getRelationalTable(),
-                    relationalTableRequestBody.getExternalSourceName());
+            String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getDatabaseQualifiedName(),
+                    relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName());
 
             response.setGUID(relationalTableGUID);
 
@@ -844,10 +844,11 @@ public class DataEngineRESTServices {
     /**
      * Create or update a Relational Table
      *
-     * @param userId             the name of the calling user
-     * @param serverName         name of server instance to call
-     * @param relationalTable    the schema type values
-     * @param externalSourceName the unique name of the external source
+     * @param userId                the name of the calling user
+     * @param serverName            name of server instance to call
+     * @param databaseQualifiedName qualified name of the database
+     * @param relationalTable       the schema type values
+     * @param externalSourceName    the unique name of the external source
      *
      * @return the unique identifier (guid) of the created schema type
      *
@@ -855,22 +856,24 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertRelationalTable(String userId, String serverName, RelationalTable relationalTable, String externalSourceName) throws
-                                                                                                                                      InvalidParameterException,
-                                                                                                                                      UserNotAuthorizedException,
-                                                                                                                                      PropertyServerException {
+    public String upsertRelationalTable(String userId, String serverName, String databaseQualifiedName, RelationalTable relationalTable,
+                                        String externalSourceName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException {
         final String methodName = "upsertRelationalTable";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
 
-        DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-//        String relationalTableGUID = dataEngineSchemaTypeHandler.upsertSchemaType(userId, relationalTable, externalSourceName);
-//
-//        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
-//
-//        return relationalTableGUID;
-        return null;
+
+
+        String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId, databaseQualifiedName, relationalTable,
+                externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
+
+        return relationalTableGUID;
     }
 
     private void addAssetProperties(DatabaseSchema databaseSchema, String owner, OwnerType ownerType, List<String> zoneMembership) {
@@ -893,6 +896,7 @@ public class DataEngineRESTServices {
 
         return databaseSchemaGUID;
     }
+
     private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeGUID, String oldSchemaTypeGUID,
                                           String externalSourceName) throws
                                                                      InvalidParameterException,
