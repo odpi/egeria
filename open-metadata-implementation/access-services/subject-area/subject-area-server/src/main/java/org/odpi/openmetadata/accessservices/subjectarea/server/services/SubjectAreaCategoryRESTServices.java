@@ -6,9 +6,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaCate
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -68,11 +69,15 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler categoryHandler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = categoryHandler.createCategory(userId, suppliedCategory);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -99,12 +104,16 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.getCategoryByGuid(userId, guid);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -146,12 +155,16 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
             response = handler.findCategory(userId, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -181,23 +194,25 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException   Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(String serverName,
-                                                                     String userId,
-                                                                     String guid,
-                                                                     Date asOfTime,
-                                                                     Integer startingFrom,
-                                                                     Integer pageSize,
-                                                                     SequencingOrder sequencingOrder,
-                                                                     String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getCategoryRelationships(String serverName,
+                                                                             String userId,
+                                                                             String guid,
+                                                                             Date asOfTime,
+                                                                             Integer startingFrom,
+                                                                             Integer pageSize,
+                                                                             SequencingOrder sequencingOrder,
+                                                                             String sequencingProperty
+                                                                            ) {
 
         final String methodName = "getCategoryRelationships";
 
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
@@ -208,6 +223,8 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             response = handler.getCategoryRelationships(userId, guid, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -240,11 +257,15 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.updateCategory(userId, guid, suppliedCategory, isReplace);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -283,11 +304,15 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.deleteCategory(userId, guid, isPurge);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -316,11 +341,15 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.restoreCategory(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -351,11 +380,15 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.getCategorizedTerms(userId, guid, searchCriteria, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom , pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -385,11 +418,15 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.getCategoryChildren(userId, guid, searchCriteria, startingFrom , pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);

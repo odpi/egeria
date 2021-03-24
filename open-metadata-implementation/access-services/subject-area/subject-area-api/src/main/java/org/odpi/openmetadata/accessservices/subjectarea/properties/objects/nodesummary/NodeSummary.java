@@ -153,7 +153,7 @@ public class NodeSummary implements Serializable {
     }
 
     /**
-     * The unique identifier of the associated Line (relationship)
+     * The unique identifier of the associated relationship
      *
      * @return relationship guid
      */
@@ -162,7 +162,7 @@ public class NodeSummary implements Serializable {
     }
 
     /**
-     * The set the unique identifier of the associated Line (relationship)
+     * The set the unique identifier of the associated relationship
      *
      * @param relationshipguid relationship guid
      */

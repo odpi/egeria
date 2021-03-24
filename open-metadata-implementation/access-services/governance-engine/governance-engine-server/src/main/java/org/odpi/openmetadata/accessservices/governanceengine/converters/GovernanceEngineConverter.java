@@ -75,8 +75,8 @@ public class GovernanceEngineConverter<B> extends GovernanceEngineOMASConverter<
                 properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                 properties.setDisplayName(this.removeName(instanceProperties));
                 properties.setDescription(this.removeDescription(instanceProperties));
-                properties.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                properties.setVersion(this.removeVersion(instanceProperties));
+                properties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                properties.setVersion(this.removeCapabilityVersion(instanceProperties));
                 properties.setPatchLevel(this.removePatchLevel(instanceProperties));
                 properties.setSource(this.removeSource(instanceProperties));
 

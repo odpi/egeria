@@ -34,7 +34,15 @@ the metadata workload from the connected tools.
 ## Cohort membership
 
 To join an open metadata repository cohort, a metadata repository must integrate
-with the OMRS module.  The integration involves:
+with the OMRS module. Egeria provides a number or pre-built
+[cohort members](../../admin-services/docs/concepts/cohort-member.md).
+
+One of them, the [repository proxy](../../admin-services/docs/concepts/repository-proxy.md)
+provides a simple way to integrate a third party server into a cohort 
+by creating an [OMRS Repository Connector and optional Event Mapper Connector](../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
+to map between the third party APIs/events and the repository service's equivalents
+
+A more bespoke integration involves:
 
 * Creating an [OMRS Repository Connector and optional Event Mapper Connector](../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
 * Designing how to configure the OMRS Services for your metadata repository.
@@ -90,6 +98,10 @@ appropriate OMRS Topic for each cohort it register with.
 This capability is useful for a metadata repository that is aggregating reference
 copies of metadata from multiple open metadata repository cohorts.
 
+
+----
+
+* Return to the [repository services overview](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

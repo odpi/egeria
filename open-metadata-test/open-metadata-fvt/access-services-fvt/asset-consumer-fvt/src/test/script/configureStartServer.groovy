@@ -1,5 +1,7 @@
 #!/usr/local/bin/groovy
 import javax.net.ssl.HttpsURLConnection
+import java.security.cert.X509Certificate
+import java.security.cert.CertificateException
 
 // SPDX-License-Identifier: Apache-2.0
 // Copyright Contributors to the ODPi Egeria project.
@@ -13,31 +15,29 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
-user=properties["user"] ?: "garygeeke";
-baseURL=properties["baseURL"] ?: "https://localhost:9443";
-serverMem=properties["servermem"] ?: "serverinmem";
-serverGraph=properties["servergraph"] ?: "servergraph";
-retries=properties["retries"] ?: 12;
-delay=properties["delay"] ?: 10;
+// Maven plugin works best with properties, gradle with system properties, so use either
+user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
+baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
+serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
+serverGraph=(properties["servergraph"] ?: System.properties["servergraph"]) ?: "servergraph";
+retries=(properties["retries"] ?: System.properties["retries"]) ?: 12;
+delay=(properties["delay"] ?: System.properties["delay"]) ?: 10;
 
 // SSL setup to avoid self-signed errors for testing
-TrustManager[] trustAllCerts = new TrustManager[]{
+def trustAllCerts = [
         new X509TrustManager() {
+            public X509Certificate[] getAcceptedIssuers() {
+                return null
+            }
 
-            public java.security.cert.X509Certificate[] getAcceptedIssuers()
-            {
-                return null;
+            public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
             }
-            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType)
-            {
-                //No need to implement.
-            }
-            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType)
-            {
-                //No need to implement.
+
+            public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {
             }
         }
-};
+] as TrustManager[]
+
 try
 {
     SSLContext sc = SSLContext.getInstance("SSL");

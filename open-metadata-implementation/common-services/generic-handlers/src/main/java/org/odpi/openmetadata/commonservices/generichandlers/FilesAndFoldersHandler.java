@@ -255,7 +255,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             {
                 int startingToken = 0;
 
-                if ("".equals(tokens[startingToken]))
+                if (tokens[startingToken].length() == 0)
                 {
                     startingToken = 1;
                 }
@@ -1315,6 +1315,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     /**
      * Set up the extended properties found in the basic data file.
      *
+     * @param pathName the fully qualified physical location of the data store
      * @param createTime the time that the file was created
      * @param modifiedTime the time of the latest change to the file
      * @param encodingType the type of encoding used on the file
@@ -1325,7 +1326,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param extendedProperties extended properties supplied by the caller
      * @return filled out map or null
      */
-    private Map<String, Object> getExtendedProperties(Date                createTime,
+    private Map<String, Object> getExtendedProperties(String              pathName,
+                                                      Date                createTime,
                                                       Date                modifiedTime,
                                                       String              encodingType,
                                                       String              encodingLanguage,
@@ -1339,6 +1341,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         if (assetExtendedProperties == null)
         {
             assetExtendedProperties = new HashMap<>();
+        }
+
+        if (pathName != null)
+        {
+            assetExtendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
         }
 
         if (createTime != null)
@@ -1444,7 +1451,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, pathParameterName, methodName);
 
-        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,
+        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(pathName,
+                                                                                 createTime,
                                                                                  modifiedTime,
                                                                                  encodingType,
                                                                                  encodingLanguage,
@@ -1573,9 +1581,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param userId calling user (assumed to be the owner)
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param fullPath unique path and file name for file
+     * @param qualifiedName unique name for the file - typically path and file name
      * @param displayName short display name for file (defaults to the file name without the path)
      * @param description description of the file
+     * @param pathName  the fully qualified physical location of the data store - default is qualified name
      * @param createTime the time that the file was created
      * @param modifiedTime the time of the latest change to the file
      * @param encodingType the type of encoding used on the file
@@ -1598,9 +1607,10 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     public List<String>  addFileToCatalog(String              userId,
                                           String              externalSourceGUID,
                                           String              externalSourceName,
-                                          String              fullPath,
+                                          String              qualifiedName,
                                           String              displayName,
                                           String              description,
+                                          String              pathName,
                                           Date                createTime,
                                           Date                modifiedTime,
                                           String              encodingType,
@@ -1616,11 +1626,18 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        final String pathParameterName = "fullPath";
+        final String pathParameterName = "qualifiedName";
         final String fileAssetParameterName = "fileAssetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(fullPath, pathParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, pathParameterName, methodName);
+
+        String fullPath = pathName;
+
+        if (fullPath == null)
+        {
+            fullPath = qualifiedName;
+        }
 
         String fileType = suppliedFileType;
 
@@ -1629,7 +1646,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             fileType = this.getFileType(fullPath);
         }
 
-        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,
+        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
+                                                                                 createTime,
                                                                                  modifiedTime,
                                                                                  encodingType,
                                                                                  encodingLanguage,
@@ -1753,6 +1771,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                 qualifiedNameParameterName,
                                                                 displayName,
                                                                 description,
+                                                                fullPath,
                                                                 methodName);
 
         if (fileAssetGUID != null)
@@ -1818,6 +1837,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                   qualifiedNameParameterName,
                                                                   displayName,
                                                                   description,
+                                                                  pathName,
                                                                   methodName);
 
         if (folderAssetGUID != null)
@@ -2586,7 +2606,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFileGUID, dataFileGUIDParameterName, methodName);
 
-        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,
+        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
+                                                                                 createTime,
                                                                                  modifiedTime,
                                                                                  encodingType,
                                                                                  encodingLanguage,
@@ -2664,7 +2685,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFileGUID, dataFolderGUIDParameterName, methodName);
 
-        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(createTime,
+        Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
+                                                                                 createTime,
                                                                                  modifiedTime,
                                                                                  encodingType,
                                                                                  encodingLanguage,

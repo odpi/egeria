@@ -120,6 +120,8 @@ Once it is configured, the integration daemon can be started using the
 
 ## Further Information
 
+* For help in fixing any error you find using the integration daemon, visit the
+[Integration Daemon Diagnostic Guide](../../../../open-metadata-publication/website/diagnostic-guide/integration-daemon-diagnostic-guide.md).
 * Link to the [Egeria Solutions](../../../../open-metadata-publication/website/solutions) to see the integration
 daemon in action.
 * Link to the [Integration Daemon Services](../../../governance-servers/integration-daemon-services) to

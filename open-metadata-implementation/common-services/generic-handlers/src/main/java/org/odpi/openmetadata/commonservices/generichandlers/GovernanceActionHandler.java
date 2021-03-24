@@ -428,10 +428,10 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             if ((requestParameters != null) && (! requestParameters.isEmpty()))
             {
                 executorProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                                         executorProperties,
-                                                                                         OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
-                                                                                         requestParameters,
-                                                                                         methodName);
+                                                                                     executorProperties,
+                                                                                     OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                     requestParameters,
+                                                                                     methodName);
             }
 
             this.linkElementToElement(userId,
@@ -442,7 +442,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                       governanceEngineGUID,
                                       governanceEngineGUIDParameterName,
-                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
                                       OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                       executorProperties,
@@ -844,8 +844,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                    properties,
                                                                                    methodName);
 
-                if (((status == GovernanceActionStatus.REQUESTED) ||
-                             (status == GovernanceActionStatus.APPROVED)) && (processingEngineUserId == null))
+                if ((status == GovernanceActionStatus.APPROVED) && (processingEngineUserId == null))
                 {
                     GovernanceActionBuilder builder = new GovernanceActionBuilder(OpenMetadataAPIMapper.WAITING_GA_STATUS_ORDINAL,
                                                                                   userId,
@@ -939,7 +938,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                    properties,
                                                                                    methodName);
 
-                if (userId.equals(processingEngineUserId))
+                if (((processingEngineUserId == null) && (governanceActionStatus == OpenMetadataAPIMapper.APPROVED_GA_STATUS_ORDINAL)) ||
+                            (userId.equals(processingEngineUserId)))
                 {
                     try
                     {

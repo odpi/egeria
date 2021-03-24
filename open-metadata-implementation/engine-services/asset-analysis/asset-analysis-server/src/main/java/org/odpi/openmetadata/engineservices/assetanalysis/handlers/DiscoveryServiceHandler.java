@@ -36,7 +36,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
      *
      * @param discoveryEngineProperties properties of the discovery engine - used for message logging
      * @param discoveryEngineGUID unique Identifier of the discovery engine - used for message logging
-     * @param governanceActionUserId userId for making updates to the governance actions
+     * @param engineHostUserId userId for making updates to the governance actions
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param governanceActionClient client for processing governance actions
      * @param requestType requestType - used for message logging
@@ -49,7 +49,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
      */
     DiscoveryServiceHandler(GovernanceEngineProperties discoveryEngineProperties,
                             String                     discoveryEngineGUID,
-                            String                     governanceActionUserId,
+                            String                     engineHostUserId,
                             String                     governanceActionGUID,
                             GovernanceEngineClient     governanceActionClient,
                             String                     requestType,
@@ -62,7 +62,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
     {
         super(discoveryEngineProperties,
               discoveryEngineGUID,
-              governanceActionUserId,
+              engineHostUserId,
               governanceActionGUID,
               governanceActionClient,
               requestType,

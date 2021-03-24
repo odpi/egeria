@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * The handler exposes methods for term functionality for the glossary author view
  */
 public class RelationshipHandler {
-    private SubjectAreaRelationshipClients subjectAreaRelationship;
+    private final SubjectAreaRelationshipClients subjectAreaRelationship;
 
     /**
      * Constructor for the RelationshipHandler
@@ -29,13 +29,13 @@ public class RelationshipHandler {
      * Create a Term HasA Relationship. A relationship between a spine object and a spine attribute.
      * Note that this method does not error if the relationship ends are not spine objects or spine attributes.
      * <p>
+     *
      * @param userId               userId under which the request is performed
      * @param termHasARelationship the HasA relationship
      * @return the created term HasA relationship
-     *
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public HasA createTermHasARelationship(String userId, HasA termHasARelationship) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaRelationship.hasA().create(userId, termHasARelationship);
@@ -47,10 +47,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Hasa relationship to get
      * @return Hasa
-     *
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public HasA getTermHasARelationship(String userId, String guid) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
@@ -63,13 +62,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId               userId under which the request is performed
-     * @param guid   guid of the Hasa relationship
+     * @param guid                 guid of the Hasa relationship
      * @param termHasARelationship the HasA relationship
      * @return the updated term HasA relationship
-     *
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property Server Exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property Server Exception
      */
     public HasA updateTermHasARelationship(String userId, String guid, HasA termHasARelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.hasA().update(userId, guid, termHasARelationship);
@@ -80,12 +78,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId               userId under which the request is performed
-     * @param guid   guid of the Hasa relationship
+     * @param guid                 guid of the Hasa relationship
      * @param termHasARelationship the HasA relationship
      * @return the replaced term HasA relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public HasA replaceTermHasARelationship(String userId, String guid, HasA termHasARelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.hasA().replace(userId, guid, termHasARelationship);
@@ -98,10 +96,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Hasa relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteTermHasARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.hasA().delete(userId, guid);
@@ -113,9 +111,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Hasa relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeTermHasARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.hasA().purge(userId, guid);
@@ -129,9 +127,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the has a relationship to delete
      * @return the restored has a relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public HasA restoreTermHasARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.hasA().restore(userId, guid);
@@ -144,11 +142,10 @@ public class RelationshipHandler {
      *
      * @param userId                  unique identifier for requesting user, under which the request is performed
      * @param relatedTermRelationship the RelatedTerm relationship
-     *
      * @return the created RelatedTerm relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property Server Exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property Server Exception
      */
     public RelatedTerm createRelatedTerm(String userId, RelatedTerm relatedTermRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.relatedTerm().create(userId, relatedTermRelationship);
@@ -160,9 +157,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to get
      * @return RelatedTerm
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public RelatedTerm getRelatedTerm(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.relatedTerm().getByGUID(userId, guid);
@@ -174,11 +171,11 @@ public class RelationshipHandler {
      *
      * @param userId          userId under which the request is performed
      * @param termRelatedTerm the RelatedTerm relationship
-     * @param guid   guid of the RelatedTerm relationship
+     * @param guid            guid of the RelatedTerm relationship
      * @return the updated term RelatedTerm relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public RelatedTerm updateRelatedTerm(String userId, String guid, RelatedTerm termRelatedTerm) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.relatedTerm().update(userId, guid, termRelatedTerm);
@@ -189,12 +186,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId          userId under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship
+     * @param guid            guid of the RelatedTerm relationship
      * @param termRelatedTerm the replacement related term relationship
      * @return ReplacementTerm replaced related Term relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public RelatedTerm replaceRelatedTerm(String userId, String guid, RelatedTerm termRelatedTerm) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.relatedTerm().replace(userId, guid, termRelatedTerm);
@@ -208,9 +205,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the related term relationship to restore
      * @return the restored related term relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public RelatedTerm restoreRelatedTerm(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.relatedTerm().restore(userId, guid);
@@ -223,10 +220,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteRelatedTerm(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.relatedTerm().delete(userId, guid);
@@ -238,9 +235,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the RelatedTerm relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeRelatedTerm(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.relatedTerm().purge(userId, guid);
@@ -254,9 +251,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the related term relationship to delete
      * @return the restored related term relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public RelatedTerm restoreRelatedTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.relatedTerm().restore(userId, guid);
@@ -270,9 +267,9 @@ public class RelationshipHandler {
      * @param userId  userId under which the request is performed
      * @param synonym the Synonym relationship
      * @return the created Synonym relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Synonym createSynonymRelationship(String userId, Synonym synonym) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.synonym().create(userId, synonym);
@@ -284,9 +281,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Synonym relationship to get
      * @return Synonym
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public Synonym getSynonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.synonym().getByGUID(userId, guid);
@@ -298,11 +295,11 @@ public class RelationshipHandler {
      *
      * @param userId  userId under which the request is performed
      * @param synonym the Synonym relationship
-     * @param guid   guid of the Synonym relationship
+     * @param guid    guid of the Synonym relationship
      * @return updated Synonym relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Synonym updateSynonymRelationship(String userId, String guid, Synonym synonym) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.synonym().update(userId, guid, synonym);
@@ -313,12 +310,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId  userId under which the request is performed
-     * @param guid   guid of the Synonym relationship
+     * @param guid    guid of the Synonym relationship
      * @param synonym the Synonym relationship
      * @return replaced synonym relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Synonym replaceSynonymRelationship(String userId, String guid, Synonym synonym) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.synonym().replace(userId, guid, synonym);
@@ -331,10 +328,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the synonym relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteSynonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.synonym().delete(userId, guid);
@@ -346,9 +343,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Synonym relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeSynonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.synonym().purge(userId, guid);
@@ -362,9 +359,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Synonym relationship to delete
      * @return the restored Synonym relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Synonym restoreSynonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.synonym().restore(userId, guid);
@@ -379,9 +376,9 @@ public class RelationshipHandler {
      * @param userId  userId under which the request is performed
      * @param antonym the Antonym relationship
      * @return the created antonym relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Antonym createAntonymRelationship(String userId, Antonym antonym) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.antonym().create(userId, antonym);
@@ -393,9 +390,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Anonym relationship to get
      * @return Antonym relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public Antonym getAntonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.antonym().getByGUID(userId, guid);
@@ -406,12 +403,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId  userId under which the request is performed
-     * @param guid   guid of the Anonym relationship
+     * @param guid    guid of the Anonym relationship
      * @param antonym the Antonym relationship
      * @return Antonym updated antonym
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Antonym updateAntonymRelationship(String userId, String guid, Antonym antonym) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.antonym().update(userId, guid, antonym);
@@ -422,12 +419,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId  userId under which the request is performed
-     * @param guid   guid of the Anonym relationship
+     * @param guid    guid of the Anonym relationship
      * @param antonym the antonym relationship
      * @return Antonym replaced antonym
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Antonym replaceAntonymRelationship(String userId, String guid, Antonym antonym) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.antonym().replace(userId, guid, antonym);
@@ -440,10 +437,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Antonym relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteAntonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.antonym().delete(userId, guid);
@@ -455,9 +452,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Antonym relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeAntonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.antonym().purge(userId, guid);
@@ -471,9 +468,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Antonym relationship to delete
      * @return the restored Antonym relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Antonym restoreAntonymRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.antonym().restore(userId, guid);
@@ -487,9 +484,9 @@ public class RelationshipHandler {
      * @param userId      userId under which the request is performed
      * @param translation the Translation relationship
      * @return the created translation relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Translation createTranslationRelationship(String userId, Translation translation) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.translation().create(userId, translation);
@@ -501,9 +498,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Translation relationship to get
      * @return Translation
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public Translation getTranslationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.translation().getByGUID(userId, guid);
@@ -514,12 +511,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId      userId under which the request is performed
-     * @param guid   guid of the Translation relationship
+     * @param guid        guid of the Translation relationship
      * @param translation the Translation relationship
      * @return Translation updated translation
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Translation updateTranslationRelationship(String userId, String guid, Translation translation) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.translation().update(userId, guid, translation);
@@ -530,12 +527,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId      userId under which the request is performed
-     * @param guid   guid of the Translation relationship
+     * @param guid        guid of the Translation relationship
      * @param translation the translation relationship
      * @return Translation replaced translation
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Translation replaceTranslationRelationship(String userId, String guid, Translation translation) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.translation().replace(userId, guid, translation);
@@ -548,10 +545,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Translation relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteTranslationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.translation().delete(userId, guid);
@@ -563,9 +560,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Translation relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeTranslationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.translation().purge(userId, guid);
@@ -579,9 +576,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Translation relationship to delete
      * @return the restored Translation relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Translation restoreTranslationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.translation().restore(userId, guid);
@@ -595,9 +592,9 @@ public class RelationshipHandler {
      * @param userId        userId under which the request is performed
      * @param usedInContext the UsedInContext relationship
      * @return the created usedInContext relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public UsedInContext createUsedInContextRelationship(String userId, UsedInContext usedInContext) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.usedInContext().create(userId, usedInContext);
@@ -609,9 +606,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the UsedInContext relationship to get
      * @return UsedInContext
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public UsedInContext getUsedInContextRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.usedInContext().getByGUID(userId, guid);
@@ -622,12 +619,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId        userId under which the request is performed
-     * @param guid   guid of the UsedInContext relationship
+     * @param guid          guid of the UsedInContext relationship
      * @param usedInContext the UsedInContext relationship
      * @return UsedInContext updated usedInContext
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public UsedInContext updateUsedInContextRelationship(String userId, String guid, UsedInContext usedInContext) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.usedInContext().update(userId, guid, usedInContext);
@@ -638,12 +635,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId        userId under which the request is performed
-     * @param guid   guid of the UsedInContext relationship
+     * @param guid          guid of the UsedInContext relationship
      * @param usedInContext the usedInContext relationship
      * @return UsedInContext replaced usedInContext
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public UsedInContext replaceUsedInContextRelationship(String userId, String guid, UsedInContext usedInContext) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.usedInContext().replace(userId, guid, usedInContext);
@@ -656,10 +653,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the UsedInContext relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteUsedInContextRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.usedInContext().delete(userId, guid);
@@ -671,9 +668,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the UsedInContext relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeUsedInContextRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.usedInContext().purge(userId, guid);
@@ -687,9 +684,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Used in context relationship to delete
      * @return the restored Used in context relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public UsedInContext restoreUsedInContextRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.usedInContext().restore(userId, guid);
@@ -703,9 +700,9 @@ public class RelationshipHandler {
      * @param userId        userId under which the request is performed
      * @param preferredTerm the PreferredTerm relationship
      * @return the created preferredTerm relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public PreferredTerm createPreferredTermRelationship(String userId, PreferredTerm preferredTerm) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.preferredTerm().create(userId, preferredTerm);
@@ -717,9 +714,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the PreferredTerm relationship to get
      * @return PreferredTerm
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public PreferredTerm getPreferredTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.preferredTerm().getByGUID(userId, guid);
@@ -730,12 +727,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId        userId under which the request is performed
-     * @param guid   guid of the PreferredTerm relationship
+     * @param guid          guid of the PreferredTerm relationship
      * @param preferredTerm the PreferredTerm relationship
      * @return PreferredTerm updated preferredTerm
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public PreferredTerm updatePreferredTermRelationship(String userId, String guid, PreferredTerm preferredTerm) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.preferredTerm().update(userId, guid, preferredTerm);
@@ -746,12 +743,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId        userId under which the request is performed
-     * @param guid   guid of the PreferredTerm relationship
+     * @param guid          guid of the PreferredTerm relationship
      * @param preferredTerm the preferredTerm relationship
      * @return PreferredTerm replaced preferredTerm
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public PreferredTerm replacePreferredTermRelationship(String userId, String guid, PreferredTerm preferredTerm) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.preferredTerm().replace(userId, guid, preferredTerm);
@@ -764,10 +761,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the PreferredTerm relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deletePreferredTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.preferredTerm().delete(userId, guid);
@@ -779,9 +776,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the PreferredTerm relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgePreferredTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.preferredTerm().purge(userId, guid);
@@ -795,9 +792,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the preferred term relationship to delete
      * @return the restored preferred term relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public PreferredTerm restorePreferredTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.preferredTerm().restore(userId, guid);
@@ -811,9 +808,9 @@ public class RelationshipHandler {
      * @param userId     userId under which the request is performed
      * @param validValue the ValidValue relationship
      * @return the created validValue relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ValidValue createValidValueRelationship(String userId, ValidValue validValue) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.validValue().create(userId, validValue);
@@ -825,9 +822,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ValidValue relationship to get
      * @return ValidValue
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public ValidValue getValidValueRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.validValue().getByGUID(userId, guid);
@@ -838,12 +835,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId     userId under which the request is performed
-     * @param guid   guid of the ValidValue relationship
+     * @param guid       guid of the ValidValue relationship
      * @param validValue the ValidValue relationship
      * @return ValidValue updated validValue
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ValidValue updateValidValueRelationship(String userId, String guid, ValidValue validValue) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.validValue().update(userId, guid, validValue);
@@ -854,12 +851,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId     userId under which the request is performed
-     * @param guid   guid of the ValidValue relationship
+     * @param guid       guid of the ValidValue relationship
      * @param validValue the validValue relationship
      * @return ValidValue replaced validValue
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ValidValue replaceValidValueRelationship(String userId, String guid, ValidValue validValue) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.validValue().replace(userId, guid, validValue);
@@ -872,10 +869,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ValidValue relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteValidValueRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.validValue().delete(userId, guid);
@@ -887,9 +884,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ValidValue relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeValidValueRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.validValue().purge(userId, guid);
@@ -903,9 +900,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the valid value relationship to delete
      * @return the restored valid value relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ValidValue restoreValidValueRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.validValue().restore(userId, guid);
@@ -919,9 +916,9 @@ public class RelationshipHandler {
      * @param userId          userId under which the request is performed
      * @param replacementTerm the ReplacementTerm relationship
      * @return the created replacementTerm relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ReplacementTerm createReplacementTermRelationship(String userId, ReplacementTerm replacementTerm) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.replacementTerm().create(userId, replacementTerm);
@@ -933,9 +930,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ReplacementTerm relationship to get
      * @return ReplacementTerm
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public ReplacementTerm getReplacementTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.replacementTerm().getByGUID(userId, guid);
@@ -946,12 +943,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId          userId under which the request is performed
-     * @param guid   guid of the ReplacementTerm relationship
+     * @param guid            guid of the ReplacementTerm relationship
      * @param replacementTerm the ReplacementTerm relationship
      * @return ReplacementTerm updated replacementTerm
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ReplacementTerm updateReplacementTermRelationship(String userId, String guid, ReplacementTerm replacementTerm) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.replacementTerm().update(userId, guid, replacementTerm);
@@ -962,12 +959,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId          userId under which the request is performed
-     * @param guid   guid of the ReplacementTerm relationship
+     * @param guid            guid of the ReplacementTerm relationship
      * @param replacementTerm the replacementTerm relationship
      * @return ReplacementTerm replaced replacementTerm
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ReplacementTerm replaceReplacementTermRelationship(String userId, String guid, ReplacementTerm replacementTerm) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.replacementTerm().replace(userId, guid, replacementTerm);
@@ -980,10 +977,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ReplacementTerm relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteReplacementTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.replacementTerm().delete(userId, guid);
@@ -995,9 +992,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ReplacementTerm relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeReplacementTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.replacementTerm().purge(userId, guid);
@@ -1011,9 +1008,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the replacement term relationship to delete
      * @return the restored replacement term relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ReplacementTerm restoreReplacementTermRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.replacementTerm().restore(userId, guid);
@@ -1027,9 +1024,9 @@ public class RelationshipHandler {
      * @param userId                  userId under which the request is performed
      * @param termTYPEDBYRelationship the TypedBy relationship
      * @return the created termTYPEDBYRelationship relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public TypedBy createTermTYPEDBYRelationship(String userId, TypedBy termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.typedBy().create(userId, termTYPEDBYRelationship);
@@ -1041,9 +1038,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the termTYPEDBYRelationship relationship to get
      * @return TypedBy
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public TypedBy getTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.typedBy().getByGUID(userId, guid);
@@ -1054,12 +1051,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId                  userId under which the request is performed
-     * @param guid   guid of the TypedBy relationship
+     * @param guid                    guid of the TypedBy relationship
      * @param termTYPEDBYRelationship the TypedBy relationship
      * @return TypedBy updated termTYPEDBYRelationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public TypedBy updateTermTYPEDBYRelationship(String userId, String guid, TypedBy termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.typedBy().update(userId, guid, termTYPEDBYRelationship);
@@ -1070,12 +1067,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId                  userId under which the request is performed
-     * @param guid   guid of the TypedBy relationship
+     * @param guid                    guid of the TypedBy relationship
      * @param termTYPEDBYRelationship the termTYPEDBYRelationship relationship
      * @return TypedBy replaced termTYPEDBYRelationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public TypedBy replaceTermTYPEDBYRelationship(String userId, String guid, TypedBy termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.typedBy().replace(userId, guid, termTYPEDBYRelationship);
@@ -1088,10 +1085,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the termTYPEDBYRelationship relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.typedBy().delete(userId, guid);
@@ -1103,9 +1100,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TypedBy relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeTermTYPEDBYRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.typedBy().purge(userId, guid);
@@ -1119,9 +1116,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the typed by relationship to delete
      * @return the restored typed by relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public TypedBy restoreTypedByRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.typedBy().restore(userId, guid);
@@ -1135,9 +1132,9 @@ public class RelationshipHandler {
      * @param userId userId under which the request is performed
      * @param isa    the Isa relationship
      * @return the created isa relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public IsA createIsaRelationship(String userId, IsA isa) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isA().create(userId, isa);
@@ -1149,9 +1146,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the isa relationship to get
      * @return Isa
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public IsA getIsaRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isA().getByGUID(userId, guid);
@@ -1165,9 +1162,9 @@ public class RelationshipHandler {
      * @param guid   guid of the isa relationship
      * @param isa    the Isa relationship
      * @return Isa updated isa
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public IsA updateIsaRelationship(String userId, String guid, IsA isa) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isA().update(userId, guid, isa);
@@ -1181,9 +1178,9 @@ public class RelationshipHandler {
      * @param guid   guid of the isa relationship
      * @param isa    the isa relationship
      * @return Isa replaced isa
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public IsA replaceIsaRelationship(String userId, String guid, IsA isa) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isA().replace(userId, guid, isa);
@@ -1196,10 +1193,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the isa relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteIsaRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.isA().delete(userId, guid);
@@ -1211,9 +1208,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Isa relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeIsaRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.isA().purge(userId, guid);
@@ -1227,9 +1224,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the is a relationship to delete
      * @return the restored is a relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public IsA restoreIsaRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isA().restore(userId, guid);
@@ -1243,9 +1240,9 @@ public class RelationshipHandler {
      * @param userId    userId under which the request is performed
      * @param isATypeOf the IsaTypeOf relationship
      * @return the created IsaTypeOf relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public IsATypeOf createTermIsATypeOfRelationship(String userId, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isaTypeOf().create(userId, isATypeOf);
@@ -1257,9 +1254,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the IsaTypeOf relationship to get
      * @return IsaTypeOf
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public IsATypeOf getTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isaTypeOf().getByGUID(userId, guid);
@@ -1270,12 +1267,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId    userId under which the request is performed
-     * @param guid   guid of the IsaTypeOf relationship
+     * @param guid      guid of the IsaTypeOf relationship
      * @param isATypeOf the IsaTypeOf relationship
      * @return IsaTypeOf updated IsaTypeOf
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public IsATypeOf updateTermIsATypeOfRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isaTypeOf().update(userId, guid, isATypeOf);
@@ -1286,12 +1283,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId    userId under which the request is performed
-     * @param guid   guid of the IsaTypeOf relationship
+     * @param guid      guid of the IsaTypeOf relationship
      * @param isATypeOf the IsaTypeOf relationship
      * @return IsaTypeOf replaced IsaTypeOf
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public IsATypeOf replaceTermIsATypeOfRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isaTypeOf().replace(userId, guid, isATypeOf);
@@ -1304,10 +1301,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the IsaTypeOf relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.isaTypeOf().delete(userId, guid);
@@ -1319,9 +1316,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the IsaTypeOf relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.isaTypeOf().purge(userId, guid);
@@ -1335,9 +1332,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the is a type of relationship to delete
      * @return the restored is a type of relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public IsATypeOf restoreIsaTypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isaTypeOf().restore(userId, guid);
@@ -1351,9 +1348,9 @@ public class RelationshipHandler {
      * @param userId                         userId under which the request is performed
      * @param termCategorizationRelationship the term categorization relationship
      * @return the created term categorization relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Categorization createTermCategorizationRelationship(String userId, Categorization termCategorizationRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termCategorization().create(userId, termCategorizationRelationship);
@@ -1365,9 +1362,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermCategorizationRelationship relationship to get
      * @return TermCategorizationRelationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public Categorization getTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termCategorization().getByGUID(userId, guid);
@@ -1376,13 +1373,14 @@ public class RelationshipHandler {
     /**
      * Update a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
      * <p>
+     *
      * @param userId                         userId under which the request is performed
-     * @param guid   guid of the TermCategorizationRelationship
+     * @param guid                           guid of the TermCategorizationRelationship
      * @param termCategorizationRelationship the term categorization relationship
      * @return the updated term categorization relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Categorization updateTermCategorizationRelationship(String userId, String guid, Categorization termCategorizationRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termCategorization().update(userId, guid, termCategorizationRelationship);
@@ -1393,12 +1391,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId                         userId under which the request is performed
-     * @param guid   guid of the TermCategorizationRelationship
+     * @param guid                           guid of the TermCategorizationRelationship
      * @param termCategorizationRelationship the term categorization relationship
      * @return the replaced term categorization relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Categorization replaceTermCategorizationRelationship(String userId, String guid, Categorization termCategorizationRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termCategorization().replace(userId, guid, termCategorizationRelationship);
@@ -1410,13 +1408,13 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermCategorizationRelationship relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-         subjectAreaRelationship.termCategorization().delete(userId, guid);
+        subjectAreaRelationship.termCategorization().delete(userId, guid);
     }
 
     /**
@@ -1425,9 +1423,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermCategorizationRelationship relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.termCategorization().purge(userId, guid);
@@ -1441,9 +1439,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Term Categorization relationship to delete
      * @return the restored has a relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public Categorization restoreTermCategorizationRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termCategorization().restore(userId, guid);
@@ -1460,9 +1458,9 @@ public class RelationshipHandler {
      * @param userId                 userId under which the request is performed
      * @param termAnchorRelationship the TermAnchor relationship
      * @return the created TermAnchor relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public TermAnchor createTermAnchorRelationship(String userId, TermAnchor termAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termAnchor().create(userId, termAnchorRelationship);
@@ -1474,9 +1472,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermAnchorRelationship relationship to get
      * @return TermAnchorRelationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public TermAnchor getTermAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termAnchor().getByGUID(userId, guid);
@@ -1487,12 +1485,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId                 userId under which the request is performed
-     * @param guid   guid of the TermAnchorRelationship relationship
+     * @param guid                   guid of the TermAnchorRelationship relationship
      * @param termAnchorRelationship the TermAnchor relationship
      * @return the updated TermAnchor relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public TermAnchor updateTermAnchorRelationship(String userId, String guid, TermAnchor termAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termAnchor().replace(userId, guid, termAnchorRelationship);
@@ -1503,12 +1501,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId                 userId under which the request is performed
-     * @param guid   guid of the TermAnchorRelationship relationship
+     * @param guid                   guid of the TermAnchorRelationship relationship
      * @param termAnchorRelationship the TermAnchor relationship
      * @return the updated TermAnchor relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public TermAnchor replaceTermAnchorRelationship(String userId, String guid, TermAnchor termAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termAnchor().replace(userId, guid, termAnchorRelationship);
@@ -1520,10 +1518,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermAnchorRelationship relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteTermAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.termAnchor().delete(userId, guid);
@@ -1535,9 +1533,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the TermAnchorRelationship relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeTermAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.termAnchor().purge(userId, guid);
@@ -1551,9 +1549,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Term Anchor relationship to delete
      * @return the restored Term Anchor relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public TermAnchor restoreTermAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.termAnchor().restore(userId, guid);
@@ -1568,9 +1566,9 @@ public class RelationshipHandler {
      * @param userId                     userId under which the request is performed
      * @param categoryAnchorRelationship the category anchor relationship
      * @return the created term categorization relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public CategoryAnchor createCategoryAnchorRelationship(String userId, CategoryAnchor categoryAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.categoryAnchor().create(userId, categoryAnchorRelationship);
@@ -1582,9 +1580,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the CategoryAnchorRelationship relationship to get
      * @return CategoryAnchorRelationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public CategoryAnchor getCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.categoryAnchor().getByGUID(userId, guid);
@@ -1594,13 +1592,13 @@ public class RelationshipHandler {
      * Update a Category Anchor Relationship.
      * <p>
      *
-     * @param userId  userId under which the request is performed
-     * @param guid   guid of the CategoryAnchorRelationship
+     * @param userId                     userId under which the request is performed
+     * @param guid                       guid of the CategoryAnchorRelationship
      * @param categoryAnchorRelationship the category anchor relationship
      * @return the updated category anchor relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public CategoryAnchor updateCategoryAnchorRelationship(String userId, String guid, CategoryAnchor categoryAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.categoryAnchor().update(userId, guid, categoryAnchorRelationship);
@@ -1611,12 +1609,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId                     userId under which the request is performed
-     * @param guid   guid of the CategoryAnchorRelationship
+     * @param guid                       guid of the CategoryAnchorRelationship
      * @param categoryAnchorRelationship the category anchor relationship
      * @return the replaced category anchor relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public CategoryAnchor replaceCategoryAnchorRelationship(String userId, String guid, CategoryAnchor categoryAnchorRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.categoryAnchor().replace(userId, guid, categoryAnchorRelationship);
@@ -1628,10 +1626,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the CategoryAnchorRelationship relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.categoryAnchor().delete(userId, guid);
@@ -1643,9 +1641,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the CategoryAnchorRelationship relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.categoryAnchor().purge(userId, guid);
@@ -1659,9 +1657,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Category Anchor relationship to delete
      * @return the restored category anchor relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public CategoryAnchor restoreCategoryAnchorRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.categoryAnchor().restore(userId, guid);
@@ -1674,9 +1672,9 @@ public class RelationshipHandler {
      * @param userId       userId under which the request is performed
      * @param projectScope the ProjectScope relationship
      * @return the created ProjectScope relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ProjectScope createProjectScopeRelationship(String userId, ProjectScope projectScope) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.projectScope().create(userId, projectScope);
@@ -1688,9 +1686,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ProjectScope relationship to get
      * @return ProjectScope
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public ProjectScope getProjectScopeRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.projectScope().getByGUID(userId, guid);
@@ -1701,13 +1699,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId                   userId under which the request is performed
-     * @param guid   guid of the ProjectScope relationship
+     * @param guid                     guid of the ProjectScope relationship
      * @param projectScopeRelationship the ProjectScope relationship
      * @return updated ProjectScope relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ProjectScope updateProjectScopeRelationship(String userId, String guid, ProjectScope projectScopeRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.projectScope().update(userId, guid, projectScopeRelationship);
@@ -1718,12 +1715,12 @@ public class RelationshipHandler {
      * <p>
      *
      * @param userId                   userId under which the request is performed
-     * @param guid   guid of the ProjectScope relationship
+     * @param guid                     guid of the ProjectScope relationship
      * @param projectScopeRelationship the ProjectScope relationship
      * @return replaced ProjectScope relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ProjectScope replaceProjectScopeRelationship(String userId, String guid, ProjectScope projectScopeRelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.projectScope().replace(userId, guid, projectScopeRelationship);
@@ -1736,10 +1733,10 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ProjectScope relationship to delete
-     * <p>
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     *               <p>
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void deleteProjectScopeRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.projectScope().delete(userId, guid);
@@ -1752,9 +1749,9 @@ public class RelationshipHandler {
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ProjectScope relationship to delete
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    Property server exception
      */
     public void purgeProjectScopeRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.projectScope().purge(userId, guid);
@@ -1768,14 +1765,114 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the ProjectScope relationship to restore
      * @return the restored ProjectScope relationship
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public ProjectScope restoreProjectScopeRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.projectScope().restore(userId, guid);
     }
 
+    /**
+     * Create a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param userId                unique identifier for requesting user, under which the request is performed
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @return CategoryHierarchyLink the created  CategoryHierarchyLink
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public CategoryHierarchyLink createCategoryHierarchyLink(String userId, CategoryHierarchyLink categoryHierarchyLink) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return subjectAreaRelationship.categoryHierarchyLink().create(userId, categoryHierarchyLink);
+    }
+
+    /**
+     * Get a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the CategoryHierarchyLink Relationship to get
+     * @return the CategoryHierarchyLink relationship with the requested guid
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public CategoryHierarchyLink getCategoryHierarchyLink(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return subjectAreaRelationship.categoryHierarchyLink().getByGUID(userId, guid);
+    }
+
+    /**
+     * Update a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param userId                userId under which the request is performed
+     * @param guid                  guid of the CategoryHierarchyLink Relationship to update
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @return the updated categoryHierarchyLink
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public CategoryHierarchyLink updateCategoryHierarchyLink(String userId, String guid, CategoryHierarchyLink categoryHierarchyLink) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return subjectAreaRelationship.categoryHierarchyLink().update(userId, guid, categoryHierarchyLink);
+    }
+
+    /**
+     * Replace a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param userId                userId under which the request is performed
+     * @param guid                  guid of the CategoryHierarchyLink Relationship to update
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @return the replaced categoryHierarchyLink
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public CategoryHierarchyLink replaceCategoryHierarchyLink(String userId, String guid, CategoryHierarchyLink categoryHierarchyLink) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return subjectAreaRelationship.categoryHierarchyLink().replace(userId, guid, categoryHierarchyLink);
+    }
+
+    /**
+     * Delete a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the CategoryHierarchyLink relationship to delete
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public void deleteCategoryHierarchyLink(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        subjectAreaRelationship.categoryHierarchyLink().delete(userId, guid);
+    }
+
+    /**
+     * Purge a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the CategoryHierarchyLink relationship to delete
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
+     */
+    public void purgeCategoryHierarchyLink(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        subjectAreaRelationship.categoryHierarchyLink().purge(userId, guid);
+    }
+
+    /**
+     * Restore a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     * <p>
+     * Restore allows the deleted CategoryHierarchyLink Relationship to be made active again. Restore allows deletes to be undone.
+     * Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink Relationship to restore
+     * @return the restored CategoryHierarchyLink
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid
+     * @throws PropertyServerException              Property server exception
+     */
+    public CategoryHierarchyLink restoreCategoryHierarchyLink(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return  subjectAreaRelationship.categoryHierarchyLink().restore(userId, guid);
+    }
 
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
@@ -1783,9 +1880,9 @@ public class RelationshipHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the SemanticAssignment relationship to get
      * @return the SemanticAssignment relationship with the requested guid
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException            one of the parameters is null or invalid
-     * @throws PropertyServerException              Property server exception
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    Property server exception
      */
     public SemanticAssignment getSemanticAssignmentRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.semanticAssignment().getByGUID(userId, guid);

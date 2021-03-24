@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -26,7 +26,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,7 +104,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     categoryAnchor.getEnd1().setNodeGuid(glossaryGuid);
                     categoryAnchor.getEnd2().setNodeGuid(createdCategoryGuid);
                     CategoryAnchorMapper anchorMapper = mappersFactory.get(CategoryAnchorMapper.class);
-                    Relationship relationship = anchorMapper.map(categoryAnchor);
+                    org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship = anchorMapper.map(categoryAnchor);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
                 }
 
@@ -115,7 +114,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     categoryHierarchyLink.getEnd1().setNodeGuid(parentCategoryGuid);
                     categoryHierarchyLink.getEnd2().setNodeGuid(createdCategoryGuid);
                     CategoryHierarchyLinkMapper hierarchyMapper = mappersFactory.get(CategoryHierarchyLinkMapper.class);
-                    Relationship relationship = hierarchyMapper.map(categoryHierarchyLink);
+                    org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship = hierarchyMapper.map(categoryHierarchyLink);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
                 }
                 response = getCategoryByGuid(userId, createdCategoryGuid);
@@ -202,9 +201,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                                          UserNotAuthorizedException,
                                                                                          InvalidParameterException {
         final String guid = category.getSystemAttributes().getGUID();
-        List<Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, CATEGORY_TYPE_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME, methodName);
+        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, CATEGORY_TYPE_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME, methodName);
         if (CollectionUtils.isNotEmpty(relationships)) {
-            for (Relationship relationship : relationships) {
+            for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship : relationships) {
                 CategoryAnchorMapper categotyAnchorMapper = mappersFactory.get(CategoryAnchorMapper.class);
                 CategoryAnchor termAnchor = categotyAnchorMapper.map(relationship);
                 GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
@@ -227,9 +226,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         if (CollectionUtils.isNotEmpty(foundEntities)) {
             for (EntityDetail entity : foundEntities) {
                 String entityGUID = entity.getGUID();
-                List<Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(
+                List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(
                         userId, entityGUID, CATEGORY_TYPE_NAME, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, methodName);
-                for (Relationship relationship : relationships) {
+                for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship : relationships) {
                     String parentGuid = relationship.getEntityOneProxy().getGUID();
                     String childGuid = relationship.getEntityTwoProxy().getGUID();
                     if (entityGUID.equals(parentGuid) && currentCategoryGuid.equals(childGuid)) {
@@ -259,7 +258,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(String userId, String guid, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Relationship> getCategoryRelationships(String userId, String guid, FindRequest findRequest) {
         String restAPIName = "getCategoryRelationships";
         return getAllRelationshipsForEntity(restAPIName, userId, guid, findRequest);
     }

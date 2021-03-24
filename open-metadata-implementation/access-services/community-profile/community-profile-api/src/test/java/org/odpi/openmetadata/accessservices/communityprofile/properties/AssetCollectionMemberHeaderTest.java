@@ -251,7 +251,7 @@ public class AssetCollectionMemberHeaderTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -260,7 +260,7 @@ public class AssetCollectionMemberHeaderTest
         {
             validateResultObject(objectMapper.readValue(jsonString, AssetCollectionMember.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -274,7 +274,7 @@ public class AssetCollectionMemberHeaderTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -283,7 +283,7 @@ public class AssetCollectionMemberHeaderTest
         {
             validateResultObject((AssetCollectionMember) objectMapper.readValue(jsonString, CommunityProfileElementHeader.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -24,7 +24,7 @@ act as a record of the activity for future audits.
 
 Governance actions can be created through the [Governance Engine OMAS API](../user).
 Some governance services (for example, the 
-[Open Watchdog Service](../../../../frameworks/governance-action-framework/docs/open-watchdog-service.md))
+[Watchdog Governance Action Service](../../../../frameworks/governance-action-framework/docs/watchdog-governance-service.md))
 can create governance actions when they run.  
 
 Governance services produce output strings called **guards** that indicate specific

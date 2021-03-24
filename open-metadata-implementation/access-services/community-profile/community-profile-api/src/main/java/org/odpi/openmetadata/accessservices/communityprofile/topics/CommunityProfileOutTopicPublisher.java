@@ -68,7 +68,7 @@ public abstract class CommunityProfileOutTopicPublisher
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             String                    eventType = "<null>";
 

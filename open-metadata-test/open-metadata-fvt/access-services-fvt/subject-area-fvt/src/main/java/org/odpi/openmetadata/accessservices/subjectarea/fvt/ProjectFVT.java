@@ -5,12 +5,10 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProjectClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScope;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -250,7 +248,7 @@ public class ProjectFVT
         subjectAreaProject.purge(this.userId, guid);
         System.out.println("Purge succeeded");
     }
-    public List<Line> getProjectRelationships(Project project) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Relationship> getProjectRelationships(Project project) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaProject.getAllRelationships(this.userId, project.getSystemAttributes().getGUID());
     }
 

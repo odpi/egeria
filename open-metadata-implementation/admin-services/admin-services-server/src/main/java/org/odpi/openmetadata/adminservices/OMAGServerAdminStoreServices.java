@@ -78,7 +78,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -114,7 +114,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -149,7 +149,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -230,7 +230,7 @@ public class OMAGServerAdminStoreServices
 
             return serverConfigStore;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_CONFIG_FILE.getMessageDefinition(serverName,
                                                                                                             methodName,
@@ -264,7 +264,7 @@ public class OMAGServerAdminStoreServices
             connector.start();
             return getOMAGServerConfigStoreRetrieveAll(serverConfigStore, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE.getMessageDefinition(methodName,
                                                                                                             error.getClass().getName(),

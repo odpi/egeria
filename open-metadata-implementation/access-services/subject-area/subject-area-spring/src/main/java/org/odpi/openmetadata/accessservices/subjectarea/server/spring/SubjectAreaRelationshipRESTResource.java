@@ -80,7 +80,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param guid                 unique identifier of the Line
+     * @param guid                 unique identifier of the relationship
      * @param termHasARelationship the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TermHasARelationship
@@ -196,7 +196,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param guid                    unique identifier of the Line
+     * @param guid                    unique identifier of the relationship
      * @param relatedTermRelationship the related term  relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created RelatedTerm
@@ -314,7 +314,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the relationship
      * @param synonym    the synonym  relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created SynonymRelationship
@@ -432,7 +432,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the relationship
      * @param antonym    the antonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created AntonymRelationship
@@ -550,7 +550,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName  serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId      userId under which the request is performed
-     * @param guid        unique identifier of the Line
+     * @param guid        unique identifier of the relationship
      * @param translation the translation relationship
      * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TranslationRelationship
@@ -668,7 +668,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId        userId under which the request is performed
-     * @param guid          unique identifier of the Line
+     * @param guid          unique identifier of the relationship
      * @param usedInContext the used in context relationship
      * @param isReplace     flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created UsedInContextRelationship
@@ -786,7 +786,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId        userId under which the request is performed
-     * @param guid          unique identifier of the Line
+     * @param guid          unique identifier of the relationship
      * @param preferredTerm the preferred term relationship
      * @param isReplace     flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created PreferredTermRelationship
@@ -905,7 +905,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the relationship
      * @param validValue the valid value relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ValidValueRelationship
@@ -1024,7 +1024,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId          userId under which the request is performed
-     * @param guid            unique identifier of the Line
+     * @param guid            unique identifier of the relationship
      * @param replacementTerm the replacement term relationship
      * @param isReplace       flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ReplacementTermRelationship
@@ -1142,7 +1142,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param guid                    unique identifier of the Line
+     * @param guid                    unique identifier of the relationship
      * @param termTypedByRelationship the typed by relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TermTypedByRelationshipRelationship
@@ -1260,7 +1260,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the relationship
      * @param isa        the is-a relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created IsARelationshipRelationship
@@ -1377,7 +1377,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the relationship
      * @param isatypeof  the is-a-type-of relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created IsARelationshipRelationship
@@ -1497,7 +1497,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the relationship
      * @param isatypeof  the is-a-type-of relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created termCategorization Relationship
@@ -1853,7 +1853,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
-     * @param guid         unique identifier of the Line
+     * @param guid         unique identifier of the relationship
      * @param projectScope the projectScope relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ProjectScopeRelationship

@@ -4,10 +4,11 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaProjectHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -60,11 +61,15 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.createProject(userId,suppliedProject);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -93,11 +98,15 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.getProjectByGuid(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -140,7 +149,9 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
@@ -152,6 +163,8 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             response = handler.findProject(userId,findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -182,20 +195,22 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(String serverName,
-                                                                    String userId,
-                                                                    String guid,
-                                                                    Date asOfTime,
-                                                                    Integer startingFrom,
-                                                                    Integer pageSize,
-                                                                    SequencingOrder sequencingOrder,
-                                                                    String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Relationship> getProjectRelationships(String serverName,
+                                                                            String userId,
+                                                                            String guid,
+                                                                            Date asOfTime,
+                                                                            Integer startingFrom,
+                                                                            Integer pageSize,
+                                                                            SequencingOrder sequencingOrder,
+                                                                            String sequencingProperty) {
         String methodName = "getProjectRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
@@ -206,6 +221,8 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             response = handler.getProjectRelationships(userId, guid, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -242,11 +259,15 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler projectHandler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = projectHandler.getProjectTerms(userId, guid, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom, pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -285,11 +306,15 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.updateProject(userId, guid, suppliedProject,isReplace);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -330,11 +355,15 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.deleteProject(userId, guid,isPurge);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -365,11 +394,15 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Project> response= new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             response = handler.restoreProject(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
