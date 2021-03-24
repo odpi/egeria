@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public interface LineageGraph extends OpenLineageGraphConnector {
@@ -80,7 +81,14 @@ public interface LineageGraph extends OpenLineageGraphConnector {
     /**
      * Task that the scheduler performs based on the interval
      */
-    void schedulerTask();
+    void performLineageGraphJob();
+
+    /**
+     * Save last asset lineage update time in the graph
+     *
+     * @param date the date
+     */
+    void saveAssetLineageUpdateTime(LocalDateTime date);
 
     /**
      * Returns whether an entity exists in the graph or not

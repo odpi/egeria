@@ -28,6 +28,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -147,7 +148,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     @Override
-    public void schedulerTask() {
+    public void performLineageGraphJob() {
         try {
             //TODO investigate possibility of adding the PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG again
             List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, PROCESS).toList();
@@ -169,6 +170,11 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 g.tx().rollback();
             }
         }
+    }
+
+    @Override
+    public void saveAssetLineageUpdateTime(LocalDateTime date) {
+        g.getGraph().variables().set("assetLineageLastUpdateTime", date);
     }
 
     /**

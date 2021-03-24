@@ -20,10 +20,10 @@ public class LineageGraphJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         LocalDateTime localTime = LocalDateTime.now();
-        log.debug("Run LineageGraphJob task at {}",localTime);
+        log.debug("Run LineageGraphJob task at {}", localTime);
 
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-        LineageGraph lineageGraph = (LineageGraph) dataMap.get("openLineageGraphStore");
+        LineageGraph lineageGraph = (LineageGraph) dataMap.get(JobConstants.OPEN_LINEAGE_GRAPH_STORE);
         performTask(lineageGraph);
     }
 
@@ -32,6 +32,6 @@ public class LineageGraphJob implements Job {
      *
      */
     private void performTask(LineageGraph lineageGraph){
-        lineageGraph.schedulerTask();
+        lineageGraph.performLineageGraphJob();
     }
 }
