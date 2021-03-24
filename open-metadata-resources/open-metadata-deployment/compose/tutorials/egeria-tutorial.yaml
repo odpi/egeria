@@ -147,7 +147,7 @@ services:
             - '.env'
 
     uistatic:
-        image: '${egeria_repo}/egeria-uistatic:${egeria_ui_version}'
+        image: '${egeria_repo}/egeria-ui:${egeria_ui_version}'
         ports:
             - '10080:80'
         networks:
@@ -181,8 +181,12 @@ services:
             - UI_API=https://ui:8443
             - NGINX_SERVER_NAME=nginx
         volumes:
-          - ${PWD}/etc/default.conf.template:/etc/nginx/templates/default.conf.template
-          - ${PWD}/ssl:/etc/nginx/ssl
+          - type: bind
+            source: ./etc/default.conf.template
+            target: /etc/nginx/templates/default.conf.template
+          - type: bind
+            source: ./ssl
+            target: /etc/nginx/ssl
 networks:
     cocopharma:
 
