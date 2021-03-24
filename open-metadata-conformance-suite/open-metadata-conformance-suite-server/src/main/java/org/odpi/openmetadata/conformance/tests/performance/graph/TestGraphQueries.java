@@ -83,7 +83,9 @@ public class TestGraphQueries extends OpenMetadataPerformanceTestCase
         getRelationshipsForEntity(metadataCollection, keys);
         getEntityNeighborhood(metadataCollection, keys);
         Map<String, List<String>> results = getRelatedEntities(metadataCollection, keys);
-        getLinkingEntities(metadataCollection, results);
+        if (results != null) {
+            getLinkingEntities(metadataCollection, results);
+        }
 
         super.setSuccessMessage("Graph query performance tests complete for: " + testTypeName);
     }

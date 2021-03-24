@@ -87,7 +87,9 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
         getRelationshipsForEntity(metadataCollection, keys);
         getEntityNeighborhood(metadataCollection, keys);
         Map<String, List<String>> results = getRelatedEntities(metadataCollection, keys);
-        getLinkingEntities(metadataCollection, results);
+        if (results != null) {
+            getLinkingEntities(metadataCollection, results);
+        }
 
         super.setSuccessMessage("Graph history query performance tests complete for: " + testTypeName);
     }
@@ -176,7 +178,6 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
                     A_GET_RELATIONSHIPS_MSG + testTypeName,
                     PerformanceProfile.GRAPH_HISTORY_QUERIES.getProfileId(),
                     null);
-            return;
         } catch (Exception exc) {
             String operationDescription = "retrieve relationships of entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -264,7 +265,6 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
                     A_GET_NEIGHBORHOOD1_MSG + testTypeName,
                     PerformanceProfile.GRAPH_HISTORY_QUERIES.getProfileId(),
                     null);
-            return;
         } catch (Exception exc) {
             String operationDescription = "retrieve neighborhood of entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -338,7 +338,6 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
      * Attempt to retrieve a number of entities' linking objects.
      * @param metadataCollection through which to call getLinkingEntities
      * @param keys instance GUIDs on which to call getLinkingEntities
-     * @return a map of starting entity GUIDs to a list of related entity GUIDs
      * @throws Exception on any errors
      */
     private void getLinkingEntities(OMRSMetadataCollection metadataCollection, Map<String, List<String>> keys) throws Exception
@@ -385,7 +384,6 @@ public class TestGraphHistoryQueries extends OpenMetadataPerformanceTestCase
                     A_GET_LINKING_MSG + testTypeName,
                     PerformanceProfile.GRAPH_HISTORY_QUERIES.getProfileId(),
                     null);
-            return;
         } catch (Exception exc) {
             String operationDescription = "retrieve linking entities of entity of type " + entityDef.getName();
             Map<String, String> parameters = new HashMap<>();
