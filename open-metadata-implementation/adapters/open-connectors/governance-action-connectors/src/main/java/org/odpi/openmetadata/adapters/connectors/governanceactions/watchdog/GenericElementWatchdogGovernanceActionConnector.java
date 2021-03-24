@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
@@ -62,10 +63,14 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
                 String elementGUID = metadataElementEvent.getMetadataElement().getElementGUID();
 
-                Map<String, String> requestParameters = new HashMap<>();
-                List<String> actionTargetGUIDs = new ArrayList<>();
+                Map<String, String>   requestParameters = new HashMap<>();
+                List<NewActionTarget> actionTargets     = new ArrayList<>();
 
-                actionTargetGUIDs.add(elementGUID);
+                NewActionTarget actionTarget = new NewActionTarget();
+
+                actionTarget.setActionTargetName(actionTargetName);
+                actionTarget.setActionTargetGUID(elementGUID);
+                actionTargets.add(actionTarget);
 
                 if ((instancesToListenTo == null) || (instancesToListenTo.contains(elementGUID)))
                 {
@@ -73,7 +78,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                     {
                         initiateProcess(newElementProcessName,
                                         null,
-                                        actionTargetGUIDs);
+                                        actionTargets);
                     }
                     else if (metadataElementEvent.getEventType() != WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
                     {
@@ -89,13 +94,13 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
                         initiateProcess(updatedElementProcessName,
                                         requestParameters,
-                                        actionTargetGUIDs);
+                                        actionTargets);
                     }
                     else if (metadataElementEvent.getEventType() != WatchdogEventType.DELETED_ELEMENT)
                     {
                         initiateProcess(deletedElementProcessName,
                                         null,
-                                        actionTargetGUIDs);
+                                        actionTargets);
                     }
                     else
                     {
@@ -107,7 +112,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                         {
                             initiateProcess(classifiedElementProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                         else if (metadataElementEvent.getEventType() != WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
                         {
@@ -124,13 +129,13 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
                             initiateProcess(reclassifiedElementProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                         else if (metadataElementEvent.getEventType() != WatchdogEventType.DELETED_CLASSIFICATION)
                         {
                             initiateProcess(declassifiedElementProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                     }
 
@@ -160,16 +165,23 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                         requestParameters.put("RelationshipGUID", relatedMetadataElements.getRelationshipGUID());
                         requestParameters.put("RelationshipTypeName", relatedMetadataElements.getRelationshipType().getElementTypeName());
 
-                        List<String> actionTargetGUIDs = new ArrayList<>();
+                        List<NewActionTarget> actionTargets = new ArrayList<>();
 
-                        actionTargetGUIDs.add(end1GUID);
-                        actionTargetGUIDs.add(end2GUID);
+                        NewActionTarget actionTarget = new NewActionTarget();
+
+                        actionTarget.setActionTargetName(actionTargetName);
+                        actionTarget.setActionTargetGUID(end1GUID);
+                        actionTargets.add(actionTarget);
+
+                        actionTarget.setActionTargetName(actionTargetTwoName);
+                        actionTarget.setActionTargetGUID(end2GUID);
+                        actionTargets.add(actionTarget);
 
                         if (relatedElementsEvent.getEventType() == WatchdogEventType.NEW_RELATIONSHIP)
                         {
                             initiateProcess(newRelationshipProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                         else if (relatedElementsEvent.getEventType() == WatchdogEventType.UPDATED_RELATIONSHIP_PROPERTIES)
                         {
@@ -185,13 +197,13 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
                             initiateProcess(updatedRelationshipProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                         else if (relatedElementsEvent.getEventType() == WatchdogEventType.DELETED_RELATIONSHIP)
                         {
                             initiateProcess(deletedRelationshipProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
 
                         if (GenericElementWatchdogGovernanceActionProvider.PROCESS_SINGLE_EVENT.equals(governanceContext.getRequestType()))

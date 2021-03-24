@@ -3710,8 +3710,21 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 if (! forLineage)
                 {
-
+                    try
+                    {
+                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
+                        {
+                            entity = null;
+                        }
+                    }
+                    catch (ClassificationErrorException error)
+                    {
+                        /*
+                         * Since this classification is not supported, it can not be attached to the entity
+                         */
+                    }
                 }
+
                 return entity;
             }
         }
@@ -4541,7 +4554,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * The purpose of taking note of the parts of the template graph processed is to prevent
      * situations where elements are processed more than once - creating distorted or "infinite" results.
      */
-    class TemplateProgress
+    static class TemplateProgress
     {
         String              newBeanGUID          = null; /* GUID of last new entity created - ultimately this is returned to the original caller*/
         String              previousTemplateGUID = null; /* GUID of last template entity processed - prevents processing a relationship twice */

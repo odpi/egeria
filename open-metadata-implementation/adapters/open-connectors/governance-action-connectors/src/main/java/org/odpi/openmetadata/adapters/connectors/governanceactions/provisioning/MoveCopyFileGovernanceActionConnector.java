@@ -360,6 +360,8 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         }
 
 
+        List<NewActionTarget> newActionTargets = null;
+
         try
         {
 
@@ -386,9 +388,22 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
                 if (destinationFileName != null)
                 {
+                    String newActionTargetGUID = null;
+
                     if (createLineage)
                     {
-                        createLineage(destinationFileName);
+                        newActionTargetGUID = createLineage(destinationFileName);
+                    }
+
+                    if (newActionTargetGUID != null)
+                    {
+                        newActionTargets = new ArrayList<>();
+
+                        NewActionTarget actionTarget = new NewActionTarget();
+
+                        actionTarget.setActionTargetGUID(newActionTargetGUID);
+                        actionTarget.setActionTargetName(destinationFileName);
+                        newActionTargets.add(actionTarget);
                     }
 
                     outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_COMPLETE_GUARD);
@@ -421,7 +436,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         try
         {
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null,null);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, newActionTargets);
         }
         catch (OCFCheckedExceptionBase error)
         {
@@ -665,14 +680,15 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
      * (if needed) and the destination file / folder.
      *
      * @param destinationFilePathName name of the file that was created
+     * @return unique identifier if the new file asset
      *
      * @throws InvalidParameterException one of the parameters passed to open metadata is invalid (probably a bug in this code)
      * @throws UserNotAuthorizedException the userId for the connector does not have the authority it needs
      * @throws PropertyServerException there is a problem with the metadata server(s)
      */
-    private void createLineage(String  destinationFilePathName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    private String createLineage(String destinationFilePathName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String methodName              = "createLineage";
         final String childProcessTypeName    = "TransientEmbeddedProcess";
@@ -774,6 +790,8 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                                                          processGUID,
                                                                                                          newFileGUID));
         }
+
+        return newFileGUID;
     }
 
 

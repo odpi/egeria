@@ -25,6 +25,12 @@ public abstract class GenericWatchdogGovernanceActionProvider extends Governance
     static final String INTERESTING_TYPE_NAME_PROPERTY = "interestingTypeName";
 
     /*
+     * Action target name for the element that has the event.
+     */
+    static final String ACTION_TARGET_NAME_PROPERTY     = "actionTargetName";
+    static final String ACTION_TARGET_TWO_NAME_PROPERTY = "actionTargetNameTwo";
+
+    /*
      * These properties define which types of events to listen for and which process to kick off if
      * the event occurs.  They can be set in the configuration properties of the connection.
      * These values can be overridden in the requestParameters. If the value for one of these properties
@@ -44,6 +50,7 @@ public abstract class GenericWatchdogGovernanceActionProvider extends Governance
      * Common separated list of property name that have changed values - added to the request properties.
      */
     static final String CHANGED_PROPERTY_NAMES = "ChangedProperties";
+
 
     /*
      * These are the guards that could be returned.  The monitor will only complete if it encounters an unrecoverable error

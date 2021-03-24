@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
@@ -149,16 +150,20 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                 if (fileInFolder(fileGUID))
                 {
-                    Map<String, String> requestParameters = new HashMap<>();
-                    List<String> actionTargetGUIDs = new ArrayList<>();
+                    Map<String, String>   requestParameters = new HashMap<>();
+                    List<NewActionTarget> actionTargets = new ArrayList<>();
 
-                    actionTargetGUIDs.add(fileGUID);
+                    NewActionTarget actionTarget = new NewActionTarget();
+
+                    actionTarget.setActionTargetGUID(fileGUID);
+                    actionTarget.setActionTargetName(actionTargetName);
+                    actionTargets.add(actionTarget);
 
                     if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
                     {
                         initiateProcess(newElementProcessName,
                                         null,
-                                        actionTargetGUIDs);
+                                        actionTargets);
                     }
                     else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
                     {
@@ -174,13 +179,13 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                         initiateProcess(updatedElementProcessName,
                                         requestParameters,
-                                        actionTargetGUIDs);
+                                        actionTargets);
                     }
                     else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
                     {
                         initiateProcess(deletedElementProcessName,
                                         null,
-                                        actionTargetGUIDs);
+                                        actionTargets);
                     }
                     else
                     {
@@ -192,7 +197,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         {
                             initiateProcess(classifiedElementProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                         else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
                         {
@@ -209,13 +214,13 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                             initiateProcess(reclassifiedElementProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                         else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_CLASSIFICATION)
                         {
                             initiateProcess(declassifiedElementProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                     }
                 }
