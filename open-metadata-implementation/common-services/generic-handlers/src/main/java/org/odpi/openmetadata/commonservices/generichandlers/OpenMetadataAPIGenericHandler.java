@@ -4479,8 +4479,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is pre-loaded with
-     * properties that should override the properties from the the template.  This is the method to call from
-     * the specific handlers
+     * properties that should override the properties from the the template.  This is the method to call from the specific handlers.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
@@ -4517,6 +4516,7 @@ public class OpenMetadataAPIGenericHandler<B>
         TemplateProgress templateProgress = createBeanFromTemplate(userId,
                                                                    externalSourceGUID,
                                                                    externalSourceName,
+                                                                   true,
                                                                    new TemplateProgress(),
                                                                    templateGUID,
                                                                    templateGUIDParameterName,
@@ -4559,16 +4559,19 @@ public class OpenMetadataAPIGenericHandler<B>
         String              newBeanGUID          = null; /* GUID of last new entity created - ultimately this is returned to the original caller*/
         String              previousTemplateGUID = null; /* GUID of last template entity processed - prevents processing a relationship twice */
         Map<String, String> coveredGUIDMap       = new HashMap<>(); /* Map of template GUIDs to new bean GUIDs that have been processed - prevents replicating the same entity twice */
+        String              beanAnchorGUID       = null; /* value of the anchor to set into the new beans */
     }
 
 
     /**
      * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is pre-loaded with
-     * properties that should override the properties from the the template.
+     * properties that should override the properties from the the template.  This method is called iterative for each entity anchored to the
+     * original template.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param firstIteration is this the first call to this method?
      * @param templateProgress current new bean, previous GUID and list of entities from the template that have been processed (so we only create new elements one-to-one when there are cyclic relationships)
      * @param templateGUID unique identifier of existing entity to use
      * @param templateGUIDParameterName name of parameter passing the templateGUID
@@ -4589,6 +4592,7 @@ public class OpenMetadataAPIGenericHandler<B>
     private TemplateProgress createBeanFromTemplate(String                        userId,
                                                     String                        externalSourceGUID,
                                                     String                        externalSourceName,
+                                                    boolean                       firstIteration,
                                                     TemplateProgress              templateProgress,
                                                     String                        templateGUID,
                                                     String                        templateGUIDParameterName,
@@ -4625,6 +4629,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           supportedZones,
                                                                           methodName);
 
+
             /*
              * Verify that the user is permitted to create a new bean.
              */
@@ -4638,7 +4643,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
             /*
              * All OK to create the new bean, now work out the classifications.  Start with the classifications from the template (ignoring Anchors
-             * and LatestChange) and then overlay the classifications set up in the builder.
+             * and LatestChange) and then overlay the classifications set up in the builder and the appropriate anchor.
              */
             Map<String, Classification> newClassificationMap = new HashMap<>();
 
@@ -4656,6 +4661,27 @@ public class OpenMetadataAPIGenericHandler<B>
                     }
                 }
             }
+
+            /*
+             * If the template has an anchor set up an anchor needs to be set up.  Need to decide if the bean's anchor is the same
+             * as the template's anchor or it is a new anchor for the new bean hierarchy being formed.
+             */
+            if ((firstIteration) && (templateAnchorEntity != null))
+            {
+                /*
+                 * Need to use the same anchor as the template.  This occurs the first time through the iteration if the initial
+                 * template object has an anchor.
+                 */
+                propertyBuilder.setAnchors(userId, templateAnchorEntity.getGUID(), methodName);
+            }
+            else if (! firstIteration)
+            {
+                /*
+                 * A bean anchor has been set up on a previous iteration.
+                 */
+                propertyBuilder.setAnchors(userId, templateProgress.beanAnchorGUID, methodName);
+            }
+
 
             List<Classification> builderClassifications = propertyBuilder.getEntityClassifications();
             if (builderClassifications != null)
@@ -4690,20 +4716,32 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   methodName);
 
             /*
-             * The real value of templates is that they cover the creation of a cluster of metadata instances.  The last step is to explore
-             * the graph of linked elements and replicate the structure for the new bean.
+             * This is the first time through the iteration and so we need to capture the top level bean's guid to act as the anchor for all other
+             * beans that are created as a result of this templated creation.
              */
-            templateProgress = this.addAttachmentsFromTemplate(userId,
-                                                               externalSourceGUID,
-                                                               externalSourceName,
-                                                               templateProgress,
-                                                               newEntityGUID,
-                                                               newEntityParameterName,
-                                                               templateGUID,
-                                                               templateAnchorEntity.getGUID(),
-                                                               entityTypeName,
-                                                               uniqueParameterValue,
-                                                               methodName);
+            if (firstIteration)
+            {
+                templateProgress.beanAnchorGUID = newEntityGUID;
+            }
+
+            if ((! firstIteration) || (templateAnchorEntity == null))
+            {
+                /*
+                 * The real value of templates is that they cover the creation of a cluster of metadata instances.  The last step is to explore
+                 * the graph of linked elements and replicate the structure for the new bean.
+                 */
+                templateProgress = this.addAttachmentsFromTemplate(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   templateProgress,
+                                                                   newEntityGUID,
+                                                                   newEntityParameterName,
+                                                                   templateGUID,
+                                                                   templateAnchorEntity.getGUID(),
+                                                                   entityTypeName,
+                                                                   uniqueParameterValue,
+                                                                   methodName);
+            }
 
             templateProgress.newBeanGUID = newEntityGUID;
         }
@@ -4897,6 +4935,7 @@ public class OpenMetadataAPIGenericHandler<B>
                         templateProgress = this.createBeanFromTemplate(userId,
                                                                          externalSourceGUID,
                                                                          externalSourceName,
+                                                                         false,
                                                                          templateProgress,
                                                                          nextTemplateEntity.getGUID(),
                                                                          nextTemplateEntityGUIDParameterName,

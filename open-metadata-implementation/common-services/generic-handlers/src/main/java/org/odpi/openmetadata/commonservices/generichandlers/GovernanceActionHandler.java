@@ -146,8 +146,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     actionTargets,
                                                     startTime,
                                                     processQualifiedName,
-                                                    originatorEngineName,
                                                     originatorServiceName,
+                                                    originatorEngineName,
                                                     methodName);
         }
         else
@@ -1083,8 +1083,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                              methodName);
 
                     List<NewActionTarget> currentActionTargets = this.markActionTargetsAsComplete(userId,
-                                                                                               governanceActionGUID,
-                                                                                               status);
+                                                                                                  governanceActionGUID,
+                                                                                                  status);
 
                     List<NewActionTarget> nextActionTargets;
 

@@ -86,6 +86,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         recognizedConfigurationProperties.add(TOP_LEVEL_PROCESS_NAME_PROPERTY);
         recognizedConfigurationProperties.add(TOP_LEVEL_PROCESS_TEMPLATE_NAME_PROPERTY);
         recognizedConfigurationProperties.add(DESTINATION_TEMPLATE_NAME_PROPERTY);
+        recognizedConfigurationProperties.add(DESTINATION_FOLDER_PROPERTY);
         recognizedConfigurationProperties.add(TOP_LEVEL_PROCESS_ONLY_LINEAGE_PROPERTY);
         recognizedConfigurationProperties.add(LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY);
         recognizedConfigurationProperties.add(LINEAGE_TO_DESTINATION_FOLDER_ONLY_PROPERTY);

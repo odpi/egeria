@@ -240,6 +240,13 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 destinationFileNamePattern = fileNamePatternOption.toString();
             }
 
+            Object destinationFolderOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.DESTINATION_FOLDER_PROPERTY);
+
+            if (destinationFolderOption != null)
+            {
+                destinationFolderName = destinationFolderOption.toString();
+            }
+
             Object sourceLineageOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY);
 
             if (sourceLineageOption != null)
@@ -552,9 +559,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         ElementProperties properties = asset.getElementProperties();
 
         String qualifiedName = propertyHelper.getStringProperty(governanceServiceName,
-                                                qualifiedNameParameterName,
-                                                properties,
-                                                methodName);
+                                                                qualifiedNameParameterName,
+                                                                properties,
+                                                                methodName);
 
         if (auditLog != null)
         {
