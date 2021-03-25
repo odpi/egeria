@@ -217,11 +217,13 @@ public class PropertyHelper
      *
      * @param properties properties object to add property to, may be null.
      * @param propertyName name of property
+     * @param propertyType type of enum
      * @param symbolicName symbol name value of property
      * @return resulting element properties object
      */
     public ElementProperties addEnumProperty(ElementProperties properties,
                                              String            propertyName,
+                                             String            propertyType,
                                              String            symbolicName)
     {
         ElementProperties  resultingProperties;
@@ -240,6 +242,7 @@ public class PropertyHelper
         EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
 
         enumPropertyValue.setSymbolicName(symbolicName);
+        enumPropertyValue.setTypeName(propertyType);
 
         resultingProperties.setProperty(propertyName, enumPropertyValue);
 
@@ -275,6 +278,7 @@ public class PropertyHelper
             }
 
             ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
+            arrayPropertyValue.setTypeName("array<string>");
             arrayPropertyValue.setArrayCount(arrayValues.size());
             int index = 0;
             for (String arrayValue : arrayValues )
@@ -339,6 +343,8 @@ public class PropertyHelper
                 if (mapElementProperties != null)
                 {
                     MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                    mapPropertyValue.setTypeName("map<string,object>");
                     mapPropertyValue.setMapValues(mapElementProperties);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
@@ -837,7 +843,7 @@ public class PropertyHelper
         if (properties != null)
         {
             Map<String, PropertyValue> propertyValues = properties.getInstanceProperties();
-            Map<String, Object>                resultingMap      = new HashMap<>();
+            Map<String, Object>        resultingMap   = new HashMap<>();
 
             if (propertyValues != null)
             {
@@ -851,11 +857,6 @@ public class PropertyHelper
                         {
                             PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
                             resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
-                        }
-                        else if (actualPropertyValue instanceof EnumPropertyValue)
-                        {
-                            EnumPropertyValue  enumPropertyValue = (EnumPropertyValue) actualPropertyValue;
-                            resultingMap.put(mapPropertyName, enumPropertyValue.getSymbolicName());
                         }
                         else
                         {

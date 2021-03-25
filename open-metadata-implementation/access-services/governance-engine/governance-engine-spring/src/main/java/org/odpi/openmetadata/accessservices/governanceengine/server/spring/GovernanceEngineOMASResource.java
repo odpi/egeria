@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-engine/users/{userId}")
 
-@Tag(name="Governance Engine OMAS", description="The Governance Engine Open Metadata Access Service (OMAS) provides support for governance engines, services and actions.", externalDocs=@ExternalDocumentation(description="Governance Engine Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/governance-engine/"))
+@Tag(name="Governance Engine OMAS",
+     description="The Governance Engine Open Metadata Access Service (OMAS) provides support for governance engines, services and actions.",
+     externalDocs=@ExternalDocumentation(description="Governance Engine Open Metadata Access Service (OMAS)",
+                                         url="https://egeria.odpi.org/open-metadata-implementation/access-services/governance-engine/"))
 
 public class GovernanceEngineOMASResource
 {
@@ -765,6 +768,56 @@ public class GovernanceEngineOMASResource
                                               @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.claimGovernanceAction(serverName, userId, governanceActionGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the governance actions that are known to the server.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     *
+     * @return list of governance action elements or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @GetMapping(path = "/governance-actions")
+
+    public GovernanceActionElementsResponse getGovernanceActions(@PathVariable String serverName,
+                                                                 @PathVariable String userId,
+                                                                 @RequestParam int    startFrom,
+                                                                 @RequestParam int    pageSize)
+    {
+        return restAPI.getGovernanceActions(serverName, userId, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the governance actions that are still in process.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     *
+     * @return list of governance action elements or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @GetMapping(path = "/governance-actions/active")
+
+    public GovernanceActionElementsResponse getActiveGovernanceActions(@PathVariable String serverName,
+                                                                       @PathVariable String userId,
+                                                                       @RequestParam int    startFrom,
+                                                                       @RequestParam int    pageSize)
+    {
+        return restAPI.getActiveGovernanceActions(serverName, userId, startFrom, pageSize);
     }
 
 
