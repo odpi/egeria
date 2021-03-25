@@ -19,6 +19,7 @@ service:
     ui: 30443
     presentation: 30091
     uistatic: 31088
+    nginx: 31443
     debug:
       core: 31005
       datalake: 31006
@@ -64,7 +65,11 @@ image:
   jupyter:
     name: jupyter
   uistatic:
-    name: egeria-uistatic
+    name: egeria-ui
+    tag: latest
+  nginx:
+    name: nginx
+    namespace:
 
 # --- 
 # Persistence
