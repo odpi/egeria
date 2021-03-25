@@ -257,7 +257,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping(path = "/users/{userId}/categories/{guid}/terms")
+    @GetMapping(path = "/{guid}/terms")
     public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(@PathVariable String serverName,
                                                                 @PathVariable String userId,
                                                                 @PathVariable String guid,
@@ -284,7 +284,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    @GetMapping(path = "/users/{userId}/categories/{guid}/child-categories")
+    @GetMapping(path = "/{guid}/categories")
     public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(@PathVariable String serverName,
                                                                     @PathVariable String userId,
                                                                     @PathVariable String guid,
