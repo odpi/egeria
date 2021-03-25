@@ -3030,22 +3030,67 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to make changes
          */
+        EntityDetail   deletedEntity = new EntityDetail(entity);
+        deletedEntity.setStatusOnDelete(entity.getStatus());
+        deletedEntity.setStatus(InstanceStatus.DELETED);
+        deletedEntity = repositoryHelper.incrementVersion(userId, entity, deletedEntity);
+
         EntityDetail   updatedEntity = new EntityDetail(entity);
-
         updatedEntity.setGUID(newEntityGUID);
-
+        updatedEntity.setReIdentifiedFromGUID(entityGUID);
         updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
-        repositoryStore.removeEntityFromStore(entity);
+        EntityProxy deletedEntityProxy = repositoryHelper.getNewEntityProxy(repositoryName, deletedEntity);
+        EntityProxy newEntityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
+
+        /*
+         * Locate/re-point relationships for entity
+         */
+        try
+        {
+            List<Relationship> relationships = this.getRelationshipsForEntity(userId,
+                    entityGUID,
+                    null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    10000);
+
+
+            if (relationships != null)
+            {
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        if (relationship.getEntityOneProxy().getGUID().equals(entityGUID))
+                        {
+                            relationship.setEntityOneProxy(newEntityProxy);
+                        }
+                        else if (relationship.getEntityTwoProxy().getGUID().equals(entityGUID))
+                        {
+                            relationship.setEntityTwoProxy(newEntityProxy);
+                        }
+                        repositoryStore.updateRelationshipInStore(relationship);
+                    }
+                }
+            }
+        }
+        catch (Throwable  error)
+        {
+            // nothing to do - keep going
+        }
+
+        repositoryStore.updateEntityInStore(deletedEntity);
         repositoryStore.createEntityInStore(updatedEntity);
 
         /*
          * The repository store maintains an entity proxy for use with relationships.
          */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-        repositoryStore.addEntityProxyToStore(entityProxy);
-        repositoryStore.removeEntityProxyFromStore(entityGUID);
+        repositoryStore.updateEntityProxyInStore(deletedEntityProxy);
+        repositoryStore.addEntityProxyToStore(newEntityProxy);
 
         return updatedEntity;
     }
@@ -3294,13 +3339,17 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to make changes
          */
+        Relationship   deletedRelationship = new Relationship(relationship);
+        deletedRelationship.setStatusOnDelete(relationship.getStatus());
+        deletedRelationship.setStatus(InstanceStatus.DELETED);
+        deletedRelationship = repositoryHelper.incrementVersion(userId, relationship, deletedRelationship);
+
         Relationship   updatedRelationship = new Relationship(relationship);
-
         updatedRelationship.setGUID(newRelationshipGUID);
-
+        updatedRelationship.setReIdentifiedFromGUID(relationshipGUID);
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
 
-        repositoryStore.removeRelationshipFromStore(relationship);
+        repositoryStore.updateRelationshipInStore(deletedRelationship);
         repositoryStore.createRelationshipInStore(updatedRelationship);
 
         return updatedRelationship;
