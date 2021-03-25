@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGConformanceSuiteConfigServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryPerformanceWorkbenchConfig;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,28 @@ public class ConfigConformanceSuiteServicesResource
                                                                   @RequestBody  RepositoryConformanceWorkbenchConfig repositoryConformanceWorkbenchConfig)
     {
         return adminAPI.enableRepositoryConformanceSuiteWorkbench(userId, serverName, repositoryConformanceWorkbenchConfig);
+    }
+
+
+    /**
+     * Request that the conformance suite services are activated in this server to test the
+     * performance of the repository services running in the server named tutRepositoryServerName.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param repositoryPerformanceWorkbenchConfig configuration for the repository performance workbench.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter or
+     * OMAGConfigurationErrorException unexpected exception.
+     */
+    @PostMapping(path = "/conformance-suite-workbenches/repository-workbench/performance")
+
+    public VoidResponse enableRepositoryPerformanceSuiteWorkbench(@PathVariable String                               userId,
+                                                                  @PathVariable String                               serverName,
+                                                                  @RequestBody  RepositoryPerformanceWorkbenchConfig repositoryPerformanceWorkbenchConfig)
+    {
+        return adminAPI.enableRepositoryPerformanceSuiteWorkbench(userId, serverName, repositoryPerformanceWorkbenchConfig);
     }
 
 
