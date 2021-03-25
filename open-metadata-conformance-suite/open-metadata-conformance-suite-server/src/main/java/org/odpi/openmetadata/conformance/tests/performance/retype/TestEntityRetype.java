@@ -28,6 +28,9 @@ public class TestEntityRetype extends OpenMetadataPerformanceTestCase
     private static final String A_FIND_ENTITIES        = TEST_CASE_ID + "-findEntitiesByProperty";
     private static final String A_FIND_ENTITIES_MSG    = "Repository performs search for unordered first instancesPerType homed instances of type: ";
 
+    private static final String A_REMOVE_PROPERTIES     = TEST_CASE_ID + "-updateEntityProperties-remove";
+    private static final String A_REMOVE_PROPERTIES_MSG = "Repository performs removal of all entity properties of instance of type: ";
+
     private static final String A_RETYPE_SUB     = TEST_CASE_ID + "-reTypeEntity-toSubtype";
     private static final String A_RETYPE_SUB_MSG = "Repository performs retyping of homed instances to each subtype of type: ";
 
@@ -141,6 +144,28 @@ public class TestEntityRetype extends OpenMetadataPerformanceTestCase
             if (subTypeNames != null && !subTypeNames.isEmpty()) {
                 String subTypeName = subTypeNames.get(0);
                 TypeDefSummary targetType = repositoryHelper.getTypeDefByName(testCaseId, subTypeName);
+                try {
+                    for (String guid : keys) {
+                        long start = System.nanoTime();
+                        EntityDetail result = metadataCollection.updateEntityProperties(workPad.getLocalServerUserId(),
+                                guid,
+                                new InstanceProperties());
+                        long elapsedTime = (System.nanoTime() - start) / 1000000;
+                        assertCondition(result != null,
+                                A_REMOVE_PROPERTIES,
+                                A_REMOVE_PROPERTIES_MSG + testTypeName,
+                                PerformanceProfile.ENTITY_UPDATE.getProfileId(),
+                                null,
+                                methodName,
+                                elapsedTime);
+                    }
+                } catch (Exception exc) {
+                    String operationDescription = "remove properties of entity of type " + entityDef.getName();
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("entityTypeGUID", entityDef.getGUID());
+                    String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                    throw new Exception(msg, exc);
+                }
                 try {
                     for (String guid : keys) {
                         long start = System.nanoTime();
