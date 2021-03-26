@@ -180,6 +180,12 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                          "The system is unable to process the request because the handler has an invalid anchor GUID.",
                                          "Gather diagnostics and add them to issue #4680."),
 
+    NULL_ANCHOR_GUID(500, "OMAG-GENERIC-HANDLERS-500-010",
+                        "A null anchor GUID has been passed to local method {0} by the {1} service through method {2}",
+                        "The system is unable to process the request because the handler has a null anchor GUID.",
+                        "This typically means the caller has either been returned an entity with a null GUID or there is an error" +
+                                "in the templated create logic.  Use the stack trace to determine the source of the error"),
+
     ;
 
     private ExceptionMessageDefinition messageDefinition;

@@ -590,7 +590,7 @@ public class DatabaseManagerRESTServices
                                                                                           databaseManagerName,
                                                                                           startFrom,
                                                                                           pageSize,
-                                                                                         methodName);
+                                                                                          methodName);
 
             response.setElementList(databaseAssets);
         }

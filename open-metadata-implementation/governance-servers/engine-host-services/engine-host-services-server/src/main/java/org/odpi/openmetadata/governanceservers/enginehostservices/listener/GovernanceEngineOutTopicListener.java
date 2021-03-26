@@ -108,7 +108,7 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                 {
                     try
                     {
-                        governanceEngineHandler.executeGovernanceAction(governanceActionEvent.getGovernanceActionElement());
+                        governanceEngineHandler.executeGovernanceAction(governanceActionEvent.getGovernanceActionGUID());
                     }
                     catch (Exception error)
                     {

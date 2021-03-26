@@ -1088,21 +1088,21 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      * @param requestParameters request properties from the caller (will be passed onto any follow on actions)
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
-     * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     @Override
-    public void recordCompletionStatus(String              userId,
-                                       String              governanceActionGUID,
-                                       Map<String, String> requestParameters,
-                                       CompletionStatus    status,
-                                       List<String>        outputGuards,
-                                       List<String>        newActionTargetGUIDs) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public void recordCompletionStatus(String                userId,
+                                       String                governanceActionGUID,
+                                       Map<String, String>   requestParameters,
+                                       CompletionStatus      status,
+                                       List<String>          outputGuards,
+                                       List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String methodName = "recordCompletionStatus";
         final String statusParameterName = "status";
@@ -1116,7 +1116,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setRequestParameters(requestParameters);
         requestBody.setStatus(status);
         requestBody.setOutputGuards(outputGuards);
-        requestBody.setNewActionTargetGUIDs(newActionTargetGUIDs);
+        requestBody.setNewActionTargets(newActionTargets);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformURLRoot + urlTemplate,
@@ -1138,7 +1138,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      * @param displayName display name for this action
      * @param description description for this action
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargetGUIDs list of action targets for the resulting governance action service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
      * @param receivedGuards list of guards to initiate the governance action
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine that should execute the request
@@ -1153,22 +1153,22 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public String initiateGovernanceAction(String              userId,
-                                           String              qualifiedName,
-                                           int                 domainIdentifier,
-                                           String              displayName,
-                                           String              description,
-                                           List<String>        requestSourceGUIDs,
-                                           List<String>        actionTargetGUIDs,
-                                           List<String>        receivedGuards,
-                                           Date                startTime,
-                                           String              governanceEngineName,
-                                           String              requestType,
-                                           Map<String, String> requestParameters,
-                                           String              originatorServiceName,
-                                           String              originatorEngineName) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public String initiateGovernanceAction(String                userId,
+                                           String                qualifiedName,
+                                           int                   domainIdentifier,
+                                           String                displayName,
+                                           String                description,
+                                           List<String>          requestSourceGUIDs,
+                                           List<NewActionTarget> actionTargets,
+                                           List<String>          receivedGuards,
+                                           Date                  startTime,
+                                           String                governanceEngineName,
+                                           String                requestType,
+                                           Map<String, String>   requestParameters,
+                                           String                originatorServiceName,
+                                           String                originatorEngineName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         final String methodName = "initiateGovernanceAction";
         final String qualifiedNameParameterName = "qualifiedName";
@@ -1186,7 +1186,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setDisplayName(displayName);
         requestBody.setDescription(description);
         requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
-        requestBody.setActionTargetGUIDs(actionTargetGUIDs);
+        requestBody.setActionTargets(actionTargets);
         requestBody.setReceivedGuards(receivedGuards);
         requestBody.setStartTime(startTime);
         requestBody.setRequestType(requestType);
@@ -1211,7 +1211,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      * @param userId caller's userId
      * @param processQualifiedName unique name of the governance action process to use
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargetGUIDs list of action targets for the resulting governance action service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible".
      * @param requestParameters request properties to be passed to the first governance action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
@@ -1223,16 +1223,16 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public String initiateGovernanceActionProcess(String              userId,
-                                                  String              processQualifiedName,
-                                                  List<String>        requestSourceGUIDs,
-                                                  List<String>        actionTargetGUIDs,
-                                                  Date                startTime,
-                                                  Map<String, String> requestParameters,
-                                                  String              originatorServiceName,
-                                                  String              originatorEngineName) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public String initiateGovernanceActionProcess(String                userId,
+                                                  String                processQualifiedName,
+                                                  List<String>          requestSourceGUIDs,
+                                                  List<NewActionTarget> actionTargets,
+                                                  Date                  startTime,
+                                                  Map<String, String>   requestParameters,
+                                                  String                originatorServiceName,
+                                                  String                originatorEngineName) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         final String methodName = "initiateGovernanceAction";
         final String qualifiedNameParameterName = "processQualifiedName";
@@ -1245,7 +1245,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
 
         requestBody.setProcessQualifiedName(processQualifiedName);
         requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
-        requestBody.setActionTargetGUIDs(actionTargetGUIDs);
+        requestBody.setActionTargets(actionTargets);
         requestBody.setStartTime(startTime);
         requestBody.setRequestParameters(requestParameters);
         requestBody.setOriginatorServiceName(originatorServiceName);
@@ -1389,6 +1389,80 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     }
 
 
+
+
+    /**
+     * Retrieve the governance actions known to the server.
+     *
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     * @return list of governance action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public List<GovernanceActionElement>  getGovernanceActions(String userId,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String methodName = "getGovernanceActions";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions?startFrom={2}&pageSize={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
+                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  serverName,
+                                                                                                  userId,
+                                                                                                  Integer.toString(startFrom),
+                                                                                                  Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+
+
+    /**
+     * Retrieve the governance actions that are still in process.
+     *
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     * @return list of governance action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public List<GovernanceActionElement>  getActiveGovernanceActions(String userId,
+                                                                     int    startFrom,
+                                                                     int    pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName = "getActiveGovernanceActions";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/active?startFrom={2}&pageSize={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
+                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  serverName,
+                                                                                                  userId,
+                                                                                                  Integer.toString(startFrom),
+                                                                                                  Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
     /**
      * Retrieve the governance actions that are still in process and that have been claimed by this caller's userId.
      * This call is used when the caller restarts.
@@ -1413,7 +1487,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "getActiveClaimedGovernanceActions";
         final String guidParameterName = "governanceEngineGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/active-governance-actions?startFrom={2}&pageSize={3}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/active-governance-actions?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, guidParameterName, methodName);
