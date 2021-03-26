@@ -313,7 +313,7 @@ public class OpenMetadataTypesArchive
      */
 
     /**
-     * The BusinessCapability entity is superfluous - can use ServerAssetUse since Application is a SoftwareServerCapability.
+     * Replace deployedImplementationType with businessCapabilityType in the BusinessCapability.
      */
     private void update0440OrganizationControls()
     {

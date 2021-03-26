@@ -176,22 +176,22 @@ public class GovernanceContext
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
-     * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                     action service completion status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public synchronized  void recordCompletionStatus(CompletionStatus    status,
-                                                     List<String>        outputGuards,
-                                                     List<String>        newActionTargetGUIDs) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public synchronized  void recordCompletionStatus(CompletionStatus      status,
+                                                     List<String>          outputGuards,
+                                                     List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         this.completionStatus = status;
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargetGUIDs);
+        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargets);
     }
 
 
@@ -201,19 +201,19 @@ public class GovernanceContext
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newRequestParameters additional request parameters.  These override/augment any request parameters defined for the next invoked service
-     * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                     action service completion status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public synchronized  void recordCompletionStatus(CompletionStatus    status,
-                                                     List<String>        outputGuards,
-                                                     Map<String, String> newRequestParameters,
-                                                     List<String>        newActionTargetGUIDs) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public synchronized  void recordCompletionStatus(CompletionStatus      status,
+                                                     List<String>          outputGuards,
+                                                     Map<String, String>   newRequestParameters,
+                                                     List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         this.completionStatus = status;
 
@@ -229,7 +229,7 @@ public class GovernanceContext
             combinedRequestParameters.putAll(newRequestParameters);
         }
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargetGUIDs);
+        openMetadataStore.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargets);
     }
 
 

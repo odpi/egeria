@@ -8,6 +8,8 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -926,9 +928,14 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
 
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-name?startFrom={2}&pageSize={3}";
 
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(validValueName);
+        requestBody.setNamePropertyName(validValueNameParameter);
+
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
                                                                                 serverPlatformURLRoot + urlTemplate,
-                                                                                validValueName,
+                                                                                requestBody,
                                                                                 serverName,
                                                                                 userId,
                                                                                 startFrom,
@@ -961,7 +968,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        final String   methodName = "getValidValueByName";
+        final String   methodName = "findValidValues";
         final String   parameterName = "searchString";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -971,9 +978,14 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-search-string" +
                 "?startFrom={2}&pageSize={3}";
 
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(parameterName);
+
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
                                                                                 serverPlatformURLRoot + urlTemplate,
-                                                                                searchString,
+                                                                                requestBody,
                                                                                 serverName,
                                                                                 userId,
                                                                                 startFrom,

@@ -3862,7 +3862,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                     if (matchValue != null)
                     {
-                        if (matchValue.matches(expectedValue))
+                        if (expectedValue.matches(matchValue))
                         {
                             result = true;
                         }

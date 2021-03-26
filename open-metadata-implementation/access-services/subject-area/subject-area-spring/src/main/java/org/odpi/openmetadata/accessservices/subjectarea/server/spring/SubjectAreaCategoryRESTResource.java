@@ -278,7 +278,7 @@ public class SubjectAreaCategoryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    @GetMapping(path = "/users/{userId}/categories/{guid}/child-categories")
+    @GetMapping(path = "/users/{userId}/categories/{guid}/categories")
     public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,
