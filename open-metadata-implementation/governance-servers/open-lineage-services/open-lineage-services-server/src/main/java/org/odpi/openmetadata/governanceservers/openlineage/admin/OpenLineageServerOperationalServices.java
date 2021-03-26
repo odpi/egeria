@@ -35,6 +35,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,13 +132,15 @@ public class OpenLineageServerOperationalServices {
     }
 
     private void initializeAndStartBackgroundJobs() {
-        int assetLineageJobInterval = getJobInterval(JobConstants.ASSET_LINEAGE_UPDATE_JOB);
-        backgroundJobs.add(new AssetLineageUpdateJobConfiguration(lineageGraphConnector, JobConstants.ASSET_LINEAGE_UPDATE_JOB,
-                AssetLineageUpdateJob.class, assetLineageJobInterval, assetLineageClient, localServerName, localServerUserId));
-
+        backgroundJobs = new ArrayList<>();
         int lineageGraphJobInterval = getJobInterval(JobConstants.LINEAGE_GRAPH_JOB);
         backgroundJobs.add(new JobConfiguration(lineageGraphConnector, JobConstants.LINEAGE_GRAPH_JOB, LineageGraphJob.class,
                 lineageGraphJobInterval));
+
+        int assetLineageJobInterval = getJobInterval(JobConstants.ASSET_LINEAGE_UPDATE_JOB);
+        String assetLineageServerName = openLineageServerConfig.getAccessServiceConfig().getServerName();
+        backgroundJobs.add(new AssetLineageUpdateJobConfiguration(lineageGraphConnector, JobConstants.ASSET_LINEAGE_UPDATE_JOB,
+                AssetLineageUpdateJob.class, assetLineageJobInterval, assetLineageClient, assetLineageServerName, localServerUserId));
 
         backgroundJobs.forEach(JobConfiguration::schedule);
     }

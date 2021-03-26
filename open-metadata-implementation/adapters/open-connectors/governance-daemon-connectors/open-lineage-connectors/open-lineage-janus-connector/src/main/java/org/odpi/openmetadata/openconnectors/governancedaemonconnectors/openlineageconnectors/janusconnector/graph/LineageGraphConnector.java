@@ -174,7 +174,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     @Override
     public void saveAssetLineageUpdateTime(LocalDateTime date) {
-        g.getGraph().variables().set("assetLineageLastUpdateTime", date);
+        g.getGraph().variables().set("assetLineageLastUpdateTime", date.toString());
     }
 
     /**

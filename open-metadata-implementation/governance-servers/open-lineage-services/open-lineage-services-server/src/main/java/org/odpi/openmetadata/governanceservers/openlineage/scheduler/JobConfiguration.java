@@ -17,30 +17,47 @@ import org.slf4j.LoggerFactory;
 
 import static org.apache.lucene.analysis.pattern.PatternTokenizerFactory.GROUP;
 
+/**
+ * Used for setting up the configuration for a Quartz scheduled job using the lineage graph as part of the data map.
+ */
 public class JobConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(JobConfiguration.class);
 
     private static final String SCHEDULER_STARTING = "QuartzSchedulerApp main thread: {}";
-    private static final String SCHEDULER_RUNNING_ERROR = "{} could not run the job for LineageGraph";
+    private static final String SCHEDULER_RUNNING_ERROR = "{} could not start the scheduler";
     private static final String JOB_RUNNING_ERROR = "The job did not start because of an error with message: {}";
     private static final String SCHEDULER_SHUTDOWN_ERROR = "Exception while attempting to shutdown the scheduler instance, the message is: {}";
 
-    static Scheduler scheduler;
-    static LineageGraph lineageGraph;
-    static int jobInterval;
-    static String jobName;
-    static Class <? extends Job> jobClass;
-    static JobDetail jobDetail;
+    private final LineageGraph lineageGraph;
+    private final int jobInterval;
+    private final String jobName;
+    private final Class <? extends Job> jobClass;
 
+    private Scheduler scheduler;
+
+    final JobDetail jobDetail;
+
+
+    /**
+     * Instantiates a new Job configuration.
+     *
+     * @param lineageGraph the lineage graph
+     * @param jobName      the job name
+     * @param jobClass     the job class
+     * @param jobInterval  the job interval
+     */
     public JobConfiguration(LineageGraph lineageGraph, String jobName, Class <? extends Job> jobClass, int jobInterval) {
-        JobConfiguration.lineageGraph = lineageGraph;
-        JobConfiguration.jobName = jobName;
-        JobConfiguration.jobClass = jobClass;
-        JobConfiguration.jobInterval = jobInterval;
-        JobConfiguration.jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, GROUP).build();
+        this.lineageGraph = lineageGraph;
+        this.jobName = jobName;
+        this.jobClass = jobClass;
+        this.jobInterval = jobInterval;
+        this.jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, GROUP).build();
     }
 
+    /**
+     * Start a scheduler and a job using it.
+     */
     public void schedule() {
         final String methodName = "schedule";
         log.debug(SCHEDULER_STARTING, Thread.currentThread().getName());
@@ -73,14 +90,14 @@ public class JobConfiguration {
         }
     }
 
-    private static void scheduleJob(Trigger trigger) throws Exception {
+    private void scheduleJob(Trigger trigger) throws Exception {
         if (lineageGraph != null) {
             jobDetail.getJobDataMap().put(JobConstants.OPEN_LINEAGE_GRAPH_STORE, lineageGraph);
             scheduler.scheduleJob(jobDetail, trigger);
         }
     }
 
-    private static Trigger buildSimpleSchedulerTrigger() {
+    private Trigger buildSimpleSchedulerTrigger() {
         return TriggerBuilder.newTrigger().withIdentity(jobName, GROUP)
                 .withSchedule(
                         SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(jobInterval).repeatForever())

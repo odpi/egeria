@@ -41,8 +41,8 @@ public class AssetLineageUpdateJob implements Job {
      * @param dataMap the job context data map containing useful data to run the job
      */
     private void performTask(LocalDateTime localDateTime, JobDataMap dataMap) {
-        AssetLineage assetLineageClient = (AssetLineage) dataMap.get(JobConstants.ASSET_LINEAGE);
-        String localServerName = (String) dataMap.get(JobConstants.LOCAL_SERVER_NAME);
+        AssetLineage assetLineageClient = (AssetLineage) dataMap.get(JobConstants.ASSET_LINEAGE_CLIENT);
+        String localServerName = (String) dataMap.get(JobConstants.ASSET_LINEAGE_SERVER_NAME);
         String localServerUserId = (String) dataMap.get(JobConstants.LOCAL_SERVER_USER_ID);
 
         try {
