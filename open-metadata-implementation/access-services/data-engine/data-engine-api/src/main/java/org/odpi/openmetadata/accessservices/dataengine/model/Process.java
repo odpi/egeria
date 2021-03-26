@@ -5,11 +5,8 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,6 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Process extends Asset {
     private String name;
     private String formula;
+    private String implementationLanguage;
     private List<PortImplementation> portImplementations;
     private List<PortAlias> portAliases;
     private List<LineageMapping> lineageMappings;
@@ -71,6 +69,14 @@ public class Process extends Asset {
      */
     public void setFormula(String formula) {
         this.formula = formula;
+    }
+
+    public String getImplementationLanguage() {
+        return implementationLanguage;
+    }
+
+    public void setImplementationLanguage(String implementationLanguage) {
+        this.implementationLanguage = implementationLanguage;
     }
 
     /**

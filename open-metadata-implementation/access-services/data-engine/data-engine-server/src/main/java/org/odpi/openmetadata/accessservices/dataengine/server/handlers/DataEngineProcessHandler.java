@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPr
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -24,8 +25,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -88,16 +91,16 @@ public class DataEngineProcessHandler {
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException {
         final String methodName = "createProcess";
-
         validateProcessParameters(userId, process.getQualifiedName(), methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-        ProcessPropertiesBuilder builder = getProcessPropertiesBuilder(process, methodName, userId);
-
-        return assetHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
-                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getQualifiedName(),
-                ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
+        return assetHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, process.getQualifiedName(), process.getName(),
+                process.getDescription(), process.getZoneMembership(), process.getOwner(),
+                dataEngineCommonHandler.getOwnerTypeOrdinal(process.getOwnerType()), process.getOriginBusinessCapabilityGUID(),
+                process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
+                OpenMetadataAPIMapper.PROCESS_TYPE_GUID, OpenMetadataAPIMapper.PROCESS_TYPE_NAME, buildProcessExtendedProperties(process),
+                InstanceStatus.DRAFT, methodName);
     }
 
     /**
@@ -134,11 +137,10 @@ public class DataEngineProcessHandler {
         }
 
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
-
-        assetHandler.updateBeanInRepository(userId, externalSourceGUID, externalSourceName, processGUID,
-                ProcessPropertiesMapper.PROCESS_GUID_PROPERTY_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, updatedProcess.getZoneMembership(),
-                updatedProcessProperties, true, methodName);
+        assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, "processGUID",
+                updatedProcess.getQualifiedName(), updatedProcess.getName(), updatedProcess.getDescription(),
+                updatedProcess.getAdditionalProperties(), OpenMetadataAPIMapper.PROCESS_TYPE_GUID, OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                buildProcessExtendedProperties(updatedProcess), methodName);
     }
 
     /**
@@ -252,16 +254,10 @@ public class DataEngineProcessHandler {
         invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
     }
 
-    //TODO check to see if we can refactor to remove builder - se Asset typeName set to process and process specific properties set to extended
-    // properties
     ProcessPropertiesBuilder getProcessPropertiesBuilder(Process process, String methodName, String userId) throws InvalidParameterException {
-        int ownerTypeOrdinal = 0;
-
-        if (process.getOwnerType() != null) {
-            ownerTypeOrdinal = process.getOwnerType().getOpenTypeOrdinal();
-        }
         return new ProcessPropertiesBuilder(process.getQualifiedName(), process.getDisplayName(), process.getName(),
-                process.getDescription(), process.getZoneMembership(), process.getOwner(), ownerTypeOrdinal,
+                process.getDescription(), process.getZoneMembership(), process.getOwner(),
+                dataEngineCommonHandler.getOwnerTypeOrdinal(process.getOwnerType()),
                 ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
                 process.getAdditionalProperties(), process.getExtendedProperties(), InstanceStatus.DRAFT, repositoryHelper,
                 serverName, serviceName, userId, methodName);
@@ -287,5 +283,24 @@ public class DataEngineProcessHandler {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND, methodName,
                     parentProcess.getQualifiedName());
         }
+    }
+
+    private Map<String, Object> buildProcessExtendedProperties(Process process) {
+        Map<String, Object> extendedProperties = new HashMap<>();
+
+        String formula = process.getFormula();
+        String implementationLanguage = process.getImplementationLanguage();
+        String displayName = process.getDisplayName();
+
+        if (formula != null) {
+            extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, formula);
+        }
+        if (implementationLanguage != null) {
+            extendedProperties.put(OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, implementationLanguage);
+        }
+        if (displayName != null) {
+            extendedProperties.put(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, displayName);
+        }
+        return extendedProperties;
     }
 }
