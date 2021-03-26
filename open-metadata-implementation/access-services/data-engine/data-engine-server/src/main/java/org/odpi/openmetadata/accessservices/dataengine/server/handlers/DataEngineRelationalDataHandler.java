@@ -216,7 +216,7 @@ public class DataEngineRelationalDataHandler {
             relationalTableGUID = relationalDataHandler.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME, relationalTable.getExtendedProperties(), relationalTable.getVendorProperties(),
+                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, relationalTable.getExtendedProperties(), relationalTable.getVendorProperties(),
                     methodName);
         } else {
             relationalTableGUID = originalRelationalTableEntity.get().getGUID();
