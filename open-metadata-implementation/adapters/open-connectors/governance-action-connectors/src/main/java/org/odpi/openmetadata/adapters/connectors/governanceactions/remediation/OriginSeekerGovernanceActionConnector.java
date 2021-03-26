@@ -61,12 +61,13 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
             }
             else if (governanceContext.getActionTargetElements().size() == 1)
             {
-                OpenMetadataElement actionTarget = governanceContext.getActionTargetElements().get(0).getTargetElement();
+                ActionTargetElement actionTarget = governanceContext.getActionTargetElements().get(0);
+                OpenMetadataElement targetElement = actionTarget.getTargetElement();
 
                 /*
                  * Check that the AssetOrigin classification is not already set - this is an error if it is.
                  */
-                ElementClassification existingAssetOriginClassification = this.getAssetOriginClassification(actionTarget);
+                ElementClassification existingAssetOriginClassification = this.getAssetOriginClassification(targetElement);
 
                 if (existingAssetOriginClassification != null)
                 {
@@ -82,9 +83,9 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                      * The returned list has been deduplicated.
                      */
                     List<String> coveredEntityGUIDs = new ArrayList<>();
-                    coveredEntityGUIDs.add(actionTarget.getElementGUID());
+                    coveredEntityGUIDs.add(targetElement.getElementGUID());
 
-                    List<ElementProperties> originClassifications = this.getOrigins(actionTarget, coveredEntityGUIDs);
+                    List<ElementProperties> originClassifications = this.getOrigins(targetElement, coveredEntityGUIDs);
 
                     if (originClassifications == null)
                     {
@@ -100,7 +101,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                         /*
                          * A single origin has been found so it is ok to add it to the action target asset.
                          */
-                        governanceContext.classifyMetadataElement(actionTarget.getElementGUID(),
+                        governanceContext.classifyMetadataElement(targetElement.getElementGUID(),
                                                                   assetOriginClassification,
                                                                   originClassifications.get(0));
 

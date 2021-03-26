@@ -262,6 +262,7 @@ public class ProvisioningGovernanceContext extends GovernanceContext
         {
             ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
                                                                                       "containmentType",
+                                                                                      "ProcessContainmentType",
                                                                                       "OWNED");
 
             openMetadataStore.createRelatedElementsInStore("ProcessHierarchy",
@@ -306,6 +307,7 @@ public class ProvisioningGovernanceContext extends GovernanceContext
 
         final String displayNamePropertyName = "displayName";
         final String portTypePropertyName = "portType";
+        final String portTypeTypeName = "PortType";
 
         final String processGUIDParameterName = "processGUID";
 
@@ -320,7 +322,7 @@ public class ProvisioningGovernanceContext extends GovernanceContext
 
         if (portType != null)
         {
-            properties = propertyHelper.addEnumProperty(properties, portTypePropertyName, portType.getOpenTypeSymbolicName());
+            properties = propertyHelper.addEnumProperty(properties, portTypePropertyName, portTypeTypeName, portType.getOpenTypeSymbolicName());
         }
 
         String portGUID = openMetadataStore.createMetadataElementInStore(portTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);

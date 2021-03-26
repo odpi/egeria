@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaCate
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -194,22 +194,22 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException   Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(String serverName,
-                                                                     String userId,
-                                                                     String guid,
-                                                                     Date asOfTime,
-                                                                     Integer startingFrom,
-                                                                     Integer pageSize,
-                                                                     SequencingOrder sequencingOrder,
-                                                                     String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getCategoryRelationships(String serverName,
+                                                                             String userId,
+                                                                             String guid,
+                                                                             Date asOfTime,
+                                                                             Integer startingFrom,
+                                                                             Integer pageSize,
+                                                                             SequencingOrder sequencingOrder,
+                                                                             String sequencingProperty
+                                                                            ) {
 
         final String methodName = "getCategoryRelationships";
 
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);

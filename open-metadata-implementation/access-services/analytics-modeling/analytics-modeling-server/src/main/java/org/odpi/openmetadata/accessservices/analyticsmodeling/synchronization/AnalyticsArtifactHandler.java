@@ -469,7 +469,8 @@ public class AnalyticsArtifactHandler {
 
 
 
-	private AnalyticsMetadataBuilder createAnalyticsMetadataBuilder(AnalyticsMetadata src, String assetGUID) throws InvalidParameterException 
+	private AnalyticsMetadataBuilder createAnalyticsMetadataBuilder(AnalyticsMetadata src, String assetGUID)
+			throws InvalidParameterException, PropertyServerException
 	{
 		String methodName = "createAnalyticsMetadataBuilder";
 

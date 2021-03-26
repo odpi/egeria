@@ -133,11 +133,11 @@ public class GovernanceEngineOutTopicPublisher
      *
      * @param governanceEngineGUID unique identifier for the governance engine
      * @param governanceEngineName unique name for the governance engine
-     * @param governanceActionElement element to send
+     * @param governanceActionGUID element to execute
      */
-    void publishNewGovernanceAction(String                  governanceEngineGUID,
-                                    String                  governanceEngineName,
-                                    GovernanceActionElement governanceActionElement)
+    void publishNewGovernanceAction(String governanceEngineGUID,
+                                    String governanceEngineName,
+                                    String governanceActionGUID)
     {
         final String methodName = "publishNewGovernanceAction";
 
@@ -150,14 +150,14 @@ public class GovernanceEngineOutTopicPublisher
                 newEvent.setEventType(GovernanceEngineEventType.REQUESTED_GOVERNANCE_ACTION_EVENT);
                 newEvent.setGovernanceEngineGUID(governanceEngineGUID);
                 newEvent.setGovernanceEngineName(governanceEngineName);
-                newEvent.setGovernanceActionElement(governanceActionElement);
+                newEvent.setGovernanceActionGUID(governanceActionGUID);
 
                 outTopicServerConnector.sendEvent(newEvent);
 
                 if (outTopicAuditLog != null)
                 {
                     outTopicAuditLog.logMessage(actionDescription,
-                                                GovernanceEngineAuditCode.NEW_GOVERNANCE_ACTION.getMessageDefinition(governanceActionElement.getElementHeader().getGUID(),
+                                                GovernanceEngineAuditCode.NEW_GOVERNANCE_ACTION.getMessageDefinition(governanceActionGUID,
                                                                                                                      governanceEngineName,
                                                                                                                      governanceEngineGUID));
                 }

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaCategoryRESTServices;
@@ -140,14 +140,14 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/categories/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                                     @PathVariable String guid,
-                                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                     @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
-                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                             @PathVariable String guid,
+                                                                             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                             @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
+                                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                             @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+                                                                            ) {
         return restAPI.getCategoryRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
@@ -278,7 +278,7 @@ public class SubjectAreaCategoryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    @GetMapping(path = "/users/{userId}/categories/{guid}/child-categories")
+    @GetMapping(path = "/users/{userId}/categories/{guid}/categories")
     public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,

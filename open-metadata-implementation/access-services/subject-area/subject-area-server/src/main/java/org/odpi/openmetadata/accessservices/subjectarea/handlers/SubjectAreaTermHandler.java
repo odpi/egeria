@@ -8,8 +8,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
@@ -29,7 +29,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -115,7 +114,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                     termAnchor.getEnd1().setNodeGuid(glossaryGuid);
                     termAnchor.getEnd2().setNodeGuid(createdTermGuid);
 
-                    Relationship relationship = termAnchorMapper.map(termAnchor);
+                    org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship = termAnchorMapper.map(termAnchor);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
                     response = getTermByGuid(userId, createdTermGuid);
                     if (response.getRelatedHTTPCode() == 200) {
@@ -274,9 +273,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                                        InvalidParameterException
     {
         final String guid = term.getSystemAttributes().getGUID();
-        List<Relationship> termAnchorRelationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_ANCHOR_RELATIONSHIP_NAME, methodName);
+        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> termAnchorRelationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_ANCHOR_RELATIONSHIP_NAME, methodName);
         if (CollectionUtils.isNotEmpty(termAnchorRelationships)) {
-            for (Relationship relationship : termAnchorRelationships) {
+            for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship : termAnchorRelationships) {
                 TermAnchor termAnchor = termAnchorMapper.map(relationship);
                 GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
                 if (glossarySummary != null) {
@@ -284,10 +283,10 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 }
             }
         }
-        List<Relationship> termCategorizationRelationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_CATEGORIZATION_RELATIONSHIP_NAME, methodName);
+        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> termCategorizationRelationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_CATEGORIZATION_RELATIONSHIP_NAME, methodName);
         if (CollectionUtils.isNotEmpty(termCategorizationRelationships)) {
             List<CategorySummary> categorySummaryList = new ArrayList<>();
-            for (Relationship relationship : termCategorizationRelationships) {
+            for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship : termCategorizationRelationships) {
                 Categorization categorization = termCategorizationMapper.map(relationship);
                 if (categorization !=null) {
                     CategorySummary categorySummary = getCategorySummary(methodName, userId, categorization);
@@ -318,7 +317,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(String userId, String guid, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Relationship> getTermRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getTermRelationships";
         return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
     }
@@ -439,15 +438,15 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      */
     private void replaceCategories(String userId, String guid, Term suppliedTerm, String methodName) throws UserNotAuthorizedException, PropertyServerException, SubjectAreaCheckedException, InvalidParameterException {
         Set<String> deleteCategorizationGuidSet = new HashSet<>();
-        SubjectAreaOMASAPIResponse<Line> lineResponse = getTermRelationships(userId, guid, new FindRequest());
-        List<Line> lines= lineResponse.results();
+        SubjectAreaOMASAPIResponse<Relationship> relationshipResponse = getTermRelationships(userId, guid, new FindRequest());
+        List<Relationship> relationships= relationshipResponse.results();
         /*
          * The supplied categories may not be completely filled out.
          * we will accept a guid (i.e. that of the category) and ignore the rest.
          */
-        for (Line line : lines) {
-            if (line.getLineType().equals(LineType.TermCategorization)) {
-                deleteCategorizationGuidSet.add(line.getGuid());
+        for (Relationship relationship : relationships) {
+            if (relationship.getRelationshipType().equals(RelationshipType.TermCategorization)) {
+                deleteCategorizationGuidSet.add(relationship.getGuid());
             }
         }
 

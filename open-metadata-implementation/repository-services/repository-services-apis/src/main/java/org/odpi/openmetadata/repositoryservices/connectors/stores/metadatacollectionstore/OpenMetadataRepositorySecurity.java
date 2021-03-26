@@ -170,11 +170,12 @@ public interface OpenMetadataRepositorySecurity
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
+     * @return entity to return (may be altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
-    void  validateUserForEntityRead(String       userId,
-                                    String       metadataCollectionName,
-                                    EntityDetail instance) throws UserNotAuthorizedException;
+    EntityDetail validateUserForEntityRead(String       userId,
+                                           String       metadataCollectionName,
+                                           EntityDetail instance) throws UserNotAuthorizedException;
 
 
     /**
@@ -367,11 +368,12 @@ public interface OpenMetadataRepositorySecurity
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
+     * @return relationship to return (may be altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
-    void  validateUserForRelationshipRead(String       userId,
-                                          String       metadataCollectionName,
-                                          Relationship instance) throws UserNotAuthorizedException;
+    Relationship  validateUserForRelationshipRead(String       userId,
+                                                  String       metadataCollectionName,
+                                                  Relationship instance) throws UserNotAuthorizedException;
 
 
     /**
@@ -460,5 +462,21 @@ public interface OpenMetadataRepositorySecurity
                                               String         newHomeMetadataCollectionName) throws UserNotAuthorizedException;
 
 
+    /**
+     * Tests for whether a reference copy should be saved to the repository.
+     *
+     * @param instance instance details
+     * @return flag indicating whether the reference copy should be saved
+     */
+    boolean  validateEntityReferenceCopySave(EntityDetail instance);
+
+
+    /**
+     * Tests for whether a reference copy should be saved to the repository.
+     *
+     * @param instance instance details
+     * @return flag indicating whether the reference copy should be saved
+     */
+    boolean  validateRelationshipReferenceCopySave(Relationship instance);
 }
 

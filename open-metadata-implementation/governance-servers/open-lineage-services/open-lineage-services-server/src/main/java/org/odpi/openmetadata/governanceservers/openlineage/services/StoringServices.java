@@ -31,6 +31,8 @@ public class StoringServices {
      * Delegates the call for the creation of entities and relationships to the connector
      */
     public void addEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+        String termGUID = lineageRelationshipsEvent.getRelationshipsContext().getEntityGuid();
+        lineageGraph.removeObsoleteEdgesFromGraph(termGUID, lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
         lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
 
