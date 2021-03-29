@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @DisallowConcurrentExecution
 public class AssetLineageUpdateJob implements Job {
@@ -35,8 +36,8 @@ public class AssetLineageUpdateJob implements Job {
     }
 
     /**
-     * Calls the Asset Lineage client to determine updates for Glossary Terms and the connector to save the time
-     * when it runs successfully.
+     * Calls the Asset Lineage client to determine updates for Glossary Terms starting from the last saved time.
+     * Then it calls the connector to save the current run time.
      * @param localDateTime the time when the job last run successfully, also the time to save in the graph
      * @param dataMap the job context data map containing useful data to run the job
      */
@@ -46,9 +47,11 @@ public class AssetLineageUpdateJob implements Job {
         String localServerUserId = (String) dataMap.get(JobConstants.LOCAL_SERVER_USER_ID);
 
         try {
-            assetLineageClient.publishEntities(localServerName, localServerUserId, GLOSSARY_TERM);
-
             LineageGraph lineageGraph = (LineageGraph) dataMap.get(JobConstants.OPEN_LINEAGE_GRAPH_STORE);
+            Optional<LocalDateTime> assetLineageLastUpdateTime = lineageGraph.getAssetLineageUpdateTime();
+
+            assetLineageClient.publishEntities(localServerName, localServerUserId, GLOSSARY_TERM, assetLineageLastUpdateTime);
+
             lineageGraph.saveAssetLineageUpdateTime(localDateTime);
 
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
