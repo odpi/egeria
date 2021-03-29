@@ -178,7 +178,7 @@ abstract public class Relationship implements Serializable, OmasObject {
     }
 
     /**
-     * The Node is readOnly
+     * The relationship is readOnly
      * @return whether read only
      */
     public boolean isReadOnly() {
@@ -186,7 +186,7 @@ abstract public class Relationship implements Serializable, OmasObject {
     }
 
     /**
-     * set whether the node is readOnly
+     * set whether the relationship is readOnly
      * @param readOnly readonly flag
      */
     public void setReadOnly(boolean readOnly) {
