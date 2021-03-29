@@ -37,7 +37,7 @@ public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubje
      */
 
     public List<Category> getCategoryChildren(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        final String urnTemplate = BASE_URL + "/%s/child-categories";
+        final String urnTemplate = BASE_URL + "/%s/categories";
         final String methodInfo = getMethodInfo(" getCategoryChildren");
         QueryBuilder query = client.createFindQuery(methodInfo, findRequest);
         String urlTemplate = urnTemplate + query.toString();

@@ -1090,4 +1090,67 @@ public class AssetOwnerResource
     {
         return restAPI.deleteAsset(serverName, userId, assetGUID, requestBody);
     }
+
+
+
+    /*
+     * ==============================================
+     * AssetDuplicateManagementInterface
+     * ==============================================
+     */
+
+
+    /**
+     * Create a simple relationship between two elements in an Asset description (typically the asset itself or
+     * attributes in their schema).
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param element1GUID unique identifier of first element
+     * @param element2GUID unique identifier of second element
+     * @param requestBody dummy request body to satisfy POST protocol.
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{element1GUID}/duplicate-of/{element2GUID}")
+
+    public VoidResponse  linkElementsAsDuplicates(@PathVariable String          serverName,
+                                                  @PathVariable String          userId,
+                                                  @PathVariable String          element1GUID,
+                                                  @PathVariable String          element2GUID,
+                                                  @RequestBody (required = false)
+                                                                NullRequestBody requestBody)
+    {
+        return restAPI.linkElementsAsDuplicates(serverName, userId, element1GUID, element2GUID, requestBody);
+    }
+
+
+    /**
+     * Remove the relationship between two elements that marks them as duplicates.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param element1GUID unique identifier of first element
+     * @param element2GUID unique identifier of second element
+     * @param requestBody dummy request body to satisfy POST protocol.
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{element1GUID}/duplicate-of/{element2GUID}/delete")
+
+    public VoidResponse  unlinkElementsAsDuplicates(@PathVariable String          serverName,
+                                                    @PathVariable String          userId,
+                                                    @PathVariable String          element1GUID,
+                                                    @PathVariable String          element2GUID,
+                                                    @RequestBody (required = false)
+                                                                  NullRequestBody requestBody)
+    {
+        return restAPI.unlinkElementsAsDuplicates(serverName, userId, element1GUID, element2GUID, requestBody);
+    }
 }

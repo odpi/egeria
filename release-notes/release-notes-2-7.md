@@ -38,7 +38,7 @@ For details on both see the commit history in GitHub.
 
 # Egeria Implementation Status at Release 2.7
 
-![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-2.7.png#pagewidth) (unchanged from 2.6)
+![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-2.7.png#pagewidth)
 
 Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
 Open Metadata and Governance vision, strategy and content.

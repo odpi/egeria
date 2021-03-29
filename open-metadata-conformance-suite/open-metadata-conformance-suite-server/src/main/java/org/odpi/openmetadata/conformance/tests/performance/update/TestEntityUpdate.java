@@ -26,7 +26,7 @@ public class TestEntityUpdate extends OpenMetadataPerformanceTestCase
     private static final String TEST_CASE_ID   = "repository-entity-update-performance";
     private static final String TEST_CASE_NAME = "Repository entity update performance test case";
 
-    private static final String A_FIND_ENTITIES        = TEST_CASE_ID + "-findEntities";
+    private static final String A_FIND_ENTITIES        = TEST_CASE_ID + "-findEntitiesByProperty";
     private static final String A_FIND_ENTITIES_MSG    = "Repository performs search for unordered first instancesPerType homed instances of type: ";
 
     private static final String A_UPDATE_PROPERTIES     = TEST_CASE_ID + "-updateEntityProperties";

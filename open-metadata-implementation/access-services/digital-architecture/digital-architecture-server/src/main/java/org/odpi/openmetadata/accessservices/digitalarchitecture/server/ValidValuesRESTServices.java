@@ -8,9 +8,7 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -46,7 +44,7 @@ public class ValidValuesRESTServices
 
     /*
      * ==============================================
-     * AssetOnboardingValidValues
+     * ManageValidValues
      * ==============================================
      */
 
@@ -1067,7 +1065,7 @@ public class ValidValuesRESTServices
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param validValueName qualified name of the valid value.
+     * @param requestBody qualified name of the valid value.
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
      *
@@ -1076,11 +1074,11 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public ValidValuesResponse getValidValueByName(String   serverName,
-                                                   String   userId,
-                                                   String   validValueName,
-                                                   int      startFrom,
-                                                   int      pageSize)
+    public ValidValuesResponse getValidValueByName(String          serverName,
+                                                   String          userId,
+                                                   NameRequestBody requestBody,
+                                                   int             startFrom,
+                                                   int             pageSize)
     {
         final String nameParameterName = "validValueName";
         final String methodName        = "getValidValueByName";
@@ -1094,7 +1092,7 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (validValueName != null)
+            if (requestBody != null)
             {
                 ValidValuesHandler<ValidValueElement,
                         ValidValueAssignmentConsumerElement,
@@ -1106,7 +1104,7 @@ public class ValidValuesRESTServices
                         ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 List<ValidValueElement>  validValues = handler.getValidValueByName(userId,
-                                                                                   validValueName,
+                                                                                   requestBody.getName(),
                                                                                    nameParameterName,
                                                                                    startFrom,
                                                                                    pageSize,
@@ -1130,7 +1128,7 @@ public class ValidValuesRESTServices
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param searchString string value to look for - may contain RegEx characters.
+     * @param requestBody string value to look for - may contain RegEx characters.
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
      *
@@ -1139,11 +1137,11 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public ValidValuesResponse findValidValues(String   serverName,
-                                               String   userId,
-                                               String   searchString,
-                                               int      startFrom,
-                                               int      pageSize)
+    public ValidValuesResponse findValidValues(String                  serverName,
+                                               String                  userId,
+                                               SearchStringRequestBody requestBody,
+                                               int                     startFrom,
+                                               int                     pageSize)
     {
         final String   searchStringParameterName = "searchString";
         final String   methodName                = "findValidValues";
@@ -1157,7 +1155,7 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (searchString != null)
+            if (requestBody != null)
             {
                 ValidValuesHandler<ValidValueElement,
                         ValidValueAssignmentConsumerElement,
@@ -1169,7 +1167,7 @@ public class ValidValuesRESTServices
                         ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 List<ValidValueElement>  validValues = handler.findValidValues(userId,
-                                                                               searchString,
+                                                                               requestBody.getSearchString(),
                                                                                searchStringParameterName,
                                                                                startFrom,
                                                                                pageSize,

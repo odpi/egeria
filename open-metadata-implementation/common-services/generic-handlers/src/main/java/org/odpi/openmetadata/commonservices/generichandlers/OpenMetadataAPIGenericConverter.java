@@ -2993,7 +2993,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.REQUEST_SOURCE_NAME_PROPERTY_NAME,
+                                                         OpenMetadataAPIMapper.ACTION_TARGET_NAME_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }

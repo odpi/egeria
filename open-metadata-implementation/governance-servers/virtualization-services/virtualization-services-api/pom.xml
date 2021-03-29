@@ -23,7 +23,7 @@
     <parent>
         <artifactId>virtualization-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.8-SNAPSHOT</version>
+        <version>2.9-SNAPSHOT</version>
     </parent>
 
     <artifactId>virtualization-services-api</artifactId>
