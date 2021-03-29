@@ -23,18 +23,25 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ANCHOR_GUID;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.AVRO_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_ENDPOINT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_TO_ASSET;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CSV_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_CONTENT_FOR_DATA_SET;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DOCUMENT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.JSON_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.KEYSTORE_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LOG_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.MEDIA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 
 /**
@@ -66,7 +73,7 @@ public class AssetContextHandler {
     }
 
     /**
-     * Builds the context for a schema element.
+     * Builds the context for a schema element without the asset context.
      *
      * @param userId       the unique identifier for the user
      * @param entityDetail the entity for which the context is build
@@ -78,9 +85,7 @@ public class AssetContextHandler {
     public Map<String, RelationshipsContext> buildSchemaElementContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String methodName = "buildSchemaElementContext";
 
-        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
-        invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(), GUID_PARAMETER,
-                handlerHelper.getAssetZoneMembership(entityDetail.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
+        handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
 
         Map<String, RelationshipsContext> context = new HashMap<>();
         Set<GraphContext> columnContext = new HashSet<>();
@@ -91,25 +96,55 @@ public class AssetContextHandler {
                 if (!isInternalTabularColumn(userId, entityDetail)) {
                     EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
 
-                    EntityDetail dataFile = handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
+                    handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
 
                     context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
                             columnContext));
-
-                    if (dataFile != null) {
-                        context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildDataFileContext(userId, dataFile));
-                    }
                 }
                 break;
             case RELATIONAL_COLUMN:
-                EntityDetail relationalTable = handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
+                handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
 
                 context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
                         columnContext));
+                break;
+        }
 
-                if (relationalTable != null) {
-                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, relationalTable));
-                }
+        return context;
+    }
+
+
+    /**
+     * Builds the asset context for a schema element.
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the asset context of the schema element
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    public RelationshipsContext buildAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        final String methodName = "buildAssetContext";
+
+        handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
+        RelationshipsContext context = new RelationshipsContext();
+
+        final String typeDefName = entityDetail.getType().getTypeDefName();
+        switch (typeDefName) {
+            case AVRO_FILE:
+            case CSV_FILE:
+            case JSON_FILE:
+            case KEYSTORE_FILE:
+            case LOG_FILE:
+            case MEDIA_FILE:
+            case DOCUMENT:
+            case DATA_FILE:
+                context = buildDataFileContext(userId, entityDetail);
+                break;
+
+            case RELATIONAL_TABLE:
+                context = buildRelationalTableContext(userId, entityDetail);
                 break;
         }
 
