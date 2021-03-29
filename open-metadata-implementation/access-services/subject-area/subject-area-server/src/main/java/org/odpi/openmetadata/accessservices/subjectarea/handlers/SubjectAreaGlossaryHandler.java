@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -199,10 +200,10 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
-
             response = getGlossaryByGuid(userId, guid);
             if (response.head().isPresent()) {
                 Glossary currentGlossary = response.head().get();
+                checkReadOnly(methodName, currentGlossary, "update");
                 if (isReplace)
                     replaceAttributes(currentGlossary, suppliedGlossary);
                 else
@@ -283,8 +284,14 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             if (isPurge) {
+                // TODO check whether whether the deleted glossary is not readonly prior to attempting a purge
                 oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, GLOSSARY_TYPE_NAME, guid);
             } else {
+                response = getGlossaryByGuid(userId, guid);
+                Glossary currentGlossary = response.head().get();
+                if (response.head().isPresent()) {
+                    checkReadOnly(methodName, currentGlossary, "delete");
+                }
                 // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
                 List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
                 if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, GLOSSARY_TYPE_NAME, methodName)) {
@@ -321,6 +328,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         final String methodName = "restoreGlossary";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
+            // TODO check whether whether the deleted glossary is not readonly prior to attempting a restore
             this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             response = getGlossaryByGuid(userId, guid);
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {

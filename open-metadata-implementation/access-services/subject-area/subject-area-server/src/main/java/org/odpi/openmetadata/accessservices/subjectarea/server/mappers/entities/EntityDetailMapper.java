@@ -46,10 +46,14 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
         }
         // set classifications
         mapOmrsClassificationsToNode(omrsEntityDetail, node);
+        // set readonly
+        if (omrsEntityDetail.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT) {
+            node.setReadOnly(true);
+        }
     }
 
     /**
-     * Map  EntityDetail properties to Node properties. This method calls out to methods that are overridden for the different Nodes.
+     * Map EntityDetail properties to Node properties. This method calls out to methods that are overridden for the different Nodes.
      * @param node supplied Node to be updated
      * @param omrsEntityDetailProperties entity detail properties
      */
@@ -248,6 +252,12 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
 
     /**
      * Map a Node (a Subject Area OMAS) concept to an EntityDetail (an OMRS concept)
+     *
+     * Note that this does not map the readonly flag to the provenance, the caller needs
+     * to handle this if required. Readonly flag is only for update / delete and restore processing
+     * can proceed, in these cases the omrs entity should be looked up first, so this mapping would
+     * not be called.
+     *
      * @param node supplied node, which is a Subject Area Concept
      * @return EntityDetail, which is an OMRS concept
      */

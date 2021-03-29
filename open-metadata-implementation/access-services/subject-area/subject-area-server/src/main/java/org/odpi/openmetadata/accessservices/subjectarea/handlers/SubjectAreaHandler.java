@@ -32,6 +32,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 
 import java.util.*;
 
@@ -471,5 +472,36 @@ public abstract class SubjectAreaHandler {
             isMatch = true;
         }
         return isMatch;
+    }
+
+    /**
+     * Check whether the node is readonly and throw and exception if it is
+     * @param methodName calling methodName
+     * @param node node to check
+     * @param operation operation being attempted
+     * @throws PropertyServerException exception thrown when the node is readonly
+     */
+    protected void checkReadOnly(String methodName, Node node, String operation ) throws PropertyServerException {
+        if (node.isReadOnly()) {
+            // reject
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_NODE.getMessageDefinition(operation, node.getNodeType().toString());
+            // todo pass parameters
+            throw new PropertyServerException(messageDefinition, className , methodName);
+        }
+    }
+    /**
+     * Check whether the relationship is readonly and throw and exception if it is
+     * @param methodName calling methodName
+     * @param relationship relationship to check
+     * @param operation operation being attempted
+     * @throws PropertyServerException exception thrown when the relationship is readonly
+     */
+    protected void checkRelationshipReadOnly(String methodName, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship, String operation ) throws PropertyServerException {
+        if (relationship.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT) {
+            // reject
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_RELATIONSHIP.getMessageDefinition(operation, relationship.getType().getTypeDefName());
+            // todo pass parameters
+            throw new PropertyServerException(messageDefinition, className , methodName);
+        }
     }
 }
