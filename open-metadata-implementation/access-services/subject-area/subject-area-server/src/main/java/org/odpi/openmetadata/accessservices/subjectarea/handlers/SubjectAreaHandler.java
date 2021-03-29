@@ -485,7 +485,6 @@ public abstract class SubjectAreaHandler {
         if (node.isReadOnly()) {
             // reject
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_NODE.getMessageDefinition(operation, node.getNodeType().toString());
-            // todo pass parameters
             throw new PropertyServerException(messageDefinition, className , methodName);
         }
     }
@@ -500,7 +499,6 @@ public abstract class SubjectAreaHandler {
         if (relationship.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT) {
             // reject
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_RELATIONSHIP.getMessageDefinition(operation, relationship.getType().getTypeDefName());
-            // todo pass parameters
             throw new PropertyServerException(messageDefinition, className , methodName);
         }
     }
