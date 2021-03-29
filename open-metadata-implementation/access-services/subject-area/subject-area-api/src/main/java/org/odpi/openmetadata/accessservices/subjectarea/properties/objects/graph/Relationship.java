@@ -55,6 +55,7 @@ abstract public class Relationship implements Serializable, OmasObject {
     private Date effectiveToTime = null;
     private Map<String, String> additionalProperties;
     protected RelationshipType relationshipType;
+    private boolean readOnly = false;
     // this is the relationship name
     protected String name;
     protected RelationshipEnd end1;
@@ -174,6 +175,22 @@ abstract public class Relationship implements Serializable, OmasObject {
 
     public void setEnd2(RelationshipEnd end2) {
         this.end2 = end2;
+    }
+
+    /**
+     * The relationship is readOnly
+     * @return whether read only
+     */
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    /**
+     * set whether the relationship is readOnly
+     * @param readOnly readonly flag
+     */
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
     }
 
     public StringBuilder toString(StringBuilder sb) {
