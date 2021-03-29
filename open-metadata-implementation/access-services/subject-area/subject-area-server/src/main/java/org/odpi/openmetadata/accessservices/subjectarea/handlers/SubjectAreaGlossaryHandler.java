@@ -328,7 +328,6 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         final String methodName = "restoreGlossary";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            // TODO check whether whether the deleted glossary is not readonly prior to attempting a restore
             this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             response = getGlossaryByGuid(userId, guid);
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
