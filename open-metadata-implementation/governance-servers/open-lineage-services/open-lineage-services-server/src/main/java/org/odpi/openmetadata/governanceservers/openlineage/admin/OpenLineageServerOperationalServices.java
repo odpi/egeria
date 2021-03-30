@@ -2,18 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
+import org.odpi.openmetadata.accessservices.assetlineage.AssetLineage;
+import org.odpi.openmetadata.adminservices.configuration.properties.OLSSimplifiedAccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageAssetContextHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.OpenLineageInTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServerInstance;
@@ -34,10 +38,10 @@ import org.slf4j.LoggerFactory;
 public class OpenLineageServerOperationalServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerOperationalServices.class);
 
-    private String localServerName;
-    private String localServerUserId;
-    private String localServerPassword;
-    private int maxPageSize;
+    private final String localServerName;
+    private final String localServerUserId;
+    private final String localServerPassword;
+    private final int maxPageSize;
 
     private OpenLineageServerConfig openLineageServerConfig;
     private OpenLineageServerInstance openLineageServerInstance;
@@ -92,7 +96,7 @@ public class OpenLineageServerOperationalServices {
         }
     }
 
-    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException {
+    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException, InvalidParameterException {
         final String actionDescription = "Initialize Open lineage Services";
         Connection lineageGraphConnection = openLineageServerConfig.getLineageGraphConnection();
         Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
@@ -151,7 +155,7 @@ public class OpenLineageServerOperationalServices {
      *
      * @throws OMAGConfigurationErrorException
      */
-    private void initializeAndStartConnectors() throws OMAGConfigurationErrorException {
+    private void initializeAndStartConnectors() throws OMAGConfigurationErrorException, InvalidParameterException {
         initializeGraphConnectorDB(
                 lineageGraphConnector,
                 OpenLineageServerErrorCode.ERROR_INITIALIZING_LINEAGE_GRAPH_CONNECTOR_DB,
@@ -212,13 +216,17 @@ public class OpenLineageServerOperationalServices {
      *
      * @throws OMAGConfigurationErrorException
      */
-    private void startIntopicConnector() throws OMAGConfigurationErrorException {
+    private void startIntopicConnector() throws OMAGConfigurationErrorException, InvalidParameterException {
         final String actionDescription = "Start the Open Lineage Services in-topic listener";
         final String methodName = "startIntopicConnector";
         final OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR;
         inTopicConnector.setAuditLog(auditLog);
         StoringServices storingServices = new StoringServices(lineageGraphConnector);
-        OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices, auditLog);
+        OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
+        AssetLineage assetLineage = new AssetLineage(accessServiceConfig.getServerName(), accessServiceConfig.getServerPlatformUrlRoot());
+        OpenLineageAssetContextHandler assetContextHandler = new OpenLineageAssetContextHandler(localServerUserId, assetLineage);
+        OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices,
+                assetContextHandler, auditLog);
         inTopicConnector.registerListener(openLineageInTopicListener);
         try {
             inTopicConnector.start();

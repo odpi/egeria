@@ -1341,7 +1341,7 @@ public class GovernanceEngineRESTServices
                                                statusOrdinal,
                                                requestBody.getRequestParameters(),
                                                requestBody.getOutputGuards(),
-                                               requestBody.getNewActionTargetGUIDs(),
+                                               requestBody.getNewActionTargets(),
                                                methodName);
             }
             else
@@ -1401,7 +1401,7 @@ public class GovernanceEngineRESTServices
                                                                   requestBody.getDisplayName(),
                                                                   requestBody.getDescription(),
                                                                   requestBody.getRequestSourceGUIDs(),
-                                                                  requestBody.getActionTargetGUIDs(),
+                                                                  requestBody.getActionTargets(),
                                                                   null,
                                                                   requestBody.getReceivedGuards(),
                                                                   requestBody.getStartTime(),
@@ -1465,7 +1465,7 @@ public class GovernanceEngineRESTServices
                 response.setGUID(handler.initiateGovernanceActionProcess(userId,
                                                                          requestBody.getProcessQualifiedName(),
                                                                          requestBody.getRequestSourceGUIDs(),
-                                                                         requestBody.getActionTargetGUIDs(),
+                                                                         requestBody.getActionTargets(),
                                                                          requestBody.getRequestParameters(),
                                                                          requestBody.getStartTime(),
                                                                          requestBody.getOriginatorServiceName(),
@@ -1595,6 +1595,94 @@ public class GovernanceEngineRESTServices
             GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
 
             handler.claimGovernanceAction(userId, governanceActionGUID, methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the governance actions that are known to the server.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     *
+     * @return list of governance action elements or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    public GovernanceActionElementsResponse getGovernanceActions(String serverName,
+                                                                 String userId,
+                                                                 int    startFrom,
+                                                                 int    pageSize)
+    {
+        final String methodName = "getGovernanceActions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GovernanceActionElementsResponse response = new GovernanceActionElementsResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+            response.setElements(handler.getGovernanceActions(userId, startFrom, pageSize, methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the governance actions that are still in process.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     *
+     * @return list of governance action elements or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    public GovernanceActionElementsResponse getActiveGovernanceActions(String serverName,
+                                                                       String userId,
+                                                                       int    startFrom,
+                                                                       int    pageSize)
+    {
+        final String methodName = "getActiveGovernanceActions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GovernanceActionElementsResponse response = new GovernanceActionElementsResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceActionHandler<GovernanceActionElement> handler = instanceHandler.getGovernanceActionHandler(userId, serverName, methodName);
+
+            response.setElements(handler.getActiveGovernanceActions(userId, startFrom, pageSize, methodName));
         }
         catch (Exception error)
         {

@@ -82,4 +82,11 @@ public interface LineageGraph extends OpenLineageGraphConnector {
      */
     void schedulerTask();
 
+    /**
+     * Returns whether an entity exists in the graph or not
+     *
+     * @param guid the lineage entity guid
+     * @return the boolean
+     */
+    boolean isEntityInGraph(String guid);
 }

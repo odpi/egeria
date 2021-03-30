@@ -86,6 +86,7 @@ public class TriageGovernanceContext extends GovernanceContext
         final String priorityPropertyName      = "priority";
         final String dueDatePropertyName       = "dueTime";
         final String statusPropertyName        = "status";
+        final String statusPropertyTypeName    = "ToDoStatus";
         final String openEnumPropertyValue     = "Open";
 
         final String toDoQualifiedNameParameterName = "toDoQualifiedName";
@@ -184,7 +185,7 @@ public class TriageGovernanceContext extends GovernanceContext
         }
 
         properties = propertyHelper.addIntProperty(properties, priorityPropertyName, priority);
-        properties = propertyHelper.addEnumProperty(properties, statusPropertyName, openEnumPropertyValue);
+        properties = propertyHelper.addEnumProperty(properties, statusPropertyName, statusPropertyTypeName, openEnumPropertyValue);
 
         String todoGUID = openMetadataStore.createMetadataElementInStore(todoTypeName, ElementStatus.ACTIVE, null, null, properties, null);
 

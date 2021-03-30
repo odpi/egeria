@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
@@ -145,12 +146,15 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                                              R relationship,
                                                                              Boolean isReplace)
     {
+        final String methodName = "updateRelationship";
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
             Optional<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> gotRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, relationshipGuid);
             if (gotRelationship.isPresent()) {
+                checkRelationshipReadOnly(methodName, gotRelationship.get(), "update");
+
                 org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship originalRelationship = gotRelationship.get();
                 org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationshipToUpdate = mapper.map(relationship);
                 relationshipToUpdate.setGUID(relationshipGuid);
@@ -224,6 +228,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                                              Class<? extends IRelationshipMapper<R>> clazz,
                                                                              String guid,
                                                                              Boolean isPurge) {
+        final String methodName = "deleteRelationship";
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
@@ -232,6 +237,10 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
             if (isPurge) {
                 oMRSAPIHelper.callOMRSPurgeRelationship(restAPIName, userId, typeGuid, mapper.getTypeName(), guid);
             } else {
+                Optional<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> gotRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
+                if (gotRelationship.isPresent()) {
+                    checkRelationshipReadOnly(methodName, gotRelationship.get(), "delete");
+                }
                 oMRSAPIHelper.callOMRSDeleteRelationship(restAPIName, userId, typeGuid, mapper.getTypeName(), guid);
             }
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {

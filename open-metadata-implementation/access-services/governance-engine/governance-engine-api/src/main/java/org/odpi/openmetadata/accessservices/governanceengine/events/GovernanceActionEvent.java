@@ -12,8 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceEngineConfigurationEvent is used to inform the governance server that the configuration of
- * one of its governance engines has changed.
+ * GovernanceActionEvent is used to inform the governance server that there is a governance action to run.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,7 +21,7 @@ public class GovernanceActionEvent extends GovernanceEngineEvent
 {
     private static final long serialVersionUID = 1L;
 
-    private GovernanceActionElement governanceActionElement = null;
+    private String governanceActionGUID = null;
 
     /**
      * Default constructor
@@ -44,30 +43,30 @@ public class GovernanceActionEvent extends GovernanceEngineEvent
 
         if (template != null)
         {
-            governanceActionElement = template.getGovernanceActionElement();
+            governanceActionGUID = template.getGovernanceActionGUID();
         }
     }
 
 
     /**
-     * Return the description of the governance action.
+     * Return the unique identifier of the governance action.
      *
-     * @return governance action element
+     * @return string guid
      */
-    public GovernanceActionElement getGovernanceActionElement()
+    public String getGovernanceActionGUID()
     {
-        return governanceActionElement;
+        return governanceActionGUID;
     }
 
 
     /**
-     * Set up the description of the governance action..
+     * Set up the unique identifier of the governance action.
      *
-     * @param governanceActionElement governance action element
+     * @param governanceActionGUID string guid
      */
-    public void setGovernanceActionElement(GovernanceActionElement governanceActionElement)
+    public void setGovernanceActionGUID(String governanceActionGUID)
     {
-        this.governanceActionElement = governanceActionElement;
+        this.governanceActionGUID = governanceActionGUID;
     }
 
 
@@ -80,7 +79,7 @@ public class GovernanceActionEvent extends GovernanceEngineEvent
     public String toString()
     {
         return "GovernanceActionEvent{" +
-                       "governanceActionElement=" + governanceActionElement +
+                       "governanceActionGUID=" + governanceActionGUID +
                        ", eventVersionId=" + getEventVersionId() +
                        ", eventType=" + getEventType() +
                        ", governanceEngineGUID='" + getGovernanceEngineGUID() + '\'' +
@@ -111,7 +110,7 @@ public class GovernanceActionEvent extends GovernanceEngineEvent
             return false;
         }
         GovernanceActionEvent that = (GovernanceActionEvent) objectToCompare;
-        return Objects.equals(governanceActionElement, that.governanceActionElement);
+        return Objects.equals(governanceActionGUID, that.governanceActionGUID);
     }
 
 
@@ -123,6 +122,6 @@ public class GovernanceActionEvent extends GovernanceEngineEvent
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), governanceActionElement);
+        return Objects.hash(super.hashCode(), governanceActionGUID);
     }
 }

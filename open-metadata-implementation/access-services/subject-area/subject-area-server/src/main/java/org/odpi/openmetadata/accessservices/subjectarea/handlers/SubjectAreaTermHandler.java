@@ -358,7 +358,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             response = getTermByGuid(userId, guid);
             if (response.head().isPresent()) {
                 Term currentTerm = response.head().get();
-
+                checkReadOnly(methodName, currentTerm, "update");
                 Set<String> currentClassificationNames = getCurrentClassificationNames(currentTerm);
 
                 if (isReplace)
@@ -578,6 +578,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             if (isPurge) {
                 oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, TERM_TYPE_NAME, guid);
             } else {
+                response = getTermByGuid(userId, guid);
+                if (response.head().isPresent()) {
+                    Term currentTerm = response.head().get();
+                    checkReadOnly(methodName, currentTerm, "delete");
+                }
                 oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, TERM_TYPE_NAME, guid);
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {

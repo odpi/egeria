@@ -257,7 +257,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param exception  exception from remote call
      */
     public synchronized void captureGenericException(String     metadataCollectionId,
-                                                     Throwable  exception)
+                                                     Exception  exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         anotherException = exception;

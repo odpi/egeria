@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.*;
@@ -22,6 +23,8 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
 {
     List<String> instancesToListenTo = new ArrayList<>();
 
+    String actionTargetName = null;
+    String actionTargetTwoName = null;
     String newElementProcessName = null;
     String updatedElementProcessName = null;
     String deletedElementProcessName = null;
@@ -78,6 +81,8 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
             }
         }
 
+        actionTargetName = getProperty(GenericElementWatchdogGovernanceActionProvider.ACTION_TARGET_NAME_PROPERTY, "receivedElement");
+        actionTargetTwoName = getProperty(GenericElementWatchdogGovernanceActionProvider.ACTION_TARGET_TWO_NAME_PROPERTY, "receivedElementTwo");
         newElementProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.NEW_ELEMENT_PROCESS_NAME_PROPERTY, null);
         updatedElementProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.UPDATED_ELEMENT_PROCESS_NAME_PROPERTY, null);
         deletedElementProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.DELETED_ELEMENT_PROCESS_NAME_PROPERTY, null);
@@ -330,12 +335,12 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
      *
      * @param processName name of the process to start
      * @param requestParameters parameters to pass to the process
-     * @param actionTargetGUIDs the elements that this process should work on
+     * @param actionTargets the elements that this process should work on
      * @throws GovernanceServiceException unable to start the process
      */
-    protected void initiateProcess(String              processName,
-                                   Map<String, String> requestParameters,
-                                   List<String>        actionTargetGUIDs) throws GovernanceServiceException
+    protected void initiateProcess(String                processName,
+                                   Map<String, String>   requestParameters,
+                                   List<NewActionTarget> actionTargets) throws GovernanceServiceException
     {
         final String methodName = "initiateProcess";
 
@@ -349,9 +354,9 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
             }
 
             String actionTargetsString = "<null>";
-            if (actionTargetGUIDs != null)
+            if (actionTargets != null)
             {
-                actionTargetsString = actionTargetGUIDs.toString();
+                actionTargetsString = actionTargets.toString();
             }
 
             try
@@ -368,7 +373,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
                 governanceContext.initiateGovernanceActionProcess(processName,
                                                                   requestParameters,
                                                                   null,
-                                                                  actionTargetGUIDs,
+                                                                  actionTargets,
                                                                   null);
             }
             catch (OCFCheckedExceptionBase nestedError)
