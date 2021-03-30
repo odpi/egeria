@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage;
 
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
+import org.odpi.openmetadata.accessservices.assetlineage.rest.AssetContextResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
@@ -17,7 +19,9 @@ import java.util.List;
 public class AssetLineage extends FFDCRESTClient implements AssetLineageInterface {
 
     private static final String BASE_PATH = "/servers/{0}/open-metadata/access-services/asset-lineage/users/{1}/";
-    private static final String PUBLISH_ENTITIES = "/publish-entities/{2}";
+    private static final String PUBLISH_ENTITIES = "publish-entities/{2}";
+    private static final String PROVIDE_CONTEXT = "provide-context/{2}/{3}";
+    private String userId;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -44,6 +48,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
     public AssetLineage(String serverName, String serverPlatformURLRoot, String userId, String password)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         super(serverName, serverPlatformURLRoot, userId, password);
+        this.userId = userId;
     }
 
     /**
@@ -68,4 +73,26 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
 
         return response.getGUIDs();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RelationshipsContext provideAssetContext(String userId, String guid, String entityType)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        String methodName = "provideAssetContext";
+
+        invalidParameterHandler.validateUserId(methodName, userId);
+
+        String urlTemplate = serverPlatformURLRoot + BASE_PATH + PROVIDE_CONTEXT;
+        AssetContextResponse response = callGetRESTCall(methodName, AssetContextResponse.class, urlTemplate, serverName,
+                userId, entityType, guid);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(response);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(response);
+        exceptionHandler.detectAndThrowPropertyServerException(response);
+
+        return response.getContext();
+    }
+
 }

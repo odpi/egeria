@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageRestServices;
+import org.odpi.openmetadata.accessservices.assetlineage.rest.AssetContextResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -87,5 +88,22 @@ public class AssetLineageResource {
                                           @PathVariable String guid,
                                           @PathVariable String entityType) {
         return restAPI.publishEntity(serverName, userId, entityType, guid);
+    }
+
+    /**
+     * Find the entity by guid and provide the context for it. It applies for data tables and files.
+     *
+     * @param serverName name of server instance to call
+     * @param userId     the name of the calling user
+     * @param guid       the guid of the entity to build context
+     * @param entityType the name of the relationship type
+     * @return a list of unique identifiers (guids) of the available entity with the given type provided as a response
+     */
+    @GetMapping(path = "/provide-context/{entityType}/{guid}")
+    public AssetContextResponse provideAssetContext(@PathVariable String serverName,
+                                                                     @PathVariable String userId,
+                                                                     @PathVariable String guid,
+                                                                     @PathVariable String entityType) {
+        return restAPI.provideAssetContextForSchemaElement(serverName, userId, entityType, guid);
     }
 }

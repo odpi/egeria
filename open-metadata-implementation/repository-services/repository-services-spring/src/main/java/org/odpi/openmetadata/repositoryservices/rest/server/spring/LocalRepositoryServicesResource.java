@@ -2425,7 +2425,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
      * FunctionNotSupportedException this method is not supported
      */
-    @PostMapping(path = "/instances/entity/{entityGUID}/home-classifications")
+    @GetMapping(path = "/instances/entity/{entityGUID}/home-classifications")
 
     public ClassificationListResponse getHomeClassifications(@PathVariable String serverName,
                                                              @PathVariable String userId,

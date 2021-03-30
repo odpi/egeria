@@ -94,7 +94,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
         {
             accumulator.captureException(metadataCollectionId, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(metadataCollectionId, error);
         }
@@ -125,7 +125,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
         accumulator.throwCapturedInvalidParameterException();
         accumulator.throwCapturedUserNotAuthorizedException();
         accumulator.throwCapturedRepositoryErrorException();
-        accumulator.throwCapturedThrowableException(methodName);
+        accumulator.throwCapturedGenericException(methodName);
 
         return null;
     }
