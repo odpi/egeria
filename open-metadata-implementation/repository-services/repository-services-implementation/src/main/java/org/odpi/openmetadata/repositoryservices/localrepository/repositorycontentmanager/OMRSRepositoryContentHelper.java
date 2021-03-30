@@ -1269,7 +1269,16 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                 }
             }
 
-            entityClassificationsMap.put(newClassification.getName(), newClassification);
+            Classification existingClassification = entityClassificationsMap.get(newClassification.getName());
+
+            /*
+             * Ignore older versions of the classification
+             */
+            if ((existingClassification == null) ||
+                        (existingClassification.getVersion() < newClassification.getVersion()))
+            {
+                entityClassificationsMap.put(newClassification.getName(), newClassification);
+            }
 
             if (entityClassificationsMap.isEmpty())
             {

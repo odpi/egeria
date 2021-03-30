@@ -135,7 +135,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(error);
         }
@@ -174,7 +174,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
 
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(methodName);
+        accumulator.throwCapturedGenericException(methodName);
         accumulator.throwCapturedEntityNotKnownException();
         accumulator.throwCapturedInvalidParameterException();
         accumulator.throwCapturedFunctionNotSupportedException();

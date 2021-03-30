@@ -23,7 +23,7 @@ public class ExceptionAccumulatorBase
     RelationshipNotKnownException   relationshipNotKnownException   = null;
     RepositoryErrorException        repositoryErrorException        = null;
     StatusNotSupportedException     statusNotSupportedException     = null;
-    Throwable                       anotherException                = null;
+    Exception                       anotherException                = null;
     TypeDefConflictException        typeDefConflictException        = null;
     TypeDefNotKnownException        typeDefNotKnownException        = null;
     TypeDefNotSupportedException    typeDefNotSupportedException    = null;
@@ -225,13 +225,13 @@ public class ExceptionAccumulatorBase
 
 
     /**
-     * Throw a RepositoryErrorException if an unexpected Throwable exception was returned by one of the calls
+     * Throw a RepositoryErrorException if an unexpected exception was returned by one of the calls
      * to a cohort connector.
      *
      * @param methodName calling method
      * @throws RepositoryErrorException there was an unexpected error in the repository
      */
-    public synchronized void throwCapturedThrowableException(String methodName) throws RepositoryErrorException
+    public synchronized void throwCapturedGenericException(String methodName) throws RepositoryErrorException
     {
         if (anotherException != null)
         {

@@ -225,7 +225,7 @@ public class OMRSMetadataHighwayManager
 
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw error;
         }
@@ -466,7 +466,7 @@ public class OMRSMetadataHighwayManager
 
             return (OMRSCohortRegistryStore)connector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             if (log.isDebugEnabled())
             {
@@ -514,7 +514,7 @@ public class OMRSMetadataHighwayManager
 
             return topicConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getTopicConnector()";
 
