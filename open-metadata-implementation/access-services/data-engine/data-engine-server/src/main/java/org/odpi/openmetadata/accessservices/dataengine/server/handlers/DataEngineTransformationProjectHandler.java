@@ -4,11 +4,9 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.TransformationProject;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.TransformationProjectBuilder;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.TransformationProjectMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -17,6 +15,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.Optional;
 
+import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.TransformationProjectMapper.COLLECTION_MEMBERSHIP_NAME;
+
 /**
  * DataEngineTransformationProjectHandler manages transformation project objects. It runs server-side in the
  * DataEngine OMAS and creates and retrieves transformation project entities through the OMRSRepositoryConnector.
@@ -24,7 +24,6 @@ import java.util.Optional;
 public class DataEngineTransformationProjectHandler {
     private final String serviceName;
     private final String serverName;
-    private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final OpenMetadataAPIGenericHandler<TransformationProject> transformationProjectHandler;
@@ -37,14 +36,13 @@ public class DataEngineTransformationProjectHandler {
      * @param serviceName                   name of this service
      * @param serverName                    name of the local server
      * @param invalidParameterHandler       handler for managing parameter errors
-     * @param repositoryHandler             manages calls to the repository services
      * @param repositoryHelper              provides utilities for manipulating the repository services objects
      * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
      * @param dataEngineCommonHandler       provides utilities for manipulating entities
      * @param transformationProjectHandler  handler for managing schema attributes in the metadata repositories
      */
     public DataEngineTransformationProjectHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                                  RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
+                                                  OMRSRepositoryHelper repositoryHelper,
                                                   OpenMetadataAPIGenericHandler<TransformationProject> transformationProjectHandler,
                                                   DataEngineRegistrationHandler dataEngineRegistrationHandler,
                                                   DataEngineCommonHandler dataEngineCommonHandler) {
@@ -52,7 +50,6 @@ public class DataEngineTransformationProjectHandler {
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
         this.transformationProjectHandler = transformationProjectHandler;
         this.dataEngineRegistrationHandler = dataEngineRegistrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
@@ -83,7 +80,7 @@ public class DataEngineTransformationProjectHandler {
 
         return transformationProjectHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
                 TransformationProjectMapper.COLLECTION_TYPE_GUID, TransformationProjectMapper.COLLECTION_TYPE_NAME,
-                transformationProject.getQualifiedName(), ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
+                transformationProject.getQualifiedName(), TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
     }
 
     public Optional<EntityDetail> findTransformationProjectEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
@@ -98,12 +95,12 @@ public class DataEngineTransformationProjectHandler {
             PropertyServerException {
 
         dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, transformationProjectGuid,
-                "CollectionMembership", ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName,
+                COLLECTION_MEMBERSHIP_NAME, TransformationProjectMapper.PROCESS_TYPE_NAME, externalSourceName,
                 null);
     }
 
     private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws InvalidParameterException {
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
     }
 }

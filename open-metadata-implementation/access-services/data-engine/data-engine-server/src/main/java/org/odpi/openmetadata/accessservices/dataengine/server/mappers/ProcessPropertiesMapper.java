@@ -17,7 +17,6 @@ public class ProcessPropertiesMapper {
     public static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
     public static final String GUID_PROPERTY_NAME = "guid";
     public static final String FORMULA_PROPERTY_NAME = "formula";
-    public static final String TRANSFORMATION_PROJECT_PROPERTY_NAME = "transformationProject";
     public static final String QUALIFIED_NAME_PROPERTY_NAME = "qualifiedName";
     public static final String CONTAINMENT_TYPE = "containmentType";
     public static final String PROCESS_GUID_PROPERTY_NAME = "processGUID";

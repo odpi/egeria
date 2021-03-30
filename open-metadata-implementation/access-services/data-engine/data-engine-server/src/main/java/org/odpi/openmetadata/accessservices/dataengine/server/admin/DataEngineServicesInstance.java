@@ -98,7 +98,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
             dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
 
-            dataEngineTransformationProjectHandler = new DataEngineTransformationProjectHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+            dataEngineTransformationProjectHandler = new DataEngineTransformationProjectHandler(serviceName, serverName, invalidParameterHandler,
                     repositoryHelper, transformationProjectOpenMetadataAPIGenericHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
 
             dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
