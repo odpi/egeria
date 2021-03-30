@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @DisallowConcurrentExecution
@@ -24,12 +25,12 @@ public class AssetLineageUpdateJob implements Job {
 
     private static final String GLOSSARY_TERM = "GlossaryTerm";
 
-    private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Run AssetLineageUpdateJob task at {}";
-    private static final String RUNNING_FAILURE = "AssetLineageUpdateJob task execution at {} failed because of the following exception {}";
+    private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Run AssetLineageUpdateJob task at {} GMT";
+    private static final String RUNNING_FAILURE = "AssetLineageUpdateJob task execution at {} GMT failed because of the following exception {}";
 
     @Override
     public void execute(JobExecutionContext context) {
-        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("GMT"));
         log.debug(RUN_ASSET_LINEAGE_UPDATE_JOB, localDateTime);
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
         performTask(localDateTime, dataMap);

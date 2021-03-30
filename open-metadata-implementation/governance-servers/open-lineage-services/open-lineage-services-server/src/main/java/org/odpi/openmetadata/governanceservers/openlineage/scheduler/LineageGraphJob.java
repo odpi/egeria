@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @DisallowConcurrentExecution
 public class LineageGraphJob implements Job {
@@ -19,8 +20,8 @@ public class LineageGraphJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) {
-        LocalDateTime localTime = LocalDateTime.now();
-        log.debug("Run LineageGraphJob task at {}", localTime);
+        LocalDateTime localTime = LocalDateTime.now(ZoneId.of("GMT"));
+        log.debug("Run LineageGraphJob task at {} GMT", localTime);
 
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
         LineageGraph lineageGraph = (LineageGraph) dataMap.get(JobConstants.OPEN_LINEAGE_GRAPH_STORE);
