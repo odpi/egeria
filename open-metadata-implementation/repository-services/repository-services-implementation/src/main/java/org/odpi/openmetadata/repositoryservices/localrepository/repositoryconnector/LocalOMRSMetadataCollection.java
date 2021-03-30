@@ -1346,6 +1346,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             if (instance.getMetadataCollectionId() == null)
             {
                 instance.setMetadataCollectionId(metadataCollectionId);
+                instance.setMetadataCollectionName(metadataCollectionName);
                 instance.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
             }
 

@@ -176,7 +176,7 @@ public class OMRSOperationalServices
 
                 return omrsRepositoryConnector;
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logException(actionDescription,
                                       OMRSAuditCode.ENTERPRISE_CONNECTOR_FAILED.getMessageDefinition(callingServiceName,
@@ -408,7 +408,7 @@ public class OMRSOperationalServices
             {
                 localRepositoryConnector.start();
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logMessage(actionDescription,
                                     OMRSAuditCode.LOCAL_REPOSITORY_FAILED_TO_START.getMessageDefinition(error.getMessage()));
@@ -895,7 +895,7 @@ public class OMRSOperationalServices
             {
                 enterpriseOMRSTopicConnector.disconnect();
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_TOPIC_DISCONNECT_ERROR.getMessageDefinition());
             }
@@ -910,7 +910,7 @@ public class OMRSOperationalServices
             {
                 enterpriseConnectorManager.disconnect();
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_CONNECTOR_DISCONNECT_ERROR.getMessageDefinition(error.getMessage()));
             }
@@ -970,7 +970,7 @@ public class OMRSOperationalServices
             connector.start();
             return (OMRSAuditLogStore)connector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getAuditLogStore";
 
@@ -1008,7 +1008,7 @@ public class OMRSOperationalServices
 
             return topicConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getTopicConnector";
 
@@ -1047,7 +1047,7 @@ public class OMRSOperationalServices
 
             return archiveStoreConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getOpenMetadataArchiveStore";
 
@@ -1103,7 +1103,7 @@ public class OMRSOperationalServices
 
             return eventMapperConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getLocalRepositoryEventMapper";
 
@@ -1166,7 +1166,7 @@ public class OMRSOperationalServices
 
             return localRepositoryConnector;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             /*
              * If there is a problem initializing the connector then the ConnectorBroker will have created a

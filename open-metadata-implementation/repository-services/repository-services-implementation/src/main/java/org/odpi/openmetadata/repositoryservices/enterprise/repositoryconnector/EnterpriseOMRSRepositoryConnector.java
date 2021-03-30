@@ -626,7 +626,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         {
             super.disconnect();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             /*
              * Nothing to do
@@ -663,7 +663,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
             {
                 connector.disconnect();
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 log.error("Exception from disconnect of connector to metadata collection:" + connector.getMetadataCollectionId() + "  Error message was: " + error.getMessage());
             }
@@ -763,7 +763,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
                 {
                     return connector.getMetadataCollection();
                 }
-                catch (Throwable   error)
+                catch (Exception   error)
                 {
                     return null;
                 }

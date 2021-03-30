@@ -2101,7 +2101,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         PropertyErrorException         propertyErrorException          = null;
         UserNotAuthorizedException     userNotAuthorizedException      = null;
         RepositoryErrorException       repositoryErrorException        = null;
-        Throwable                      anotherException                = null;
+        Exception                      anotherException                = null;
 
         /*
          * Loop through the metadata collections extracting the typedefs from each repository.
@@ -2162,7 +2162,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                 {
                     userNotAuthorizedException = error;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     anotherException = error;
                 }
@@ -2260,7 +2260,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         PropertyErrorException         propertyErrorException          = null;
         UserNotAuthorizedException     userNotAuthorizedException      = null;
         RepositoryErrorException       repositoryErrorException        = null;
-        Throwable                      anotherException                = null;
+        Exception                      anotherException                = null;
 
         /*
          * Loop through the metadata collections extracting the typedefs from each repository.
@@ -2324,7 +2324,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                 {
                     userNotAuthorizedException = error;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     anotherException = error;
                 }
@@ -2443,7 +2443,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         PropertyErrorException        propertyErrorException        = null;
         UserNotAuthorizedException    userNotAuthorizedException    = null;
         RepositoryErrorException      repositoryErrorException      = null;
-        Throwable                     anotherException              = null;
+        Exception                     anotherException              = null;
 
         /*
          * Loop through the metadata collections extracting the typedefs from each repository.
@@ -2509,7 +2509,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                 {
                     userNotAuthorizedException = error;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     anotherException = error;
                 }
@@ -2521,7 +2521,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             throwCapturedRepositoryErrorException(repositoryErrorException);
             throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
-            throwCapturedThrowableException(anotherException, methodName);
+            throwCapturedGenericException(anotherException, methodName);
             throwCapturedTypeErrorException(typeErrorException);
             throwCapturedPropertyErrorException(propertyErrorException);
             throwCapturedInvalidParameterException(invalidParameterException);
@@ -4576,15 +4576,15 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Throw a RepositoryErrorException if an unexpected Throwable exception was returned by one of the calls
+     * Throw a RepositoryErrorException if an unexpected exception was returned by one of the calls
      * to a cohort connector.
      *
      * @param exception captured exception
      * @param methodName calling method
      * @throws RepositoryErrorException there was an unexpected error in the repository
      */
-    private void throwCapturedThrowableException(Throwable   exception,
-                                                 String      methodName) throws RepositoryErrorException
+    private void throwCapturedGenericException(Exception exception,
+                                               String    methodName) throws RepositoryErrorException
     {
         if (exception != null)
         {
@@ -4642,7 +4642,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param functionNotSupportedException captured exception
      * @param entityNotKnownException captured exception
      * @param repositoryErrorException captured exception
-     * @param anotherException captured Throwable exception
+     * @param anotherException captured generic exception
      * @param methodName name of calling method
      * @return InstanceGraph
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -4660,7 +4660,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                         FunctionNotSupportedException functionNotSupportedException,
                                                         EntityNotKnownException       entityNotKnownException,
                                                         RepositoryErrorException      repositoryErrorException,
-                                                        Throwable                     anotherException,
+                                                        Exception                     anotherException,
                                                         String                        methodName) throws UserNotAuthorizedException,
                                                                                                          PropertyErrorException,
                                                                                                          FunctionNotSupportedException,
@@ -4690,7 +4690,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
             throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
             throwCapturedRepositoryErrorException(repositoryErrorException);
             throwCapturedPropertyErrorException(propertyErrorException);
-            throwCapturedThrowableException(anotherException, methodName);
+            throwCapturedGenericException(anotherException, methodName);
             throwCapturedFunctionNotSupportedException(functionNotSupportedException);
             throwCapturedEntityNotKnownException(entityNotKnownException);
 

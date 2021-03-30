@@ -1511,7 +1511,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                      OpenMetadataAPIMapper.PROPERTIES_PROPERTY_NAME,
                                                                                                      propertyFacet.getProperties(),
                                                                                                      methodName);
-                    if ((vendorProperties == null) && (! vendorProperties.isEmpty()))
+                    if ((vendorProperties != null) && (! vendorProperties.isEmpty()))
                     {
                         return vendorProperties;
                     }

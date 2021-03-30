@@ -215,7 +215,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
         {
             accumulator.captureException(metadataCollectionId, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(metadataCollectionId, error);
         }
