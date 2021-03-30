@@ -23,7 +23,7 @@ public class LocalRepositoryServicesClient extends MetadataCollectionServicesCli
     public LocalRepositoryServicesClient(String repositoryName,
                                          String restURLRoot) throws InvalidParameterException
     {
-        super(repositoryName,restURLRoot, "/");
+        super(repositoryName, restURLRoot, "/");
     }
 
 
@@ -44,6 +44,6 @@ public class LocalRepositoryServicesClient extends MetadataCollectionServicesCli
                                          String     userId,
                                          String     password) throws InvalidParameterException
     {
-        super(repositoryName,restURLRoot, "/", userId, password);
+        super(repositoryName, restURLRoot, "/", userId, password);
     }
 }

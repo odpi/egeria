@@ -101,7 +101,7 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
         {
             omrsTopicConnector.sendTypeDefEvent(typeDefEvent);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   OMRSAuditCode.SEND_TYPEDEF_EVENT_ERROR.getMessageDefinition(sourceName),
@@ -139,7 +139,7 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
                 omrsTopicConnector.sendInstanceEvent(instanceEvent);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   OMRSAuditCode.SEND_INSTANCE_EVENT_ERROR.getMessageDefinition(sourceName),

@@ -4146,8 +4146,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         ClassificationListResponse restResult = this.callClassificationListGetRESTCall(methodName,
                                                                                        restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
-                                                                                       entityGUID,
-                                                                                       userId);
+                                                                                       userId,
+                                                                                       entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -4190,8 +4190,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         ClassificationListResponse restResult = this.callClassificationListPostRESTCall(methodName,
                                                                                         restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
                                                                                         requestBody,
-                                                                                        entityGUID,
-                                                                                        userId);
+                                                                                        userId,
+                                                                                        entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);

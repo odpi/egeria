@@ -156,7 +156,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public synchronized void captureGenericException(Throwable  exception)
+    public synchronized void captureGenericException(Exception  exception)
     {
         anotherException = exception;
     }

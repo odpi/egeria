@@ -176,7 +176,7 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(error);
         }
@@ -224,7 +224,7 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
         accumulator.throwCapturedPropertyErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
         accumulator.throwCapturedFunctionNotSupportedException();
-        accumulator.throwCapturedThrowableException(methodName);
+        accumulator.throwCapturedGenericException(methodName);
 
         return null;
     }
@@ -256,12 +256,12 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
                 metadataCollection.addEntityProxy(userId, entityProxy);
                 return true;
             }
-            catch (Throwable proxyError)
+            catch (Exception proxyError)
             {
                 log.debug("Error from adding proxy: " + proxyError.getMessage());
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             log.debug("Error from querying entity: " + error.getMessage());
         }

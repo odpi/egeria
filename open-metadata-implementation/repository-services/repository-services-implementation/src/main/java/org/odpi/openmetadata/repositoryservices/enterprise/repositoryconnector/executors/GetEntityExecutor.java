@@ -4,9 +4,7 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.*;
@@ -25,18 +23,12 @@ import java.util.*;
  * entities from other repositories.  This means that the phase two calls will only go remote if the remote repository
  * supports the getHomeClassifications method.
  */
-public class GetEntityExecutor extends RepositoryExecutorBase
+public class GetEntityExecutor extends GetEntitySummaryExecutor
 {
-    private String                      entityGUID;
     private boolean                     allExceptions       = true;
     private Date                        asOfTime            = null;
 
-    private boolean                     inPhaseOne          = true;
     private EntityDetail                latestEntity        = null;
-    private Map<String, Classification> homeClassifications = new HashMap<>();
-
-    private MaintenanceAccumulator      accumulator         = new MaintenanceAccumulator();
-
 
 
     /**
@@ -52,9 +44,8 @@ public class GetEntityExecutor extends RepositoryExecutorBase
                              boolean              allExceptions,
                              String               methodName)
     {
-        super(userId, methodName);
+        super(userId, entityGUID, methodName);
 
-        this.entityGUID = entityGUID;
         this.allExceptions = allExceptions;
     }
 
@@ -72,9 +63,8 @@ public class GetEntityExecutor extends RepositoryExecutorBase
                              Date                 asOfTime,
                              String               methodName)
     {
-        super(userId, methodName);
+        super(userId, entityGUID, methodName);
 
-        this.entityGUID = entityGUID;
         this.asOfTime = asOfTime;
     }
 
@@ -118,25 +108,7 @@ public class GetEntityExecutor extends RepositoryExecutorBase
 
                 if (retrievedEntity != null)
                 {
-                    /*
-                     * The classifications from every retrieved entity are harvested.
-                     */
-                    if (retrievedEntity.getClassifications() != null)
-                    {
-                        for (Classification entityClassification : retrievedEntity.getClassifications())
-                        {
-                            if (entityClassification != null)
-                            {
-                                /*
-                                 * Only home classifications are saved.
-                                 */
-                                if (metadataCollectionId.equals(entityClassification.getMetadataCollectionId()))
-                                {
-                                    homeClassifications.put(entityClassification.getName(), entityClassification);
-                                }
-                            }
-                        }
-                    }
+                    saveClassifications(retrievedEntity.getClassifications());
 
                     if (metadataCollectionId.equals(retrievedEntity.getMetadataCollectionId()))
                     {
@@ -161,30 +133,7 @@ public class GetEntityExecutor extends RepositoryExecutorBase
             }
             else /* retrieving additional classifications */
             {
-                List<Classification> homeClassifications;
-
-                if (asOfTime == null)
-                {
-                    homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID);
-                }
-                else
-                {
-                    homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID, asOfTime);
-                }
-
-                /*
-                 * Home classifications override any matching classifications stored in the entity.
-                 */
-                if (homeClassifications != null)
-                {
-                    for (Classification homeClassification : homeClassifications)
-                    {
-                        if (homeClassification != null)
-                        {
-                            this.homeClassifications.put(homeClassification.getName(), homeClassification);
-                        }
-                    }
-                }
+                getHomeClassifications(metadataCollection);
             }
         }
         catch (InvalidParameterException error)
@@ -207,7 +156,7 @@ public class GetEntityExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(error);
         }
@@ -231,13 +180,13 @@ public class GetEntityExecutor extends RepositoryExecutorBase
     {
         if (latestEntity != null)
         {
-            if (homeClassifications.isEmpty())
+            if (allClassifications.isEmpty())
             {
                 latestEntity.setClassifications(null);
             }
             else
             {
-                latestEntity.setClassifications(new ArrayList<>(homeClassifications.values()));
+                latestEntity.setClassifications(new ArrayList<>(allClassifications.values()));
             }
 
             return latestEntity;
