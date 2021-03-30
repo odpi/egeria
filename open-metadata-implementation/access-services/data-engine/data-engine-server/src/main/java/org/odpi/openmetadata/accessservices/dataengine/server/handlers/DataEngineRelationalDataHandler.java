@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
@@ -9,8 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
@@ -108,7 +108,7 @@ public class DataEngineRelationalDataHandler {
         }
 
         DatabaseSchema databaseSchema = database.getDatabaseSchema();
-        if(databaseSchema == null) {
+        if (databaseSchema == null) {
             databaseSchema = createDefaultDatabaseSchema(database);
         }
         addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
@@ -130,15 +130,15 @@ public class DataEngineRelationalDataHandler {
      * @throws PropertyServerException    problem accessing the property server
      */
     private Optional<EntityDetail> findDatabaseEntity(String userId, String qualifiedName) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException {
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataAPIMapper.DATABASE_TYPE_NAME);
     }
 
     private void upsertDatabaseSchema(String userId, String databaseGUID, DatabaseSchema databaseSchema, String externalSourceName) throws
-                                                                                                                                     InvalidParameterException,
-                                                                                                                                     PropertyServerException,
-                                                                                                                                     UserNotAuthorizedException {
+                                                                                                                                    InvalidParameterException,
+                                                                                                                                    PropertyServerException,
+                                                                                                                                    UserNotAuthorizedException {
         final String methodName = "upsertDatabaseSchema";
         validateParameters(userId, methodName, databaseSchema.getQualifiedName(), databaseSchema.getDisplayName());
 
@@ -177,13 +177,13 @@ public class DataEngineRelationalDataHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public Optional<String> findSchemaForDatabase(String userId, String databaseGUID) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException {
+    private Optional<String> findSchemaForDatabase(String userId, String databaseGUID) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException {
         final String methodName = "findSchemaForDatabase";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(databaseGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME);
 
@@ -237,6 +237,10 @@ public class DataEngineRelationalDataHandler {
                                                                                 UserNotAuthorizedException {
         final String methodName = "upsertRelationalColumns";
 
+        if (CollectionUtils.isEmpty(columns)) {
+            return;
+        }
+
         for (RelationalColumn column : columns) {
             int sortOrder = dataEngineCommonHandler.getSortOrder(column);
 
@@ -248,7 +252,7 @@ public class DataEngineRelationalDataHandler {
                         column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getValidValuesSetGUID(), column.getFormula(),
                         column.isDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
                         column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder,
-                        column.getMinimumLength(), column.getLength(), column.getSignificantDigits(), column.isNullable(), column.getNativeClass(),
+                        column.getMinimumLength(), column.getLength(), column.getPrecision(), column.isNullable(), column.getNativeClass(),
                         column.getAliases(), column.getAdditionalProperties(), column.getTypeName(), column.getExtendedProperties(),
                         column.getVendorProperties(), methodName);
             } else {
@@ -257,7 +261,7 @@ public class DataEngineRelationalDataHandler {
                         column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getFormula(), column.isDeprecated(),
                         column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                         column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder, column.getMinimumLength(), column.getLength(),
-                        column.getSignificantDigits(), column.isNullable(), column.getNativeClass(), column.getAliases(),
+                        column.getPrecision(), column.isNullable(), column.getNativeClass(), column.getAliases(),
                         column.getAdditionalProperties(), column.getTypeName(), column.getExtendedProperties(), column.getVendorProperties(),
                         methodName);
             }
@@ -298,7 +302,7 @@ public class DataEngineRelationalDataHandler {
 
     private void validateParameters(String userId, String methodName, String qualifiedName, String displayName) throws InvalidParameterException {
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(displayName, OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
     }
 }
