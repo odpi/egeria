@@ -43,6 +43,10 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
                 omasRelationship.getEnd2().setNodeGuid(guid2);
             }
         }
+        // set readonly
+        if (omrsRelationship.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT) {
+            omasRelationship.setReadOnly(true);
+        }
 
         // Set properties
         InstanceProperties relationshipProperties = omrsRelationship.getProperties();

@@ -34,6 +34,8 @@ public class AssetController {
      * @param types OM types list to search for
      * @param sequencingProperty name of the property based on which to sort the result
      * @param sequencingOrder PROPERTY_ASCENDING or PROPERTY_DESCENDING
+     * @param caseSensitive set case sensitive flag
+     * @param exactMatch set exact match flag
      * @param from the offset for the results
      * @param pageSize the number of results per page
      * @return list of assets
@@ -47,6 +49,8 @@ public class AssetController {
                                                         String sequencingProperty,
                                             @RequestParam(name = "sequencingOrder", defaultValue = "PROPERTY_ASCENDING")
                                                         SequencingOrder sequencingOrder,
+                                            @RequestParam(defaultValue="false")  boolean caseSensitive,
+                                            @RequestParam(defaultValue="false") boolean exactMatch,
                                             @RequestParam(defaultValue="0") Integer from,
                                             @RequestParam(defaultValue="10") Integer pageSize)
             throws PropertyServerException, InvalidParameterException {
@@ -59,6 +63,8 @@ public class AssetController {
         searchParameters.setFrom(from);
         searchParameters.setSequencingProperty(sequencingProperty);
         searchParameters.setSequencingOrder(sequencingOrder);
+        searchParameters.setCaseInsensitive(!caseSensitive);
+        searchParameters.setExactMatch(exactMatch);
         return assetCatalogOMASService.searchAssets(user, searchCriteria, searchParameters);
     }
 
