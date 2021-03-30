@@ -8,9 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessContainmentType;
-import org.odpi.openmetadata.accessservices.dataengine.model.TransformationProject;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.dataengine.server.builders.TransformationProjectBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
@@ -102,22 +100,6 @@ public class DataEngineProcessHandler {
                 ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
     }
 
-    public String createTransformationProject(String userId, TransformationProject transformationProject, String externalSourceName)
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-
-        String methodName = "createTransformationProject";
-        validateProcessParameters(userId, transformationProject.getName(), methodName);
-
-        String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
-
-        TransformationProjectBuilder builder = new TransformationProjectBuilder(transformationProject.getQualifiedName(),
-                transformationProject.getName(), ProcessPropertiesMapper.TRANSFORMATION_PROJECT_TYPE_NAME, repositoryHelper, serviceName, serverName);
-
-        return assetHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
-                ProcessPropertiesMapper.TRANSFORMATION_PROJECT_TYPE_GUID, ProcessPropertiesMapper.TRANSFORMATION_PROJECT_TYPE_NAME,
-                transformationProject.getQualifiedName(), ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
-    }
-
     /**
      * Update the process
      *
@@ -175,11 +157,6 @@ public class DataEngineProcessHandler {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
     }
 
-    public Optional<EntityDetail> findTransformationProjectEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
-            PropertyServerException,
-            InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, ProcessPropertiesMapper.TRANSFORMATION_PROJECT_TYPE_NAME);
-    }
     /**
      * Create ProcessPort relationships between a Process asset and the corresponding Ports. Verifies that the
      * relationship is not present before creating it
@@ -199,15 +176,6 @@ public class DataEngineProcessHandler {
             PropertyServerException {
         dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, portGUID,
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName,
-                null);
-    }
-
-    public void addProcessTransformationProjectRelationship(String userId, String processGUID, String transformationProjectGuid, String externalSourceName)
-            throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
-        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, transformationProjectGuid,
-                ProcessPropertiesMapper.TRANSFORMATION_PROJECT_RELATIONSHIP_TYPE_NAME, ProcessPropertiesMapper.TRANSFORMATION_PROJECT_RELATIONSHIP_TYPE_GUID, externalSourceName,
                 null);
     }
 

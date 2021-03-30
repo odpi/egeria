@@ -12,18 +12,6 @@ public class ProcessPropertiesMapper {
     public static final String PROCESS_PORT_TYPE_GUID = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA2";
     public static final String PROCESS_PORT_TYPE_NAME = "ProcessPort";
 
-
-    // these guids look fishy?
-    public static final String TRANSFORMATION_PROJECT_RELATIONSHIP_TYPE_GUID = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA1";
-    public static final String TRANSFORMATION_PROJECT_RELATIONSHIP_TYPE_NAME = "TransformationProjectRelationship";
-
-
-
-    public static final String TRANSFORMATION_PROJECT_TYPE_GUID = "fB4E00CF-37e4-88CE-1234-233BAdB84DA2";
-    public static final String TRANSFORMATION_PROJECT_TYPE_NAME = "TransformationProject";
-
-
-
     public static final String PROCESS_HIERARCHY_TYPE_NAME = "ProcessHierarchy";
 
     public static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";

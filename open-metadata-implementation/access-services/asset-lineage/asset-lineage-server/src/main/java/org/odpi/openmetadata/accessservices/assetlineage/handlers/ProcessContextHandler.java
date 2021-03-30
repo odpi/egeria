@@ -35,9 +35,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TRANSFORMATION_PROJECT_RELATIONSHIP;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableProcessRelationshipsTypes;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -101,8 +99,23 @@ public class ProcessContextHandler {
             addContextForPort(userId, port, relationshipsContext.getRelationships());
         }
 
+        List<Relationship> transformationProject = handlerHelper.getRelationshipsByType(userId, processGUID, COLLECTION_MEMBERSHIP, PROCESS);
+        if (CollectionUtils.isEmpty(transformationProject)) {
+            log.error("No relationships Transformation Project has been found for the entity with guid {}", processGUID);
+
+            throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(), this.getClass().getName(), "Retrieving Relationship");
+        }
+
+        RelationshipsContext transformationProjectRelationshipsContext = handlerHelper.buildContextForRelationships(userId, processGUID, transformationProject);
+        for (Relationship transformationProjectRelationship : transformationProject) {
+            EntityDetail transformationProjectEntity = handlerHelper.getEntityAtTheEnd(userId, processGUID, transformationProjectRelationship);
+            handlerHelper.addContextForRelationships(userId, transformationProjectEntity, COLLECTION_MEMBERSHIP, transformationProjectRelationshipsContext.getRelationships());
+
+        }
         Multimap<String, RelationshipsContext> context = ArrayListMultimap.create();
+
         context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), relationshipsContext);
+        context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), transformationProjectRelationshipsContext);
 
         Set<LineageEntity> tabularColumns = relationshipsContext.getRelationships().stream()
                 .filter(relationship -> relationship.getRelationshipType().equalsIgnoreCase(ATTRIBUTE_FOR_SCHEMA))

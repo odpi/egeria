@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTransformationProjectHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -815,19 +816,20 @@ public class DataEngineRESTServices {
             }
             DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
+            DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId, serverName, methodName);
+
             Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
             String processGUID;
             String transformationProjectGUID = null;
 
-            Optional<EntityDetail> transformationProjectEntity = processHandler.findTransformationProjectEntity(userId, qualifiedName);
+            Optional<EntityDetail> transformationProjectEntity = dataEngineTransformationProjectHandler.findTransformationProjectEntity(userId, qualifiedName);
             TransformationProject transformationProject = process.getTransformationProject();
             if (!transformationProjectEntity.isPresent()) {
                 if (transformationProject != null) {
-                    transformationProjectGUID = processHandler.createTransformationProject(userId, transformationProject, externalSourceName);
+                    transformationProjectGUID = dataEngineTransformationProjectHandler.createTransformationProject(userId, transformationProject, externalSourceName);
                 }
             } else {
                 transformationProjectGUID = transformationProjectEntity.get().getGUID();
-                    // todo update name or do what...
             }
             if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
@@ -932,9 +934,9 @@ public class DataEngineRESTServices {
 
         final String methodName = "addProcessPortRelationships";
 
-        DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+        DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId, serverName, methodName);
 
-        processHandler.addProcessTransformationProjectRelationship(userId, processGUID, transformationProjectGuid, externalSourceName);
+        dataEngineTransformationProjectHandler.addProcessTransformationProjectRelationship(userId, transformationProjectGuid, processGUID, externalSourceName);
     }
 
     private void addProcessPortRelationships(String userId, String serverName, String processGUID, Set<String> portGUIDs, GUIDResponse response,
