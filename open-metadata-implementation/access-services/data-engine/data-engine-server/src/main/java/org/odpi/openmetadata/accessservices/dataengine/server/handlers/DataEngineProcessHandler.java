@@ -126,7 +126,7 @@ public class DataEngineProcessHandler {
 
         String processGUID = originalProcessEntity.getGUID();
 
-        ProcessPropertiesBuilder updatedProcessBuilder = getProcessPropertiesBuilder(updatedProcess, methodName, userId);
+        ProcessPropertiesBuilder updatedProcessBuilder = getProcessPropertiesBuilder(updatedProcess);
 
         InstanceProperties updatedProcessProperties = updatedProcessBuilder.getInstanceProperties(methodName);
         EntityDetail updatedProcessEntity = dataEngineCommonHandler.buildEntityDetail(processGUID, updatedProcessProperties);
@@ -254,13 +254,11 @@ public class DataEngineProcessHandler {
         invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
     }
 
-    ProcessPropertiesBuilder getProcessPropertiesBuilder(Process process, String methodName, String userId) throws InvalidParameterException {
+    ProcessPropertiesBuilder getProcessPropertiesBuilder(Process process) {
         return new ProcessPropertiesBuilder(process.getQualifiedName(), process.getDisplayName(), process.getName(),
-                process.getDescription(), process.getZoneMembership(), process.getOwner(),
-                dataEngineCommonHandler.getOwnerTypeOrdinal(process.getOwnerType()),
-                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
-                process.getAdditionalProperties(), process.getExtendedProperties(), InstanceStatus.DRAFT, repositoryHelper,
-                serverName, serviceName, userId, methodName);
+                process.getDescription(), ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
+                process.getImplementationLanguage(), process.getAdditionalProperties(), process.getExtendedProperties(), repositoryHelper,
+                serverName, serviceName);
     }
 
     public void upsertProcessHierarchyRelationship(String userId, ParentProcess parentProcess, String processGUID,

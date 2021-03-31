@@ -158,7 +158,7 @@ class DataEngineProcessHandlerTest {
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
         Process process = getProcess();
         process.setGUID(PROCESS_GUID);
-        doReturn(mockedBuilder).when(processHandler).getProcessPropertiesBuilder(process, "updateProcess", USER);
+        doReturn(mockedBuilder).when(processHandler).getProcessPropertiesBuilder(process);
         EntityDetail mockedUpdatedProcessEntity = Mockito.mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(PROCESS_GUID, null)).thenReturn(mockedUpdatedProcessEntity);
 
@@ -219,7 +219,7 @@ class DataEngineProcessHandlerTest {
         when(mockedOriginalProcessEntity.getGUID()).thenReturn(PROCESS_GUID);
 
         ProcessPropertiesBuilder mockedBuilder = Mockito.mock(ProcessPropertiesBuilder.class);
-        doReturn(mockedBuilder).when(processHandler).getProcessPropertiesBuilder(process, methodName, USER);
+        doReturn(mockedBuilder).when(processHandler).getProcessPropertiesBuilder(process);
 
         InstanceProperties updatedProcessProperties = new InstanceProperties();
         when(mockedBuilder.getInstanceProperties(methodName)).thenReturn(updatedProcessProperties);
