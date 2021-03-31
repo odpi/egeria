@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.dataengine.model;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -26,7 +25,6 @@ public class Referenceable implements Serializable {
         this.qualifiedName = qualifiedName;
     }
 
-
     /**
      * Returns the stored qualified name property for the metadata entity.
      * If no qualified name is available then the empty string is returned.
@@ -38,7 +36,6 @@ public class Referenceable implements Serializable {
         return qualifiedName;
     }
 
-
     /**
      * Set up additional properties.
      *
@@ -49,7 +46,6 @@ public class Referenceable implements Serializable {
         this.additionalProperties = additionalProperties;
     }
 
-
     /**
      * Return a copy of the additional properties.  Null means no additional properties are available.
      *
@@ -57,20 +53,8 @@ public class Referenceable implements Serializable {
      */
     public Map<String, String> getAdditionalProperties()
     {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
+       return additionalProperties;
     }
-
 
     /**
      * Return specific properties for the data manager vendor.
@@ -79,20 +63,8 @@ public class Referenceable implements Serializable {
      */
     public Map<String, String> getVendorProperties()
     {
-        if (vendorProperties == null)
-        {
-            return null;
-        }
-        else if (vendorProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(vendorProperties);
-        }
+        return vendorProperties;
     }
-
 
     /**
      * Set up specific properties for the data manager vendor.
@@ -104,7 +76,6 @@ public class Referenceable implements Serializable {
         this.vendorProperties = vendorProperties;
     }
 
-
     /**
      * Return the name of the open metadata type for this metadata element.
      *
@@ -114,7 +85,6 @@ public class Referenceable implements Serializable {
     {
         return typeName;
     }
-
 
     /**
      * Set up the name of the open metadata type for this element.
@@ -126,7 +96,6 @@ public class Referenceable implements Serializable {
         this.typeName = typeName;
     }
 
-
     /**
      * Return the properties that have been defined for a subtype of this object that are not supported explicitly
      * by this bean.
@@ -135,20 +104,8 @@ public class Referenceable implements Serializable {
      */
     public Map<String, Object> getExtendedProperties()
     {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
+      return extendedProperties;
     }
-
 
     /**
      * Set up the properties that have been defined for a subtype of this object that are not supported explicitly

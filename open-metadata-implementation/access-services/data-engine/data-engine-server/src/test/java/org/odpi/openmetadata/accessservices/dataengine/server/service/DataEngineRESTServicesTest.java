@@ -805,13 +805,14 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void upsertRelationalTable_noTable() throws InvalidParameterException {
-        DatabaseRequestBody requestBody = new DatabaseRequestBody();
+    void upsertRelationalTable_noDatabase() throws InvalidParameterException {
+        RelationalTableRequestBody requestBody = new RelationalTableRequestBody();
         requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        GUIDResponse response = dataEngineRESTServices.upsertDatabase(USER, SERVER_NAME, requestBody);
+        GUIDResponse response = dataEngineRESTServices.upsertRelationalTable(USER, SERVER_NAME, requestBody);
         assertTrue(StringUtils.isEmpty(response.getGUID()));
-        verify(restExceptionHandler, times(1)).handleMissingValue("database", "upsertDatabase");
+        verify(restExceptionHandler, times(1)).handleMissingValue("databaseQualifiedName",
+                "upsertRelationalTable");
     }
 
     private LineageMappingsRequestBody mockLineageMappingsRequestBody() {

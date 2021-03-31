@@ -21,20 +21,7 @@ public class DatabaseSchema extends Asset {
      * @return print out of variables in a JSON-style
      */
     @Override
-    public String toString()
-    {
-        return "DatabaseSchemaProperties{" +
-                "displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerType=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+    public String toString() {
+        return "DatabaseSchema{}";
     }
 }

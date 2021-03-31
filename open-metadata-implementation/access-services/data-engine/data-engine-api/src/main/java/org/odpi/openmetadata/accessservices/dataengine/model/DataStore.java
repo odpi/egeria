@@ -33,11 +33,9 @@ public class DataStore extends Asset {
      *
      * @return string name
      */
-    public String getPathName()
-    {
+    public String getPathName() {
         return pathName;
     }
-
 
     /**
      * Set up the fully qualified physical location of the data store.  This should be suitable for the
@@ -45,178 +43,133 @@ public class DataStore extends Asset {
      *
      * @param pathName string name
      */
-    public void setPathName(String pathName)
-    {
+    public void setPathName(String pathName) {
         this.pathName = pathName;
     }
-
 
     /**
      * Return the time that the data store was created.
      *
      * @return date
      */
-    public Date getCreateTime()
-    {
+    public Date getCreateTime() {
         return createTime;
     }
-
 
     /**
      * Set up the time that the data store was created.
      *
      * @param createTime date
      */
-    public void setCreateTime(Date createTime)
-    {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
 
     /**
      * Return the last known time the data store was modified.
      *
      * @return date
      */
-    public Date getModifiedTime()
-    {
+    public Date getModifiedTime() {
         return modifiedTime;
     }
-
 
     /**
      * Setup the last known time the data store was modified.
      *
      * @param modifiedTime date
      */
-    public void setModifiedTime(Date modifiedTime)
-    {
+    public void setModifiedTime(Date modifiedTime) {
         this.modifiedTime = modifiedTime;
     }
-
 
     /**
      * Return the name of the encoding style used in the data store.
      *
      * @return string name
      */
-    public String getEncodingType()
-    {
+    public String getEncodingType() {
         return encodingType;
     }
-
 
     /**
      * Set up the name of the encoding style used in the data store.
      *
      * @param encodingType string name
      */
-    public void setEncodingType(String encodingType)
-    {
+    public void setEncodingType(String encodingType) {
         this.encodingType = encodingType;
     }
-
 
     /**
      * Return the name of the natural language used for text strings within the data store.
      *
      * @return string language name
      */
-    public String getEncodingLanguage()
-    {
+    public String getEncodingLanguage() {
         return encodingLanguage;
     }
-
 
     /**
      * Set up the name of the natural language used for text strings within the data store.
      *
      * @param encodingLanguage string language name
      */
-    public void setEncodingLanguage(String encodingLanguage)
-    {
+    public void setEncodingLanguage(String encodingLanguage) {
         this.encodingLanguage = encodingLanguage;
     }
-
 
     /**
      * Return the description of the encoding used in the data store.
      *
      * @return string text
      */
-    public String getEncodingDescription()
-    {
+    public String getEncodingDescription() {
         return encodingDescription;
     }
-
 
     /**
      * Set up the description of the encoding used in the data store.
      *
      * @param encodingDescription string text
      */
-    public void setEncodingDescription(String encodingDescription)
-    {
+    public void setEncodingDescription(String encodingDescription) {
         this.encodingDescription = encodingDescription;
     }
-
 
     /**
      * Return the additional properties associated with the encoding process.
      *
      * @return map of name-value pairs
      */
-    public Map<String, String> getEncodingProperties()
-    {
-        if (encodingProperties == null)
-        {
+    public Map<String, String> getEncodingProperties() {
+        if (encodingProperties == null) {
             return null;
-        }
-        else if (encodingProperties.isEmpty())
-        {
+        } else if (encodingProperties.isEmpty()) {
             return null;
         }
         return encodingProperties;
     }
-
 
     /**
      * Set up the additional properties associated with the encoding process.
      *
      * @param encodingProperties map of name-value pairs
      */
-    public void setEncodingProperties(Map<String, String> encodingProperties)
-    {
+    public void setEncodingProperties(Map<String, String> encodingProperties) {
         this.encodingProperties = encodingProperties;
     }
 
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
-     */
     @Override
-    public String toString()
-    {
-        return "DataStoreProperties{" +
-                "pathName=" + pathName +
+    public String toString() {
+        return "DataStore{" +
+                "pathName='" + pathName + '\'' +
                 ", createTime=" + createTime +
                 ", modifiedTime=" + modifiedTime +
                 ", encodingType='" + encodingType + '\'' +
                 ", encodingLanguage='" + encodingLanguage + '\'' +
                 ", encodingDescription='" + encodingDescription + '\'' +
-                ", encodingProperties='" + encodingProperties + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerTYpe=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", encodingProperties=" + encodingProperties +
                 '}';
     }
 

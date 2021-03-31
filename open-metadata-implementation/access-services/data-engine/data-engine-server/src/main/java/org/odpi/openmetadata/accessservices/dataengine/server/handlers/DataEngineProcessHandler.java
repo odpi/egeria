@@ -285,6 +285,13 @@ public class DataEngineProcessHandler {
         }
     }
 
+    /**
+     * Build the extendedProperties map for a process, by adding type specific properties to the map
+     *
+     * @param process the process for which the extended properties map is built
+     *
+     * @return map containing the process extended properties
+     */
     private Map<String, Object> buildProcessExtendedProperties(Process process) {
         Map<String, Object> extendedProperties = new HashMap<>();
 

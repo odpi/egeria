@@ -23,137 +23,155 @@ public class Asset extends Referenceable {
     private String owner;
     private OwnerType ownerType;
     private List<String> zoneMembership;
-    private Map<String, String> origin;
-    private String typeGUID;
     private String GUID;
     private String originOrganizationGUID;
     private String originBusinessCapabilityGUID;
     private Map<String, String> otherOriginValues;
 
     /**
-     * Gets display name.
+     * Returns the stored display name property for the asset.
+     * If no display name is available then null is returned.
      *
-     * @return the display name
+     * @return String name
      */
     public String getDisplayName() {
         return displayName;
     }
 
     /**
-     * Sets display name.
+     * Set up the stored display name property for the asset.
      *
-     * @param displayName the display name
+     * @param displayName String name
      */
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
     /**
-     * Gets description.
+     * Returns the stored description property for the asset.
+     * If no description is provided then null is returned.
      *
-     * @return the description
+     * @return description String text
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * Sets description.
+     * Set up the stored description property associated with the asset.
      *
-     * @param description the description
+     * @param description String text
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * Gets owner.
+     * Returns the name of the owner for this asset.
      *
-     * @return the owner
+     * @return owner String
      */
     public String getOwner() {
         return owner;
     }
 
     /**
-     * Sets owner.
+     * Set up the name of the owner for this asset.
      *
-     * @param owner the owner
+     * @param owner String name
      */
     public void setOwner(String owner) {
         this.owner = owner;
     }
 
     /**
-     * Gets owner type.
+     * Return the type of owner stored in the owner property.
      *
-     * @return the owner type
+     * @return OwnerType enum
      */
     public OwnerType getOwnerType() {
         return ownerType;
     }
 
     /**
-     * Sets owner type.
+     * Set up the owner type for this asset.
      *
-     * @param ownerType the owner type
+     * @param ownerType OwnerType enum
      */
     public void setOwnerType(OwnerType ownerType) {
         this.ownerType = ownerType;
     }
 
     /**
-     * Gets zone membership.
+     * Return the names of the zones that this asset is a member of.
      *
-     * @return the zone membership
+     * @return list of zone names
      */
     public List<String> getZoneMembership() {
         return zoneMembership;
     }
 
     /**
-     * Sets zone membership.
+     * Set up the names of the zones that this asset is a member of.
      *
-     * @param zoneMembership the zone membership
+     * @param zoneMembership list of zone names
      */
     public void setZoneMembership(List<String> zoneMembership) {
         this.zoneMembership = zoneMembership;
     }
 
     /**
-     * Gets origin.
+     * Return the unique identifier for the organization that originated this asset.
      *
-     * @return the origin
+     * @return string guid
      */
-    public Map<String, String> getOrigin() {
-        return origin;
+    public String getOriginOrganizationGUID() {
+        return originOrganizationGUID;
     }
 
     /**
-     * Sets origin.
+     * Set up the unique identifier for the organization that originated this asset.
      *
-     * @param origin the origin
+     * @param originOrganizationGUID string guid
      */
-    public void setOrigin(Map<String, String> origin) {
-        this.origin = origin;
+    public void setOriginOrganizationGUID(String originOrganizationGUID) {
+        this.originOrganizationGUID = originOrganizationGUID;
     }
 
     /**
-     * Gets type guid.
+     * Return the unique identifier of the business capability that originated this asset.
      *
-     * @return the type guid
+     * @return string guid
      */
-    public String getTypeGUID() {
-        return typeGUID;
+    public String getOriginBusinessCapabilityGUID() {
+        return originBusinessCapabilityGUID;
     }
 
     /**
-     * Sets type guid.
+     * Set up the unique identifier of the business capability that originated this asset.
      *
-     * @param typeGUID the type guid
+     * @param originBusinessCapabilityGUID string guid
      */
-    public void setTypeGUID(String typeGUID) {
-        this.typeGUID = typeGUID;
+    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID) {
+        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
+    }
+
+    /**
+     * Return the properties that characterize where this asset is from.
+     *
+     * @return map of name value pairs, all strings
+     */
+    public Map<String, String> getOtherOriginValues() {
+        return otherOriginValues;
+    }
+
+    /**
+     * Set up the properties that characterize where this asset is from.
+     *
+     * @param otherOriginValues map of name value pairs, all strings
+     */
+    public void setOtherOriginValues(Map<String, String> otherOriginValues) {
+        this.otherOriginValues = otherOriginValues;
     }
 
     /**
@@ -174,31 +192,6 @@ public class Asset extends Referenceable {
         this.GUID = GUID;
     }
 
-
-    public String getOriginOrganizationGUID() {
-        return originOrganizationGUID;
-    }
-
-    public void setOriginOrganizationGUID(String originOrganizationGUID) {
-        this.originOrganizationGUID = originOrganizationGUID;
-    }
-
-    public String getOriginBusinessCapabilityGUID() {
-        return originBusinessCapabilityGUID;
-    }
-
-    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID) {
-        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
-    }
-
-    public Map<String, String> getOtherOriginValues() {
-        return otherOriginValues;
-    }
-
-    public void setOtherOriginValues(Map<String, String> otherOriginValues) {
-        this.otherOriginValues = otherOriginValues;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -210,8 +203,6 @@ public class Asset extends Referenceable {
                 Objects.equals(owner, asset.owner) &&
                 ownerType == asset.ownerType &&
                 Objects.equals(zoneMembership, asset.zoneMembership) &&
-                Objects.equals(origin, asset.origin) &&
-                Objects.equals(typeGUID, asset.typeGUID) &&
                 Objects.equals(GUID, asset.GUID) &&
                 Objects.equals(originOrganizationGUID, asset.originOrganizationGUID) &&
                 Objects.equals(originBusinessCapabilityGUID, asset.originBusinessCapabilityGUID) &&
@@ -220,7 +211,8 @@ public class Asset extends Referenceable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), displayName, description, owner, ownerType, zoneMembership, origin, typeGUID, GUID, originOrganizationGUID, originBusinessCapabilityGUID, otherOriginValues);
+        return Objects.hash(super.hashCode(), displayName, description, owner, ownerType, zoneMembership, GUID, originOrganizationGUID,
+                originBusinessCapabilityGUID, otherOriginValues);
     }
 
     @Override
@@ -231,8 +223,6 @@ public class Asset extends Referenceable {
                 ", owner='" + owner + '\'' +
                 ", ownerType=" + ownerType +
                 ", zoneMembership=" + zoneMembership +
-                ", origin=" + origin +
-                ", typeGUID='" + typeGUID + '\'' +
                 ", GUID='" + GUID + '\'' +
                 ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
                 ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +

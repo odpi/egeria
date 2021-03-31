@@ -22,190 +22,411 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Attribute extends Referenceable {
     private String displayName;
+    private String description;
+    private boolean isDeprecated;
+    private int position;
     private int minCardinality;
     private int maxCardinality;
     private boolean allowsDuplicateValues;
     private boolean orderedValues;
-    private int position;
     private String defaultValueOverride;
-    private String dataType;
-    private String defaultValue;
-    private String anchorGUID;
+    private DataItemSortOrder sortOrder;
+    private int minimumLength;
+    private int length;
+    private int precision;
+    private boolean isNullable;
     private String nativeClass;
     private List<String> aliases;
-    private DataItemSortOrder sortOrder;
-    private String description;
-    private int significantDigits;
-    private String precision;
-    private int length;
-    private int minimumLength;
-    private boolean isNullable;
-    private boolean isDeprecated;
+    private String dataType;
+    private String defaultValue;
     private String fixedValue;
     private String externalTypeGUID;
     private String validValuesSetGUID;
-
+    private String anchorGUID;
 
     /**
-     * Gets display name.
+     * Return the simple name of the schema element.
      *
-     * @return the display name
+     * @return string name
      */
     public String getDisplayName() {
         return displayName;
     }
 
     /**
-     * Sets display name.
+     * Set up the simple name of the schema element.
      *
-     * @param displayName the display name
+     * @param name String display name
      */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setDisplayName(String name) {
+        this.displayName = name;
     }
 
     /**
-     * Gets min cardinality.
+     * Returns the stored description property for the schema element.
      *
-     * @return the min cardinality
+     * @return string description
      */
-    public int getMinCardinality() {
-        return minCardinality;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Sets min cardinality.
+     * Set up the stored description property for the schema element.
      *
-     * @param minCardinality the min cardinality
+     * @param description string description
      */
-    public void setMinCardinality(int minCardinality) {
-        this.minCardinality = minCardinality;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * Gets max cardinality.
+     * Returns true if the schema element deprecated
      *
-     * @return the max cardinality
+     * @return boolean flag
      */
-    public int getMaxCardinality() {
-        return maxCardinality;
+    public boolean isDeprecated() {
+        return isDeprecated;
     }
 
     /**
-     * Sets max cardinality.
+     * Set whether the schema element deprecated or not.  Default is false.
      *
-     * @param maxCardinality the max cardinality
+     * @param deprecated boolean flag
      */
-    public void setMaxCardinality(int maxCardinality) {
-        this.maxCardinality = maxCardinality;
+    public void setDeprecated(boolean deprecated) {
+        isDeprecated = deprecated;
     }
 
     /**
-     * Gets allows duplicate values.
+     * Return the position of this schema attribute in its parent schema.
      *
-     * @return the allows duplicate values
-     */
-    public boolean getAllowsDuplicateValues() {
-        return allowsDuplicateValues;
-    }
-
-    /**
-     * Sets allows duplicate values.
-     *
-     * @param allowsDuplicateValues the allows duplicate values
-     */
-    public void setAllowsDuplicateValues(boolean allowsDuplicateValues) {
-        this.allowsDuplicateValues = allowsDuplicateValues;
-    }
-
-    /**
-     * Gets ordered values.
-     *
-     * @return the ordered values
-     */
-    public boolean getOrderedValues() {
-        return orderedValues;
-    }
-
-    /**
-     * Sets ordered values.
-     *
-     * @param orderedValues the ordered values
-     */
-    public void setOrderedValues(boolean orderedValues) {
-        this.orderedValues = orderedValues;
-    }
-
-    /**
-     * Gets position.
-     *
-     * @return the position
+     * @return int position in schema - 0 means first
      */
     public int getPosition() {
         return position;
     }
 
     /**
-     * Sets position.
+     * Set up the position of this schema attribute in its parent schema.
      *
-     * @param position the position
+     * @param position int position in schema - 0 means first
      */
     public void setPosition(int position) {
         this.position = position;
     }
 
     /**
-     * Gets default value override.
+     * Return this minimum number of instances allowed for this attribute.
      *
-     * @return the default value override
+     * @return int
      */
-    public String getDefaultValueOverride() {
-        return defaultValueOverride;
+    public int getMinCardinality() {
+        return minCardinality;
     }
 
     /**
-     * Sets default value override.
+     * Set up the minimum number of instances allowed for this attribute.
      *
-     * @param defaultValueOverride the default value override
+     * @param minCardinality int
      */
-    public void setDefaultValueOverride(String defaultValueOverride) {
+    public void setMinCardinality(int minCardinality) {
+        this.minCardinality = minCardinality;
+    }
+
+    /**
+     * Return the maximum number of instances allowed for this attribute.
+     *
+     * @return int (-1 means infinite)
+     */
+    public int getMaxCardinality() {
+        return maxCardinality;
+    }
+
+    /**
+     * Set up the maximum number of instances allowed for this attribute.
+     *
+     * @param maxCardinality int (-1 means infinite)
+     */
+    public void setMaxCardinality(int maxCardinality) {
+        this.maxCardinality = maxCardinality;
+    }
+
+    /**
+     * Return whether the same value can be used by more than one instance of this attribute.
+     *
+     * @return boolean flag
+     */
+    public boolean getAllowsDuplicateValues() {
+        return allowsDuplicateValues;
+    }
+
+    /**
+     * Set up whether the same value can be used by more than one instance of this attribute.
+     *
+     * @param allowsDuplicateValues boolean flag
+     */
+    public void setAllowsDuplicateValues(boolean allowsDuplicateValues) {
+        this.allowsDuplicateValues = allowsDuplicateValues;
+    }
+
+    /**
+     * Return whether the attribute instances are arranged in an order.
+     *
+     * @return boolean flag
+     */
+    public boolean getOrderedValues() {
+        return orderedValues;
+    }
+
+    /**
+     * Set up whether the attribute instances are arranged in an order.
+     *
+     * @param orderedValues boolean flag
+     */
+    public void setOrderedValues(boolean orderedValues) {
+        this.orderedValues = orderedValues;
+    }
+
+    /**
+     * Return the order that the attribute instances are arranged in - if any.
+     *
+     * @return DataItemSortOrder enum
+     */
+    public DataItemSortOrder getSortOrder() {
+        return sortOrder;
+    }
+
+    /**
+     * Set up the order that the attribute instances are arranged in - if any.
+     *
+     * @param sortOrder DataItemSortOrder enum
+     */
+    public void setSortOrder(DataItemSortOrder sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    /**
+     * Return the minimum length of the data.
+     *
+     * @return int
+     */
+    public int getMinimumLength() {
+        return minimumLength;
+    }
+
+    /**
+     * Set up the minimum length of the data.
+     *
+     * @param minimumLength int
+     */
+    public void setMinimumLength(int minimumLength) {
+        this.minimumLength = minimumLength;
+    }
+
+    /**
+     * Return the length of the data field.
+     *
+     * @return int
+     */
+    public int getLength() {
+        return length;
+    }
+
+    /**
+     * Set up the length of the data field.
+     *
+     * @param length int
+     */
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    /**
+     * Return the number of significant digits to the right of decimal point.
+     *
+     * @return int
+     */
+    public int getPrecision() {
+        return precision;
+    }
+
+    /**
+     * Set up the number of significant digits to the right of decimal point.
+     *
+     * @param precision int
+     */
+    public void setPrecision(int precision) {
+        this.precision = precision;
+    }
+
+    /**
+     * Return whether the field is nullable or not.
+     *
+     * @return boolean
+     */
+    public boolean isNullable() {
+        return isNullable;
+    }
+
+    /**
+     * Set up whether the field is nullable or not.
+     *
+     * @param nullable boolean
+     */
+    public void setNullable(boolean nullable) {
+        isNullable = nullable;
+    }
+
+    /**
+     * Return any default value for this attribute that would override the default defined in the
+     * schema element for this attribute's type (note only used is type is primitive).
+     *
+     * @return String default value override
+     */
+    public String getDefaultValueOverride() { return defaultValueOverride; }
+
+    /**
+     * Set up any default value for this attribute that would override the default defined in the
+     * schema element for this attribute's type (note only used is type is primitive).
+     *
+     * @param defaultValueOverride String default value override
+     */
+    public void setDefaultValueOverride(String defaultValueOverride)
+    {
         this.defaultValueOverride = defaultValueOverride;
     }
 
     /**
-     * Gets data type.
+     * Return the name of the Java class to use to represent this type.
      *
-     * @return the data type
+     * @return fully qualified Java class name
      */
-    public String getDataType() {
-        return dataType;
+    public String getNativeClass() {
+        return nativeClass;
     }
 
     /**
-     * Sets data type.
+     * Set up the name of the Java class to use to represent this type.
      *
-     * @param dataType the data type
+     * @param nativeClass fully qualified Java class name
      */
-    public void setDataType(String dataType) {
+    public void setNativeClass(String nativeClass) {
+        this.nativeClass = nativeClass;
+    }
+
+    /**
+     * Return a list of alternative names for the attribute.
+     *
+     * @return list of names
+     */
+    public List<String> getAliases() {
+        return aliases;
+    }
+
+    /**
+     * Set up a list of alternative names for the attribute.
+     *
+     * @param aliases list of names
+     */
+    public void setAliases(List<String> aliases) {
+        this.aliases = aliases;
+    }
+
+    /**
+     * Return the data type for this element.  Null means unknown data type.
+     *
+     * @return string data type name
+     */
+    public String getDataType() { return dataType; }
+
+    /**
+     * Set up the data type for this element.  Null means unknown data type.
+     *
+     * @param dataType data type name
+     */
+    public void setDataType(String dataType)
+    {
         this.dataType = dataType;
     }
 
     /**
-     * Gets default value.
+     * Return the default value for the element.  Null means no default value set up.
      *
-     * @return the default value
+     * @return string containing default value
      */
-    public String getDefaultValue() {
-        return defaultValue;
+    public String getDefaultValue() { return defaultValue; }
+
+    /**
+     * Set up the default value for the element.  Null means no default value set up.
+     *
+     * @param defaultValue String containing default value
+     */
+    public void setDefaultValue(String defaultValue)
+    {
+        this.defaultValue = defaultValue;
     }
 
     /**
-     * Sets default value.
+     * Return a fixed literal value - an alternative to default value.
      *
-     * @param defaultValue the default value
+     * @return string value
      */
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
+    public String getFixedValue()
+    {
+        return fixedValue;
+    }
+
+    /**
+     * If the column contains a fixed literal value, set this value here - an alternative to default value.
+     *
+     * @param fixedValue string
+     */
+    public void setFixedValue(String fixedValue)
+    {
+        this.fixedValue = fixedValue;
+    }
+
+    /**
+     * Return the unique identifier of this column's type.
+     *
+     * @return unique identifier (guid) of the external schema type
+     */
+    public String getExternalTypeGUID()
+    {
+        return externalTypeGUID;
+    }
+
+    /**
+     * If the type of this column is represented by an external (standard type) put its value here.  No need to set
+     * dataType, FixedType or defaultType
+     *
+     * @param externalTypeGUID unique identifier (guid) of the external schema type
+     */
+    public void setExternalTypeGUID(String externalTypeGUID)
+    {
+        this.externalTypeGUID = externalTypeGUID;
+    }
+
+    /**
+     * Return the set of valid values for this column.
+     *
+     * @return unique identifier (guid) of the valid values set
+     */
+    public String getValidValuesSetGUID()
+    {
+        return validValuesSetGUID;
+    }
+
+    /**
+     * If the type is controlled by a fixed set of values, set up the unique identifier of the valid values set
+     * that lists the valid values.
+     *
+     * @param validValuesSetGUID unique identifier (guid) of the valid values set
+     */
+    public void setValidValuesSetGUID(String validValuesSetGUID)
+    {
+        this.validValuesSetGUID = validValuesSetGUID;
     }
 
     /**
@@ -226,118 +447,6 @@ public class Attribute extends Referenceable {
         this.anchorGUID = anchorGUID;
     }
 
-    public boolean isAllowsDuplicateValues() {
-        return allowsDuplicateValues;
-    }
-
-    public boolean isOrderedValues() {
-        return orderedValues;
-    }
-
-    public String getNativeClass() {
-        return nativeClass;
-    }
-
-    public void setNativeClass(String nativeClass) {
-        this.nativeClass = nativeClass;
-    }
-
-    public List<String> getAliases() {
-        return aliases;
-    }
-
-    public void setAliases(List<String> aliases) {
-        this.aliases = aliases;
-    }
-
-    public DataItemSortOrder getSortOrder() {
-        return sortOrder;
-    }
-
-    public void setSortOrder(DataItemSortOrder sortOrder) {
-        this.sortOrder = sortOrder;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getSignificantDigits() {
-        return significantDigits;
-    }
-
-    public void setSignificantDigits(int significantDigits) {
-        this.significantDigits = significantDigits;
-    }
-
-    public String getPrecision() {
-        return precision;
-    }
-
-    public void setPrecision(String precision) {
-        this.precision = precision;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public int getMinimumLength() {
-        return minimumLength;
-    }
-
-    public void setMinimumLength(int minimumLength) {
-        this.minimumLength = minimumLength;
-    }
-
-    public boolean isNullable() {
-        return isNullable;
-    }
-
-    public void setNullable(boolean nullable) {
-        isNullable = nullable;
-    }
-
-    public boolean isDeprecated() {
-        return isDeprecated;
-    }
-
-    public void setDeprecated(boolean deprecated) {
-        isDeprecated = deprecated;
-    }
-
-    public String getFixedValue() {
-        return fixedValue;
-    }
-
-    public void setFixedValue(String fixedValue) {
-        this.fixedValue = fixedValue;
-    }
-
-    public String getExternalTypeGUID() {
-        return externalTypeGUID;
-    }
-
-    public void setExternalTypeGUID(String externalTypeGUID) {
-        this.externalTypeGUID = externalTypeGUID;
-    }
-
-    public String getValidValuesSetGUID() {
-        return validValuesSetGUID;
-    }
-
-    public void setValidValuesSetGUID(String validValuesSetGUID) {
-        this.validValuesSetGUID = validValuesSetGUID;
-    }
-
     @Override
     public String toString() {
         return "Attribute{" +
@@ -355,7 +464,6 @@ public class Attribute extends Referenceable {
                 ", aliases=" + aliases +
                 ", sortOrder=" + sortOrder +
                 ", description='" + description + '\'' +
-                ", significantDigits=" + significantDigits +
                 ", precision='" + precision + '\'' +
                 ", length=" + length +
                 ", minimumLength=" + minimumLength +
@@ -378,7 +486,6 @@ public class Attribute extends Referenceable {
                 allowsDuplicateValues == attribute.allowsDuplicateValues &&
                 orderedValues == attribute.orderedValues &&
                 position == attribute.position &&
-                significantDigits == attribute.significantDigits &&
                 length == attribute.length &&
                 minimumLength == attribute.minimumLength &&
                 isNullable == attribute.isNullable &&
@@ -401,6 +508,7 @@ public class Attribute extends Referenceable {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), displayName, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues, position,
-                defaultValueOverride, dataType, defaultValue, anchorGUID, nativeClass, aliases, sortOrder, description, significantDigits, precision, length, minimumLength, isNullable, isDeprecated, fixedValue, externalTypeGUID, validValuesSetGUID);
+                defaultValueOverride, dataType, defaultValue, anchorGUID, nativeClass, aliases, sortOrder, description, precision, length,
+                minimumLength, isNullable, isDeprecated, fixedValue, externalTypeGUID, validValuesSetGUID);
     }
 }

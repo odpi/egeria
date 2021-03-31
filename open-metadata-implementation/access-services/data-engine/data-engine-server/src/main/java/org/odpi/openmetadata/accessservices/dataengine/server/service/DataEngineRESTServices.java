@@ -723,13 +723,13 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create the Database with corresponding associated schema types and relationships
+     * Create or update the Database with corresponding associated schema type and relationship
      *
      * @param serverName          name of server instance to call
      * @param userId              the name of the calling user
-     * @param databaseRequestBody properties of the schema type
+     * @param databaseRequestBody properties of the database
      *
-     * @return the unique identifier (guid) of the created schema type
+     * @return the unique identifier (guid) of the created database
      */
     public GUIDResponse upsertDatabase(String userId, String serverName, DatabaseRequestBody databaseRequestBody) {
         final String methodName = "upsertDatabase";
@@ -758,13 +758,13 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create the SchemaType with schema attributes and corresponding relationships
+     * Create the Relational Table with Relational Columns and corresponding relationships
      *
      * @param serverName                 name of server instance to call
      * @param userId                     the name of the calling user
-     * @param relationalTableRequestBody properties of the schema type
+     * @param relationalTableRequestBody properties of the relational table
      *
-     * @return the unique identifier (guid) of the created schema type
+     * @return the unique identifier (guid) of the created relational table
      */
     public GUIDResponse upsertRelationalTable(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody) {
         final String methodName = "upsertRelationalTable";
@@ -1082,19 +1082,18 @@ public class DataEngineRESTServices {
     }
 
     private boolean isRelationalTableRequestBodyValid(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody,
-                                                      String methodName) throws
-                                                                         InvalidParameterException {
+                                                      String methodName) throws InvalidParameterException {
         if (isRequestBodyInvalid(userId, serverName, relationalTableRequestBody, methodName)) return false;
 
         if (relationalTableRequestBody.getDatabaseQualifiedName() == null) {
-            restExceptionHandler.handleMissingValue("databaseQualifiedNam", methodName);
+            restExceptionHandler.handleMissingValue("databaseQualifiedName", methodName);
             return false;
         }
         return true;
     }
 
     private boolean isRequestBodyInvalid(String userId, String serverName, DataEngineOMASAPIRequestBody requestBody, String methodName) throws
-                                                                                                                                      InvalidParameterException {
+                                                                                                                                        InvalidParameterException {
         if (requestBody == null) {
             restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             return true;

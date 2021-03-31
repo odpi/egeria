@@ -74,16 +74,15 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
         if (repositoryHandler != null) {
 
-            AssetHandler<Process> assetHandler = new AssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName), Process.class,
-                    serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
+            final AssetHandler<Process> assetHandler = new AssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName),
+                    Process.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
                     securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
-            SchemaTypeHandler<SchemaType> schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,
-                    serverName),
-                    SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+            final SchemaTypeHandler<SchemaType> schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,
+                    serverName), SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
-            SchemaAttributeHandler<Attribute, SchemaType> schemaAttributeHandler =
+            final SchemaAttributeHandler<Attribute, SchemaType> schemaAttributeHandler =
                     new SchemaAttributeHandler<>(new SchemaAttributeConverter<>(repositoryHelper, serviceName, serverName),
                             Attribute.class, new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
                             SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
@@ -91,28 +90,28 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
             final RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType> relationalDataHandler =
                     new RelationalDataHandler<>(new DatabaseConverter<>(repositoryHelper, serviceName, serverName),
-                    Database.class,
-                    new DatabaseSchemaConverter<>(repositoryHelper, serviceName, serverName),
-                    DatabaseSchema.class,
-                    new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
-                    RelationalTable.class,
-                    new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
-                    RelationalTable.class,
-                    new DatabaseColumnConverter<>(repositoryHelper, serviceName, serverName),
-                    RelationalColumn.class,
-                    new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
-                    SchemaType.class,
-                    serviceName,
-                    serverName,
-                    invalidParameterHandler,
-                    repositoryHandler,
-                    repositoryHelper,
-                    localServerUserId,
-                    securityVerifier,
-                    supportedZones,
-                    defaultZones,
-                    publishZones,
-                    auditLog);
+                            Database.class,
+                            new DatabaseSchemaConverter<>(repositoryHelper, serviceName, serverName),
+                            DatabaseSchema.class,
+                            new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
+                            RelationalTable.class,
+                            new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
+                            RelationalTable.class,
+                            new DatabaseColumnConverter<>(repositoryHelper, serviceName, serverName),
+                            RelationalColumn.class,
+                            new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
+                            SchemaType.class,
+                            serviceName,
+                            serverName,
+                            invalidParameterHandler,
+                            repositoryHandler,
+                            repositoryHelper,
+                            localServerUserId,
+                            securityVerifier,
+                            supportedZones,
+                            defaultZones,
+                            publishZones,
+                            auditLog);
 
             dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper);
@@ -126,7 +125,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
             dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     dataEngineCommonHandler);
             dataEngineRelationalDataHandler = new DataEngineRelationalDataHandler(serviceName, serverName, invalidParameterHandler,
-                    repositoryHandler,repositoryHelper, relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+                    repositoryHandler, repositoryHelper, relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
 
         } else {
             final String methodName = "new ServiceInstance";

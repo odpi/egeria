@@ -36,7 +36,7 @@ public class Process extends Asset {
     }
 
     /**
-     * Gets name.
+     * Gets the prcoces name.
      *
      * @return the name
      */
@@ -45,37 +45,48 @@ public class Process extends Asset {
     }
 
     /**
-     * Sets name.
+     * Sets up the process name.
      *
-     * @param name the name
+     * @param name string name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Gets formula.
+     * Return the description of the processing performed by this process.
      *
-     * @return the formula
+     * @return string description
      */
-    public String getFormula() {
-        return formula;
-    }
+    public String getFormula() { return formula; }
 
     /**
-     * Sets formula.
+     * Set up the the description of the processing performed by this process.
      *
-     * @param formula the formula
+     * @param formula string description
      */
-    public void setFormula(String formula) {
+    public void setFormula(String formula)
+    {
         this.formula = formula;
     }
 
-    public String getImplementationLanguage() {
+    /**
+     * Return the name of the programming language that this process is implemented in.
+     *
+     * @return string name
+     */
+    public String getImplementationLanguage()
+    {
         return implementationLanguage;
     }
 
-    public void setImplementationLanguage(String implementationLanguage) {
+    /**
+     * Set up the name of the programming language that this process is implemented in.
+     *
+     * @param implementationLanguage string name
+     */
+    public void setImplementationLanguage(String implementationLanguage)
+    {
         this.implementationLanguage = implementationLanguage;
     }
 
@@ -174,37 +185,14 @@ public class Process extends Asset {
     }
 
     @Override
-    public String toString() {
-        return "Process{" +
-                "name='" + name + '\'' +
-                ", formula='" + formula + '\'' +
-                ", portImplementations=" + portImplementations +
-                ", portAliases=" + portAliases +
-                ", lineageMappings=" + lineageMappings +
-                ", updateSemantic=" + updateSemantic +
-                ", parentProcesses=" + parentProcesses +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerType=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", typeGUID='" + getTypeGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", guid='" + getGUID() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Process process = (Process) o;
         return Objects.equals(name, process.name) &&
                 Objects.equals(formula, process.formula) &&
+                Objects.equals(implementationLanguage, process.implementationLanguage) &&
                 Objects.equals(portImplementations, process.portImplementations) &&
                 Objects.equals(portAliases, process.portAliases) &&
                 Objects.equals(lineageMappings, process.lineageMappings) &&
@@ -214,6 +202,20 @@ public class Process extends Asset {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, formula, portImplementations, portAliases, lineageMappings, updateSemantic, parentProcesses);
+        return Objects.hash(super.hashCode(), name, formula, implementationLanguage, portImplementations, portAliases, lineageMappings, updateSemantic, parentProcesses);
+    }
+
+    @Override
+    public String toString() {
+        return "Process{" +
+                "name='" + name + '\'' +
+                ", formula='" + formula + '\'' +
+                ", implementationLanguage='" + implementationLanguage + '\'' +
+                ", portImplementations=" + portImplementations +
+                ", portAliases=" + portAliases +
+                ", lineageMappings=" + lineageMappings +
+                ", updateSemantic=" + updateSemantic +
+                ", parentProcesses=" + parentProcesses +
+                '}';
     }
 }

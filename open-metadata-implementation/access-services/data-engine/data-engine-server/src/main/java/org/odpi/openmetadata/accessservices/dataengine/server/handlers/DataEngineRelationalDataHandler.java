@@ -25,6 +25,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * DataEngineRelationalDataHandler manages Databases and RelationalTables objects from the property server.  It runs server-side in the DataEngine
+ * OMAS and creates entities and relationships through the OMRSRepositoryConnector.
+ */
 public class DataEngineRelationalDataHandler {
     private final String serviceName;
     private final String serverName;
@@ -64,13 +68,13 @@ public class DataEngineRelationalDataHandler {
     }
 
     /**
-     * Create the database
+     * Create or update the database
      *
      * @param userId             the name of the calling user
-     * @param database           the values of the process
+     * @param database           the values of the database
      * @param externalSourceName the unique name of the external source
      *
-     * @return unique identifier of the process in the repository
+     * @return unique identifier of the database in the repository
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -135,6 +139,18 @@ public class DataEngineRelationalDataHandler {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataAPIMapper.DATABASE_TYPE_NAME);
     }
 
+    /**
+     * Create or update the database schema
+     *
+     * @param userId             the name of the calling user
+     * @param databaseSchema     the values of the database schema
+     * @param databaseGUID       the unique identifier of the database
+     * @param externalSourceName the unique name of the external source
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     private void upsertDatabaseSchema(String userId, String databaseGUID, DatabaseSchema databaseSchema, String externalSourceName) throws
                                                                                                                                     InvalidParameterException,
                                                                                                                                     PropertyServerException,
@@ -166,12 +182,12 @@ public class DataEngineRelationalDataHandler {
     }
 
     /**
-     * Retrieve the schema type that is linked to the port
+     * Retrieve the schema type that is linked to the database
      *
      * @param userId       the name of the calling user
-     * @param databaseGUID the unique identifier of the port
+     * @param databaseGUID the unique identifier of the database
      *
-     * @return The unique identifier for the retrieved schema type or null
+     * @return optional with entity details if found, empty optional if not found
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -197,6 +213,20 @@ public class DataEngineRelationalDataHandler {
         return Optional.of(entity.getGUID());
     }
 
+    /**
+     * Create or update the relational table
+     *
+     * @param userId                the name of the calling user
+     * @param databaseQualifiedName the database qualified name
+     * @param relationalTable       the values of the relational table
+     * @param externalSourceName    the unique name of the external source
+     *
+     * @return unique identifier of the relationa table in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     public String upsertRelationalTable(String userId, String databaseQualifiedName, RelationalTable relationalTable, String externalSourceName) throws
                                                                                                                                                  InvalidParameterException,
                                                                                                                                                  PropertyServerException,
@@ -232,6 +262,19 @@ public class DataEngineRelationalDataHandler {
         return relationalTableGUID;
     }
 
+    /**
+     * Create or update the relational columns of a relational table
+     *
+     * @param userId              the name of the calling user
+     * @param columns             the values of the columns
+     * @param relationalTableGUID the unique identifier of the relational table
+     * @param externalSourceName  the unique name of the external source
+     * @param externalSourceGUID  the unique name of the external source
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     private void upsertRelationalColumns(String userId, String externalSourceGUID, String externalSourceName, String relationalTableGUID,
                                          List<RelationalColumn> columns) throws InvalidParameterException, PropertyServerException,
                                                                                 UserNotAuthorizedException {
@@ -268,6 +311,18 @@ public class DataEngineRelationalDataHandler {
         }
     }
 
+    /**
+     * Retrieve the unique identifier of the schema type that is linked to the database
+     *
+     * @param userId                the name of the calling user
+     * @param databaseQualifiedName the qualified name of the database
+     *
+     * @return The unique identifier for the retrieved schema type or null
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     private String getDatabaseSchemaGUID(String userId, String databaseQualifiedName, String methodName) throws InvalidParameterException,
                                                                                                                 PropertyServerException,
                                                                                                                 UserNotAuthorizedException {
@@ -285,12 +340,27 @@ public class DataEngineRelationalDataHandler {
         return null;
     }
 
+    /**
+     * Adds the common asset properties to the database schema
+     *
+     * @param databaseSchema the database schema
+     * @param owner          string the owner
+     * @param ownerType      enum OwnerType
+     * @param zoneMembership list of zone names¬
+     */
     private void addAssetProperties(DatabaseSchema databaseSchema, String owner, OwnerType ownerType, List<String> zoneMembership) {
         databaseSchema.setOwner(owner);
         databaseSchema.setOwnerType(ownerType);
         databaseSchema.setZoneMembership(zoneMembership);
     }
 
+    /**
+     * Creates a default Database Schema object with values composed from the Database
+     *
+     * @param database the database properties
+     *
+     * @return The DatabaseSchema object
+     */
     private DatabaseSchema createDefaultDatabaseSchema(Database database) {
         String postfix = ":schema";
         DatabaseSchema databaseSchema = new DatabaseSchema();
@@ -300,6 +370,16 @@ public class DataEngineRelationalDataHandler {
         return databaseSchema;
     }
 
+    /**
+     * Verifies if the parameters are valid for a request
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name
+     * @param displayName   the display name
+     * @param methodName    name of the calling method
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     */
     private void validateParameters(String userId, String methodName, String qualifiedName, String displayName) throws InvalidParameterException {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);

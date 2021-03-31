@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -23,10 +25,19 @@ public class Database extends DataStore {
     @JsonProperty("schema")
     private DatabaseSchema databaseSchema;
 
+
+    /**
+     * @return the database schema for the database
+     */
     public DatabaseSchema getDatabaseSchema() {
         return databaseSchema;
     }
 
+    /**
+     * Set up the database schema for the database
+     *
+     * @param databaseSchema DatabaseSchema object
+     */
     public void setDatabaseSchema(DatabaseSchema databaseSchema) {
         this.databaseSchema = databaseSchema;
     }
@@ -50,7 +61,6 @@ public class Database extends DataStore {
         this.databaseType = databaseType;
     }
 
-
     /**
      * Return the version of the database - often this is related to the version of its schemas.
      *
@@ -59,7 +69,6 @@ public class Database extends DataStore {
     public String getDatabaseVersion() {
         return databaseVersion;
     }
-
 
     /**
      * Set up the version of the database - often this is related to the version of its schemas.
@@ -70,7 +79,6 @@ public class Database extends DataStore {
         this.databaseVersion = databaseVersion;
     }
 
-
     /**
      * Return the name of this database instance - useful if the same schemas are deployed to multiple database instances.
      *
@@ -79,7 +87,6 @@ public class Database extends DataStore {
     public String getDatabaseInstance() {
         return databaseInstance;
     }
-
 
     /**
      * Set up the name of this database instance - useful if the same schemas are deployed to multiple database instances.
@@ -90,7 +97,6 @@ public class Database extends DataStore {
         this.databaseInstance = databaseInstance;
     }
 
-
     /**
      * Return the source (typically connection name) of the database information.
      *
@@ -99,7 +105,6 @@ public class Database extends DataStore {
     public String getDatabaseImportedFrom() {
         return databaseImportedFrom;
     }
-
 
     /**
      * Set up the the source (typically connection name) of the database information.
@@ -110,37 +115,38 @@ public class Database extends DataStore {
         this.databaseImportedFrom = databaseImportedFrom;
     }
 
-
     /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
      */
     @Override
-    public String toString() {
+    public String
+    toString() {
         return "Database{" +
                 "databaseType='" + databaseType + '\'' +
                 ", databaseVersion='" + databaseVersion + '\'' +
                 ", databaseInstance='" + databaseInstance + '\'' +
                 ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
-                ", pathName='" + getPathName() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encodingType='" + getEncodingType() + '\'' +
-                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", encodingProperties=" + getEncodingProperties() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerType=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", databaseSchema=" + databaseSchema +
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Database database = (Database) o;
+        return Objects.equals(databaseType, database.databaseType) &&
+                Objects.equals(databaseVersion, database.databaseVersion) &&
+                Objects.equals(databaseInstance, database.databaseInstance) &&
+                Objects.equals(databaseImportedFrom, database.databaseImportedFrom) &&
+                Objects.equals(databaseSchema, database.databaseSchema);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), databaseType, databaseVersion, databaseInstance, databaseImportedFrom, databaseSchema);
+    }
 }
