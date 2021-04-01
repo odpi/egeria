@@ -158,7 +158,7 @@ allprojects {
             implementation("org.springframework.boot:spring-boot-starter-web:2.3.5.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-test:2.3.5.RELEASE")
             implementation("org.springframework.boot:spring-boot-test:2.3.5.RELEASE")
-            implementation("org.springframework.data:spring-data-commons:2.4.1")
+            implementation("org.springframework.data:spring-data-commons:2.4.7")
             implementation("org.springframework.data:spring-data-jpa:2.4.1")
             implementation("org.springframework.security:spring-security-config:5.4.1")
             implementation("org.springframework.security:spring-security-core:5.4.1")
