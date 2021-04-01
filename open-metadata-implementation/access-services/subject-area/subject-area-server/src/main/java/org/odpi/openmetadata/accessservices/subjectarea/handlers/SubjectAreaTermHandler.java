@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceClassifications;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
@@ -371,7 +371,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 currentTerm.setEffectiveFromTime(termFromTime);
                 currentTerm.setEffectiveToTime(termToTime);
                 // always update the governance actions for a replace or an update
-                currentTerm.setGovernanceActions(suppliedTerm.getGovernanceActions());
+                currentTerm.setGovernanceClassifications(suppliedTerm.getGovernanceClassifications());
 
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
                 EntityDetail forUpdate = termMapper.map(currentTerm);
@@ -483,7 +483,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 .map(x -> x.getClassificationName())
                 .collect(Collectors.toSet());
 
-        GovernanceActions currentActions = currentTerm.getGovernanceActions();
+        GovernanceClassifications currentActions = currentTerm.getGovernanceClassifications();
         if (currentActions != null) {
             if (currentActions.getConfidence()!=null)
                 currentClassificationNames.add(currentActions.getConfidence().getClassificationName());
