@@ -71,36 +71,62 @@ public class DataEngineTransformationProjectHandler {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         String methodName = "createTransformationProject";
-        validateProcessParameters(userId, transformationProject.getName(), methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(transformationProject.getQualifiedName(), TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-        TransformationProjectBuilder builder = new TransformationProjectBuilder(transformationProject.getQualifiedName(),
-                transformationProject.getName(), TransformationProjectMapper.COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
+        TransformationProjectBuilder builder = getTransformationProjectBuilder(transformationProject);
 
         return transformationProjectHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
                 TransformationProjectMapper.COLLECTION_TYPE_GUID, TransformationProjectMapper.COLLECTION_TYPE_NAME,
                 transformationProject.getQualifiedName(), TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
     }
 
+    TransformationProjectBuilder getTransformationProjectBuilder(TransformationProject transformationProject) {
+        TransformationProjectBuilder builder = new TransformationProjectBuilder(transformationProject.getQualifiedName(),
+                transformationProject.getName(), TransformationProjectMapper.COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
+        return builder;
+    }
+
+    /**
+     * Find out if the Transformation Project object is already stored in the repository as a Collection. It uses the fully qualified name to retrieve the entity
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualifiedName name of the process to be searched
+     *
+     * @return optional with entity details if found, empty optional if not found
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     public Optional<EntityDetail> findTransformationProjectEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
             PropertyServerException,
             InvalidParameterException {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, TransformationProjectMapper.COLLECTION_TYPE_NAME);
     }
 
+    /**
+     * Create CollectionMembership relationships between a Process asset and the Transformation Project. Verifies that the
+     * relationship is not present before creating it
+     *
+     * @param userId             the name of the calling user
+     * @param processGUID        the unique identifier of the process
+     * @param transformationProjectGuid           the unique identifier of the collection that represents the transformation project
+     * @param externalSourceName the unique name of the external source
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     public void addProcessTransformationProjectRelationship(String userId, String processGUID, String transformationProjectGuid, String externalSourceName)
             throws InvalidParameterException,
             UserNotAuthorizedException,
             PropertyServerException {
 
         dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, transformationProjectGuid,
-                COLLECTION_MEMBERSHIP_NAME, TransformationProjectMapper.PROCESS_TYPE_NAME, externalSourceName,
+                COLLECTION_MEMBERSHIP_NAME, TransformationProjectMapper.COLLECTION_TYPE_NAME, externalSourceName,
                 null);
-    }
-
-    private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws InvalidParameterException {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
     }
 }

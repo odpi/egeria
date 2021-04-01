@@ -822,15 +822,17 @@ public class DataEngineRESTServices {
             String processGUID;
             String transformationProjectGUID = null;
 
-            Optional<EntityDetail> transformationProjectEntity = dataEngineTransformationProjectHandler.findTransformationProjectEntity(userId, qualifiedName);
             TransformationProject transformationProject = process.getTransformationProject();
-            if (!transformationProjectEntity.isPresent()) {
-                if (transformationProject != null) {
+            if (transformationProject != null) {
+                String transformationProjectQualifiedName = transformationProject.getQualifiedName();
+                Optional<EntityDetail> transformationProjectEntity = dataEngineTransformationProjectHandler.findTransformationProjectEntity(userId, transformationProjectQualifiedName);
+                if (!transformationProjectEntity.isPresent()) {
                     transformationProjectGUID = dataEngineTransformationProjectHandler.createTransformationProject(userId, transformationProject, externalSourceName);
+                } else {
+                    transformationProjectGUID = transformationProjectEntity.get().getGUID();
                 }
-            } else {
-                transformationProjectGUID = transformationProjectEntity.get().getGUID();
             }
+
             if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
 
