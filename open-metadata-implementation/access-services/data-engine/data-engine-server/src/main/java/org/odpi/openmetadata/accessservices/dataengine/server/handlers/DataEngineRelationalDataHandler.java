@@ -98,8 +98,8 @@ public class DataEngineRelationalDataHandler {
                     database.getPathName(), database.getCreateTime(), database.getModifiedTime(), database.getEncodingType(),
                     database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(), database.getDatabaseType(),
                     database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
-                    database.getAdditionalProperties(), OpenMetadataAPIMapper.DATABASE_TYPE_NAME, database.getExtendedProperties(),
-                    database.getVendorProperties(), methodName);
+                    database.getAdditionalProperties(), OpenMetadataAPIMapper.DATABASE_TYPE_NAME, null,
+                    null, methodName);
         } else {
             databaseGUID = originalDatabaseEntity.get().getGUID();
             relationalDataHandler.updateDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, database.getQualifiedName(),
@@ -107,8 +107,8 @@ public class DataEngineRelationalDataHandler {
                     database.getOriginOrganizationGUID(), database.getOriginBusinessCapabilityGUID(), database.getOtherOriginValues(),
                     database.getCreateTime(), database.getModifiedTime(), database.getEncodingType(), database.getEncodingLanguage(),
                     database.getEncodingDescription(), database.getEncodingProperties(), database.getDatabaseType(), database.getDatabaseVersion(),
-                    database.getDatabaseInstance(), database.getDatabaseImportedFrom(), database.getAdditionalProperties(), database.getTypeName(),
-                    database.getExtendedProperties(), database.getVendorProperties(), methodName);
+                    database.getDatabaseInstance(), database.getDatabaseImportedFrom(), database.getAdditionalProperties(),
+                    OpenMetadataAPIMapper.DATABASE_TYPE_NAME, null, null, methodName);
         }
 
         DatabaseSchema databaseSchema = database.getDatabaseSchema();
@@ -169,7 +169,7 @@ public class DataEngineRelationalDataHandler {
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                     databaseSchema.getAdditionalProperties(), OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                    databaseSchema.getExtendedProperties(), databaseSchema.getVendorProperties(), methodName);
+                    null, null, methodName);
         } else {
             String databaseSchemaGUID = originalDatabaseSchemaEntity.get().getGUID();
             relationalDataHandler.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
@@ -177,7 +177,7 @@ public class DataEngineRelationalDataHandler {
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                     databaseSchema.getAdditionalProperties(), OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                    databaseSchema.getExtendedProperties(), databaseSchema.getVendorProperties(), methodName);
+                    null, null, methodName);
         }
     }
 
@@ -246,15 +246,13 @@ public class DataEngineRelationalDataHandler {
             relationalTableGUID = relationalDataHandler.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, relationalTable.getExtendedProperties(), relationalTable.getVendorProperties(),
-                    methodName);
+                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
         } else {
             relationalTableGUID = originalRelationalTableEntity.get().getGUID();
             relationalDataHandler.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, relationalTable.getExtendedProperties(),
-                    relationalTable.getVendorProperties(), methodName);
+                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
         }
 
         upsertRelationalColumns(userId, externalSourceGUID, externalSourceName, relationalTableGUID, relationalTable.getColumns());
@@ -296,8 +294,8 @@ public class DataEngineRelationalDataHandler {
                         column.isDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
                         column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder,
                         column.getMinimumLength(), column.getLength(), column.getPrecision(), column.isNullable(), column.getNativeClass(),
-                        column.getAliases(), column.getAdditionalProperties(), column.getTypeName(), column.getExtendedProperties(),
-                        column.getVendorProperties(), methodName);
+                        column.getAliases(), column.getAdditionalProperties(), OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME, null,
+                        null, methodName);
             } else {
                 relationalDataHandler.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName,
                         originalRelationalColumnEntity.get().getGUID(), column.getQualifiedName(), column.getDisplayName(), column.getDescription(),
@@ -305,8 +303,8 @@ public class DataEngineRelationalDataHandler {
                         column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                         column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder, column.getMinimumLength(), column.getLength(),
                         column.getPrecision(), column.isNullable(), column.getNativeClass(), column.getAliases(),
-                        column.getAdditionalProperties(), column.getTypeName(), column.getExtendedProperties(), column.getVendorProperties(),
-                        methodName);
+                        column.getAdditionalProperties(), OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME, null,
+                        null, methodName);
             }
         }
     }

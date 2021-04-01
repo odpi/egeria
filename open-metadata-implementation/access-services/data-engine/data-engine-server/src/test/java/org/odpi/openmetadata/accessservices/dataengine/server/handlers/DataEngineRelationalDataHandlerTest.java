@@ -95,8 +95,7 @@ class DataEngineRelationalDataHandlerTest {
                 database.getOtherOriginValues(), database.getPathName(), database.getCreateTime(), database.getModifiedTime(),
                 database.getEncodingType(), database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(),
                 database.getDatabaseType(), database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
-                database.getAdditionalProperties(), OpenMetadataAPIMapper.DATABASE_TYPE_NAME, database.getExtendedProperties(),
-                database.getVendorProperties(), methodName)).thenReturn(GUID);
+                database.getAdditionalProperties(), OpenMetadataAPIMapper.DATABASE_TYPE_NAME, null, null, methodName)).thenReturn(GUID);
 
         String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, EXTERNAL_SOURCE_DE_NAME);
 
@@ -131,8 +130,7 @@ class DataEngineRelationalDataHandlerTest {
                 database.getOtherOriginValues(), database.getPathName(), database.getCreateTime(), database.getModifiedTime(),
                 database.getEncodingType(), database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(),
                 database.getDatabaseType(), database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
-                database.getAdditionalProperties(), OpenMetadataAPIMapper.DATABASE_TYPE_NAME, database.getExtendedProperties(),
-                database.getVendorProperties(), methodName)).thenReturn(GUID);
+                database.getAdditionalProperties(), OpenMetadataAPIMapper.DATABASE_TYPE_NAME,null, null, methodName)).thenReturn(GUID);
 
         String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, EXTERNAL_SOURCE_DE_NAME);
 
@@ -167,8 +165,8 @@ class DataEngineRelationalDataHandlerTest {
                 database.getOriginBusinessCapabilityGUID(), database.getOtherOriginValues(), database.getCreateTime(), database.getModifiedTime(),
                 database.getEncodingType(), database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(),
                 database.getDatabaseType(), database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
-                database.getAdditionalProperties(), database.getTypeName(), database.getExtendedProperties(), database.getVendorProperties(),
-                methodName);
+                database.getAdditionalProperties(), OpenMetadataAPIMapper.DATABASE_TYPE_NAME, null, null, methodName);
+
         verify(relationalDataHandler, times(1)).updateDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
                 SCHEMA_GUID, database.getDatabaseSchema().getQualifiedName(), database.getDatabaseSchema().getDisplayName(),
                 database.getDatabaseSchema().getDescription(), database.getOwner(), database.getOwnerType().getOpenTypeOrdinal(),
@@ -192,8 +190,7 @@ class DataEngineRelationalDataHandlerTest {
         when(relationalDataHandler.createDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, SCHEMA_GUID,
                 relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                 relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, relationalTable.getExtendedProperties(), relationalTable.getVendorProperties(),
-                methodName)).thenReturn(TABLE_GUID);
+                OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, null, null, methodName)).thenReturn(TABLE_GUID);
 
         String result = dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, relationalTable, EXTERNAL_SOURCE_DE_NAME);
 
@@ -205,8 +202,8 @@ class DataEngineRelationalDataHandlerTest {
                 column.isDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
                 column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(),
                 column.getSortOrder().getOpenTypeOrdinal(), column.getMinimumLength(), column.getLength(), column.getPrecision(),
-                column.isNullable(), column.getNativeClass(), column.getAliases(), column.getAdditionalProperties(), column.getTypeName(),
-                column.getExtendedProperties(), column.getVendorProperties(), "upsertRelationalColumns");
+                column.isNullable(), column.getNativeClass(), column.getAliases(), column.getAdditionalProperties(),
+                OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME, null, null, "upsertRelationalColumns");
     }
 
     @Test
@@ -228,15 +225,14 @@ class DataEngineRelationalDataHandlerTest {
         verify(relationalDataHandler, times(1)).updateDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, TABLE_GUID,
                 relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                 relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, relationalTable.getExtendedProperties(),
-                relationalTable.getVendorProperties(), methodName);
+                OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
         verify(relationalDataHandler, times(1)).updateDatabaseColumn(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
                 COLUMN_GUID, column.getQualifiedName(), column.getDisplayName(), column.getDescription(),
                 column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getFormula(), column.isDeprecated(),
                 column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                 column.getOrderedValues(), column.getDefaultValueOverride(), column.getSortOrder().getOpenTypeOrdinal(), column.getMinimumLength(),
                 column.getLength(), column.getPrecision(), column.isNullable(), column.getNativeClass(), column.getAliases(),
-                column.getAdditionalProperties(), column.getTypeName(), column.getExtendedProperties(), column.getVendorProperties(),
+                column.getAdditionalProperties(), OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME, null ,null,
                 "upsertRelationalColumns");
     }
 

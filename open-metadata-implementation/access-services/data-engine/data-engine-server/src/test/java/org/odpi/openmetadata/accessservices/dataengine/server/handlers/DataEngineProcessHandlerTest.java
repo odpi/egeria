@@ -77,7 +77,15 @@ class DataEngineProcessHandlerTest {
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
     private static final String PARENT_PROCESS_QUALIFIED_NAME = "parentQualifiedName";
     private static final String PARENT_GUID = "parentGUID";
+    private static Map<String, Object> extendedProperties = createExtendedPropertiesMap();
 
+    private static Map<String, Object> createExtendedPropertiesMap() {
+        extendedProperties = new HashMap<>();
+        extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, FORMULA);
+        extendedProperties.put(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, NAME);
+
+        return extendedProperties;
+    }
     @Mock
     private RepositoryHandler repositoryHandler;
 
@@ -114,7 +122,7 @@ class DataEngineProcessHandlerTest {
                 process.getQualifiedName(), process.getName(), process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 process.getOwnerType().getOpenTypeOrdinal(), process.getOriginOrganizationGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
-                OpenMetadataAPIMapper.PROCESS_TYPE_GUID, OpenMetadataAPIMapper.PROCESS_TYPE_NAME, process.getExtendedProperties(),
+                OpenMetadataAPIMapper.PROCESS_TYPE_GUID, OpenMetadataAPIMapper.PROCESS_TYPE_NAME, extendedProperties,
                 InstanceStatus.DRAFT, methodName)).thenReturn(GUID);
 
         String result = processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
@@ -141,7 +149,7 @@ class DataEngineProcessHandlerTest {
                 process.getQualifiedName(), process.getName(), process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 process.getOwnerType().getOpenTypeOrdinal(), process.getOriginOrganizationGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
-                OpenMetadataAPIMapper.PROCESS_TYPE_GUID, OpenMetadataAPIMapper.PROCESS_TYPE_NAME, process.getExtendedProperties(),
+                OpenMetadataAPIMapper.PROCESS_TYPE_GUID, OpenMetadataAPIMapper.PROCESS_TYPE_NAME, extendedProperties,
                 InstanceStatus.DRAFT, methodName);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
@@ -175,7 +183,7 @@ class DataEngineProcessHandlerTest {
         verify(assetHandler, times(1)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 PROCESS_GUID, "processGUID", process.getQualifiedName(), process.getName(), process.getDescription(),
                 process.getAdditionalProperties(), OpenMetadataAPIMapper.PROCESS_TYPE_GUID, OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                process.getExtendedProperties(), methodName);
+                extendedProperties, methodName);
 
     }
 
@@ -204,7 +212,7 @@ class DataEngineProcessHandlerTest {
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, ProcessPropertiesMapper.PROCESS_GUID_PROPERTY_NAME,
                 process.getQualifiedName(), process.getName(), process.getDescription(),
                 process.getAdditionalProperties(), OpenMetadataAPIMapper.PROCESS_TYPE_GUID, OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                process.getExtendedProperties(), "updateProcess");
+                extendedProperties, "updateProcess");
     }
 
     @Test
@@ -240,7 +248,7 @@ class DataEngineProcessHandlerTest {
         doThrow(mockedException).when(assetHandler).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 PROCESS_GUID, "processGUID", process.getQualifiedName(), process.getName(), process.getDescription(),
                 process.getAdditionalProperties(), OpenMetadataAPIMapper.PROCESS_TYPE_GUID, OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                process.getExtendedProperties(), methodName);
+                extendedProperties, methodName);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () -> processHandler.updateProcess(USER,
                 mockedOriginalProcessEntity, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -410,11 +418,6 @@ class DataEngineProcessHandlerTest {
         process.setOwnerType(OwnerType.USER_ID);
         process.setUpdateSemantic(UpdateSemantic.REPLACE);
         process.setZoneMembership(Collections.singletonList("default"));
-
-        Map<String, Object> extendedProperties = new HashMap<>();
-        extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, FORMULA);
-        extendedProperties.put(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, NAME);
-        process.setExtendedProperties(extendedProperties);
 
         return process;
     }

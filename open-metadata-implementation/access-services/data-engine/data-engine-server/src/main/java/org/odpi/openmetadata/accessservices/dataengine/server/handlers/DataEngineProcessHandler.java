@@ -257,7 +257,7 @@ public class DataEngineProcessHandler {
     ProcessPropertiesBuilder getProcessPropertiesBuilder(Process process) {
         return new ProcessPropertiesBuilder(process.getQualifiedName(), process.getDisplayName(), process.getName(),
                 process.getDescription(), ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
-                process.getImplementationLanguage(), process.getAdditionalProperties(), process.getExtendedProperties(), repositoryHelper,
+                process.getImplementationLanguage(), process.getAdditionalProperties(), repositoryHelper,
                 serverName, serviceName);
     }
 
