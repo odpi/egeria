@@ -4,11 +4,11 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -86,17 +86,17 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String getAssetSchemaTypeGUID(String userId,
-                                  String externalSourceGUID,
-                                  String externalSourceName,
-                                  String assetGUID,
-                                  String assetGUIDParameterName,
-                                  String assetTypeName,
-                                  String schemaTypeTypeGUID,
-                                  String schemaTypeTypeName,
-                                  String methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public String getAssetSchemaTypeGUID(String userId,
+                                            String externalSourceGUID,
+                                            String externalSourceName,
+                                            String assetGUID,
+                                            String assetGUIDParameterName,
+                                            String assetTypeName,
+                                            String schemaTypeTypeGUID,
+                                            String schemaTypeTypeName,
+                                            String methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);

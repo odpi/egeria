@@ -6,10 +6,17 @@ import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.metadataelements.FileElement;
+import org.odpi.openmetadata.accessservices.dataengine.model.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.accessservices.dataengine.model.metadataelements.FolderElement;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.DataFileConverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.FileFolderConverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.FileSystemConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaAttributeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaTypeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
@@ -38,6 +45,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private final DataEnginePortHandler dataEnginePortHandler;
     private final Connection inTopicConnection;
+    private final DataEngineDataFileHandler dataEngineDataFileHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -88,6 +96,12 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                     repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
             dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     dataEngineCommonHandler);
+            dataEngineDataFileHandler = new DataEngineDataFileHandler(
+                    new FileSystemConverter<FileSystemElement>(repositoryHelper, serviceName, serverName), FileSystemElement.class,
+                    new FileFolderConverter<FolderElement>(repositoryHelper, serviceName, serverName), FolderElement.class,
+                    new DataFileConverter<FileElement>(repositoryHelper, serviceName, serverName), FileElement.class,
+                    serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
+                    securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
         } else {
             final String methodName = "new ServiceInstance";
@@ -139,4 +153,11 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      * @return connection object for client
      */
     Connection getInTopicConnection() { return inTopicConnection; }
+
+    /**
+     * Return the handler for DataFile
+     */
+    public DataEngineDataFileHandler getDataEngineDataFileHandler() {
+        return dataEngineDataFileHandler;
+    }
 }

@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -20,8 +21,11 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
+import org.odpi.openmetadata.accessservices.dataengine.model.TabularSchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -30,10 +34,11 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -41,6 +46,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -48,6 +54,7 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -94,6 +101,10 @@ class DataEngineRESTServicesTest {
     private static final String PORT_GUID = "portGuid";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
+    private static final String FILE_TYPE = "fileType";
+    private static final String PATH = "/home/path/file.fileType";
+    private static final int POSITION = 1;
+    private static final String NATIVE_CLASS = "nativeClass";
 
     @Mock
     RESTExceptionHandler restExceptionHandler;
@@ -115,6 +126,9 @@ class DataEngineRESTServicesTest {
 
     @Mock
     private DataEngineProcessHandler processHandler;
+
+    @Mock
+    private DataEngineDataFileHandler dataEngineDataFileHandler;
 
     private final PortImplementation portImplementation = getPortImplementation();
 
@@ -759,6 +773,18 @@ class DataEngineRESTServicesTest {
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
     }
 
+    @Test
+    public void createDataFileAndSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockDataFileHandler("createDataFileAndSchema");
+        DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody();
+
+        GUIDResponse guidResponse = dataEngineRESTServices.createDataFileAndSchema(SERVER_NAME, USER, dataFileRequestBody);
+
+        verify(dataEngineDataFileHandler, times(1)).addFileAssetToCatalog(dataFileRequestBody.getDataFile(),
+                dataFileRequestBody.getTabularSchemaType(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                USER, "createDataFileAndSchema");
+    }
+
     private LineageMappingsRequestBody mockLineageMappingsRequestBody() {
         LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
         requestBody.setLineageMappings(Collections.singletonList(getLineageMapping()));
@@ -780,6 +806,10 @@ class DataEngineRESTServicesTest {
 
     private void mockProcessHandler(String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         when(instanceHandler.getProcessHandler(USER, SERVER_NAME, methodName)).thenReturn(processHandler);
+    }
+
+    private void mockDataFileHandler(String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        when(instanceHandler.getDataFileHandler(USER, SERVER_NAME, methodName)).thenReturn(dataEngineDataFileHandler);
     }
 
     private DataEngineRegistrationRequestBody mockDataEngineRegistrationRequestBody() {
@@ -821,6 +851,16 @@ class DataEngineRESTServicesTest {
         requestBody.setPorts(Collections.singletonList(QUALIFIED_NAME));
         requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
+    }
+
+    private DataFileRequestBody mockDataFileRequestBody(){
+        DataFileRequestBody dataFileRequestBody = new DataFileRequestBody();
+        dataFileRequestBody.setDataFile(getDataFile());
+        dataFileRequestBody.setTabularSchemaType(getTabularSchemaType());
+        dataFileRequestBody.setExternalSourceGuid(EXTERNAL_SOURCE_DE_GUID);
+        dataFileRequestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+
+        return dataFileRequestBody;
     }
 
     private SoftwareServerCapability getSoftwareServerCapability() {
@@ -900,5 +940,46 @@ class DataEngineRESTServicesTest {
         process.setUpdateSemantic(UpdateSemantic.REPLACE);
 
         return process;
+    }
+
+    private DataFile getDataFile(){
+        DataFile dataFile = new DataFile();
+        dataFile.setQualifiedName(QUALIFIED_NAME);
+        dataFile.setName(NAME);
+        dataFile.setOwner(OWNER);
+        dataFile.setFileType(FILE_TYPE);
+        dataFile.setDescription(DESCRIPTION);
+        dataFile.setPath(PATH);
+
+        return dataFile;
+    }
+
+    private TabularSchemaType getTabularSchemaType(){
+        List<TabularColumn> tabularColumns = new ArrayList<>();
+        tabularColumns.add(getTabularColumn());
+
+        TabularSchemaType tabularSchemaType = new TabularSchemaType();
+        tabularSchemaType.setQualifiedName(QUALIFIED_NAME);
+        tabularSchemaType.setDisplayName(NAME);
+        tabularSchemaType.setDescription(DESCRIPTION);
+        tabularSchemaType.setAuthor(AUTHOR);
+        tabularSchemaType.setUsage(USAGE);
+        tabularSchemaType.setEncodingStandard(ENCODING_STANDARD);
+        tabularSchemaType.setVersionNumber(VERSION_NUMBER);
+        tabularSchemaType.setTabularColumns(tabularColumns);
+
+        return tabularSchemaType;
+    }
+
+    private TabularColumn getTabularColumn(){
+        TabularColumn tabularColumn = new TabularColumn();
+        tabularColumn.setQualifiedName(QUALIFIED_NAME);
+        tabularColumn.setDisplayName(NAME);
+        tabularColumn.setDescription(DESCRIPTION);
+        tabularColumn.setPosition(POSITION);
+        tabularColumn.setNativeClass(NATIVE_CLASS);
+        tabularColumn.setDataItemSortOrder(DataItemSortOrder.ASCENDING);
+
+        return tabularColumn;
     }
 }

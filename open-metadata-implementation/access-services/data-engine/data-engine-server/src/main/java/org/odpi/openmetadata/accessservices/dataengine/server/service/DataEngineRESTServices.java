@@ -5,14 +5,35 @@ package org.odpi.openmetadata.accessservices.dataengine.server.service;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.CSVFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.rest.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.TabularSchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -41,6 +62,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.partitioningBy;
+import static org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode.DATA_FILE_NOT_PROVIDED;
 
 /**
  * The DataEngineRESTServices provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -1005,4 +1027,42 @@ public class DataEngineRESTServices {
 
         return portAliasGUIDs;
     }
+
+    public GUIDResponse createDataFileAndSchema(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
+        
+        String methodName = "createDataFileAndSchema";
+        GUIDResponse response = new GUIDResponse();
+        String guid;
+
+        try {
+            DataEngineDataFileHandler handler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
+            DataFile dataFile = dataFileRequestBody.getDataFile();
+            TabularSchemaType tabularSchemaType = dataFileRequestBody.getTabularSchemaType();
+
+            if(dataFile == null || tabularSchemaType == null){
+                throw new InvalidParameterException(DATA_FILE_NOT_PROVIDED.getMessageDefinition(),
+                        this.getClass().getName(), methodName, "dataFile, tabularSchemaType");
+            }
+
+            if(dataFile instanceof CSVFile){
+                guid = handler.addFileAssetToCatalog((CSVFile) dataFile, tabularSchemaType,
+                        dataFileRequestBody.getExternalSourceGuid(), dataFileRequestBody.getExternalSourceName(),
+                        userId, methodName);
+            } else {
+                guid = handler.addFileAssetToCatalog(dataFile, tabularSchemaType, dataFileRequestBody.getExternalSourceGuid(),
+                        dataFileRequestBody.getExternalSourceName(), userId, methodName);
+            }
+
+            response.setGUID(guid);
+
+        } catch (InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
+        }
+        return response;
+    }
+
 }
