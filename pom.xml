@@ -231,7 +231,7 @@
         <httpcore.version>4.4.14</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
-        <lettuce.version>6.0.2.RELEASE</lettuce.version>
+        <lettuce.version>6.1.0.RELEASE</lettuce.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
