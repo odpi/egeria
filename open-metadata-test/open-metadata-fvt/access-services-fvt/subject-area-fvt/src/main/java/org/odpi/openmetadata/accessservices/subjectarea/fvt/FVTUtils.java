@@ -45,6 +45,34 @@ public class FVTUtils {
             // error
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + "'s userId  to exist,  ");
         }
+        if (relationship.isReadOnly()) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " not to be readonly");
+        }
+        if (relationship.getEnd1() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end1 to have a value");
+        }
+        if (relationship.getEnd1().getNodeQualifiedName() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end1 qualified name to have a value");
+        }
+        if (relationship.getEnd1().getNodeGuid() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end1 guid to have a value");
+        }
+        if (relationship.getEnd2() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end2 to have a value");
+        }
+        if (relationship.getEnd2().getNodeQualifiedName() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end2 qualified name to have a value");
+        }
+        if (relationship.getEnd2().getNodeGuid() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end2 guid to have a value");
+        }
     }
     public static void checkEnds(Relationship relationship1, Relationship relationship2, String relationshipName, String operation) throws SubjectAreaFVTCheckedException {
         if (!relationship1.getEnd1().getNodeGuid().equals(relationship2.getEnd1().getNodeGuid())) {

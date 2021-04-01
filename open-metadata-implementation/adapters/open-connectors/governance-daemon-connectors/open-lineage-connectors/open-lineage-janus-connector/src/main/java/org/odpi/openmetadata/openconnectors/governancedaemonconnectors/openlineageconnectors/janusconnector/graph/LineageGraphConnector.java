@@ -28,6 +28,8 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -90,6 +92,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME;
 
 public class LineageGraphConnector extends LineageGraphConnectorBase {
 
@@ -147,7 +150,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     @Override
-    public void schedulerTask() {
+    public void performLineageGraphJob() {
         try {
             //TODO investigate possibility of adding the PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG again
             List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, PROCESS).toList();
@@ -169,6 +172,21 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 g.tx().rollback();
             }
         }
+    }
+
+    @Override
+    public void saveAssetLineageUpdateTime(LocalDateTime date) {
+        g.getGraph().variables().set(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME, date.toString());
+    }
+
+    @Override
+    public Optional<LocalDateTime> getAssetLineageUpdateTime() {
+        Optional<Object> lastUpdateTime = g.getGraph().variables().get(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME);
+        if(lastUpdateTime.isPresent()) {
+            String lastUpdateTimeValue = (String) lastUpdateTime.get();
+            return Optional.of(LocalDateTime.parse(lastUpdateTimeValue, DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        }
+        return Optional.empty();
     }
 
     /**
