@@ -98,7 +98,7 @@ allprojects {
             implementation("io.github.classgraph:classgraph:4.8.102")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
             implementation('io.lettuce:lettuce-core:6.0.2.RELEASE')
-            implementation("io.micrometer:micrometer-registry-prometheus:1.6.2")
+            implementation("io.micrometer:micrometer-registry-prometheus:1.6.5")
             implementation("io.netty:netty-all:4.1.59.Final")
             implementation("io.netty:netty-codec:4.1.59.Final")
             implementation("io.netty:netty-common:4.1.59.Final")
