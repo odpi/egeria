@@ -6,6 +6,9 @@
 Release 2.8 adds:
 * New support for event and property filtering for the open metadata server security connector
 * Changes to metadata types
+* New performance workbench for the CTS (technical preview)
+* New interface for retrieving the complete history of a single metadata instance
+* Splitting of CTS results into multiple smaller files
 
 Details of these and other changes are in the sections that follow.
 
@@ -68,7 +71,44 @@ on this page:
   since it is a more descriptive name.
   See [model 0440](../open-metadata-publication/website/open-metadata-types/0440-Organizational-Controls.md).
 
+### Performance workbench
+
+The performance workbench intends to test the response time of all repository (metadata collection) methods for the
+technology under test. The volume of the test can be easily configured to also test scalability.
+
+More information is available [in the workbench's documentation](../open-metadata-conformance-suite/docs/performance-workbench/README.md).
+
+### Instance history interface
+
+Two new (optional) methods have been introduced to the metadata collection interface:
+
+* `getEntityDetailHistory`
+* `getRelationshipHistory`
+
+Both methods take the GUID of the instance for which to retrieve history, an optional range of times between which to
+retrieve the historical versions (or if both are `null` to retrieve _all_ historical versions), and a set of paging
+parameters.
+
+If not implemented by a repository, these will simply throw `FunctionNotSupported` exceptions by default
+to indicate that they are not implemented.
+
+### CTS results output
+
+Up to this release, the detailed results of a CTS run could only be be retrieved by pulling a huge
+(100's of MB) file across the REST interface for the CTS. Aside from not typically working with most REST clients
+(like Postman), this had the additional impact of a sudden huge hit on the JVM heap to serialize such a large JSON
+structure (immediately grabbing ~1GB of the heap).
+
+While this old interface still exists for backwards compatibility, the new default interface provided in this release
+allows users to pull down just an overall summary of the results separately from the full detailed results, and the
+detailed results are now broken down into separate files by profile and test case: each of which can therefore be
+retrieved individually.
+
+(So, for example, if you see from the summary that only 1-2 profiles are not conformant, you can retrieve just the
+details for those profiles rather than all details.)
+
 ### Bug fixes and other updates
+
 * Additional Bug Fixes
 * Dependency Updates
 
