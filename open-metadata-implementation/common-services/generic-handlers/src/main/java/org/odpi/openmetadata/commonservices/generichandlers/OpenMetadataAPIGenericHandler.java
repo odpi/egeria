@@ -10404,7 +10404,7 @@ public class OpenMetadataAPIGenericHandler<B>
             this.reEvaluateAnchorGUID(startingGUID,
                                       startingElementTypeName,
                                       startingElementEntity,
-                                      startingElementAnchorEntity.getGUID(),
+                                      null,
                                       methodName);
         }
 
