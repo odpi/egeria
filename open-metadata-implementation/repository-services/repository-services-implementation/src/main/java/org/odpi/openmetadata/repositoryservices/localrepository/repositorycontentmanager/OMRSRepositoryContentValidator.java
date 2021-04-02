@@ -1215,7 +1215,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                     typeDef.getCategory(),
                                     methodName);
         }
-        catch (Throwable    error)
+        catch (Exception    error)
         {
            throw new RepositoryErrorException(OMRSErrorCode.BAD_TYPEDEF.getMessageDefinition(thisMethodName,
                                                                                               typeDef.getName(),
@@ -3399,7 +3399,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             {
                 throw error;
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 /*
                  * Logic error as the instance should be valid
@@ -3808,7 +3808,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                             matchingProperties++;
                                                         }
                                                     }
-                                                    catch (Throwable error)
+                                                    catch (Exception error)
                                                     {
                                                         throw new InvalidParameterException(
                                                                 OMRSErrorCode.INVALID_SEARCH_CRITERIA.getMessageDefinition(error.getClass().getName(),
@@ -3868,7 +3868,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         }
                     }
                 }
-                catch (Throwable   exc)
+                catch (Exception   exc)
                 {
                     /*
                      * Ignore property
@@ -3914,7 +3914,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         }
                     }
                 }
-                catch (Throwable   exc)
+                catch (Exception   exc)
                 {
                     /*
                      * Ignore property
@@ -4517,7 +4517,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             /*
              * Probably a class cast error which should never occur.
@@ -4633,7 +4633,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             /*
              * Probably a class cast error which should never occur.

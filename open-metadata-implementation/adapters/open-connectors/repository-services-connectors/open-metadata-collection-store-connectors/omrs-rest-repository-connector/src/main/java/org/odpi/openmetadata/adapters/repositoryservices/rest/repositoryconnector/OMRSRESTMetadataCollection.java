@@ -35,8 +35,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
     private String                        errorMessage = null;
     private String                        remoteMetadataCollectionId = null;
 
-    private boolean getHomeClassificationsSupported = false;
-    private boolean getHomeClassificationsWithHistorySupported = false;
+    private boolean getHomeClassificationsSupported = true;
+    private boolean getHomeClassificationsWithHistorySupported = true;
 
 
     /**

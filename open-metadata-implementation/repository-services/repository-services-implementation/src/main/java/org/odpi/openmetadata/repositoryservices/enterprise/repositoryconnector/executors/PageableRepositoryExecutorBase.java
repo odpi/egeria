@@ -93,7 +93,7 @@ abstract class PageableRepositoryExecutorBase extends CloneableRepositoryExecuto
     {
         queryInstanceAccumulator.throwCapturedUserNotAuthorizedException();
         queryInstanceAccumulator.throwCapturedRepositoryErrorException();
-        queryInstanceAccumulator.throwCapturedThrowableException(methodName);
+        queryInstanceAccumulator.throwCapturedGenericException(methodName);
         queryInstanceAccumulator.throwCapturedPropertyErrorException();
         queryInstanceAccumulator.throwCapturedInvalidParameterException();
         queryInstanceAccumulator.throwCapturedFunctionNotSupportedException();

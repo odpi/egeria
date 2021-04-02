@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
@@ -381,5 +382,20 @@ public class HandlerHelper {
         context.addAll(buildContextForRelationships(userId, startEntity.getGUID(), relationships).getRelationships());
 
         return getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
+    }
+
+
+    /**
+     * Validate asset's GUID and it being in the specific supported zones.
+     *
+     * @param entityDetail   the entity detail
+     * @param methodName     the method name
+     * @param supportedZones the supported zones
+     * @throws InvalidParameterException the invalid parameter exception
+     */
+    public void validateAsset(EntityDetail entityDetail, String methodName, List<String> supportedZones) throws InvalidParameterException {
+        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(), GUID_PARAMETER,
+                getAssetZoneMembership(entityDetail.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
     }
 }

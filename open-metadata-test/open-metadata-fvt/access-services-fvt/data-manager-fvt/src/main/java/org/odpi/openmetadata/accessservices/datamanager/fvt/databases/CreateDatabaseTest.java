@@ -385,6 +385,14 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
+            if (retrievedSchema.getZoneMembership() == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null database schema Zone Membership from Retrieve)");
+            }
+            if (retrievedSchema.getZoneMembership().size() != 1)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Database schema Zone Membership size is " + retrievedSchema.getZoneMembership().size() + " from Retrieve)");
+            }
             if (! databaseSchemaZone.equals(retrievedSchema.getZoneMembership().get(0)))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad database schema Zone Membership from Retrieve)");

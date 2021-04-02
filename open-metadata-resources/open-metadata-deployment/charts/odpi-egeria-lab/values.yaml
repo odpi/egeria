@@ -31,7 +31,7 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: "2.8-SNAPSHOT"
+  version: "2.9-SNAPSHOT"
   #repositoryType: "local-graph-repository"
   repositoryType: "in-memory-repository"
 

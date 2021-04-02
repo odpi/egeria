@@ -93,7 +93,7 @@ public class PurgeEntityExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(error);
         }
@@ -128,7 +128,7 @@ public class PurgeEntityExecutor extends RepositoryExecutorBase
         accumulator.throwCapturedEntityNotDeletedException();
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(methodName);
+        accumulator.throwCapturedGenericException(methodName);
         accumulator.throwCapturedEntityNotKnownException();
         accumulator.throwCapturedFunctionNotSupportedException();
         accumulator.throwCapturedInvalidParameterException();
