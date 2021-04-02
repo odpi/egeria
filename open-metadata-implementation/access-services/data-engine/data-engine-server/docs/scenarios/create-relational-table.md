@@ -37,7 +37,7 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-eng
                }
            ]
        },
-       "externalSourceName": "ING::Project::ExternalDataEngine"
+       "externalSourceName": "Company::Project::ExternalDataEngine"
    }
 }
 ```

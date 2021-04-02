@@ -20,7 +20,7 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-eng
             "displayName": "DB2INST1"
         }
     },
-    "externalSourceName": "ING::Project::ExternalDataEngine"
+    "externalSourceName": "Company::Project::ExternalDataEngine"
 }
 ```
 
