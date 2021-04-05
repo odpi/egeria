@@ -505,7 +505,6 @@ class DataEngineRESTServicesTest {
         mockPortHandler("upsertPortImplementationWithSchemaType");
         mockPortHandler("upsertPortAliasWithDelegation");
         mockProcessHandler("upsertProcess");
-//        mockTransformationProjectHandler("findTransformationProjectEntity");
         mockProcessHandler("updateProcessStatus");
         mockProcessHandler("addProcessPortRelationships");
         mockTransformationProjectHandler("upsertProcess");

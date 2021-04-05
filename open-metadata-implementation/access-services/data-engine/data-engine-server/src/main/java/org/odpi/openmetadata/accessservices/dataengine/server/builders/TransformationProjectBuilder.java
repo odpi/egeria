@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
-import org.odpi.openmetadata.commonservices.generichandlers.AssetBuilder;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.TransformationProjectMapper.NAME_PROPERTY_NAME;
 
-public class TransformationProjectBuilder extends AssetBuilder {
+public class TransformationProjectBuilder extends ReferenceableBuilder {
 
     private String transformationProjectName;
 
