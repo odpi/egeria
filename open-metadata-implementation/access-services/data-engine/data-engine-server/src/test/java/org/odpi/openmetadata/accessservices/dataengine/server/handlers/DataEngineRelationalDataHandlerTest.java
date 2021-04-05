@@ -103,7 +103,7 @@ class DataEngineRelationalDataHandlerTest {
         verifyInvalidParameterHandlerInvocations(methodName);
         String postfix = ":schema";
         verify(relationalDataHandler, times(1)).createDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, GUID,
-                database.getQualifiedName() + postfix, database.getDisplayName() + postfix, null, database.getOwner(),
+                database.getQualifiedName() + postfix, null, null, database.getOwner(),
                 database.getOwnerType().getOpenTypeOrdinal(), database.getZoneMembership(), database.getOriginOrganizationGUID(),
                 database.getOriginBusinessCapabilityGUID(), database.getOtherOriginValues(), null,
                 OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null, null, "upsertDatabaseSchema");
