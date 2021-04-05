@@ -44,7 +44,7 @@
 			"response": []
 		},
 		{
-			"name": "Create Software Server Capability",
+			"name": "Register external tool",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -127,7 +127,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic-schema\",\n        \"displayName\": \"MINIMAL-basic-schema\",\n        \"schema\": {\n            \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic-schema::(database_schema)=DB2INST1\",\n            \"displayName\": \"DB2INST1\"\n        }\n    },\n    \"externalSourceName\": \"Company::Project::ExternalDataEngine\"\n}"
+					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic-schema\",\n        \"displayName\": \"MINIMAL-basic-schema\",\n        \"schema\": {\n            \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-basic-schema::(database_schema)=DB2INST1\"\n        }\n    },\n    \"externalSourceName\": \"Company::Project::ExternalDataEngine\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
@@ -197,7 +197,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n        \"displayName\": \"MINIMAL-all-props\",\n        \"description\": \"DB2 MINIMAL\",\n        \"databaseType\": \"DB2\",\n        \"databaseVersion\": \"10.05.0002\",\n        \"databaseInstance\": \"db2inst1\",\n        \"databaseImportedFrom\": \"DB2Connector 9.1\",\n        \"createTime\": \"1588160311000\",\n        \"modifiedTime\": \"1588160311000\",\n        \"pathName\": \"pathName\",\n        \"encodingType\": \"type\",\n        \"encodingLanguage\": \"lang\",\n        \"encodingDescription\": \"props\",\n        \"schema\": {\n            \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1\",\n            \"displayName\": \"DB2INST1\",\n            \"description\": \"DB2INST1 desc\"\n        },\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"origin\" :{\n        \t\"prop\":\"origin\"\n        },\n        \"otherOriginValues\":{\n        \t\"prop\":\"oherOrigin\"\n        }\n    },\n    \"externalSourceName\": \"Company::Project::ExternalDataEngine\"\n}"
+					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n        \"displayName\": \"MINIMAL-all-props\",\n        \"description\": \"DB2 MINIMAL\",\n        \"databaseType\": \"DB2\",\n        \"databaseVersion\": \"10.05.0002\",\n        \"databaseInstance\": \"db2inst1\",\n        \"databaseImportedFrom\": \"DB2Connector 9.1\",\n        \"createTime\": \"1588160311000\",\n        \"modifiedTime\": \"1588160311000\",\n        \"pathName\": \"pathName\",\n        \"encodingType\": \"type\",\n        \"encodingLanguage\": \"lang\",\n        \"encodingDescription\": \"props\",\n        \"schema\": {\n            \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1\",\n            \"displayName\": \"DB2INST1\",\n            \"description\": \"DB2INST1 desc\"\n        },\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\":{\n        \t\"prop\":\"oherOrigin\"\n        }\n    },\n    \"externalSourceName\": \"Company::Project::ExternalDataEngine\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",

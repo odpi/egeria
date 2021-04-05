@@ -113,7 +113,7 @@ public class DataEngineRelationalDataHandler {
 
         DatabaseSchema databaseSchema = database.getDatabaseSchema();
         if (databaseSchema == null) {
-            databaseSchema = createDefaultDatabaseSchema(database);
+            databaseSchema = createDefaultDatabaseSchema(database.getQualifiedName());
         }
         addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
         upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
@@ -156,7 +156,8 @@ public class DataEngineRelationalDataHandler {
                                                                                                                                     PropertyServerException,
                                                                                                                                     UserNotAuthorizedException {
         final String methodName = "upsertDatabaseSchema";
-        validateParameters(userId, methodName, databaseSchema.getQualifiedName(), databaseSchema.getDisplayName());
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(databaseSchema.getQualifiedName(), OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
         Optional<EntityDetail> originalDatabaseSchemaEntity = dataEngineCommonHandler.findEntity(userId, databaseSchema.getQualifiedName(),
@@ -353,18 +354,16 @@ public class DataEngineRelationalDataHandler {
     }
 
     /**
-     * Creates a default Database Schema object with values composed from the Database
+     * Creates a default Database Schema object with qualified name composed from the Database qualified name
      *
-     * @param database the database properties
+     * @param databaseQualifiedName the qualified name
      *
      * @return The DatabaseSchema object
      */
-    private DatabaseSchema createDefaultDatabaseSchema(Database database) {
+    private DatabaseSchema createDefaultDatabaseSchema(String databaseQualifiedName) {
         String postfix = ":schema";
         DatabaseSchema databaseSchema = new DatabaseSchema();
-        databaseSchema.setDisplayName(database.getDisplayName() + postfix);
-        databaseSchema.setQualifiedName(database.getQualifiedName() + postfix);
-
+        databaseSchema.setQualifiedName(databaseQualifiedName + postfix);
         return databaseSchema;
     }
 
