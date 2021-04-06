@@ -31,7 +31,7 @@ public class AssetLineageUpdateJob implements Job {
     private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Run AssetLineageUpdateJob task at {} GMT";
     private static final String RUNNING_FAILURE = "AssetLineageUpdateJob task execution at {} GMT failed because of the following exception {}";
     private static final String ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR = "AssetLineageUpdateJob default value from " +
-            "config was defined as '{}' and it should have a format such as '{}'";
+            "config was defined as '{}' and it should have a format such as '{}'. The job will trigger the initial load.";
 
     @Override
     public void execute(JobExecutionContext context) {
