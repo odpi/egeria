@@ -25,7 +25,9 @@ Components included are:
    - Factory server     - factory:9443 internally, localhost:19446 externally
    - Egeria ui          - ui:8443 internally (https), localhost:18443 externally (https)
    - Static content     - staticui:80 internally (https), localhost:10080 externally (https)
- * kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
+   - nginx              - nginx:443 internally (https), localhost:10443 externally (https)
+   - presentation       - presentation:8091 internally (https), localhost:18091 externally (https) 
+* kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
  * zookeeper - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image
  * notebook - notebook:8888 internally, localhost:18888 externally (lab version, base image) - see https://jupyter-docker-stacks.readthedocs.io/en/latest/
 
@@ -39,7 +41,9 @@ Components included are:
  - To start the environment `docker-compose -f ./egeria-tutorial.yaml up`
  - you will notice all the components starting. As the notebook server starts it will also load
    the latest notebooks we have available directly from git.
- - go to http://localhost:18888 to interact with the Jupyter Notebook 
+ - go to http://localhost:18888 to interact with the Jupyter Notebook
+ - use https://localhost:18091 to interact with the React UI (Tex, Rex, Dino)
+ - use https://localhost:10443 to interact with the Polymer UI (this is a proxy that uses uistatic & ui for content)
  - To stop the environment : `docker-compose -f ./egeria-tutorial.yaml down`
  - To refresh the images (recommended to pick up latest code) : `docker-compose -f ./egeria-tutorial.yaml pull`
  
