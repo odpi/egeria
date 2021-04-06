@@ -59,7 +59,7 @@ image:
     name: egeria
   presentation:
     name: egeria-react-ui
-    tag: 2.8.0
+    tag: 2.7.0
   configure:
     name: egeria-configure
   jupyter:
