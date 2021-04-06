@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,17 +14,21 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
@@ -31,13 +36,15 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRe
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -46,7 +53,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.springframework.util.ReflectionUtils;
@@ -125,6 +131,9 @@ class DataEngineRESTServicesTest {
 
     @Mock
     private DataEngineProcessHandler processHandler;
+
+    @Mock
+    DataEngineRelationalDataHandler dataEngineRelationalDataHandler;
 
     @Mock
     private DataEngineDataFileHandler dataEngineDataFileHandler;
@@ -402,7 +411,8 @@ class DataEngineRESTServicesTest {
 
         GUIDResponse response = dataEngineRESTServices.upsertPortImplementation(USER, SERVER_NAME, requestBody);
 
-        verify(dataEnginePortHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEnginePortHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         assertEquals(PORT_GUID, response.getGUID());
@@ -491,7 +501,7 @@ class DataEngineRESTServicesTest {
 
     @Test
     void updatePortAlias() throws InvalidParameterException, PropertyServerException,
-                                           UserNotAuthorizedException {
+                                  UserNotAuthorizedException {
         mockPortHandler("upsertPortAliasWithDelegation");
 
         Optional<EntityDetail> portEntity = mockEntityDetail(GUID);
@@ -506,6 +516,7 @@ class DataEngineRESTServicesTest {
         verify(dataEnginePortHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
+
     @Test
     void createProcess() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockSchemaTypeHandler("upsertSchemaType");
@@ -773,6 +784,51 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
+    void upsertDatabase() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockRelationalDataHandler("upsertDatabase");
+
+        when(dataEngineRelationalDataHandler.upsertDatabase(USER, getDatabase(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+
+        DatabaseRequestBody requestBody = mockDatabaseRequestBody();
+
+        GUIDResponse response = dataEngineRESTServices.upsertDatabase(USER, SERVER_NAME, requestBody);
+        assertEquals(GUID, response.getGUID());
+    }
+
+    @Test
+    void upsertDatabase_noDatabase() throws InvalidParameterException {
+        DatabaseRequestBody requestBody = new DatabaseRequestBody();
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+
+        GUIDResponse response = dataEngineRESTServices.upsertDatabase(USER, SERVER_NAME, requestBody);
+        assertTrue(StringUtils.isEmpty(response.getGUID()));
+        verify(restExceptionHandler, times(1)).handleMissingValue("database", "upsertDatabase");
+    }
+
+    @Test
+    void upsertRelationalTable() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockRelationalDataHandler("upsertRelationalTable");
+
+        when(dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, getRelationalTable(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+
+        RelationalTableRequestBody requestBody = mockRelationalTableRequestBody();
+
+        GUIDResponse response = dataEngineRESTServices.upsertRelationalTable(USER, SERVER_NAME, requestBody);
+        assertEquals(GUID, response.getGUID());
+    }
+
+    @Test
+    void upsertRelationalTable_noDatabase() throws InvalidParameterException {
+        RelationalTableRequestBody requestBody = new RelationalTableRequestBody();
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+
+        GUIDResponse response = dataEngineRESTServices.upsertRelationalTable(USER, SERVER_NAME, requestBody);
+        assertTrue(StringUtils.isEmpty(response.getGUID()));
+        verify(restExceptionHandler, times(1)).handleMissingValue("databaseQualifiedName",
+                "upsertRelationalTable");
+    }
+
+    @Test
     public void createDataFileAndSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockDataFileHandler("createDataFileAndSchema");
         DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody();
@@ -805,6 +861,10 @@ class DataEngineRESTServicesTest {
 
     private void mockProcessHandler(String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         when(instanceHandler.getProcessHandler(USER, SERVER_NAME, methodName)).thenReturn(processHandler);
+    }
+
+    private void mockRelationalDataHandler(String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        when(instanceHandler.getRelationalDataHandler(USER, SERVER_NAME, methodName)).thenReturn(dataEngineRelationalDataHandler);
     }
 
     private void mockDataFileHandler(String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
@@ -874,6 +934,22 @@ class DataEngineRESTServicesTest {
         return softwareServerCapability;
     }
 
+    private DatabaseRequestBody mockDatabaseRequestBody() {
+        DatabaseRequestBody requestBody = new DatabaseRequestBody();
+        requestBody.setDatabase(getDatabase());
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        return requestBody;
+    }
+
+    private RelationalTableRequestBody mockRelationalTableRequestBody() {
+        RelationalTableRequestBody requestBody = new RelationalTableRequestBody();
+        requestBody.setRelationalTable(getRelationalTable());
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        requestBody.setDatabaseQualifiedName(QUALIFIED_NAME);
+
+        return requestBody;
+    }
+
     private SchemaType getSchemaType() {
         SchemaType schemaType = new SchemaType();
 
@@ -930,13 +1006,30 @@ class DataEngineRESTServicesTest {
         process.setDescription(DESCRIPTION);
         process.setFormula(FORMULA);
         process.setOwner(OWNER);
-        process.setOwnerType(OwnerType.USER_ID.getOrdinal());
+        process.setOwnerType(OwnerType.USER_ID);
         process.setPortImplementations(portImplementations);
         process.setPortAliases(portAliases);
         process.setLineageMappings(lineageMappings);
         process.setUpdateSemantic(UpdateSemantic.REPLACE);
 
         return process;
+    }
+
+    private Database getDatabase() {
+        Database database = new Database();
+
+        database.setQualifiedName(QUALIFIED_NAME);
+        database.setDisplayName(NAME);
+        return database;
+    }
+
+    private RelationalTable getRelationalTable() {
+        RelationalTable relationalTable = new RelationalTable();
+
+        relationalTable.setQualifiedName(QUALIFIED_NAME);
+        relationalTable.setDisplayName(NAME);
+
+        return relationalTable;
     }
 
     private DataFile getDataFile(){
@@ -979,4 +1072,5 @@ class DataEngineRESTServicesTest {
 
         return tabularColumn;
     }
+
 }
