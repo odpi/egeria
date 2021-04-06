@@ -44,7 +44,6 @@ public class DataFile implements Serializable {
     protected String owner;
     protected OwnerType ownerType;
     protected List<String> zoneMembership;
-    protected String latestChange;
 
     //DataStore
     protected Date createTime;
@@ -105,14 +104,6 @@ public class DataFile implements Serializable {
         this.zoneMembership = zoneMembership;
     }
 
-    public String getLatestChange() {
-        return latestChange;
-    }
-
-    public void setLatestChange(String latestChange) {
-        this.latestChange = latestChange;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -162,7 +153,6 @@ public class DataFile implements Serializable {
                 ", owner='" + owner + "'" +
                 ", ownerType='" + ownerType + "'" +
                 ", zoneMembership='" + zoneMembership + "'" +
-                ", latestChange='" + latestChange + "'" +
                 ", createTime='" + createTime + "'" +
                 ", modifiedTime='" + modifiedTime + "'" +
                 ", fileType='" + fileType + "'" +
@@ -184,7 +174,6 @@ public class DataFile implements Serializable {
                 Objects.equals(owner, dataFile.owner) &&
                 Objects.equals(ownerType, dataFile.ownerType) &&
                 Objects.equals(zoneMembership, dataFile.zoneMembership) &&
-                Objects.equals(latestChange, dataFile.latestChange) &&
                 Objects.equals(createTime, dataFile.modifiedTime) &&
                 Objects.equals(modifiedTime, dataFile.modifiedTime) &&
                 Objects.equals(description, dataFile.description) &&

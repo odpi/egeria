@@ -22,7 +22,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
-import org.odpi.openmetadata.accessservices.dataengine.model.TabularSchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
@@ -780,9 +779,9 @@ class DataEngineRESTServicesTest {
 
         GUIDResponse guidResponse = dataEngineRESTServices.createDataFileAndSchema(SERVER_NAME, USER, dataFileRequestBody);
 
-        verify(dataEngineDataFileHandler, times(1)).addFileAssetToCatalog(dataFileRequestBody.getDataFile(),
-                dataFileRequestBody.getTabularSchemaType(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                USER, "createDataFileAndSchema");
+        verify(dataEngineDataFileHandler, times(1)).addOrUpdateFileAssetToCatalog(
+                dataFileRequestBody.getDataFile(), dataFileRequestBody.getSchema(), dataFileRequestBody.getColumns(),
+                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "createDataFileAndSchema");
     }
 
     private LineageMappingsRequestBody mockLineageMappingsRequestBody() {
@@ -856,9 +855,7 @@ class DataEngineRESTServicesTest {
     private DataFileRequestBody mockDataFileRequestBody(){
         DataFileRequestBody dataFileRequestBody = new DataFileRequestBody();
         dataFileRequestBody.setDataFile(getDataFile());
-        dataFileRequestBody.setTabularSchemaType(getTabularSchemaType());
-        dataFileRequestBody.setExternalSourceGuid(EXTERNAL_SOURCE_DE_GUID);
-        dataFileRequestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataFileRequestBody.setSchema(getSchemaTypeForDataFile());dataFileRequestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         return dataFileRequestBody;
     }
@@ -954,21 +951,21 @@ class DataEngineRESTServicesTest {
         return dataFile;
     }
 
-    private TabularSchemaType getTabularSchemaType(){
+    private SchemaType getSchemaTypeForDataFile(){
         List<TabularColumn> tabularColumns = new ArrayList<>();
         tabularColumns.add(getTabularColumn());
 
-        TabularSchemaType tabularSchemaType = new TabularSchemaType();
-        tabularSchemaType.setQualifiedName(QUALIFIED_NAME);
-        tabularSchemaType.setDisplayName(NAME);
-        tabularSchemaType.setDescription(DESCRIPTION);
-        tabularSchemaType.setAuthor(AUTHOR);
-        tabularSchemaType.setUsage(USAGE);
-        tabularSchemaType.setEncodingStandard(ENCODING_STANDARD);
-        tabularSchemaType.setVersionNumber(VERSION_NUMBER);
-        tabularSchemaType.setTabularColumns(tabularColumns);
+        SchemaType schemaType = new SchemaType();
+        schemaType.setQualifiedName(QUALIFIED_NAME);
+        schemaType.setDisplayName(NAME);
+//        schemaType.setDescription(DESCRIPTION);
+        schemaType.setAuthor(AUTHOR);
+        schemaType.setUsage(USAGE);
+        schemaType.setEncodingStandard(ENCODING_STANDARD);
+        schemaType.setVersionNumber(VERSION_NUMBER);
+//        schemaType.setTabularColumns(tabularColumns);
 
-        return tabularSchemaType;
+        return schemaType;
     }
 
     private TabularColumn getTabularColumn(){

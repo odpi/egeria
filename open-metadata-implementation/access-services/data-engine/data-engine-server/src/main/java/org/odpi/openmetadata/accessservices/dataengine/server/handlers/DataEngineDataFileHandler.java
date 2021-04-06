@@ -2,8 +2,8 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.CSVFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
-import org.odpi.openmetadata.accessservices.dataengine.model.TabularSchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.metadataelements.FileElement;
 import org.odpi.openmetadata.accessservices.dataengine.model.metadataelements.FileSystemElement;
 import org.odpi.openmetadata.accessservices.dataengine.model.metadataelements.FolderElement;
@@ -44,8 +44,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 
 public class DataEngineDataFileHandler extends FilesAndFoldersHandler<FileSystemElement, FolderElement, FileElement> {
 
-    private InvalidParameterHandler myInvalidParameterHandler;
-
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -77,14 +75,14 @@ public class DataEngineDataFileHandler extends FilesAndFoldersHandler<FileSystem
         super(fileSystemConverter, fileSystemBeanClass, folderConverter, folderBeanClass, fileConverter, fileBeanClass,
                 serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
                 securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-        myInvalidParameterHandler = invalidParameterHandler;
     }
 
 
-    public String addFileAssetToCatalog(DataFile dataFile, TabularSchemaType tabularSchemaType, String externalSourceGuid,
-                                        String externalSourceName, String userId, String methodName)
+    public String addOrUpdateFileAssetToCatalog(DataFile dataFile, SchemaType schemaType, List<TabularColumn> columns,
+                                                String externalSourceGuid, String externalSourceName, String userId,
+                                                String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        myInvalidParameterHandler.validateUserId(userId, methodName);
+        validateParameters(dataFile, schemaType, columns, userId, methodName);
 
         Map<String, Object> extendedProperties = new HashMap<>();
         extendedProperties.put(FILE_TYPE_PROPERTY_NAME, dataFile.getFileType());
@@ -96,16 +94,17 @@ public class DataEngineDataFileHandler extends FilesAndFoldersHandler<FileSystem
                 DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, extendedProperties, methodName);
 
         createEndpointConnectionAndPath(dataFile, externalSourceGuid, externalSourceName, dataFileGuid, userId, methodName);
-        createTabularSchemaType(tabularSchemaType, externalSourceGuid, externalSourceName, dataFileGuid,
+        createTabularSchemaTypeWithColumns(schemaType, columns, externalSourceGuid, externalSourceName, dataFileGuid,
                 "dataFileGuid", DATA_FILE_TYPE_NAME, userId, methodName);
 
         return dataFileGuid;
     }
 
-    public String addFileAssetToCatalog(CSVFile csvFile, TabularSchemaType tabularSchemaType, String externalSourceGuid,
-                                        String externalSourceName, String userId, String methodName)
+    public String addOrUpdateFileAssetToCatalog(CSVFile csvFile, SchemaType schemaType, List<TabularColumn> columns,
+                                                String externalSourceGuid, String externalSourceName, String userId,
+                                                final String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        myInvalidParameterHandler.validateUserId(userId, methodName);
+        validateParameters(csvFile, schemaType, columns, userId, methodName);
 
         Map<String, Object> extendedProperties = new HashMap<>();
         extendedProperties.put(FILE_TYPE_PROPERTY_NAME, csvFile.getFileType());
@@ -119,7 +118,7 @@ public class DataEngineDataFileHandler extends FilesAndFoldersHandler<FileSystem
                 CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME, extendedProperties, methodName);
 
         createEndpointConnectionAndPath(csvFile, externalSourceGuid, externalSourceName, csvFileGuid, userId, methodName);
-        createTabularSchemaType(tabularSchemaType, externalSourceGuid, externalSourceName, csvFileGuid,
+        createTabularSchemaTypeWithColumns(schemaType, columns, externalSourceGuid, externalSourceName, csvFileGuid,
                 "csvFileGuid", CSV_FILE_TYPE_NAME, userId, methodName);
 
         return csvFileGuid;
@@ -148,18 +147,18 @@ public class DataEngineDataFileHandler extends FilesAndFoldersHandler<FileSystem
                 dataFile.getPath(), "dataFilePath", methodName);
     }
 
-    public void createTabularSchemaType(TabularSchemaType tabularSchemaType, String externalSourceGuid, String externalSourceName,
-                                        String fileAssetGuid, String fileAssetGuidParameterName, String assetTypeName,
-                                        String userId, String methodName)
+    public void createTabularSchemaTypeWithColumns(SchemaType schemaType, List<TabularColumn> columns, String externalSourceGuid,
+                                                   String externalSourceName, String fileAssetGuid, String fileAssetGuidParameterName,
+                                                   String assetTypeName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         String schemaTypeGuid = schemaAttributeHandler.getAssetSchemaTypeGUID(userId, externalSourceGuid, externalSourceName,
                 fileAssetGuid, fileAssetGuidParameterName, assetTypeName, TABULAR_SCHEMA_TYPE_TYPE_GUID,
                 TABULAR_SCHEMA_TYPE_TYPE_NAME, methodName);
 
-        for(TabularColumn tabularColumn : tabularSchemaType.getTabularColumns()){
+        for(TabularColumn tabularColumn : columns){
 
-            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(tabularSchemaType.getQualifiedName(),
+            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(schemaType.getQualifiedName(),
                     TABULAR_COLUMN_TYPE_TYPE_GUID, TABULAR_COLUMN_TYPE_TYPE_NAME, repositoryHelper, serviceName, serverName);
             schemaTypeBuilder.setDataType("String");
 
@@ -180,10 +179,20 @@ public class DataEngineDataFileHandler extends FilesAndFoldersHandler<FileSystem
                     TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, tabularColumn.getQualifiedName(),
                     "qualifiedName", schemaAttributeBuilder, methodName);
         }
+    }
 
-
-
-
+    private void validateParameters(DataFile dataFile, SchemaType schemaType, List<TabularColumn> columns, String userId, String methodName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(dataFile, "dataFile", methodName);
+        invalidParameterHandler.validateName(dataFile.getQualifiedName(), "dataFile.qualifiedName", methodName);
+        if( schemaType != null) {
+            invalidParameterHandler.validateObject(schemaType.getQualifiedName(), "schema.qualifiedName", methodName);
+        }
+        invalidParameterHandler.validateObject(columns, "columns", methodName);
+        for(TabularColumn column : columns){
+            invalidParameterHandler.validateName(column.getQualifiedName(), "columns.column.qualifiedName", methodName);
+        }
+        ;
     }
 
 }

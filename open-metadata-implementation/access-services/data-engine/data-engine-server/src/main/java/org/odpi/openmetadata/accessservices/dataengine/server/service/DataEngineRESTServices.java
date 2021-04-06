@@ -16,7 +16,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataengine.model.TabularSchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
@@ -62,7 +62,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.partitioningBy;
-import static org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode.DATA_FILE_NOT_PROVIDED;
 
 /**
  * The DataEngineRESTServices provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -1035,22 +1034,22 @@ public class DataEngineRESTServices {
         String guid;
 
         try {
-            DataEngineDataFileHandler handler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
-            DataFile dataFile = dataFileRequestBody.getDataFile();
-            TabularSchemaType tabularSchemaType = dataFileRequestBody.getTabularSchemaType();
+            DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
+            DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
-            if(dataFile == null || tabularSchemaType == null){
-                throw new InvalidParameterException(DATA_FILE_NOT_PROVIDED.getMessageDefinition(),
-                        this.getClass().getName(), methodName, "dataFile, tabularSchemaType");
-            }
+            String externalSourceName = dataFileRequestBody.getExternalSourceName();
+            String externalSourceGuid = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+
+            DataFile dataFile = dataFileRequestBody.getDataFile();
+            SchemaType schemaType = dataFileRequestBody.getSchema();
+            List<TabularColumn> columns = dataFileRequestBody.getColumns();
 
             if(dataFile instanceof CSVFile){
-                guid = handler.addFileAssetToCatalog((CSVFile) dataFile, tabularSchemaType,
-                        dataFileRequestBody.getExternalSourceGuid(), dataFileRequestBody.getExternalSourceName(),
-                        userId, methodName);
+                guid = dataFileHandler.addOrUpdateFileAssetToCatalog((CSVFile) dataFile, schemaType, columns,
+                        externalSourceGuid, externalSourceName, userId, methodName);
             } else {
-                guid = handler.addFileAssetToCatalog(dataFile, tabularSchemaType, dataFileRequestBody.getExternalSourceGuid(),
-                        dataFileRequestBody.getExternalSourceName(), userId, methodName);
+                guid = dataFileHandler.addOrUpdateFileAssetToCatalog(dataFile, schemaType, columns,
+                        externalSourceGuid, externalSourceName, userId, methodName);
             }
 
             response.setGUID(guid);

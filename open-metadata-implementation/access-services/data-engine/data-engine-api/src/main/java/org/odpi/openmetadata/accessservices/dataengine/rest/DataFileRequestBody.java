@@ -6,8 +6,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
-import org.odpi.openmetadata.accessservices.dataengine.model.TabularSchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataFileRequestBody extends DataEngineOMASAPIRequestBody {
 
     private DataFile dataFile;
-    private TabularSchemaType tabularSchemaType;
-    private String externalSourceGuid;
+    private SchemaType schema;
+    private List<TabularColumn> columns;
 
     public DataFile getDataFile() {
         return dataFile;
@@ -30,28 +32,28 @@ public class DataFileRequestBody extends DataEngineOMASAPIRequestBody {
         this.dataFile = dataFile;
     }
 
-    public TabularSchemaType getTabularSchemaType() {
-        return tabularSchemaType;
+    public SchemaType getSchema() {
+        return schema;
     }
 
-    public void setTabularSchemaType(TabularSchemaType tabularSchemaType) {
-        this.tabularSchemaType = tabularSchemaType;
+    public void setSchema(SchemaType schema) {
+        this.schema = schema;
     }
 
-    public String getExternalSourceGuid() {
-        return externalSourceGuid;
+    public List<TabularColumn> getColumns() {
+        return columns;
     }
 
-    public void setExternalSourceGuid(String externalSourceGuid) {
-        this.externalSourceGuid = externalSourceGuid;
+    public void setColumns(List<TabularColumn> columns) {
+        this.columns = columns;
     }
 
     @Override
     public String toString() {
         return "DataFileRequestBody{" +
                 "dataFile=" + dataFile +
-                "tabularSchemaType=" + tabularSchemaType +
-                "externalSourceGuid=" + externalSourceGuid +
+                "schema=" + schema +
+                "columns=" + columns +
                 '}';
     }
 
@@ -61,12 +63,12 @@ public class DataFileRequestBody extends DataEngineOMASAPIRequestBody {
         if (o == null || getClass() != o.getClass()) return false;
         DataFileRequestBody that = (DataFileRequestBody) o;
         return Objects.equals(dataFile, that.dataFile) &&
-                Objects.equals(tabularSchemaType, that.tabularSchemaType) &&
-                Objects.equals(externalSourceGuid, that.externalSourceGuid);
+                Objects.equals(schema, that.schema) &&
+                Objects.equals(columns, that.columns);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataFile, tabularSchemaType, externalSourceGuid);
+        return Objects.hash(dataFile, schema);
     }
 }
