@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -31,17 +33,34 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
         omasRelationship.setSystemAttributes(SubjectAreaUtils.createSystemAttributes(omrsRelationship));
         EntityProxy proxy1 = omrsRelationship.getEntityOneProxy();
         if (proxy1 != null) {
+            RelationshipEnd end1 = omasRelationship.getEnd1();
             String guid1 = proxy1.getGUID();
             if (guid1 != null) {
-                omasRelationship.getEnd1().setNodeGuid(guid1);
+                end1.setNodeGuid(guid1);
             }
+            Map<String, InstancePropertyValue> map =  proxy1.getUniqueProperties().getInstanceProperties();
+            PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue)map.get("qualifiedName");
+            if (qualifiedNamePropertyValue !=null) {
+                end1.setNodeQualifiedName(qualifiedNamePropertyValue.getPrimitiveValue().toString());
+            }
+
         }
         EntityProxy proxy2 = omrsRelationship.getEntityTwoProxy();
         if (proxy2 != null) {
+            RelationshipEnd end2 = omasRelationship.getEnd2();
             String guid2 = proxy2.getGUID();
             if (guid2 != null) {
-                omasRelationship.getEnd2().setNodeGuid(guid2);
+                end2.setNodeGuid(guid2);
             }
+            Map<String, InstancePropertyValue> map =  proxy2.getUniqueProperties().getInstanceProperties();
+            PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue)map.get("qualifiedName");
+            if (qualifiedNamePropertyValue !=null) {
+                end2.setNodeQualifiedName(qualifiedNamePropertyValue.getPrimitiveValue().toString());
+            }
+        }
+        // set readonly
+        if (omrsRelationship.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT) {
+            omasRelationship.setReadOnly(true);
         }
 
         // Set properties

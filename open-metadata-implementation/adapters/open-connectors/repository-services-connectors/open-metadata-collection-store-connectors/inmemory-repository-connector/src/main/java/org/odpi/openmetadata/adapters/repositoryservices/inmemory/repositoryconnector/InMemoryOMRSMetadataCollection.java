@@ -2198,6 +2198,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 newClassification = repositoryHelper.getNewClassification(repositoryName,
                                                                           externalSourceGUID,
+                                                                          externalSourceName,
                                                                           InstanceProvenanceType.EXTERNAL_SOURCE,
                                                                           userId,
                                                                           classificationName,
@@ -3743,12 +3744,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
                 if (metadataCollectionId.equals(entity.getMetadataCollectionId()))
                 {
-                    updatedEntity = repositoryHelper.incrementVersion(userId, retrievedEntity, updatedEntity);
                     repositoryStore.updateEntityInStore(updatedEntity);
                 }
                 else
                 {
-                    repositoryStore.saveReferenceEntityToStore(entity);
+                    repositoryStore.saveReferenceEntityToStore(updatedEntity);
                 }
 
                 /*

@@ -53,6 +53,8 @@ public class GraphConstants {
     private static final String PROPERTY_NAME_PATH = "path";
     public static final String PROPERTY_NAME_PROCESS_LINEAGE_COMPLETED_FLAG = "processLineageCompletedFlag";
 
+    public static final String VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME = "assetLineageLastUpdateTime";
+
     public static final String CONDENSED_NODE_DISPLAY_NAME = "...";
     public static final String SOURCE_CONDENSATION = "source";
     public static final String DESTINATION_CONDENSATION = "destination";

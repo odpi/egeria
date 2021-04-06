@@ -84,7 +84,7 @@ public class VerifyTypeDefExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(error);
         }
@@ -121,7 +121,7 @@ public class VerifyTypeDefExecutor extends RepositoryExecutorBase
 
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(super.methodName);
+        accumulator.throwCapturedGenericException(super.methodName);
         accumulator.throwCapturedTypeDefNotSupportedException();
         accumulator.throwCapturedInvalidTypeDefException();
         accumulator.throwCapturedInvalidParameterException();

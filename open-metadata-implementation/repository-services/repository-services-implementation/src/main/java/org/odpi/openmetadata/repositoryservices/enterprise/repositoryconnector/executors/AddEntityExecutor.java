@@ -157,7 +157,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(error);
         }
@@ -201,7 +201,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
 
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(super.methodName);
+        accumulator.throwCapturedGenericException(super.methodName);
         accumulator.throwCapturedTypeErrorException();
         accumulator.throwCapturedClassificationErrorException();
         accumulator.throwCapturedPropertyErrorException();

@@ -665,7 +665,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}/tables/{databaseTableGUID}")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/{databaseTableGUID}")
 
     public VoidResponse updateDatabaseTable(@PathVariable String                  serverName,
                                             @PathVariable String                  userId,
@@ -694,7 +694,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}/tables/{databaseTableGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/{databaseTableGUID}/{qualifiedName}/delete")
 
     public VoidResponse removeDatabaseTable(@PathVariable                  String          serverName,
                                             @PathVariable                  String          userId,

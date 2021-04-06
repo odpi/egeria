@@ -418,7 +418,7 @@ public class OMRSCohortManager
                                                   error);
 
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             log.debug(actionDescription + " FAILED with exception");
 

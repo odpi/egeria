@@ -200,7 +200,7 @@ public class SubjectAreaCategoryRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
+     * <li> EntityNotPurgedException             a hard delete was issued but the category was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/categories/{guid}")
@@ -278,7 +278,7 @@ public class SubjectAreaCategoryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    @GetMapping(path = "/users/{userId}/categories/{guid}/child-categories")
+    @GetMapping(path = "/users/{userId}/categories/{guid}/categories")
     public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,

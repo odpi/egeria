@@ -31,7 +31,6 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
       "openLineageDescription": "Open Lineage Service is used for the storage and querying of lineage",
       "inTopicName": "server.omas.omas.assetlineage.outTopic",
       "openLineageWiki": "wiki URL",
-      "jobIntervalInSeconds": "120",
       "lineageGraphConnection": {
         "class": "Connection",
         "displayName": "Lineage Graph Connection",
@@ -47,8 +46,24 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
           "index.search.backend": "lucene",
           "index.search.directory": "./egeria-lineage-repositories/lineageGraph/searchindex"
         }
-      }
-    }
+      },
+      "accessServiceConfig": {
+        "serverName": "omas",
+        "serverPlatformUrlRoot": "https://localhost:8080",
+        "user": "admin",
+        "password": "admin"
+      },
+      "backgroundJobs": [
+        {
+          "jobName": "LineageGraphJob",
+          "jobInterval": 120
+        }, 
+        {
+          "jobName": "AssetLineageUpdateJob",
+          "jobInterval": 120
+        }
+      ]
+   }
     ```
     to the following address
 
@@ -58,9 +73,14 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
 
     Update the payload with specific configuration values
     - `inTopicName` - the topic name of Asset Lineage OMAS Out Topic
-    - `jobIntervalInSeconds` - interval for Open Lineage Services background processing job. Default is 120 if not specified
     - `lineageGraphConnection` - contains the information needed for configuring the 
     [open-lineage-janus-connector](../../../../adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/README.md)
+    - `accessServiceConfig.serverName` - the name of the server where Asset Lineage is running
+    - `accessServiceConfig.serverPlatformUrlRoot` - the base URL where the Asset Lineage is running
+    - `accessServiceConfig.user` - the user needed for authentication in Asset Lineage (not used at the moment)
+    - `accessServiceConfig.password` - the password needed for authentication in Asset Lineage (not user at the moment)
+    - `backgroundJobs.jobName` - should be the name of the job class name
+    - `backgroundJobs.jobInterval` - interval for Open Lineage Services background processing job. Default is 120 if not specified
 
     Note that you can configure the connector to run embedded or on a standalone JanusGraph server, by setting the `connectorProviderClassName
     ` parameter to 
