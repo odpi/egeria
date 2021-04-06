@@ -232,6 +232,7 @@
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
         <lettuce.version>6.1.0.RELEASE</lettuce.version>
+        <javax.servlet.version>4.0.1</javax.servlet.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
@@ -411,6 +412,12 @@
                 <artifactId>jaxb-api</artifactId>
                 <version>${javax-jaxb-api.version}</version>
             </dependency>
+
+           <dependency>
+               <groupId>javax.servlet</groupId>
+               <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet.version}</version>
+           </dependency>
 
             <dependency>
                 <groupId>junit</groupId>
