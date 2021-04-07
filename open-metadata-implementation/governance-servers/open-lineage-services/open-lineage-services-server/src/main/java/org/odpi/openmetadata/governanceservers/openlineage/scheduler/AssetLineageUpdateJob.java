@@ -12,6 +12,7 @@ import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,10 +32,10 @@ public class AssetLineageUpdateJob implements Job {
     private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Run AssetLineageUpdateJob task at {} GMT";
     private static final String RUNNING_FAILURE = "AssetLineageUpdateJob task execution at {} GMT failed because of the following exception {}";
     private static final String ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR = "AssetLineageUpdateJob default value from " +
-            "config was defined as '{}' and it should have a format such as '{}'. The job will trigger the initial load.";
+            "config was defined as '{}' and it should have an ISO-8601 format such as '{}'. The job will shutdown and won't start again. Restart OLS with new value.";
 
     @Override
-    public void execute(JobExecutionContext context) {
+    public void execute(JobExecutionContext context) throws JobExecutionException {
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("GMT"));
         log.debug(RUN_ASSET_LINEAGE_UPDATE_JOB, localDateTime);
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
@@ -48,7 +49,7 @@ public class AssetLineageUpdateJob implements Job {
      * @param localDateTime the time when the job last run successfully, also the time to save in the graph
      * @param dataMap       the job context data map containing useful data to run the job
      */
-    private void performTask(LocalDateTime localDateTime, JobDataMap dataMap) {
+    private void performTask(LocalDateTime localDateTime, JobDataMap dataMap) throws JobExecutionException {
         AssetLineage assetLineageClient = (AssetLineage) dataMap.get(JobConstants.ASSET_LINEAGE_CLIENT);
         String localServerName = (String) dataMap.get(JobConstants.ASSET_LINEAGE_SERVER_NAME);
         String localServerUserId = (String) dataMap.get(JobConstants.LOCAL_SERVER_USER_ID);
@@ -77,7 +78,7 @@ public class AssetLineageUpdateJob implements Job {
      * @return the asset lineage last update time
      */
     private Optional<LocalDateTime> getAssetLineageLastUpdateTime(String configAssetLineageDefaultTime, LineageGraph lineageGraph,
-                                                                  LocalDateTime localDateTime) {
+                                                                  LocalDateTime localDateTime) throws JobExecutionException {
         Optional<LocalDateTime> assetLineageLastUpdateTime = lineageGraph.getAssetLineageUpdateTime();
 
         if (!assetLineageLastUpdateTime.isPresent()) {
@@ -86,7 +87,10 @@ public class AssetLineageUpdateJob implements Job {
                     assetLineageLastUpdateTime = Optional.of(LocalDateTime.parse(configAssetLineageDefaultTime,
                             DateTimeFormatter.ISO_LOCAL_DATE_TIME));
                 } catch (DateTimeParseException exception) {
-                    log.warn(ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR, configAssetLineageDefaultTime, localDateTime);
+                    log.error(ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR, configAssetLineageDefaultTime, localDateTime);
+                    JobExecutionException jobExecutionException = new JobExecutionException(exception);
+                    jobExecutionException.setUnscheduleAllTriggers(true);
+                    throw jobExecutionException;
                 }
             }
         }

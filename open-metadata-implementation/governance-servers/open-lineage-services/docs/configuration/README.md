@@ -85,7 +85,7 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
     - `backgroundJobs.jobName` - should be the name of the job class name
     - `backgroundJobs.jobInterval` - interval for Open Lineage Services background processing job. The default is 120 if not specified
     - `backgroundJobs.jobEnabled` - enables or disables the job. The default is true if not specified
-    - `backgroundJobs.jobDefaultValue` - value used to specify a particular value for the job. It's used in OLS only for the AssetLineageUpdateJob. It should have the following format (example): '2021-04-06T10:32:22.235'. It offers the chance to avoid the initial load and start publishing entities only starting from that date and time. It is used only if there is no value saved in the graph to indicate the last update time 
+    - `backgroundJobs.jobDefaultValue` - value used to specify a particular value for the job. It's used in OLS only for the AssetLineageUpdateJob. It should have the ISO-8601 format, example: '2021-04-06T10:32:22.235'. It offers the chance to avoid the initial load and start publishing entities only starting from the given date and time. It is used only if there is no value saved in the graph to indicate the last update time. If a parsing error occurs, the job and the triggers will be shut down.  
 
     Note that you can configure the connector to run embedded or on a standalone JanusGraph server, by setting the `connectorProviderClassName
     ` parameter to 
