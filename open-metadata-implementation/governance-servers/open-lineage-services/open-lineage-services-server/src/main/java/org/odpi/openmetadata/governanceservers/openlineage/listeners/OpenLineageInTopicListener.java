@@ -23,6 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -96,8 +97,12 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                 break;
             case COLUMN_CONTEXT_EVENT:
                 lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
-                storeAssetContext(lineageRelationshipsEvent);
+                requestAssetContext(lineageRelationshipsEvent);
                 storingServices.addEntityContext(lineageRelationshipsEvent);
+                break;
+            case ASSET_CONTEXT_EVENT:
+                lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                storeAssetContext(lineageRelationshipsEvent);
                 break;
             case NEW_RELATIONSHIP_EVENT:
                 lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
@@ -133,18 +138,25 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
     }
 
     private void storeAssetContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+        Set<GraphContext> relationships = lineageRelationshipsEvent.getRelationshipsContext().getRelationships();
+        if(!CollectionUtils.isEmpty(relationships)) {
+            storingServices.addEntityContext(relationships);
+            String entityGuid = lineageRelationshipsEvent.getRelationshipsContext().getEntityGuid();
+            auditLog.logMessage("storing Asset Context information for entity",
+                    OpenLineageServerAuditCode.ASSET_CONTEXT_INFO.getMessageDefinition(entityGuid));
+        }
+    }
+
+    private void requestAssetContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
         Optional<LineageEntity> optionalEntity = assetContextHandler.getAssetLineageEntity(lineageRelationshipsEvent);
         if(optionalEntity.isPresent()) {
             LineageEntity entity = optionalEntity.get();
             String guid = entity.getGuid();
             if(!storingServices.isEntityInGraph(guid)) {
                 try {
-                    Set<GraphContext> relationships = assetContextHandler.getAssetContextForEntity(guid, entity.getTypeDefName());
-                    if(!CollectionUtils.isEmpty(relationships)) {
-                        storingServices.addEntityContext(relationships);
-                        auditLog.logMessage("storing Asset Context information for entity",
-                                OpenLineageServerAuditCode.ASSET_CONTEXT_INFO.getMessageDefinition(guid));
-                    }
+                    List<String> guids = assetContextHandler.getAssetContextForEntity(guid, entity.getTypeDefName());
+                    auditLog.logMessage("requested the entity's Asset Context for entity",
+                            OpenLineageServerAuditCode.ASSET_CONTEXT_REQUEST.getMessageDefinition(guid, guids.toString()));
                 } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
                     OpenLineageServerAuditCode errorCode = OpenLineageServerAuditCode.ASSET_CONTEXT_EXCEPTION;
                     auditLog.logException("retrieving Asset Context exception", errorCode.getLogMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,

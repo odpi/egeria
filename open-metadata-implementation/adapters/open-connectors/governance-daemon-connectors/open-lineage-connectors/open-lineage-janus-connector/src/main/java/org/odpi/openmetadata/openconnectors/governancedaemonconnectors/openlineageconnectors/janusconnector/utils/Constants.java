@@ -35,11 +35,13 @@ public final class Constants {
     public static final String CONNECTION = "Connection";
     public static final String PROCESS = "Process";
     public static final String ENDPOINT = "Endpoint";
+    public static final String COLLECTION = "Collection";
 
     public static final Collection<String> DATA_FILE_AND_SUBTYPES = Arrays.asList(DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
             KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
 
     public static final String RELATIONAL_TABLE_KEY = "relationalTable";
+    public static final String TRANSFORMATION_PROJECT_KEY = "transformationProject";
     public static final String SCHEMA_TYPE_KEY = "schema";
     public static final String DATABASE_KEY = "database";
     public static final String DATA_FILE_KEY = "dataFile";
