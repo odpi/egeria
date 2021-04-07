@@ -186,7 +186,7 @@ public class Term extends GovernedNode implements Serializable {
             }
             sb.append("]");
         }
-        sb.append(getGovernanceActions());
+        sb.append(getGovernanceClassifications());
         sb.append(", SpineInformation=[");
 
         if (isSpineObject) {
@@ -222,13 +222,13 @@ public class Term extends GovernedNode implements Serializable {
                 Objects.equals(summary, term.summary) &&
                 Objects.equals(abbreviation, term.abbreviation) &&
                 Objects.equals(usage, term.usage) &&
-                Objects.equals(getGovernanceActions(), term.getGovernanceActions()) &&
+                Objects.equals(getGovernanceClassifications(), term.getGovernanceClassifications()) &&
                 Objects.equals(glossary, term.glossary);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), summary, usage, abbreviation, glossary, isSpineObject, isSpineAttribute, isObjectIdentifier, categories, getGovernanceActions());
+        return Objects.hash(super.hashCode(), summary, usage, abbreviation, glossary, isSpineObject, isSpineAttribute, isObjectIdentifier, categories, getGovernanceClassifications());
     }
 
     protected void processClassification(Classification classification) {

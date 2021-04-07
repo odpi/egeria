@@ -9,8 +9,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
@@ -992,25 +994,17 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                     description,
+                                                                                     methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.SEMANTIC_ASSIGNMENT_DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        if (expression != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SEMANTIC_ASSIGNMENT_EXPRESSION_PROPERTY_NAME,
-                                                                      expression,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME,
+                                                                  expression,
+                                                                  methodName);
 
         try
         {
@@ -1029,36 +1023,25 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.SEMANTIC_ASSIGNMENT_CONFIDENCE_PROPERTY_NAME,
+                                                               OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
                                                                confidence,
                                                                methodName);
 
-        if (createdBy != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SEMANTIC_ASSIGNMENT_CREATED_BY_PROPERTY_NAME,
-                                                                      createdBy,
-                                                                      methodName);
-        }
-
-        if (steward != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SEMANTIC_ASSIGNMENT_STEWARD_PROPERTY_NAME,
-                                                                      steward,
-                                                                      methodName);
-        }
-
-        if (source != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SEMANTIC_ASSIGNMENT_SOURCE_PROPERTY_NAME,
-                                                                      source,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.CREATED_BY_PROPERTY_NAME,
+                                                                  createdBy,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                  steward,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  source,
+                                                                  methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -1121,6 +1104,272 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Create a simple relationship between two elements in an Asset description (typically the asset itself or
+     * attributes in their schema).
+     *
+     * @param userId calling user
+     * @param element1GUID unique identifier of first element
+     * @param element1GUIDParameter name of parameter supplying element1GUID
+     * @param element2GUID unique identifier of second element
+     * @param element2GUIDParameter name of parameter supplying element2GUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  linkElementsAsDuplicates(String userId,
+                                          String element1GUID,
+                                          String element1GUIDParameter,
+                                          String element2GUID,
+                                          String element2GUIDParameter,
+                                          String methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(element2GUID, element2GUIDParameter, methodName);
+
+        /*
+         * First check the GUIDs are valid.
+         */
+        EntityDetail entity1 = this.getEntityFromRepository(userId,
+                                                            element1GUID,
+                                                            element1GUIDParameter,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            null,
+                                                            null,
+                                                            true,
+                                                            supportedZones,
+                                                            methodName);
+
+        EntityDetail entity2 = this.getEntityFromRepository(userId,
+                                                            element2GUID,
+                                                            element2GUIDParameter,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            null,
+                                                            null,
+                                                            true,
+                                                            supportedZones,
+                                                            methodName);
+
+        /*
+         * Next set up the classifications if needed.
+         */
+        boolean classificationNeeded = true;
+        try
+        {
+            if (repositoryHelper.getClassificationFromEntity(serviceName,
+                                                             entity1,
+                                                             OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                                             methodName) == null)
+            {
+                classificationNeeded = false;
+            }
+        }
+        catch (ClassificationErrorException classificationError)
+        {
+            // nothing to do
+        }
+
+        if (classificationNeeded)
+        {
+            this.setClassificationInRepository(userId,
+                                               element1GUID,
+                                               element1GUIDParameter,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
+                                               OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                               null,
+                                               methodName);
+        }
+
+        classificationNeeded = true;
+        try
+        {
+            if (repositoryHelper.getClassificationFromEntity(serviceName,
+                                                             entity2,
+                                                             OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                                             methodName) == null)
+            {
+                classificationNeeded = false;
+            }
+        }
+        catch (ClassificationErrorException classificationError)
+        {
+            // nothing to do
+        }
+
+        if (classificationNeeded)
+        {
+            this.setClassificationInRepository(userId,
+                                               element2GUID,
+                                               element2GUIDParameter,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
+                                               OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                               null,
+                                               methodName);
+        }
+
+        /*
+         * Finally link the entities together.
+         */
+        InstanceProperties properties  = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                                      userId,
+                                                                                      methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  serviceName,
+                                                                  methodName);
+
+        try
+        {
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.DUPLICATE_TYPE_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.DUPLICATE_TYPE_ENUM_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.DUPLICATE_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.PEER_ORDINAL,
+                                                                    methodName);
+        }
+        catch (TypeErrorException error)
+        {
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.DUPLICATE_TYPE_ENUM_TYPE_NAME);
+        }
+
+        try
+        {
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.VALIDATED_GC_STATUS_ORDINAL,
+                                                                    methodName);
+        }
+        catch (TypeErrorException error)
+        {
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.GOVERNANCE_CLASSIFICATION_STATUS_ENUM_TYPE_NAME);
+        }
+
+        this.linkElementToElement(userId,
+                                  null,
+                                  null,
+                                  element1GUID,
+                                  element1GUIDParameter,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  element2GUID,
+                                  element2GUIDParameter,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_GUID,
+                                  OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_NAME,
+                                  properties,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove the relationship between two elements that marks them as duplicates.
+     *
+     * @param userId calling user
+     * @param element1GUID unique identifier of first element
+     * @param element1GUIDParameter name of parameter supplying element1GUID
+     * @param element2GUID unique identifier of second element
+     * @param element2GUIDParameter name of parameter supplying element2GUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid or the elements are not linked as duplicates
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  unlinkElementsAsDuplicates(String userId,
+                                            String element1GUID,
+                                            String element1GUIDParameter,
+                                            String element2GUID,
+                                            String element2GUIDParameter,
+                                            String methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(element2GUID, element2GUIDParameter, methodName);
+
+        /*
+         * The repository helper will validate the types of GUIDs etc
+         */
+        repositoryHandler.removeRelationshipBetweenEntities(userId,
+                                                            null,
+                                                            null,
+                                                            OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_GUID,
+                                                            OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_NAME,
+                                                            element1GUID,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            element2GUID,
+                                                            methodName);
+
+        /*
+         * Determine whether the entities are still linked as duplicates.  If they are not, then remove their known duplicate classification.
+         */
+        if (this.getAttachmentLinks(userId,
+                                    element1GUID,
+                                    element1GUIDParameter,
+                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_GUID,
+                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_NAME,
+                                    null,
+                                    null,
+                                    0,
+                                    0,
+                                    invalidParameterHandler.getMaxPagingSize(),
+                                    methodName) == null)
+        {
+            this.removeClassificationFromRepository(userId,
+                                                    null,
+                                                    null,
+                                                    element1GUID,
+                                                    element1GUIDParameter,
+                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_NAME,
+                                                    methodName);
+        }
+
+
+        if (this.getAttachmentLinks(userId,
+                                    element2GUID,
+                                    element2GUIDParameter,
+                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_GUID,
+                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_NAME,
+                                    null,
+                                    null,
+                                    0,
+                                    0,
+                                    invalidParameterHandler.getMaxPagingSize(),
+                                    methodName) == null)
+        {
+            this.removeClassificationFromRepository(userId,
+                                                    null,
+                                                    null,
+                                                    element2GUID,
+                                                    element2GUIDParameter,
+                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.KNOWN_DUPLICATE_LINK_TYPE_NAME,
+                                                    methodName);
+        }
+    }
+
+
+    /**
      * Create the property facet for the vendor properties.
      *
      * @param userId calling user
@@ -1139,10 +1388,88 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
+        final String referenceableGUIDParameter = "referenceableGUID";
+        final String propertyFacetGUIDParameter = "propertyFacet[x]";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(referenceableGUID, referenceableGUIDParameter, methodName);
+
+        List<EntityDetail> propertyFacets = this.getPropertyFacets(userId,
+                                                                   referenceableGUID,
+                                                                   referenceableGUIDParameter,
+                                                                   OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                                                   methodName);
+
+
         if (vendorProperties != null)
         {
-            invalidParameterHandler.throwMethodNotSupported(userId, serviceName, serverName, methodName);
-            // todo
+            PropertyFacetBuilder builder = new PropertyFacetBuilder(referenceableGUID + "_" + OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                                                    vendorProperties,
+                                                                    repositoryHelper,
+                                                                    serviceName,
+                                                                    serverName);
+
+            if (propertyFacets != null)
+            {
+                for (EntityDetail propertyFacet : propertyFacets)
+                {
+                    if (propertyFacet != null)
+                    {
+                        this.updateBeanInRepository(userId,
+                                                    null,
+                                                    null,
+                                                    propertyFacet.getGUID(),
+                                                    propertyFacetGUIDParameter,
+                                                    OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                                    supportedZones,
+                                                    builder.getInstanceProperties(methodName),
+                                                    true,
+                                                    methodName);
+                    }
+                }
+            }
+            else
+            {
+                /*
+                 * No property facet exists - so create one.
+                 */
+                builder.setAnchors(userId, referenceableGUID, methodName);
+
+                createBeanInRepository(userId,
+                                       null,
+                                       null,
+                                       OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
+                                       OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                       null,
+                                       null,
+                                       builder,
+                                       methodName);
+            }
+        }
+        else
+        {
+            if (propertyFacets != null)
+            {
+                for (EntityDetail propertyFacet : propertyFacets)
+                {
+                    if (propertyFacet != null)
+                    {
+                        this.deleteBeanInRepository(userId,
+                                                    null,
+                                                    null,
+                                                    propertyFacet.getGUID(),
+                                                    propertyFacetGUIDParameter,
+                                                    OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                                    null,
+                                                    null,
+                                                    methodName);
+                    }
+                }
+            }
         }
     }
 
@@ -1152,7 +1479,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param referenceableGUID unique identifier of the metadata element
-     * @param qualifiedName qualified name of the metadata element
      * @param methodName calling method
      *
      * @return map of properties
@@ -1163,13 +1489,104 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     public Map<String, String> getVendorProperties(String userId,
                                                    String referenceableGUID,
-                                                   String qualifiedName,
                                                    String methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        // todo
-        invalidParameterHandler.throwMethodNotSupported(userId, serviceName, serverName, methodName);
+        final String referenceableGUIDParameter = "referenceableGUID";
+
+        List<EntityDetail> propertyFacets = this.getPropertyFacets(userId,
+                                                                   referenceableGUID,
+                                                                   referenceableGUIDParameter,
+                                                                   OpenMetadataAPIMapper.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                                                   methodName);
+
+        if (propertyFacets != null)
+        {
+            for (EntityDetail propertyFacet : propertyFacets)
+            {
+                if (propertyFacet != null)
+                {
+                    Map<String, String> vendorProperties = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                     OpenMetadataAPIMapper.PROPERTIES_PROPERTY_NAME,
+                                                                                                     propertyFacet.getProperties(),
+                                                                                                     methodName);
+                    if ((vendorProperties != null) && (! vendorProperties.isEmpty()))
+                    {
+                        return vendorProperties;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve the property facet for the vendor properties. It uses the supportedZones supplied with the service.
+     *
+     * @param userId calling user
+     * @param referenceableGUID unique identifier of the metadata element
+     * @param methodName calling method
+     *
+     * @return map of properties
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private List<EntityDetail> getPropertyFacets(String userId,
+                                                 String referenceableGUID,
+                                                 String referenceableGUIDParameter,
+                                                 String description,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        List<EntityDetail> propertyFacets = this.getAttachedEntities(userId,
+                                                                     referenceableGUID,
+                                                                     referenceableGUIDParameter,
+                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                     OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
+                                                                     OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                                                     OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     supportedZones,
+                                                                     0,
+                                                                     invalidParameterHandler.getMaxPagingSize(),
+                                                                     methodName);
+
+
+        if ((propertyFacets != null) && (! propertyFacets.isEmpty()))
+        {
+            List<EntityDetail> matchingPropertyFacets = new ArrayList<>();
+
+            for (EntityDetail propertyFacet : propertyFacets)
+            {
+                if (propertyFacet != null)
+                {
+                    String storedDescription = repositoryHelper.getStringProperty(serviceName,
+                                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                  propertyFacet.getProperties(),
+                                                                                  methodName);
+
+                    if (((storedDescription == null) && (description == null)) || ((storedDescription != null) && (storedDescription.equals(description))))
+                    {
+                        matchingPropertyFacets.add(propertyFacet);
+                    }
+                }
+            }
+
+            if (! matchingPropertyFacets.isEmpty())
+            {
+                return matchingPropertyFacets;
+            }
+        }
+
         return null;
     }
 }

@@ -225,7 +225,7 @@ public class FindRelationshipsByPropertyExecutor extends PageableRepositoryExecu
         {
             accumulator.captureException(metadataCollectionId, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(metadataCollectionId, error);
         }

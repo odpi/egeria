@@ -46,6 +46,7 @@ public class Node implements Serializable, OmasObject {
     private String name =null;
     private String qualifiedName =null;
     private SystemAttributes systemAttributes=null;
+    private boolean readOnly = false;
     private Date effectiveFromTime = null;
     private Date effectiveToTime = null;
     private String description =null;
@@ -106,6 +107,22 @@ public class Node implements Serializable, OmasObject {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * The Node is readOnly
+     * @return whether read only
+     */
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    /**
+     * set whether the node is readOnly
+     * @param readOnly readonly flag
+     */
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
     }
 
     /**

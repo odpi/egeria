@@ -410,27 +410,26 @@ public abstract class GovernanceEngineHandler
     /**
      * Execute the requested governance action on or after the start time.
      *
-     * @param governanceActionElement element describing the governance action.
+     * @param governanceActionGUID unique identifier of potential governance action to run.
      */
-    public void executeGovernanceAction(GovernanceActionElement  governanceActionElement)
+    public void executeGovernanceAction(String governanceActionGUID)
     {
         final String methodName = "executeGovernanceAction";
 
         try
         {
-            ElementHeader              elementHeader                 = governanceActionElement.getElementHeader();
-            GovernanceActionElement    latestGovernanceActionElement = serverClient.getGovernanceAction(serverUserId, elementHeader.getGUID());
+            GovernanceActionElement    latestGovernanceActionElement = serverClient.getGovernanceAction(serverUserId, governanceActionGUID);
             GovernanceActionProperties properties                    = latestGovernanceActionElement.getProperties();
 
             if (properties.getActionStatus() == GovernanceActionStatus.APPROVED)
             {
-                serverClient.claimGovernanceAction(serverUserId, elementHeader.getGUID());
+                serverClient.claimGovernanceAction(serverUserId, governanceActionGUID);
 
                 // todo if the start date is in the future then the governance action should be given to the scheduler
 
-                serverClient.updateGovernanceActionStatus(serverUserId, elementHeader.getGUID(), GovernanceActionStatus.IN_PROGRESS);
+                serverClient.updateGovernanceActionStatus(serverUserId, governanceActionGUID, GovernanceActionStatus.IN_PROGRESS);
 
-                runGovernanceService(elementHeader.getGUID(),
+                runGovernanceService(governanceActionGUID,
                                      properties.getRequestType(),
                                      properties.getRequestParameters(),
                                      properties.getRequestSourceElements(),
@@ -442,7 +441,7 @@ public abstract class GovernanceEngineHandler
             auditLog.logException(methodName,
                                   EngineHostServicesAuditCode.ACTION_PROCESSING_ERROR.getMessageDefinition(methodName,
                                                                                                            error.getClass().getName(),
-                                                                                                           governanceActionElement.toString(),
+                                                                                                           governanceActionGUID,
                                                                                                            error.getMessage()),
                                   error);
         }

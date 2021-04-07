@@ -175,6 +175,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                  EntityDetail entity,
                                                  String       methodName)
     {
+        final String entityGUIDParameterName = "entity.getGUID";
+
         if (entity != null)
         {
             InstanceType type = entity.getType();
@@ -195,17 +197,25 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                             int attempt = 0;
                             int sleepTime = 1000;
 
-                            GovernanceActionElement element = null;
-
                             while (attempt < 5)
                             {
-                                element = governanceActionHandler.getGovernanceAction(userId, entity.getGUID(), methodName);
+                                EntityDetail governanceEngine = governanceActionHandler.getAttachedEntity(userId,
+                                                                                                          entity.getGUID(),
+                                                                                                          entityGUIDParameterName,
+                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
+                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
+                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                                                          methodName);
 
-                                if (element.getProperties().getGovernanceEngineName() != null)
+                                if (governanceEngine != null)
                                 {
-                                    eventPublisher.publishNewGovernanceAction(element.getProperties().getGovernanceEngineGUID(),
-                                                                              element.getProperties().getGovernanceEngineName(),
-                                                                              element);
+                                    eventPublisher.publishNewGovernanceAction(governanceEngine.getGUID(),
+                                                                              repositoryHelper.getStringProperty(sourceName,
+                                                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                                 governanceEngine.getProperties(),
+                                                                                                                 methodName),
+                                                                              entity.getGUID());
 
                                     return true;
                                 }
@@ -221,7 +231,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                             /*
                              * Given up waiting
                              */
-                            auditLog.logMessage(methodName, GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(element.toString()));
+                            auditLog.logMessage(methodName, GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(entity.toString()));
                         }
                         catch (Exception error)
                         {

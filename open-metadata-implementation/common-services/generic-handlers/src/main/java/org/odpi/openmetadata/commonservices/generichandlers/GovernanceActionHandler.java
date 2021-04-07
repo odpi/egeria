@@ -4,6 +4,7 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryEntitiesIterator;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositorySelectedEntitiesIterator;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -81,7 +83,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId caller's userId
      * @param processQualifiedName unique name to give this governance action process
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargetGUIDs list of action targets for the resulting governance action service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
      * @param requestParameters initial set of request parameters from the caller
      * @param startTime future start time or null for "as soon as possible"
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
@@ -93,17 +95,17 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String initiateGovernanceActionProcess(String              userId,
-                                                  String              processQualifiedName,
-                                                  List<String>        requestSourceGUIDs,
-                                                  List<String>        actionTargetGUIDs,
-                                                  Map<String, String> requestParameters,
-                                                  Date                startTime,
-                                                  String              originatorServiceName,
-                                                  String              originatorEngineName,
-                                                  String              methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public String initiateGovernanceActionProcess(String                userId,
+                                                  String                processQualifiedName,
+                                                  List<String>          requestSourceGUIDs,
+                                                  List<NewActionTarget> actionTargets,
+                                                  Map<String, String>   requestParameters,
+                                                  Date                  startTime,
+                                                  String                originatorServiceName,
+                                                  String                originatorEngineName,
+                                                  String                methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         final String qualifiedNameParameterName  = "processQualifiedName";
         final String governanceActionTypeGUIDParameterName  = "governanceActionFlowRelationship.getEntityTwoProxy().getGUID()";
@@ -141,11 +143,11 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     guard,
                                                     requestParameters,
                                                     requestSourceGUIDs,
-                                                    actionTargetGUIDs,
+                                                    actionTargets,
                                                     startTime,
                                                     processQualifiedName,
-                                                    originatorEngineName,
                                                     originatorServiceName,
+                                                    originatorEngineName,
                                                     methodName);
         }
         else
@@ -168,7 +170,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param guard guard that triggered this action
      * @param initialRequestParameters initial set of request parameters
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargetGUIDs list of action targets for the resulting governance action service
+     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible"
      * @param requestSourceName name of calling source
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
@@ -180,21 +182,21 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    private String initiateGovernanceActionFromType(String              userId,
-                                                    String              anchorGUID,
-                                                    String              governanceActionTypeGUID,
-                                                    String              governanceActionTypeGUIDParameterName,
-                                                    String              guard,
-                                                    Map<String, String> initialRequestParameters,
-                                                    List<String>        requestSourceGUIDs,
-                                                    List<String>        actionTargetGUIDs,
-                                                    Date                startTime,
-                                                    String              requestSourceName,
-                                                    String              originatorServiceName,
-                                                    String              originatorEngineName,
-                                                    String              methodName) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    private String initiateGovernanceActionFromType(String                userId,
+                                                    String                anchorGUID,
+                                                    String                governanceActionTypeGUID,
+                                                    String                governanceActionTypeGUIDParameterName,
+                                                    String                guard,
+                                                    Map<String, String>   initialRequestParameters,
+                                                    List<String>          requestSourceGUIDs,
+                                                    List<NewActionTarget> actionTargets,
+                                                    Date                  startTime,
+                                                    String                requestSourceName,
+                                                    String                originatorServiceName,
+                                                    String                originatorEngineName,
+                                                    String                methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         Relationship governanceActionTypeExecutorRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                               governanceActionTypeGUID,
@@ -281,7 +283,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         displayName,
                                         description,
                                         requestSourceGUIDs,
-                                        actionTargetGUIDs,
+                                        actionTargets,
                                         mandatoryGuards,
                                         receivedGuards,
                                         startTime,
@@ -308,7 +310,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param displayName display name for this action
      * @param description description for this action
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargetGUIDs list of action targets for the resulting governance action service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
      * @param mandatoryGuards list of guards that must be received in order to proceed with the governance action
      * @param receivedGuards list of guards to initiate the governance action
      * @param startTime future start time or null for "as soon as possible"
@@ -328,27 +330,27 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String initiateGovernanceAction(String              userId,
-                                           String              qualifiedName,
-                                           int                 domainIdentifier,
-                                           String              displayName,
-                                           String              description,
-                                           List<String>        requestSourceGUIDs,
-                                           List<String>        actionTargetGUIDs,
-                                           List<String>        mandatoryGuards,
-                                           List<String>        receivedGuards,
-                                           Date                startTime,
-                                           String              governanceEngineName,
-                                           String              requestType,
-                                           Map<String, String> requestParameters,
-                                           String              governanceActionTypeGUID,
-                                           String              anchorGUID,
-                                           String              requestSourceName,
-                                           String              originatorServiceName,
-                                           String              originatorEngineName,
-                                           String              methodName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public String initiateGovernanceAction(String                userId,
+                                           String                qualifiedName,
+                                           int                   domainIdentifier,
+                                           String                displayName,
+                                           String                description,
+                                           List<String>          requestSourceGUIDs,
+                                           List<NewActionTarget> actionTargets,
+                                           List<String>          mandatoryGuards,
+                                           List<String>          receivedGuards,
+                                           Date                  startTime,
+                                           String                governanceEngineName,
+                                           String                requestType,
+                                           Map<String, String>   requestParameters,
+                                           String                governanceActionTypeGUID,
+                                           String                anchorGUID,
+                                           String                requestSourceName,
+                                           String                originatorServiceName,
+                                           String                originatorEngineName,
+                                           String                methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String qualifiedNameParameterName  = "qualifiedName";
         final String engineNameParameterName     = "governanceEngineName";
@@ -412,6 +414,83 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             }
 
             /*
+             * Show the relationship to an governance action type if this governance action originated from a governance action process.
+             */
+            InstanceProperties originatorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                   null,
+                                                                                                   OpenMetadataAPIMapper.ORIGIN_GOVERNANCE_SERVICE_PROPERTY_NAME,
+                                                                                                   originatorServiceName,
+                                                                                                   methodName);
+
+            originatorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                originatorProperties,
+                                                                                OpenMetadataAPIMapper.ORIGIN_GOVERNANCE_ENGINE_PROPERTY_NAME,
+                                                                                originatorEngineName,
+                                                                                methodName);
+
+
+            if (governanceActionTypeGUID != null)
+            {
+                this.linkElementToElement(userId,
+                                          null,
+                                          null,
+                                          governanceActionTypeGUID,
+                                          governanceActionTypeGUIDParameterName,
+                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                          governanceActionGUID,
+                                          governanceActionGUIDParameterName,
+                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME,
+                                          originatorProperties,
+                                          methodName);
+            }
+
+            /*
+             * Identify the source of the work
+             */
+            if ((requestSourceGUIDs != null) && (! requestSourceGUIDs.isEmpty()))
+            {
+                final String requestSourceGUIDParameterName = "requestSourceGUIDs[x]";
+
+                originatorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                    originatorProperties,
+                                                                                    OpenMetadataAPIMapper.REQUEST_SOURCE_NAME_PROPERTY_NAME,
+                                                                                    requestSourceName,
+                                                                                    methodName);
+
+                for (String requestSourceGUID : requestSourceGUIDs)
+                {
+                    if (requestSourceGUID != null)
+                    {
+                        this.linkElementToElement(userId,
+                                                  null,
+                                                  null,
+                                                  requestSourceGUID,
+                                                  requestSourceGUIDParameterName,
+                                                  OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                  governanceActionGUID,
+                                                  governanceActionGUIDParameterName,
+                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_NAME,
+                                                  originatorProperties,
+                                                  methodName);
+                    }
+                }
+            }
+
+            /*
+             * Identify the objects to work on
+             */
+            this.addActionTargets(userId,
+                                  governanceActionGUID,
+                                  governanceActionGUIDParameterName,
+                                  actionTargets,
+                                  methodName);
+
+
+            /*
              * Link the governance action to the governance engine.
              */
             InstanceProperties executorProperties = null;
@@ -448,81 +527,6 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       executorProperties,
                                       methodName);
 
-            InstanceProperties originatorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                                   null,
-                                                                                                   OpenMetadataAPIMapper.ORIGIN_GOVERNANCE_SERVICE_PROPERTY_NAME,
-                                                                                                   originatorServiceName,
-                                                                                                   methodName);
-
-            originatorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                originatorProperties,
-                                                                                OpenMetadataAPIMapper.ORIGIN_GOVERNANCE_ENGINE_PROPERTY_NAME,
-                                                                                originatorEngineName,
-                                                                                methodName);
-
-            /*
-             * Show the relationship to an governance action type if this governance action originated from a governance action process.
-             */
-            if (governanceActionTypeGUID != null)
-            {
-                this.linkElementToElement(userId,
-                                          null,
-                                          null,
-                                          governanceActionTypeGUID,
-                                          governanceActionTypeGUIDParameterName,
-                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
-                                          governanceActionGUID,
-                                          governanceActionGUIDParameterName,
-                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
-                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID,
-                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME,
-                                          originatorProperties,
-                                          methodName);
-            }
-
-            /*
-             * Identify the source of the work
-             */
-            if ((requestSourceGUIDs != null) && (! requestSourceGUIDs.isEmpty()))
-            {
-                final String requestSourceGUIDParameterName = "requestSourceGUIDs[x]";
-
-                originatorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                    executorProperties,
-                                                                                    OpenMetadataAPIMapper.REQUEST_SOURCE_NAME_PROPERTY_NAME,
-                                                                                    requestSourceName,
-                                                                                    methodName);
-
-                for (String requestSourceGUID : requestSourceGUIDs)
-                {
-                    if (requestSourceGUID != null)
-                    {
-                        this.linkElementToElement(userId,
-                                                  null,
-                                                  null,
-                                                  requestSourceGUID,
-                                                  requestSourceGUIDParameterName,
-                                                  OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                                  governanceActionGUID,
-                                                  governanceActionGUIDParameterName,
-                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
-                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_REQUEST_SOURCE_TYPE_NAME,
-                                                  originatorProperties,
-                                                  methodName);
-                    }
-                }
-            }
-
-            /*
-             * Identify the objects to work on
-             */
-            this.addActionTargets(userId,
-                                  governanceActionGUID,
-                                  governanceActionGUIDParameterName,
-                                  actionTargetGUIDs,
-                                  methodName);
-
 
             if ((mandatoryGuards == null) || ((receivedGuards != null) && (receivedGuards.containsAll(mandatoryGuards))))
             {
@@ -543,28 +547,36 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param governanceActionGUID unique identifier of the governance action to connector the targets to
      * @param governanceActionGUIDParameterName parameter passing the governanceActionGUID
-     * @param actionTargetGUIDs list of targets
+     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
      * @param methodName calling method
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    private void addActionTargets(String       userId,
-                                  String       governanceActionGUID,
-                                  String       governanceActionGUIDParameterName,
-                                  List<String> actionTargetGUIDs,
-                                  String       methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    private void addActionTargets(String                userId,
+                                  String                governanceActionGUID,
+                                  String                governanceActionGUIDParameterName,
+                                  List<NewActionTarget> actionTargets,
+                                  String                methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        if ((actionTargetGUIDs != null) && (! actionTargetGUIDs.isEmpty()))
+        if ((actionTargets != null) && (! actionTargets.isEmpty()))
         {
-            final String actionTargetGUIDParameterName = "actionTargetGUIDs[x]";
+            final String actionTargetGUIDParameterName = "actionTargets[x]";
 
-            for (String actionTargetGUID : actionTargetGUIDs)
+            for (NewActionTarget actionTarget : actionTargets)
             {
+                String actionTargetGUID = actionTarget.getActionTargetGUID();
+                String actionTargetName = actionTarget.getActionTargetName();
                 if (actionTargetGUID != null)
                 {
+                    InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                 null,
+                                                                                                 OpenMetadataAPIMapper.ACTION_TARGET_NAME_PROPERTY_NAME,
+                                                                                                 actionTargetName,
+                                                                                                 methodName);
+
                     this.linkElementToElement(userId,
                                               null,
                                               null,
@@ -576,7 +588,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                               OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_GUID,
                                               OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME,
-                                              null,
+                                              properties,
                                               methodName);
                 }
             }
@@ -1011,22 +1023,22 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param status completion status enum value
      * @param callerRequestParameters request parameters used by the caller
      * @param outputGuards optional guard strings for triggering subsequent action(s)
-     * @param newActionTargetGUIDs list of additional elements to add to the action targets for the next phase
+     * @param newActionTargets additional elements to add to the action targets for the next phase
      * @param methodName calling method
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public void recordCompletionStatus(String              userId,
-                                       String              governanceActionGUID,
-                                       int                 status,
-                                       Map<String, String> callerRequestParameters,
-                                       List<String>        outputGuards,
-                                       List<String>        newActionTargetGUIDs,
-                                       String              methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public void recordCompletionStatus(String                userId,
+                                       String                governanceActionGUID,
+                                       int                   status,
+                                       Map<String, String>   callerRequestParameters,
+                                       List<String>          outputGuards,
+                                       List<NewActionTarget> newActionTargets,
+                                       String                methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String guidParameterName = "governanceActionGUID";
 
@@ -1070,9 +1082,50 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                      methodName),
                                                              methodName);
 
-                    this.markActionTargetsAsComplete(userId,
-                                                     governanceActionGUID,
-                                                     status);
+                    List<NewActionTarget> currentActionTargets = this.markActionTargetsAsComplete(userId,
+                                                                                                  governanceActionGUID,
+                                                                                                  status);
+
+                    List<NewActionTarget> nextActionTargets;
+
+                    if ((currentActionTargets != null) && (! currentActionTargets.isEmpty()))
+                    {
+                        if ((newActionTargets != null) && (! newActionTargets.isEmpty()))
+                        {
+                            nextActionTargets = new ArrayList<>(currentActionTargets);
+
+                            for (NewActionTarget newActionTarget : newActionTargets)
+                            {
+                                boolean isNewActionTarget = true;
+
+                                for (NewActionTarget currentActionTarget : currentActionTargets)
+                                {
+                                    if (currentActionTarget != null)
+                                    {
+                                        if ((currentActionTarget.getActionTargetGUID().equals(newActionTarget.getActionTargetGUID())) &&
+                                            (currentActionTarget.getActionTargetName().equals(newActionTarget.getActionTargetName())))
+                                        {
+                                            isNewActionTarget = false;
+                                        }
+                                    }
+                                }
+
+                                if (isNewActionTarget)
+                                {
+                                    nextActionTargets.add(newActionTarget);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            nextActionTargets = currentActionTargets;
+                        }
+                    }
+                    else
+                    {
+                        nextActionTargets = newActionTargets;
+                    }
+
 
                     /*
                      * The anchor GUID is set if this is part of a governance action process.  It points to the first governance action entity
@@ -1084,7 +1137,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        governanceActionGUID,
                                                        anchorGUID,
                                                        outputGuards,
-                                                       newActionTargetGUIDs,
+                                                       nextActionTargets,
                                                        callerRequestParameters,
                                                        methodName);
                 }
@@ -1128,31 +1181,47 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param governanceActionGUID completed governance action
      * @param status completion status
+     * @return list of existing governance actions
      *
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
-    private void markActionTargetsAsComplete(String userId,
-                                             String governanceActionGUID,
-                                             int    status) throws UserNotAuthorizedException,
-                                                                   PropertyServerException
+    private List<NewActionTarget> markActionTargetsAsComplete(String userId,
+                                                              String governanceActionGUID,
+                                                              int    status) throws UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String methodName = "markActionTargetsAsComplete";
 
-        List<Relationship> actionTargets = repositoryHandler.getRelationshipsByType(userId,
+        List<NewActionTarget> currentActionTargets = null;
+
+        List<Relationship> actionTargetRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     governanceActionGUID,
                                                                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME,
                                                                                     methodName);
 
-        if (actionTargets != null)
+        if (actionTargetRelationships != null)
         {
-            for (Relationship actionTarget : actionTargets)
+            currentActionTargets = new ArrayList<>();
+
+            for (Relationship actionTarget : actionTargetRelationships)
             {
                 if (actionTarget != null)
                 {
+                    NewActionTarget currentActionTarget = new NewActionTarget();
+
+                    currentActionTarget.setActionTargetGUID(actionTarget.getEntityTwoProxy().getGUID());
+
                     InstanceProperties actionTargetProperties = actionTarget.getProperties();
+
+                    currentActionTarget.setActionTargetName(repositoryHelper.getStringProperty(serviceName,
+                                                                                               OpenMetadataAPIMapper.ACTION_TARGET_NAME_PROPERTY_NAME,
+                                                                                               actionTargetProperties,
+                                                                                               methodName));
+
+                    currentActionTargets.add(currentActionTarget);
 
                     if (actionTargetProperties.getPropertyValue(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME) == null)
                     {
@@ -1189,6 +1258,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 }
             }
         }
+
+        return currentActionTargets;
     }
 
 
@@ -1202,7 +1273,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param previousGovernanceActionGUID unique identifier of governance action that has just completed
      * @param anchorGUID unique identifier of the first governance action to execute for the process
      * @param outputGuards guards set up by the previous action(s)
-     * @param newActionTargetGUIDs unique identifiers of the elements for future governance actions to work on
+     * @param newActionTargets unique identifiers of the elements for future governance actions to work on
      * @param currentRequestParameters set of request parameters gathered so far in the process
      * @param methodName calling method
      *
@@ -1210,15 +1281,15 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
-    private void initiateNextGovernanceActions(String              userId,
-                                               String              previousGovernanceActionGUID,
-                                               String              anchorGUID,
-                                               List<String>        outputGuards,
-                                               List<String>        newActionTargetGUIDs,
-                                               Map<String, String> currentRequestParameters,
-                                               String              methodName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    private void initiateNextGovernanceActions(String                userId,
+                                               String                previousGovernanceActionGUID,
+                                               String                anchorGUID,
+                                               List<String>          outputGuards,
+                                               List<NewActionTarget> newActionTargets,
+                                               Map<String, String>   currentRequestParameters,
+                                               String                methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         /*
          * Locate the governance action type that initiated this action (if any).
@@ -1314,7 +1385,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                         anchorGUID,
                                                                                         guard,
                                                                                         ignoreMultipleTriggers,
-                                                                                        newActionTargetGUIDs);
+                                                                                        newActionTargets);
 
                             if (nextGovernanceActionGUID == null)
                             {
@@ -1330,7 +1401,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                             guard,
                                                                                             currentRequestParameters,
                                                                                             null,
-                                                                                            newActionTargetGUIDs,
+                                                                                            newActionTargets,
                                                                                             new Date(),
                                                                                             null,
                                                                                             originatorServiceName,
@@ -1407,7 +1478,11 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (Relationship dependedOnActionType : dependedOnActionTypes)
             {
-                if (dependedOnActionType != null)
+                /*
+                 * The interesting relationships are those that have the Governance ActionType at end2.
+                 */
+                if ((dependedOnActionType != null) && (dependedOnActionType.getEntityTwoProxy() != null) &&
+                    (governanceActionTypeGUID.equals(dependedOnActionType.getEntityTwoProxy().getGUID())))
                 {
                     boolean mandatoryGuard = repositoryHelper.getBooleanProperty(serviceName,
                                                                                  OpenMetadataAPIMapper.MANDATORY_GUARD_PROPERTY_NAME,
@@ -1453,6 +1528,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param anchorGUID identifier for the process instance
      * @param guard the guard that triggered this action
      * @param ignoreMultipleTriggers are multiple instances of the corresponding governance action allowed in a process instance?
+     * @param newActionTargets next set of elements to work on
      *
      * @return unique identifier of existing governance action that needs to be used. Null indicate that a new governance action can be started.
      *
@@ -1460,14 +1536,14 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
-    private String newGovernanceActionNeeded(String       userId,
-                                             String       governanceActionTypeGUID,
-                                             String       anchorGUID,
-                                             String       guard,
-                                             boolean      ignoreMultipleTriggers,
-                                             List<String> newActionTargetGUIDs) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    private String newGovernanceActionNeeded(String                userId,
+                                             String                governanceActionTypeGUID,
+                                             String                anchorGUID,
+                                             String                guard,
+                                             boolean               ignoreMultipleTriggers,
+                                             List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         if ((anchorGUID != null) && (governanceActionTypeGUID != null))
         {
@@ -1540,7 +1616,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 this.addActionTargets(userId,
                                                       nextGovernanceAction.getGUID(),
                                                       governanceActionGUIDParameterName,
-                                                      newActionTargetGUIDs,
+                                                      newActionTargets,
                                                       methodName);
 
 
@@ -1601,6 +1677,131 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Retrieve the governance actions that are known to this server.
+     *
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     * @param methodName calling method
+     * @return list of governance action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    public List<B>  getGovernanceActions(String userId,
+                                         int    startFrom,
+                                         int    pageSize,
+                                         String methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
+                                                                             userId,
+                                                                             OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
+                                                                             OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                                                             0,
+                                                                             invalidParameterHandler.getMaxPagingSize(),
+                                                                             methodName);
+
+        List<B> results = new ArrayList<>();
+        int entityCount = 0;
+
+        while ((iterator.moreToReceive()) && ((pageSize == 0) || (results.size() < pageSize)))
+        {
+            entityCount ++;
+            EntityDetail nextGovernanceAction = iterator.getNext();
+
+            if (entityCount > startFrom)
+            {
+                B bean = this.getGovernanceAction(userId, nextGovernanceAction.getGUID(), methodName);
+
+                if (bean != null)
+                {
+                    results.add(bean);
+                }
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the governance actions that are still in process.
+     *
+     * @param userId userId of caller
+     * @param startFrom starting from element
+     * @param pageSize maximum elements to return
+     * @param methodName calling method
+     * @return list of governance action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    public List<B>  getActiveGovernanceActions(String userId,
+                                               int    startFrom,
+                                               int    pageSize,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
+                                                                             userId,
+                                                                             OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
+                                                                             OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                                                             0,
+                                                                             invalidParameterHandler.getMaxPagingSize(),
+                                                                             methodName);
+
+        List<B> results = new ArrayList<>();
+        int entityCount = 0;
+
+        while ((iterator.moreToReceive()) && ((pageSize == 0) || (results.size() < pageSize)))
+        {
+            entityCount ++;
+            EntityDetail nextGovernanceAction = iterator.getNext();
+
+            if (entityCount > startFrom)
+            {
+                int status = repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
+                                                                     nextGovernanceAction.getProperties(),
+                                                                     methodName);
+
+                if ((status == OpenMetadataAPIMapper.REQUESTED_GA_STATUS_ORDINAL) || (status == OpenMetadataAPIMapper.APPROVED_GA_STATUS_ORDINAL) ||
+                    (status == OpenMetadataAPIMapper.WAITING_GA_STATUS_ORDINAL) || (status == OpenMetadataAPIMapper.IN_PROGRESS_GA_STATUS_ORDINAL))
+                {
+                    B bean = this.getGovernanceAction(userId, nextGovernanceAction.getGUID(), methodName);
+
+                    if (bean != null)
+                    {
+                        results.add(bean);
+                    }
+                }
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+
+        return results;
     }
 
 

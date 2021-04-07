@@ -151,7 +151,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
             {
                 localRepositoryConnector.disconnect();
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 log.error("Exception from disconnect of connector to metadata collection:" + localMetadataCollectionId + "  Error message was: " + error.getMessage());
                 throw error;

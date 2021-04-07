@@ -2436,6 +2436,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             {
                 newClassification = repositoryHelper.getNewClassification(repositoryName,
                          externalSourceGUID,
+                         externalSourceName,
                          InstanceProvenanceType.EXTERNAL_SOURCE,
                          userId,
                          classificationName,
@@ -3676,11 +3677,10 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                                                                         methodName);
 
                 if (metadataCollectionId.equals(entity.getMetadataCollectionId())) {
-                    updatedEntity = repositoryHelper.incrementVersion(userId, retrievedEntity, updatedEntity);
                     graphStore.updateEntityInStore(updatedEntity);
                 }
                 else {
-                    graphStore.saveEntityReferenceCopyToStore(entity);
+                    graphStore.saveEntityReferenceCopyToStore(updatedEntity);
                 }
             }
             catch (EntityNotKnownException  error) {
