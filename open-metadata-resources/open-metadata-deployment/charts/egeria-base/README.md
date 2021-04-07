@@ -36,9 +36,9 @@ helm dep update egeria-base
 helm install egeria egeria-base
 ```
 
-THE INSTALL WILL TAAKE SEVERAL MINUTES
+THE INSTALL WILL TAKE SEVERAL MINUTES
 
-This is beacuse it is not only creating the required
+This is because it is not only creating the required
 objects in Kubernetes to run the platforms, but also is configuring egeria itself - which involves waiting
 for everything to startup before configuring Egeria via REST API calls.
 
