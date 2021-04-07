@@ -85,6 +85,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
             final SchemaTypeHandler<SchemaType> schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,
                     serverName), SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                    localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
             final OpenMetadataAPIGenericHandler<TransformationProject> transformationProjectOpenMetadataAPIGenericHandler =
                     new OpenMetadataAPIGenericHandler<>(new TransformationProjectCoverter<>(repositoryHelper, serviceName, serverName), TransformationProject.class,
