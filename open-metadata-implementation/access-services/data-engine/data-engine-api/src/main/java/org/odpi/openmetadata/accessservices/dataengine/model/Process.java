@@ -25,6 +25,7 @@ public class Process extends Asset {
     private List<PortImplementation> portImplementations;
     private List<PortAlias> portAliases;
     private List<LineageMapping> lineageMappings;
+    private TransformationProject transformationProject;
     private UpdateSemantic updateSemantic;
     private List<ParentProcess> parentProcesses;
 
@@ -193,6 +194,7 @@ public class Process extends Asset {
         return Objects.equals(name, process.name) &&
                 Objects.equals(formula, process.formula) &&
                 Objects.equals(implementationLanguage, process.implementationLanguage) &&
+                Objects.equals(transformationProject, process.transformationProject) &&
                 Objects.equals(portImplementations, process.portImplementations) &&
                 Objects.equals(portAliases, process.portAliases) &&
                 Objects.equals(lineageMappings, process.lineageMappings) &&

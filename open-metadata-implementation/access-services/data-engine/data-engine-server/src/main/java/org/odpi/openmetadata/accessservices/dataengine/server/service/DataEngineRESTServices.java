@@ -14,6 +14,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTransformationProjectHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -872,17 +873,33 @@ public class DataEngineRESTServices {
             Set<String> portImplementationGUIDs = upsertPortImplementations(userId, serverName, portImplementations, response,
                     externalSourceName);
 
+
+
             Set<String> portAliasGUIDs = upsertPortAliases(userId, serverName, portAliases, response, externalSourceName);
 
             //check intermediary status of the response after creating the ports
             if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
                 return response;
             }
-
             DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+
+            DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId, serverName, methodName);
 
             Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
             String processGUID;
+            String transformationProjectGUID = null;
+
+            TransformationProject transformationProject = process.getTransformationProject();
+            if (transformationProject != null) {
+                String transformationProjectQualifiedName = transformationProject.getQualifiedName();
+                Optional<EntityDetail> transformationProjectEntity = dataEngineTransformationProjectHandler.findTransformationProjectEntity(userId, transformationProjectQualifiedName);
+                if (!transformationProjectEntity.isPresent()) {
+                    transformationProjectGUID = dataEngineTransformationProjectHandler.createTransformationProject(userId, transformationProject, externalSourceName);
+                } else {
+                    transformationProjectGUID = transformationProjectEntity.get().getGUID();
+                }
+            }
+
             if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
 
@@ -900,6 +917,10 @@ public class DataEngineRESTServices {
                     deleteObsoletePorts(userId, serverName, portAliasGUIDs, processGUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME,
                             response, externalSourceName);
                 }
+            }
+
+            if (transformationProjectGUID != null) {
+                addProcessTransformationProjectRelationships(userId, serverName, processGUID, transformationProjectGUID, externalSourceName);
             }
 
             addProcessPortRelationships(userId, serverName, processGUID,
@@ -971,6 +992,17 @@ public class DataEngineRESTServices {
                 }
             }
         });
+    }
+
+    private void addProcessTransformationProjectRelationships(String userId, String serverName, String processGUID, String transformationProjectGuid,
+                                             String externalSourceName) throws InvalidParameterException, PropertyServerException,
+            UserNotAuthorizedException {
+
+        final String methodName = "addProcessPortRelationships";
+
+        DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId, serverName, methodName);
+
+        dataEngineTransformationProjectHandler.addProcessTransformationProjectRelationship(userId, transformationProjectGuid, processGUID, externalSourceName);
     }
 
     private void addProcessPortRelationships(String userId, String serverName, String processGUID, Set<String> portGUIDs, GUIDResponse response,

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTransformationProjectHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -50,6 +51,17 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
                 serverName, serviceOperationName);
 
         return instance.getProcessHandler();
+    }
+
+
+    public DataEngineTransformationProjectHandler getTransformationProjectHandler(String userId, String serverName, String serviceOperationName) throws
+            InvalidParameterException,
+            UserNotAuthorizedException,
+            PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
+                serverName, serviceOperationName);
+
+        return instance.getDataEngineTransformationProjectHandler();
     }
 
     /**
