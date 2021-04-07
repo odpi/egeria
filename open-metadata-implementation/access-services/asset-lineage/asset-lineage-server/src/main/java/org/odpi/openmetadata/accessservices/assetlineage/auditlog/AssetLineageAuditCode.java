@@ -68,7 +68,8 @@ public enum AssetLineageAuditCode implements AuditLogMessageSet {
 
     ASSET_CONTEXT_INFO("OMAS-ASSET-LINEAGE-0010",
             OMRSAuditLogRecordSeverity.INFO,
-            "The asset context for the entity with guid {0} is retrieved through REST endpoint: {1}",
+            "The asset context for the entity with guid {0} is requested through REST endpoint and will be " +
+                    "retrieved on the out topic.",
             "The Asset Lineage OMAS retrieves entity's asset context.",
             "No action is required.");
 
