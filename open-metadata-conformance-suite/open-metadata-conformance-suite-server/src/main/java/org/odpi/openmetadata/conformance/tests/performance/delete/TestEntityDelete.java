@@ -101,14 +101,17 @@ public class TestEntityDelete extends OpenMetadataPerformanceTestCase
                 null,
                 numInstances);
         long elapsedTime = (System.nanoTime() - start) / 1000000;
-        assertCondition(entities != null,
-                A_FIND_ENTITIES,
-                A_FIND_ENTITIES_MSG + testTypeName,
-                PerformanceProfile.ENTITY_SEARCH.getProfileId(),
-                null,
-                "findEntitiesByProperty",
-                elapsedTime);
-        return entities == null ? null : entities.stream().map(EntityDetail::getGUID).collect(Collectors.toSet());
+        if (entities != null) {
+            assertCondition(true,
+                    A_FIND_ENTITIES,
+                    A_FIND_ENTITIES_MSG + testTypeName,
+                    PerformanceProfile.ENTITY_SEARCH.getProfileId(),
+                    null,
+                    "findEntitiesByProperty",
+                    elapsedTime);
+            return entities.stream().map(EntityDetail::getGUID).collect(Collectors.toSet());
+        }
+        return null;
     }
 
     /**
@@ -122,33 +125,35 @@ public class TestEntityDelete extends OpenMetadataPerformanceTestCase
 
         final String methodName = "deleteEntity";
 
-        try {
-            for (String guid : keys) {
-                long start = System.nanoTime();
-                EntityDetail result = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                        entityDef.getGUID(),
-                        entityDef.getName(),
-                        guid);
-                long elapsedTime = (System.nanoTime() - start) / 1000000;
-                assertCondition(result != null,
-                        A_DELETE,
+        if (keys != null) {
+            try {
+                for (String guid : keys) {
+                    long start = System.nanoTime();
+                    EntityDetail result = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                            entityDef.getGUID(),
+                            entityDef.getName(),
+                            guid);
+                    long elapsedTime = (System.nanoTime() - start) / 1000000;
+                    assertCondition(result != null,
+                            A_DELETE,
+                            A_DELETE_MSG + testTypeName,
+                            PerformanceProfile.ENTITY_DELETE.getProfileId(),
+                            null,
+                            methodName,
+                            elapsedTime);
+                }
+            } catch (FunctionNotSupportedException exception) {
+                super.addNotSupportedAssertion(A_DELETE,
                         A_DELETE_MSG + testTypeName,
                         PerformanceProfile.ENTITY_DELETE.getProfileId(),
-                        null,
-                        methodName,
-                        elapsedTime);
+                        null);
+            } catch (Exception exc) {
+                String operationDescription = "delete entity of type " + entityDef.getName();
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("typeGUID", entityDef.getGUID());
+                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+                throw new Exception(msg, exc);
             }
-        } catch (FunctionNotSupportedException exception) {
-            super.addNotSupportedAssertion(A_DELETE,
-                    A_DELETE_MSG + testTypeName,
-                    PerformanceProfile.ENTITY_DELETE.getProfileId(),
-                    null);
-        } catch (Exception exc) {
-            String operationDescription = "delete entity of type " + entityDef.getName();
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("typeGUID", entityDef.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-            throw new Exception(msg, exc);
         }
 
     }
