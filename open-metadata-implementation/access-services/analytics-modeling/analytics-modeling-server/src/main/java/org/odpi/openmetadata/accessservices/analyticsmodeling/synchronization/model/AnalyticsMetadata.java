@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.IdMap;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaAttribute;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+
 
 /**
  *	Base class for analytics metadata provides common attributes. 
@@ -122,6 +124,10 @@ public abstract class AnalyticsMetadata extends SchemaAttribute {
         	this.setSourceId(Arrays.asList(additionalProperties.get(IdMap.SOURCE_ID).split(Constants.SYNC_ID_LIST_DELIMITER)));
         }
 
+        if (additionalProperties.get(IdMap.SOURCE_GUID) != null) {
+        	this.setSourceGuid(Arrays.asList(additionalProperties.get(IdMap.SOURCE_GUID).split(Constants.SYNC_ID_LIST_DELIMITER)));
+        }
+
         this.setType(additionalProperties.get(Constants.TYPE));
         this.setIdentifier(additionalProperties.get(Constants.SYNC_IDENTIFIER));
         
@@ -146,10 +152,45 @@ public abstract class AnalyticsMetadata extends SchemaAttribute {
             additionalProperties.put(IdMap.SOURCE_ID, String.join(Constants.SYNC_ID_LIST_DELIMITER, this.getSourceId()));
         }
 
+        if (this.getSourceGuid() != null) {
+            additionalProperties.put(IdMap.SOURCE_GUID, String.join(Constants.SYNC_ID_LIST_DELIMITER, this.getSourceGuid()));
+        }
+
         additionalProperties.put(Constants.TYPE, this.getType());
         additionalProperties.put(Constants.SYNC_IDENTIFIER, this.getIdentifier());
         
         prepareCustomProperties();
 	}
+	
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+
+        AnalyticsMetadata that = (AnalyticsMetadata) objectToCompare;
+        return Objects.equals(identifier, that.identifier)
+        		&& Objects.equals(type, that.type)
+        		&& Objects.equals(sourceGuid, that.sourceGuid)
+        		&& Objects.equals(sourceId, that.sourceId)
+        		&& super.equals(objectToCompare);
+    }
+
+    /**
+     * Return a number that represents the contents of this object.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), identifier, type);
+    }
 
 }

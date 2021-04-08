@@ -226,6 +226,39 @@ public class AnalyticsModelingRestServices {
 	}
 
 	/**
+	 * Update analytics artifact defined as json input.
+	 * @param serverName where to create artifact.
+	 * @param userId requested the operation.
+	 * @param serverCapability source where artifact persist.
+	 * @param artifact definition.
+	 * @return response with artifact or error description.
+	 */
+	public AnalyticsModelingOMASAPIResponse updateArtifact(String serverName, String userId, String serverCapability, String artifact) {
+
+		String methodName = "updateArtifact";
+		AnalyticsModelingOMASAPIResponse ret;
+		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+		try {
+
+			validateUrlParameters(serverName, userId, null, null, null, null, methodName);
+
+			AssetsResponse response = new AssetsResponse();
+			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
+					.updateAssets(userId, serverCapability, artifact);
+			response.setAssetList(assets);
+			ret = response;
+		} catch (AnalyticsModelingCheckedException e) {
+			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
+		}
+		
+		restCallLogger.logRESTCallReturn(token, ret.toString());
+		return ret;
+	}
+	
+	/**
 	 * Validate path and query parameters from URL.
 	 * @param serverName mandatory path parameter of the base URL.
 	 * @param userId mandatory path parameter of the base URL.
