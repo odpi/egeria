@@ -114,6 +114,13 @@ public enum OpenLineageServerAuditCode {
             OMRSAuditLogRecordSeverity.INFO,
             "Asset Context for entity {0} was stored in the graph.",
             "Asset Context was stored in the graph.",
+            "No action is required."),
+
+    ASSET_CONTEXT_REQUEST("OPEN-LINEAGE-SERVICES-0021",
+            OMRSAuditLogRecordSeverity.INFO,
+            "Asset Context for entity {0} was requested from Asset Lineage and will be expected as event." +
+                    " Entities in the context will be: {1}",
+            "Asset Context was requested from Asset Lineage.",
             "No action is required.");
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerAuditCode.class);

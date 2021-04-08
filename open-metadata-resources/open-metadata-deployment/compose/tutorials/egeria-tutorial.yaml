@@ -59,7 +59,6 @@ services:
         ports:
             - '18888:8888'
         depends_on:
-            - kafka
             - core
             - dev
             - datalake
@@ -129,7 +128,6 @@ services:
     ui:
         depends_on:
             - datalake
-            - uistatic
         image: '${egeria_repo}/egeria:${egeria_version}'
         environment:
             - OMAS_SERVER_URL=https://datalake:9443
@@ -168,6 +166,9 @@ services:
             - '.env'
 
     nginx:
+        depends_on:
+            - ui
+            - uistatic
         image: 'nginx:latest'
         ports:
             - '10443:443'
