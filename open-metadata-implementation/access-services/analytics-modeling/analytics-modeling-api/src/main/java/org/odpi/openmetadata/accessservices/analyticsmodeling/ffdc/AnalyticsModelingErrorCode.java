@@ -164,7 +164,16 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"User {0} failed to create server capability {1}. Cause: {2}",
 			"The system is unable to process the request.",
 			"Review the exception to resolve the issue."),
-	
+	FAILED_UPDATE_ARTIFACT(
+			"OMAS-ANALYTICS-MODELING-027", 
+			"Failed to update analytics artifact.",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue and repeat request to fix artifact."),
+	ILLEGAL_OPERATION(
+			"OMAS-ANALYTICS-MODELING-028", 
+			"Illegal operation {0} is called for instance {2}",
+			"Logical error in execution. The system is unable to process the request.",
+			"Report the error to administrator."),
 	
 	UNKNOWN_ERROR(
 			"OMAS-ANALYTICS-MODELING-500", 
