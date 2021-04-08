@@ -1298,8 +1298,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             {
                 if (entity != null)
                 {
-                    if ((entity.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
+                    if ((repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
                             && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)))
                     {
 
@@ -1596,8 +1595,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             {
                 if (relationship != null)
                 {
-                    if ((relationship.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)))
+                    if ((repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)))
                     {
                         retainedRelationships.add(relationship);
                     }
@@ -1729,8 +1727,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             {
                 if (entity != null)
                 {
-                    if ((entity.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
+                    if ((repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
                             && (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)))
                     {
 
@@ -1840,8 +1837,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             {
                 if (relationship != null)
                 {
-                    if ((relationship.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)))
+                    if ((repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)))
                     {
                         retainedRelationships.add(relationship);
                     }
@@ -2058,8 +2054,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             {
                 if (entity != null)
                 {
-                    if ((entity.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
+                    if ((repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity))
                             && (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)))
                     {
 
@@ -2091,9 +2086,9 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2224,8 +2219,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             {
                 if (relationship != null)
                 {
-                    if ((relationship.getStatus() != InstanceStatus.DELETED)
-                            && (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)))
+                    if ((repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)))
                     {
                         retainedRelationships.add(relationship);
                     }
@@ -2678,8 +2672,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                  * Status filter
                  * Eliminate soft deleted entities and apply status filtering if any was requested
                  */
-                if (   (entity.getStatus() == InstanceStatus.DELETED)
-                    || (! repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)))
+                if ((! repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)))
                 {
                     retainEntity = false;
                 }
@@ -3016,13 +3009,59 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validation complete - ok to make changes
          */
+        EntityDetail deletedEntity = new EntityDetail(entity);
+        deletedEntity.setStatusOnDelete(entity.getStatus());
+        deletedEntity.setStatus(InstanceStatus.DELETED);
+        deletedEntity = repositoryHelper.incrementVersion(userId, entity, deletedEntity);
+
         EntityDetail updatedEntity = new EntityDetail(entity);
-
         updatedEntity.setGUID(newEntityGUID);
-
+        updatedEntity.setReIdentifiedFromGUID(entityGUID);
         updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
-        graphStore.removeEntityFromStore(entityGUID);
+        EntityProxy newEntityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
+
+        /*
+         * Locate/re-point relationships for entity
+         */
+        try
+        {
+            List<Relationship> relationships = this.getRelationshipsForEntity(userId,
+                    entityGUID,
+                    null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    10000);
+
+
+            if (relationships != null)
+            {
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        if (relationship.getEntityOneProxy().getGUID().equals(entityGUID))
+                        {
+                            relationship.setEntityOneProxy(newEntityProxy);
+                        }
+                        else if (relationship.getEntityTwoProxy().getGUID().equals(entityGUID))
+                        {
+                            relationship.setEntityTwoProxy(newEntityProxy);
+                        }
+                        graphStore.updateRelationshipInStore(relationship);
+                    }
+                }
+            }
+        }
+        catch (Throwable  error)
+        {
+            log.error("{} entity wth GUID {} caused throwable", methodName, entityGUID, error);
+        }
+
+        graphStore.updateEntityInStore(deletedEntity);
         graphStore.createEntityInStore(updatedEntity);
 
         return updatedEntity;
@@ -3226,13 +3265,17 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validation complete - ok to make changes
          */
+        Relationship   deletedRelationship = new Relationship(relationship);
+        deletedRelationship.setStatusOnDelete(relationship.getStatus());
+        deletedRelationship.setStatus(InstanceStatus.DELETED);
+        deletedRelationship = repositoryHelper.incrementVersion(userId, relationship, deletedRelationship);
+
         Relationship   updatedRelationship = new Relationship(relationship);
-
         updatedRelationship.setGUID(newRelationshipGUID);
-
+        updatedRelationship.setReIdentifiedFromGUID(relationshipGUID);
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
 
-        graphStore.removeRelationshipFromStore(relationshipGUID);
+        graphStore.updateRelationshipInStore(deletedRelationship);
         graphStore.createRelationshipInStore(updatedRelationship);
 
         return updatedRelationship;
