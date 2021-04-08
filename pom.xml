@@ -88,19 +88,7 @@
     <!-- POM packaging means that this module has sub-modules -->
     <packaging>pom</packaging>
 
-    <!-- Multiple repos for redundancy - artifacts we use are expected to be on both -->
-
     <repositories>
-        <repository>
-            <id>0-JCenter</id>
-            <url>https://jcenter.bintray.com/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
         <repository>
             <id>1-MavenCentral</id>
             <url>https://repo1.maven.org/maven2/</url>
@@ -114,16 +102,6 @@
     </repositories>
 
     <pluginRepositories>
-        <pluginRepository>
-            <id>0-JCenter</id>
-            <url>https://jcenter.bintray.com/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
         <pluginRepository>
             <id>1-MavenCentral</id>
             <url>https://repo1.maven.org/maven2/</url>
