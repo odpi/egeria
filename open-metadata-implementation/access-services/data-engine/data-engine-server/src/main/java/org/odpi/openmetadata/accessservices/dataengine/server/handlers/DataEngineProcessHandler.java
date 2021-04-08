@@ -254,8 +254,8 @@ public class DataEngineProcessHandler {
         return new ProcessPropertiesBuilder(process.getQualifiedName(), process.getDisplayName(), process.getName(),
                 process.getDescription(),process.getZoneMembership(), process.getOwner(), process.getOwnerType(),
                 ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, process.getFormula(),
-                process.getAdditionalProperties(), process.getExtendedProperties(), InstanceStatus.DRAFT, repositoryHelper,
-                serverName, serviceName, userId, methodName);
+                process.getAdditionalProperties(), process.getExtendedProperties(),
+                InstanceStatus.DRAFT, repositoryHelper, serverName, serviceName, userId, methodName);
     }
 
     public void upsertProcessHierarchyRelationship(String userId, ParentProcess parentProcess, String processGUID,
