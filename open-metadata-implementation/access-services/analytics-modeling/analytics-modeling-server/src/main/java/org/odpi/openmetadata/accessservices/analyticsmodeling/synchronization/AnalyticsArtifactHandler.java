@@ -742,6 +742,7 @@ public class AnalyticsArtifactHandler {
 		});
 	}
 
+
 	/**
 	 * Helper function to create AnalyticsMetadataBuilder for AnalyticMetadata item.
 	 * @param src item to build.
@@ -750,7 +751,8 @@ public class AnalyticsArtifactHandler {
 	 * @return requested builder.
 	 * @throws InvalidParameterException
 	 */
-	private AnalyticsMetadataBuilder createAnalyticsMetadataBuilder(AnalyticsMetadata src, String assetGUID, boolean bCreate) throws InvalidParameterException 
+	private AnalyticsMetadataBuilder createAnalyticsMetadataBuilder(AnalyticsMetadata src, String assetGUID, boolean bCreate) 
+			throws InvalidParameterException, PropertyServerException 
 	{
 		String methodName = "createAnalyticsMetadataBuilder";
 

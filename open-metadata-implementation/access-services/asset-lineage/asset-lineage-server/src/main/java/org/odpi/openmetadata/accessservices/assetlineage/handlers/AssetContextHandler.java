@@ -2,15 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.HashMap;
@@ -18,21 +21,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ANCHOR_GUID;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.AVRO_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_ENDPOINT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_TO_ASSET;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CSV_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_CONTENT_FOR_DATA_SET;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DOCUMENT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.JSON_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.KEYSTORE_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LOG_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.MEDIA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 
 /**
@@ -64,7 +73,7 @@ public class AssetContextHandler {
     }
 
     /**
-     * Builds the context for a schema element.
+     * Builds the context for a schema element without the asset context.
      *
      * @param userId       the unique identifier for the user
      * @param entityDetail the entity for which the context is build
@@ -76,38 +85,66 @@ public class AssetContextHandler {
     public Map<String, RelationshipsContext> buildSchemaElementContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String methodName = "buildSchemaElementContext";
 
-        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
-        invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(), GUID_PARAMETER,
-                handlerHelper.getAssetZoneMembership(entityDetail.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
+        handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
 
         Map<String, RelationshipsContext> context = new HashMap<>();
         Set<GraphContext> columnContext = new HashSet<>();
 
-        context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(), buildLineageMappingsContext(userId, entityDetail));
         final String typeDefName = entityDetail.getType().getTypeDefName();
         switch (typeDefName) {
             case TABULAR_COLUMN:
-                EntityDetail schemaType = addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
+                if (!isInternalTabularColumn(userId, entityDetail)) {
+                    EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
 
-                EntityDetail dataFile = addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
+                    handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, columnContext);
 
-                context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
-                        columnContext));
-
-                if (dataFile != null) {
-                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildDataFileContext(userId, dataFile));
+                    context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
+                            columnContext));
                 }
                 break;
-
             case RELATIONAL_COLUMN:
-                EntityDetail relationalTable = addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
+                handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, columnContext);
 
                 context.put(AssetLineageEventType.COLUMN_CONTEXT_EVENT.getEventTypeName(), new RelationshipsContext(entityDetail.getGUID(),
                         columnContext));
+                break;
+        }
 
-                if (relationalTable != null) {
-                    context.put(AssetLineageEventType.ASSET_CONTEXT_EVENT.getEventTypeName(), buildRelationalTableContext(userId, relationalTable));
-                }
+        return context;
+    }
+
+
+    /**
+     * Builds the asset context for a schema element.
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the asset context of the schema element
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    public RelationshipsContext buildAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+        final String methodName = "buildAssetContext";
+
+        handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
+        RelationshipsContext context = new RelationshipsContext();
+
+        final String typeDefName = entityDetail.getType().getTypeDefName();
+        switch (typeDefName) {
+            case AVRO_FILE:
+            case CSV_FILE:
+            case JSON_FILE:
+            case KEYSTORE_FILE:
+            case LOG_FILE:
+            case MEDIA_FILE:
+            case DOCUMENT:
+            case DATA_FILE:
+                context = buildDataFileContext(userId, entityDetail);
+                break;
+
+            case RELATIONAL_TABLE:
+                context = buildRelationalTableContext(userId, entityDetail);
                 break;
         }
 
@@ -115,20 +152,32 @@ public class AssetContextHandler {
     }
 
     /**
-     * Builds the lineage mappings context for a schema element.
+     * Validates that an entity is internal to DataEngine OMAS
      *
-     * @param userId       the unique identifier for the user
-     * @param entityDetail the entity for which the context is build
+     * @param userId        the unique identifier for the user
+     * @param tabularColumn the column to validate
      *
-     * @return the lineage mappings context of the schema element
+     * @return true if it's internal, false otherwise
      *
-     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
      */
-    private RelationshipsContext buildLineageMappingsContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
-        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING,
-                entityDetail.getType().getTypeDefName());
+    private boolean isInternalTabularColumn(String userId, EntityDetail tabularColumn) throws InvalidParameterException, PropertyServerException,
+                                                                                              UserNotAuthorizedException {
+        String methodName = "isInternalTabularColumn";
 
-        return handlerHelper.buildContextForRelationships(userId, entityDetail.getGUID(), relationships);
+        InstancePropertyValue anchorGUIDProperty = tabularColumn.getProperties().getPropertyValue(ANCHOR_GUID);
+        if(anchorGUIDProperty == null) {
+            return false;
+        }
+
+        String anchorGUID = anchorGUIDProperty.valueAsString();
+        if (StringUtils.isEmpty(anchorGUID)) {
+            return false;
+        }
+
+        return repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, PROCESS, methodName);
     }
 
     /**
@@ -144,11 +193,11 @@ public class AssetContextHandler {
     private RelationshipsContext buildRelationalTableContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         Set<GraphContext> context = new HashSet<>();
 
-        EntityDetail schemaType = addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, context);
+        EntityDetail schemaType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, context);
 
-        EntityDetail deployedSchemaType = addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, context);
+        EntityDetail deployedSchemaType = handlerHelper.addContextForRelationships(userId, schemaType, ASSET_SCHEMA_TYPE, context);
 
-        EntityDetail database = addContextForRelationships(userId, deployedSchemaType, DATA_CONTENT_FOR_DATA_SET, context);
+        EntityDetail database = handlerHelper.addContextForRelationships(userId, deployedSchemaType, DATA_CONTENT_FOR_DATA_SET, context);
 
         if (database != null) {
             addConnectionToAssetContext(userId, database, context);
@@ -167,9 +216,9 @@ public class AssetContextHandler {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private void addConnectionToAssetContext(String userId, EntityDetail entityDetail, Set<GraphContext> context) throws OCFCheckedExceptionBase {
-        EntityDetail connection = addContextForRelationships(userId, entityDetail, CONNECTION_TO_ASSET, context);
+        EntityDetail connection = handlerHelper.addContextForRelationships(userId, entityDetail, CONNECTION_TO_ASSET, context);
 
-        addContextForRelationships(userId, connection, CONNECTION_ENDPOINT, context);
+        handlerHelper.addContextForRelationships(userId, connection, CONNECTION_ENDPOINT, context);
     }
 
     /**
@@ -185,7 +234,9 @@ public class AssetContextHandler {
     private RelationshipsContext buildDataFileContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         Set<GraphContext> context = new HashSet<>();
 
-        EntityDetail fileFolder = addContextForRelationships(userId, entityDetail, NESTED_FILE, context);
+        addConnectionToAssetContext(userId, entityDetail, context);
+
+        EntityDetail fileFolder = handlerHelper.addContextForRelationships(userId, entityDetail, NESTED_FILE, context);
 
         addContextForFileFolder(userId, fileFolder, context);
 
@@ -207,7 +258,7 @@ public class AssetContextHandler {
             return;
         }
 
-        EntityDetail fileFolder = addContextForRelationships(userId, entityDetail, FOLDER_HIERARCHY, context);
+        EntityDetail fileFolder = handlerHelper.addContextForRelationships(userId, entityDetail, FOLDER_HIERARCHY, context);
 
         if (fileFolder != null) {
             //recursively build the nested folder structure
@@ -216,42 +267,5 @@ public class AssetContextHandler {
             // build the context for the Connection
             addConnectionToAssetContext(userId, entityDetail, context);
         }
-    }
-
-    /**
-     * Adds the relationships context for an entity, based on the relationship type.
-     *
-     * @param userId               the unique identifier for the user
-     * @param startEntity          the start entity for the relationships
-     * @param relationshipTypeName the type of the relationship for which the context is built
-     * @param context              the context to be updated
-     *
-     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
-     */
-    private EntityDetail addContextForRelationships(String userId, EntityDetail startEntity, String relationshipTypeName,
-                                                    Set<GraphContext> context) throws OCFCheckedExceptionBase {
-        if (startEntity == null) {
-            return null;
-        }
-
-        context.addAll(handlerHelper.buildContextForLineageClassifications(startEntity).getRelationships());
-
-        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipTypeName,
-                startEntity.getType().getTypeDefName());
-        if (CollectionUtils.isEmpty(relationships)) {
-            return null;
-        }
-
-        if (startEntity.getType().getTypeDefName().equals(FILE_FOLDER)) {
-            relationships = relationships.stream().filter(relationship ->
-                    relationship.getEntityTwoProxy().getGUID().equals(startEntity.getGUID())).collect(Collectors.toList());
-            if (CollectionUtils.isEmpty(relationships)) {
-                return null;
-            }
-        }
-
-        context.addAll(handlerHelper.buildContextForRelationships(userId, startEntity.getGUID(), relationships).getRelationships());
-
-        return handlerHelper.getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
     }
 }

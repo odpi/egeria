@@ -177,7 +177,8 @@ public interface AssetClassificationInterface
      *                         If null then the assetGUID is used.
      * @param securityLabels list of security labels defining the security characteristics of the element
      * @param securityProperties Descriptive labels describing the security properties of the element
-     * @throws InvalidParameterException entity not known, null userId or guid
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
@@ -196,8 +197,9 @@ public interface AssetClassificationInterface
      * @param userId calling user
      * @param assetGUID unique identifier of asset
      * @param assetElementGUID element where the security tags need to be removed.
-     *                         If null then the assetGUID is used.
-     * @throws InvalidParameterException entity not known, null userId or guid
+     *                         If null then the assetGUID is used
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
@@ -206,4 +208,41 @@ public interface AssetClassificationInterface
                              String                assetElementGUID) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException;
+
+    /**
+     * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to classify
+     * @param name name of the template
+     * @param description description of when, where and how to use the template
+     * @param additionalProperties any additional properties
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void addTemplateClassification(String              userId,
+                                   String              assetGUID,
+                                   String              name,
+                                   String              description,
+                                   Map<String, String> additionalProperties) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
+
+
+    /**
+     * Remove the classification that indicates that this asset can be used as a template.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to declassify
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void removeTemplateClassification(String userId,
+                                      String assetGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException;
 }

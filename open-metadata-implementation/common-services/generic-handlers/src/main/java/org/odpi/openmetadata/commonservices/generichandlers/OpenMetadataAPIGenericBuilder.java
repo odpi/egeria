@@ -229,42 +229,54 @@ public class OpenMetadataAPIGenericBuilder
      * @param userId calling user
      * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
      * @param methodName calling method
+     * @throws PropertyServerException a null anchors GUID has been supplied
      */
     public void setAnchors(String userId,
                            String anchorGUID,
-                           String methodName)
+                           String methodName) throws PropertyServerException
     {
-        try
+        final String localMethodName = "setAnchors";
+
+        if (anchorGUID != null)
         {
-            /*
-             * This is an attempt to trap an intermittent error recorded in issue #4680.
-             */
-            if ("<unknown>".equals(anchorGUID))
+            try
             {
-                final String localMethodName = "setAnchors";
+                /*
+                 * This is an attempt to trap an intermittent error recorded in issue #4680.
+                 */
+                if ("<unknown>".equals(anchorGUID))
+                {
+                    throw new PropertyServerException(GenericHandlersErrorCode.UNKNOWN_ANCHOR_GUID.getMessageDefinition(localMethodName,
+                                                                                                                        serviceName,
+                                                                                                                        methodName),
+                                                      this.getClass().getName(),
+                                                      localMethodName);
+                }
 
-                throw new PropertyServerException(GenericHandlersErrorCode.UNKNOWN_ANCHOR_GUID.getMessageDefinition(localMethodName,
-                                                                                                                    serviceName,
-                                                                                                                    methodName),
-                                                  this.getClass().getName(),
-                                                  localMethodName);
+                Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                      null,
+                                                                                      null,
+                                                                                      InstanceProvenanceType.LOCAL_COHORT,
+                                                                                      userId,
+                                                                                      OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                                                      typeName,
+                                                                                      ClassificationOrigin.ASSIGNED,
+                                                                                      null,
+                                                                                      getAnchorsProperties(anchorGUID, methodName));
+                newClassifications.put(classification.getName(), classification);
             }
-
-            Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                  null,
-                                                                                  null,
-                                                                                  InstanceProvenanceType.LOCAL_COHORT,
-                                                                                  userId,
-                                                                                  OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                                                  typeName,
-                                                                                  ClassificationOrigin.ASSIGNED,
-                                                                                  null,
-                                                                                  getAnchorsProperties(anchorGUID, methodName));
-            newClassifications.put(classification.getName(), classification);
+            catch (Exception error)
+            {
+                errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            }
         }
-        catch (Exception error)
+        else
         {
-            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            throw new PropertyServerException(GenericHandlersErrorCode.NULL_ANCHOR_GUID.getMessageDefinition(localMethodName,
+                                                                                                             serviceName,
+                                                                                                             methodName),
+                                              this.getClass().getName(),
+                                              localMethodName);
         }
     }
 
@@ -550,32 +562,20 @@ public class OpenMetadataAPIGenericBuilder
      * @param propertyMap map of property names to values
      * @param effectiveFrom date to make the element active in the governance program (null for now)
      * @param effectiveTo date to remove the element from the governance program (null = until deleted)
-     * @param methodName calling method
      * @return repository services properties
      * @throws InvalidParameterException problem mapping properties
      */
-    public InstanceProperties getInstanceProperties(Map<String, Object> propertyMap,
-                                                    Date                effectiveFrom,
-                                                    Date                effectiveTo,
-                                                    String              methodName) throws InvalidParameterException
+    public InstanceProperties getInstanceProperties(Map<String, InstancePropertyValue> propertyMap,
+                                                    Date                               effectiveFrom,
+                                                    Date                               effectiveTo) throws InvalidParameterException
     {
         InstanceProperties properties = null;
 
-        if (propertyMap != null)
+        if ((propertyMap != null) && (! propertyMap.isEmpty()))
         {
-            try
-            {
-                properties = repositoryHelper.addPropertyMapToInstance(serviceName,
-                                                                       null,
-                                                                       propertyMap,
-                                                                       methodName);
-            }
-            catch (OCFCheckedExceptionBase error)
-            {
-                final String propertyName = "properties";
+            properties = new InstanceProperties();
 
-                throw new InvalidParameterException(error, propertyName);
-            }
+            properties.setInstanceProperties(propertyMap);
         }
 
         return setEffectivityDates(properties, effectiveFrom, effectiveTo);

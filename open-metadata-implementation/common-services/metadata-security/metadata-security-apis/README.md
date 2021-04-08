@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-# API for the open metadata connectors
+# API for the open metadata security connectors
 
 Below is a description of the API of the two
 [Open Metadata Security Connectors](../metadata-security-connectors).
@@ -30,7 +30,8 @@ all requests to pass.  Figure 2 shows the layers:
 ![Figure 2](../docs/layers-of-security-checks.png)
 > **Figure 2:** Layers of security checks within a server
 
-Below are the methods for the different layers:
+Each lay is implemented in a separate interface and the connector can choose
+which interfaces to implement.  Below are the interfaces and methods for the different layers:
 
 * **OpenMetadataServerSecurity** - provides the root interface for a connector that validates access to Open
  Metadata services and instances for a specific user.  There are other optional interfaces that
@@ -61,7 +62,7 @@ Below are the methods for the different layers:
   * **validateUserForTypeUpdate** - Tests for whether a specific user should have the right to update a typeDef within a repository.
   * **validateUserForTypeDelete** - Tests for whether a specific user should have the right to delete a typeDef within a repository.
   * **validateUserForEntityCreate** - Tests for whether a specific user should have the right to create a instance within a repository.
-  * **validateUserForEntityRead** - Tests for whether a specific user should have read access to a specific instance within a repository.
+  * **validateUserForEntityRead** - Tests for whether a specific user should have read access to a specific instance within a repository.  May also remove content from the entity before it is passed to caller.
   * **validateUserForEntitySummaryRead** - Tests for whether a specific user should have read access to a specific instance within a repository.
   * **validateUserForEntityProxyRead** - Tests for whether a specific user should have read access to a specific instance within a repository.
   * **validateUserForEntityUpdate** - Tests for whether a specific user should have the right to update a instance within a repository.
@@ -69,14 +70,23 @@ Below are the methods for the different layers:
    within a repository.
   * **validateUserForEntityDelete** - Tests for whether a specific user should have the right to delete a instance within a repository.
   * **validateUserForRelationshipCreate** - Tests for whether a specific user should have the right to create a instance within a repository.
-  * **validateUserForRelationshipRead** - Tests for whether a specific user should have read access to a specific instance within a repository.
+  * **validateUserForRelationshipRead** - Tests for whether a specific user should have read access to a specific instance within a repository.  May also remove content from the relationship before it is passed to caller.
   * **validateUserForRelationshipUpdate** - Tests for whether a specific user should have the right to update a instance within a repository.
   * **validateUserForRelationshipDelete** - Tests for whether a specific user should have the right to delete a instance within a repository.
- 
+  * **validateEntityReferenceCopySave** - Tests for whether a reference copy should be saved to the repository.
+  * **validateRelationshipReferenceCopySave** - Tests for whether a reference copy should be saved to the repository.
+
+* **OpenMetadataEventsSecurity** - defines security checks for sending and receiving events on the
+[open metadata repository cohorts](../../../repository-services/docs/open-metadata-repository-cohort.md).
+  
+  * **validateInboundEvent** - Validates whether an event received from another member of the cohort should be processed by this server.   May also remove content from the event before it is processed by the server.
+  * **validateOutboundEvent** - Validates whether an event should be sent to the other members of the cohort by this server.   May also remove content from the event before it is sent to the cohort.
+    
 * **OpenMetadataAssetSecurity** - validates what a user is allowed to do with to Assets.
   The methods are given access to the whole asset to allow a variety of values to be tested.
   
-  * **setSupportedZonesForUser** - Provides an opportunity to override the deployed module setting of [**supportedZones**](../../access-services/docs/concepts/governance-zones) for a user specific list.
+  * **setSupportedZonesForUser** - Provides an opportunity to override the deployed module setting of 
+  [supportedZones](../../../access-services/docs/concepts/governance-zones) for a user specific list.
   * **validateUserForAssetCreate** - Tests for whether a specific user should have the right to create an asset.
   * **validateUserForAssetRead** - Tests for whether a specific user should have read access to a specific asset.
   * **validateUserForAssetDetailUpdate** - Tests for whether a specific user should have the right to update an asset.

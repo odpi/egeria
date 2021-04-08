@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.LocationHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -54,6 +55,36 @@ class DigitalArchitectureInstanceHandler extends OMASServiceInstanceHandler
         if (instance != null)
         {
             return instance.getAssetHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    LocationHandler<LocationElement> getLocationHandler(String userId,
+                                                        String serverName,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        DigitalArchitectureServicesInstance instance = (DigitalArchitectureServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                           serverName,
+                                                                                                                           serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getLocationHandler();
         }
 
         return null;

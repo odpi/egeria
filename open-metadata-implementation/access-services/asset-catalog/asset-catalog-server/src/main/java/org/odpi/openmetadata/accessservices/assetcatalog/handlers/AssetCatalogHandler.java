@@ -556,7 +556,13 @@ public class AssetCatalogHandler {
         List<EntityDetail> result = new ArrayList<>();
 
         OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
-        searchCriteria = repositoryHelper.getContainsRegex(searchCriteria, searchParameters.isCaseInsensitive());
+
+        if(searchParameters.isExactMatch()) {
+            searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, searchParameters.isCaseInsensitive());
+        }
+        else {
+            searchCriteria = repositoryHelper.getContainsRegex(searchCriteria, searchParameters.isCaseInsensitive());
+        }
 
         for (String type : types) {
             result.addAll(searchEntityByCriteria(userId, searchCriteria, type, searchParameters, metadataCollection));

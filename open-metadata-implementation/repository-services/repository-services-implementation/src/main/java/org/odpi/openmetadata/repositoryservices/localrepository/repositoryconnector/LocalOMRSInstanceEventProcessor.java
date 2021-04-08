@@ -46,6 +46,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     private OMRSRepositoryValidator         repositoryValidator;
     private OMRSRepositoryEventExchangeRule saveExchangeRule;
     private OMRSMetadataCollection          localMetadataCollection = null;
+    private boolean                         produceRefreshEvents;
     private OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor;
 
     /*
@@ -67,6 +68,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param repositoryHelper                 helper class for building instances
      * @param repositoryValidator              helper class for validating instances
      * @param saveExchangeRule                 rule that determines which events to process.
+     * @param produceRefreshEvents             flag indicating whether the local connector should respond to refresh events
      * @param outboundRepositoryEventProcessor event processor
      * @param auditLog                         audit log for this component.
      */
@@ -76,6 +78,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                     OMRSRepositoryHelper            repositoryHelper,
                                     OMRSRepositoryValidator         repositoryValidator,
                                     OMRSRepositoryEventExchangeRule saveExchangeRule,
+                                    boolean                         produceRefreshEvents,
                                     OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor,
                                     AuditLog                        auditLog)
     {
@@ -89,6 +92,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
         this.saveExchangeRule = saveExchangeRule;
+        this.produceRefreshEvents = produceRefreshEvents;
         this.outboundRepositoryEventProcessor = outboundRepositoryEventProcessor;
         this.auditLog = auditLog;
 
@@ -98,7 +102,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
             {
                 this.localMetadataCollection = localConnector.getMetadataCollection();
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 /*
                  * Nothing to do, error will be logged in verifyEventProcessor
@@ -823,7 +827,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.saveClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, classification);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -863,7 +867,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.purgeClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, originalClassification);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -905,7 +909,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.saveClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, classification);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -950,7 +954,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.deleteEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -988,7 +992,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.purgeEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1043,7 +1047,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
              * Ignore - just means the repository did not have the instance.
              */
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1218,7 +1222,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         {
             verifyEventProcessor(methodName);
 
-            if (localMetadataCollectionId.equals(homeMetadataCollectionId))
+            if (produceRefreshEvents && (localMetadataCollectionId.equals(homeMetadataCollectionId)))
             {
                 EntityDetail entity = localMetadataCollection.isEntityKnown(localRepositoryConnector.getServerUserId(),
                                                                             instanceGUID);
@@ -1234,7 +1238,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1398,7 +1402,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.deleteRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1436,7 +1440,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.purgeRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1492,7 +1496,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
              * Ignore as this just means that he reference copy was not stored for this instance.
              */
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1667,7 +1671,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         {
             verifyEventProcessor(methodName);
 
-            if (localMetadataCollectionId.equals(homeMetadataCollectionId))
+            if (produceRefreshEvents && (localMetadataCollectionId.equals(homeMetadataCollectionId)))
             {
                 Relationship relationship = localMetadataCollection.isRelationshipKnown(localRepositoryConnector.getServerUserId(),
                                                                                         instanceGUID);
@@ -1685,7 +1689,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
             }
 
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1756,7 +1760,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
             localMetadataCollection.saveInstanceReferenceCopies(localRepositoryConnector.getServerUserId(),
                                                                 instances);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1853,7 +1857,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                                                           targetInstanceGUID,
                                                                                                           newGUID));
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logMessage(methodName,
                                     OMRSAuditCode.UNABLE_TO_RE_IDENTIFY_INSTANCE.getMessageDefinition(localServerName,
@@ -1978,7 +1982,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             final String methodName = "processRetrievedEntity";
 
@@ -2026,7 +2030,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             final String methodName = "processRetrievedRelationship";
 
@@ -2180,7 +2184,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                  homeMetadataCollectionId);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logMessage(methodName,
                                 OMRSAuditCode.UNABLE_TO_REMOVE_REFERENCE_COPY.getMessageDefinition(localServerName,
@@ -2242,7 +2246,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -2370,7 +2374,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                                                      methodName),
                                                                                              messageFormatter.getFormattedMessage(messageDefinition));
                             }
-                            catch (Throwable error)
+                            catch (Exception error)
                             {
                                 /*
                                  * Don't ever expect to be here - it probably means that the getTypeDef method
@@ -2421,7 +2425,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                                           storedInstance.getGUID(),
                                                                                           messageFormatter.getFormattedMessage(messageDefinition));
                     }
-                    catch (Throwable error)
+                    catch (Exception error)
                     {
                         /*
                          * Don't ever expect to be here - it probably means that the getTypeDef method
@@ -2477,7 +2481,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                       relationship);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -2546,7 +2550,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorServerName originator server name
      * @param originatorMetadataCollectionId originators metadata collection id
      */
-    private void handleUnexpectedErrorFromEvent(Throwable  error,
+    private void handleUnexpectedErrorFromEvent(Exception  error,
                                                 String     methodName,
                                                 String     originatorServerName,
                                                 String     originatorMetadataCollectionId)

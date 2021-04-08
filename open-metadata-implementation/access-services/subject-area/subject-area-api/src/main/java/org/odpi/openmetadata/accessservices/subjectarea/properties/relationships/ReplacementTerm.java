@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,28 +21,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReplacementTerm extends Line {
+public class ReplacementTerm extends Relationship {
     private String description = "Link to a glossary term that is replacing an obsolete glossary term.";
 
     /*
      * Set up end 1.
      */
-     protected static final String END_1_NODE_TYPE = "Term";
-     protected static final String END_1_ATTRIBUTE_NAME = "replacedTerms";
-     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Replaced glossary terms.";
-     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
-            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
+     private static final String END_1_NODE_TYPE = "Term";
+     private static final String END_1_ATTRIBUTE_NAME = "replacedTerms";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Replaced glossary terms.";
+     private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final RelationshipEnd RELATIONSHIP_END_1 = new RelationshipEnd(END_1_NODE_TYPE,
+                                                                           END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-     protected static final String END_2_NODE_TYPE = "Term";
-     protected static final String END_2_ATTRIBUTE_NAME = "replacementTerms";
-     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Replacement glossary terms.";
-     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
-            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
+     private static final String END_2_NODE_TYPE = "Term";
+     private static final String END_2_ATTRIBUTE_NAME = "replacementTerms";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Replacement glossary terms.";
+     private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final RelationshipEnd RELATIONSHIP_END_2 = new RelationshipEnd(END_2_NODE_TYPE,
+                                                                           END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String expression;
     private TermRelationshipStatus status;
@@ -50,7 +50,7 @@ public class ReplacementTerm extends Line {
     private String source;
 
     public ReplacementTerm() {
-        super("ReplacementTerm", "3bac5f35-328b-4bbd-bfc9-3b3c9ba5e0ed", LINE_END_1, LINE_END_2);
+        super("ReplacementTerm", RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**

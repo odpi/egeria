@@ -3,25 +3,29 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.TransformationProject;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaAttributeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaTypeConverter;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineAssetHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.TransformationProjectCoverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTransformationProjectHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -36,10 +40,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEngineProcessHandler processHandler;
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private final DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
+    private final DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler;
     private final DataEnginePortHandler dataEnginePortHandler;
-    private final DataEngineAssetHandler<Process> dataEngineAssetHandler;
-    private final SchemaTypeHandler<SchemaType> schemaTypeHandler;
-    private final SchemaAttributeHandler<SchemaAttribute, SchemaType> schemaAttributeHandler;
     private final Connection inTopicConnection;
 
     /**
@@ -65,16 +67,24 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
         if (repositoryHandler != null) {
 
-            dataEngineAssetHandler = new DataEngineAssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName), Process.class,
+            AssetHandler<Process> assetHandler = new AssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName), Process.class,
                     serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
                     securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
-            schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
+            OpenMetadataAPIGenericHandler<TransformationProject> transformationProjectOpenMetadataAPIGenericHandler =
+                    new OpenMetadataAPIGenericHandler<>(new TransformationProjectCoverter<>(repositoryHelper, serviceName, serverName), TransformationProject.class,
+                    serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
+                    securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+
+            SchemaTypeHandler<SchemaType> schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,
+                    serverName),
                     SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
-            schemaAttributeHandler = new SchemaAttributeHandler<>(new SchemaAttributeConverter<>(repositoryHelper, serviceName, serverName),
-                    SchemaAttribute.class, new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
+            SchemaAttributeHandler<Attribute, SchemaType> schemaAttributeHandler =
+                    new SchemaAttributeHandler<>(new SchemaAttributeConverter<>(repositoryHelper, serviceName, serverName),
+                    Attribute.class, new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
                     SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
@@ -84,9 +94,13 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
             DataEngineCommonHandler dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
                     repositoryHandler, repositoryHelper, dataEngineRegistrationHandler);
             processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    dataEngineAssetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+                    assetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
             dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+
+            dataEngineTransformationProjectHandler = new DataEngineTransformationProjectHandler(serviceName, serverName, invalidParameterHandler,
+                    repositoryHelper, transformationProjectOpenMetadataAPIGenericHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+
             dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     dataEngineCommonHandler);
 
@@ -132,6 +146,10 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      */
     DataEnginePortHandler getPortHandler() {
         return dataEnginePortHandler;
+    }
+
+    public DataEngineTransformationProjectHandler getDataEngineTransformationProjectHandler() {
+        return dataEngineTransformationProjectHandler;
     }
 
     /**

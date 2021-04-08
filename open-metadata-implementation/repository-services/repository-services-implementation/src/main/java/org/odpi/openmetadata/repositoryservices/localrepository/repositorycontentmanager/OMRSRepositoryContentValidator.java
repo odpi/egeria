@@ -621,7 +621,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         final String userIdParameterName = "userId";
 
-        if ("".equals(userId))
+        if ((userId == null) || (userId.length() == 0))
         {
             throw new InvalidParameterException(OMRSErrorCode.NULL_USER_ID.getMessageDefinition(userIdParameterName, methodName, sourceName),
                                                 this.getClass().getName(),
@@ -1215,7 +1215,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                     typeDef.getCategory(),
                                     methodName);
         }
-        catch (Throwable    error)
+        catch (Exception    error)
         {
            throw new RepositoryErrorException(OMRSErrorCode.BAD_TYPEDEF.getMessageDefinition(thisMethodName,
                                                                                               typeDef.getName(),
@@ -1456,6 +1456,38 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     }
 
 
+    /**
+     * Validate that a home metadata collection identifier in an classification is not null.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param classification classification to test.
+     * @param methodName method receiving the call
+     * @throws RepositoryErrorException no guid provided
+     */
+    @Override
+    public  void validateHomeMetadataGUID(String           sourceName,
+                                          Classification   classification,
+                                          String           methodName) throws RepositoryErrorException
+    {
+        final String  thisMethodName = "validateHomeMetadataGUID";
+
+        if (classification == null)
+        {
+            this.throwValidatorLogicError(sourceName, methodName, thisMethodName);
+        }
+
+        if (classification.getMetadataCollectionId() == null)
+        {
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_INSTANCE_METADATA_COLLECTION_ID.getMessageDefinition(classification.getName(),
+                                                                                                                       sourceName,
+                                                                                                                       methodName,
+                                                                                                                       classification.toString()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
+    }
+
+
 
     /**
      * Validate that a home metadata collection identifier in an instance is not null.
@@ -1549,6 +1581,48 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         else
         {
             this.validateAsOfTime(sourceName, parameterName, asOfTime, methodName);
+        }
+    }
+
+
+    /**
+     * Validate that the time parameters are not inverted ('from' later than 'to').
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param parameterName name of the parameter that passed the guid.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the instance (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the instance (exclusive)
+     * @param methodName method receiving the call
+     * @throws InvalidParameterException 'fromTime' is later than 'toTime', or either is some point in the future
+     */
+    @Override
+    public  void validateDateRange(String sourceName,
+                                   String parameterName,
+                                   Date   fromTime,
+                                   Date   toTime,
+                                   String methodName) throws InvalidParameterException
+    {
+        // If either (or both) are null, then this is valid: simply extend forwards or backwards (or both) as far as we can
+        if (fromTime != null && toTime != null)
+        {
+            if (fromTime.compareTo(toTime) > 0)
+            {
+                throw new InvalidParameterException(OMRSErrorCode.INVALID_TIME_RANGE.getMessageDefinition(methodName,
+                                                                                                          fromTime.toString(),
+                                                                                                          toTime.toString()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+            }
+        }
+        // Regardless, validate any non-null date is not in the future
+        if (fromTime != null)
+        {
+            this.validateAsOfTime(sourceName, "fromTime", fromTime, methodName);
+        }
+        if (toTime != null)
+        {
+            this.validateAsOfTime(sourceName, "toTime", toTime, methodName);
         }
     }
 
@@ -1847,7 +1921,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                         String searchCriteria,
                                         String methodName) throws InvalidParameterException
     {
-        if ((searchCriteria == null) || ("".equals(searchCriteria)))
+        if ((searchCriteria == null) || (searchCriteria.length() == 0))
         {
             throw new InvalidParameterException(OMRSErrorCode.NO_SEARCH_CRITERIA.getMessageDefinition(parameterName,
                                                                                                       methodName,
@@ -3310,9 +3384,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 throw new InvalidParameterException(OMRSErrorCode.INVALID_RELATIONSHIP_ENDS.getMessageDefinition(methodName,
                                                                                                                  sourceName,
-                                                                                                                 typeDef.toString(),
-                                                                                                                 entityOneProxy.toString(),
-                                                                                                                 entityTwoProxy.toString()),
+                                                                                                                 typeDef.getName(),
+                                                                                                                 entityOneProxy.getGUID(),
+                                                                                                                 entityOneTypeName,
+                                                                                                                 entityOneTypeDefName,
+                                                                                                                 entityTwoProxy.getGUID(),
+                                                                                                                 entityTwoTypeName,
+                                                                                                                 entityTwoTypeDefName),
                                                     this.getClass().getName(),
                                                     methodName,
                                                     "relationship.End");
@@ -3321,7 +3399,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             {
                 throw error;
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 /*
                  * Logic error as the instance should be valid
@@ -3730,7 +3808,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                             matchingProperties++;
                                                         }
                                                     }
-                                                    catch (Throwable error)
+                                                    catch (Exception error)
                                                     {
                                                         throw new InvalidParameterException(
                                                                 OMRSErrorCode.INVALID_SEARCH_CRITERIA.getMessageDefinition(error.getClass().getName(),
@@ -3784,13 +3862,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                     if (matchValue != null)
                     {
-                        if (matchValue.matches(expectedValue))
+                        if (expectedValue.matches(matchValue))
                         {
                             result = true;
                         }
                     }
                 }
-                catch (Throwable   exc)
+                catch (Exception   exc)
                 {
                     /*
                      * Ignore property
@@ -3836,7 +3914,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         }
                     }
                 }
-                catch (Throwable   exc)
+                catch (Exception   exc)
                 {
                     /*
                      * Ignore property
@@ -4439,7 +4517,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             /*
              * Probably a class cast error which should never occur.
@@ -4555,7 +4633,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             /*
              * Probably a class cast error which should never occur.

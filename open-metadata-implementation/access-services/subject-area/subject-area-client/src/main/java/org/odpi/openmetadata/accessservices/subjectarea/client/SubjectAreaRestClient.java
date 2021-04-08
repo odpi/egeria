@@ -223,14 +223,12 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
 
         GenericResponse<T> completeResponse = null;
         int requestedPageSize = 0;
-        int startingFrom = 0;
         if (findRequest != null) {
             if (findRequest.getPageSize() == null) {
                 findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
             }
             invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
             requestedPageSize = findRequest.getPageSize();
-            startingFrom = findRequest.getStartingFrom();
         }
 
         if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall < 1 || maximumPageSizeOnRestCall >= requestedPageSize ) {
@@ -537,6 +535,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
 
     /**
      * Method for constructing a query (https://en.wikipedia.org/wiki/Query_string) using the information described in the findRequest
+     * page size and startingFrom need to set by the caller.
+     *
      * @param methodName  name of the method being called.
      * @param findRequest {@link FindRequest}
      *
@@ -544,27 +544,32 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @throws InvalidParameterException one of the parameters is null or invalid
      * */
     public QueryBuilder createFindQuery(String methodName, FindRequest findRequest) throws InvalidParameterException {
-        String searchCriteria = findRequest.getSearchCriteria();
-        if (searchCriteria != null) {
-            searchCriteria = QueryUtils.encodeParams(methodName, "searchCriteria", searchCriteria);
-        }
-        String property = findRequest.getSequencingProperty();
-        if (property != null) {
-            property = QueryUtils.encodeParams(methodName, "sequencingProperty", property);
-        }
-
+        QueryBuilder queryBuilder = new QueryBuilder();
         SequencingOrder sequencingOrder = findRequest.getSequencingOrder();
         if (sequencingOrder == null) {
             sequencingOrder = SequencingOrder.ANY;
         }
+        String sequencingOrderName = QueryUtils.encodeParams(methodName, "sequencingOrder", sequencingOrder.name());
+        queryBuilder.addParam("sequencingOrder", sequencingOrderName);
+        Integer pageSize = findRequest.getPageSize();
+        if (pageSize != null) {
+            queryBuilder.addParam("pageSize", pageSize);
+        }
+        queryBuilder.addParam("startingFrom",  findRequest.getStartingFrom());
 
-        return new QueryBuilder()
-                .addParam("sequencingOrder", sequencingOrder.name())
-                .addParam("asOfTime", findRequest.getAsOfTime())
-                .addParam("searchCriteria", searchCriteria)
-                .addParam("startingFrom", findRequest.getStartingFrom())
-                .addParam("pageSize", findRequest.getPageSize())
-                .addParam("sequencingProperty", property);
+        String searchCriteria = findRequest.getSearchCriteria();
+        if (searchCriteria != null) {
+            searchCriteria = QueryUtils.encodeParams(methodName, "searchCriteria", searchCriteria);
+            queryBuilder.addParam("searchCriteria", searchCriteria);
+        }
+        String property = findRequest.getSequencingProperty();
+        if (property != null) {
+            property = QueryUtils.encodeParams(methodName, "sequencingProperty", property);
+            queryBuilder.addParam("sequencingProperty", property);
+        }
+
+
+        return queryBuilder;
     }
 
     public String getServerName() {

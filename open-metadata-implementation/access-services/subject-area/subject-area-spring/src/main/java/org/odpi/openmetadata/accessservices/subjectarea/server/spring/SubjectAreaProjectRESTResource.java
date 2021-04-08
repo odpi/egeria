@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -87,31 +87,29 @@ public class SubjectAreaProjectRESTResource {
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria     String expression matching Project property values. If not specified then all glossaries are returned.
-     * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
+     * @param searchCriteria     String expression matching Project property values. If not specified then all projects are returned.
+     * @param asOfTime           the projects returned as they were at this time. null indicates at the current time.
+     * @param startingFrom       the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize           the maximum number of elements that can be returned on this request.
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return A list of glossaries meeting the search Criteria
+     * @return A list of projects meeting the search Criteria
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/projects")
     public SubjectAreaOMASAPIResponse<Project> findProject(@PathVariable String serverName, @PathVariable String userId,
-                                                           @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
-                                                           @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                           @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
-                                                           @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                           @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                           @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
+                                                             @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                             @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                             @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+                                                            ) {
         return restAPI.findProject(serverName, userId, searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
@@ -139,14 +137,14 @@ public class SubjectAreaProjectRESTResource {
 
 
     @GetMapping(path = "/users/{userId}/projects/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                                    @PathVariable String guid,
-                                                                    @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                    @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
-                                                                    @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                    @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                                    @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                            @PathVariable String guid,
+                                                                            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                            @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                                            @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+                                                                           ) {
         return restAPI.getProjectRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 

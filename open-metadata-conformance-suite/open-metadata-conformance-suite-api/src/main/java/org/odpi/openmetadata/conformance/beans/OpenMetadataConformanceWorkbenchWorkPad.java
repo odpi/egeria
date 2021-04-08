@@ -214,11 +214,47 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
 
 
     /**
+     * Retrieve the set of test case IDs registered with this work pad.
+     *
+     * @return the test case IDs
+     */
+    synchronized Set<String> getTestCaseIds()
+    {
+        return new TreeSet<>(testCaseMap.keySet());
+    }
+
+
+    /**
+     * Accumulate the set of profile names registered with this work pad.
+     *
+     * @return the profile names
+     */
+    public abstract List<String> getProfileNames();
+
+
+    /**
+     * Accumulate the evidences for a given profile.
+     *
+     * @param profileName for which to obtain the detailed results
+     * @return the test evidence organized by profile and requirement within profile
+     */
+    public abstract OpenMetadataConformanceProfileResults getProfileResults(String profileName);
+
+
+    /**
      * Accumulate the evidences for each profile
      *
-     * @return the test evidence organized by profile and requirement withing profile
+     * @return the test evidence organized by profile and requirement within profile
      */
     public abstract List<OpenMetadataConformanceProfileResults> getProfileResults();
+
+
+    /**
+     * Accumulate the summarized evidences for each profile
+     *
+     * @return the summarized test evidence organized by profile and requirement within profile
+     */
+    public abstract List<OpenMetadataConformanceProfileSummary> getProfileSummaries();
 
 
     /**
@@ -365,14 +401,18 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      * @param testCaseId identifier of the reporting test case
      * @param testCaseName name of the reporting test case
      * @param testCaseDocumentationURL link to the test case documentation.
-     * @param assertionMessage details of the assertion
+     * @param assertionId details of the assertion
+     * @param methodName the method that the condition tests
+     * @param elapsedTime of the test executing (in milliseconds)
      */
     public synchronized void addSuccessfulCondition(Integer  profileId,
                                                     Integer  requirementId,
                                                     String   testCaseId,
                                                     String   testCaseName,
                                                     String   testCaseDocumentationURL,
-                                                    String   assertionMessage)
+                                                    String   assertionId,
+                                                    String   methodName,
+                                                    Long     elapsedTime)
     {
         OpenMetadataConformanceTestEvidence  testEvidence = new OpenMetadataConformanceTestEvidence();
 
@@ -381,8 +421,14 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         testEvidence.setTestCaseId(testCaseId);
         testEvidence.setTestCaseName(testCaseName);
         testEvidence.setTestCaseDescriptionURL(testCaseDocumentationURL);
-        testEvidence.setAssertionMessage(assertionMessage);
+        testEvidence.setAssertionId(assertionId);
         testEvidence.setTestEvidenceType(OpenMetadataConformanceTestEvidenceType.SUCCESSFUL_ASSERTION);
+        if (methodName != null) {
+            testEvidence.setMethodName(methodName);
+        }
+        if (elapsedTime != null) {
+            testEvidence.setElapsedTime(elapsedTime);
+        }
 
         testEvidenceList.add(testEvidence);
     }
@@ -396,14 +442,18 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      * @param testCaseId identifier of the reporting test case
      * @param testCaseName name of the reporting test case
      * @param testCaseDocumentationURL link to the test case documentation.
-     * @param assertionMessage details of the assertion
+     * @param assertionId details of the assertion
+     * @param methodName the method that the condition tests
+     * @param elapsedTime of the test executing (in milliseconds)
      */
     public synchronized void addUnsuccessfulCondition(Integer  profileId,
                                                       Integer  requirementId,
                                                       String   testCaseId,
                                                       String   testCaseName,
                                                       String   testCaseDocumentationURL,
-                                                      String   assertionMessage)
+                                                      String   assertionId,
+                                                      String   methodName,
+                                                      Long     elapsedTime)
     {
         OpenMetadataConformanceTestEvidence  testEvidence = new OpenMetadataConformanceTestEvidence();
 
@@ -412,8 +462,14 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         testEvidence.setTestCaseId(testCaseId);
         testEvidence.setTestCaseName(testCaseName);
         testEvidence.setTestCaseDescriptionURL(testCaseDocumentationURL);
-        testEvidence.setAssertionMessage(assertionMessage);
+        testEvidence.setAssertionId(assertionId);
         testEvidence.setTestEvidenceType(OpenMetadataConformanceTestEvidenceType.UNSUCCESSFUL_ASSERTION);
+        if (methodName != null) {
+            testEvidence.setMethodName(methodName);
+        }
+        if (elapsedTime != null) {
+            testEvidence.setElapsedTime(elapsedTime);
+        }
 
         testEvidenceList.add(testEvidence);
     }
@@ -427,14 +483,14 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      * @param testCaseId identifier of the reporting test case
      * @param testCaseName name of the reporting test case
      * @param testCaseDocumentationURL link to the test case documentation.
-     * @param assertionMessage details of the assertion
+     * @param assertionId details of the assertion
      */
     public synchronized void addNotSupportedCondition(Integer  profileId,
                                                       Integer  requirementId,
                                                       String   testCaseId,
                                                       String   testCaseName,
                                                       String   testCaseDocumentationURL,
-                                                      String   assertionMessage)
+                                                      String   assertionId)
     {
         OpenMetadataConformanceTestEvidence  testEvidence = new OpenMetadataConformanceTestEvidence();
 
@@ -443,7 +499,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         testEvidence.setTestCaseId(testCaseId);
         testEvidence.setTestCaseName(testCaseName);
         testEvidence.setTestCaseDescriptionURL(testCaseDocumentationURL);
-        testEvidence.setAssertionMessage(assertionMessage);
+        testEvidence.setAssertionId(assertionId);
         testEvidence.setTestEvidenceType(OpenMetadataConformanceTestEvidenceType.NOT_SUPPORTED_FUNCTION);
 
         testEvidenceList.add(testEvidence);
@@ -492,7 +548,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      * @param testCaseId identifier of the reporting test case
      * @param testCaseName name of the reporting test case
      * @param testCaseDocumentationURL link to the test case documentation.
-     * @param assertionMessage message associated with the exception.
+     * @param assertionId message associated with the exception.
      * @param exception exception
      */
     synchronized void  addUnexpectedException(Integer              profileId,
@@ -500,7 +556,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
                                               String               testCaseId,
                                               String               testCaseName,
                                               String               testCaseDocumentationURL,
-                                              String               assertionMessage,
+                                              String               assertionId,
                                               ExceptionBean        exception)
     {
         OpenMetadataConformanceTestEvidence  testEvidence = new OpenMetadataConformanceTestEvidence();
@@ -510,7 +566,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         testEvidence.setTestCaseId(testCaseId);
         testEvidence.setTestCaseName(testCaseName);
         testEvidence.setTestCaseDescriptionURL(testCaseDocumentationURL);
-        testEvidence.setAssertionMessage(assertionMessage);
+        testEvidence.setAssertionId(assertionId);
         testEvidence.setConformanceException(exception);
         testEvidence.setTestEvidenceType(OpenMetadataConformanceTestEvidenceType.UNEXPECTED_EXCEPTION);
 
@@ -642,6 +698,26 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         }
 
         return workbenchResults;
+    }
+
+    /**
+     * Return the summarized results determined so far by the workbench.
+     *
+     * @return workbench summary results object
+     */
+    synchronized OpenMetadataConformanceWorkbenchSummary getWorkbenchSummary()
+    {
+        OpenMetadataConformanceWorkbenchSummary workbenchSummary = new OpenMetadataConformanceWorkbenchSummary();
+
+        workbenchSummary.setWorkbenchId(workbenchId);
+        workbenchSummary.setWorkbenchName(workbenchName);
+        workbenchSummary.setVersionNumber(workbenchVersionNumber);
+        workbenchSummary.setTutName(tutName);
+        workbenchSummary.setTutType(tutType);
+
+        workbenchSummary.setProfileSummaries(getProfileSummaries());
+
+        return workbenchSummary;
     }
 
     /**

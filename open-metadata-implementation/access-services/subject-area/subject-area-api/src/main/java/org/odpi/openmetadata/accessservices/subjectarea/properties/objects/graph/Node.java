@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * A Node is an entity in the subject area omas that has a type {@code  NodeType}, name, qualified name and description.
  * A node may be in one or more projects.
  * <p>
- * Nodes can be connected with {@code Line }s to form graphs. As they may be visualised, so a node has an associated
+ * Nodes can be connected with {@code Relationship }s to form graphs. As they may be visualised, so a node has an associated
  * icon.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -46,6 +46,7 @@ public class Node implements Serializable, OmasObject {
     private String name =null;
     private String qualifiedName =null;
     private SystemAttributes systemAttributes=null;
+    private boolean readOnly = false;
     private Date effectiveFromTime = null;
     private Date effectiveToTime = null;
     private String description =null;
@@ -106,6 +107,22 @@ public class Node implements Serializable, OmasObject {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * The Node is readOnly
+     * @return whether read only
+     */
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    /**
+     * set whether the node is readOnly
+     * @param readOnly readonly flag
+     */
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
     }
 
     /**

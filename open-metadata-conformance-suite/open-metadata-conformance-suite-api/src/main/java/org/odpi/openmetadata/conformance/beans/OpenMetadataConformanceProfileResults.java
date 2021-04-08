@@ -14,8 +14,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * OpenMetadataConformanceProfileResults provides a summary of the assessment of a technology's
- * conformance to an open metadata conformance profile.
+ * OpenMetadataConformanceProfileResults provides a detailed assessment of a technology's
+ * conformance to an open metadata conformance profile, including all evidence collected.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

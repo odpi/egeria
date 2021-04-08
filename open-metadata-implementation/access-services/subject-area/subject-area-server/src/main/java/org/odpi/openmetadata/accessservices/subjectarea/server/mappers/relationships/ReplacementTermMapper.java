@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the replacementTerm and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class ReplacementTermMapper extends LineMapper<ReplacementTerm> {
+public class ReplacementTermMapper extends RelationshipMapper<ReplacementTerm> {
     public static final String REPLACEMENT_TERM = "ReplacementTerm";
 
     public ReplacementTermMapper(OMRSAPIHelper omrsapiHelper) {
@@ -23,13 +23,13 @@ public class ReplacementTermMapper extends LineMapper<ReplacementTerm> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param replacementTerm       supplied line
-     * @param properties equivalent instance properties to the Line
+     * @param replacementTerm       supplied relationship
+     * @param properties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(ReplacementTerm replacementTerm, InstanceProperties properties) {
+    protected void mapRelationshipToInstanceProperties(ReplacementTerm replacementTerm, InstanceProperties properties) {
         if (replacementTerm.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getDescription(), "description");
         }
@@ -52,13 +52,13 @@ public class ReplacementTermMapper extends LineMapper<ReplacementTerm> {
     /**
      * Map a primitive omrs property to the replacementTerm object.
      *
-     * @param replacementTerm         the glossary to be updated
+     * @param replacementTerm         the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(ReplacementTerm replacementTerm, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(ReplacementTerm replacementTerm, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -81,7 +81,7 @@ public class ReplacementTermMapper extends LineMapper<ReplacementTerm> {
     }
 
     @Override
-    protected boolean mapEnumToLine(ReplacementTerm replacementTerm, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(ReplacementTerm replacementTerm, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -97,7 +97,7 @@ public class ReplacementTermMapper extends LineMapper<ReplacementTerm> {
     }
 
     @Override
-    protected ReplacementTerm getLineInstance() {
+    protected ReplacementTerm getRelationshipInstance() {
         return new ReplacementTerm();
     }
 

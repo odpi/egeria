@@ -9,14 +9,15 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasO
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.IRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.Mapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.MappersFactory;
@@ -31,7 +32,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 
 import java.util.*;
 
@@ -81,7 +82,7 @@ public abstract class SubjectAreaHandler {
      * Get glossary summary
      * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
-     * @param line glossary relationship {@link TermAnchor} or {@link CategoryAnchor}
+     * @param relationship glossary relationship {@link TermAnchor} or {@link CategoryAnchor}
      * @return Glossary summary
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -90,18 +91,18 @@ public abstract class SubjectAreaHandler {
      */
     GlossarySummary getGlossarySummary(String restAPIName,
                                        String userId,
-                                       Line line) throws UserNotAuthorizedException,
-                                                         PropertyServerException,
-                                                         InvalidParameterException,
-                                                         SubjectAreaCheckedException
+                                       Relationship relationship) throws UserNotAuthorizedException,
+                                                                 PropertyServerException,
+                                                                 InvalidParameterException,
+                                                                 SubjectAreaCheckedException
     {
-        String guid = SubjectAreaUtils.getGlossaryGuidFromAnchor(line);
+        String guid = SubjectAreaUtils.getGlossaryGuidFromAnchor(relationship);
         Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, GLOSSARY_TYPE_NAME, restAPIName);
         if (entityDetail.isPresent()) {
             GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
             Glossary glossary = glossaryMapper.map(entityDetail.get());
             // TODO sort out icons
-            return SubjectAreaUtils.extractGlossarySummaryFromGlossary(glossary, line);
+            return SubjectAreaUtils.extractGlossarySummaryFromGlossary(glossary, relationship);
         }
 
         return null;
@@ -110,7 +111,7 @@ public abstract class SubjectAreaHandler {
      * Get category summary
      * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
-     * @param line category relationship {@link TermAnchor} or {@link CategoryAnchor}
+     * @param relationship category relationship {@link TermAnchor} or {@link CategoryAnchor}
      * @return category summary
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -119,18 +120,18 @@ public abstract class SubjectAreaHandler {
      */
     CategorySummary getCategorySummary(String restAPIName,
                                        String userId,
-                                       Line line) throws UserNotAuthorizedException,
-                                                         PropertyServerException,
-                                                         InvalidParameterException,
-                                                         SubjectAreaCheckedException
+                                       Relationship relationship) throws UserNotAuthorizedException,
+                                                                 PropertyServerException,
+                                                                 InvalidParameterException,
+                                                                 SubjectAreaCheckedException
     {
-        String categoryGuid = line.getEnd1().getNodeGuid();
+        String categoryGuid = relationship.getEnd1().getNodeGuid();
         Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, categoryGuid, CATEGORY_TYPE_NAME, restAPIName);
         if (entityDetail.isPresent()) {
             CategoryMapper CategoryMapper = mappersFactory.get(CategoryMapper.class);
             Category category = CategoryMapper.map(entityDetail.get());
             // TODO sort out icons
-            return SubjectAreaUtils.extractCategorySummaryFromCategory(category, line);
+            return SubjectAreaUtils.extractCategorySummaryFromCategory(category, relationship);
         }
 
         return null;
@@ -247,18 +248,18 @@ public abstract class SubjectAreaHandler {
      * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested guid
      * */
-    public SubjectAreaOMASAPIResponse<Line> getAllRelationshipsForEntity(String methodName,
-                                                                         String userId,
-                                                                         String guid,
-                                                                         FindRequest findRequest)
+    public SubjectAreaOMASAPIResponse<Relationship> getAllRelationshipsForEntity(String methodName,
+                                                                                 String userId,
+                                                                                 String guid,
+                                                                                 FindRequest findRequest)
     {
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         try {
             if (findRequest.getPageSize() == null) {
                 findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
             }
             invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
-            response.addAllResults(getAllLineForEntity(methodName, userId, guid, findRequest));
+            response.addAllResults(getAllRelationshipForEntity(methodName, userId, guid, findRequest));
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException  e) {
             response.setExceptionInfo(e, className);
         }
@@ -273,28 +274,28 @@ public abstract class SubjectAreaHandler {
      * @param userId                  user identity
      * @param entityGuid              globally unique identifier
      * @param findRequest             {@link FindRequest}
-     * @return {@code List<Line>}
+     * @return {@code List<Relationship>}
      *
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws SubjectAreaCheckedException standard exception Subject Area OMAS services
      */
-    public List<Line> getAllLineForEntity(String restAPIName,
-                                           String userId,
-                                           String entityGuid,
-                                           FindRequest findRequest) throws SubjectAreaCheckedException,
+    public List<Relationship> getAllRelationshipForEntity(String restAPIName,
+                                                  String userId,
+                                                  String entityGuid,
+                                                  FindRequest findRequest) throws SubjectAreaCheckedException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         if (findRequest.getPageSize() == null) {
             findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
         }
         invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), restAPIName);
-        List<Relationship> relationships = oMRSAPIHelper.getAllRelationshipsForEntity(restAPIName, userId, entityGuid, findRequest);
-        return getLinesFromRelationships(relationships);
+        List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships = oMRSAPIHelper.getAllRelationshipsForEntity(restAPIName, userId, entityGuid, findRequest);
+        return getRelationshipsFromRelationships(relationships);
     }
 
-    public List<Line> getLinesFromRelationships(Collection<Relationship> relationships) {
-        return convertOmrsToOmas(relationships, ILineMapper.class);
+    public List<Relationship> getRelationshipsFromRelationships(Collection<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationships) {
+        return convertOmrsToOmas(relationships, IRelationshipMapper.class);
     }
 
     public List<Node> getNodesFromEntityDetails(Collection<EntityDetail> entityDetails){
@@ -408,6 +409,97 @@ public abstract class SubjectAreaHandler {
         String qualifiedName = node.getQualifiedName();
         if (qualifiedName == null || qualifiedName.trim().equals("")) {
             node.setQualifiedName(node.getName() + "@" + UUID.randomUUID().toString());
+        }
+    }
+    /**
+     * return whether the Category matches the search criteria
+     *
+     * @param category       category to use for match
+     * @param searchCriteria criteria to use for match
+     * @return boolean indicating whether the category matches the search criteria
+     */
+    protected boolean categoryMatchSearchCriteria(Category category, String searchCriteria) {
+        boolean isMatch = false;
+        if (searchCriteria == null) return true;
+        final String name = category.getName();
+        final String description = category.getDescription();
+        final String qualifiedName = category.getQualifiedName();
+
+        if (name != null && name.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (description != null && description.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (qualifiedName != null && qualifiedName.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        return isMatch;
+    }
+    /**
+     * return whether the Term matches the search criteria
+     *
+     * @param term           term to use for match
+     * @param searchCriteria criteria to use for match
+     * @return boolean indicating whether the term matches the search criteria
+     */
+    protected boolean termMatchSearchCriteria(Term term, String searchCriteria) {
+        if (searchCriteria == null) return true;
+        boolean isMatch = false;
+        final String name = term.getName();
+        final String description = term.getDescription();
+        final String qualifiedName = term.getQualifiedName();
+        final String abbreviation = term.getAbbreviation();
+        final String examples = term.getExamples();
+        final String usage = term.getUsage();
+
+        if (name != null && name.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (description != null && description.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (qualifiedName != null && qualifiedName.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (abbreviation != null && abbreviation.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (examples != null && examples.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        if (usage != null && usage.matches(searchCriteria)) {
+            isMatch = true;
+        }
+        return isMatch;
+    }
+
+    /**
+     * Check whether the node is readonly and throw and exception if it is
+     * @param methodName calling methodName
+     * @param node node to check
+     * @param operation operation being attempted
+     * @throws PropertyServerException exception thrown when the node is readonly
+     */
+    protected void checkReadOnly(String methodName, Node node, String operation ) throws PropertyServerException {
+        if (node.isReadOnly()) {
+            // reject
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_NODE.getMessageDefinition(operation, node.getNodeType().toString());
+            throw new PropertyServerException(messageDefinition, className , methodName);
+        }
+    }
+    /**
+     * Check whether the relationship is readonly and throw and exception if it is
+     * @param methodName calling methodName
+     * @param relationship relationship to check
+     * @param operation operation being attempted
+     * @throws PropertyServerException exception thrown when the relationship is readonly
+     */
+    protected void checkRelationshipReadOnly(String methodName, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship, String operation ) throws PropertyServerException {
+        if (relationship.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT) {
+            // reject
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MODIFICATION_OPERATION_ATTEMPTED_ON_READ_ONLY_RELATIONSHIP.getMessageDefinition(operation, relationship.getType().getTypeDefName());
+            throw new PropertyServerException(messageDefinition, className , methodName);
         }
     }
 }

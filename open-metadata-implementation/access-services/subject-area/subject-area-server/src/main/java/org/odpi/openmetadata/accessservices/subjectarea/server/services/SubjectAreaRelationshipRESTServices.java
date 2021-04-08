@@ -45,7 +45,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<HasA> createTermHasARelationship(String serverName, String userId, HasA termHasARelationship) {
         String restAPIName = "createTermHasARelationship";
-        return createLine(serverName, restAPIName, userId, TermHasARelationshipMapper.class, termHasARelationship);
+        return createRelationship(serverName, restAPIName, userId, TermHasARelationshipMapper.class, termHasARelationship);
     }
 
 
@@ -67,7 +67,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     public SubjectAreaOMASAPIResponse<HasA> getTermHasARelationship(String serverName, String userId, String guid) {
 
         String restAPIName = "getTermHasARelationship";
-        return getLine(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid);
     }
 
     /**
@@ -76,7 +76,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param guid                 unique identifier of the Line
+     * @param guid                 unique identifier of the relationship
      * @param termHasARelationship the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Hasa
@@ -93,7 +93,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<HasA> updateTermHasARelationship(String serverName, String userId, String guid, HasA termHasARelationship, boolean isReplace) {
         String restAPIName = "updateTermHasARelationship";
-        return updateLine(serverName, restAPIName, userId, guid, TermHasARelationshipMapper.class, termHasARelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, TermHasARelationshipMapper.class, termHasARelationship, isReplace);
     }
 
     /**
@@ -117,7 +117,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<HasA> deleteTermHasARelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteTermHasARelationship";
-        return deleteLine(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid, isPurge);
     }
 
     /**
@@ -142,7 +142,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<HasA> restoreTermHasARelationship(String serverName, String userId, String guid) {
         String restAPIName = "restoreTermHasARelationship";
-        return restoreLine(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid);
     }
 
     /**
@@ -165,7 +165,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<RelatedTerm> createRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship) {
         String restAPIName = "createRelatedTerm";
-        return createLine(serverName, restAPIName, userId, RelatedTermMapper.class, relatedTermRelationship);
+        return createRelationship(serverName, restAPIName, userId, RelatedTermMapper.class, relatedTermRelationship);
     }
 
     /**
@@ -185,7 +185,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<RelatedTerm> getRelatedTerm(String serverName, String userId, String guid) {
         String restAPIName = "getRelatedTerm";
-        return getLine(serverName, restAPIName, userId, RelatedTermMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, RelatedTermMapper.class, guid);
     }
 
     /**
@@ -194,7 +194,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param guid                    unique identifier of the Line
+     * @param guid                    unique identifier of the relationship
      * @param relatedTermRelationship the related term  relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated RelatedTerm
@@ -211,7 +211,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<RelatedTerm> updateRelatedTerm(String serverName, String userId, String guid, RelatedTerm relatedTermRelationship, boolean isReplace) {
         String restAPIName = "updateRelatedTerm";
-        return updateLine(serverName, restAPIName, userId, guid, RelatedTermMapper.class, relatedTermRelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, RelatedTermMapper.class, relatedTermRelationship, isReplace);
     }
 
     /**
@@ -235,7 +235,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<RelatedTerm> deleteRelatedTerm(String serverName, String userId, String guid, boolean isPurge) {
         String restAPIName = "deleteRelatedTerm";
-        return deleteLine(serverName, restAPIName, userId, RelatedTermMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, RelatedTermMapper.class, guid, isPurge);
     }
 
     /**
@@ -260,7 +260,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<RelatedTerm> restoreRelatedTerm(String serverName, String userId, String guid) {
         String restAPIName = "restoreRelatedTerm";
-        return restoreLine(serverName, restAPIName, userId, RelatedTermMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, RelatedTermMapper.class, guid);
     }
 
     /**
@@ -284,7 +284,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Synonym> createSynonym(String serverName, String userId, Synonym synonym) {
         String restAPIName = "createSynonym";
-        return createLine(serverName, restAPIName, userId, SynonymMapper.class, synonym);
+        return createRelationship(serverName, restAPIName, userId, SynonymMapper.class, synonym);
     }
 
     /**
@@ -304,7 +304,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Synonym> getSynonymRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getSynonymRelationship";
-        return getLine(serverName, restAPIName, userId, SynonymMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, SynonymMapper.class, guid);
     }
 
     /**
@@ -313,7 +313,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the relationship
      * @param synonym    the Synonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated SynonymRelationship
@@ -330,7 +330,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Synonym> updateSynonymRelationship(String serverName, String userId, String guid, Synonym synonym, boolean isReplace) {
         String restAPIName = "updateSynonymRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, SynonymMapper.class, synonym, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, SynonymMapper.class, synonym, isReplace);
     }
 
     /**
@@ -354,7 +354,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Synonym> deleteSynonymRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteSynonymRelationship";
-        return deleteLine(serverName, restAPIName, userId, SynonymMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, SynonymMapper.class, guid, isPurge);
     }
 
     /**
@@ -379,7 +379,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Synonym> restoreSynonym(String serverName, String userId, String guid) {
         String restAPIName = "restoreSynonym";
-        return restoreLine(serverName, restAPIName, userId, SynonymMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, SynonymMapper.class, guid);
     }
 
     /**
@@ -402,7 +402,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Antonym> createAntonym(String serverName, String userId, Antonym antonym) {
         String restAPIName = "createAntonym";
-        return createLine(serverName, restAPIName, userId, AntonymMapper.class, antonym);
+        return createRelationship(serverName, restAPIName, userId, AntonymMapper.class, antonym);
     }
 
     /**
@@ -422,7 +422,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Antonym> getAntonymRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getAntonymRelationship";
-        return getLine(serverName, restAPIName, userId, AntonymMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, AntonymMapper.class, guid);
     }
 
     /**
@@ -431,7 +431,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the relationship
      * @param antonym    the Antonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated AntonymRelationship
@@ -448,7 +448,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Antonym> updateAntonymRelationship(String serverName, String userId, String guid, Antonym antonym, boolean isReplace) {
         String restAPIName = "updateAntonymRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, AntonymMapper.class, antonym, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, AntonymMapper.class, antonym, isReplace);
     }
 
     /**
@@ -472,7 +472,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Antonym> deleteAntonymRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteAntonymRelationship";
-        return deleteLine(serverName, restAPIName, userId, AntonymMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, AntonymMapper.class, guid, isPurge);
     }
 
     /**
@@ -498,7 +498,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Antonym> restoreAntonym(String serverName, String userId, String guid) {
         String restAPIName = "restoreAntonym";
-        return restoreLine(serverName, restAPIName, userId, AntonymMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, AntonymMapper.class, guid);
     }
 
     /**
@@ -521,7 +521,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Translation> createTranslation(String serverName, String userId, Translation translationRelationship) {
         String restAPIName = "createTranslation";
-        return createLine(serverName, restAPIName, userId, TranslationMapper.class, translationRelationship);
+        return createRelationship(serverName, restAPIName, userId, TranslationMapper.class, translationRelationship);
     }
 
     /**
@@ -541,7 +541,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Translation> getTranslationRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTranslationRelationship";
-        return getLine(serverName, restAPIName, userId, TranslationMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, TranslationMapper.class, guid);
     }
 
     /**
@@ -550,7 +550,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param guid                    unique identifier of the Line
+     * @param guid                    unique identifier of the relationship
      * @param translationRelationship the Translation relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated TranslationRelationship
@@ -567,7 +567,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Translation> updateTranslationRelationship(String serverName, String userId, String guid, Translation translationRelationship, boolean isReplace) {
         String restAPIName = "updateTranslationRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, TranslationMapper.class, translationRelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, TranslationMapper.class, translationRelationship, isReplace);
     }
 
     /**
@@ -591,7 +591,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Translation> deleteTranslationRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteTranslationRelationship";
-        return deleteLine(serverName, restAPIName, userId, TranslationMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TranslationMapper.class, guid, isPurge);
     }
 
     /**
@@ -616,7 +616,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Translation> restoreTranslation(String serverName, String userId, String guid) {
         String restAPIName = "restoreTranslation";
-        return restoreLine(serverName, restAPIName, userId, TranslationMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, TranslationMapper.class, guid);
     }
 
     /**
@@ -640,7 +640,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<UsedInContext> createUsedInContext(String serverName, String userId, UsedInContext usedInContextRelationship) {
         String restAPIName = "createUsedInContext";
-        return createLine(serverName, restAPIName, userId, UsedInContextMapper.class, usedInContextRelationship);
+        return createRelationship(serverName, restAPIName, userId, UsedInContextMapper.class, usedInContextRelationship);
     }
 
     /**
@@ -660,7 +660,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<UsedInContext> getUsedInContextRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getUsedInContextRelationship";
-        return getLine(serverName, restAPIName, userId, UsedInContextMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, UsedInContextMapper.class, guid);
     }
 
     /**
@@ -669,7 +669,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param guid                      unique identifier of the Line
+     * @param guid                      unique identifier of the relationship
      * @param usedInContextRelationship the UsedInContext relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated UsedInContextRelationship
@@ -685,7 +685,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<UsedInContext> updateUsedInContextRelationship(String serverName, String userId, String guid, UsedInContext usedInContextRelationship, boolean isReplace) {
         String restAPIName = "updateUsedInContextRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, UsedInContextMapper.class, usedInContextRelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, UsedInContextMapper.class, usedInContextRelationship, isReplace);
     }
 
     /**
@@ -709,7 +709,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<UsedInContext> deleteUsedInContextRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteUsedInContextRelationship";
-        return deleteLine(serverName, restAPIName, userId, UsedInContextMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, UsedInContextMapper.class, guid, isPurge);
     }
 
     /**
@@ -734,7 +734,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<UsedInContext> restoreUsedInContext(String serverName, String userId, String guid) {
         String restAPIName = "restoreUsedInContext";
-        return restoreLine(serverName, restAPIName, userId, UsedInContextMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, UsedInContextMapper.class, guid);
     }
 
     /**
@@ -757,7 +757,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<PreferredTerm> createPreferredTerm(String serverName, String userId, PreferredTerm preferredTermRelationship) {
         String restAPIName = "createPreferredTerm";
-        return createLine(serverName, restAPIName, userId, PreferredTermMapper.class, preferredTermRelationship);
+        return createRelationship(serverName, restAPIName, userId, PreferredTermMapper.class, preferredTermRelationship);
     }
 
     /**
@@ -777,7 +777,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<PreferredTerm> getPreferredTermRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getPreferredTermRelationship";
-        return getLine(serverName, restAPIName, userId, PreferredTermMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, PreferredTermMapper.class, guid);
     }
 
     /**
@@ -786,7 +786,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param guid                      unique identifier of the Line
+     * @param guid                      unique identifier of the relationship
      * @param preferredTermRelationship the PreferredTerm relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated PreferredTermRelationship
@@ -804,7 +804,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<PreferredTerm> updatePreferredTermRelationship(String serverName, String userId, String guid, PreferredTerm preferredTermRelationship, boolean isReplace) {
         String restAPIName = "updatePreferredTermRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, PreferredTermMapper.class, preferredTermRelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, PreferredTermMapper.class, preferredTermRelationship, isReplace);
     }
 
     /**
@@ -828,7 +828,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<PreferredTerm> deletePreferredTermRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deletePreferredTermRelationship";
-        return deleteLine(serverName, restAPIName, userId, PreferredTermMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, PreferredTermMapper.class, guid, isPurge);
     }
 
     /**
@@ -853,7 +853,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<PreferredTerm> restorePreferredTerm(String serverName, String userId, String guid) {
         String restAPIName = "restorePreferredTerm";
-        return restoreLine(serverName, restAPIName, userId, PreferredTermMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, PreferredTermMapper.class, guid);
     }
 
     /**
@@ -877,7 +877,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ValidValue> createValidValue(String serverName, String userId, ValidValue validValueRelationship) {
         String restAPIName = "createValidValue";
-        return createLine(serverName, restAPIName, userId, ValidValueMapper.class, validValueRelationship);
+        return createRelationship(serverName, restAPIName, userId, ValidValueMapper.class, validValueRelationship);
     }
 
     /**
@@ -897,7 +897,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ValidValue> getValidValueRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getValidValueRelationship";
-        return getLine(serverName, restAPIName, userId, ValidValueMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, ValidValueMapper.class, guid);
     }
 
     /**
@@ -906,7 +906,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName             serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                 userId under which the request is performed
-     * @param guid                   unique identifier of the Line
+     * @param guid                   unique identifier of the relationship
      * @param validValueRelationship the ValidValue relationship
      * @param isReplace              flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated ValidValueRelationship
@@ -923,7 +923,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ValidValue> updateValidValueRelationship(String serverName, String userId, String guid, ValidValue validValueRelationship, boolean isReplace) {
         String restAPIName = "updateValidValueRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, ValidValueMapper.class, validValueRelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, ValidValueMapper.class, validValueRelationship, isReplace);
     }
 
     /**
@@ -947,7 +947,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ValidValue> deleteValidValueRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteValidValueRelationship";
-        return deleteLine(serverName, restAPIName, userId, ValidValueMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, ValidValueMapper.class, guid, isPurge);
     }
 
     /**
@@ -972,7 +972,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ValidValue> restoreValidValue(String serverName, String userId, String guid) {
         String restAPIName = "restoreValidValue";
-        return restoreLine(serverName, restAPIName, userId, ValidValueMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, ValidValueMapper.class, guid);
     }
 
     /**
@@ -995,7 +995,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ReplacementTerm> createReplacementTerm(String serverName, String userId, ReplacementTerm replacementTermRelationship) {
         String restAPIName = "createReplacementTerm";
-        return createLine(serverName, restAPIName, userId, ReplacementTermMapper.class, replacementTermRelationship);
+        return createRelationship(serverName, restAPIName, userId, ReplacementTermMapper.class, replacementTermRelationship);
     }
 
     /**
@@ -1015,7 +1015,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ReplacementTerm> getReplacementTerm(String serverName, String userId, String guid) {
         String restAPIName = "getReplacementTerm";
-        return getLine(serverName, restAPIName, userId, ReplacementTermMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, ReplacementTermMapper.class, guid);
     }
 
     /**
@@ -1024,7 +1024,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                  serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                      userId under which the request is performed
-     * @param guid                        unique identifier of the Line
+     * @param guid                        unique identifier of the relationship
      * @param replacementTermRelationship the ReplacementTerm relationship
      * @param isReplace                   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated ReplacementRelationship
@@ -1041,7 +1041,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ReplacementTerm> updateReplacementTerm(String serverName, String userId, String guid, ReplacementTerm replacementTermRelationship, boolean isReplace) {
         String restAPIName = "updateReplacementTerm";
-        return updateLine(serverName, restAPIName, userId, guid, ReplacementTermMapper.class, replacementTermRelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, ReplacementTermMapper.class, replacementTermRelationship, isReplace);
     }
 
     /**
@@ -1065,7 +1065,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ReplacementTerm> deleteReplacementTerm(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteReplacementTerm";
-        return deleteLine(serverName, restAPIName, userId, ReplacementTermMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, ReplacementTermMapper.class, guid, isPurge);
     }
 
     /**
@@ -1091,7 +1091,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ReplacementTerm> restoreReplacementTerm(String serverName, String userId, String guid) {
         String restAPIName = "restoreReplacementTerm";
-        return restoreLine(serverName, restAPIName, userId, ReplacementTermMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, ReplacementTermMapper.class, guid);
     }
 
     /**
@@ -1114,7 +1114,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TypedBy> createTermTypedByRelationship(String serverName, String userId, TypedBy termTypedByRelationship) {
         String restAPIName = "createTermTypedByRelationship";
-        return createLine(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, termTypedByRelationship);
+        return createRelationship(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, termTypedByRelationship);
     }
 
     /**
@@ -1134,7 +1134,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TypedBy> getTermTypedByRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTermTypedByRelationship";
-        return getLine(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid);
     }
 
     /**
@@ -1143,7 +1143,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param guid                    unique identifier of the Line
+     * @param guid                    unique identifier of the relationship
      * @param termTypedByRelationship the TypedBy relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated TypedBy
@@ -1160,7 +1160,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TypedBy> updateTermTypedByRelationship(String serverName, String userId, String guid, TypedBy termTypedByRelationship, boolean isReplace) {
         String restAPIName = "updateTermTypedByRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, TermTypedByRelationshipMapper.class, termTypedByRelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, TermTypedByRelationshipMapper.class, termTypedByRelationship, isReplace);
     }
 
     /**
@@ -1184,7 +1184,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TypedBy> deleteTermTypedByRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteTermTypedByRelationship";
-        return deleteLine(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid, isPurge);
     }
 
     /**
@@ -1209,7 +1209,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TypedBy> restoreTermTypedByRelationship(String serverName, String userId, String guid) {
         String restAPIName = "restoreTermTypedByRelationship";
-        return restoreLine(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid);
     }
 
     /**
@@ -1233,7 +1233,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsA> createIsARelationship(String serverName, String userId, IsA iSARelationship) {
         String restAPIName = "createIsARelationship";
-        return createLine(serverName, restAPIName, userId, IsARelationshipMapper.class, iSARelationship);
+        return createRelationship(serverName, restAPIName, userId, IsARelationshipMapper.class, iSARelationship);
     }
 
     /**
@@ -1253,7 +1253,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsA> getIsARelationship(String serverName, String userId, String guid) {
         String restAPIName = "getIsARelationship";
-        return getLine(serverName, restAPIName, userId, IsARelationshipMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, IsARelationshipMapper.class, guid);
     }
 
     /**
@@ -1262,7 +1262,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId          userId under which the request is performed
-     * @param guid            unique identifier of the Line
+     * @param guid            unique identifier of the relationship
      * @param iSARelationship the Isa relationship
      * @param isReplace       flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Isa
@@ -1279,7 +1279,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsA> updateIsARelationship(String serverName, String userId, String guid, IsA iSARelationship, boolean isReplace) {
         String restAPIName = "updateIsARelationship";
-        return updateLine(serverName, restAPIName, userId, guid, IsARelationshipMapper.class, iSARelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, IsARelationshipMapper.class, iSARelationship, isReplace);
     }
 
     /**
@@ -1303,7 +1303,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsA> deleteIsARelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteIsARelationship";
-        return deleteLine(serverName, restAPIName, userId, IsARelationshipMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, IsARelationshipMapper.class, guid, isPurge);
     }
 
     /**
@@ -1328,7 +1328,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsA> restoreIsARelationship(String serverName, String userId, String guid) {
         String restAPIName = "restoreIsARelationship";
-        return restoreLine(serverName, restAPIName, userId, IsARelationshipMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, IsARelationshipMapper.class, guid);
     }
 
     /**
@@ -1352,7 +1352,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsATypeOf> createTermIsATypeOfRelationship(String serverName, String userId, IsATypeOf termIsATypeOfRelationship) {
         String restAPIName = "createTermIsATypeOfRelationship";
-        return createLine(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, termIsATypeOfRelationship);
+        return createRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, termIsATypeOfRelationship);
     }
 
     /**
@@ -1372,7 +1372,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsATypeOf> getTermIsATypeOfRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTermIsATypeOfRelationship";
-        return getLine(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid);
     }
 
     /**
@@ -1381,7 +1381,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param guid                      unique identifier of the Line
+     * @param guid                      unique identifier of the relationship
      * @param termIsATypeOfRelationship the IsaTypeOf relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated IsaTypeOf
@@ -1398,7 +1398,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsATypeOf> updateTermIsATypeOfRelationship(String serverName, String userId, String guid, IsATypeOf termIsATypeOfRelationship, boolean isReplace) {
         String restAPIName = "updateTermIsATypeOfRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, TermIsATypeOfRelationshipMapper.class, termIsATypeOfRelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, TermIsATypeOfRelationshipMapper.class, termIsATypeOfRelationship, isReplace);
     }
 
     /**
@@ -1422,7 +1422,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsATypeOf> deleteIsATypeOfRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteIsATypeOfRelationship";
-        return deleteLine(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid, isPurge);
     }
 
     /**
@@ -1447,7 +1447,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsATypeOfRelationship(String serverName, String userId, String guid) {
         String restAPIName = "restoreTermIsATypeOfRelationship";
-        return restoreLine(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid);
     }
 
     /**
@@ -1472,7 +1472,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Categorization> createTermCategorizationRelationship(String serverName, String userId, Categorization termCategorizationRelationship) {
         String restAPIName = "createTermCategorizationRelationship";
-        return createLine(serverName, restAPIName, userId, TermCategorizationMapper.class, termCategorizationRelationship);
+        return createRelationship(serverName, restAPIName, userId, TermCategorizationMapper.class, termCategorizationRelationship);
     }
 
     /**
@@ -1492,7 +1492,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Categorization> getTermCategorizationRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTermCategorizationRelationship";
-        return getLine(serverName, restAPIName, userId, TermCategorizationMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, TermCategorizationMapper.class, guid);
     }
 
     /**
@@ -1501,7 +1501,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName                     serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                         userId under which the request is performed
-     * @param guid                           unique identifier of the Line
+     * @param guid                           unique identifier of the relationship
      * @param termCategorizationRelationship the termCategorization relationship
      * @param isReplace                      flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Isa
@@ -1518,7 +1518,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Categorization> updateTermCategorizationRelationship(String serverName, String userId, String guid, Categorization termCategorizationRelationship, Boolean isReplace) {
         String restAPIName = "updateTermCategorizationRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, TermCategorizationMapper.class, termCategorizationRelationship, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, TermCategorizationMapper.class, termCategorizationRelationship, isReplace);
     }
 
 
@@ -1543,7 +1543,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Categorization> deleteTermCategorizationRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteTermCategorizationRelationship";
-        return deleteLine(serverName, restAPIName, userId, TermCategorizationMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TermCategorizationMapper.class, guid, isPurge);
     }
 
     /**
@@ -1566,7 +1566,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<Categorization> restoreTermCategorizationRelationship(String serverName, String userId, String guid) {
         String restAPIName = "restoreTermCategorizationRelationship";
-        return restoreLine(serverName, restAPIName, userId, TermCategorizationMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, TermCategorizationMapper.class, guid);
     }
 
     /**
@@ -1593,7 +1593,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TermAnchor> createTermAnchorRelationship(String serverName, String userId, TermAnchor termAnchorRelationship) {
         String restAPIName = "createTermAnchorRelationship";
-        return createLine(serverName, restAPIName, userId, TermAnchorMapper.class, termAnchorRelationship);
+        return createRelationship(serverName, restAPIName, userId, TermAnchorMapper.class, termAnchorRelationship);
     }
 
     /**
@@ -1613,7 +1613,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TermAnchor> getTermAnchorRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getTermAnchorRelationship";
-        return getLine(serverName, restAPIName, userId, TermAnchorMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, TermAnchorMapper.class, guid);
     }
 
     /**
@@ -1634,7 +1634,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TermAnchor> updateTermAnchorRelationship(String serverName, String userId, String guid, TermAnchor termAnchor, Boolean isReplace) {
         String restAPIName = "updateTermCategorizationRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, TermAnchorMapper.class, termAnchor, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, TermAnchorMapper.class, termAnchor, isReplace);
     }
 
     /**
@@ -1658,7 +1658,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TermAnchor> deleteTermAnchorRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteTermAnchorRelationship";
-        return deleteLine(serverName, restAPIName, userId, TermAnchorMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, TermAnchorMapper.class, guid, isPurge);
     }
 
     /**
@@ -1681,7 +1681,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<TermAnchor> restoreTermAnchorRelationship(String serverName, String userId, String guid) {
         String restAPIName = "restoreTermAnchorRelationship";
-        return restoreLine(serverName, restAPIName, userId, TermAnchorMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, TermAnchorMapper.class, guid);
     }
 
     /**
@@ -1707,7 +1707,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<CategoryAnchor> createCategoryAnchorRelationship(String serverName, String userId, CategoryAnchor categoryAnchorRelationship) {
         String restAPIName = "createCategoryAnchorRelationship";
-        return createLine(serverName, restAPIName, userId, CategoryAnchorMapper.class, categoryAnchorRelationship);
+        return createRelationship(serverName, restAPIName, userId, CategoryAnchorMapper.class, categoryAnchorRelationship);
     }
 
     /**
@@ -1727,7 +1727,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<CategoryAnchor> getCategoryAnchorRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getCategoryAnchorRelationship";
-        return getLine(serverName, restAPIName, userId, CategoryAnchorMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, CategoryAnchorMapper.class, guid);
     }
 
     /**
@@ -1749,7 +1749,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<CategoryAnchor> updateCategoryAnchorRelationship(String serverName, String userId, String guid, CategoryAnchor categoryAnchor, Boolean isReplace) {
         String restAPIName = "updateTermCategorizationRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, CategoryAnchorMapper.class, categoryAnchor, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, CategoryAnchorMapper.class, categoryAnchor, isReplace);
     }
 
     /**
@@ -1773,7 +1773,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<CategoryAnchor> deleteCategoryAnchorRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteCategoryAnchorRelationship";
-        return deleteLine(serverName, restAPIName, userId, CategoryAnchorMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, CategoryAnchorMapper.class, guid, isPurge);
     }
 
     /**
@@ -1796,7 +1796,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<CategoryAnchor> restoreCategoryAnchorRelationship(String serverName, String userId, String guid) {
         String restAPIName = "restoreCategoryAnchorRelationship";
-        return restoreLine(serverName, restAPIName, userId, CategoryAnchorMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, CategoryAnchorMapper.class, guid);
     }
 
     /**
@@ -1820,7 +1820,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ProjectScope> createProjectScopeRelationship(String serverName, String userId, ProjectScope projectScope) {
         String restAPIName = "createProjectScope";
-        return createLine(serverName, restAPIName, userId, ProjectScopeMapper.class, projectScope);
+        return createRelationship(serverName, restAPIName, userId, ProjectScopeMapper.class, projectScope);
     }
 
     /**
@@ -1840,7 +1840,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ProjectScope> getProjectScopeRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getProjectScopeRelationship";
-        return getLine(serverName, restAPIName, userId, ProjectScopeMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, ProjectScopeMapper.class, guid);
     }
 
     /**
@@ -1849,7 +1849,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
-     * @param guid         unique identifier of the Line
+     * @param guid         unique identifier of the relationship
      * @param projectScope the ProjectScope relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated ProjectScopeRelationship
@@ -1866,7 +1866,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ProjectScope> updateProjectScopeRelationship(String serverName, String userId, String guid, ProjectScope projectScope, boolean isReplace) {
         String restAPIName = "updateProjectScopeRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, ProjectScopeMapper.class, projectScope, isReplace);
+        return updateRelationship(serverName, restAPIName, userId, guid, ProjectScopeMapper.class, projectScope, isReplace);
     }
 
     /**
@@ -1890,7 +1890,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ProjectScope> deleteProjectScopeRelationship(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteProjectScopeRelationship";
-        return deleteLine(serverName, restAPIName, userId, ProjectScopeMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, ProjectScopeMapper.class, guid, isPurge);
     }
 
     /**
@@ -1915,48 +1915,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<ProjectScope> restoreProjectScopeRelationship(String serverName, String userId, String guid) {
         String restAPIName = "restoreProjectScopeRelationship";
-        return restoreLine(serverName, restAPIName, userId, ProjectScopeMapper.class, guid);
-    }
-
-    /**
-     * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
-     *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the SemanticAssignment relationship to get
-     * @return response which when successful contains the SemanticAssignment relationship with the requested guid
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<SemanticAssignment> getSemanticAssignmentRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "getSemanticAssignmentRelationship";
-        return getLine(serverName, restAPIName, userId, SemanticAssignmentMapper.class, guid);
-    }
-
-    /**
-     * Update a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
-     *
-     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId                userId under which the request is performed
-     * @param guid                  guid of the CategoryHierarchyLink relationship
-     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
-     * @param isReplace             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated categoryHierarchyLink
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> PropertyServerException              Property server exception. </li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryHierarchyLink(String serverName, String userId, String guid, CategoryHierarchyLink categoryHierarchyLink, Boolean isReplace) {
-        String restAPIName = "updateCategoryHierarchyLink";
-        return updateLine(serverName,restAPIName, userId, guid, CategoryHierarchyLinkMapper.class, categoryHierarchyLink, isReplace);
+        return restoreRelationship(serverName, restAPIName, userId, ProjectScopeMapper.class, guid);
     }
 
     /**
@@ -1975,7 +1934,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> createCategoryHierarchyLink(String serverName, String userId, CategoryHierarchyLink categoryHierarchyLink) {
         String restAPIName = "createCategoryHierarchyLink";
-        return createLine(serverName,restAPIName,userId, CategoryHierarchyLinkMapper.class, categoryHierarchyLink);
+        return createRelationship(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, categoryHierarchyLink);
     }
 
     /**
@@ -1994,7 +1953,27 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> getCategoryHierarchyLink(String serverName, String userId, String guid) {
         String restAPIName = "getCategoryHierarchyLink";
-        return getLine(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid);
+        return getRelationship(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid);
+    }
+    /**
+     * Update a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
+     * @param guid                  guid of the CategoryHierarchyLink relationship
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @param isReplace             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated categoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryHierarchyLink(String serverName, String userId, String guid, CategoryHierarchyLink categoryHierarchyLink, Boolean isReplace) {
+        String restAPIName = "updateCategoryHierarchyLink";
+        return updateRelationship(serverName, restAPIName, userId, guid, CategoryHierarchyLinkMapper.class, categoryHierarchyLink, isReplace);
     }
 
     /**
@@ -2014,7 +1993,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> deleteCategoryHierarchyLink(String serverName, String userId, String guid, Boolean isPurge) {
         String restAPIName = "deleteCategoryHierarchyLink";
-        return deleteLine(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid, isPurge);
+        return deleteRelationship(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid, isPurge);
     }
 
     /**
@@ -2036,6 +2015,26 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> restoreCategoryHierarchyLink(String serverName, String userId, String guid) {
         String restAPIName = "restoreCategoryHierarchyLink";
-        return restoreLine(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid);
+        return restoreRelationship(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid);
     }
+    /**
+     * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the SemanticAssignment relationship to get
+     * @return response which when successful contains the SemanticAssignment relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<SemanticAssignment> getSemanticAssignmentRelationship(String serverName, String userId, String guid) {
+        String restAPIName = "getSemanticAssignmentRelationship";
+        return getRelationship(serverName, restAPIName, userId, SemanticAssignmentMapper.class, guid);
+    }
+
 }

@@ -45,11 +45,11 @@ import java.util.Map;
 
 public class RexViewRESTServices {
 
-    protected static RexViewInstanceHandler instanceHandler       = new RexViewInstanceHandler();
+    protected static final RexViewInstanceHandler instanceHandler       = new RexViewInstanceHandler();
 
-    private static RESTExceptionHandler     restExceptionHandler  = new RESTExceptionHandler();
+    private static final RESTExceptionHandler     restExceptionHandler  = new RESTExceptionHandler();
 
-    private static RESTCallLogger           restCallLogger        = new RESTCallLogger(LoggerFactory.getLogger(RexViewRESTServices.class),
+    private static final RESTCallLogger           restCallLogger        = new RESTCallLogger(LoggerFactory.getLogger(RexViewRESTServices.class),
                                                                                        instanceHandler.getServiceName());
 
     private static final Logger             log                   = LoggerFactory.getLogger(RexViewRESTServices.class);
@@ -110,9 +110,9 @@ public class RexViewRESTServices {
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception exception)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -166,8 +166,8 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureUserNotAuthorizedException(response, error);
             }
-            catch (Throwable error) {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (Exception exception) {
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
             /*
@@ -181,12 +181,12 @@ public class RexViewRESTServices {
                                                                  requestBody.getEnterpriseOption(),
                                                                  methodName));
             }
-            catch (RexViewServiceException error)
+            catch (RexViewServiceException exception)
             {
-                RexExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+                RexExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
             }
-            catch (Throwable error) {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            catch (Exception exception) {
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
         }
 
@@ -195,11 +195,11 @@ public class RexViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            RexViewServiceException exception = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                         this.getClass().getName(),
                                                                         methodName);
 
-            RexExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            RexExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
 
@@ -250,21 +250,21 @@ public class RexViewRESTServices {
                 handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
 
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
             /*
@@ -280,13 +280,13 @@ public class RexViewRESTServices {
                                                                    requestBody.getEntityGUID(),
                                                                    methodName));
             }
-            catch (RexViewServiceException error)
+            catch (RexViewServiceException exception)
             {
-                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
         }
@@ -296,11 +296,11 @@ public class RexViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            RexViewServiceException exception = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                         this.getClass().getName(),
                                                                         methodName);
 
-            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
         }
 
 
@@ -346,21 +346,21 @@ public class RexViewRESTServices {
 
                 handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
             /*
@@ -377,13 +377,13 @@ public class RexViewRESTServices {
                                                                          methodName));
 
             }
-            catch (RexViewServiceException error)
+            catch (RexViewServiceException exception)
             {
-                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
         }
         else
@@ -391,11 +391,11 @@ public class RexViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            RexViewServiceException exception = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                         this.getClass().getName(),
                                                                         methodName);
 
-            RexExceptionHandler.captureCheckedException( response, error, error.getClass().getName());
+            RexExceptionHandler.captureCheckedException( response, exception, exception.getClass().getName());
         }
 
 
@@ -443,21 +443,21 @@ public class RexViewRESTServices {
 
                 handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
             try
@@ -478,13 +478,13 @@ public class RexViewRESTServices {
 
 
             }
-            catch (RexViewServiceException error)
+            catch (RexViewServiceException exception)
             {
-                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
         }
         else
@@ -492,11 +492,11 @@ public class RexViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            RexViewServiceException exception = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                         this.getClass().getName(),
                                                                         methodName);
 
-            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
         }
 
 
@@ -545,21 +545,21 @@ public class RexViewRESTServices {
 
                 handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
             try
@@ -581,13 +581,13 @@ public class RexViewRESTServices {
                 response.setServerName(requestBody.getServerName());
 
             }
-            catch (RexViewServiceException error)
+            catch (RexViewServiceException exception)
             {
-                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
         }
         else
@@ -595,11 +595,11 @@ public class RexViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            RexViewServiceException exception = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                         this.getClass().getName(),
                                                                         methodName);
 
-            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
         }
 
 
@@ -654,21 +654,21 @@ public class RexViewRESTServices {
 
                 handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
             try
@@ -688,13 +688,13 @@ public class RexViewRESTServices {
                 }
 
             }
-            catch (RexViewServiceException error)
+            catch (RexViewServiceException exception)
             {
-                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
         }
 
@@ -703,11 +703,11 @@ public class RexViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            RexViewServiceException exception = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                         this.getClass().getName(),
                                                                         methodName);
 
-            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -761,21 +761,21 @@ public class RexViewRESTServices {
 
                 handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
             try {
@@ -797,13 +797,13 @@ public class RexViewRESTServices {
                 }
 
             }
-            catch (RexViewServiceException error)
+            catch (RexViewServiceException exception)
             {
-                RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch (Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
         }
         else
@@ -811,11 +811,11 @@ public class RexViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            RexViewServiceException error = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            RexViewServiceException exception = new RexViewServiceException(RexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                         this.getClass().getName(),
                                                                         methodName);
 
-            RexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            RexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
         }
 
 

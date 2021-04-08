@@ -74,9 +74,9 @@ public class DiscoveryEngineRESTServices
                                                          pageSize,
                                                          methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -128,9 +128,9 @@ public class DiscoveryEngineRESTServices
                                                                   pageSize,
                                                                   methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -182,9 +182,9 @@ public class DiscoveryEngineRESTServices
                                                           pageSize,
                                                           methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -229,17 +229,17 @@ public class DiscoveryEngineRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.findBeanGUIDs(userId,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                     searchString,
                                                     searchStringParameterName,
+                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                     startFrom,
                                                     pageSize,
                                                     methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -288,9 +288,9 @@ public class DiscoveryEngineRESTServices
                                                               pageSize,
                                                               methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -331,9 +331,9 @@ public class DiscoveryEngineRESTServices
 
             auditLog.logMessage(methodName, DiscoveryEngineAuditCode.ASSET_AUDIT_LOG.getMessageDefinition(assetGUID, discoveryService, message));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -401,9 +401,9 @@ public class DiscoveryEngineRESTServices
                                                                        methodName));
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -469,9 +469,9 @@ public class DiscoveryEngineRESTServices
                                                       methodName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -515,9 +515,9 @@ public class DiscoveryEngineRESTServices
                                                                           discoveryReportGUID,
                                                                           methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -552,9 +552,9 @@ public class DiscoveryEngineRESTServices
 
             response.setNames(handler.getTypesOfAnnotation());
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -588,9 +588,9 @@ public class DiscoveryEngineRESTServices
 
             response.setStringMap(handler.getTypesOfAnnotationDescriptions());
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -660,9 +660,9 @@ public class DiscoveryEngineRESTServices
                                                                                methodName));
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -710,9 +710,9 @@ public class DiscoveryEngineRESTServices
                                                                           maximumResults,
                                                                           methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -760,9 +760,9 @@ public class DiscoveryEngineRESTServices
                                                                    maximumResults,
                                                                    methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -803,9 +803,9 @@ public class DiscoveryEngineRESTServices
 
             response.setAnnotation(handler.getAnnotation(userId, annotationGUID, methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -855,9 +855,9 @@ public class DiscoveryEngineRESTServices
                                                                     requestBody,
                                                                     methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -902,9 +902,9 @@ public class DiscoveryEngineRESTServices
                                                                requestBody,
                                                                methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -946,9 +946,9 @@ public class DiscoveryEngineRESTServices
 
             handler.updateAnnotation(userId, annotationGUID, requestBody, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -991,9 +991,9 @@ public class DiscoveryEngineRESTServices
 
             handler.deleteAnnotation(userId, annotationGUID, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1037,9 +1037,9 @@ public class DiscoveryEngineRESTServices
 
             handler.getPreviousDataFieldsForAsset(userId, discoveryReportGUID, startingFrom, maximumResults, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1084,9 +1084,9 @@ public class DiscoveryEngineRESTServices
 
             handler.getNewDataFieldsForAsset(userId, discoveryReportGUID, startingFrom, maximumResults, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1130,9 +1130,9 @@ public class DiscoveryEngineRESTServices
 
             handler.getNestedDataFields(userId, parentDataFieldGUID, startingFrom, maximumResults, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1173,9 +1173,9 @@ public class DiscoveryEngineRESTServices
 
             handler.getDataField(userId, dataFieldGUID, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1245,9 +1245,9 @@ public class DiscoveryEngineRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1316,9 +1316,9 @@ public class DiscoveryEngineRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1369,9 +1369,9 @@ public class DiscoveryEngineRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1431,9 +1431,9 @@ public class DiscoveryEngineRESTServices
                                     dataField.getAdditionalProperties(),
                                     methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1480,9 +1480,9 @@ public class DiscoveryEngineRESTServices
                                     dataFieldGUID,
                                     methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

@@ -84,7 +84,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -136,7 +136,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(typeName))
+            if ((typeName != null) && (typeName.length() == 0))
             {
                 typeName = null;
             }
@@ -163,7 +163,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -209,7 +209,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(name))
+            if (name != null && (name.length() == 0))
             {
                 name = null;
             }
@@ -236,7 +236,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -282,7 +282,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(serverUserId))
+            if ((serverUserId != null) && (serverUserId.length() == 0))
             {
                 serverUserId = null;
             }
@@ -309,7 +309,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -355,7 +355,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(serverPassword))
+            if ((serverPassword != null) && (serverPassword.length() == 0))
             {
                 serverPassword = null;
             }
@@ -382,7 +382,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -455,7 +455,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -512,7 +512,7 @@ public class OMAGServerAdminServices
 
             EventBusConfig   eventBusConfig = new EventBusConfig();
 
-            if ("".equals(connectorProvider))
+            if ((connectorProvider != null) && (connectorProvider.length() == 0))
             {
                 eventBusConfig.setConnectorProvider(null);
             }
@@ -521,7 +521,7 @@ public class OMAGServerAdminServices
                 eventBusConfig.setConnectorProvider(connectorProvider);
             }
 
-            if ("".equals(topicURLRoot))
+            if ((topicURLRoot != null) && (topicURLRoot.length() == 0))
             {
                 eventBusConfig.setTopicURLRoot(null);
             }
@@ -565,7 +565,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -620,7 +620,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -690,7 +690,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -742,7 +742,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(url))
+            if ((url != null) && (url.length() == 0))
             {
                 url = null;
             }
@@ -769,7 +769,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -851,7 +851,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -935,7 +935,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -983,7 +983,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1031,7 +1031,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1079,7 +1079,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1136,7 +1136,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1203,7 +1203,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1259,7 +1259,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1314,7 +1314,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1367,7 +1367,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1444,7 +1444,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1502,7 +1502,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1562,7 +1562,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1620,7 +1620,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1644,11 +1644,11 @@ public class OMAGServerAdminServices
      * OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
      * OMAGConfigurationErrorException the local repository mode has not been set
      */
-    public VoidResponse setLocalRepositoryEventMapper(String     userId,
+    public VoidResponse setRepositoryProxyEventMapper(String     userId,
                                                       String     serverName,
                                                       Connection connection)
     {
-        final String methodName = "setLocalRepositoryEventMapper";
+        final String methodName = "setRepositoryProxyEventMapper";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1709,7 +1709,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1735,13 +1735,13 @@ public class OMAGServerAdminServices
      * OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    public VoidResponse setLocalRepositoryEventMapper(String              userId,
+    public VoidResponse setRepositoryProxyEventMapper(String              userId,
                                                       String              serverName,
                                                       String              connectorProvider,
                                                       String              eventSource,
                                                       Map<String, Object> additionalProperties)
     {
-        final String methodName = "setLocalRepositoryEventMapper";
+        final String methodName = "setRepositoryProxyEventMapper";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1754,7 +1754,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            this.setLocalRepositoryEventMapper(userId,
+            this.setRepositoryProxyEventMapper(userId,
                                                serverName,
                                                connectorConfigurationFactory.getRepositoryEventMapperConnection(connectorProvider,
                                                                                                                 additionalProperties,
@@ -1768,7 +1768,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1843,7 +1843,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1924,7 +1924,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2000,7 +2000,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2081,7 +2081,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2183,7 +2183,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2278,7 +2278,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2373,7 +2373,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2425,7 +2425,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2529,7 +2529,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2581,7 +2581,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2695,7 +2695,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2746,7 +2746,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2791,7 +2791,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2926,7 +2926,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2979,7 +2979,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -3030,7 +3030,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -3094,7 +3094,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -3157,7 +3157,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureConfigurationErrorException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -3201,7 +3201,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -3231,7 +3231,7 @@ public class OMAGServerAdminServices
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable  error)
+        } catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -3275,7 +3275,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }

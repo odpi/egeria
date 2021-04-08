@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSRepositoryRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -725,6 +726,33 @@ public class LocalRepositoryServicesResource
 
 
     /**
+     * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param historyRangeRequest detailing the range of times and paging for the results
+     * @return EntityList structure or
+     * InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * EntityNotKnownException the requested entity instance is not known in the metadata collection
+     *                                   at the time requested.
+     * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * FunctionNotSupportedException the repository does not support history.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entity/{guid}/history/all")
+    public  EntityListResponse getEntityDetailHistory(@PathVariable String              serverName,
+                                                      @PathVariable String              userId,
+                                                      @PathVariable String              guid,
+                                                      @RequestBody  HistoryRangeRequest historyRangeRequest)
+    {
+        return restAPI.getEntityDetailHistory(serverName, userId, guid, historyRangeRequest);
+    }
+
+
+    /**
      * Return the relationships for a specific entity.
      *
      * @param serverName unique identifier for requested server.
@@ -1105,6 +1133,32 @@ public class LocalRepositoryServicesResource
                                                  @RequestBody  HistoryRequest asOfTime)
     {
         return restAPI.getRelationship(serverName, userId, guid, asOfTime);
+    }
+
+
+    /**
+     * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
+     * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the relationship.
+     * @param historyRangeRequest detailing the range of times and paging for the results
+     * @return RelationshipList structure or
+     * InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
+     *                                   at the time requested.
+     * FunctionNotSupportedException the repository does not support history.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/relationship/{guid}/history/all")
+    public  RelationshipListResponse getRelationshipHistory(@PathVariable String              serverName,
+                                                            @PathVariable String              userId,
+                                                            @PathVariable String              guid,
+                                                            @RequestBody  HistoryRangeRequest historyRangeRequest)
+    {
+        return restAPI.getRelationshipHistory(serverName, userId, guid, historyRangeRequest);
     }
 
 
@@ -2371,7 +2425,7 @@ public class LocalRepositoryServicesResource
      * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
      * FunctionNotSupportedException this method is not supported
      */
-    @PostMapping(path = "/instances/entity/{entityGUID}/home-classifications")
+    @GetMapping(path = "/instances/entity/{entityGUID}/home-classifications")
 
     public ClassificationListResponse getHomeClassifications(@PathVariable String serverName,
                                                              @PathVariable String userId,
@@ -2596,9 +2650,9 @@ public class LocalRepositoryServicesResource
      */
     @PostMapping(path = "instances/entities/classifications/reference-copy/purge")
 
-    public  VoidResponse purgeClassificationReferenceCopy(String                          serverName,
-                                                          String                          userId,
-                                                          ClassificationWithEntityRequest requestBody)
+    public  VoidResponse purgeClassificationReferenceCopy(@PathVariable String                          serverName,
+                                                          @PathVariable String                          userId,
+                                                          @RequestBody  ClassificationWithEntityRequest requestBody)
     {
         return restAPI.purgeClassificationReferenceCopy(serverName, userId, requestBody);
     }

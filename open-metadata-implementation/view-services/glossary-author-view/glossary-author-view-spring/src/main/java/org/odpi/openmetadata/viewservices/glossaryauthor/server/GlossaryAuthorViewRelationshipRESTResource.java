@@ -81,7 +81,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param guid                 unique identifier of the Line
+     * @param guid                 unique identifier of the Relationship
      * @param termHasARelationship the HasA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TermHasARelationship
@@ -197,7 +197,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param guid                    unique identifier of the Line
+     * @param guid                    unique identifier of the Relationship
      * @param relatedTermRelationship the related term  relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created RelatedTerm
@@ -315,7 +315,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param synonym    the synonym  relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created SynonymRelationship
@@ -433,7 +433,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param antonym    the antonym relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created AntonymRelationship
@@ -551,7 +551,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName  serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId      userId under which the request is performed
-     * @param guid        unique identifier of the Line
+     * @param guid        unique identifier of the Relationship
      * @param translation the translation relationship
      * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TranslationRelationship
@@ -669,7 +669,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId        userId under which the request is performed
-     * @param guid          unique identifier of the Line
+     * @param guid          unique identifier of the Relationship
      * @param usedInContext the used in context relationship
      * @param isReplace     flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created UsedInContextRelationship
@@ -787,7 +787,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId        userId under which the request is performed
-     * @param guid          unique identifier of the Line
+     * @param guid          unique identifier of the Relationship
      * @param preferredTerm the preferred term relationship
      * @param isReplace     flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created PreferredTermRelationship
@@ -910,7 +910,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param validValue the valid value relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ValidValueRelationship
@@ -1029,7 +1029,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId          userId under which the request is performed
-     * @param guid            unique identifier of the Line
+     * @param guid            unique identifier of the Relationship
      * @param replacementTerm the replacement term relationship
      * @param isReplace       flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ReplacementTermRelationship
@@ -1147,7 +1147,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param guid                    unique identifier of the Line
+     * @param guid                    unique identifier of the Relationship
      * @param termTYPEDBYRelationship the typed by relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TermTYPEDBYRelationshipRelationship
@@ -1265,7 +1265,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param isa        the is-a relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created IsARelationshipRelationship
@@ -1382,7 +1382,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param isatypeof  the is-a-type-of relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created IsARelationshipRelationship
@@ -1502,7 +1502,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
+     * @param guid       unique identifier of the Relationship
      * @param isatypeof  the is-a-type-of relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created termCategorization Relationship
@@ -1587,7 +1587,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping(path = "/term-anchor")
+    @PostMapping(path = "/term-anchors")
     public SubjectAreaOMASAPIResponse<TermAnchor> createTermAnchor(@PathVariable String serverName,
                                                                    @PathVariable String userId,
                                                                    @RequestBody TermAnchor termAnchorRelationship) {
@@ -1608,7 +1608,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping(path = "/term-anchor/{guid}")
+    @GetMapping(path = "/term-anchors/{guid}")
     public SubjectAreaOMASAPIResponse<TermAnchor> getTermAnchorRelationship(@PathVariable String serverName,
                                                                             @PathVariable String userId,
                                                                             @PathVariable String guid) {
@@ -1632,7 +1632,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PutMapping(path = "/term-anchor/{guid}")
+    @PutMapping(path = "/term-anchors/{guid}")
     public SubjectAreaOMASAPIResponse<TermAnchor> updateTermAnchorRelationship(@PathVariable String serverName,
                                                                                  @PathVariable String userId,
                                                                                  @PathVariable String guid,
@@ -1656,7 +1656,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @DeleteMapping(path = "/term-anchor/{guid}")
+    @DeleteMapping(path = "/term-anchors/{guid}")
     public SubjectAreaOMASAPIResponse<TermAnchor> deleteTermAnchorRelationship(@PathVariable String serverName,
                                                                                @PathVariable String userId,
                                                                                @PathVariable String guid,
@@ -1680,7 +1680,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping(path = "/term-anchor/{guid}")
+    @PostMapping(path = "/term-anchors/{guid}")
     public SubjectAreaOMASAPIResponse<TermAnchor> restoreTermAnchorRelationship(@PathVariable String serverName,
                                                                                 @PathVariable String userId,
                                                                                 @PathVariable String guid) {
@@ -1705,7 +1705,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping(path = "/category-anchor")
+    @PostMapping(path = "/category-anchors")
     public SubjectAreaOMASAPIResponse<CategoryAnchor> createCategoryAnchor(@PathVariable String serverName,
                                                                            @PathVariable String userId,
                                                                            @RequestBody CategoryAnchor categoryAnchorRelationship) {
@@ -1726,7 +1726,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping(path = "/category-anchor/{guid}")
+    @GetMapping(path = "/category-anchors/{guid}")
     public SubjectAreaOMASAPIResponse<CategoryAnchor> getCategoryAnchorRelationship(@PathVariable String serverName,
                                                                                     @PathVariable String userId,
                                                                                     @PathVariable String guid) {
@@ -1748,7 +1748,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @DeleteMapping(path = "/category-anchor/{guid}")
+    @DeleteMapping(path = "/category-anchors/{guid}")
     public SubjectAreaOMASAPIResponse<CategoryAnchor> deleteCategoryAnchorRelationship(@PathVariable String serverName,
                                                                                        @PathVariable String userId,
                                                                                        @PathVariable String guid,
@@ -1774,7 +1774,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PutMapping(path = "/category-anchor/{guid}")
+    @PutMapping(path = "/category-anchors/{guid}")
     public SubjectAreaOMASAPIResponse<CategoryAnchor> updateCategoryAnchorRelationship(@PathVariable String serverName,
                                                                                @PathVariable String userId,
                                                                                @PathVariable String guid,
@@ -1799,7 +1799,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping(path = "/category-anchor/{guid}")
+    @PostMapping(path = "/category-anchors/{guid}")
     public SubjectAreaOMASAPIResponse<CategoryAnchor> restoreCategoryAnchorRelationship(@PathVariable String serverName,
                                                                                         @PathVariable String userId,
                                                                                         @PathVariable String guid) {
@@ -1856,7 +1856,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
-     * @param guid         unique identifier of the Line
+     * @param guid         unique identifier of the Relationship
      * @param projectScope the projectScope relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created ProjectScopeRelationship
@@ -1941,5 +1941,120 @@ public class GlossaryAuthorViewRelationshipRESTResource {
                                                                                             @PathVariable String userId,
                                                                                             @PathVariable String guid) {
         return restAPI.getSemanticAssignmentRelationship(serverName, userId, guid);
+    }
+    /**
+     * Create a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @return response, when successful contains the created categoryHierarchyLink relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @PostMapping(path = "/category-hierarchy-links")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> createCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                         @PathVariable String userId,
+                                                                                         @RequestBody CategoryHierarchyLink categoryHierarchyLink) {
+        return restAPI.createCategoryHierarchyLink(serverName, userId, categoryHierarchyLink);
+    }
+
+    /**
+     * Get a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink Relationship to get
+     * @return response which when successful contains the CategoryHierarchyLink relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @GetMapping(path = "/category-hierarchy-links/{guid}")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> getCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                      @PathVariable String userId,
+                                                                                      @PathVariable String guid) {
+        return restAPI.getCategoryHierarchyLink(serverName, userId, guid);
+    }
+
+    /**
+     * Update a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
+     * @param guid                  guid of the CategoryHierarchyLink relationship
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @param isReplace             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated categoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @PutMapping(path = "/category-hierarchy-links/{guid}")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                         @PathVariable String userId,
+                                                                                         @PathVariable String guid,
+                                                                                         @RequestBody CategoryHierarchyLink categoryHierarchyLink,
+                                                                                         @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+                                                                                        ) {
+        return restAPI.updateCategoryHierarchyLink(serverName, userId, guid, categoryHierarchyLink, isReplace);
+    }
+
+    /**
+     * Delete a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink relationship to delete
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @return response for a soft delete the response contains the deleted relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @DeleteMapping(path = "/category-hierarchy-links/{guid}")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> deleteCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                         @PathVariable String userId,
+                                                                                         @PathVariable String guid,
+                                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                                                        ) {
+        return restAPI.deleteCategoryHierarchyLink(serverName, userId, guid, isPurge);
+    }
+
+    /**
+     * Restore a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     * <p>
+     * Restore allows the deleted CategoryHierarchyLink Relationship to be made active again. Restore allows deletes to be undone.
+     * Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink Relationship to delete
+     * @return response which when successful contains the restored CategoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @PostMapping(path = "/category-hierarchy-links/{guid}")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> restoreCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                          @PathVariable String userId,
+                                                                                          @PathVariable String guid) {
+        return restAPI.restoreCategoryHierarchyLink(serverName, userId, guid);
     }
 }

@@ -226,7 +226,7 @@ public class FindEntitiesByPropertyExecutor extends PageableRepositoryExecutorBa
         {
             accumulator.captureException(metadataCollectionId, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             accumulator.captureGenericException(metadataCollectionId, error);
         }

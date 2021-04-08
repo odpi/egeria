@@ -31,7 +31,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
     private SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> schemaAttributeHandler;
     private SchemaTypeHandler<SchemaTypeElement>                              schemaTypeHandler;
 
-    private SoftwareServerCapabilityHandler<FileSystemElement> fileSystemHandler;
+    private ReferenceableHandler<ReferenceableElement> referenceableHandler;
 
     private FilesAndFoldersHandler<FileSystemElement,
                                    FolderElement,
@@ -136,19 +136,19 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                          publishZones,
                                                          auditLog);
 
-        this.fileSystemHandler = new SoftwareServerCapabilityHandler<>(new FileSystemConverter<>(repositoryHelper, serviceName, serverName),
-                                                                       FileSystemElement.class,
-                                                                       serviceName,
-                                                                       serverName,
-                                                                       invalidParameterHandler,
-                                                                       repositoryHandler,
-                                                                       repositoryHelper,
-                                                                       localServerUserId,
-                                                                       securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
-                                                                       auditLog);
+        this.referenceableHandler = new ReferenceableHandler<>(new ReferenceableConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ReferenceableElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
 
         this.filesAndFoldersHandler = new FilesAndFoldersHandler<>(new FileSystemConverter<>(repositoryHelper, serviceName, serverName),
                                                                    FileSystemElement.class,
@@ -286,18 +286,18 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
 
 
     /**
-     * Return the handler for managing software server capability objects representing the integrator.
+     * Return the handler for managing referenceable objects.
      *
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    SoftwareServerCapabilityHandler<FileSystemElement> getFileSystemHandler() throws PropertyServerException
+    ReferenceableHandler<ReferenceableElement> getReferenceableHandler() throws PropertyServerException
     {
-        final String methodName = "getFileSystemHandler";
+        final String methodName = "getReferenceableHandler";
 
         validateActiveRepository(methodName);
 
-        return fileSystemHandler;
+        return referenceableHandler;
     }
 
 

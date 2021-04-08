@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 
 /**
@@ -28,30 +28,58 @@ public class FVTUtils {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + node.getName() + "'s userId  to exist,  ");
         }
     }
-    public static void validateLine(Line line) throws SubjectAreaFVTCheckedException {
-        if (line==null) {
+    public static void validateRelationship(Relationship relationship) throws SubjectAreaFVTCheckedException {
+        if (relationship==null) {
             // error
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected line to exist,  ");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected relationship to exist,  ");
         }
-        if (line.getName()==null) {
+        if (relationship.getName()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected line to have a name,  ");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected relationship to have a name,  ");
         }
-        if (line.getSystemAttributes()==null) {
+        if (relationship.getSystemAttributes()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + line.getName() + "'s system attributes to exist,  ");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + "'s system attributes to exist,  ");
         }
-        if (line.getSystemAttributes().getGUID()==null) {
+        if (relationship.getSystemAttributes().getGUID()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + line.getName() + "'s userId  to exist,  ");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + "'s userId  to exist,  ");
+        }
+        if (relationship.isReadOnly()) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " not to be readonly");
+        }
+        if (relationship.getEnd1() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end1 to have a value");
+        }
+        if (relationship.getEnd1().getNodeQualifiedName() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end1 qualified name to have a value");
+        }
+        if (relationship.getEnd1().getNodeGuid() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end1 guid to have a value");
+        }
+        if (relationship.getEnd2() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end2 to have a value");
+        }
+        if (relationship.getEnd2().getNodeQualifiedName() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end2 qualified name to have a value");
+        }
+        if (relationship.getEnd2().getNodeGuid() ==null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + " end2 guid to have a value");
         }
     }
-    public static void checkEnds(Line line1, Line line2, String lineName, String operation) throws SubjectAreaFVTCheckedException {
-        if (!line1.getEnd1().getNodeGuid().equals(line2.getEnd1().getNodeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: update end 1 not as expected for relationship " + lineName + " operation " + operation);
+    public static void checkEnds(Relationship relationship1, Relationship relationship2, String relationshipName, String operation) throws SubjectAreaFVTCheckedException {
+        if (!relationship1.getEnd1().getNodeGuid().equals(relationship2.getEnd1().getNodeGuid())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: update end 1 not as expected for relationship " + relationshipName + " operation " + operation);
         }
-        if (!line1.getEnd2().getNodeGuid().equals(line2.getEnd2().getNodeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: update end 2 not as expected for relationship " + lineName + " operation " + operation);
+        if (!relationship1.getEnd2().getNodeGuid().equals(relationship2.getEnd2().getNodeGuid())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: update end 2 not as expected for relationship " + relationshipName + " operation " + operation);
         }
     }
 }

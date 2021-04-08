@@ -658,6 +658,22 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Throws an exception if an entity is classified with the supplied classification name.
+     * It is typically used when adding new classifications to entities.
+     *
+     * @param sourceName          source of the request (used for logging)
+     * @param entity              entity to update
+     * @param classificationName  classification to retrieve
+     * @param methodName          calling method
+     * @throws ClassificationErrorException  the classification is not attached to the entity
+     */
+    void checkEntityNotClassifiedEntity(String        sourceName,
+                                        EntitySummary entity,
+                                        String        classificationName,
+                                        String        methodName) throws ClassificationErrorException;
+
+
+    /**
      * Add a classification to an existing entity.
      *
      * @param sourceName          source of the request (used for logging)
@@ -688,7 +704,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return the names classification from an existing entity.
+     * Return the named classification from an existing entity and throws an exception if it is not.
      *
      * @param sourceName          source of the request (used for logging)
      * @param entity              entity to update

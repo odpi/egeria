@@ -35,7 +35,12 @@ public enum DatabaseIntegratorAuditCode implements AuditLogMessageSet
                                            "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
                                    "Verify that this connector is being started with the correct configuration."),
 
-
+    NULL_CONTEXT("OMIS-DATABASE-INTEGRATOR-0003",
+                 OMRSAuditLogRecordSeverity.ERROR,
+                 "Integration connector {0} has a null context",
+                 "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
+                 "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                         "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
     ;
 
 

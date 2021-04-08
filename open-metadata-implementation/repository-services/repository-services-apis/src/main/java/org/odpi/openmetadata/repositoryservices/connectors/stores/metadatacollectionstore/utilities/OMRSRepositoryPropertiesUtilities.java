@@ -2000,6 +2000,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
                 }
+                else if (mapPropertyValue instanceof InstancePropertyValue)
+                {
+                    resultingProperties.setProperty(mapPropertyName, (InstancePropertyValue)mapPropertyValue);
+                    propertyCount++;
+                }
                 else if (mapPropertyValue != null)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();

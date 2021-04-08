@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -141,14 +141,14 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                                     @PathVariable String guid,
-                                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                     @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
-                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                             @PathVariable String guid,
+                                                                             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                             @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
+                                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                             @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+                                                                            ) {
         return restAPI.getCategoryRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
@@ -239,12 +239,14 @@ public class GlossaryAuthorViewCategoryRESTResource {
         return restAPI.restoreCategory(serverName, userId, guid);
 
     }
+
     /**
      * Get the terms that are categorized by this Category
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
+     * @param searchCriteria String expression to match the categorized Term property values.
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
      * @return A list of terms is categorized by this Category
@@ -259,9 +261,10 @@ public class GlossaryAuthorViewCategoryRESTResource {
     public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(@PathVariable String serverName,
                                                                 @PathVariable String userId,
                                                                 @PathVariable String guid,
+                                                                @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                                 @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
                                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return restAPI.getCategorizedTerms(serverName, userId, guid, startingFrom, pageSize);
+        return restAPI.getCategorizedTerms(serverName, userId, guid, searchCriteria, startingFrom, pageSize);
     }
 
     /**
@@ -269,10 +272,11 @@ public class GlossaryAuthorViewCategoryRESTResource {
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       unique identifier for requesting user, under which the request is performed
-     * @param guid         guid of the category to get terms
+     * @param guid         guid of the parent category
+     * @param searchCriteria String expression matching child Category property values.
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
-     * @return A list of child categories
+     * @return A list of child categories filtered by the search criteria if one is supplied.
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -280,13 +284,14 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      **/
-    @GetMapping(path = "/{guid}/child-categories")
+    @GetMapping(path = "/{guid}/categories")
     public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(@PathVariable String serverName,
                                                                     @PathVariable String userId,
                                                                     @PathVariable String guid,
+                                                                    @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                                     @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 
-        return restAPI.getCategoryChildren(serverName, userId, guid, startingFrom, pageSize);
+        return restAPI.getCategoryChildren(serverName, userId, guid, searchCriteria, startingFrom, pageSize);
     }
 }

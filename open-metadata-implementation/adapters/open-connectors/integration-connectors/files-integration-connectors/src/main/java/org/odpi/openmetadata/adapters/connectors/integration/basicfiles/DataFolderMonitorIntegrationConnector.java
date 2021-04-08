@@ -108,7 +108,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
                 FileFolderProperties properties = new FileFolderProperties();
 
                 properties.setModifiedTime(modifiedTime);
-                context.updateDataFolderInCatalog(folderElement.getElementHeader().getGUID(), true, properties);
+                this.getContext().updateDataFolderInCatalog(folderElement.getElementHeader().getGUID(), true, properties);
 
                 if (auditLog != null)
                 {

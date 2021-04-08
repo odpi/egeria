@@ -294,6 +294,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                    qualifiedNameParameterName,
                                                    displayName,
                                                    description,
+                                                   null,
                                                    methodName);
     }
 

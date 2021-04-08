@@ -19,6 +19,7 @@ dependencies {
     implementation 'org.apache.commons:commons-collections4'
     implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation 'com.google.guava:guava'
+    implementation 'org.apache.commons:commons-lang3'
 }
 
 description = 'Asset Lineage OMAS Server-side'

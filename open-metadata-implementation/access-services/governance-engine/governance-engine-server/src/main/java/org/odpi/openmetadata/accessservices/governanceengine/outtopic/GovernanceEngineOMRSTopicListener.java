@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Thread.sleep;
+
 /**
  * GovernanceEngineOMRSTopicListener is the listener that registers with the repository services (OMRS)
  * to monitor changes to the metadata.  This class is looking for changes to the governance engines
@@ -161,7 +163,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     }
 
 
-
     /**
      * Process an entity extracted from an event.
      *
@@ -174,6 +175,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                  EntityDetail entity,
                                                  String       methodName)
     {
+        final String entityGUIDParameterName = "entity.getGUID";
+
         if (entity != null)
         {
             InstanceType type = entity.getType();
@@ -191,19 +194,44 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                     {
                         try
                         {
-                            GovernanceActionElement element = governanceActionHandler.getGovernanceAction(userId, entity.getGUID(), methodName);
+                            int attempt = 0;
+                            int sleepTime = 1000;
 
-                            if (element.getProperties().getGovernanceEngineName() != null)
+                            while (attempt < 5)
                             {
-                                eventPublisher.publishNewGovernanceAction(element.getProperties().getGovernanceEngineGUID(),
-                                                                          element.getProperties().getGovernanceEngineName(),
-                                                                          element);
+                                EntityDetail governanceEngine = governanceActionHandler.getAttachedEntity(userId,
+                                                                                                          entity.getGUID(),
+                                                                                                          entityGUIDParameterName,
+                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
+                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
+                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                                                          methodName);
+
+                                if (governanceEngine != null)
+                                {
+                                    eventPublisher.publishNewGovernanceAction(governanceEngine.getGUID(),
+                                                                              repositoryHelper.getStringProperty(sourceName,
+                                                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                                 governanceEngine.getProperties(),
+                                                                                                                 methodName),
+                                                                              entity.getGUID());
+
+                                    return true;
+                                }
+
+                                /*
+                                 * The governance action is being set up so need to give the metadata server more time.
+                                 */
+                                attempt ++;
+                                sleep(sleepTime);
+                                sleepTime = sleepTime * 2;
                             }
-                            else
-                            {
-                                auditLog.logMessage(methodName,
-                                                    GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(element.toString()));
-                            }
+
+                            /*
+                             * Given up waiting
+                             */
+                            auditLog.logMessage(methodName, GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(entity.toString()));
                         }
                         catch (Exception error)
                         {

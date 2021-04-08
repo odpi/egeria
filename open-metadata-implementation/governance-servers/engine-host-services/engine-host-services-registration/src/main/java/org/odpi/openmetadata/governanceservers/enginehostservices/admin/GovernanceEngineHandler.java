@@ -289,7 +289,9 @@ public abstract class GovernanceEngineHandler
                         governanceServiceLookupTable.put(governanceRequestType, governanceServiceCache);
 
                         auditLog.logMessage(methodName,
-                                            EngineHostServicesAuditCode.SUPPORTED_REQUEST_TYPE.getMessageDefinition(governanceEngineName, serverName));
+                                            EngineHostServicesAuditCode.SUPPORTED_REQUEST_TYPE.getMessageDefinition(governanceEngineName,
+                                                                                                                    serverName,
+                                                                                                                    governanceRequestType));
                     }
                 }
             }
@@ -408,41 +410,38 @@ public abstract class GovernanceEngineHandler
     /**
      * Execute the requested governance action on or after the start time.
      *
-     * @param governanceActionElement element describing the governance action.
-     *
-     * @throws InvalidParameterException Vital fields of the governance action are not filled out
-     * @throws UserNotAuthorizedException the governance service is not permitted to execute the governance action
-     * @throws PropertyServerException there is a problem communicating with the open metadata stores
+     * @param governanceActionGUID unique identifier of potential governance action to run.
      */
-    public void executeGovernanceAction(GovernanceActionElement  governanceActionElement) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+    public void executeGovernanceAction(String governanceActionGUID)
     {
         final String methodName = "executeGovernanceAction";
 
         try
         {
-            ElementHeader              elementHeader = governanceActionElement.getElementHeader();
-            GovernanceActionProperties properties = governanceActionElement.getProperties();
+            GovernanceActionElement    latestGovernanceActionElement = serverClient.getGovernanceAction(serverUserId, governanceActionGUID);
+            GovernanceActionProperties properties                    = latestGovernanceActionElement.getProperties();
 
-            serverClient.claimGovernanceAction(engineUserId, elementHeader.getGUID());
+            if (properties.getActionStatus() == GovernanceActionStatus.APPROVED)
+            {
+                serverClient.claimGovernanceAction(serverUserId, governanceActionGUID);
 
-            // todo if the start date is in the future then the governance action should be given to the scheduler
+                // todo if the start date is in the future then the governance action should be given to the scheduler
 
-            serverClient.updateGovernanceActionStatus(engineUserId, elementHeader.getGUID(), GovernanceActionStatus.IN_PROGRESS);
+                serverClient.updateGovernanceActionStatus(serverUserId, governanceActionGUID, GovernanceActionStatus.IN_PROGRESS);
 
-            GovernanceServiceHandler governanceServiceHandler = runGovernanceService(elementHeader.getGUID(),
-                                                                                     properties.getRequestType(),
-                                                                                     properties.getRequestProperties(),
-                                                                                     properties.getRequestSourceElements(),
-                                                                                     properties.getActionTargetElements());
+                runGovernanceService(governanceActionGUID,
+                                     properties.getRequestType(),
+                                     properties.getRequestParameters(),
+                                     properties.getRequestSourceElements(),
+                                     properties.getActionTargetElements());
+            }
         }
         catch (Exception error)
         {
             auditLog.logException(methodName,
                                   EngineHostServicesAuditCode.ACTION_PROCESSING_ERROR.getMessageDefinition(methodName,
                                                                                                            error.getClass().getName(),
-                                                                                                           governanceActionElement.toString(),
+                                                                                                           governanceActionGUID,
                                                                                                            error.getMessage()),
                                   error);
         }
