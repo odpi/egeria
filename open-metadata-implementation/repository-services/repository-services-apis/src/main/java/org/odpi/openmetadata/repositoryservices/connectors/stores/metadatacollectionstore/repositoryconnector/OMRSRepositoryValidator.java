@@ -1135,7 +1135,8 @@ public interface OMRSRepositoryValidator
 
 
     /**
-     * Verify that the supplied instance is in one of the supplied statuses.
+     * Verify that the supplied instance is in one of the supplied statuses. Note that if the supplied statuses are
+     * null, then only statuses that are not DELETE are considered valid.
      *
      * @param validStatuses  list of statuses the instance should be in any one of them
      * @param instance  instance to test

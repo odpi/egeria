@@ -10,7 +10,6 @@
 
 buildscript {
     repositories {
-        jcenter()
         mavenCentral()
     }
 
@@ -62,12 +61,11 @@ allprojects {
     // As we've migrated from maven - we'll assume all submodules publish directly to maven
     apply plugin: 'maven-publish'
 
-    // In a few cases we need dependencies from outside the tree - mostly just hadoop binding (and the pom)
-    // Use JCenter for performance, and our own official build snapshots for gaian/ranger/derby & main egeria BOM for version fixing
     repositories {
         jcenter()
-        maven { url("https://odpi.jfrog.io/odpi/egeria-snapshot") }
-        //mavenLocal()
+            maven {
+                url "https://maven.atlassian.com/3rdparty"
+            }
         }
 
     /*
@@ -97,15 +95,15 @@ allprojects {
             implementation("commons-logging:commons-logging:1.2")
             implementation("io.github.classgraph:classgraph:4.8.104")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
+            implementation("io.micrometer:micrometer-registry-prometheus:1.6.5")
             implementation('io.lettuce:lettuce-core:6.1.0.RELEASE')
-            implementation("io.micrometer:micrometer-registry-prometheus:1.6.2")
-            implementation("io.netty:netty-handler:4.1.62.Final")
-            implementation("io.netty:netty-common:4.1.62.Final")
-            implementation("io.netty:netty-buffer:4.1.62.Final")
-            implementation("io.netty:netty-codec:4.1.62.Final")
-            implementation("io.netty:netty-all:4.1.62.Final")
-            implementation("io.netty:netty-transport:4.1.62.Final")
-            implementation("io.netty:netty-resolver:4.1.62.Final")
+            implementation("io.netty:netty-handler:4.1.63.Final")
+            implementation("io.netty:netty-common:4.1.63.Final")
+            implementation("io.netty:netty-buffer:4.1.63.Final")
+            implementation("io.netty:netty-codec:4.1.63.Final")
+            implementation("io.netty:netty-all:4.1.63.Final")
+            implementation("io.netty:netty-transport:4.1.63.Final")
+            implementation("io.netty:netty-resolver:4.1.63.Final")
             implementation("io.swagger.core.v3:swagger-annotations:2.1.7")
             implementation("jakarta.annotation:jakarta.annotation-api:1.3.5")
             implementation("jakarta.persistence:jakarta.persistence-api:2.2.3")
@@ -147,33 +145,34 @@ allprojects {
             implementation("org.reflections:reflections:0.9.12")
             implementation("org.slf4j:jcl-over-slf4j:1.7.30")
             implementation("org.slf4j:slf4j-api:1.7.30")
-            implementation("org.springdoc:springdoc-openapi-ui:1.4.8")
-            implementation("org.springframework.boot:spring-boot:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-autoconfigure:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-actuator:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-data-redis:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-security:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-validation:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-web:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-starter-test:2.3.5.RELEASE")
-            implementation("org.springframework.boot:spring-boot-test:2.3.5.RELEASE")
+            implementation("org.springdoc:springdoc-openapi-ui:1.5.6")
+            implementation("org.springframework.boot:spring-boot-autoconfigure:2.4.4")
+            implementation("org.springframework.boot:spring-boot:2.4.4")
+            implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.4.4")
+            implementation("org.springframework.boot:spring-boot-starter-web:2.4.4")
+            implementation("org.springframework.boot:spring-boot-starter-validation:2.4.4")
+            implementation("org.springframework.data:spring-data-commons:2.4.7")
+            implementation("org.springframework.boot:spring-boot-test:2.4.4")
+            implementation("org.springframework.boot:spring-boot-starter-test:2.4.4")
+            implementation("org.springframework.boot:spring-boot-starter-security:2.4.4")
+            implementation("org.springframework.boot:spring-boot-starter-data-redis:2.4.4")
+            implementation("org.springframework.boot:spring-boot-starter-actuator:2.4.4")
             implementation("org.springframework.data:spring-data-commons:2.4.1")
-            implementation("org.springframework.data:spring-data-jpa:2.4.1")
-            implementation("org.springframework.security:spring-security-config:5.4.1")
-            implementation("org.springframework.security:spring-security-core:5.4.1")
-            implementation("org.springframework.security:spring-security-ldap:5.4.1")
-            implementation("org.springframework.security:spring-security-web:5.4.1")
-            implementation("org.springframework:spring-aop:5.3.1")
-            implementation("org.springframework:spring-beans:5.3.1")
-            implementation("org.springframework:spring-context:5.3.1")
-            implementation("org.springframework:spring-core:5.3.1")
-            implementation("org.springframework:spring-expression:5.3.1")
-            implementation("org.springframework:spring-jdbc:5.3.1")
-            implementation("org.springframework:spring-test:5.3.1")
-            implementation("org.springframework:spring-tx:5.3.1")
-            implementation("org.springframework:spring-web:5.3.1")
-            implementation("org.springframework:spring-webmvc:5.3.1")
+            implementation("org.springframework.data:spring-data-jpa:2.4.7")
+            implementation("org.springframework.security:spring-security-config:5.4.5")
+            implementation("org.springframework.security:spring-security-core:5.4.5")
+            implementation("org.springframework.security:spring-security-ldap:5.4.5")
+            implementation("org.springframework.security:spring-security-web:5.4.5")
+            implementation("org.springframework:spring-aop:5.3.5")
+            implementation("org.springframework:spring-beans:5.3.5")
+            implementation("org.springframework:spring-context:5.3.5")
+            implementation("org.springframework:spring-expression:5.3.5")
+            implementation("org.springframework:spring-test:5.3.5")
+            implementation("org.springframework:spring-jdbc:5.3.5")
+            implementation("org.springframework:spring-web:5.3.5")
+            implementation("org.springframework:spring-webmvc:5.3.5")
+            implementation("org.springframework:spring-tx:5.3.5")
+            implementation("org.springframework:spring-core:5.3.5")
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
             runtimeOnly("joda-time:joda-time:2.10.10")
