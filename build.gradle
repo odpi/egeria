@@ -10,7 +10,6 @@
 
 buildscript {
     repositories {
-        jcenter()
         mavenCentral()
     }
 
@@ -62,12 +61,11 @@ allprojects {
     // As we've migrated from maven - we'll assume all submodules publish directly to maven
     apply plugin: 'maven-publish'
 
-    // In a few cases we need dependencies from outside the tree - mostly just hadoop binding (and the pom)
-    // Use JCenter for performance, and our own official build snapshots for gaian/ranger/derby & main egeria BOM for version fixing
     repositories {
         jcenter()
-        maven { url("https://odpi.jfrog.io/odpi/egeria-snapshot") }
-        //mavenLocal()
+            maven {
+                url "https://maven.atlassian.com/3rdparty"
+            }
         }
 
     /*
