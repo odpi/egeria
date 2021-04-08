@@ -39,6 +39,12 @@ public abstract class InstanceHeader extends InstanceAuditHeader
      */
     private String                    instanceURL            = null;
 
+    /*
+     * If this instance has been re-identified (its GUID changed), then this refers to the previous GUID by
+     * which it was known (for full auditability).
+     */
+    private String                    reIdentifiedFromGUID   = null;
+
     /**
      * Default Constructor sets the instance to nulls.
      */
@@ -61,6 +67,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
         {
             this.guid = template.getGUID();
             this.instanceURL = template.getInstanceURL();
+            this.reIdentifiedFromGUID = template.getReIdentifiedFromGUID();
         }
     }
 
@@ -103,6 +110,28 @@ public abstract class InstanceHeader extends InstanceAuditHeader
 
 
     /**
+     * Return the unique identifier by which this instance was previously known.
+     *
+     * @return guid String unique identifier
+     */
+    public String getReIdentifiedFromGUID()
+    {
+        return reIdentifiedFromGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier by which t his instance was previously known.
+     *
+     * @param reIdentifiedFromGUID String unique identifier
+     */
+    public void setReIdentifiedFromGUID(String reIdentifiedFromGUID)
+    {
+        this.reIdentifiedFromGUID = reIdentifiedFromGUID;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -112,6 +141,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     {
         return "InstanceHeader{" +
                 "guid='" + guid + '\'' +
+                ", reIdentifiedFromGUID='" + reIdentifiedFromGUID + '\'' +
                 ", instanceURL='" + instanceURL + '\'' +
                 ", type=" + getType() +
                 ", instanceProvenanceType=" + getInstanceProvenanceType() +
@@ -152,7 +182,8 @@ public abstract class InstanceHeader extends InstanceAuditHeader
         }
         InstanceHeader that = (InstanceHeader) objectToCompare;
         return Objects.equals(guid, that.guid) &&
-                Objects.equals(getInstanceURL(), that.getInstanceURL());
+                Objects.equals(getInstanceURL(), that.getInstanceURL()) &&
+                Objects.equals(getReIdentifiedFromGUID(), that.getReIdentifiedFromGUID());
     }
 
 
@@ -165,6 +196,6 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), guid, getInstanceURL());
+        return Objects.hash(super.hashCode(), guid, getInstanceURL(), reIdentifiedFromGUID);
     }
 }
