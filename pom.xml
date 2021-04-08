@@ -99,6 +99,17 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
+        <!-- Needed for fixes to old jackson libraries used as transitive dependencies -->
+        <repository>
+            <id>2-Fixes</id>
+            <url>https://maven.atlassian.com/3rdparty/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
     </repositories>
 
     <pluginRepositories>
