@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.CommonServ
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
@@ -177,7 +178,7 @@ public class OMRSRepositoryRESTServices
                     }
                 }
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 /* return null */
             }
@@ -218,7 +219,7 @@ public class OMRSRepositoryRESTServices
                     }
                 }
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 /* return null */
             }
@@ -298,9 +299,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRepositoryErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -359,9 +360,9 @@ public class OMRSRepositoryRESTServices
         {
             captureUserNotAuthorizedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -416,9 +417,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -465,9 +466,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -514,9 +515,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -563,9 +564,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -615,9 +616,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -664,9 +665,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -719,9 +720,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeDefNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -774,9 +775,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeDefNotKnown(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -829,9 +830,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeDefNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -884,9 +885,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeDefNotKnown(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1019,9 +1020,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidTypeDefException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1098,9 +1099,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidTypeDefException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1177,9 +1178,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidTypeDefException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1246,9 +1247,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidTypeDefException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1314,9 +1315,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidTypeDefException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1396,9 +1397,9 @@ public class OMRSRepositoryRESTServices
                 response.setExceptionCausedBy(error.getCause().getClass().getName());
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1470,9 +1471,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeDefInUseException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1544,9 +1545,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeDefInUseException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1629,9 +1630,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeDefNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1714,9 +1715,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeDefNotKnown(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1771,9 +1772,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1828,9 +1829,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1912,9 +1913,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityProxyOnlyException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1989,9 +1990,97 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityProxyOnlyException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param historyRangeRequest detailing the range of times and paging for the results
+     * @return EntityList structure or
+     * InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * EntityNotKnownException the requested entity instance is not known in the metadata collection
+     *                                   at the time requested.
+     * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * FunctionNotSupportedException the repository does not support history.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse getEntityDetailHistory(String              serverName,
+                                                      String              userId,
+                                                      String              guid,
+                                                      HistoryRangeRequest historyRangeRequest)
+    {
+        final  String   methodName = "getEntityDetailHistory";
+
+        log.debug("Calling method: " + methodName);
+
+        EntityListResponse response = new EntityListResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            if (historyRangeRequest != null)
+            {
+                response.setEntities(metadataCollection.getEntityDetailHistory(userId,
+                                                                               guid,
+                                                                               historyRangeRequest.getFromTime(),
+                                                                               historyRangeRequest.getToTime(),
+                                                                               historyRangeRequest.getOffset(),
+                                                                               historyRangeRequest.getPageSize(),
+                                                                               historyRangeRequest.getSequencingOrder()));
+            }
+            else
+            {
+                response.setEntities(metadataCollection.getEntityDetailHistory(userId,
+                                                                               guid,
+                                                                               null,
+                                                                               null,
+                                                                               0,
+                                                                               0,
+                                                                               HistorySequencingOrder.BACKWARDS));
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (EntityProxyOnlyException error)
+        {
+            captureEntityProxyOnlyException(response, error);
+        }
+        catch (Exception error)
+        {
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2115,9 +2204,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2243,9 +2332,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2371,9 +2460,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2501,9 +2590,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2630,9 +2719,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2761,9 +2850,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2893,9 +2982,9 @@ public class OMRSRepositoryRESTServices
         {
             captureClassificationErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3027,9 +3116,9 @@ public class OMRSRepositoryRESTServices
         {
             captureClassificationErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3153,9 +3242,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3280,9 +3369,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3332,9 +3421,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3412,9 +3501,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3484,9 +3573,92 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
+     * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the relationship.
+     * @param historyRangeRequest detailing the range of times and paging for the results
+     * @return RelationshipList structure or
+     * InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
+     *                                   at the time requested.
+     * FunctionNotSupportedException the repository does not support history.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  RelationshipListResponse getRelationshipHistory(String              serverName,
+                                                            String              userId,
+                                                            String              guid,
+                                                            HistoryRangeRequest historyRangeRequest)
+    {
+        final  String   methodName = "getRelationshipHistory";
+
+        log.debug("Calling method: " + methodName);
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            if (historyRangeRequest != null)
+            {
+                response.setRelationships(metadataCollection.getRelationshipHistory(userId,
+                                                                                    guid,
+                                                                                    historyRangeRequest.getFromTime(),
+                                                                                    historyRangeRequest.getToTime(),
+                                                                                    historyRangeRequest.getOffset(),
+                                                                                    historyRangeRequest.getPageSize(),
+                                                                                    historyRangeRequest.getSequencingOrder()));
+            }
+            else
+            {
+                response.setRelationships(metadataCollection.getRelationshipHistory(userId,
+                                                                                    guid,
+                                                                                    null,
+                                                                                    null,
+                                                                                    0,
+                                                                                    0,
+                                                                                    HistorySequencingOrder.BACKWARDS));
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (RelationshipNotKnownException error)
+        {
+            captureRelationshipNotKnownException(response, error);
+        }
+        catch (Exception error)
+        {
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3608,9 +3780,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3734,9 +3906,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3859,9 +4031,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3986,9 +4158,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4107,9 +4279,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4230,9 +4402,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePagingErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4318,9 +4490,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4408,9 +4580,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4511,9 +4683,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4616,9 +4788,9 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4750,9 +4922,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4886,9 +5058,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4989,9 +5161,9 @@ public class OMRSRepositoryRESTServices
         {
             captureClassificationErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5097,9 +5269,9 @@ public class OMRSRepositoryRESTServices
         {
             captureClassificationErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5164,9 +5336,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5234,9 +5406,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5306,9 +5478,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePropertyErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5368,9 +5540,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5445,9 +5617,9 @@ public class OMRSRepositoryRESTServices
         {
             captureFunctionNotSupportedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5523,9 +5695,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5590,9 +5762,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotDeletedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5671,9 +5843,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePropertyErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5756,9 +5928,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePropertyErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5827,9 +5999,9 @@ public class OMRSRepositoryRESTServices
         {
             captureClassificationErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5907,9 +6079,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePropertyErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6007,9 +6179,9 @@ public class OMRSRepositoryRESTServices
         {
             captureStatusNotSupportedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6116,9 +6288,9 @@ public class OMRSRepositoryRESTServices
         {
             captureStatusNotSupportedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6188,9 +6360,9 @@ public class OMRSRepositoryRESTServices
         {
             captureStatusNotSupportedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6260,9 +6432,9 @@ public class OMRSRepositoryRESTServices
         {
             capturePropertyErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6322,9 +6494,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6401,9 +6573,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6479,9 +6651,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6547,9 +6719,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotDeletedException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6633,9 +6805,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6727,9 +6899,9 @@ public class OMRSRepositoryRESTServices
         {
             captureClassificationErrorException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6814,9 +6986,9 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6896,9 +7068,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6986,9 +7158,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7074,9 +7246,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7166,9 +7338,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidEntityException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7228,9 +7400,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7298,9 +7470,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7385,9 +7557,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidEntityException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7472,9 +7644,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidEntityException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7558,9 +7730,9 @@ public class OMRSRepositoryRESTServices
         {
             captureHomeEntityException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7644,9 +7816,9 @@ public class OMRSRepositoryRESTServices
         {
             captureHomeEntityException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7729,9 +7901,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidEntityException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7813,9 +7985,9 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidEntityException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7905,9 +8077,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipConflictException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7998,9 +8170,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipConflictException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -8091,9 +8263,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipConflictException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -8178,9 +8350,9 @@ public class OMRSRepositoryRESTServices
         {
             captureHomeRelationshipException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -8265,9 +8437,9 @@ public class OMRSRepositoryRESTServices
         {
             captureHomeRelationshipException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -8369,9 +8541,9 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipConflictException(response, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            captureThrowable(response, error, userId, serverName, methodName);
+            captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -8817,11 +8989,11 @@ public class OMRSRepositoryRESTServices
      * @param serverName targeted server instance
      * @param methodName calling method
      */
-    private void captureThrowable(OMRSAPIResponse              response,
-                                  Throwable                    error,
-                                  String                       userId,
-                                  String                       serverName,
-                                  String                       methodName)
+    private void captureGenericException(OMRSAPIResponse              response,
+                                         Exception                    error,
+                                         String                       userId,
+                                         String                       serverName,
+                                         String                       methodName)
     {
         String  message = error.getMessage();
 
@@ -8853,7 +9025,7 @@ public class OMRSRepositoryRESTServices
                                       error);
             }
         }
-        catch (Throwable  secondError)
+        catch (Exception  secondError)
         {
             log.error("Unexpected exception processing error {}", error.toString(), secondError);
         }
@@ -8952,7 +9124,7 @@ public class OMRSRepositoryRESTServices
 
                     return mf.format(parameters) + "{" + jsonString + "}";
                 }
-                catch (Throwable  exc)
+                catch (Exception  exc)
                 {
                     /*
                      * No further action is taken because the URL is a "nice to have" and do not want to

@@ -21,12 +21,132 @@ public class ConformanceSuiteTestLabServices
 
     private static final Logger log = LoggerFactory.getLogger(ConformanceSuiteTestLabServices.class);
 
+
+    /**
+     * Requests the list of profile (names) that are available.
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @return TestCaseListResponse or
+     * InvalidParameterException the serverName is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    public ProfileNameListResponse getProfileNames(String  userId,
+                                                   String  serverName)
+    {
+        final String   methodName = "getProfileNames";
+
+        log.debug("Calling method: " + methodName);
+
+        ProfileNameListResponse response = new ProfileNameListResponse();
+
+        try
+        {
+            validateUserId(userId, methodName);
+            TechnologyUnderTestWorkPad workPad = getWorkPad(serverName, methodName);
+            response.setProfileNames(workPad.getProfileNames());
+        }
+        catch (PropertyServerException   error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (InvalidParameterException   error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
     /**
      * Requests detailed information on the execution of a specific test case.
      *
      * @param userId calling user.
      * @param serverName the name of the conformance service.
-     * @param testCaseId technology under test server name.
+     * @param profileName of the profile for which to obtain a detailed report.
+     * @return TestCaseReportResponse or
+     * InvalidParameterException the serverName or workbenchId is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    public ProfileReportResponse getProfileReport(String   userId,
+                                                  String   serverName,
+                                                  String   profileName)
+    {
+        final String   methodName = "getProfileReport";
+
+        log.debug("Calling method: " + methodName);
+
+        ProfileReportResponse response = new ProfileReportResponse();
+
+        try
+        {
+            validateUserId(userId, methodName);
+            TechnologyUnderTestWorkPad workPad = getWorkPad(serverName, methodName);
+            response.setProfileResult(workPad.getProfileReport(profileName));
+        }
+        catch (PropertyServerException   error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (InvalidParameterException   error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Requests the list of test case IDs that are available.
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @return TestCaseListResponse or
+     * InvalidParameterException the serverName is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    public TestCaseListResponse getTestCaseIds(String  userId,
+                                               String  serverName)
+    {
+        final String   methodName = "getTestCaseIds";
+
+        log.debug("Calling method: " + methodName);
+
+        TestCaseListResponse response = new TestCaseListResponse();
+
+        try
+        {
+            validateUserId(userId, methodName);
+            TechnologyUnderTestWorkPad workPad = getWorkPad(serverName, methodName);
+            response.setTestCaseIds(workPad.getTestCaseIds());
+        }
+        catch (PropertyServerException   error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (InvalidParameterException   error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Requests detailed information on the execution of a specific test case.
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @param testCaseId of the test case for which to obtain a detailed report.
      * @return TestCaseReportResponse or
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
@@ -166,6 +286,45 @@ public class ConformanceSuiteTestLabServices
             validateUserId(userId, methodName);
             TechnologyUnderTestWorkPad workPad = getWorkPad(serverName, methodName);
             response.setTestLabResults(workPad.getTestLabResults());
+        }
+        catch (PropertyServerException   error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (InvalidParameterException   error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Request a summary report on the conformance of the technology under test.
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @return TestLabSummaryResponse or
+     * InvalidParameterException the serverName or workbenchId is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    public TestLabSummaryResponse getConformanceSummaryReport(String   userId,
+                                                              String   serverName)
+    {
+        final String   methodName = "getConformanceSummaryReport";
+
+        log.debug("Calling method: " + methodName);
+
+        TestLabSummaryResponse response = new TestLabSummaryResponse();
+
+        try
+        {
+            validateUserId(userId, methodName);
+            TechnologyUnderTestWorkPad workPad = getWorkPad(serverName, methodName);
+            response.setTestLabSummary(workPad.getTestLabSummary());
         }
         catch (PropertyServerException   error)
         {

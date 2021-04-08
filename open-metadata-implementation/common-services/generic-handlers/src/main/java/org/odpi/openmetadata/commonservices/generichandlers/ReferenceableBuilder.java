@@ -289,10 +289,10 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    private InstanceProperties getTemplateProperties(String              name,
-                                                     String              description,
-                                                     Map<String, String> additionalProperties,
-                                                     String              methodName)
+    InstanceProperties getTemplateProperties(String              name,
+                                             String              description,
+                                             Map<String, String> additionalProperties,
+                                             String              methodName)
     {
         InstanceProperties properties = null;
 

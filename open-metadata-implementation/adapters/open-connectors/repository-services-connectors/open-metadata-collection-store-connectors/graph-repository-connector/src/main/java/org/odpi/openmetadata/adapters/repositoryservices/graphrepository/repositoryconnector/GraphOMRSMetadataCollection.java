@@ -2344,8 +2344,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName, entity, newClassification, methodName);
 
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
-
         graphStore.updateEntityInStore(updatedEntity);
 
         return updatedEntity;
@@ -2444,6 +2442,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             {
                 newClassification = repositoryHelper.getNewClassification(repositoryName,
                          externalSourceGUID,
+                         externalSourceName,
                          InstanceProvenanceType.EXTERNAL_SOURCE,
                          userId,
                          classificationName,
@@ -2472,8 +2471,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          */
 
         EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName, entity, newClassification, methodName);
-
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
         graphStore.updateEntityInStore(updatedEntity);
 
@@ -2531,8 +2528,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName, entity, classificationName, methodName);
-
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
         graphStore.updateEntityInStore(updatedEntity);
 
@@ -3427,8 +3422,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 newClassification,
                 methodName);
 
-        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
-
         graphStore.updateEntityInStore(updatedEntity);
 
 
@@ -3641,11 +3634,10 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                                                                         methodName);
 
                 if (metadataCollectionId.equals(entity.getMetadataCollectionId())) {
-                    updatedEntity = repositoryHelper.incrementVersion(userId, retrievedEntity, updatedEntity);
                     graphStore.updateEntityInStore(updatedEntity);
                 }
                 else {
-                    graphStore.saveEntityReferenceCopyToStore(entity);
+                    graphStore.saveEntityReferenceCopyToStore(updatedEntity);
                 }
             }
             catch (EntityNotKnownException  error) {

@@ -71,7 +71,7 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
                                 GovernanceProgramAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
                                 accessServiceConfigurationProperties.toString());
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   GovernanceProgramAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

@@ -63,8 +63,15 @@ public enum AssetLineageAuditCode implements AuditLogMessageSet {
                                   OMRSAuditLogRecordSeverity.ERROR,
             "AssetLineagePublisher instance not available.",
                                           "The Asset Lineage OMAS will not publish entity.",
-                                          "Possible configuration error; Contact the server administrator to check accessServiceOutTopic connection configuration before tying again.");
+                                          "Possible configuration error; Contact the server administrator to " +
+                                                  "check accessServiceOutTopic connection configuration before tying again."),
 
+    ASSET_CONTEXT_INFO("OMAS-ASSET-LINEAGE-0010",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The asset context for the entity with guid {0} is requested through REST endpoint and will be " +
+                    "retrieved on the out topic.",
+            "The Asset Lineage OMAS retrieves entity's asset context.",
+            "No action is required.");
 
     private AuditLogMessageDefinition messageDefinition;
 

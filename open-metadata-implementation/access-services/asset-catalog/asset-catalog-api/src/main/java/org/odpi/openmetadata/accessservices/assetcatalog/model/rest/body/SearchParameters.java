@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
 import javax.validation.constraints.PositiveOrZero;
@@ -41,8 +40,9 @@ public class SearchParameters implements Serializable {
 
     private List<String> entityTypes;
     private List<String> relationshipTypeGUIDs;
-    @JsonProperty("isCaseInsensitive")
-    private boolean isCaseInsensitive = Boolean.TRUE;
+
+    private boolean caseInsensitive = Boolean.TRUE;
+    private boolean exactMatch = Boolean.FALSE;
 
     /**
      * Return the maximum page pageSize supported by this server.
@@ -192,7 +192,7 @@ public class SearchParameters implements Serializable {
      * @return false if it is performed a case-insensitive search and true otherwise
      */
     public boolean isCaseInsensitive() {
-        return isCaseInsensitive;
+        return caseInsensitive;
     }
 
     /**
@@ -202,7 +202,7 @@ public class SearchParameters implements Serializable {
      * @param caseInsensitive boolean to set the case sensitivity for the search criteria
      */
     public void setCaseInsensitive(boolean caseInsensitive) {
-        isCaseInsensitive = caseInsensitive;
+        this.caseInsensitive = caseInsensitive;
     }
 
     @Override
@@ -210,7 +210,7 @@ public class SearchParameters implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SearchParameters that = (SearchParameters) o;
-        return isCaseInsensitive == that.isCaseInsensitive &&
+        return caseInsensitive == that.caseInsensitive &&
                 Objects.equals(pageSize, that.pageSize) &&
                 Objects.equals(from, that.from) &&
                 Objects.equals(level, that.level) &&
@@ -223,6 +223,14 @@ public class SearchParameters implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageSize, from, level, sequencingProperty, sequencingOrder, limitResultsByClassification, entityTypes, relationshipTypeGUIDs, isCaseInsensitive);
+        return Objects.hash(pageSize, from, level, sequencingProperty, sequencingOrder, limitResultsByClassification, entityTypes, relationshipTypeGUIDs, caseInsensitive);
+    }
+
+    public boolean isExactMatch() {
+        return exactMatch;
+    }
+
+    public void setExactMatch(boolean exactMatch) {
+        this.exactMatch = exactMatch;
     }
 }

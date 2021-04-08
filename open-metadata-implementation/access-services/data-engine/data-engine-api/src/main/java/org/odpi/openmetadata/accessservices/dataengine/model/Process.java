@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -21,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-public class Process {
+public class Process implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String name;
@@ -29,6 +30,7 @@ public class Process {
     private List<PortImplementation> portImplementations;
     private List<PortAlias> portAliases;
     private List<LineageMapping> lineageMappings;
+    private TransformationProject transformationProject;
     private UpdateSemantic updateSemantic;
     private List<ParentProcess> parentProcesses;
     private String displayName;
@@ -415,10 +417,19 @@ public class Process {
                 ", typeGUID='" + typeGUID + '\'' +
                 ", typeName='" + typeName + '\'' +
                 ", guid='" + GUID + '\'' +
+                ", transformationProject='" + transformationProject + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 ", extendedProperties=" + extendedProperties +
                 '}';
+    }
+
+    public TransformationProject getTransformationProject() {
+        return transformationProject;
+    }
+
+    public void setTransformationProject(TransformationProject transformationProject) {
+        this.transformationProject = transformationProject;
     }
 
     @Override
@@ -448,6 +459,7 @@ public class Process {
                 Objects.equals(GUID, process.GUID) &&
                 Objects.equals(qualifiedName, process.qualifiedName) &&
                 Objects.equals(additionalProperties, process.additionalProperties) &&
+                Objects.equals(transformationProject, process.transformationProject) &&
                 Objects.equals(extendedProperties, process.extendedProperties);
     }
 
@@ -455,6 +467,7 @@ public class Process {
     public int hashCode() {
         return Objects.hash(super.hashCode(), name, formula, portImplementations, portAliases, lineageMappings,
                 updateSemantic, parentProcesses, displayName, description, owner, ownerType, zoneMembership, origin,
-                typeGUID, typeName, GUID, qualifiedName, additionalProperties, extendedProperties);
+                typeGUID, typeName, GUID, qualifiedName, transformationProject,
+                additionalProperties, extendedProperties);
     }
 }

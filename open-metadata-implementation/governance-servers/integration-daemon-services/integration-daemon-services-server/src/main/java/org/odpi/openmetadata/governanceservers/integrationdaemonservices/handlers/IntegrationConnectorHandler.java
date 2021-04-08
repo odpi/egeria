@@ -211,7 +211,7 @@ public class IntegrationConnectorHandler implements Serializable
      *
      * @param actionDescription description of caller's operation
      */
-    void reinitializeConnector(String    actionDescription)
+    synchronized void reinitializeConnector(String    actionDescription)
     {
         final String operationName = "initialize";
 
@@ -232,14 +232,14 @@ public class IntegrationConnectorHandler implements Serializable
 
             integrationConnector = (IntegrationConnector)genericConnector;
 
-            this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
-
             contextManager.setContext(integrationConnectorId,
                                       integrationConnectorName,
                                       metadataSourceQualifiedName,
                                       integrationConnector,
                                       permittedSynchronization,
                                       integrationServiceOptions);
+
+            this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
 
             if (needDedicatedThread)
             {
@@ -306,11 +306,18 @@ public class IntegrationConnectorHandler implements Serializable
         {
             Map<String, Object>  connectionConfigurationProperties = connection.getConfigurationProperties();
 
-            if (isMergeUpdate)
+            if (connectionConfigurationProperties != null)
             {
-                if (configurationProperties != null)
+                if (isMergeUpdate)
                 {
-                    connectionConfigurationProperties.putAll(configurationProperties);
+                    if (configurationProperties != null)
+                    {
+                        connectionConfigurationProperties.putAll(configurationProperties);
+                    }
+                }
+                else
+                {
+                    connectionConfigurationProperties = configurationProperties;
                 }
             }
             else

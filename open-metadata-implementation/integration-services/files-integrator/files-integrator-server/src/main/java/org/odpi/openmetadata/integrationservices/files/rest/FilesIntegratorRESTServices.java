@@ -73,9 +73,9 @@ public class FilesIntegratorRESTServices
                                                                         FilesIntegratorConnector.class,
                                                                         IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

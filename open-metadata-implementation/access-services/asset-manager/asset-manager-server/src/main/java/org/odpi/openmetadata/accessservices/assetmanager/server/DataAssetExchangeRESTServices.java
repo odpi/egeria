@@ -13,9 +13,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.LoggerFactory;
 
 
@@ -26,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class DataAssetExchangeRESTServices
 {
     private static AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
-    private static RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(GlossaryExchangeRESTServices.class),
+    private static RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(DataAssetExchangeRESTServices.class),
                                                                                     instanceHandler.getServiceName());
 
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
@@ -56,12 +53,12 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createAsset(String           serverName,
-                                    String           userId,
-                                    boolean          assetManagerIsHome,
-                                    AssetRequestBody requestBody)
+    public GUIDResponse createDataAsset(String               serverName,
+                                        String               userId,
+                                        boolean              assetManagerIsHome,
+                                        DataAssetRequestBody requestBody)
     {
-        final String methodName = "createAsset";
+        final String methodName = "createDataAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -76,32 +73,20 @@ public class DataAssetExchangeRESTServices
             {
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-                response.setGUID(handler.createAsset(userId,
-                                                     requestBody.getMetadataCorrelationProperties(),
-                                                     assetManagerIsHome,
-                                                     requestBody.getElementProperties(),
-                                                     methodName));
+                response.setGUID(handler.createDataAsset(userId,
+                                                         requestBody.getMetadataCorrelationProperties(),
+                                                         assetManagerIsHome,
+                                                         requestBody.getElementProperties(),
+                                                         methodName));
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -116,6 +101,7 @@ public class DataAssetExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template and correlate to external identifiers
      *
@@ -124,12 +110,13 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createAssetFromTemplate(String              serverName,
-                                                String              userId,
-                                                String              templateGUID,
-                                                TemplateRequestBody requestBody)
+    public GUIDResponse createDataAssetFromTemplate(String              serverName,
+                                                    String              userId,
+                                                    boolean             assetManagerIsHome,
+                                                    String              templateGUID,
+                                                    TemplateRequestBody requestBody)
     {
-        final String methodName = "createAssetFromTemplate";
+        final String methodName = "createDataAssetFromTemplate";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -144,32 +131,21 @@ public class DataAssetExchangeRESTServices
             {
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-                response.setGUID(handler.createAssetFromTemplate(userId,
-                                                                 requestBody.getMetadataCorrelationProperties(),
-                                                                 templateGUID,
-                                                                 requestBody.getElementProperties(),
-                                                                 methodName));
+                response.setGUID(handler.createDataAssetFromTemplate(userId,
+                                                                     requestBody.getMetadataCorrelationProperties(),
+                                                                     assetManagerIsHome,
+                                                                     templateGUID,
+                                                                     requestBody.getElementProperties(),
+                                                                     methodName));
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -192,13 +168,13 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateAsset(String           serverName,
-                                    String           userId,
-                                    String           assetGUID,
-                                    boolean          isMergeUpdate,
-                                    AssetRequestBody requestBody)
+    public VoidResponse updateDataAsset(String               serverName,
+                                        String               userId,
+                                        String               assetGUID,
+                                        boolean              isMergeUpdate,
+                                        DataAssetRequestBody requestBody)
     {
-        final String methodName = "updateAsset";
+        final String methodName = "updateDataAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -213,33 +189,21 @@ public class DataAssetExchangeRESTServices
             {
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-                handler.updateAsset(userId,
-                                    requestBody.getMetadataCorrelationProperties(),
-                                    assetGUID,
-                                    isMergeUpdate,
-                                    requestBody.getElementProperties(),
-                                    methodName);
+                handler.updateDataAsset(userId,
+                                        requestBody.getMetadataCorrelationProperties(),
+                                        assetGUID,
+                                        isMergeUpdate,
+                                        requestBody.getElementProperties(),
+                                        methodName);
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -264,12 +228,12 @@ public class DataAssetExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse publishAsset(String                             serverName,
-                                     String                             userId,
-                                     String                             assetGUID,
-                                     AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse publishDataAsset(String                             serverName,
+                                         String                             userId,
+                                         String                             assetGUID,
+                                         AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "publishAsset";
+        final String methodName = "publishDataAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -282,23 +246,11 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.publishAsset(userId, assetGUID, methodName);
+            handler.publishDataAsset(userId, assetGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -323,12 +275,12 @@ public class DataAssetExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse withdrawAsset(String                             serverName,
-                                      String                             userId,
-                                      String                             assetGUID,
-                                      AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse withdrawDataAsset(String                             serverName,
+                                          String                             userId,
+                                          String                             assetGUID,
+                                          AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "withdrawAsset";
+        final String methodName = "withdrawDataAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -341,23 +293,11 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.withdrawAsset(userId, assetGUID, methodName);
+            handler.withdrawDataAsset(userId, assetGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -380,12 +320,12 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeAsset(String                        serverName,
-                                    String                        userId,
-                                    String                        assetGUID,
-                                    MetadataCorrelationProperties requestBody)
+    public VoidResponse removeDataAsset(String                        serverName,
+                                        String                        userId,
+                                        String                        assetGUID,
+                                        MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "removeAsset";
+        final String methodName = "removeDataAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -398,23 +338,11 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.removeAsset(userId, requestBody, assetGUID, methodName);
+            handler.removeDataAsset(userId, requestBody, assetGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -437,12 +365,12 @@ public class DataAssetExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse setAssetAsReferenceData(String                        serverName,
-                                                String                        userId,
-                                                String                        assetGUID,
-                                                MetadataCorrelationProperties requestBody)
+    public VoidResponse setDataAssetAsReferenceData(String                        serverName,
+                                                    String                        userId,
+                                                    String                        assetGUID,
+                                                    MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "setAssetAsReferenceData";
+        final String methodName = "setDataAssetAsReferenceData";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -455,23 +383,11 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.setAssetAsReferenceData(userId, assetGUID, methodName);
+            handler.setDataAssetAsReferenceData(userId, assetGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -494,12 +410,12 @@ public class DataAssetExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse clearAssetAsReferenceData(String                        serverName,
-                                                  String                        userId,
-                                                  String                        assetGUID,
-                                                  MetadataCorrelationProperties requestBody)
+    public VoidResponse clearDataAssetAsReferenceData(String                        serverName,
+                                                      String                        userId,
+                                                      String                        assetGUID,
+                                                      MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "clearAssetAsReferenceData";
+        final String methodName = "clearDataAssetAsReferenceData";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -512,23 +428,11 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.clearAssetAsReferenceData(userId, assetGUID, methodName);
+            handler.clearDataAssetAsReferenceData(userId, assetGUID, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -552,18 +456,18 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetElementsResponse findAssets(String                  serverName,
-                                            String                  userId,
-                                            int                     startFrom,
-                                            int                     pageSize,
-                                            SearchStringRequestBody requestBody)
+    public DataAssetElementsResponse findDataAssets(String                  serverName,
+                                                    String                  userId,
+                                                    int                     startFrom,
+                                                    int                     pageSize,
+                                                    SearchStringRequestBody requestBody)
     {
-        final String methodName = "findAssets";
+        final String methodName = "findDataAssets";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetElementsResponse response = new AssetElementsResponse();
-        AuditLog              auditLog = null;
+        DataAssetElementsResponse response = new DataAssetElementsResponse();
+        AuditLog                  auditLog = null;
 
         try
         {
@@ -573,34 +477,22 @@ public class DataAssetExchangeRESTServices
             {
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findAssets(userId,
-                                                           requestBody.getAssetManagerGUID(),
-                                                           requestBody.getAssetManagerName(),
-                                                           requestBody.getSearchString(),
-                                                           startFrom,
-                                                           pageSize,
-                                                           methodName));
+                response.setElementList(handler.findDataAssets(userId,
+                                                               requestBody.getAssetManagerGUID(),
+                                                               requestBody.getAssetManagerName(),
+                                                               requestBody.getSearchString(),
+                                                               startFrom,
+                                                               pageSize,
+                                                               methodName));
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -623,18 +515,18 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetElementsResponse scanAssets(String                             serverName,
-                                            String                             userId,
-                                            int                                startFrom,
-                                            int                                pageSize,
-                                            AssetManagerIdentifiersRequestBody requestBody)
+    public DataAssetElementsResponse scanDataAssets(String                             serverName,
+                                                    String                             userId,
+                                                    int                                startFrom,
+                                                    int                                pageSize,
+                                                    AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "scanAssets";
+        final String methodName = "scanDataAssets";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetElementsResponse response = new AssetElementsResponse();
-        AuditLog              auditLog = null;
+        DataAssetElementsResponse response = new DataAssetElementsResponse();
+        AuditLog                  auditLog = null;
 
         try
         {
@@ -644,33 +536,21 @@ public class DataAssetExchangeRESTServices
             {
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.scanAssets(userId,
-                                                           requestBody.getAssetManagerGUID(),
-                                                           requestBody.getAssetManagerName(),
-                                                           startFrom,
-                                                           pageSize,
-                                                           methodName));
+                response.setElementList(handler.scanDataAssets(userId,
+                                                               requestBody.getAssetManagerGUID(),
+                                                               requestBody.getAssetManagerName(),
+                                                               startFrom,
+                                                               pageSize,
+                                                               methodName));
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -694,18 +574,18 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetElementsResponse   getAssetsByName(String          serverName,
-                                                   String          userId,
-                                                   int             startFrom,
-                                                   int             pageSize,
-                                                   NameRequestBody requestBody)
+    public DataAssetElementsResponse getDataAssetsByName(String          serverName,
+                                                         String          userId,
+                                                         int             startFrom,
+                                                         int             pageSize,
+                                                         NameRequestBody requestBody)
     {
-        final String methodName = "getAssetsByName";
+        final String methodName = "getDataAssetsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetElementsResponse response = new AssetElementsResponse();
-        AuditLog              auditLog = null;
+        DataAssetElementsResponse response = new DataAssetElementsResponse();
+        AuditLog                  auditLog = null;
 
         try
         {
@@ -715,34 +595,22 @@ public class DataAssetExchangeRESTServices
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getAssetsByName(userId,
-                                                                requestBody.getAssetManagerGUID(),
-                                                                requestBody.getAssetManagerName(),
-                                                                requestBody.getName(),
-                                                                startFrom,
-                                                                pageSize,
-                                                                methodName));
+                response.setElementList(handler.getDataAssetsByName(userId,
+                                                                    requestBody.getAssetManagerGUID(),
+                                                                    requestBody.getAssetManagerName(),
+                                                                    requestBody.getName(),
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName));
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -765,18 +633,18 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetElementsResponse  getAssetsForAssetManager(String                             serverName,
-                                                           String                             userId,
-                                                           int                                startFrom,
-                                                           int                                pageSize,
-                                                           AssetManagerIdentifiersRequestBody requestBody)
+    public DataAssetElementsResponse getDataAssetsForAssetManager(String                             serverName,
+                                                                  String                             userId,
+                                                                  int                                startFrom,
+                                                                  int                                pageSize,
+                                                                  AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "getAssetsForAssetManager";
+        final String methodName = "getDataAssetsForAssetManager";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetElementsResponse response = new AssetElementsResponse();
-        AuditLog              auditLog = null;
+        DataAssetElementsResponse response = new DataAssetElementsResponse();
+        AuditLog                  auditLog = null;
 
         try
         {
@@ -786,33 +654,21 @@ public class DataAssetExchangeRESTServices
             {
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getAssetsForAssetManager(userId,
-                                                                         requestBody.getAssetManagerGUID(),
-                                                                         requestBody.getAssetManagerName(),
-                                                                         startFrom,
-                                                                         pageSize,
-                                                                         methodName));
+                response.setElementList(handler.getDataAssetsForAssetManager(userId,
+                                                                             requestBody.getAssetManagerGUID(),
+                                                                             requestBody.getAssetManagerName(),
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             methodName));
             }
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -834,17 +690,17 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetElementResponse getAssetByGUID(String                             serverName,
-                                               String                             userId,
-                                               String                             assetGUID,
-                                               AssetManagerIdentifiersRequestBody requestBody)
+    public DataAssetElementResponse getDataAssetByGUID(String                             serverName,
+                                                       String                             userId,
+                                                       String                             assetGUID,
+                                                       AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "getAssetByGUID";
+        final String methodName = "getDataAssetByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetElementResponse response = new AssetElementResponse();
-        AuditLog             auditLog = null;
+        DataAssetElementResponse response = new DataAssetElementResponse();
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -854,36 +710,24 @@ public class DataAssetExchangeRESTServices
 
             if (requestBody != null)
             {
-                response.setElement(handler.getAssetByGUID(userId,
-                                                           requestBody.getAssetManagerGUID(),
-                                                           requestBody.getAssetManagerName(),
-                                                           assetGUID,
-                                                           methodName));
+                response.setElement(handler.getDataAssetByGUID(userId,
+                                                               requestBody.getAssetManagerGUID(),
+                                                               requestBody.getAssetManagerName(),
+                                                               assetGUID,
+                                                               methodName));
             }
             else
             {
-                response.setElement(handler.getAssetByGUID(userId,
-                                                           null,
-                                                           null,
-                                                           assetGUID,
-                                                           methodName));
+                response.setElement(handler.getDataAssetByGUID(userId,
+                                                               null,
+                                                               null,
+                                                               assetGUID,
+                                                               methodName));
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

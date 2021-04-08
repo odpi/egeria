@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ValidValuesRequestBody carries the parameters for created a new asset.
+ * ValidValuesRequestBody carries the parameters for created a new valid values element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -201,19 +201,20 @@ public class ValidValuesRequestBody extends ReferenceableRequestBody
     @Override
     public String toString()
     {
-        return "ValidValueRequestBody{" +
-                "typeName='" + typeName + '\'' +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", usage='" + usage + '\'' +
-                ", scope='" + scope + '\'' +
-                ", preferredValue='" + preferredValue + '\'' +
-                ", isDeprecated=" + isDeprecated +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties + '}';
+        return "ValidValuesRequestBody{" +
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", usage='" + usage + '\'' +
+                       ", scope='" + scope + '\'' +
+                       ", preferredValue='" + preferredValue + '\'' +
+                       ", isDeprecated=" + isDeprecated +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", meanings=" + getMeanings() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

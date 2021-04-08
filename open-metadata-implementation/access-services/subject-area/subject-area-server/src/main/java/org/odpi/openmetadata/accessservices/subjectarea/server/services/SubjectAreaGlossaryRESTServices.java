@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlos
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -174,19 +174,19 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(String serverName,
-                                                                     String userId,
-                                                                     String guid,
-                                                                     Date asOfTime,
-                                                                     Integer startingFrom,
-                                                                     Integer pageSize,
-                                                                     SequencingOrder sequencingOrder,
-                                                                     String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Relationship> getGlossaryRelationships(String serverName,
+                                                                             String userId,
+                                                                             String guid,
+                                                                             Date asOfTime,
+                                                                             Integer startingFrom,
+                                                                             Integer pageSize,
+                                                                             SequencingOrder sequencingOrder,
+                                                                             String sequencingProperty) {
         String methodName = "getGlossaryRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);

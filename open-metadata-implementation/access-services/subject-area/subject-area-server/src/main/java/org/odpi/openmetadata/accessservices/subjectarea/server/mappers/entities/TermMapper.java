@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceClassifications;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
@@ -102,29 +102,29 @@ public class TermMapper extends EntityDetailMapper<Term> {
     @Override
     protected boolean updateNodeWithClassification(Term term, Classification omasClassification) {
         boolean handled = false;
-        GovernanceActions governanceActions = term.getGovernanceActions();
-        if (governanceActions ==null) {
-            governanceActions = new GovernanceActions();
+        GovernanceClassifications governanceClassifications = term.getGovernanceClassifications();
+        if (governanceClassifications ==null) {
+            governanceClassifications = new GovernanceClassifications();
         }
         final String classificationName = omasClassification.getClassificationName();
 
         String sourceName = omrsapiHelper.getServiceName();
         //TODO do additional properties for classification subtypes.
         if (repositoryHelper.isTypeOf(sourceName,classificationName,"Confidentiality")) {
-            governanceActions.setConfidentiality((Confidentiality) omasClassification);
-            term.setGovernanceActions(governanceActions);
+            governanceClassifications.setConfidentiality((Confidentiality) omasClassification);
+            term.setGovernanceClassifications(governanceClassifications);
             handled =true;
         } else if (repositoryHelper.isTypeOf(sourceName,classificationName,"Confidence")) {
-            governanceActions.setConfidence((Confidence) omasClassification);
-            term.setGovernanceActions(governanceActions);
+            governanceClassifications.setConfidence((Confidence) omasClassification);
+            term.setGovernanceClassifications(governanceClassifications);
             handled =true;
         } else if (repositoryHelper.isTypeOf(sourceName,classificationName,"Criticality")) {
-            governanceActions.setCriticality((Criticality) omasClassification);
-            term.setGovernanceActions(governanceActions);
+            governanceClassifications.setCriticality((Criticality) omasClassification);
+            term.setGovernanceClassifications(governanceClassifications);
             handled =true;
         } else if (repositoryHelper.isTypeOf(sourceName,classificationName,"Retention")) {
-            governanceActions.setRetention((Retention) omasClassification);
-            term.setGovernanceActions(governanceActions);
+            governanceClassifications.setRetention((Retention) omasClassification);
+            term.setGovernanceClassifications(governanceClassifications);
             handled =true;
         } else if (repositoryHelper.isTypeOf(sourceName,classificationName,"SpineObject")) {
             term.setSpineObject(true);
@@ -148,12 +148,12 @@ public class TermMapper extends EntityDetailMapper<Term> {
     @Override
     protected List<Classification> getInlinedClassifications(Term term) {
         List<Classification> inlinedClassifications = new ArrayList<>();
-        GovernanceActions governanceActions = term.getGovernanceActions();
-        if (governanceActions !=null) {
-            Criticality criticality = governanceActions.getCriticality();
-            Confidence confidence = governanceActions.getConfidence();
-            Confidentiality confidentiality =governanceActions.getConfidentiality();
-            Retention retention = governanceActions.getRetention();
+        GovernanceClassifications governanceClassifications = term.getGovernanceClassifications();
+        if (governanceClassifications !=null) {
+            Criticality criticality = governanceClassifications.getCriticality();
+            Confidence confidence = governanceClassifications.getConfidence();
+            Confidentiality confidentiality =governanceClassifications.getConfidentiality();
+            Retention retention = governanceClassifications.getRetention();
             if (criticality != null) {
                 inlinedClassifications.add(criticality);
             }

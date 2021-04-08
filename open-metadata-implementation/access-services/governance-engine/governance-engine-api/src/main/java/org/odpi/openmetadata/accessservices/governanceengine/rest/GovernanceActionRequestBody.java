@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,18 +27,18 @@ public class GovernanceActionRequestBody implements Serializable
 {
     private static final long   serialVersionUID = 1L;
 
-    private String              qualifiedName         = null;
-    private int                 domainIdentifier      = 0;
-    private String              displayName           = null;
-    private String              description           = null;
-    private List<String>        requestSourceGUIDs    = null;
-    private List<String>        actionTargetGUIDs     = null;
-    private List<String>        receivedGuards        = null;
-    private Date                startTime             = null;
-    private String              requestType           = null;
-    private Map<String, String> requestProperties     = null;
-    private String              originatorServiceName = null;
-    private String              originatorEngineName  = null;
+    private String                qualifiedName         = null;
+    private int                   domainIdentifier      = 0;
+    private String                displayName           = null;
+    private String                description           = null;
+    private List<String>          requestSourceGUIDs    = null;
+    private List<NewActionTarget> actionTargets         = null;
+    private List<String>          receivedGuards        = null;
+    private Date                  startTime             = null;
+    private String                requestType           = null;
+    private Map<String, String>   requestParameters     = null;
+    private String                originatorServiceName = null;
+    private String                originatorEngineName  = null;
 
     /**
      * Default constructor
@@ -62,11 +63,11 @@ public class GovernanceActionRequestBody implements Serializable
             displayName = template.getDisplayName();
             description = template.getDescription();
             requestSourceGUIDs = template.getRequestSourceGUIDs();
-            actionTargetGUIDs = template.getActionTargetGUIDs();
+            actionTargets = template.getActionTargets();
             receivedGuards = template.getReceivedGuards();
             startTime = template.getStartTime();
             requestType = template.getRequestType();
-            requestProperties = template.getRequestProperties();
+            requestParameters = template.getRequestParameters();
             originatorServiceName = template.getOriginatorServiceName();
             originatorEngineName = template.getOriginatorEngineName();}
     }
@@ -195,32 +196,32 @@ public class GovernanceActionRequestBody implements Serializable
     /**
      * Return the list of elements that the governance action will work on.
      *
-     * @return list of string guids
+     * @return list of name to string guids
      */
-    public List<String> getActionTargetGUIDs()
+    public List<NewActionTarget> getActionTargets()
     {
-        if (actionTargetGUIDs == null)
+        if (actionTargets == null)
         {
             return null;
         }
 
-        if (actionTargetGUIDs.isEmpty())
+        if (actionTargets.isEmpty())
         {
             return null;
         }
 
-        return actionTargetGUIDs;
+        return actionTargets;
     }
 
 
     /**
      * Set up the list of elements that the governance action will work on.
      *
-     * @param actionTargetGUIDs list of string guids
+     * @param actionTargets list of names to string guids
      */
-    public void setActionTargetGUIDs(List<String> actionTargetGUIDs)
+    public void setActionTargets(List<NewActionTarget> actionTargets)
     {
-        this.actionTargetGUIDs = actionTargetGUIDs;
+        this.actionTargets = actionTargets;
     }
 
 
@@ -295,30 +296,30 @@ public class GovernanceActionRequestBody implements Serializable
      *
      * @return map of properties
      */
-    public Map<String, String> getRequestProperties()
+    public Map<String, String> getRequestParameters()
     {
-        if (requestProperties == null)
+        if (requestParameters == null)
         {
             return null;
         }
 
-        if (requestProperties.isEmpty())
+        if (requestParameters.isEmpty())
         {
             return null;
         }
 
-        return requestProperties;
+        return requestParameters;
     }
 
 
     /**
      * Set up the parameters to pass onto the governance service.
      *
-     * @param requestProperties map of properties
+     * @param requestParameters map of properties
      */
-    public void setRequestProperties(Map<String, String> requestProperties)
+    public void setRequestParameters(Map<String, String> requestParameters)
     {
-        this.requestProperties = requestProperties;
+        this.requestParameters = requestParameters;
     }
 
 
@@ -380,10 +381,10 @@ public class GovernanceActionRequestBody implements Serializable
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", requestSourceGUIDs=" + requestSourceGUIDs +
-                       ", actionTargetGUIDs=" + actionTargetGUIDs +
+                       ", actionTargets=" + actionTargets +
                        ", startTime=" + startTime +
                        ", requestType='" + requestType + '\'' +
-                       ", requestProperties=" + requestProperties +
+                       ", requestParameters=" + requestParameters +
                        ", originatorServiceName=" + originatorServiceName +
                        ", originatorEngineName=" + originatorEngineName +
                        '}';
@@ -413,12 +414,12 @@ public class GovernanceActionRequestBody implements Serializable
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
-                       Objects.equals(actionTargetGUIDs, that.actionTargetGUIDs) &&
+                       Objects.equals(actionTargets, that.actionTargets) &&
                        Objects.equals(startTime, that.startTime) &&
                        Objects.equals(requestType, that.requestType) &&
                        Objects.equals(originatorServiceName, that.originatorServiceName) &&
                        Objects.equals(originatorEngineName, that.originatorEngineName) &&
-                       Objects.equals(requestProperties, that.requestProperties);
+                       Objects.equals(requestParameters, that.requestParameters);
     }
 
 
@@ -430,7 +431,7 @@ public class GovernanceActionRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargetGUIDs, startTime, requestType,
-                            requestProperties, originatorServiceName, originatorEngineName);
+        return Objects.hash(qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargets, startTime, requestType,
+                            requestParameters, originatorServiceName, originatorEngineName);
     }
 }

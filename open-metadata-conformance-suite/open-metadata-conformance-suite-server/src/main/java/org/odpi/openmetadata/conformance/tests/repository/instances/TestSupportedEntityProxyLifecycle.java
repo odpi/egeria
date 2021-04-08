@@ -438,14 +438,19 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * Ask the TUT to add the entity proxy to its repository
          */
 
+        long elapsedTime;
         try {
+            long start = System.currentTimeMillis();
             metadataCollection.addEntityProxy(workPad.getLocalServerUserId(), entity1Proxy);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion2,
                             assertionMsg2 + end1TypeName,
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
+                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId(),
+                            "addEntityProxy",
+                            elapsedTime);
 
             createdEntityProxiesTUT.add(entity1Proxy);
 
@@ -609,13 +614,17 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          */
 
         try {
+            long start = System.currentTimeMillis();
             metadataCollection.addEntityProxy(workPad.getLocalServerUserId(), entity2Proxy);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion2,
                             assertionMsg2 + end2TypeName,
                             RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId());
+                            RepositoryConformanceProfileRequirement.STORE_ENTITY_PROXIES.getRequirementId(),
+                            "addEntityProxy",
+                            elapsedTime);
 
             createdEntityProxiesTUT.add(entity2Proxy);
 
@@ -659,7 +668,9 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         EntitySummary retrievedEntity1Summary = null;
         try {
 
+            long start = System.currentTimeMillis();
             retrievedEntity1Summary = metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), entity1.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
         } catch (Exception exc) {
             /*
@@ -680,29 +691,37 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                         assertion3,
                         assertionMsg3 + end1TypeName,
                         RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
+                        RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId(),
+                        "getEntitySummary",
+                        elapsedTime);
 
 
         /*
          * It SHOULD NOT be possible to retrieve the proxy as an EntityDetail - this should throw EntityProxyOnlyException
          */
 
+        long start = System.currentTimeMillis();
         try {
 
             EntityDetail retrievedEntity1Detail = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), entity1.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((false),
                             assertion4,
                             assertionMsg4 + end1TypeName,
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId(),
+                            "getEntityDetail-negative",
+                            elapsedTime);
         } catch (EntityProxyOnlyException exception) {
-
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion4,
                             assertionMsg4 + end1TypeName,
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId(),
+                            "getEntityDetail-negative",
+                            elapsedTime);
         } catch (Exception exc) {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -724,13 +743,17 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
         try {
 
+            start = System.currentTimeMillis();
             EntityDetail retrievedEntity1Detail = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity1.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((retrievedEntity1Detail == null),
                             assertion5,
                             assertionMsg5 + end1TypeName,
                             RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId(),
+                            "isEntityKnown-negative",
+                            elapsedTime);
 
         } catch (Exception exc) {
             /*
@@ -764,24 +787,30 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
             try {
 
+                start = System.currentTimeMillis();
                 EntityDetail updatedEntity = metadataCollection.updateEntityStatus(workPad.getLocalServerUserId(), entity1.getGUID(), validInstanceStatus);
+                elapsedTime = System.currentTimeMillis() - start;
 
                 assertCondition((false),
                                 assertion9,
                                 testTypeName + assertionMsg9,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
+                                "updateEntityStatus-negative",
+                                elapsedTime);
 
             } catch (InvalidParameterException e) {
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
-
+                elapsedTime = System.currentTimeMillis() - start;
                 assertCondition((true),
                                 assertion9,
                                 testTypeName + assertionMsg9,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
+                                "updateEntityStatus-negative",
+                                elapsedTime);
 
             } catch (Exception exc) {
                 /*
@@ -813,24 +842,30 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
             try {
 
+                start = System.currentTimeMillis();
                 EntityDetail minPropertiesEntity = metadataCollection.updateEntityProperties(workPad.getLocalServerUserId(), entity1.getGUID(), minEntityProps);
+                elapsedTime = System.currentTimeMillis() - start;
 
                 assertCondition((false),
                                 assertion10,
                                 testTypeName + assertionMsg10,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
+                                "updateEntityProperties-negative",
+                                elapsedTime);
 
             } catch (InvalidParameterException e) {
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
-
+                elapsedTime = System.currentTimeMillis() - start;
                 assertCondition((true),
                                 assertion10,
                                 testTypeName + assertionMsg10,
                                 RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
+                                "updateEntityProperties-negative",
+                                elapsedTime);
             } catch (Exception exc) {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -860,16 +895,20 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
         try {
 
+            start = System.currentTimeMillis();
             EntityDetail reTypedEntity = metadataCollection.reTypeEntity(workPad.getLocalServerUserId(),
                                                                          entity1.getGUID(),
                                                                          end1Type,
                                                                          end1Type); // see comment above about using original type
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((false),
                             assertion11,
                             testTypeName + assertionMsg11,
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
+                            "reTypeEntity-negative",
+                            elapsedTime);
 
         } catch (InvalidParameterException e) {
 
@@ -877,11 +916,14 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
              * We are not expecting the type update to work - it should have thrown an InvalidParameterException
              */
 
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion11,
                             testTypeName + assertionMsg11,
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
+                            "reTypeEntity-negative",
+                            elapsedTime);
         } catch (Exception exc) {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -912,11 +954,13 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
         try {
 
+            start = System.currentTimeMillis();
             EntityDetail reIdentifiedEntity = metadataCollection.reIdentifyEntity(workPad.getLocalServerUserId(),
                                                                                   end1Type.getGUID(),
                                                                                   end1Type.getName(),
                                                                                   entity1.getGUID(),
                                                                                   newGUID);
+            elapsedTime = System.currentTimeMillis() - start;
 
             if (reIdentifiedEntity != null)
                 createdEntitiesTUT.add(reIdentifiedEntity);
@@ -925,7 +969,9 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                             assertion12,
                             testTypeName + assertionMsg12,
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
+                            "reIdentifyEntity-negative",
+                            elapsedTime);
 
         } catch (InvalidParameterException e) {
 
@@ -933,11 +979,14 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
              * We are not expecting the identity update to work - it should have thrown an InvalidParameterException
              */
 
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion12,
                             testTypeName + assertionMsg12,
                             RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_PROXY_LOCKING.getRequirementId(),
+                            "reIdentifyEntity-negative",
+                            elapsedTime);
         } catch (Exception exc) {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -971,18 +1020,22 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
             instanceProps = super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition());
 
+            start = System.currentTimeMillis();
             newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
                                                                  relationshipDef.getGUID(),
                                                                  instanceProps,
                                                                  entity1.getGUID(),
                                                                  entity2.getGUID(),
                                                                  null);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion6,
                             assertionMsg6 + testTypeName,
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                            "addRelationship",
+                            elapsedTime);
 
             createdRelationshipsTUT.add(newRelationship);
 
@@ -1028,16 +1081,20 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
              */
             try {
 
+                start = System.currentTimeMillis();
                 Relationship deletedRelationship = metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
                                                                                          newRelationship.getType().getTypeDefGUID(),
                                                                                          newRelationship.getType().getTypeDefName(),
                                                                                          newRelationship.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
 
                 assertCondition(true,
                                 assertion7,
                                 assertionMsg7 + testTypeName,
                                 RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId(),
+                                "deleteRelationship",
+                                elapsedTime);
 
 
             } catch (FunctionNotSupportedException exception) {
@@ -1180,22 +1237,28 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          */
 
         try {
+            start = System.currentTimeMillis();
             metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), entity1.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((false),
                     assertion8,
                     assertionMsg8 + end1TypeName,
                     RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getRequirementId(),
+                    "getEntitySummary-negative",
+                    elapsedTime);
 
         }
         catch (EntityNotKnownException exception) {
-
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                     assertion8,
                     assertionMsg8 + end1TypeName,
                     RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getRequirementId());
+                    RepositoryConformanceProfileRequirement.ENTITY_PROXY_DELETE.getRequirementId(),
+                    "getEntitySummary-negative",
+                    elapsedTime);
         }
         catch (Exception exc) {
             /*

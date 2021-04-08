@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the termHASARelationship and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class TermHasARelationshipMapper extends LineMapper<HasA> {
+public class TermHasARelationshipMapper extends RelationshipMapper<HasA> {
     public static final String TERM_HASA_RELATIONSHIP = "TermHASARelationship";
 
     public TermHasARelationshipMapper(OMRSAPIHelper omrsapiHelper) {
@@ -23,13 +23,13 @@ public class TermHasARelationshipMapper extends LineMapper<HasA> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied omas relationship to omrs InstanceProperties.
      *
-     * @param termHasARelationship               supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param termHasARelationship               supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(HasA termHasARelationship, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(HasA termHasARelationship, InstanceProperties instanceProperties) {
         if (termHasARelationship.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getDescription(), "description");
         }
@@ -49,13 +49,13 @@ public class TermHasARelationshipMapper extends LineMapper<HasA> {
     /**
      * Map a primitive omrs property to the termHASARelationship object.
      *
-     * @param termHasARelationship         the glossary to be updated
+     * @param termHasARelationship         the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(HasA termHasARelationship, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(HasA termHasARelationship, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -74,7 +74,7 @@ public class TermHasARelationshipMapper extends LineMapper<HasA> {
     }
 
     @Override
-    protected boolean mapEnumToLine(HasA termHasARelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(HasA termHasARelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -90,7 +90,7 @@ public class TermHasARelationshipMapper extends LineMapper<HasA> {
     }
 
     @Override
-    protected HasA getLineInstance() {
+    protected HasA getRelationshipInstance() {
         return new HasA();
     }
 

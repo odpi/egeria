@@ -111,7 +111,7 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                       "the configuration needs to be changed to allow the user to update the asset."),
 
     INCOMPLETE_ASSET(         403, "OMAG-PLATFORM-SECURITY-403-010 ",
-                              "User {0} is not authorized to change asset {1} because it has missing properties",
+                              "User {0} is not authorized to change asset {1} because it has missing properties: {2}",
                               "The system is unable to process a request from the user because the asset is not correctly or completely filled out." +
                                       "  The request fails with a UserNotAuthorizedException exception.",
                               "Using knowledge about the asset determine why the properties are missing and whether it needs to be " +

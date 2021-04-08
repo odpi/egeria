@@ -34,8 +34,8 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
      * @param serverName name of this server
      */
     public AssetManagerOMASConverter(OMRSRepositoryHelper   repositoryHelper,
-                                    String                 serviceName,
-                                    String                 serverName)
+                                     String                 serviceName,
+                                     String                 serverName)
     {
         super (repositoryHelper, serviceName, serverName);
     }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceClassifications;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * A governed Node is a node that can have associated governance actions.
+ * A governed Node is a node that can have associated governance classifications.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -31,15 +31,15 @@ public class GovernedNode extends Node implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(GovernedNode.class);
     private static final String className = GovernedNode.class.getName();
 
-    private GovernanceActions governanceActions = null;
+    private GovernanceClassifications governanceClassifications = null;
 
 
-    public GovernanceActions getGovernanceActions() {
-        return governanceActions;
+    public GovernanceClassifications getGovernanceClassifications() {
+        return governanceClassifications;
     }
 
-    public void setGovernanceActions(GovernanceActions governanceActions) {
-        this.governanceActions = governanceActions;
+    public void setGovernanceClassifications(GovernanceClassifications governanceClassifications) {
+        this.governanceClassifications = governanceClassifications;
     }
 
     public StringBuilder toString(StringBuilder sb) {
@@ -50,8 +50,8 @@ public class GovernedNode extends Node implements Serializable {
         sb.append("Node{");
         sb.append("node='").append(super.toString(sb)).append('\'');
 
-        if (governanceActions!=null) {
-            sb.append(",goveranceActions=").append(governanceActions);
+        if (governanceClassifications !=null) {
+            sb.append(",governanceClassifications=").append(governanceClassifications);
         }
 
 
@@ -71,12 +71,12 @@ public class GovernedNode extends Node implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         GovernedNode that = (GovernedNode) o;
-        return Objects.equals(governanceActions, that.governanceActions);
+        return Objects.equals(governanceClassifications, that.governanceClassifications);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), governanceActions);
+        return Objects.hash(super.hashCode(), governanceClassifications);
     }
 
     /**
@@ -89,19 +89,19 @@ public class GovernedNode extends Node implements Serializable {
     public void setClassifications(List<Classification> classifications) {
         if (CollectionUtils.isNotEmpty(classifications)) {
             List<Classification> newClassifications = new ArrayList<>();
-            if (this.governanceActions ==null) {
-                this.governanceActions = new GovernanceActions();
+            if (this.governanceClassifications ==null) {
+                this.governanceClassifications = new GovernanceClassifications();
             }
 
             for (Classification classification : classifications) {
                 if (classification.getClassificationName().equals(new Confidentiality().getClassificationName())) {
-                    this.governanceActions.setConfidentiality((Confidentiality) classification);
+                    this.governanceClassifications.setConfidentiality((Confidentiality) classification);
                 } else if (classification.getClassificationName().equals(new Confidence().getClassificationName())) {
-                    this.governanceActions.setConfidence((Confidence) classification);
+                    this.governanceClassifications.setConfidence((Confidence) classification);
                 } else if (classification.getClassificationName().equals(new Criticality().getClassificationName())) {
-                    this.governanceActions.setCriticality((Criticality) classification);
+                    this.governanceClassifications.setCriticality((Criticality) classification);
                 } else if (classification.getClassificationName().equals(new Retention().getClassificationName())) {
-                    this.governanceActions.setRetention((Retention) classification);
+                    this.governanceClassifications.setRetention((Retention) classification);
                 } else {
                     newClassifications.add(classification);
                 }

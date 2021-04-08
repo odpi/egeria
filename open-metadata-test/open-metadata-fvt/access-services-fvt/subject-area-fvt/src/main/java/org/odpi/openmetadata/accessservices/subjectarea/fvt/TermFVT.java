@@ -14,9 +14,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Critica
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.RetentionBasis;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceClassifications;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -143,36 +143,36 @@ public class TermFVT {
         System.out.println("Purge term1");
         purgeTerm(guid);
         System.out.println("Create term3 with governance actions");
-        GovernanceActions governanceActions = createGovernanceActions();
-        Term term3 = createTermWithGovernanceActions(DEFAULT_TEST_TERM_NAME, glossaryGuid,governanceActions);
+        GovernanceClassifications governanceClassifications = createGovernanceClassifications();
+        Term term3 = createTermWithGovernanceClassifications(DEFAULT_TEST_TERM_NAME, glossaryGuid, governanceClassifications);
         FVTUtils.validateNode(term3);
-        if (!governanceActions.getConfidence().getLevel().equals(term3.getGovernanceActions().getConfidence().getLevel())){
+        if (!governanceClassifications.getConfidence().getLevel().equals(term3.getGovernanceClassifications().getConfidence().getLevel())){
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidence not returned  as expected");
         }
-        if (!governanceActions.getConfidentiality().getLevel().equals(term3.getGovernanceActions().getConfidentiality().getLevel())) {
+        if (!governanceClassifications.getConfidentiality().getLevel().equals(term3.getGovernanceClassifications().getConfidentiality().getLevel())) {
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidentiality not returned  as expected");
         }
-        if (!governanceActions.getRetention().getBasis().equals(term3.getGovernanceActions().getRetention().getBasis())) {
+        if (!governanceClassifications.getRetention().getBasis().equals(term3.getGovernanceClassifications().getRetention().getBasis())) {
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions retention not returned  as expected");
         }
-        if (!governanceActions.getCriticality().getLevel().equals(term3.getGovernanceActions().getCriticality().getLevel())) {
+        if (!governanceClassifications.getCriticality().getLevel().equals(term3.getGovernanceClassifications().getCriticality().getLevel())) {
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions criticality not returned  as expected. ");
         }
-        GovernanceActions governanceActions2 = create2ndGovernanceActions();
+        GovernanceClassifications governanceClassifications2 = create2ndGovernanceClassifications();
         System.out.println("Update term3 with and change governance actions");
         Term term3ForUpdate = new Term();
         term3ForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
-        term3ForUpdate.setGovernanceActions(governanceActions2);
+        term3ForUpdate.setGovernanceClassifications(governanceClassifications2);
 
         Term updatedTerm3 = updateTerm(term3.getSystemAttributes().getGUID(), term3ForUpdate);
         FVTUtils.validateNode(updatedTerm3);
-        if (!governanceActions2.getConfidence().getLevel().equals(updatedTerm3.getGovernanceActions().getConfidence().getLevel())){
+        if (!governanceClassifications2.getConfidence().getLevel().equals(updatedTerm3.getGovernanceClassifications().getConfidence().getLevel())){
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidence not returned  as expected");
         }
-        if (!governanceActions2.getConfidentiality().getLevel().equals(updatedTerm3.getGovernanceActions().getConfidentiality().getLevel())) {
+        if (!governanceClassifications2.getConfidentiality().getLevel().equals(updatedTerm3.getGovernanceClassifications().getConfidentiality().getLevel())) {
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions confidentiality not returned  as expected");
         }
-        if (updatedTerm3.getGovernanceActions().getRetention() !=null) {
+        if (updatedTerm3.getGovernanceClassifications().getRetention() !=null) {
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions retention not null as expected");
         }
         // https://github.com/odpi/egeria/issues/3457  the below line when uncommented causes an error with the graph repo.
@@ -443,48 +443,48 @@ public class TermFVT {
         return term;
     }
 
-    public  Term createTermWithGovernanceActions(String termName, String glossaryGuid,GovernanceActions governanceActions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public  Term createTermWithGovernanceClassifications(String termName, String glossaryGuid, GovernanceClassifications governanceClassifications) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Term term = getTermForInput(termName, glossaryGuid);
-        term.setGovernanceActions(governanceActions);
+        term.setGovernanceClassifications(governanceClassifications);
         Term newTerm = issueCreateTerm(term);
         return newTerm;
     }
 
-    private GovernanceActions createGovernanceActions() {
-        GovernanceActions governanceActions = new GovernanceActions();
+    private GovernanceClassifications createGovernanceClassifications() {
+        GovernanceClassifications governanceClassifications = new GovernanceClassifications();
         Confidentiality confidentiality = new Confidentiality();
         confidentiality.setLevel(6);
-        governanceActions.setConfidentiality(confidentiality);
+        governanceClassifications.setConfidentiality(confidentiality);
 
         Confidence confidence = new Confidence();
         confidence.setLevel(ConfidenceLevel.Authoritative);
-        governanceActions.setConfidence(confidence);
+        governanceClassifications.setConfidence(confidence);
 
         Criticality criticality = new Criticality();
         criticality.setLevel(CriticalityLevel.Catastrophic);
-        governanceActions.setCriticality(criticality);
+        governanceClassifications.setCriticality(criticality);
 
         Retention retention = new Retention();
         retention.setBasis(RetentionBasis.ProjectLifetime);
-        governanceActions.setRetention(retention);
-        return governanceActions;
+        governanceClassifications.setRetention(retention);
+        return governanceClassifications;
     }
-    private GovernanceActions create2ndGovernanceActions() {
-        GovernanceActions governanceActions = new GovernanceActions();
+    private GovernanceClassifications create2ndGovernanceClassifications() {
+        GovernanceClassifications governanceClassifications = new GovernanceClassifications();
         Confidentiality confidentiality = new Confidentiality();
         confidentiality.setLevel(5);
-        governanceActions.setConfidentiality(confidentiality);
+        governanceClassifications.setConfidentiality(confidentiality);
 
         Confidence confidence = new Confidence();
         confidence.setLevel(ConfidenceLevel.AdHoc);
-        governanceActions.setConfidence(confidence);
+        governanceClassifications.setConfidence(confidence);
         // remove this classification level
         Criticality criticality = new Criticality();
         criticality.setLevel(null);
-        governanceActions.setCriticality(criticality);
+        governanceClassifications.setCriticality(criticality);
         // remove retention by nulling it
-        governanceActions.setRetention(null);
-        return governanceActions;
+        governanceClassifications.setRetention(null);
+        return governanceClassifications;
     }
 
 
@@ -560,11 +560,11 @@ public class TermFVT {
         System.out.println("Purge succeeded");
     }
 
-    public List<Line> getTermRelationships(Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Relationship> getTermRelationships(Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaTerm.getAllRelationships(this.userId, term.getSystemAttributes().getGUID());
     }
 
-    public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Relationship> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setAsOfTime(asOfTime);
         findRequest.setStartingFrom(offset);

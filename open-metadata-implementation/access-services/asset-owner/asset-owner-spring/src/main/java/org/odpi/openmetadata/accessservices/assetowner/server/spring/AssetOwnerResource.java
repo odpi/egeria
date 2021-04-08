@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -113,6 +114,30 @@ public class AssetOwnerResource
                                           @RequestBody  AssetProperties requestBody)
     {
         return restAPI.addAssetToCatalog(serverName, userId, typeName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an asset using an existing asset as a template.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier (guid) of the asset or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/from-template/{templateGUID}")
+
+    public GUIDResponse  addAssetToCatalogUsingTemplate(@PathVariable String             serverName,
+                                                        @PathVariable String             userId,
+                                                        @PathVariable String             templateGUID,
+                                                        @RequestBody  TemplateProperties requestBody)
+    {
+        return restAPI.addAssetToCatalogUsingTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -806,6 +831,54 @@ public class AssetOwnerResource
     }
 
 
+    /**
+     * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to classify
+     * @param requestBody  properties of the template
+     *
+     * @return void or
+     *  InvalidParameterException asset or element not known, null userId or guid or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/{assetGUID}/template-classification")
+
+    public VoidResponse addTemplateClassification(@PathVariable                   String                            serverName,
+                                                  @PathVariable                   String                            userId,
+                                                  @PathVariable                   String                            assetGUID,
+                                                  @RequestBody (required = false) TemplateClassificationRequestBody requestBody)
+    {
+        return restAPI.addTemplateClassification(serverName, userId, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the classification that indicates that this asset can be used as a template.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to declassify
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException asset or element not known, null userId or guid or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/{assetGUID}/template-classification/delete")
+
+    public VoidResponse removeTemplateClassification(@PathVariable                   String          serverName,
+                                                     @PathVariable                   String          userId,
+                                                     @PathVariable                   String          assetGUID,
+                                                     @RequestBody (required = false) NullRequestBody requestBody)
+    {
+        return restAPI.removeTemplateClassification(serverName, userId, assetGUID, requestBody);
+    }
+
+
     /*
      * ==============================================
      * AssetReviewInterface
@@ -1016,5 +1089,68 @@ public class AssetOwnerResource
                                     @RequestBody(required = false)  NullRequestBody requestBody)
     {
         return restAPI.deleteAsset(serverName, userId, assetGUID, requestBody);
+    }
+
+
+
+    /*
+     * ==============================================
+     * AssetDuplicateManagementInterface
+     * ==============================================
+     */
+
+
+    /**
+     * Create a simple relationship between two elements in an Asset description (typically the asset itself or
+     * attributes in their schema).
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param element1GUID unique identifier of first element
+     * @param element2GUID unique identifier of second element
+     * @param requestBody dummy request body to satisfy POST protocol.
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{element1GUID}/duplicate-of/{element2GUID}")
+
+    public VoidResponse  linkElementsAsDuplicates(@PathVariable String          serverName,
+                                                  @PathVariable String          userId,
+                                                  @PathVariable String          element1GUID,
+                                                  @PathVariable String          element2GUID,
+                                                  @RequestBody (required = false)
+                                                                NullRequestBody requestBody)
+    {
+        return restAPI.linkElementsAsDuplicates(serverName, userId, element1GUID, element2GUID, requestBody);
+    }
+
+
+    /**
+     * Remove the relationship between two elements that marks them as duplicates.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param element1GUID unique identifier of first element
+     * @param element2GUID unique identifier of second element
+     * @param requestBody dummy request body to satisfy POST protocol.
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{element1GUID}/duplicate-of/{element2GUID}/delete")
+
+    public VoidResponse  unlinkElementsAsDuplicates(@PathVariable String          serverName,
+                                                    @PathVariable String          userId,
+                                                    @PathVariable String          element1GUID,
+                                                    @PathVariable String          element2GUID,
+                                                    @RequestBody (required = false)
+                                                                  NullRequestBody requestBody)
+    {
+        return restAPI.unlinkElementsAsDuplicates(serverName, userId, element1GUID, element2GUID, requestBody);
     }
 }

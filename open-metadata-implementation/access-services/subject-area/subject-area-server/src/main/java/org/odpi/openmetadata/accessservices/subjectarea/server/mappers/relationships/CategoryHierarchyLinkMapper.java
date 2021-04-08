@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
  * Mapping methods to map between the categoryHierarchyLink and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class CategoryHierarchyLinkMapper extends LineMapper<CategoryHierarchyLink> {
+public class CategoryHierarchyLinkMapper extends RelationshipMapper<CategoryHierarchyLink> {
     public static final String CATEGORY_HIERARCHY_LINK = "CategoryHierarchyLink";
 
     public CategoryHierarchyLinkMapper(OMRSAPIHelper omrsapiHelper) {
@@ -28,7 +28,7 @@ public class CategoryHierarchyLinkMapper extends LineMapper<CategoryHierarchyLin
     }
 
     @Override
-    protected CategoryHierarchyLink getLineInstance() {
+    protected CategoryHierarchyLink getRelationshipInstance() {
         return new CategoryHierarchyLink();
     }
 }

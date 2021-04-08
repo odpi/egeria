@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -154,14 +154,14 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                                     @PathVariable String guid,
-                                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                     @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
-                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                             @PathVariable String guid,
+                                                                             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                             @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
+                                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                             @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+                                                                            ) {
         return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
@@ -175,6 +175,8 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * @param searchCriteria String expression matching child Term property values.
      * @param startingFrom the starting element number for this set of results. This is used when retrieving elements
      * @param pageSize Return the maximum number of elements that can be returned on this request.
+     * @param sequencingOrder sequencing order
+     * @param sequencingProperty property used for sequencing.
      * @return A list of terms owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -183,7 +185,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    @GetMapping(path = "/users/{userId}/glossaries/{guid}/terms")
+    @GetMapping(path = "/{guid}/terms")
     public SubjectAreaOMASAPIResponse<Term> getGlossaryTerms(@PathVariable String serverName,
                                                              @PathVariable String userId,
                                                              @PathVariable String guid,
@@ -196,6 +198,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
         return restAPI.getTerms(serverName, userId, guid, searchCriteria,asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
+
     /**
      * Get the Categories owned by this glossary. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
      *
@@ -204,9 +207,12 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * @param guid         guid of the glossary to get terms
      * @param searchCriteria String expression matching child Category property values.
      * @param asOfTime     the categories returned as they were at this time. null indicates at the current time.
+     * @param onlyTop      when only the top categories (those categories without parents) are returned.
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
-     * @param onlyTop      when only the top categories (those categories without parents) are returned.
+     * @param sequencingOrder    the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     *
      * @return A list of categories owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -215,7 +221,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    @GetMapping(path = "/users/{userId}/glossaries/{guid}/categories")
+    @GetMapping(path = "/{guid}/categories")
     public SubjectAreaOMASAPIResponse<Category> getGlossaryCategories(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,

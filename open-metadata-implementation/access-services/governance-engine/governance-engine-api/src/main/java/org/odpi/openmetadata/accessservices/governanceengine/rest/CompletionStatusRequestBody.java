@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,10 +27,10 @@ public class CompletionStatusRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private CompletionStatus    status               = null;
-    private Map<String, String> requestProperties    = null;
-    private List<String>        outputGuards         = null;
-    private List<String>        newActionTargetGUIDs = null;
+    private CompletionStatus      status            = null;
+    private Map<String, String>   requestParameters = null;
+    private List<String>          outputGuards      = null;
+    private List<NewActionTarget> newActionTargets  = null;
 
 
     /**
@@ -51,9 +52,9 @@ public class CompletionStatusRequestBody implements Serializable
         if (template != null)
         {
             status = template.getStatus();
-            requestProperties = template.getRequestProperties();
+            requestParameters = template.getRequestParameters();
             outputGuards = template.getOutputGuards();
-            newActionTargetGUIDs = template.getNewActionTargetGUIDs();
+            newActionTargets = template.getNewActionTargets();
         }
     }
 
@@ -85,30 +86,30 @@ public class CompletionStatusRequestBody implements Serializable
      *
      * @return map of properties
      */
-    public Map<String, String> getRequestProperties()
+    public Map<String, String> getRequestParameters()
     {
-        if (requestProperties == null)
+        if (requestParameters == null)
         {
             return null;
         }
 
-        if (requestProperties.isEmpty())
+        if (requestParameters.isEmpty())
         {
             return null;
         }
 
-        return requestProperties;
+        return requestParameters;
     }
 
 
     /**
      * Set up the parameters to pass onto the governance service.
      *
-     * @param requestProperties map of properties
+     * @param requestParameters map of properties
      */
-    public void setRequestProperties(Map<String, String> requestProperties)
+    public void setRequestParameters(Map<String, String> requestParameters)
     {
-        this.requestProperties = requestProperties;
+        this.requestParameters = requestParameters;
     }
 
 
@@ -145,34 +146,34 @@ public class CompletionStatusRequestBody implements Serializable
 
 
     /**
-     * Return the list of metadata elements that the next governance action should target.
+     * Return the metadata elements that the next governance action should target.
      *
-     * @return list of string guids
+     * @return list of names to string guids
      */
-    public List<String> getNewActionTargetGUIDs()
+    public List<NewActionTarget> getNewActionTargets()
     {
-        if (newActionTargetGUIDs == null)
+        if (newActionTargets == null)
         {
             return null;
         }
 
-        if (newActionTargetGUIDs.isEmpty())
+        if (newActionTargets.isEmpty())
         {
             return null;
         }
 
-        return newActionTargetGUIDs;
+        return newActionTargets;
     }
 
 
     /**
      * Set up the list of metadata elements that the next governance action should target.
      *
-     * @param newActionTargetGUIDs list of string guids
+     * @param newActionTargets list of names to string guids
      */
-    public void setNewActionTargetGUIDs(List<String> newActionTargetGUIDs)
+    public void setNewActionTargets(List<NewActionTarget> newActionTargets)
     {
-        this.newActionTargetGUIDs = newActionTargetGUIDs;
+        this.newActionTargets = newActionTargets;
     }
 
 
@@ -186,9 +187,9 @@ public class CompletionStatusRequestBody implements Serializable
     {
         return "CompletionStatusRequestBody{" +
                        "status=" + status +
-                       ", requestProperties=" + requestProperties +
+                       ", requestParameters=" + requestParameters +
                        ", outputGuards=" + outputGuards +
-                       ", newActionTargetGUIDs=" + newActionTargetGUIDs +
+                       ", newActionTargets=" + newActionTargets +
                        '}';
     }
 
@@ -213,7 +214,7 @@ public class CompletionStatusRequestBody implements Serializable
         CompletionStatusRequestBody that = (CompletionStatusRequestBody) objectToCompare;
         return status == that.status &&
                        Objects.equals(outputGuards, that.outputGuards) &&
-                       Objects.equals(newActionTargetGUIDs, that.newActionTargetGUIDs);
+                       Objects.equals(newActionTargets, that.newActionTargets);
     }
 
 
@@ -225,6 +226,6 @@ public class CompletionStatusRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(status, outputGuards, newActionTargetGUIDs);
+        return Objects.hash(status, outputGuards, newActionTargets);
     }
 }

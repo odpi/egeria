@@ -6,11 +6,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.server.builders.SchemaAttributePropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
-import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
@@ -18,11 +18,9 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -45,7 +43,7 @@ public class DataEngineSchemaTypeHandler {
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final SchemaTypeHandler<SchemaType> schemaTypeHandler;
-    private final SchemaAttributeHandler<SchemaAttribute, SchemaType> schemaAttributeHandler;
+    private final SchemaAttributeHandler<Attribute, SchemaType> schemaAttributeHandler;
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
 
@@ -65,7 +63,7 @@ public class DataEngineSchemaTypeHandler {
     public DataEngineSchemaTypeHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                        RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
                                        SchemaTypeHandler<SchemaType> schemaTypeHandler,
-                                       SchemaAttributeHandler<SchemaAttribute, SchemaType> schemaAttributeHandler,
+                                       SchemaAttributeHandler<Attribute, SchemaType> schemaAttributeHandler,
                                        DataEngineRegistrationHandler dataEngineRegistrationHandler,
                                        DataEngineCommonHandler dataEngineCommonHandler) {
         this.serviceName = serviceName;
@@ -179,7 +177,6 @@ public class DataEngineSchemaTypeHandler {
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException {
         final String methodName = "addLineageMappingRelationship";
-        final String parameterName = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(sourceSchemaAttributeQualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
@@ -293,21 +290,21 @@ public class DataEngineSchemaTypeHandler {
     private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, Attribute attribute) throws
             InvalidParameterException {
         String methodName = "buildSchemaAttributeEntityDetail";
-        SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
+        SchemaAttributePropertiesBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
 
         return dataEngineCommonHandler.buildEntityDetail(schemaAttributeGUID, schemaAttributeBuilder.getInstanceProperties(methodName));
     }
 
-    SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
+    SchemaAttributePropertiesBuilder getSchemaAttributeBuilder(Attribute attribute) {
         HashMap<String, String> additionalProperties = new HashMap<>();
         additionalProperties.put(OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME, attribute.getAnchorGUID());
-        return new SchemaAttributeBuilder(attribute.getQualifiedName(), attribute.getDisplayName(), null,
+        return new SchemaAttributePropertiesBuilder(attribute.getQualifiedName(), attribute.getDisplayName(), null,
                 attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(), false,
                 attribute.getDefaultValueOverride(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
                 0, 0, 0, 0,
                 false, null, null, additionalProperties,
                 OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID, OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
-                null, repositoryHelper, serviceName, serverName);
+                null, repositoryHelper, serviceName, serverName, attribute.getAnchorGUID());
     }
 
     private void createSchemaAttribute(String userId, SchemaType schemaType, String schemaTypeGUID, Attribute attribute,
@@ -315,29 +312,21 @@ public class DataEngineSchemaTypeHandler {
             UserNotAuthorizedException,
             PropertyServerException {
         final String methodName = "createSchemaAttribute";
-        SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
+        SchemaAttributePropertiesBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
+        schemaTypeBuilder.setDataType(dataType);
         schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
         final String schemaTypeGUIDParameterName = "schemaTypeGUID";
         final String qualifiedNameParameterName = "schemaAttribute.getQualifiedName()";
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-        String schemaAttributeGUID = schemaAttributeHandler.createNestedSchemaAttribute(userId, externalSourceGUID,
+        schemaAttributeHandler.createNestedSchemaAttribute(userId, externalSourceGUID,
                 externalSourceName, schemaTypeGUID, schemaTypeGUIDParameterName,
                 OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
                 OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                 OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                 attribute.getQualifiedName(), qualifiedNameParameterName, schemaAttributeBuilder, methodName);
-
-        TypeDef classificationTypeDef = repositoryHelper.getTypeDefByName(userId, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
-                SchemaTypePropertiesMapper.DATA_TYPE, dataType, methodName);
-
-        repositoryHandler.classifyEntity(userId, externalSourceGUID,
-                externalSourceName, schemaAttributeGUID, classificationTypeDef.getGUID(), classificationTypeDef.getName(),
-                null, null, properties, methodName);
-
     }
 
     private EntityDetail buildSchemaTypeEntityDetail(String schemaTypeGUID, SchemaType schemaType) throws InvalidParameterException {

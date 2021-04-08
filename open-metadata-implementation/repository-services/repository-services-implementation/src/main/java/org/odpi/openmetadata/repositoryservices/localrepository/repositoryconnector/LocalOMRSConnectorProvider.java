@@ -197,7 +197,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
             {
                 realLocalConnector = (OMRSRepositoryConnector) connector;
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 throw new ConnectionCheckedException(OMRSErrorCode.BAD_LOCAL_REPOSITORY_CONNECTION.getMessageDefinition(),
                                                      this.getClass().getName(),

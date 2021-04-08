@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -154,7 +154,7 @@ public class GraphFVT
         graph = getGraph(term1.getSystemAttributes().getGUID(),
                 null,
                 null,
-                new HashSet<>(Arrays.asList(LineType.Synonym)),
+                new HashSet<>(Arrays.asList(RelationshipType.Synonym)),
                 null,
                 3);
         checkGraphContent(graph,2,1);
@@ -164,10 +164,10 @@ public class GraphFVT
         graph = getGraph(term1.getSystemAttributes().getGUID(),
                 null,
                 null,
-                new HashSet<>(Arrays.asList(LineType.Synonym)),
+                new HashSet<>(Arrays.asList(RelationshipType.Synonym)),
                 null,
                 3);
-        // expect 3 terms with the 2 Synonym Lines from term1.
+        // expect 3 terms with the 2 Synonym relationships from term1.
         checkGraphContent(graph,3,2);
 
         // at this stage we should have a glossary, 3 terms, 3 term to glossary relationships and 2 synonym relationships
@@ -183,7 +183,7 @@ public class GraphFVT
         graph = getGraph(term3.getSystemAttributes().getGUID(),
                 null,
                 null,
-                new HashSet<>(Arrays.asList(LineType.Synonym)),
+                new HashSet<>(Arrays.asList(RelationshipType.Synonym)),
                 null,
                 1);
         checkGraphContent(graph,2,1);
@@ -194,7 +194,7 @@ public class GraphFVT
 
                 null,
                 1);
-        // expect to only pick up the TermAnchor Lines not the synonyms because we have depth 1.
+        // expect to only pick up the TermAnchor relationships not the synonyms because we have depth 1.
         checkGraphContent(graph,4,3);
 
         // createCategory
@@ -227,8 +227,9 @@ public class GraphFVT
                 null,
                 3);
         checkGraphContent(graph,2,1);
-        checkNodesContainNodeType(graph.getNodes(),NodeType.Taxonomy);
-        checkNodesContainNodeType(graph.getNodes(),NodeType.SubjectAreaDefinition);
+
+        checkNodesContainNodeType(graph,NodeType.Taxonomy);
+        checkNodesContainNodeType(graph,NodeType.SubjectAreaDefinition);
         // delete the term, category and subject area we created.
         subjectAreaFVT.deleteSubjectAreaDefinition(subjectAreaDefinition.getSystemAttributes().getGUID());
         categoryFVT.deleteCategory(category.getSystemAttributes().getGUID());
@@ -239,9 +240,15 @@ public class GraphFVT
         glossaryFVT.deleteGlossary(glossaryGuid);
     }
 
-    private void checkNodesContainNodeType(Set<? extends Node> nodes, NodeType nodeTypeToCheck) throws SubjectAreaFVTCheckedException {
+    private void checkNodesContainNodeType(Graph graph, NodeType nodeTypeToCheck) throws SubjectAreaFVTCheckedException {
         boolean found = false;
-        for (Node node:nodes) {
+        if (graph == null || graph.getNodes() == null || graph.getNodes().size() == 0 ) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected to find "+nodeTypeToCheck.name() + "but there were no nodes in the graph");
+        }
+        Map<String, Node> nodes =graph.getNodes();
+        Set<String> guids = nodes.keySet();
+        for (String guid:guids) {
+            Node node = nodes.get(guid);
             if (node.getNodeType() == nodeTypeToCheck) {
                 found = true;
             }
@@ -251,24 +258,24 @@ public class GraphFVT
         }
     }
 
-    private void checkGraphContent(Graph graph,int expectedNodesSize,int expectedLinesSize) throws SubjectAreaFVTCheckedException {
-        System.out.println("CheckGraphContent expected " +expectedNodesSize + " Nodes and "+expectedLinesSize + " Lines" );
+    private void checkGraphContent(Graph graph,int expectedNodesSize,int expectedRelationshipsSize) throws SubjectAreaFVTCheckedException {
+        System.out.println("CheckGraphContent expected " +expectedNodesSize + " Nodes and "+expectedRelationshipsSize + " Relationships" );
         if (graph.getNodes().size() !=expectedNodesSize ) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedNodesSize +  " nodes, got " +graph.getNodes().size());
         }
-        if (expectedLinesSize ==0 && (graph.getLines() != null) ) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 and graph.getLines() to be null ");
-        } else  if (expectedLinesSize !=0 && (graph.getLines() == null) ) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedLinesSize + " and graph.getLines() is null ");
-        } else if (graph.getLines()!=null && graph.getLines().size() !=expectedLinesSize ) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedLinesSize + " Lines, got " +graph.getLines().size());
+        if (expectedRelationshipsSize ==0 && (graph.getRelationships() != null) ) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 and graph.getRelationships() to be null ");
+        } else  if (expectedRelationshipsSize !=0 && (graph.getRelationships() == null) ) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedRelationshipsSize + " and graph.getRelationships() is null ");
+        } else if (graph.getRelationships()!=null && graph.getRelationships().size() !=expectedRelationshipsSize ) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedRelationshipsSize + " relationships, got " +graph.getRelationships().size());
         }
     }
 
     private Graph getGraph(String guid,
                            Date asOfTime,
                            Set<NodeType> nodeFilter,
-                           Set<LineType> lineFilter,
+                           Set<RelationshipType> relationshipFilter,
                            StatusFilter statusFilter,   // may need to extend this for controlled terms
                            int level) throws InvalidParameterException,
                                                  PropertyServerException,
@@ -278,7 +285,7 @@ public class GraphFVT
                 guid,
                 asOfTime,
                 nodeFilter,
-                lineFilter,
+                relationshipFilter,
                 statusFilter,
                 level);
     }

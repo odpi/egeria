@@ -24,11 +24,22 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest Egeria release:
 
-Note that as of 2.6 the dates in the release notes now apply to when the code is released publically, rather than the month the code was developed
-
+* [Release 2.8](release-notes-2-8.md) - April 2021
+  * New support for event and property filtering for the open metadata server security connector
+  * Changes to metadata types
+  * New performance workbench for the CTS (technical preview)
+  * New interface for retrieving the complete history of a single metadata instance
+  * Splitting of CTS results into multiple smaller files
+  * Bug Fixes
+  * Dependency updates
+  * Important notes included on known issues
+  
+* [Release 2.7](release-notes-2-7.md) - March 2021
+  * Bug Fixes
+  * Dependency updates
 ## Older Releases
 
-* [Release 2.6](release-notes-2-6.md) - February 2020
+* [Release 2.6](release-notes-2-6.md) - February 2021
   * Governance Server, replacing Stewardship, Discovery & Security Server
   * Changes to location of configuration files
   * New metadata types for Governance Actions, Duplicate Processing
@@ -136,6 +147,32 @@ resolve the problem, please raise a new
 You can also follow our discussions by joining the LF AI & Data Foundation Slack team.
 Sign up at https://slack.lfai.foundation/ & join the
 `egeria-discussions` channel.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ----
