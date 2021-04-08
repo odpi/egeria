@@ -57,7 +57,7 @@ public class DataEngineProcessHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param assetHandler            provides utilities for manipulating the repository services assets
      * @param dataEngineCommonHandler provides utilities for manipulating entities
-     * @param registrationHandler     creates software server capability entities
+     * @param registrationHandler     provides utilities for manipulating software server capability entities
      **/
     public DataEngineProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                     RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
@@ -228,9 +228,9 @@ public class DataEngineProcessHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public Set<String> getPortsForProcess(String userId, String processGUID, String portTypeName) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException {
+    public Set<EntityDetail> getPortsForProcess(String userId, String processGUID, String portTypeName) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException {
         final String methodName = "getPortsForProcess";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -245,8 +245,7 @@ public class DataEngineProcessHandler {
             return new HashSet<>();
         }
 
-        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName))
-                .map(InstanceHeader::getGUID).collect(Collectors.toSet());
+        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName)).collect(Collectors.toSet());
     }
 
     private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws InvalidParameterException {

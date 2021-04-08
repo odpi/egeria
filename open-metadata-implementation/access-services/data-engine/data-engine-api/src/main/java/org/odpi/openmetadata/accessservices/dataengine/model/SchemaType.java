@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +28,7 @@ public class SchemaType extends Referenceable {
     private String versionNumber;
     private String type;
     @JsonProperty("columns")
-    private List<Attribute> attributeList;
+    private List<Attribute> tabularColumns;
 
     /**
      * Gets display name.
@@ -126,17 +125,17 @@ public class SchemaType extends Referenceable {
      *
      * @return the attribute list
      */
-    public List<Attribute> getAttributeList() {
-        return attributeList;
+    public List<Attribute> getTabularColumns() {
+        return tabularColumns;
     }
 
     /**
      * Sets attribute list.
      *
-     * @param attributeList the attribute list
+     * @param tabularColumns the attribute list
      */
-    public void setAttributeList(List<Attribute> attributeList) {
-        this.attributeList = attributeList;
+    public void setTabularColumns(List<Attribute> tabularColumns) {
+        this.tabularColumns = tabularColumns;
     }
 
     /**
@@ -166,7 +165,7 @@ public class SchemaType extends Referenceable {
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", versionNumber='" + versionNumber + '\'' +
                 ", type=" + type +
-                ", attributeList=" + attributeList +
+                ", attributeList=" + tabularColumns +
                 '}';
     }
 
@@ -181,12 +180,12 @@ public class SchemaType extends Referenceable {
                 Objects.equals(encodingStandard, that.encodingStandard) &&
                 Objects.equals(versionNumber, that.versionNumber) &&
                 Objects.equals(type, that.type) &&
-                Objects.equals(attributeList, that.attributeList);
+                Objects.equals(tabularColumns, that.tabularColumns);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(displayName, author, usage, encodingStandard, versionNumber, attributeList);
+        return Objects.hash(displayName, author, usage, encodingStandard, versionNumber, tabularColumns);
     }
 
 }

@@ -17,8 +17,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SchemaTypeRequestBody extends DataEngineOMASAPIRequestBody {
+    private String portQualifiedName;
     @JsonProperty("schema")
     private SchemaType schemaType;
+
+    public String getPortQualifiedName() {
+        return portQualifiedName;
+    }
+
+    public void setPortQualifiedName(String portQualifiedName) {
+        this.portQualifiedName = portQualifiedName;
+    }
 
     public SchemaType getSchemaType() {
         return schemaType;
@@ -31,7 +40,8 @@ public class SchemaTypeRequestBody extends DataEngineOMASAPIRequestBody {
     @Override
     public String toString() {
         return "SchemaTypeRequestBody{" +
-                "schemaType=" + schemaType +
+                "portQualifiedName='" + portQualifiedName + '\'' +
+                ", schemaType=" + schemaType +
                 '}';
     }
 
@@ -40,11 +50,12 @@ public class SchemaTypeRequestBody extends DataEngineOMASAPIRequestBody {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SchemaTypeRequestBody that = (SchemaTypeRequestBody) o;
-        return Objects.equals(schemaType, that.schemaType);
+        return Objects.equals(portQualifiedName, that.portQualifiedName) &&
+                Objects.equals(schemaType, that.schemaType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(schemaType);
+        return Objects.hash(portQualifiedName, schemaType);
     }
 }

@@ -84,14 +84,16 @@ public class DataEngineSchemaTypeHandler {
      * @param userId             the name of the calling user
      * @param schemaType         the schema type values
      * @param externalSourceName the unique name of the external source
+     *
      * @return unique identifier of the schema type in the repository
+     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertSchemaType(String userId, SchemaType schemaType, String externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException {
         final String methodName = "upsertSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -114,12 +116,10 @@ public class DataEngineSchemaTypeHandler {
                     updatedSchemaTypeEntity, true);
 
             if (entityDetailDifferences.hasInstancePropertiesDifferences()) {
-                schemaTypeHandler.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID,
-                        SCHEMA_TYPE_GUID_PARAMETER_NAME, schemaTypeBuilder);
+                schemaTypeHandler.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME,
+                        schemaTypeBuilder);
             }
         }
-
-        upsertSchemaAttributes(userId, schemaType, schemaTypeGUID, schemaType.getAttributeList(), externalSourceName);
 
         return schemaTypeGUID;
     }
@@ -204,8 +204,8 @@ public class DataEngineSchemaTypeHandler {
     /**
      * Remove the schema type with the associated schema attributes
      *
-     * @param userId         the name of the calling user
-     * @param schemaTypeGUID the unique identifier of the schema type
+     * @param userId             the name of the calling user
+     * @param schemaTypeGUID     the unique identifier of the schema type
      * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
@@ -213,8 +213,8 @@ public class DataEngineSchemaTypeHandler {
      * @throws PropertyServerException    problem accessing the property server
      */
     public void removeSchemaType(String userId, String schemaTypeGUID, String externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException {
         final String methodName = "removeSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -233,9 +233,9 @@ public class DataEngineSchemaTypeHandler {
     /**
      * Updates the schema attribute with anchorGUID property set to process GUID
      *
-     * @param userId      the name of the calling user
-     * @param attribute   the properties of the schema attribute
-     * @param processGUID the GUID of the process
+     * @param userId             the name of the calling user
+     * @param attribute          the properties of the schema attribute
+     * @param processGUID        the GUID of the process
      * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
@@ -243,7 +243,8 @@ public class DataEngineSchemaTypeHandler {
      * @throws PropertyServerException    problem accessing the property server
      */
     public void addAnchorGUID(String userId, Attribute attribute, String processGUID, String externalSourceName) throws InvalidParameterException,
-            UserNotAuthorizedException, PropertyServerException {
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException {
         final String methodName = "addAnchorGUID";
 
         Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, attribute.getQualifiedName());
@@ -260,27 +261,28 @@ public class DataEngineSchemaTypeHandler {
         }
     }
 
-    private void upsertSchemaAttributes(String userId, SchemaType schemaType, String schemaTypeGUID,
-                                        List<Attribute> attributeList, String externalSourceName) throws InvalidParameterException,
-            PropertyServerException, UserNotAuthorizedException {
+    public void upsertSchemaAttributes(String userId, SchemaType schemaType, String schemaTypeGUID, String externalSourceName) throws
+                                                                                                                               InvalidParameterException,
+                                                                                                                               PropertyServerException,
+                                                                                                                               UserNotAuthorizedException {
 
         String methodName = "upsertSchemaAttributes";
-        for (Attribute attribute : attributeList) {
+        for (Attribute tabularColumn : schemaType.getTabularColumns()) {
 
-            Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, attribute.getQualifiedName());
+            Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, tabularColumn.getQualifiedName());
 
             if (!schemaAttributeEntity.isPresent()) {
-                createSchemaAttribute(userId, schemaType, schemaTypeGUID, attribute, attribute.getDataType(), externalSourceName);
+                createSchemaAttribute(userId, schemaType, schemaTypeGUID, tabularColumn, tabularColumn.getDataType(), externalSourceName);
             } else {
                 String schemaAttributeGUID = schemaAttributeEntity.get().getGUID();
-                EntityDetail updatedSchemaAttributeEntity = buildSchemaAttributeEntityDetail(schemaAttributeGUID, attribute);
+                EntityDetail updatedSchemaAttributeEntity = buildSchemaAttributeEntityDetail(schemaAttributeGUID, tabularColumn);
                 EntityDetailDifferences entityDetailDifferences = repositoryHelper.getEntityDetailDifferences(schemaAttributeEntity.get(),
                         updatedSchemaAttributeEntity, true);
 
                 if (entityDetailDifferences.hasInstancePropertiesDifferences()) {
                     String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
                     schemaAttributeHandler.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName,
-                            schemaAttributeGUID, getSchemaAttributeBuilder(attribute).getInstanceProperties(methodName));
+                            schemaAttributeGUID, getSchemaAttributeBuilder(tabularColumn).getInstanceProperties(methodName));
                 }
             }
         }
@@ -288,7 +290,7 @@ public class DataEngineSchemaTypeHandler {
 
 
     private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, Attribute attribute) throws
-            InvalidParameterException {
+                                                                                                           InvalidParameterException {
         String methodName = "buildSchemaAttributeEntityDetail";
         SchemaAttributePropertiesBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
 
@@ -308,9 +310,8 @@ public class DataEngineSchemaTypeHandler {
     }
 
     private void createSchemaAttribute(String userId, SchemaType schemaType, String schemaTypeGUID, Attribute attribute,
-                                       String dataType, String externalSourceName) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+                                       String dataType, String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                                          PropertyServerException {
         final String methodName = "createSchemaAttribute";
         SchemaAttributePropertiesBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
@@ -345,8 +346,8 @@ public class DataEngineSchemaTypeHandler {
     }
 
     private Set<String> getSchemaAttributesForSchemaType(String userId, String schemaTypeGUID) throws UserNotAuthorizedException,
-            PropertyServerException,
-            InvalidParameterException {
+                                                                                                      PropertyServerException,
+                                                                                                      InvalidParameterException {
         final String methodName = "getSchemaAttributesForSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);

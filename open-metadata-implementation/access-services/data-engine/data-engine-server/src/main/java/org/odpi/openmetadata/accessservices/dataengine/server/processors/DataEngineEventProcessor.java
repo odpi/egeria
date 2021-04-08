@@ -78,7 +78,9 @@ public class DataEngineEventProcessor {
         try {
             PortAliasEvent portAliasEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortAliasEvent.class);
 
-            dataEngineRESTServices.upsertPortAliasWithDelegation(portAliasEvent.getUserId(), serverName, portAliasEvent.getPort(),
+            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, portAliasEvent.getUserId(),
+                    portAliasEvent.getProcessQualifiedName());
+            dataEngineRESTServices.upsertPortAliasWithDelegation(portAliasEvent.getUserId(), serverName, portAliasEvent.getPort(), processGUID,
                     portAliasEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -118,8 +120,10 @@ public class DataEngineEventProcessor {
         try {
             PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortImplementationEvent.class);
 
-            dataEngineRESTServices.upsertPortImplementationWithSchemaType(portImplementationEvent.getUserId(), serverName,
-                    portImplementationEvent.getPortImplementation(), portImplementationEvent.getExternalSourceName());
+            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, portImplementationEvent.getUserId(),
+                    portImplementationEvent.getProcessQualifiedName());
+            dataEngineRESTServices.upsertPortImplementation(portImplementationEvent.getUserId(), serverName,
+                    portImplementationEvent.getPortImplementation(), processGUID, portImplementationEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -167,8 +171,6 @@ public class DataEngineEventProcessor {
             FFDCResponseBase response = new FFDCResponseBase();
             dataEngineRESTServices.addLineageMappings(lineageMappingsEvent.getUserId(), serverName, lineageMappingsEvent.getLineageMappings(),
                     response, lineageMappingsEvent.getExternalSourceName());
-
-
         } catch (JsonProcessingException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
             logException(dataEngineEvent, methodName, e);
         }
@@ -186,9 +188,8 @@ public class DataEngineEventProcessor {
         try {
             ProcessesEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesEvent.class);
 
-            dataEngineRESTServices.upsertProcesses(processesEvent.getUserId(), serverName,
-                    processesEvent.getProcesses(), processesEvent.getExternalSourceName());
-
+            dataEngineRESTServices.upsertProcesses(processesEvent.getUserId(), serverName, processesEvent.getProcesses(),
+                    processesEvent.getExternalSourceName());
         } catch (JsonProcessingException e) {
             log.debug("Exception in parsing event from in Data Engine In Topic", e);
             logException(dataEngineEvent, methodName, e);
@@ -205,12 +206,13 @@ public class DataEngineEventProcessor {
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             SchemaTypeEvent schemaEvent = OBJECT_MAPPER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
-            dataEngineRESTServices.upsertSchemaType(schemaEvent.getUserId(), serverName, schemaEvent.getSchemaType(),
+
+            String portGUID = dataEngineRESTServices.getProcessGUID(serverName, schemaEvent.getUserId(), schemaEvent.getPortQualifiedName());
+            dataEngineRESTServices.upsertSchemaType(schemaEvent.getUserId(), serverName, portGUID, schemaEvent.getSchemaType(),
                     schemaEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(schemaTypeEvent, methodName, e);
         }
-
     }
 
     private void logException(String dataEngineEvent, String methodName, Exception e) {

@@ -385,7 +385,7 @@ class DataEngineSchemaTypeHandlerTest {
         schemaType.setEncodingStandard(ENCODING_STANDARD);
         schemaType.setVersionNumber(VERSION);
 
-        schemaType.setAttributeList(attributeList);
+        schemaType.setTabularColumns(attributeList);
 
         return schemaType;
     }
