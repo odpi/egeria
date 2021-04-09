@@ -250,7 +250,8 @@ public class DataEngineRESTServices {
             if (isRequestBodyInvalid(userId, serverName, portAliasRequestBody, methodName)) return response;
 
             response.setGUID(upsertPortAliasWithDelegation(userId, serverName, portAliasRequestBody.getPortAlias(),
-                    getProcessGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName()), portAliasRequestBody.getExternalSourceName()));
+                    getProcessGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName()),
+                    portAliasRequestBody.getExternalSourceName()));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -442,7 +443,7 @@ public class DataEngineRESTServices {
             if (portImplementation.getUpdateSemantic() == UpdateSemantic.REPLACE) {
                 EntityDetail schemaTypeForPort = dataEnginePortHandler.findSchemaTypeForPort(userId, portImplementationGUID);
                 if (schemaTypeForPort != null) {
-                    deleteObsoleteSchemaType(userId, serverName, portImplementation.getSchemaType().getQualifiedName(), schemaTypeForPort.getGUID(),
+                    deleteObsoleteSchemaType(userId, serverName, portImplementation.getSchemaType().getQualifiedName(), schemaTypeForPort,
                             externalSourceName);
                 }
             }
@@ -589,8 +590,7 @@ public class DataEngineRESTServices {
             if (guidResponse.getRelatedHTTPCode() == HttpStatus.OK.value()) {
                 String processGUID = guidResponse.getGUID();
                 process.setGUID(processGUID);
-                VoidResponse updateStatusResponse = updateProcessStatus(userId, serverName, process, InstanceStatus.ACTIVE,
-                        externalSourceName);
+                VoidResponse updateStatusResponse = updateProcessStatus(userId, serverName, process, InstanceStatus.ACTIVE, externalSourceName);
                 if (updateStatusResponse.getRelatedHTTPCode() != 200) {
                     captureException(updateStatusResponse, guidResponse);
                 }
@@ -745,8 +745,8 @@ public class DataEngineRESTServices {
         DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         String schemaTypeGUID = dataEngineSchemaTypeHandler.upsertSchemaType(userId, schemaType, externalSourceName);
-        dataEnginePortHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID, methodName);
         dataEngineSchemaTypeHandler.upsertSchemaAttributes(userId, schemaType, schemaTypeGUID, externalSourceName);
+        dataEnginePortHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID, methodName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, schemaTypeGUID);
 
@@ -825,11 +825,12 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeQName, String oldSchemaTypeQName,
+    private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeQName, EntityDetail oldSchemaType,
                                           String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
                                                                             PropertyServerException {
         final String methodName = "deleteObsoleteSchemaType";
 
+        String oldSchemaTypeQName = oldSchemaType.getProperties().getPropertyValue(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
         if (!oldSchemaTypeQName.equalsIgnoreCase(schemaTypeQName)) {
             DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
             dataEngineSchemaTypeHandler.removeSchemaType(userId, oldSchemaTypeQName, externalSourceName);
@@ -909,11 +910,10 @@ public class DataEngineRESTServices {
                 processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.DRAFT, externalSourceName);
 
                 if (updateSemantic == UpdateSemantic.REPLACE) {
-                    deleteObsoletePorts(userId, serverName,
-                            portImplementations.stream().map(Referenceable::getQualifiedName).collect(Collectors.toSet()),
-                            processGUID, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, response, externalSourceName);
-                    deleteObsoletePorts(userId, serverName, portAliases.stream().map(Referenceable::getQualifiedName).collect(Collectors.toSet()),
-                            processGUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, response, externalSourceName);
+                    deleteObsoletePorts(userId, serverName, portImplementations, processGUID, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME,
+                            response, externalSourceName);
+                    deleteObsoletePorts(userId, serverName, portAliases, processGUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, response,
+                            externalSourceName);
                 }
             }
 
@@ -1017,12 +1017,12 @@ public class DataEngineRESTServices {
                 externalSourceName);
     }
 
-    private void deleteObsoletePorts(String userId, String serverName, Set<String> newPortQNames, String processGUID, String portTypeName,
+    private void deleteObsoletePorts(String userId, String serverName, List<? extends Port> ports, String processGUID, String portTypeName,
                                      GUIDResponse response, String externalSourceName) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException {
         final String methodName = "deleteObsoletePorts";
-        if (CollectionUtils.isEmpty(newPortQNames)) {
+        if (CollectionUtils.isEmpty(ports)) {
             return;
         }
 
@@ -1033,6 +1033,7 @@ public class DataEngineRESTServices {
         Set<String> portQNames = existingPorts.stream()
                 .map(entityDetail -> entityDetail.getProperties().getPropertyValue(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME).valueAsString())
                 .collect(Collectors.toSet());
+        Set<String> newPortQNames = ports.stream().map(Referenceable::getQualifiedName).collect(Collectors.toSet());
 
         // delete ports that are not in the process payload anymore
         List<String> obsoletePortQNames = portQNames.stream().collect(partitioningBy(newPortQNames::contains)).get(Boolean.FALSE);
