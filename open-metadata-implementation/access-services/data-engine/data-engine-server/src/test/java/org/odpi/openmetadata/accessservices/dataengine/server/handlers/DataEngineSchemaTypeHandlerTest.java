@@ -13,7 +13,6 @@ import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.server.builders.SchemaAttributePropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -316,35 +315,6 @@ class DataEngineSchemaTypeHandlerTest {
                 SchemaTypePropertiesMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 
-    @Test
-    void addAnchorGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockFindEntity(ATTRIBUTE_QUALIFIED_NAME, GUID, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
-
-        SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributePropertiesBuilder(attribute);
-
-        doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
-                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
-        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-
-        verify(schemaAttributeHandler, times(1)).updateSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, schemaAttributeBuilder.getInstanceProperties("addAnchorGUID"));
-    }
-
-    @Test
-    void addAnchorGUID_throwsInvalidParameterException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        SchemaAttribute schemaAttribute = new SchemaAttribute();
-        schemaAttribute.setQualifiedName(ATTRIBUTE_QUALIFIED_NAME);
-
-
-        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
-
-        dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID, EXTERNAL_SOURCE_DE_GUID);
-
-        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
-                "addAnchorGUID", ATTRIBUTE_QUALIFIED_NAME);
-    }
-
     private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
                                                                                                          PropertyServerException,
                                                                                                          InvalidParameterException {
@@ -390,13 +360,13 @@ class DataEngineSchemaTypeHandlerTest {
         return schemaType;
     }
 
-    private SchemaAttributePropertiesBuilder getSchemaAttributePropertiesBuilder(Attribute attribute) {
-        SchemaAttributePropertiesBuilder schemaAttributeBuilder = new SchemaAttributePropertiesBuilder(attribute.getQualifiedName(),
+    private SchemaAttributeBuilder getSchemaAttributePropertiesBuilder(Attribute attribute) {
+        SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(attribute.getQualifiedName(),
                 attribute.getDisplayName(), null, attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(),
                 false, attribute.getDefaultValueOverride(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
                 0, 0, 0, 0, false, null, null, null,
                 OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID, OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
-                null, repositoryHelper, "serviceName", "serverName", PROCESS_GUID);
+                null, repositoryHelper, "serviceName", "serverName");
         Classification classification = new Classification();
         classification.setName("classification");
         schemaAttributeBuilder.setClassification(classification);

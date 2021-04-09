@@ -6,11 +6,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.server.builders.SchemaAttributePropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
@@ -230,36 +230,6 @@ public class DataEngineSchemaTypeHandler {
                 externalSourceName);
     }
 
-    /**
-     * Updates the schema attribute with anchorGUID property set to process GUID
-     *
-     * @param userId             the name of the calling user
-     * @param attribute          the properties of the schema attribute
-     * @param processGUID        the GUID of the process
-     * @param externalSourceName the external data engine
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void addAnchorGUID(String userId, Attribute attribute, String processGUID, String externalSourceName) throws InvalidParameterException,
-                                                                                                                        UserNotAuthorizedException,
-                                                                                                                        PropertyServerException {
-        final String methodName = "addAnchorGUID";
-
-        Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, attribute.getQualifiedName());
-        if (!schemaAttributeEntity.isPresent()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
-                    attribute.getQualifiedName());
-        } else {
-            attribute.setAnchorGUID(processGUID);
-
-            String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
-
-            schemaAttributeHandler.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName,
-                    schemaAttributeEntity.get().getGUID(), getSchemaAttributeBuilder(attribute).getInstanceProperties(methodName));
-        }
-    }
 
     public void upsertSchemaAttributes(String userId, SchemaType schemaType, String schemaTypeGUID, String externalSourceName) throws
                                                                                                                                InvalidParameterException,
@@ -289,31 +259,29 @@ public class DataEngineSchemaTypeHandler {
     }
 
 
-    private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, Attribute attribute) throws
-                                                                                                           InvalidParameterException {
+    private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, Attribute attribute) throws InvalidParameterException {
         String methodName = "buildSchemaAttributeEntityDetail";
-        SchemaAttributePropertiesBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
+        SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
 
         return dataEngineCommonHandler.buildEntityDetail(schemaAttributeGUID, schemaAttributeBuilder.getInstanceProperties(methodName));
     }
 
-    SchemaAttributePropertiesBuilder getSchemaAttributeBuilder(Attribute attribute) {
+    SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
         HashMap<String, String> additionalProperties = new HashMap<>();
-        additionalProperties.put(OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME, attribute.getAnchorGUID());
-        return new SchemaAttributePropertiesBuilder(attribute.getQualifiedName(), attribute.getDisplayName(), null,
-                attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(), false,
+        return new SchemaAttributeBuilder(attribute.getQualifiedName(), attribute.getDisplayName(), attribute.getDescription(),
+                attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.isDeprecated(),
                 attribute.getDefaultValueOverride(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
-                0, 0, 0, 0,
-                false, null, null, additionalProperties,
+                dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(), attribute.getLength(), attribute.getPrecision(),
+                attribute.isNullable(), attribute.getNativeClass(), attribute.getAliases(), additionalProperties,
                 OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID, OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
-                null, repositoryHelper, serviceName, serverName, attribute.getAnchorGUID());
+                null, repositoryHelper, serviceName, serverName);
     }
 
     private void createSchemaAttribute(String userId, SchemaType schemaType, String schemaTypeGUID, Attribute attribute,
                                        String dataType, String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
                                                                                           PropertyServerException {
         final String methodName = "createSchemaAttribute";
-        SchemaAttributePropertiesBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
+        SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
         schemaTypeBuilder.setDataType(dataType);
         schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
