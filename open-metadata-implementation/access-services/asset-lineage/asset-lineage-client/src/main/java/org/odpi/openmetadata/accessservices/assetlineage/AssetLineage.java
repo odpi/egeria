@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage;
 
-import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
-import org.odpi.openmetadata.accessservices.assetlineage.rest.AssetContextResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
@@ -11,7 +9,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * {@inheritDoc}
@@ -20,10 +20,12 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
 
     private static final String BASE_PATH = "/servers/{0}/open-metadata/access-services/asset-lineage/users/{1}/";
     private static final String PUBLISH_ENTITIES = "publish-entities/{2}";
-    private static final String PROVIDE_CONTEXT = "provide-context/{2}/{3}";
+    private static final String PUBLISH_CONTEXT = "publish-context/{2}/{3}";
+    private static final String UPDATED_AFTER_DATE = "?updatedAfterDate={3}";
+
     private String userId;
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Instantiates a new Asset lineage Client.
@@ -55,18 +57,20 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
      * {@inheritDoc}
      */
     @Override
-    public List<String> publishEntities(String serverName, String userId, String entityType)
+    public List<String> publishEntities(String serverName, String userId, String entityType, Optional<LocalDateTime> updatedAfterDate)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "publishEntities";
 
         invalidParameterHandler.validateUserId(methodName, userId);
+        String urlTemplate = serverPlatformURLRoot + BASE_PATH + PUBLISH_ENTITIES;
 
-        GUIDListResponse response = callGUIDListGetRESTCall(methodName,
-                serverPlatformURLRoot + BASE_PATH + PUBLISH_ENTITIES,
-                serverName,
-                userId,
-                entityType);
-
+        GUIDListResponse response;
+        if(updatedAfterDate.isPresent()) {
+            response = callGUIDListGetRESTCall(methodName, urlTemplate + UPDATED_AFTER_DATE,
+                    serverName, userId, entityType, updatedAfterDate.get());
+        } else {
+            response = callGUIDListGetRESTCall(methodName, urlTemplate, serverName, userId, entityType);
+        }
         exceptionHandler.detectAndThrowInvalidParameterException(response);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(response);
         exceptionHandler.detectAndThrowPropertyServerException(response);
@@ -78,21 +82,21 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
      * {@inheritDoc}
      */
     @Override
-    public RelationshipsContext provideAssetContext(String userId, String guid, String entityType)
+    public List<String> publishAssetContext(String userId, String guid, String entityType)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "provideAssetContext";
+        String methodName = "publishAssetContext";
 
         invalidParameterHandler.validateUserId(methodName, userId);
 
-        String urlTemplate = serverPlatformURLRoot + BASE_PATH + PROVIDE_CONTEXT;
-        AssetContextResponse response = callGetRESTCall(methodName, AssetContextResponse.class, urlTemplate, serverName,
+        String urlTemplate = serverPlatformURLRoot + BASE_PATH + PUBLISH_CONTEXT;
+        GUIDListResponse response = callGetRESTCall(methodName, GUIDListResponse.class, urlTemplate, serverName,
                 userId, entityType, guid);
 
         exceptionHandler.detectAndThrowInvalidParameterException(response);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(response);
         exceptionHandler.detectAndThrowPropertyServerException(response);
 
-        return response.getContext();
+        return response.getGUIDs();
     }
 
 }

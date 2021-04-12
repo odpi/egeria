@@ -14,7 +14,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
-import org.odpi.openmetadata.accessservices.assetlineage.rest.AssetContextResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -28,8 +27,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
@@ -247,21 +249,32 @@ public class AssetLineageRestServices {
         return null;
     }
 
-    public AssetContextResponse provideAssetContextForSchemaElement(String serverName, String userId, String entityType, String guid) {
-        String methodName = "provideAssetContextForSchemaElement";
-        AssetContextResponse response = new AssetContextResponse();
+    /**
+     * Publish asset context on the Out Topic. Provides a list with asset context entities' GUIDs.
+     *
+     * @param serverName the server name
+     * @param userId     the user id
+     * @param entityType the entity type
+     * @param guid       the GUID of the entity for which the context is published
+     * @return a list with asset context entities' GUIDs
+     */
+    public GUIDListResponse publishAssetContext(String serverName, String userId, String entityType, String guid) {
+        String methodName = "publishAssetContext";
+        GUIDListResponse response = new GUIDListResponse();
 
         try {
             AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
             HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
+            AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
+            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             EntityDetail entity = handlerHelper.getEntityDetails(userId, guid, entityType);
-
             RelationshipsContext assetContext = assetContextHandler.buildAssetContext(userId, entity);
-            response.setContext(assetContext);
+            publisher.publishAssetContextEvent(assetContext);
 
-            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            auditLog.logMessage(methodName, AssetLineageAuditCode.ASSET_CONTEXT_INFO.getMessageDefinition( guid, assetContext.toString()));
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ASSET_CONTEXT_INFO.getMessageDefinition(guid));
+            List<String> guids = getEntityGUIDsFromAssetContext(assetContext);
+            response.setGUIDs(guids);
 
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
@@ -269,10 +282,20 @@ public class AssetLineageRestServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
-        } catch (OCFCheckedExceptionBase e) {
+        } catch (OCFCheckedExceptionBase | JsonProcessingException e) {
             restExceptionHandler.captureThrowable(response, e, methodName);
         }
 
         return response;
+    }
+
+    private List<String> getEntityGUIDsFromAssetContext(RelationshipsContext assetContext) {
+        Set<String> guids = new HashSet<>();
+        assetContext.getRelationships()
+                .forEach(relationship ->  {
+                    guids.add(relationship.getFromVertex().getGuid());
+                    guids.add(relationship.getToVertex().getGuid());
+                });
+        return new ArrayList<>(guids);
     }
 }

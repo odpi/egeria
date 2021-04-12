@@ -26,7 +26,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class  GovernanceActions implements Serializable {
+public class GovernanceClassifications implements Serializable {
     private Confidentiality confidentiality = null;
     private Confidence confidence =null;
     private Retention retention =null;

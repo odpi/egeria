@@ -37,29 +37,6 @@ public class SubjectAreaUtils {
 
     private static final String className = SubjectAreaUtils.class.getName();
 
-    public static boolean isTopLevelGlossaryObject(String entityName) {
-        boolean isTopLevelGlossaryObject = false;
-        if (entityName.equals("Glossary") ||
-                entityName.equals("Node") ||
-                entityName.equals("GlossaryCategory")
-        ) {
-            isTopLevelGlossaryObject = true;
-        }
-        return isTopLevelGlossaryObject;
-    }
-
-    public static boolean isGovernanceActionClassification(String classificationName) {
-        boolean isGovernanceActionClassification = false;
-        if (classificationName.equals("Confidence") ||
-                classificationName.equals("Confidentiality") ||
-                classificationName.equals("Retention") ||
-                classificationName.equals("Criticality")
-        ) {
-            isGovernanceActionClassification = true;
-        }
-        return isGovernanceActionClassification;
-    }
-
     public static InstanceType createTemplateFromTypeDef(TypeDef typeDef) {
         InstanceType template = new InstanceType();
         template.setTypeDefName(typeDef.getName());
@@ -76,26 +53,6 @@ public class SubjectAreaUtils {
         // Not setting template.setValidInstanceProperties(); as I have not got this informaiton fropm the typeDef
 
         return template;
-    }
-
-    public static boolean isTerm(String typeName) {
-        return typeName.equals("GlossaryTerm");
-    }
-
-    public static boolean isCategory(String typeName) {
-        return typeName.equals("GlossaryCategory");
-    }
-
-    public static boolean isGlossary(String typeName) {
-        return typeName.equals("Glossary");
-    }
-
-    public static void addStringToInstanceProperty(String key, String value, InstanceProperties instanceProperties) {
-        PrimitivePropertyValue primitivePropertyValue;
-        primitivePropertyValue = new PrimitivePropertyValue();
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        primitivePropertyValue.setPrimitiveValue(value);
-        instanceProperties.setProperty(key, primitivePropertyValue);
     }
 
     /**
@@ -122,21 +79,7 @@ public class SubjectAreaUtils {
         nodeSummary.setToRelationshipEffectivityTime(relationship.getEffectiveToTime());
     }
 
-    /**
-     * extract iconSummary if this media is an icon
-     *
-     * @param relatedMedia related media
-     * @return iconSummaru or null
-     */
-    public static IconSummary extractIconSummaryFromRelatedMedia(EntityDetail relatedMedia) {
-        IconSummary icon = null;
-        // if (relatedMedia.getMediaUsage().contains(MediaUsage.Icon.getOrdinal()))
-        {
-            icon = new IconSummary();
-            //TODO sort out icons - add a mapper ?
-        }
-        return icon;
-    }
+
 
     /**
      * Extract Glossary Summary

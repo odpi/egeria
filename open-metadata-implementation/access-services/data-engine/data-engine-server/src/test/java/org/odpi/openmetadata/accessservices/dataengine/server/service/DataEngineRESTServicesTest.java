@@ -34,6 +34,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTransformationProjectHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -112,6 +113,9 @@ class DataEngineRESTServicesTest {
 
     @Mock
     private DataEnginePortHandler dataEnginePortHandler;
+
+    @Mock
+    private DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler;
 
     @Mock
     private DataEngineProcessHandler processHandler;
@@ -503,6 +507,7 @@ class DataEngineRESTServicesTest {
         mockProcessHandler("upsertProcess");
         mockProcessHandler("updateProcessStatus");
         mockProcessHandler("addProcessPortRelationships");
+        mockTransformationProjectHandler("upsertProcess");
 
         when(dataEnginePortHandler.createPortAlias(USER, portAlias, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
@@ -533,6 +538,7 @@ class DataEngineRESTServicesTest {
         mockPortHandler("upsertPortImplementationWithSchemaType");
         mockPortHandler("upsertPortAliasWithDelegation");
         mockProcessHandler("updateProcessStatus");
+        mockTransformationProjectHandler("upsertProcess");
 
         String methodName = "upsertProcess";
         mockProcessHandler(methodName);
@@ -568,6 +574,7 @@ class DataEngineRESTServicesTest {
         mockPortHandler("upsertPortImplementationWithSchemaType");
         mockPortHandler("upsertPortAliasWithDelegation");
         mockProcessHandler("updateProcessStatus");
+        mockTransformationProjectHandler("upsertProcess");
 
         String methodName = "upsertProcess";
         mockProcessHandler(methodName);
@@ -600,7 +607,7 @@ class DataEngineRESTServicesTest {
         mockProcessHandler("updateProcessStatus");
         mockProcessHandler("addProcessPortRelationships");
         mockProcessHandler("deleteObsoletePorts");
-
+        mockTransformationProjectHandler("upsertProcess");
 
         Optional<EntityDetail> portEntity = mockEntityDetail(PORT_GUID);
         when(dataEnginePortHandler.findPortImplementationEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
@@ -780,6 +787,10 @@ class DataEngineRESTServicesTest {
 
     private void mockProcessHandler(String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         when(instanceHandler.getProcessHandler(USER, SERVER_NAME, methodName)).thenReturn(processHandler);
+    }
+
+    private void mockTransformationProjectHandler(String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        when(instanceHandler.getTransformationProjectHandler(USER, SERVER_NAME, methodName)).thenReturn(dataEngineTransformationProjectHandler);
     }
 
     private DataEngineRegistrationRequestBody mockDataEngineRegistrationRequestBody() {
