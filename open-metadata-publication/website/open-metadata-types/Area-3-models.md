@@ -33,6 +33,7 @@ understand the data assets they are working with.
 
 * **[0310 Glossary](0310-Glossary.md)**
 * **[0320 Category Hierarchy](0320-Category-Hierarchy.md)**
+* **[0325 Primary Category](0325-Primary-Category.md)**
 * **[0330 Glossary Terms](0330-Terms.md)**
 * **[0340 Dictionary](0340-Dictionary.md)**
 * **[0350 Related Terms](0350-Related-Terms.md)**
