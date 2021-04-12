@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
@@ -12,14 +13,17 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ANCHOR_GUID;
@@ -39,10 +43,12 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.MEDIA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_SCHEMA_TYPE;
 
 /**
  * The Asset Context Handler provides methods to build graph context for schema elements.
@@ -163,21 +169,48 @@ public class AssetContextHandler {
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private boolean isInternalTabularColumn(String userId, EntityDetail tabularColumn) throws InvalidParameterException, PropertyServerException,
-                                                                                              UserNotAuthorizedException {
+    private boolean isInternalTabularColumn(String userId, EntityDetail tabularColumn) throws OCFCheckedExceptionBase {
         String methodName = "isInternalTabularColumn";
 
-        InstancePropertyValue anchorGUIDProperty = tabularColumn.getProperties().getPropertyValue(ANCHOR_GUID);
-        if(anchorGUIDProperty == null) {
+        Optional<Relationship> relationship = handlerHelper.getUniqueRelationshipByType(userId, tabularColumn.getGUID(), ATTRIBUTE_FOR_SCHEMA,
+                TABULAR_COLUMN);
+        if (!relationship.isPresent()) {
             return false;
         }
 
-        String anchorGUID = anchorGUIDProperty.valueAsString();
+        EntityDetail schemaType = handlerHelper.getEntityAtTheEnd(userId, tabularColumn.getGUID(), relationship.get());
+        Optional<Classification> anchorGUIDClassification = getAnchorGUIDClassification(schemaType);
+        if (!anchorGUIDClassification.isPresent()) {
+            return false;
+        }
+        String anchorGUID = getAnchorGUID(anchorGUIDClassification.get());
         if (StringUtils.isEmpty(anchorGUID)) {
             return false;
         }
 
-        return repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, PROCESS, methodName);
+        //TODO remove check for schema type -  currently the anchorGUID for a schema type is set to itself, but it should be the port implementation
+        return repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, PORT_IMPLEMENTATION, methodName) ||
+                repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, TABULAR_SCHEMA_TYPE, methodName);
+    }
+
+    private String getAnchorGUID(Classification classification) {
+        InstancePropertyValue anchorGUIDProperty = classification.getProperties().getPropertyValue(ANCHOR_GUID);
+        if (anchorGUIDProperty == null) {
+            return null;
+        }
+        return anchorGUIDProperty.valueAsString();
+    }
+
+    private Optional<Classification> getAnchorGUIDClassification(EntityDetail tabularColumn) {
+        List<Classification> classifications = tabularColumn.getClassifications();
+        if (CollectionUtils.isEmpty(classifications)) {
+            return Optional.empty();
+        }
+        for (Classification classification : classifications) {
+            if ("Anchors".equalsIgnoreCase(classification.getName()))
+                return Optional.of(classification);
+        }
+        return Optional.empty();
     }
 
     /**
