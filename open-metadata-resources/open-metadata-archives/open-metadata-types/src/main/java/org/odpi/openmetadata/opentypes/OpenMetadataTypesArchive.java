@@ -145,7 +145,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        OpenMetadataTypesArchive2_7  previousTypes = new OpenMetadataTypesArchive2_7(archiveBuilder);
+        OpenMetadataTypesArchive2_9  previousTypes = new OpenMetadataTypesArchive2_9(archiveBuilder);
 
         /*
          * Pull the types from previous releases.
