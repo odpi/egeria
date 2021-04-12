@@ -157,15 +157,18 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier from a software server capability definition for an external data engine
      */
-    public String getPortGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException {
+    public Optional<String> getPortGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException {
         final String methodName = "getExternalDataEngineByQualifiedName";
 
+        if (StringUtils.isEmpty(qualifiedName)) {
+            return Optional.empty();
+        }
         DataEnginePortHandler handler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         Optional<EntityDetail> portEntity = handler.findPortEntity(userId, qualifiedName);
-        return portEntity.map(InstanceHeader::getGUID).orElse(null);
+        return Optional.of(portEntity.map(InstanceHeader::getGUID).get());
     }
 
     /**
@@ -185,8 +188,9 @@ public class DataEngineRESTServices {
         try {
             if (isRequestBodyInvalid(userId, serverName, schemaTypeRequestBody, methodName)) return response;
 
-            response.setGUID(upsertSchemaType(userId, serverName, getPortGUID(serverName, userId, schemaTypeRequestBody.getPortQualifiedName()),
-                    schemaTypeRequestBody.getSchemaType(), schemaTypeRequestBody.getExternalSourceName()));
+            Optional<String> portOptional = getPortGUID(serverName, userId, schemaTypeRequestBody.getPortQualifiedName());
+            response.setGUID(upsertSchemaType(userId, serverName, portOptional.orElse(null), schemaTypeRequestBody.getSchemaType(),
+                    schemaTypeRequestBody.getExternalSourceName()));
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -215,12 +219,14 @@ public class DataEngineRESTServices {
         try {
             if (isRequestBodyInvalid(userId, serverName, portImplementationRequestBody, methodName)) return response;
 
-            String portImplementationGUID = upsertPortImplementation(userId, serverName, portImplementationRequestBody.getPortImplementation(),
-                    getProcessGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName()),
-                    portImplementationRequestBody.getExternalSourceName());
+            String processQualifiedName = portImplementationRequestBody.getProcessQualifiedName();
+            String processGUID = getProcessGUID(serverName, userId, processQualifiedName);
+            String externalSourceName = portImplementationRequestBody.getExternalSourceName();
 
-            response.setGUID(portImplementationGUID);
-
+            updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
+            response.setGUID(upsertPortImplementation(userId, serverName, portImplementationRequestBody.getPortImplementation(),
+                    processGUID, externalSourceName));
+            updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -249,10 +255,13 @@ public class DataEngineRESTServices {
         try {
             if (isRequestBodyInvalid(userId, serverName, portAliasRequestBody, methodName)) return response;
 
-            response.setGUID(upsertPortAliasWithDelegation(userId, serverName, portAliasRequestBody.getPortAlias(),
-                    getProcessGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName()),
-                    portAliasRequestBody.getExternalSourceName()));
+            String processQualifiedName = portAliasRequestBody.getProcessQualifiedName();
+            String processGUID = getProcessGUID(serverName, userId, processQualifiedName);
+            String externalSourceName = portAliasRequestBody.getExternalSourceName();
 
+            updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
+            response.setGUID(upsertPortAliasWithDelegation(userId, serverName, portAliasRequestBody.getPortAlias(), processGUID, externalSourceName));
+            updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -590,7 +599,7 @@ public class DataEngineRESTServices {
             if (guidResponse.getRelatedHTTPCode() == HttpStatus.OK.value()) {
                 String processGUID = guidResponse.getGUID();
                 process.setGUID(processGUID);
-                VoidResponse updateStatusResponse = updateProcessStatus(userId, serverName, process, InstanceStatus.ACTIVE, externalSourceName);
+                VoidResponse updateStatusResponse = updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
                 if (updateStatusResponse.getRelatedHTTPCode() != 200) {
                     captureException(updateStatusResponse, guidResponse);
                 }
@@ -734,10 +743,7 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertSchemaType(String userId, String serverName, String portImplementationGUID, SchemaType schemaType,
-                                   String externalSourceName) throws
-                                                              InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException {
+                                   String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "upsertSchemaType";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, schemaType);
 
@@ -746,8 +752,9 @@ public class DataEngineRESTServices {
 
         String schemaTypeGUID = dataEngineSchemaTypeHandler.upsertSchemaType(userId, schemaType, externalSourceName);
         dataEngineSchemaTypeHandler.upsertSchemaAttributes(userId, schemaType, schemaTypeGUID, externalSourceName);
-        dataEnginePortHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID, methodName);
-
+        if (StringUtils.isNotEmpty(portImplementationGUID)) {
+            dataEnginePortHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID, methodName);
+        }
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, schemaTypeGUID);
 
         return schemaTypeGUID;
@@ -830,7 +837,8 @@ public class DataEngineRESTServices {
                                                                             PropertyServerException {
         final String methodName = "deleteObsoleteSchemaType";
 
-        String oldSchemaTypeQName = oldSchemaType.getProperties().getPropertyValue(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
+        String oldSchemaTypeQName =
+                oldSchemaType.getProperties().getPropertyValue(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
         if (!oldSchemaTypeQName.equalsIgnoreCase(schemaTypeQName)) {
             DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
             dataEngineSchemaTypeHandler.removeSchemaType(userId, oldSchemaTypeQName, externalSourceName);
@@ -851,17 +859,17 @@ public class DataEngineRESTServices {
         response.setExceptionProperties(initialResponse.getExceptionProperties());
     }
 
-    private VoidResponse updateProcessStatus(String userId, String serverName, Process process,
-                                             InstanceStatus instanceStatus, String externalSourceName) {
+    private VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus,
+                                             String externalSourceName) {
         final String methodName = "updateProcessStatus";
 
-        log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, process.getGUID());
+        log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processGUID);
 
         VoidResponse response = new VoidResponse();
         try {
             DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            processHandler.updateProcessStatus(userId, process.getGUID(), instanceStatus, externalSourceName);
+            processHandler.updateProcessStatus(userId, processGUID, instanceStatus, externalSourceName);
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {

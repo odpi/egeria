@@ -145,13 +145,45 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
+    public String createOrUpdateSchemaType(String userId, SchemaType schemaType, String portQualifiedName) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException {
+
+        invalidParameterHandler.validateUserId(userId, SCHEMA_TYPE_METHOD_NAME);
+
+        SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
+        requestBody.setSchemaType(schemaType);
+        requestBody.setPortQualifiedName(portQualifiedName);
+
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, SCHEMA_TYPE_METHOD_NAME, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Deprecated
     public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException,
                                                                                                                 UserNotAuthorizedException,
                                                                                                                 PropertyServerException {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation, String processQualifiedName) throws
+                                                                                                                                      InvalidParameterException,
+                                                                                                                                      UserNotAuthorizedException,
+                                                                                                                                      PropertyServerException {
         invalidParameterHandler.validateUserId(userId, PORT_IMPLEMENTATION_METHOD_NAME);
 
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         requestBody.setPortImplementation(portImplementation);
+        requestBody.setProcessQualifiedName(processQualifiedName);
 
         requestBody.setExternalSourceName(externalSourceName);
 
@@ -162,15 +194,27 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String createOrUpdatePortAlias(String userId, PortAlias portAlias, String processQualifiedName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException {
         final String methodName = PORT_ALIAS_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         requestBody.setPortAlias(portAlias);
+        requestBody.setProcessQualifiedName(processQualifiedName);
 
         requestBody.setExternalSourceName(externalSourceName);
 

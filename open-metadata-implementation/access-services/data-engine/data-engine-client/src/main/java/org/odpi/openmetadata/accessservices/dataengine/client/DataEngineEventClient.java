@@ -55,7 +55,8 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, ConnectorCheckedException {
+    public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException,
+                                                                                                                    ConnectorCheckedException {
 
         DataEngineRegistrationEvent event = new DataEngineRegistrationEvent();
         event.setUserId(userId);
@@ -76,7 +77,7 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public String createOrUpdateSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException, ConnectorCheckedException  {
+    public String createOrUpdateSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException, ConnectorCheckedException {
 
         SchemaTypeEvent event = new SchemaTypeEvent();
         event.setUserId(userId);
@@ -97,13 +98,15 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException, ConnectorCheckedException {
+    public String createOrUpdateSchemaType(String userId, SchemaType schemaType, String portQualifiedName) throws InvalidParameterException,
+                                                                                                                  ConnectorCheckedException {
 
-        PortImplementationEvent event = new PortImplementationEvent();
+        SchemaTypeEvent event = new SchemaTypeEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.PORT_IMPLEMENTATION_EVENT);
-        event.setPortImplementation(portImplementation);
+        event.setEventType(DataEngineEventType.SCHEMA_TYPE_EVENT);
+        event.setSchemaType(schemaType);
+        event.setPortQualifiedName(portQualifiedName);
 
         topicConnector.sendEvent(event);
 
@@ -118,13 +121,64 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
+    @Deprecated
+    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException,
+                                                                                                                ConnectorCheckedException {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
+     */
+    @Override
+    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation, String processQualifiedName) throws
+                                                                                                                                      InvalidParameterException,
+                                                                                                                                      ConnectorCheckedException {
+
+        PortImplementationEvent event = new PortImplementationEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.PORT_IMPLEMENTATION_EVENT);
+        event.setPortImplementation(portImplementation);
+        event.setProcessQualifiedName(processQualifiedName);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
+     */
+    @Override
+    @Deprecated
     public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException, ConnectorCheckedException {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
+     */
+    @Override
+    public String createOrUpdatePortAlias(String userId, PortAlias portAlias, String processQualifiedName) throws InvalidParameterException,
+                                                                                                                  ConnectorCheckedException {
 
         PortAliasEvent event = new PortAliasEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setEventType(DataEngineEventType.PORT_ALIAS_EVENT);
         event.setPort(portAlias);
+        event.setProcessQualifiedName(processQualifiedName);
 
         topicConnector.sendEvent(event);
 
@@ -178,7 +232,8 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException, ConnectorCheckedException {
+    public void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException,
+                                                                                                    ConnectorCheckedException {
 
         ProcessToPortListEvent event = new ProcessToPortListEvent();
         event.setUserId(userId);
