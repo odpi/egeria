@@ -47,6 +47,8 @@ import java.util.Optional;
 public class OpenLineageServerOperationalServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerOperationalServices.class);
 
+    private static final String EMPTY_STRING = "";
+
     private final String localServerName;
     private final String localServerUserId;
     private final String localServerPassword;
@@ -133,24 +135,45 @@ public class OpenLineageServerOperationalServices {
 
     private void initializeAndStartBackgroundJobs() {
         backgroundJobs = new ArrayList<>();
-        int lineageGraphJobInterval = getJobInterval(JobConstants.LINEAGE_GRAPH_JOB);
-        backgroundJobs.add(new JobConfiguration(lineageGraphConnector, JobConstants.LINEAGE_GRAPH_JOB, LineageGraphJob.class,
-                lineageGraphJobInterval));
 
-        int assetLineageJobInterval = getJobInterval(JobConstants.ASSET_LINEAGE_UPDATE_JOB);
-        String assetLineageServerName = openLineageServerConfig.getAccessServiceConfig().getServerName();
-        backgroundJobs.add(new AssetLineageUpdateJobConfiguration(lineageGraphConnector, JobConstants.ASSET_LINEAGE_UPDATE_JOB,
-                AssetLineageUpdateJob.class, assetLineageJobInterval, assetLineageClient, assetLineageServerName, localServerUserId));
+        Optional<OLSBackgroundJob> lineageGraphJob = getJob(JobConstants.LINEAGE_GRAPH_JOB);
+        if (isJobEnabled(lineageGraphJob)) {
+            int lineageGraphJobInterval = getJobInterval(lineageGraphJob);
+            backgroundJobs.add(new JobConfiguration(lineageGraphConnector, JobConstants.LINEAGE_GRAPH_JOB, LineageGraphJob.class,
+                    lineageGraphJobInterval));
+        }
+
+        Optional<OLSBackgroundJob> assetLineageUpdateJob = getJob(JobConstants.ASSET_LINEAGE_UPDATE_JOB);
+        if (isJobEnabled(assetLineageUpdateJob)) {
+            int assetLineageJobInterval = getJobInterval(assetLineageUpdateJob);
+            String configAssetLineageLastUpdateTime = getDefaultValue(assetLineageUpdateJob);
+
+            String assetLineageServerName = openLineageServerConfig.getAccessServiceConfig().getServerName();
+            backgroundJobs.add(new AssetLineageUpdateJobConfiguration(lineageGraphConnector, JobConstants.ASSET_LINEAGE_UPDATE_JOB,
+                    AssetLineageUpdateJob.class, assetLineageJobInterval, configAssetLineageLastUpdateTime, assetLineageClient,
+                    assetLineageServerName, localServerUserId));
+        }
 
         backgroundJobs.forEach(JobConfiguration::schedule);
     }
 
-    private int getJobInterval(String name) {
-        Optional<OLSBackgroundJob> interval = openLineageServerConfig.getBackgroundJobs()
+    private int getJobInterval(Optional<OLSBackgroundJob> job) {
+        return job.map(OLSBackgroundJob::getJobInterval).orElse(JobConstants.DEFAULT_JOB_INTERVAL_IN_SECONDS);
+    }
+
+    private boolean isJobEnabled(Optional<OLSBackgroundJob> job) {
+        return job.map(OLSBackgroundJob::isJobEnabled).orElse(Boolean.TRUE);
+    }
+
+    private String getDefaultValue(Optional<OLSBackgroundJob> job) {
+        return job.map(OLSBackgroundJob::getJobDefaultValue).orElse(EMPTY_STRING);
+    }
+
+    private Optional<OLSBackgroundJob> getJob(String name) {
+        return openLineageServerConfig.getBackgroundJobs()
                 .stream()
                 .filter(job -> name.equals(job.getJobName()))
                 .findAny();
-        return interval.map(OLSBackgroundJob::getJobInterval).orElse(JobConstants.DEFAULT_JOB_INTERVAL_IN_SECONDS);
     }
 
     /**
