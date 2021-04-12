@@ -40,18 +40,18 @@ public class OpenLineageAssetContextHandler {
     }
 
     /**
-     * Retrieve asset context for entity.
+     * Determines the publishing of the entity's asset contexts and returns the list of all entities inside the context.
      *
      * @param guid        the guid of the entity
      * @param typeDefName the type def name of the entity
-     * @return a relationships set
+     * @return a relationships list
      * @throws InvalidParameterException  the invalid parameter exception
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
      */
-    public Set<GraphContext> getAssetContextForEntity(String guid, String typeDefName)
+    public List<String> getAssetContextForEntity(String guid, String typeDefName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        return assetLineageClient.provideAssetContext(localServerUserId, guid, typeDefName).getRelationships();
+        return assetLineageClient.publishAssetContext(localServerUserId, guid, typeDefName);
     }
 
     /**
