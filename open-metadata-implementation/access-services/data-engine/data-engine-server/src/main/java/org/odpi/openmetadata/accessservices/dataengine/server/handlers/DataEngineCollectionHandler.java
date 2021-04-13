@@ -39,7 +39,7 @@ public class DataEngineCollectionHandler {
      * @param repositoryHelper              provides utilities for manipulating the repository services objects
      * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
      * @param dataEngineCommonHandler       provides utilities for manipulating entities
-     * @param collectionOpenMetadataAPIGenericHandler  handler for managing schema attributes in the metadata repositories
+     * @param collectionOpenMetadataAPIGenericHandler helps building model for creating Collection metadata associated with Process assets
      */
     public DataEngineCollectionHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                        OMRSRepositoryHelper repositoryHelper,
@@ -112,7 +112,7 @@ public class DataEngineCollectionHandler {
      *
      * @param userId             the name of the calling user
      * @param processGUID        the unique identifier of the process
-     * @param collectionGUID           the unique identifier of the collection that represents the collection
+     * @param collectionGUID     the unique identifier of the collection
      * @param externalSourceName the unique name of the external source
      *
      * @throws InvalidParameterException  the bean properties are invalid
