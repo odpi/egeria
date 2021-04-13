@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Create port implementation
+# Create processes
 
 Create a Process, with an array of port implementations, port aliases and lineage mappings.
 For each port, it creates the associated schema type and relationships.

@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
+import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -55,7 +58,6 @@ public class DataEngineCommonHandler {
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.dataEngineRegistrationHandler = dataEngineRegistrationHandler;
-
     }
 
     /**
@@ -73,7 +75,6 @@ public class DataEngineCommonHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-
     protected String createExternalEntity(String userId, InstanceProperties instanceProperties, InstanceStatus instanceStatus, String entityTypeName,
                                           String externalSourceName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
@@ -203,8 +204,8 @@ public class DataEngineCommonHandler {
     protected void upsertExternalRelationship(String userId, String firstGUID, String secondGUID, String relationshipTypeName,
                                               String firstEntityTypeName, String externalSourceName,
                                               InstanceProperties relationshipProperties) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException {
 
         final String methodName = "upsertExternalRelationship";
 
@@ -260,8 +261,39 @@ public class DataEngineCommonHandler {
                 null, null, methodName);
     }
 
+    /**
+     * Return the owner type ordinal
+     *
+     * @param ownerType OwnerType enum
+     *
+     * @return DataItemSortOrder enum ordinal
+     */
+    protected int getOwnerTypeOrdinal(OwnerType ownerType) {
+        int ownerTypeOrdinal = OwnerType.USER_ID.getOpenTypeOrdinal();
+
+        if (ownerType != null) {
+            ownerTypeOrdinal = ownerType.getOpenTypeOrdinal();
+        }
+        return ownerTypeOrdinal;
+    }
+
+    /**
+     * Return the ordinal for the order that the column is arranged in
+     *
+     * @param column the column to
+     *
+     * @return DataItemSortOrder enum ordinal
+     */
+    protected int getSortOrder(Attribute column) {
+        int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+        if (column.getSortOrder() != null) {
+            sortOrder = column.getSortOrder().getOpenTypeOrdinal();
+        }
+        return sortOrder;
+    }
+
     protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws
-            InvalidParameterException {
+                                                                                                                      InvalidParameterException {
 
         throw new InvalidParameterException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName, "qualifiedName");
     }
