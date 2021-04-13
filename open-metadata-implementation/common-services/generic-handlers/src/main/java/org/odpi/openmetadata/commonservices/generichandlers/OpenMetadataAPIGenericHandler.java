@@ -2139,7 +2139,7 @@ public class OpenMetadataAPIGenericHandler<B>
         }
 
         /*
-         * Finally test to see if the type is connected to an API operation or API schema type.
+         * Next test to see if the type is connected to an API operation or API schema type.
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
@@ -2190,11 +2190,27 @@ public class OpenMetadataAPIGenericHandler<B>
             return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
         }
 
+        /*
+         * Finally test that this schema type is attached directly to a port.
+         */
+        relationship = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                     schemaTypeGUID,
+                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                                     methodName);
+        if (relationship != null)
+        {
+            EntityProxy proxy = relationship.getEntityOneProxy();
+
+            return proxy.getGUID();
+        }
+
 
         /*
-         * If none of these relationships are present, then this schema type is the anchor.
+         * If none of these relationships are present, then this schema type has no anchor.
          */
-        return schemaTypeGUID;
+        return null;
     }
 
 
