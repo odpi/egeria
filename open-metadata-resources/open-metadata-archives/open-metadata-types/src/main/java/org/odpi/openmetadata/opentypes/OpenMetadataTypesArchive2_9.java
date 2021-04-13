@@ -156,16 +156,16 @@ public class OpenMetadataTypesArchive2_9
         /*
          * Calls for new and changed types go here
          */
-        add0325PrimaryCategoryClassification();
+        add0335PrimaryCategoryClassification();
 
     }
 
 
 
     /**
-     * 0325  Add the Primary Category Classification
+     * 0335  Add the Primary Category Classification
      */
-    private void add0325PrimaryCategoryClassification()
+    private void add0335PrimaryCategoryClassification()
     {
         this.archiveBuilder.addClassificationDef(addPrimaryCategoryClassification());
     }
