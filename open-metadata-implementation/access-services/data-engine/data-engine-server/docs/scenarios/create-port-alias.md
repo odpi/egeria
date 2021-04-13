@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Create port implementation
+# Create port alias
 
 Create a PortAlias, with a PortDelegation relationship to a PortImplementation.
 The PortAlias type and the delegated PortImplementation type must be the same.
