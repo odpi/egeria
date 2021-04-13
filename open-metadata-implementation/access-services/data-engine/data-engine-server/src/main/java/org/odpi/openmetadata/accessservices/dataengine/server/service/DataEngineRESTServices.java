@@ -13,7 +13,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTransformationProjectHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -816,20 +815,20 @@ public class DataEngineRESTServices {
             }
             DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId, serverName, methodName);
+            DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 
             Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
             String processGUID;
-            String transformationProjectGUID = null;
+            String collectionGUID = null;
 
-            TransformationProject transformationProject = process.getTransformationProject();
-            if (transformationProject != null) {
-                String transformationProjectQualifiedName = transformationProject.getQualifiedName();
-                Optional<EntityDetail> transformationProjectEntity = dataEngineTransformationProjectHandler.findTransformationProjectEntity(userId, transformationProjectQualifiedName);
-                if (!transformationProjectEntity.isPresent()) {
-                    transformationProjectGUID = dataEngineTransformationProjectHandler.createTransformationProject(userId, transformationProject, externalSourceName);
+            Collection collection = process.getCollection();
+            if (collection != null) {
+                String collectionQualifiedName = collection.getQualifiedName();
+                Optional<EntityDetail> collectionEntity = dataEngineCollectionHandler.findCollectionEntity(userId, collectionQualifiedName);
+                if (!collectionEntity.isPresent()) {
+                    collectionGUID = dataEngineCollectionHandler.createCollection(userId, collection, externalSourceName);
                 } else {
-                    transformationProjectGUID = transformationProjectEntity.get().getGUID();
+                    collectionGUID = collectionEntity.get().getGUID();
                 }
             }
 
@@ -852,8 +851,8 @@ public class DataEngineRESTServices {
                 }
             }
 
-            if (transformationProjectGUID != null) {
-                addProcessTransformationProjectRelationships(userId, serverName, processGUID, transformationProjectGUID, externalSourceName);
+            if (collectionGUID != null) {
+                addProcessCollectionRelationships(userId, serverName, processGUID, collectionGUID, externalSourceName);
             }
 
             addProcessPortRelationships(userId, serverName, processGUID,
@@ -886,7 +885,7 @@ public class DataEngineRESTServices {
             return new ArrayList<>();
         }
         return portImplementations.stream().map(portImplementation -> portImplementation.getSchemaType().getAttributeList())
-                .flatMap(Collection::stream).collect(Collectors.toList());
+                .flatMap(java.util.Collection::stream).collect(Collectors.toList());
     }
 
     private void addAnchorGUID(String userId, String serverName, String processGUID, List<Attribute> schemaAttributes,
@@ -930,15 +929,15 @@ public class DataEngineRESTServices {
         });
     }
 
-    private void addProcessTransformationProjectRelationships(String userId, String serverName, String processGUID, String transformationProjectGuid,
-                                             String externalSourceName) throws InvalidParameterException, PropertyServerException,
+    private void addProcessCollectionRelationships(String userId, String serverName, String processGUID, String collectionGUID,
+                                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
             UserNotAuthorizedException {
 
         final String methodName = "addProcessPortRelationships";
 
-        DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId, serverName, methodName);
+        DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 
-        dataEngineTransformationProjectHandler.addProcessTransformationProjectRelationship(userId, transformationProjectGuid, processGUID, externalSourceName);
+        dataEngineCollectionHandler.addCollectionMembershipRelationship(userId, collectionGUID, processGUID, externalSourceName);
     }
 
     private void addProcessPortRelationships(String userId, String serverName, String processGUID, Set<String> portGUIDs, GUIDResponse response,
