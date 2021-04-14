@@ -9,9 +9,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.CSVFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
@@ -23,12 +24,13 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -84,14 +86,16 @@ class DataEngineDataFileHandlerTest {
     void addCsvAssetToCatalog() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         CSVFile csvFile = getCsvFile();
         SchemaType tabularSchemaType = getTabularSchema();
-        List<TabularColumn> columns = getTabularColumns();
+        List<Attribute> columns = getTabularColumns();
 
-        dataEngineDataFileHandler.addOrUpdateFileAssetToCatalog(csvFile, tabularSchemaType, columns,
-                EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+        dataEngineDataFileHandler.upsertFileAssetIntoCatalog("FILE_TYPE_NAME", "FILE_TYPE_GUID",
+                csvFile, tabularSchemaType, columns, getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
+                USER, METHOD);
 
         verify(dataEngineDataFileHandler, times(1)).
-                addOrUpdateFileAssetToCatalog(csvFile, tabularSchemaType, columns, EXTERNAL_SOURCE_GUID,
-                        EXTERNAL_SOURCE_NAME, USER, METHOD);
+                upsertFileAssetIntoCatalog("FILE_TYPE_NAME", "FILE_TYPE_GUID", csvFile,
+                        tabularSchemaType, columns, getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
+                        USER, METHOD);
     }
 
 
@@ -107,11 +111,11 @@ class DataEngineDataFileHandlerTest {
     private CSVFile getCsvFile(){
         CSVFile csvFile = new CSVFile();
         csvFile.setQualifiedName(QUALIFIED_NAME);
-        csvFile.setName(NAME);
+        csvFile.setDisplayName(NAME);
         csvFile.setOwner(OWNER);
         csvFile.setFileType(FILE_TYPE);
         csvFile.setDescription(DESCRIPTION);
-        csvFile.setPath(PATH);
+        csvFile.setPathName(PATH);
         csvFile.setDelimiterCharacter(",");
         csvFile.setQuoteCharacter("\"");
 
@@ -130,20 +134,27 @@ class DataEngineDataFileHandlerTest {
         return tabularSchema;
     }
 
-    private List<TabularColumn> getTabularColumns(){
-        List<TabularColumn> tabularColumns = new ArrayList<>();
+    private List<Attribute> getTabularColumns(){
+        List<Attribute> tabularColumns = new ArrayList<>();
 
-        TabularColumn tabularColumn = new TabularColumn();
+        Attribute tabularColumn = new Attribute();
         tabularColumn.setQualifiedName(QUALIFIED_NAME);
         tabularColumn.setDisplayName(NAME);
         tabularColumn.setDescription(DESCRIPTION);
         tabularColumn.setPosition(POSITION);
         tabularColumn.setNativeClass(NATIVE_CLASS);
-        tabularColumn.setDataItemSortOrder(DataItemSortOrder.ASCENDING);
+        tabularColumn.setSortOrder(DataItemSortOrder.ASCENDING);
 
         tabularColumns.add(tabularColumn);
 
         return tabularColumns;
+    }
+
+    private Map<String, Object> getExtendedProperties(){
+        Map<String, Object> extendedProperties = new HashMap<>();
+        extendedProperties.put(FILE_TYPE, FILE_TYPE);
+
+        return extendedProperties;
     }
 
 }

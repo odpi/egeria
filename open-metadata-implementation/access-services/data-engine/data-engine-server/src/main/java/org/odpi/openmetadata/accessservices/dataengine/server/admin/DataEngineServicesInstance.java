@@ -4,22 +4,18 @@ package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.DataFileConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseColumnConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseSchemaConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseTableConverter;
-import org.odpi.openmetadata.accessservices.dataengine.model.metadataelements.FileElement;
-import org.odpi.openmetadata.accessservices.dataengine.model.metadataelements.FileSystemElement;
-import org.odpi.openmetadata.accessservices.dataengine.model.metadataelements.FolderElement;
-import org.odpi.openmetadata.accessservices.dataengine.server.converters.DataFileConverter;
-import org.odpi.openmetadata.accessservices.dataengine.server.converters.FileFolderConverter;
-import org.odpi.openmetadata.accessservices.dataengine.server.converters.FileSystemConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaAttributeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaTypeConverter;
@@ -134,12 +130,21 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                     dataEngineCommonHandler);
             dataEngineRelationalDataHandler = new DataEngineRelationalDataHandler(serviceName, serverName, invalidParameterHandler,
                     repositoryHandler, repositoryHelper, relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
-            dataEngineDataFileHandler = new DataEngineDataFileHandler(
-                    new FileSystemConverter<FileSystemElement>(repositoryHelper, serviceName, serverName), FileSystemElement.class,
-                    new FileFolderConverter<FolderElement>(repositoryHelper, serviceName, serverName), FolderElement.class,
-                    new DataFileConverter<FileElement>(repositoryHelper, serviceName, serverName), FileElement.class,
-                    serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
-                    securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+            AssetHandler<DataFile> fileHandler = new AssetHandler<>(new DataFileConverter<>(repositoryHelper, serviceName, serverName),
+                    DataFile.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                    localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+//            ConnectionHandler<org.odpi.openmetadata.accessservices.dataengine.model.Connection> connectionHandler = new ConnectionHandler<>(
+//                    new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+//                    org.odpi.openmetadata.accessservices.dataengine.model.Connection.class,
+//                    invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier,
+//                    supportedZones, defaultZones, publishZones, auditLog);
+//            EndpointHandler<Endpoint> endpointHandler = new EndpointHandler<>(
+//                    new EndpointConverter<>(repositoryHelper, serviceName, serverName), Endpoint.class,
+//                    serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
+//                    securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+            dataEngineDataFileHandler = new DataEngineDataFileHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper, dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler);
 
         } else {
             final String methodName = "new ServiceInstance";

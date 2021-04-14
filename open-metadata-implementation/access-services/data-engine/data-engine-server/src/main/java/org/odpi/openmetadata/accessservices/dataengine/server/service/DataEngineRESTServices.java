@@ -18,7 +18,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
@@ -57,6 +56,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +68,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.partitioningBy;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
 
 /**
  * The DataEngineRESTServices provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -1131,7 +1138,7 @@ public class DataEngineRESTServices {
         return false;
     }
 
-    public GUIDResponse createDataFileAndSchema(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
+    public GUIDResponse upsertDataFile(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
 
         String methodName = "createDataFileAndSchema";
         GUIDResponse response = new GUIDResponse();
@@ -1144,17 +1151,16 @@ public class DataEngineRESTServices {
             String externalSourceName = dataFileRequestBody.getExternalSourceName();
             String externalSourceGuid = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-            DataFile dataFile = dataFileRequestBody.getDataFile();
-            SchemaType schemaType = dataFileRequestBody.getSchema();
-            List<TabularColumn> columns = dataFileRequestBody.getColumns();
+            DataFile file = dataFileRequestBody.getDataFile();
+            List<Attribute> columns = file.getColumns();
+            SchemaType schemaType = getDefaultSchemaTypeIfAbsentAndAddAttributes(file, file.getSchema(), columns);
 
-            if(dataFile instanceof CSVFile){
-                guid = dataFileHandler.addOrUpdateFileAssetToCatalog((CSVFile) dataFile, schemaType, columns,
-                        externalSourceGuid, externalSourceName, userId, methodName);
-            } else {
-                guid = dataFileHandler.addOrUpdateFileAssetToCatalog(dataFile, schemaType, columns,
-                        externalSourceGuid, externalSourceName, userId, methodName);
-            }
+            Map<String, Object> extendedProperties = getExtendedProperties(file);
+            String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME ;
+            String fileTypeGuid = file instanceof CSVFile ? CSV_FILE_TYPE_GUID : DATA_FILE_TYPE_GUID ;
+
+            guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType, columns,
+                    extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
 
             response.setGUID(guid);
 
@@ -1166,6 +1172,30 @@ public class DataEngineRESTServices {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
         return response;
+    }
+
+    private SchemaType getDefaultSchemaTypeIfAbsentAndAddAttributes(DataFile file, SchemaType schemaType, List<Attribute> attributes){
+        if(schemaType == null){
+            schemaType = new SchemaType();
+            schemaType.setQualifiedName(file.getQualifiedName() +"::schema");
+            schemaType.setDisplayName("Schema");
+        }
+        schemaType.setAttributeList(attributes);
+        return schemaType;
+    }
+
+    private HashMap<String, Object> getExtendedProperties(DataFile file){
+        HashMap<String, Object> extendedProperties = new HashMap<>();
+
+        if(file instanceof CSVFile){
+            CSVFile csvFile = (CSVFile) file;
+            extendedProperties.put(FILE_TYPE_PROPERTY_NAME, csvFile.getFileType());
+            extendedProperties.put(DELIMITER_CHARACTER_PROPERTY_NAME, csvFile.getDelimiterCharacter());
+            extendedProperties.put(QUOTE_CHARACTER_PROPERTY_NAME, csvFile.getQuoteCharacter());
+        } else {
+            extendedProperties.put(FILE_TYPE_PROPERTY_NAME, file.getFileType());
+        }
+        return extendedProperties;
     }
 
 }

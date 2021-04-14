@@ -37,7 +37,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     protected String                          serverName;
     private String                          localServerUserId;
     protected OMRSRepositoryHelper            repositoryHelper;
-    private RepositoryHandler               repositoryHandler;
+    protected RepositoryHandler               repositoryHandler;
     protected InvalidParameterHandler         invalidParameterHandler;
 
     private SoftwareServerCapabilityHandler<FILESYSTEM> fileSystemHandler;

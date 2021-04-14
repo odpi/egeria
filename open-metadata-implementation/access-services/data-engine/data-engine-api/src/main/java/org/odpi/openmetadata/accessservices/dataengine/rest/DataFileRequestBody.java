@@ -5,11 +5,9 @@ package org.odpi.openmetadata.accessservices.dataengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
-import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,9 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataFileRequestBody extends DataEngineOMASAPIRequestBody {
 
+    @JsonProperty("file")
     private DataFile dataFile;
-    private SchemaType schema;
-    private List<TabularColumn> columns;
 
     public DataFile getDataFile() {
         return dataFile;
@@ -32,28 +29,10 @@ public class DataFileRequestBody extends DataEngineOMASAPIRequestBody {
         this.dataFile = dataFile;
     }
 
-    public SchemaType getSchema() {
-        return schema;
-    }
-
-    public void setSchema(SchemaType schema) {
-        this.schema = schema;
-    }
-
-    public List<TabularColumn> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<TabularColumn> columns) {
-        this.columns = columns;
-    }
-
     @Override
     public String toString() {
         return "DataFileRequestBody{" +
                 "dataFile=" + dataFile +
-                "schema=" + schema +
-                "columns=" + columns +
                 '}';
     }
 
@@ -62,13 +41,11 @@ public class DataFileRequestBody extends DataEngineOMASAPIRequestBody {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DataFileRequestBody that = (DataFileRequestBody) o;
-        return Objects.equals(dataFile, that.dataFile) &&
-                Objects.equals(schema, that.schema) &&
-                Objects.equals(columns, that.columns);
+        return Objects.equals(dataFile, that.dataFile) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataFile, schema);
+        return Objects.hash(dataFile);
     }
 }

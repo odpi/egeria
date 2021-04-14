@@ -14,8 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
-import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
@@ -25,11 +26,10 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataengine.model.TabularColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -39,12 +39,12 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -52,7 +52,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.springframework.util.ReflectionUtils;
@@ -62,8 +61,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -833,11 +834,12 @@ class DataEngineRESTServicesTest {
         mockDataFileHandler("createDataFileAndSchema");
         DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody();
 
-        GUIDResponse guidResponse = dataEngineRESTServices.createDataFileAndSchema(SERVER_NAME, USER, dataFileRequestBody);
+        GUIDResponse guidResponse = dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
-        verify(dataEngineDataFileHandler, times(1)).addOrUpdateFileAssetToCatalog(
-                dataFileRequestBody.getDataFile(), dataFileRequestBody.getSchema(), dataFileRequestBody.getColumns(),
-                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "createDataFileAndSchema");
+        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog( "FILE_TYPE_NAAME",
+                "FILE_TYPE_GUID", dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
+                dataFileRequestBody.getDataFile().getColumns(), getExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "createDataFileAndSchema");
     }
 
     private LineageMappingsRequestBody mockLineageMappingsRequestBody() {
@@ -915,7 +917,7 @@ class DataEngineRESTServicesTest {
     private DataFileRequestBody mockDataFileRequestBody(){
         DataFileRequestBody dataFileRequestBody = new DataFileRequestBody();
         dataFileRequestBody.setDataFile(getDataFile());
-        dataFileRequestBody.setSchema(getSchemaTypeForDataFile());dataFileRequestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataFileRequestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         return dataFileRequestBody;
     }
@@ -1035,42 +1037,47 @@ class DataEngineRESTServicesTest {
     private DataFile getDataFile(){
         DataFile dataFile = new DataFile();
         dataFile.setQualifiedName(QUALIFIED_NAME);
-        dataFile.setName(NAME);
+        dataFile.setDisplayName(NAME);
         dataFile.setOwner(OWNER);
         dataFile.setFileType(FILE_TYPE);
         dataFile.setDescription(DESCRIPTION);
-        dataFile.setPath(PATH);
+        dataFile.setPathName(PATH);
+        dataFile.setSchema(getSchemaTypeForDataFile());
+
+        List<Attribute> tabularColumns = new ArrayList<>();
+        tabularColumns.add(getTabularColumn());
+        dataFile.setColumns(tabularColumns);
 
         return dataFile;
     }
 
     private SchemaType getSchemaTypeForDataFile(){
-        List<TabularColumn> tabularColumns = new ArrayList<>();
-        tabularColumns.add(getTabularColumn());
-
         SchemaType schemaType = new SchemaType();
         schemaType.setQualifiedName(QUALIFIED_NAME);
         schemaType.setDisplayName(NAME);
-//        schemaType.setDescription(DESCRIPTION);
         schemaType.setAuthor(AUTHOR);
         schemaType.setUsage(USAGE);
         schemaType.setEncodingStandard(ENCODING_STANDARD);
         schemaType.setVersionNumber(VERSION_NUMBER);
-//        schemaType.setTabularColumns(tabularColumns);
-
         return schemaType;
     }
 
-    private TabularColumn getTabularColumn(){
-        TabularColumn tabularColumn = new TabularColumn();
+    private Attribute getTabularColumn(){
+        Attribute tabularColumn = new Attribute();
         tabularColumn.setQualifiedName(QUALIFIED_NAME);
         tabularColumn.setDisplayName(NAME);
         tabularColumn.setDescription(DESCRIPTION);
         tabularColumn.setPosition(POSITION);
         tabularColumn.setNativeClass(NATIVE_CLASS);
-        tabularColumn.setDataItemSortOrder(DataItemSortOrder.ASCENDING);
-
+        tabularColumn.setSortOrder(DataItemSortOrder.ASCENDING);
         return tabularColumn;
+    }
+
+    private Map<String, Object> getExtendedProperties(){
+        Map<String, Object> extendedProperties = new HashMap<>();
+        extendedProperties.put(FILE_TYPE, FILE_TYPE);
+
+        return extendedProperties;
     }
 
 }
