@@ -58,23 +58,6 @@ public class EgeriaUIPlatform {
         };
     }
 
-
-    @Bean
-    @ConditionalOnProperty(value = "cors.allowed-origins")
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                if(allowedOrigins.length>0) {
-                    registry.addMapping("/**")
-                            .allowedOrigins(allowedOrigins);
-                }
-            }
-        };
-    }
-
-
-
     @Bean
     public AssetCatalog getAssetCatalog(@Value("${omas.server.url}") String serverUrl,
                                         @Value("${omas.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {

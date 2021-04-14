@@ -39,6 +39,9 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -905,17 +908,33 @@ public class DataEngineRESTServices {
             Set<String> portImplementationGUIDs = upsertPortImplementations(userId, serverName, portImplementations, response,
                     externalSourceName);
 
+
+
             Set<String> portAliasGUIDs = upsertPortAliases(userId, serverName, portAliases, response, externalSourceName);
 
             //check intermediary status of the response after creating the ports
             if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
                 return response;
             }
-
             DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+
+            DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 
             Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
             String processGUID;
+            String collectionGUID = null;
+
+            Collection collection = process.getCollection();
+            if (collection != null) {
+                String collectionQualifiedName = collection.getQualifiedName();
+                Optional<EntityDetail> collectionEntity = dataEngineCollectionHandler.findCollectionEntity(userId, collectionQualifiedName);
+                if (!collectionEntity.isPresent()) {
+                    collectionGUID = dataEngineCollectionHandler.createCollection(userId, collection, externalSourceName);
+                } else {
+                    collectionGUID = collectionEntity.get().getGUID();
+                }
+            }
+
             if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
 
@@ -933,6 +952,10 @@ public class DataEngineRESTServices {
                     deleteObsoletePorts(userId, serverName, portAliasGUIDs, processGUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME,
                             response, externalSourceName);
                 }
+            }
+
+            if (collectionGUID != null) {
+                addProcessCollectionRelationships(userId, serverName, processGUID, collectionGUID, externalSourceName);
             }
 
             addProcessPortRelationships(userId, serverName, processGUID,
@@ -965,7 +988,7 @@ public class DataEngineRESTServices {
             return new ArrayList<>();
         }
         return portImplementations.stream().map(portImplementation -> portImplementation.getSchemaType().getAttributeList())
-                .flatMap(Collection::stream).collect(Collectors.toList());
+                .flatMap(java.util.Collection::stream).collect(Collectors.toList());
     }
 
     private void addAnchorGUID(String userId, String serverName, String processGUID, List<Attribute> schemaAttributes,
@@ -1004,6 +1027,17 @@ public class DataEngineRESTServices {
                 }
             }
         });
+    }
+
+    private void addProcessCollectionRelationships(String userId, String serverName, String processGUID, String collectionGUID,
+                                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
+            UserNotAuthorizedException {
+
+        final String methodName = "addProcessPortRelationships";
+
+        DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
+
+        dataEngineCollectionHandler.addCollectionMembershipRelationship(userId, collectionGUID, processGUID, externalSourceName);
     }
 
     private void addProcessPortRelationships(String userId, String serverName, String processGUID, Set<String> portGUIDs, GUIDResponse response,

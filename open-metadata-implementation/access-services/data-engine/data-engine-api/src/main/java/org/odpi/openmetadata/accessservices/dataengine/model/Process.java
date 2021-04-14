@@ -25,6 +25,7 @@ public class Process extends Asset {
     private List<PortImplementation> portImplementations;
     private List<PortAlias> portAliases;
     private List<LineageMapping> lineageMappings;
+    private Collection collection;
     private UpdateSemantic updateSemantic;
     private List<ParentProcess> parentProcesses;
 
@@ -58,15 +59,16 @@ public class Process extends Asset {
      *
      * @return string description
      */
-    public String getFormula() { return formula; }
+    public String getFormula() {
+        return formula;
+    }
 
     /**
      * Set up the the description of the processing performed by this process.
      *
      * @param formula string description
      */
-    public void setFormula(String formula)
-    {
+    public void setFormula(String formula) {
         this.formula = formula;
     }
 
@@ -75,8 +77,7 @@ public class Process extends Asset {
      *
      * @return string name
      */
-    public String getImplementationLanguage()
-    {
+    public String getImplementationLanguage() {
         return implementationLanguage;
     }
 
@@ -85,8 +86,7 @@ public class Process extends Asset {
      *
      * @param implementationLanguage string name
      */
-    public void setImplementationLanguage(String implementationLanguage)
-    {
+    public void setImplementationLanguage(String implementationLanguage) {
         this.implementationLanguage = implementationLanguage;
     }
 
@@ -184,6 +184,24 @@ public class Process extends Asset {
         this.parentProcesses = parentProcesses;
     }
 
+
+    /**
+     *  Retrieves the collection to which the process belongs
+     * */
+    public Collection getCollection() {
+        return collection;
+    }
+
+
+    /**
+     * Sets the collection.
+     *
+     * @param collection the collection to which the process belongs
+     */
+    public void setCollection(Collection collection) {
+        this.collection = collection;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -196,13 +214,15 @@ public class Process extends Asset {
                 Objects.equals(portImplementations, process.portImplementations) &&
                 Objects.equals(portAliases, process.portAliases) &&
                 Objects.equals(lineageMappings, process.lineageMappings) &&
+                Objects.equals(collection, process.collection) &&
                 updateSemantic == process.updateSemantic &&
                 Objects.equals(parentProcesses, process.parentProcesses);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, formula, implementationLanguage, portImplementations, portAliases, lineageMappings, updateSemantic, parentProcesses);
+        return Objects.hash(super.hashCode(), name, formula, implementationLanguage, portImplementations, portAliases, lineageMappings,
+                collection, updateSemantic, parentProcesses);
     }
 
     @Override
@@ -214,6 +234,7 @@ public class Process extends Asset {
                 ", portImplementations=" + portImplementations +
                 ", portAliases=" + portAliases +
                 ", lineageMappings=" + lineageMappings +
+                ", collection=" + collection +
                 ", updateSemantic=" + updateSemantic +
                 ", parentProcesses=" + parentProcesses +
                 '}';
