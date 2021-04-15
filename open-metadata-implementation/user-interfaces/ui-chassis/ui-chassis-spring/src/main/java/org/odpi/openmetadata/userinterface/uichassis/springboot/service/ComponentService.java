@@ -39,4 +39,13 @@ public class ComponentService {
                 .forEach(components::addAll);
         return components;
     }
+
+    /**
+     *
+     * @return the set of roles used by the app
+     * this is configuration of the application.properties with role.visibleComponents.[ROLE] values
+     */
+    public final Set<String> getAppRoles(){
+        return visibleComponents.keySet();
+    }
 }
