@@ -226,19 +226,6 @@ public class DataEngineEventClient implements DataEngineClient {
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws ConnectorCheckedException problem with the underlying connector (if used)
-     */
-    @Deprecated
-    @Override
-    public void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException,
-                                                                                                    ConnectorCheckedException {
-
-    }
-
-    /**
      * Sets external source system name using the data engine client
      *
      * @param externalSourceName Source system name

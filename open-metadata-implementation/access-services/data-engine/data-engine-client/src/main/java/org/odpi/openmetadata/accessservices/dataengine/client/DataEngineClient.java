@@ -204,25 +204,6 @@ public interface DataEngineClient {
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException,
                                                                                         ConnectorCheckedException;
-
-    /**
-     * Use {@link #createOrUpdatePortImplementation(String, PortImplementation, String)} for creating a port implementation attached to a process
-     *
-     * @param userId      the name of the calling user
-     * @param portGUIDs   the list of port GUIDs
-     * @param processGUID the process GUYID
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     * @throws ConnectorCheckedException  internal problem with the connector
-     */
-    @Deprecated
-    void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException,
-                                                                                             ConnectorCheckedException;
-
     /**
      * Sets external source system name using the data engine client
      *

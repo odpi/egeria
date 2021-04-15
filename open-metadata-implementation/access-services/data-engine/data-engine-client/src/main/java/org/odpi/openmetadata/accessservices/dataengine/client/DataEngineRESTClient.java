@@ -261,15 +261,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public void addPortsToProcess(String userId, List<String> portQualifiedNames, String processGUID) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException, PropertyServerException {
-    }
-
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
                                       Object... params) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
         super.callVoidPostRESTCall(methodName, serverPlatformRootURL + urlTemplate, requestBody, serverName, userId, params);
