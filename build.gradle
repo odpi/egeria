@@ -176,8 +176,6 @@ allprojects {
             implementation("org.springframework:spring-core:5.3.5")
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
-            compileOnly('org.projectlombok:lombok:1.18.20')
-            annotationProcessor('org.projectlombok:lombok:1.18.20')
             runtimeOnly("joda-time:joda-time:2.10.10")
             implementation("org.yaml:snakeyaml:1.28")
             runtimeOnly("org.antlr:antlr-runtime:3.5.2")
