@@ -192,6 +192,24 @@ public class AssetLineagePublisher {
         publishEvent(event);
     }
 
+
+    /**
+     * Publishes a {@link LineageRelationshipsEvent} containing a {@link LineageRelationship}
+     *
+     * @param assetContext the LineageRelationship to be published
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    public void publishAssetContextEvent(RelationshipsContext assetContext) throws ConnectorCheckedException, JsonProcessingException {
+        LineageRelationshipsEvent event = new LineageRelationshipsEvent();
+
+        event.setRelationshipsContext(assetContext);
+        event.setAssetLineageEventType(AssetLineageEventType.ASSET_CONTEXT_EVENT);
+
+        publishEvent(event);
+    }
+
     /**
      * Output a new asset event.
      *

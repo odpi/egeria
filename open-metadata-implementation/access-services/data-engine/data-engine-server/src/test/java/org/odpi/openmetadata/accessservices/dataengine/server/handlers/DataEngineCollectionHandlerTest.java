@@ -11,9 +11,9 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.dataengine.model.TransformationProject;
-import org.odpi.openmetadata.accessservices.dataengine.server.builders.TransformationProjectBuilder;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.TransformationProjectMapper;
+import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
+import org.odpi.openmetadata.accessservices.dataengine.server.builders.CollectionBuilder;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CollectionMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -21,7 +21,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
@@ -40,7 +39,7 @@ import static org.odpi.openmetadata.accessservices.dataengine.server.util.Mocked
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-class DataEngineTransformationProjectHandlerTest {
+class DataEngineCollectionHandlerTest {
     private static final String USER = "user";
     private static final String QUALIFIED_NAME = "qualifiedName";
     private static final String NAME = "name";
@@ -64,30 +63,30 @@ class DataEngineTransformationProjectHandlerTest {
 
     @Spy
     @InjectMocks
-    private DataEngineTransformationProjectHandler transformationProjectHandler;
+    private DataEngineCollectionHandler dataEngineCollectionHandler;
 
     @Test
-    void createTransformationProjectTest() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        String methodName = "createTransformationProject";
+    void createCollectionTest() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        String methodName = "createCollection";
 
-        TransformationProject transformationProject = getTransformationProject();
-        TransformationProjectBuilder mockedBuilder = Mockito.mock(TransformationProjectBuilder.class);
+        Collection collection = getCollection();
+        CollectionBuilder mockedBuilder = Mockito.mock(CollectionBuilder.class);
 
         when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         when(assetHandler.createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                TransformationProjectMapper.COLLECTION_TYPE_GUID, TransformationProjectMapper.COLLECTION_TYPE_NAME, QUALIFIED_NAME,
-                TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName)).thenReturn(GUID);
+                CollectionMapper.COLLECTION_TYPE_GUID, CollectionMapper.COLLECTION_TYPE_NAME, QUALIFIED_NAME,
+                CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName)).thenReturn(GUID);
 
-        doReturn(mockedBuilder).when(transformationProjectHandler).getTransformationProjectBuilder(transformationProject);
+        doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
-        String result = transformationProjectHandler.createTransformationProject(USER, transformationProject, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        String result = dataEngineCollectionHandler.createCollection(USER, collection, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
-                TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+                CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
     }
 
     @Test
@@ -95,10 +94,10 @@ class DataEngineTransformationProjectHandlerTest {
             NoSuchMethodException,
             InstantiationException,
             IllegalAccessException, InvalidParameterException, InvocationTargetException {
-        String methodName = "createTransformationProject";
+        String methodName = "createCollection";
 
-        TransformationProject transformationProject = getTransformationProject();
-        TransformationProjectBuilder mockedBuilder = Mockito.mock(TransformationProjectBuilder.class);
+        Collection collection = getCollection();
+        CollectionBuilder mockedBuilder = Mockito.mock(CollectionBuilder.class);
 
         when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
@@ -106,13 +105,13 @@ class DataEngineTransformationProjectHandlerTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(assetHandler).createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                TransformationProjectMapper.COLLECTION_TYPE_GUID, TransformationProjectMapper.COLLECTION_TYPE_NAME, QUALIFIED_NAME,
-                TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName);
+                CollectionMapper.COLLECTION_TYPE_GUID, CollectionMapper.COLLECTION_TYPE_NAME, QUALIFIED_NAME,
+                CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName);
 
-        doReturn(mockedBuilder).when(transformationProjectHandler).getTransformationProjectBuilder(transformationProject);
+        doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                transformationProjectHandler.createTransformationProject(USER, transformationProject, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+                dataEngineCollectionHandler.createCollection(USER, collection, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -122,10 +121,10 @@ class DataEngineTransformationProjectHandlerTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(GUID);
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, TransformationProjectMapper.COLLECTION_TYPE_NAME))
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CollectionMapper.COLLECTION_TYPE_NAME))
                 .thenReturn(optionalOfMockedEntity);
 
-        Optional<EntityDetail> result = transformationProjectHandler.findTransformationProjectEntity(USER, QUALIFIED_NAME);
+        Optional<EntityDetail> result = dataEngineCollectionHandler.findCollectionEntity(USER, QUALIFIED_NAME);
 
         assertTrue(result.isPresent());
         assertEquals(GUID, result.get().getGUID());
@@ -135,28 +134,28 @@ class DataEngineTransformationProjectHandlerTest {
     void findProcessNotExistingTest() throws UserNotAuthorizedException, PropertyServerException,
             InvalidParameterException {
 
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, TransformationProjectMapper.COLLECTION_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CollectionMapper.COLLECTION_TYPE_NAME)).thenReturn(Optional.empty());
 
-        Optional<EntityDetail> result = transformationProjectHandler.findTransformationProjectEntity(USER, QUALIFIED_NAME);
+        Optional<EntityDetail> result = dataEngineCollectionHandler.findCollectionEntity(USER, QUALIFIED_NAME);
 
         assertFalse(result.isPresent());
     }
 
     @Test
-    void addProcessTransformationProjectRelationshipTest() throws UserNotAuthorizedException, PropertyServerException,
+    void addProcessCollectionRelationshipTest() throws UserNotAuthorizedException, PropertyServerException,
             InvalidParameterException {
-        transformationProjectHandler.addProcessTransformationProjectRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEngineCollectionHandler.addCollectionMembershipRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, PROCESS_GUID, GUID,
-                TransformationProjectMapper.COLLECTION_MEMBERSHIP_NAME, TransformationProjectMapper.COLLECTION_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                CollectionMapper.COLLECTION_MEMBERSHIP_NAME, CollectionMapper.COLLECTION_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
 
-    private TransformationProject getTransformationProject() {
-        TransformationProject transformationProject = new TransformationProject();
-        transformationProject.setQualifiedName(QUALIFIED_NAME);
-        transformationProject.setName(NAME);
-        return transformationProject;
+    private Collection getCollection() {
+        Collection collection = new Collection();
+        collection.setQualifiedName(QUALIFIED_NAME);
+        collection.setName(NAME);
+        return collection;
     }
 
 }

@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTransformationProjectHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -906,8 +907,23 @@ public class DataEngineRESTServices {
         try {
             DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
+            DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
+
             Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
             String processGUID;
+            String collectionGUID = null;
+
+            Collection collection = process.getCollection();
+            if (collection != null) {
+                String collectionQualifiedName = collection.getQualifiedName();
+                Optional<EntityDetail> collectionEntity = dataEngineCollectionHandler.findCollectionEntity(userId, collectionQualifiedName);
+                if (!collectionEntity.isPresent()) {
+                    collectionGUID = dataEngineCollectionHandler.createCollection(userId, collection, externalSourceName);
+                } else {
+                    collectionGUID = collectionEntity.get().getGUID();
+                }
+            }
+
             if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
             } else {
@@ -923,9 +939,9 @@ public class DataEngineRESTServices {
                 }
             }
 
-            String transformationProjectGUID = createTransformationProject(userId, serverName, process.getTransformationProject(),
+            String collectionGUID = createTransformationProject(userId, serverName, process.getTransformationProject(),
                     externalSourceName);
-            if (transformationProjectGUID != null) {
+            if (collectionGUID != null) {
                 addProcessTransformationProjectRelationships(userId, serverName, processGUID, transformationProjectGUID, externalSourceName);
             }
 
@@ -1010,17 +1026,15 @@ public class DataEngineRESTServices {
         });
     }
 
-    private void addProcessTransformationProjectRelationships(String userId, String serverName, String processGUID, String transformationProjectGuid,
-                                                              String externalSourceName) throws InvalidParameterException, PropertyServerException,
-                                                                                                UserNotAuthorizedException {
+    private void addProcessCollectionRelationships(String userId, String serverName, String processGUID, String collectionGUID,
+                                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
+            UserNotAuthorizedException {
 
         final String methodName = "addProcessTransformationProjectRelationships";
 
-        DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId,
-                serverName, methodName);
+        DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 
-        dataEngineTransformationProjectHandler.addProcessTransformationProjectRelationship(userId, transformationProjectGuid, processGUID,
-                externalSourceName);
+        dataEngineCollectionHandler.addCollectionMembershipRelationship(userId, collectionGUID, processGUID, externalSourceName);
     }
 
     private void deleteObsoletePorts(String userId, String serverName, List<? extends Port> ports, String processGUID, String portTypeName,

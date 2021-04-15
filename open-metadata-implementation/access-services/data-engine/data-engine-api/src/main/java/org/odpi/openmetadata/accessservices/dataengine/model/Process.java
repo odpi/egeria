@@ -25,7 +25,7 @@ public class Process extends Asset {
     private List<PortImplementation> portImplementations;
     private List<PortAlias> portAliases;
     private List<LineageMapping> lineageMappings;
-    private TransformationProject transformationProject;
+    private Collection collection;
     private UpdateSemantic updateSemantic;
     private List<ParentProcess> parentProcesses;
 
@@ -88,24 +88,6 @@ public class Process extends Asset {
      */
     public void setImplementationLanguage(String implementationLanguage) {
         this.implementationLanguage = implementationLanguage;
-    }
-
-    /**
-     * Return the name of the transformation project that this process belongs to.
-     *
-     * @return string name
-     */
-    public TransformationProject getTransformationProject() {
-        return transformationProject;
-    }
-
-    /**
-     * Set up the the transformation project that this process belongs to.
-     *
-     * @param transformationProject string name
-     */
-    public void setTransformationProject(TransformationProject transformationProject) {
-        this.transformationProject = transformationProject;
     }
 
     /**
@@ -202,6 +184,24 @@ public class Process extends Asset {
         this.parentProcesses = parentProcesses;
     }
 
+
+    /**
+     *  Retrieves the collection to which the process belongs
+     * */
+    public Collection getCollection() {
+        return collection;
+    }
+
+
+    /**
+     * Sets the collection.
+     *
+     * @param collection the collection to which the process belongs
+     */
+    public void setCollection(Collection collection) {
+        this.collection = collection;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -214,7 +214,7 @@ public class Process extends Asset {
                 Objects.equals(portImplementations, process.portImplementations) &&
                 Objects.equals(portAliases, process.portAliases) &&
                 Objects.equals(lineageMappings, process.lineageMappings) &&
-                Objects.equals(transformationProject, process.transformationProject) &&
+                Objects.equals(collection, process.collection) &&
                 updateSemantic == process.updateSemantic &&
                 Objects.equals(parentProcesses, process.parentProcesses);
     }
@@ -222,7 +222,7 @@ public class Process extends Asset {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), name, formula, implementationLanguage, portImplementations, portAliases, lineageMappings,
-                transformationProject, updateSemantic, parentProcesses);
+                collection, updateSemantic, parentProcesses);
     }
 
     @Override
@@ -234,7 +234,7 @@ public class Process extends Asset {
                 ", portImplementations=" + portImplementations +
                 ", portAliases=" + portAliases +
                 ", lineageMappings=" + lineageMappings +
-                ", transformationProject=" + transformationProject +
+                ", collection=" + collection +
                 ", updateSemantic=" + updateSemantic +
                 ", parentProcesses=" + parentProcesses +
                 '}';
