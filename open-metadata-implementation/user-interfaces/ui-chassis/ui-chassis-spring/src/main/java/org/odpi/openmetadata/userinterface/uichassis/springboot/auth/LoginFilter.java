@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
+import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +19,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -24,17 +28,17 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     private static final String PASSWORD = "password";
     private final AuthService authenticationService;
     private final AuthenticationExceptionHandler authenticationExceptionHandler;
+    private final Set<String> appRoles;
+
 
     Logger log = LoggerFactory.getLogger(this.getClass());
 
-    protected LoginFilter(String urlMapping,
-                          AuthenticationManager authenticationManager,
-                          AuthService authenticationService,
-                          AuthenticationExceptionHandler authenticationExceptionHandler) {
-        super(new AntPathRequestMatcher(urlMapping));
-        setAuthenticationManager(authenticationManager);
-        this.authenticationService = authenticationService;
-        this.authenticationExceptionHandler = authenticationExceptionHandler;
+    private LoginFilter(LoginFilterBuilder builder){
+        super(new AntPathRequestMatcher(builder.urlMapping));
+        setAuthenticationManager(builder.authenticationManager);
+        this.authenticationService = builder.authService;
+        this.authenticationExceptionHandler = builder.authenticationExceptionHandler;
+        this.appRoles = builder.appRoles;
     }
 
     @Override
@@ -67,9 +71,53 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         log.info("SUCCESSFUL Authentication for user {}", request.getParameter(USERNAME));
         authenticationService.addAuthentication(request, response, authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        if(authentication.getAuthorities().isEmpty()){
+
+        if( !checkRoles(authentication) || authentication.getAuthorities().isEmpty() ){
             log.warn("NO roles for user: {}", request.getParameter(USERNAME));
             response.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase());
+        }
+    }
+
+    private boolean checkRoles(Authentication authentication){
+       return  authentication.getAuthorities().stream()
+                .map(r -> r.getAuthority())
+                .anyMatch(appRoles::contains);
+    }
+
+    public static class LoginFilterBuilder{
+        private String urlMapping;
+        private AuthenticationManager authenticationManager;
+        private AuthService authService;
+        private AuthenticationExceptionHandler authenticationExceptionHandler;
+        private Set<String> appRoles;
+
+        public LoginFilterBuilder url(String urlMapping){
+            this.urlMapping = urlMapping;
+            return this;
+        }
+
+        public LoginFilterBuilder authManager(AuthenticationManager authenticationManager){
+            this.authenticationManager = authenticationManager;
+            return this;
+        }
+
+        public LoginFilterBuilder authService(AuthService authService){
+            this.authService = authService;
+            return this;
+        }
+
+        public LoginFilterBuilder exceptionHandler(AuthenticationExceptionHandler authenticationExceptionHandler){
+            this.authenticationExceptionHandler = authenticationExceptionHandler;
+            return this;
+        }
+
+        public LoginFilterBuilder appRoles(Set<String> appRoles){
+            this.appRoles = appRoles;
+            return this;
+        }
+
+        public LoginFilter build(){
+            return new LoginFilter(this);
         }
     }
 }
