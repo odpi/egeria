@@ -265,19 +265,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public void addPortsToProcess(String userId, List<String> portQualifiedNames, String processGUID) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException {
-        final String methodName = PORTS_TO_PROCESS_METHOD_NAME;
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        PortListRequestBody requestBody = new PortListRequestBody();
-        requestBody.setPorts(portQualifiedNames);
-
-        requestBody.setExternalSourceName(externalSourceName);
-
-        callVoidPostRESTCall(userId, methodName, PORTS_TO_PROCESS_URL_TEMPLATE, requestBody, processGUID);
+                                                                                                             UserNotAuthorizedException, PropertyServerException {
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,

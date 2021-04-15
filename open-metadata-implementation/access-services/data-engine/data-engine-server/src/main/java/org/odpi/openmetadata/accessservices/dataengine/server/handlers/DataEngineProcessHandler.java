@@ -162,28 +162,6 @@ public class DataEngineProcessHandler {
     }
 
     /**
-     * Create ProcessPort relationships between a Process asset and the corresponding Ports. Verifies that the
-     * relationship is not present before creating it
-     *
-     * @param userId             the name of the calling user
-     * @param processGUID        the unique identifier of the process
-     * @param portGUID           the unique identifier of the port
-     * @param externalSourceName the unique name of the external source
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void addProcessPortRelationship(String userId, String processGUID, String portGUID, String externalSourceName)
-            throws InvalidParameterException,
-                   UserNotAuthorizedException,
-                   PropertyServerException {
-        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, portGUID,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName,
-                null);
-    }
-
-    /**
      * Update the process instance status
      *
      * @param userId             the name of the calling user
@@ -195,10 +173,10 @@ public class DataEngineProcessHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void updateProcessStatus(String userId, String processGUID, InstanceStatus instanceStatus, String externalSourceName)
-            throws InvalidParameterException,
-                   UserNotAuthorizedException,
-                   PropertyServerException {
+    public void updateProcessStatus(String userId, String processGUID, InstanceStatus instanceStatus, String externalSourceName) throws
+                                                                                                                                 InvalidParameterException,
+                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                 PropertyServerException {
 
         final String methodName = "updateProcessStatus";
         final String processGUIDParameterName = "processGUID";
@@ -222,7 +200,7 @@ public class DataEngineProcessHandler {
      * @param processGUID  the unique identifier of the process
      * @param portTypeName the type of the port to be retrieved
      *
-     * @return A set of unique identifiers for the retrieved ports or an empty set
+     * @return A set of the retrieved ports or an empty set
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

@@ -93,8 +93,7 @@ public interface DataEngineClient {
                                                                                                            ConnectorCheckedException;
 
     /**
-     * Use {@link #createOrUpdatePortImplementation(String, PortImplementation, String)} createOrUpdatePortImplementation for creating a port
-     * implementation attached to a process
+     * Use {@link #createOrUpdatePortImplementation(String, PortImplementation, String)} for creating a port implementation attached to a process
      *
      * @param userId             the name of the calling user
      * @param portImplementation the port implementation bean
@@ -207,7 +206,7 @@ public interface DataEngineClient {
                                                                                         ConnectorCheckedException;
 
     /**
-     * Add ports and process ports relationship to an existing port
+     * Use {@link #createOrUpdatePortImplementation(String, PortImplementation, String)} for creating a port implementation attached to a process
      *
      * @param userId      the name of the calling user
      * @param portGUIDs   the list of port GUIDs
@@ -218,6 +217,7 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
+    @Deprecated
     void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException,

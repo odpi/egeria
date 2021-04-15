@@ -213,9 +213,11 @@ public class DataEngineCommonHandler {
         invalidParameterHandler.validateGUID(firstGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateGUID(secondGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+
         Optional<Relationship> relationship = findRelationship(userId, firstGUID, secondGUID, firstEntityTypeName, relationshipTypeName);
         if (!relationship.isPresent()) {
-            String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
             repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID, externalSourceName,
                     firstGUID, secondGUID, relationshipProperties, methodName);
@@ -225,13 +227,27 @@ public class DataEngineCommonHandler {
             RelationshipDifferences relationshipDifferences = repositoryHelper.getRelationshipDifferences(originalRelationship,
                     buildRelationship(originalRelationship.getGUID(), relationshipProperties), true);
             if (relationshipDifferences.hasInstancePropertiesDifferences()) {
-                String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
                 repositoryHandler.updateRelationshipProperties(userId, externalSourceGUID,
                         externalSourceName, originalRelationship.getGUID(), relationshipProperties, methodName);
             }
         }
     }
 
+    /**
+     * Find out if the relationships  is already stored in the repository.
+     *
+     * @param userId               the name of the calling user
+     * @param firstGUID            the unique identifier of the entity at first end
+     * @param secondGUID           the unique identifier of the entity at second end
+     * @param relationshipTypeName type name for the relationship to create
+     * @param firstEntityTypeName  type name for the entity at first end
+     *
+     * @return The found relationship or an empty Optional
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     protected Optional<Relationship> findRelationship(String userId, String firstGUID, String secondGUID, String firstEntityTypeName,
                                                       String relationshipTypeName) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,

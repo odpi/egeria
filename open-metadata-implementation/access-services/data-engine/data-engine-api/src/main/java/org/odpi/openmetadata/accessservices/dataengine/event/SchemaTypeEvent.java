@@ -22,10 +22,20 @@ public class SchemaTypeEvent extends DataEngineEventHeader{
     private String portQualifiedName;
     private SchemaType schemaType;
 
+    /**
+     * Gets the port qualified name.
+     *
+     * @return the port qualified name
+     */
     public String getPortQualifiedName() {
         return portQualifiedName;
     }
 
+    /**
+     * Sets the port qualified name.
+     *
+     * @param portQualifiedName the port qualified name
+     */
     public void setPortQualifiedName(String portQualifiedName) {
         this.portQualifiedName = portQualifiedName;
     }

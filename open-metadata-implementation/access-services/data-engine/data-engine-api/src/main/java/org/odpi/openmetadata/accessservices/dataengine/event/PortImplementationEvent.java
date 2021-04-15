@@ -22,13 +22,24 @@ public class PortImplementationEvent extends DataEngineEventHeader {
     private String processQualifiedName;
     private PortImplementation portImplementation;
 
+    /**
+     * Gets the process qualified name.
+     *
+     * @return the process qualified name
+     */
     public String getProcessQualifiedName() {
         return processQualifiedName;
     }
 
+    /**
+     * Sets the process qualified name.
+     *
+     * @param processQualifiedName the process qualified name
+     */
     public void setProcessQualifiedName(String processQualifiedName) {
         this.processQualifiedName = processQualifiedName;
     }
+
     /**
      * Gets port implementation.
      *

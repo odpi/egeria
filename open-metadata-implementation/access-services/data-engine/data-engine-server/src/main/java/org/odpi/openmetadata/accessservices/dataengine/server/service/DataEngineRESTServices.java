@@ -151,38 +151,42 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Get the unique identifier of a process from a external data engine qualified name
+     * Get the unique identifier of a process
      *
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
-     * @param qualifiedName qualified name of the external data engine
+     * @param qualifiedName qualified name of the process
      *
-     * @return the unique identifier from a software server capability definition for an external data engine
+     * @return the unique identifier of a process or empty optional
      */
-    public String getProcessGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
+    public Optional<String> getProcessGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException {
         final String methodName = "getProcessGUID";
 
+        if (StringUtils.isEmpty(qualifiedName)) {
+            return Optional.empty();
+        }
+
         DataEngineProcessHandler handler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
         Optional<EntityDetail> processEntity = handler.findProcessEntity(userId, qualifiedName);
-        return processEntity.map(InstanceHeader::getGUID).orElse(null);
+        return Optional.of(processEntity.map(InstanceHeader::getGUID).get());
     }
 
     /**
-     * Get the unique identifier from a external data engine qualified name
+     * Get the unique identifier of a port
      *
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
-     * @param qualifiedName qualified name of the external data engine
+     * @param qualifiedName qualified name of the port
      *
-     * @return the unique identifier from a software server capability definition for an external data engine
+     * @return the unique identifier of a port or empty optional
      */
     public Optional<String> getPortGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException {
-        final String methodName = "getExternalDataEngineByQualifiedName";
+        final String methodName = "getPortGUID";
 
         if (StringUtils.isEmpty(qualifiedName)) {
             return Optional.empty();
@@ -241,8 +245,7 @@ public class DataEngineRESTServices {
         try {
             if (isRequestBodyInvalid(userId, serverName, portImplementationRequestBody, methodName)) return response;
 
-            String processQualifiedName = portImplementationRequestBody.getProcessQualifiedName();
-            String processGUID = getProcessGUID(serverName, userId, processQualifiedName);
+            String processGUID = getProcessGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName()).orElse(null);
             String externalSourceName = portImplementationRequestBody.getExternalSourceName();
 
             updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
@@ -277,8 +280,7 @@ public class DataEngineRESTServices {
         try {
             if (isRequestBodyInvalid(userId, serverName, portAliasRequestBody, methodName)) return response;
 
-            String processQualifiedName = portAliasRequestBody.getProcessQualifiedName();
-            String processGUID = getProcessGUID(serverName, userId, processQualifiedName);
+            String processGUID = getProcessGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName()).orElse(null);
             String externalSourceName = portAliasRequestBody.getExternalSourceName();
 
             updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
@@ -519,40 +521,6 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create ProcessPort relationships for an existing Process
-     *
-     * @param userId             the name of the calling user
-     * @param serverName         name of server instance to call
-     * @param processGUID        the process entity unique identifier(guid)
-     * @param portQualifiedNames the list of qualified names for the port entities
-     * @param externalSourceName the unique name of the external source
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void addPortsToProcess(String userId, String serverName, String processGUID, List<String> portQualifiedNames, String externalSourceName) throws
-                                                                                                                                                    InvalidParameterException,
-                                                                                                                                                    PropertyServerException,
-                                                                                                                                                    UserNotAuthorizedException {
-        final String methodName = "addPortsToProcess";
-
-        if (CollectionUtils.isEmpty(portQualifiedNames)) {
-            return;
-        }
-
-        DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
-        DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-
-        for (String portQualifiedName : portQualifiedNames) {
-            Optional<EntityDetail> portEntity = dataEnginePortHandler.findPortEntity(userId, portQualifiedName);
-            if (portEntity.isPresent()) {
-                processHandler.addProcessPortRelationship(userId, processGUID, portEntity.get().getGUID(), externalSourceName);
-            }
-        }
-    }
-
-    /**
      * Create LineageMappings relationships between schema attributes
      *
      * @param userId             the name of the calling user
@@ -642,44 +610,6 @@ public class DataEngineRESTServices {
         addProcessHierarchyRelationships(userId, serverName, processes, response, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
-
-        return response;
-    }
-
-    /**
-     * Create ProcessPort relationships for an existing Process
-     *
-     * @param serverName          name of server instance to call
-     * @param userId              the name of the calling user
-     * @param processGuid         the guid of the process
-     * @param portListRequestBody list of port qualified names
-     *
-     * @return the unique identifier (guid) of the updated process entity
-     */
-    public GUIDResponse addPortsToProcess(String userId, String serverName, String processGuid, PortListRequestBody portListRequestBody) {
-        final String methodName = "addPortsToProcess";
-
-        GUIDResponse response = new GUIDResponse();
-
-        try {
-            if (portListRequestBody == null) {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-                return response;
-            }
-
-            addPortsToProcess(userId, serverName, processGuid, portListRequestBody.getPorts(), portListRequestBody.getExternalSourceName());
-
-            response.setGUID(processGuid);
-
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-
-        log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
 
         return response;
     }
@@ -948,7 +878,7 @@ public class DataEngineRESTServices {
 
             String collectionGUID = createCollection(userId, serverName, process.getCollection(), externalSourceName);
             if (collectionGUID != null) {
-                addProcessCollectionRelationships(userId, serverName, processGUID, collectionGUID, externalSourceName);
+                addProcessCollectionRelationship(userId, serverName, processGUID, collectionGUID, externalSourceName);
             }
 
             upsertPortImplementations(userId, serverName, portImplementations, processGUID, response, externalSourceName);
@@ -1028,11 +958,11 @@ public class DataEngineRESTServices {
         });
     }
 
-    private void addProcessCollectionRelationships(String userId, String serverName, String processGUID, String collectionGUID,
-                                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
+    private void addProcessCollectionRelationship(String userId, String serverName, String processGUID, String collectionGUID,
+                                                  String externalSourceName) throws InvalidParameterException, PropertyServerException,
                                                                                      UserNotAuthorizedException {
 
-        final String methodName = "addProcessTransformationProjectRelationships";
+        final String methodName = "addProcessCollectionRelationship";
 
         DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 

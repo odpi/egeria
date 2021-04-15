@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -140,7 +141,7 @@ public class DataEngineSchemaTypeHandler {
     public Optional<EntityDetail> findSchemaTypeEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
                                                                                                    PropertyServerException,
                                                                                                    InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, SchemaTypePropertiesMapper.SCHEMA_TYPE_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME);
     }
 
     /**
@@ -206,21 +207,26 @@ public class DataEngineSchemaTypeHandler {
      * Remove the schema type with the associated schema attributes
      *
      * @param userId             the name of the calling user
-     * @param schemaTypeGUID     the unique identifier of the schema type
+     * @param qualifiedName      the unique identifier of the schema type
      * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeSchemaType(String userId, String schemaTypeGUID, String externalSourceName) throws InvalidParameterException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException {
+    public void removeSchemaType(String userId, String qualifiedName, String externalSourceName) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException {
         final String methodName = "removeSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(schemaTypeGUID, SchemaTypePropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
+        Optional<EntityDetail> schemaType = findSchemaTypeEntity(userId, qualifiedName);
+        if (!schemaType.isPresent()) {
+            return;
+        }
+        String schemaTypeGUID = schemaType.get().getGUID();
         Set<String> schemaAttributeGUIDs = getSchemaAttributesForSchemaType(userId, schemaTypeGUID);
 
         for (String schemaAttributeGUID : schemaAttributeGUIDs) {
@@ -233,9 +239,9 @@ public class DataEngineSchemaTypeHandler {
 
 
     private void upsertSchemaAttributes(String userId, SchemaType schemaType, String schemaTypeGUID, String externalSourceName) throws
-                                                                                                                               InvalidParameterException,
-                                                                                                                               PropertyServerException,
-                                                                                                                               UserNotAuthorizedException {
+                                                                                                                                InvalidParameterException,
+                                                                                                                                PropertyServerException,
+                                                                                                                                UserNotAuthorizedException {
 
         String methodName = "upsertSchemaAttributes";
         for (Attribute tabularColumn : schemaType.getTabularColumns()) {

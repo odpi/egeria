@@ -314,6 +314,10 @@ class DataEngineSchemaTypeHandlerTest {
 
     @Test
     void removeSchemaType() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        EntityDetail mockedEntity = mock(EntityDetail.class);
+        when(mockedEntity.getGUID()).thenReturn(GUID);
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+
         //mock getSchemaAttributesForSchemaType
         mockTypeDef(SchemaTypePropertiesMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                 OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
@@ -325,7 +329,7 @@ class DataEngineSchemaTypeHandlerTest {
                 SchemaTypePropertiesMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0,
                 "getSchemaAttributesForSchemaType")).thenReturn(entityDetails);
 
-        dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEngineSchemaTypeHandler.removeSchemaType(USER, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID,
                 SchemaTypePropertiesMapper.TABULAR_COLUMN_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);

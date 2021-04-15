@@ -104,7 +104,9 @@ public class HandlerHelper {
     }
 
     /**
-     * Fetch the relationships of an entity based on the type of the relationship
+     * Return the relationship of the requested type connected to the starting entity.
+     * The assumption is that this is a 0..1 relationship so one relationship (or an empty Optional) is returned.
+     * If lots of relationships are found then the PropertyServerException is thrown.
      *
      * @param userId               the unique identifier for the user
      * @param entityGUID           the unique identifier of the entity for which the relationships are retrieved

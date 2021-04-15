@@ -71,7 +71,7 @@ public class DataEnginePortHandler {
     }
 
     /**
-     * Create the port implementation attached to a process
+     * Create the port implementation attached to a process.
      *
      * @param userId             the name of the calling user
      * @param portImplementation the port implementation values
@@ -92,7 +92,7 @@ public class DataEnginePortHandler {
     }
 
     /**
-     * Create the port alias and attach it to the process
+     * Create the port alias and attach it to the process.
      *
      * @param userId             the name of the calling user
      * @param portAlias          the port alias values
@@ -149,7 +149,7 @@ public class DataEnginePortHandler {
     }
 
     /**
-     * Create the port
+     * Create the port and attach it to the process.
      *
      * @param userId             the name of the calling user
      * @param port               the port values
@@ -244,7 +244,7 @@ public class DataEnginePortHandler {
      * @param userId   the name of the calling user
      * @param portGUID the unique identifier of the port
      *
-     * @return The unique identifier for the retrieved schema type or null
+     * @return retrieved entity or null
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

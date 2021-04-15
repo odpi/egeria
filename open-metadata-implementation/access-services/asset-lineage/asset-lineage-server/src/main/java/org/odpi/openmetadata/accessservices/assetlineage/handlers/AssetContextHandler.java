@@ -44,7 +44,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
@@ -179,7 +178,7 @@ public class AssetContextHandler {
         }
 
         EntityDetail schemaType = handlerHelper.getEntityAtTheEnd(userId, tabularColumn.getGUID(), relationship.get());
-        Optional<Classification> anchorGUIDClassification = getAnchorGUIDClassification(schemaType);
+        Optional<Classification> anchorGUIDClassification = getAnchorsClassification(schemaType);
         if (!anchorGUIDClassification.isPresent()) {
             return false;
         }
@@ -193,6 +192,12 @@ public class AssetContextHandler {
                 repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, TABULAR_SCHEMA_TYPE, methodName);
     }
 
+    /**
+     * Retrieves the anchorGUID property form a classification
+     * @param classification the classification
+     *
+     * @return the anchorGUID property or null if missing
+     */
     private String getAnchorGUID(Classification classification) {
         InstancePropertyValue anchorGUIDProperty = classification.getProperties().getPropertyValue(ANCHOR_GUID);
         if (anchorGUIDProperty == null) {
@@ -201,8 +206,14 @@ public class AssetContextHandler {
         return anchorGUIDProperty.valueAsString();
     }
 
-    private Optional<Classification> getAnchorGUIDClassification(EntityDetail tabularColumn) {
-        List<Classification> classifications = tabularColumn.getClassifications();
+    /**
+     *  Retrieves the Anchors classification from an entity
+     * @param entityDetail the entity to check for the classification
+     *
+     * @return the Anchors classification or an empty Optional if missing
+     */
+    private Optional<Classification> getAnchorsClassification(EntityDetail entityDetail) {
+        List<Classification> classifications = entityDetail.getClassifications();
         if (CollectionUtils.isEmpty(classifications)) {
             return Optional.empty();
         }

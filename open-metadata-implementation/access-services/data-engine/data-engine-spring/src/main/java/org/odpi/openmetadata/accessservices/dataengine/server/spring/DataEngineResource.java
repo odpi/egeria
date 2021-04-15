@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -149,6 +150,8 @@ public class DataEngineResource {
     }
 
     /**
+     * Use {@link #createOrUpdatePortImplementation(String, String, PortImplementationRequestBody)} for creating a port implementation attached to
+     * a process
      * Add ports to an existing Process entity
      *
      * @param serverName          name of server instance to call
@@ -158,12 +161,13 @@ public class DataEngineResource {
      *
      * @return unique identifier of the updated process
      */
+    @Deprecated
     @PostMapping(path = "/processes/{processGuid}/ports")
     public GUIDResponse addPortsToProcess(@PathVariable("userId") String userId,
                                           @PathVariable("serverName") String serverName,
                                           @PathVariable("processGuid") String processGuid,
                                           @RequestBody PortListRequestBody portListRequestBody) {
-        return restAPI.addPortsToProcess(userId, serverName, processGuid, portListRequestBody);
+        return new GUIDResponse();
     }
 
     /**
