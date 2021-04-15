@@ -17,7 +17,6 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
