@@ -15,7 +15,6 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTransformationProjectHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -140,7 +139,7 @@ public class DataEngineRESTServices {
     public String getProcessGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException {
-        final String methodName = "getExternalDataEngineByQualifiedName";
+        final String methodName = "getProcessGUID";
 
         DataEngineProcessHandler handler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
@@ -751,7 +750,6 @@ public class DataEngineRESTServices {
         DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         String schemaTypeGUID = dataEngineSchemaTypeHandler.upsertSchemaType(userId, schemaType, externalSourceName);
-        dataEngineSchemaTypeHandler.upsertSchemaAttributes(userId, schemaType, schemaTypeGUID, externalSourceName);
         if (StringUtils.isNotEmpty(portImplementationGUID)) {
             dataEnginePortHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID, methodName);
         }
@@ -918,9 +916,9 @@ public class DataEngineRESTServices {
                 processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.DRAFT, externalSourceName);
 
                 if (updateSemantic == UpdateSemantic.REPLACE) {
-                    deleteObsoletePorts(userId, serverName, portImplementations, processGUID, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME,
+                    deleteObsoletePorts(userId, serverName, portImplementations, processGUID, OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME,
                             response, externalSourceName);
-                    deleteObsoletePorts(userId, serverName, portAliases, processGUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, response,
+                    deleteObsoletePorts(userId, serverName, portAliases, processGUID, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME, response,
                             externalSourceName);
                 }
             }

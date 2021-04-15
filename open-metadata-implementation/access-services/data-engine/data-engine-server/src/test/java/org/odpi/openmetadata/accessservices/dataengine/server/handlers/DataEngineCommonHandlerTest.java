@@ -192,7 +192,7 @@ class DataEngineCommonHandlerTest {
         Relationship mockedRelationship = mock(Relationship.class);
         when(mockedRelationship.getGUID()).thenReturn(RELATIONSHIP_GUID);
         when(repositoryHandler.getRelationshipBetweenEntities(USER, FIRST_GUID, ENTITY_TYPE_NAME, SECOND_GUID, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(mockedRelationship);
+                RELATIONSHIP_TYPE_NAME, "findRelationship")).thenReturn(mockedRelationship);
 
         RelationshipDifferences mockedDifferences = mock(RelationshipDifferences.class);
         when(mockedDifferences.hasInstancePropertiesDifferences()).thenReturn(true);

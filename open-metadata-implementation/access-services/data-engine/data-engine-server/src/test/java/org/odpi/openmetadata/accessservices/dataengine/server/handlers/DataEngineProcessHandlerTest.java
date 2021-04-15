@@ -18,7 +18,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessContainmentType;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
@@ -324,8 +323,7 @@ class DataEngineProcessHandlerTest {
         processHandler.updateProcessStatus(USER, PROCESS_GUID, InstanceStatus.ACTIVE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateGUID(PROCESS_GUID,
-                PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(PROCESS_GUID, "guid", methodName);
 
         verify(assetHandler, times(1)).updateBeanStatusInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, "processGUID",
@@ -341,13 +339,13 @@ class DataEngineProcessHandlerTest {
 
         EntityDetail portImplementation = mock(EntityDetail.class);
         InstanceType mockedTypeImpl = mock(InstanceType.class);
-        when(mockedTypeImpl.getTypeDefName()).thenReturn(PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
+        when(mockedTypeImpl.getTypeDefName()).thenReturn(OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME);
         when(portImplementation.getType()).thenReturn(mockedTypeImpl);
         when(portImplementation.getGUID()).thenReturn(PORT_IMPL_GUID);
 
         EntityDetail portAlias = mock(EntityDetail.class);
         InstanceType mockedTypeAlias = mock(InstanceType.class);
-        when(mockedTypeAlias.getTypeDefName()).thenReturn(PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
+        when(mockedTypeAlias.getTypeDefName()).thenReturn(OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME);
         when(portAlias.getType()).thenReturn(mockedTypeImpl);
         when(portAlias.getGUID()).thenReturn(PORT_ALIAS_GUID);
 
@@ -357,7 +355,7 @@ class DataEngineProcessHandlerTest {
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, 0, 0, methodName)).thenReturn(portEntityGUIDs);
 
 
-        Set<EntityDetail> result = processHandler.getPortsForProcess(USER, PROCESS_GUID, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
+        Set<EntityDetail> result = processHandler.getPortsForProcess(USER, PROCESS_GUID, OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME);
         assertEquals(2, result.size());
         assertTrue(result.contains(portImplementation));
         assertTrue(result.contains(portAlias));

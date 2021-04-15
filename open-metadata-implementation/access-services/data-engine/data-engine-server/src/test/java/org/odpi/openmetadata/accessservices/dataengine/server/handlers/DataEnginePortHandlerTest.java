@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,11 +12,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.PortHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -24,7 +28,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -53,6 +56,8 @@ class DataEnginePortHandlerTest {
     private static final String PORT_GUID = "portGuid";
     private static final String PROCESS_GUID = "portGuid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
+    private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
+
     @Mock
     private RepositoryHandler repositoryHandler;
 
@@ -65,23 +70,40 @@ class DataEnginePortHandlerTest {
     @Mock
     private DataEngineCommonHandler dataEngineCommonHandler;
 
+    @Mock
+    private DataEngineRegistrationHandler dataEngineRegistrationHandler;
+
+    @Mock
+    private PortHandler<Port> portHandler;
+
     @InjectMocks
     private DataEnginePortHandler dataEnginePortHandler;
+
+    @BeforeEach
+    void setup() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
+    }
 
     @Test
     void createPortImplementation() throws InvalidParameterException, PropertyServerException,
                                            UserNotAuthorizedException {
         String methodName = "createPort";
 
-        when(dataEngineCommonHandler.createExternalEntity(USER, null, InstanceStatus.ACTIVE, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
-
-        String result = dataEnginePortHandler.createPortImplementation(USER, getPortImplementation(), PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
+                "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME,
+                null, methodName)).thenReturn(GUID);
+        String result = dataEnginePortHandler.createPortImplementation(USER, getPortImplementation(), PROCESS_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
-                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(NAME,
+                OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        verify(portHandler, times(1)).createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
+                "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME,
+                null, methodName);
     }
 
     @Test
@@ -95,8 +117,9 @@ class DataEnginePortHandlerTest {
         String methodName = "createPort";
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineCommonHandler.createExternalEntity(USER, null, InstanceStatus.ACTIVE, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
+                "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME,
+                null, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.createPortImplementation(USER, getPortImplementation(), PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -108,14 +131,19 @@ class DataEnginePortHandlerTest {
     void createPortAlias() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "createPort";
 
-        when(dataEngineCommonHandler.createExternalEntity(USER, null, InstanceStatus.ACTIVE, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+        when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
+                "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME,
+                null, methodName)).thenReturn(GUID);
 
         String result = dataEnginePortHandler.createPortAlias(USER, getPortAlias(), PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(NAME, OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        verify(portHandler, times(1)).createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
+                "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME,
+                null, methodName);
     }
 
     @Test
@@ -129,8 +157,9 @@ class DataEnginePortHandlerTest {
         String methodName = "createPort";
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineCommonHandler.createExternalEntity(USER, null, InstanceStatus.ACTIVE, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+        when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
+                "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME,
+                null, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.createPortAlias(USER, getPortAlias(), PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -155,16 +184,17 @@ class DataEnginePortHandlerTest {
         dataEnginePortHandler.updatePortImplementation(USER, mockedOriginalPortEntity, getPortImplementation(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-
-        verify(dataEngineCommonHandler, times(1)).updateEntity(USER, PORT_GUID, null,
-                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(NAME, OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        verify(portHandler, times(1)).updatePort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PORT_GUID,
+                "portGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null,
+                OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME, null, methodName);
     }
 
     @Test
     void updatePortImplementation_throwsUserNotAuthorizedException() throws InvocationTargetException, NoSuchMethodException, InstantiationException,
-            IllegalAccessException, UserNotAuthorizedException,
-            PropertyServerException, InvalidParameterException {
+                                                                            IllegalAccessException, UserNotAuthorizedException,
+                                                                            PropertyServerException, InvalidParameterException {
 
         String methodName = "updatePort";
 
@@ -178,12 +208,14 @@ class DataEnginePortHandlerTest {
         when(repositoryHelper.getEntityDetailDifferences(mockedOriginalPortEntity, mockedUpdatedPortEntity, true)).thenReturn(mockedDifferences);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(dataEngineCommonHandler).updateEntity(USER, PORT_GUID, null,
-                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        doThrow(mockedException).when(portHandler).updatePort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PORT_GUID,
+                "portGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null,
+                OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME, null, methodName);
 
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEnginePortHandler.updatePortImplementation(USER, mockedOriginalPortEntity, getPortImplementation(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+                dataEnginePortHandler.updatePortImplementation(USER, mockedOriginalPortEntity, getPortImplementation(),
+                        EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -205,10 +237,10 @@ class DataEnginePortHandlerTest {
         dataEnginePortHandler.updatePortImplementation(USER, mockedOriginalPortEntity, getPortImplementation(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         verify(dataEngineCommonHandler, times(0)).updateEntity(USER, PORT_GUID, null,
-                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 
     @Test
@@ -228,21 +260,20 @@ class DataEnginePortHandlerTest {
         dataEnginePortHandler.updatePortAlias(USER, mockedOriginalPortEntity, getPortAlias(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(NAME, PortPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
-
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
-                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        verify(dataEngineCommonHandler, times(1)).updateEntity(USER, PORT_GUID, null,
-                PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(invalidParameterHandler, times(1)).validateName(NAME, OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(portHandler, times(1)).updatePort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PORT_GUID,
+                "portGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null,
+                OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME, null, methodName);
     }
 
     @Test
     void updatePortAlias_throwsUserNotAuthorizedException() throws InvocationTargetException,
-            NoSuchMethodException,
-            InstantiationException,
-            IllegalAccessException,
-            UserNotAuthorizedException,
-            PropertyServerException, InvalidParameterException {
+                                                                   NoSuchMethodException,
+                                                                   InstantiationException,
+                                                                   IllegalAccessException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException, InvalidParameterException {
 
         String methodName = "updatePort";
 
@@ -256,9 +287,9 @@ class DataEnginePortHandlerTest {
         when(repositoryHelper.getEntityDetailDifferences(mockedOriginalPortEntity, mockedUpdatedPortEntity, true)).thenReturn(mockedDifferences);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(dataEngineCommonHandler).updateEntity(USER, PORT_GUID, null,
-                PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-
+        doThrow(mockedException).when(portHandler).updatePort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PORT_GUID,
+                "portGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null,
+                OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME, null, methodName);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.updatePortAlias(USER, mockedOriginalPortEntity, getPortAlias(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -271,9 +302,8 @@ class DataEnginePortHandlerTest {
                                             UserNotAuthorizedException {
         dataEnginePortHandler.addPortSchemaRelationship(USER, GUID, SCHEMA_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, GUID, SCHEMA_GUID,
-                PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                null);
+        verify(portHandler, times(1)).setupPortSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID,
+                "portGUID", SCHEMA_GUID, "schemaTypeGUID", "addPortSchemaRelationship");
     }
 
     @Test
@@ -287,8 +317,8 @@ class DataEnginePortHandlerTest {
         String methodName = "addPortSchemaRelationship";
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(dataEngineCommonHandler).upsertExternalRelationship(USER, GUID, SCHEMA_GUID,
-                PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+        doThrow(mockedException).when(portHandler).setupPortSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID,
+                "portGUID", SCHEMA_GUID, "schemaTypeGUID", "addPortSchemaRelationship");
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.addPortSchemaRelationship(USER, GUID, SCHEMA_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -297,24 +327,24 @@ class DataEnginePortHandlerTest {
     }
 
     @Test
-    void getSchemaTypeForPort() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    void findSchemaTypeForPort() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "findSchemaTypeForPort";
 
         mockTypeDef();
 
         EntityDetail entityDetail = mock(EntityDetail.class);
-        when(repositoryHandler.getEntityForRelationshipType(USER, PORT_GUID, PortPropertiesMapper.PORT_TYPE_NAME,
-                PortPropertiesMapper.PORT_SCHEMA_TYPE_GUID, PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME, methodName)).thenReturn(entityDetail);
+        when(repositoryHandler.getEntityForRelationshipType(USER, PORT_GUID, OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID, OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(entityDetail);
 
         EntityDetail result = dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateGUID(PORT_GUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(PORT_GUID, "guid", methodName);
         assertEquals(entityDetail, result);
     }
 
     @Test
-    void getSchemaTypeForPort_throwsUserNotAuthorizedException() throws PropertyServerException,
+    void findSchemaTypeForPort_throwsUserNotAuthorizedException() throws PropertyServerException,
                                                                         UserNotAuthorizedException,
                                                                         InvocationTargetException,
                                                                         NoSuchMethodException,
@@ -325,8 +355,8 @@ class DataEnginePortHandlerTest {
         mockTypeDef();
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(repositoryHandler.getEntityForRelationshipType(USER, PORT_GUID, PortPropertiesMapper.PORT_TYPE_NAME,
-                PortPropertiesMapper.PORT_SCHEMA_TYPE_GUID, PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME, methodName)).thenThrow(mockedException);
+        when(repositoryHandler.getEntityForRelationshipType(USER, PORT_GUID, OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID, OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID));
@@ -339,7 +369,8 @@ class DataEnginePortHandlerTest {
                                                                 InvalidParameterException {
         mockDelegatedPortEntity(PortType.OUTIN_PORT);
 
-        dataEnginePortHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEnginePortHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE,
                 "addPortDelegationRelationship", DELEGATED_QUALIFIED_NAME, PortType.OUTIN_PORT.getName());
@@ -351,10 +382,11 @@ class DataEnginePortHandlerTest {
                                                 InvalidParameterException {
         mockDelegatedPortEntity(PortType.INPUT_PORT);
 
-        dataEnginePortHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEnginePortHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, GUID, PORT_GUID,
-                PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+        verify(portHandler, times(1)).setupPortDelegation(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                GUID, "portGUID", PORT_GUID, "portGUID", "addPortDelegationRelationship");
     }
 
     @Test
@@ -364,7 +396,7 @@ class DataEnginePortHandlerTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(GUID);
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
 
         Optional<EntityDetail> result = dataEnginePortHandler.findPortImplementationEntity(USER, QUALIFIED_NAME);
 
@@ -382,7 +414,7 @@ class DataEnginePortHandlerTest {
         String methodName = "findPort";
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME)).thenThrow(mockedException);
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.findPortImplementationEntity(USER, QUALIFIED_NAME));
@@ -395,7 +427,7 @@ class DataEnginePortHandlerTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(GUID);
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
 
         Optional<EntityDetail> result = dataEnginePortHandler.findPortAliasEntity(USER, QUALIFIED_NAME);
 
@@ -413,7 +445,7 @@ class DataEnginePortHandlerTest {
         String methodName = "findPort";
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME)).thenThrow(mockedException);
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.findPortAliasEntity(USER, QUALIFIED_NAME));
@@ -423,10 +455,15 @@ class DataEnginePortHandlerTest {
 
     @Test
     void removePort() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        dataEnginePortHandler.removePort(USER, PORT_GUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        EntityDetail entityDetail = mock(EntityDetail.class);
+        when(entityDetail.getGUID()).thenReturn(PORT_GUID);
+        Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
+
+        dataEnginePortHandler.removePort(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, PORT_GUID,
-                PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 
     private void mockDelegatedPortEntity(PortType portType) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
@@ -434,26 +471,26 @@ class DataEnginePortHandlerTest {
         when(mockedPortEntity.getGUID()).thenReturn(PORT_GUID);
         Optional<EntityDetail> mockedEntity = Optional.of(mockedPortEntity);
 
-        when(dataEngineCommonHandler.findEntity(USER, DELEGATED_QUALIFIED_NAME, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME)).thenReturn(mockedEntity);
+        when(dataEngineCommonHandler.findEntity(USER, DELEGATED_QUALIFIED_NAME, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME)).thenReturn(mockedEntity);
 
         InstanceProperties mockedInstanceProperties = new InstanceProperties();
         EnumPropertyValue mockedEnumValue = new EnumPropertyValue();
         mockedEnumValue.setSymbolicName(portType.getName());
         mockedEnumValue.setOrdinal(portType.getOrdinal());
         mockedEnumValue.setDescription(portType.getDescription());
-        mockedInstanceProperties.setProperty(PortPropertiesMapper.PORT_TYPE_PROPERTY_NAME, mockedEnumValue);
+        mockedInstanceProperties.setProperty(OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME, mockedEnumValue);
 
         when(mockedPortEntity.getProperties()).thenReturn(mockedInstanceProperties);
-        when(repositoryHandler.getUniqueEntityByName(USER, DELEGATED_QUALIFIED_NAME, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, null,
-                PortPropertiesMapper.PORT_TYPE_GUID, PortPropertiesMapper.PORT_TYPE_NAME, "getPortEntityDetailByQualifiedName")).thenReturn(mockedPortEntity);
+        when(repositoryHandler.getUniqueEntityByName(USER, DELEGATED_QUALIFIED_NAME, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, null,
+                OpenMetadataAPIMapper.PORT_TYPE_GUID, OpenMetadataAPIMapper.PORT_TYPE_NAME, "getPortEntityDetailByQualifiedName")).thenReturn(mockedPortEntity);
     }
 
     private void mockTypeDef() {
         TypeDef entityTypeDef = mock(TypeDef.class);
-        when(repositoryHelper.getTypeDefByName(USER, PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME)).thenReturn(entityTypeDef);
+        when(repositoryHelper.getTypeDefByName(USER, OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME)).thenReturn(entityTypeDef);
 
-        when(entityTypeDef.getName()).thenReturn(PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME);
-        when(entityTypeDef.getGUID()).thenReturn(PortPropertiesMapper.PORT_SCHEMA_TYPE_GUID);
+        when(entityTypeDef.getName()).thenReturn(OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME);
+        when(entityTypeDef.getGUID()).thenReturn(OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID);
     }
 
     private PortImplementation getPortImplementation() {
