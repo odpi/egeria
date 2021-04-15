@@ -221,6 +221,8 @@
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
         <lettuce.version>6.1.0.RELEASE</lettuce.version>
+        <lombok.version>1.18.20</lombok.version>
+        <lombok-plugin.version>1.18.18.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -2984,6 +2986,12 @@
                 <version>${lettuce.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -3236,12 +3244,18 @@
                     <version>${properties.plugin.version}</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-maven-plugin</artifactId>
+                    <version>${lombok-plugin.version}</version>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>
 
         <!-- Should be default, but needed to keep IntelliJ happy -->
-        <sourceDirectory>src/main/java</sourceDirectory>
+        <sourceDirectory>${project.build.directory}/delombok</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>
             <resource>
@@ -3256,6 +3270,26 @@
 
         <!-- Default compiler options - enable additional lint checks -->
         <plugins>
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>delombok</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/main/java</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/delombok</outputDirectory>
+                            <addOutputDirectory>false</addOutputDirectory>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

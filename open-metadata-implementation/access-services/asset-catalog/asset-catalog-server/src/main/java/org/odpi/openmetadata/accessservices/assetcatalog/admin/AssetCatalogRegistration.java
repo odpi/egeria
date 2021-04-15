@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
@@ -13,10 +15,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOpe
  * then use this registration information as confirmation that there is an implementation of this
  * access service in the server and it can be configured and used.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 class AssetCatalogRegistration {
-
-    private AssetCatalogRegistration() {
-    }
 
     /**
      * Pass information about this access service to the OMAG Server administration services.
