@@ -5,16 +5,39 @@ package org.odpi.openmetadata.accessservices.dataengine.server.service;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
+import org.odpi.openmetadata.accessservices.dataengine.model.Port;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.rest.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
+import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -32,7 +55,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -907,23 +929,8 @@ public class DataEngineRESTServices {
         try {
             DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
-
             Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
             String processGUID;
-            String collectionGUID = null;
-
-            Collection collection = process.getCollection();
-            if (collection != null) {
-                String collectionQualifiedName = collection.getQualifiedName();
-                Optional<EntityDetail> collectionEntity = dataEngineCollectionHandler.findCollectionEntity(userId, collectionQualifiedName);
-                if (!collectionEntity.isPresent()) {
-                    collectionGUID = dataEngineCollectionHandler.createCollection(userId, collection, externalSourceName);
-                } else {
-                    collectionGUID = collectionEntity.get().getGUID();
-                }
-            }
-
             if (!processEntity.isPresent()) {
                 processGUID = processHandler.createProcess(userId, process, externalSourceName);
             } else {
@@ -939,10 +946,9 @@ public class DataEngineRESTServices {
                 }
             }
 
-            String collectionGUID = createTransformationProject(userId, serverName, process.getTransformationProject(),
-                    externalSourceName);
+            String collectionGUID = createCollection(userId, serverName, process.getCollection(), externalSourceName);
             if (collectionGUID != null) {
-                addProcessTransformationProjectRelationships(userId, serverName, processGUID, transformationProjectGUID, externalSourceName);
+                addProcessCollectionRelationships(userId, serverName, processGUID, collectionGUID, externalSourceName);
             }
 
             upsertPortImplementations(userId, serverName, portImplementations, processGUID, response, externalSourceName);
@@ -972,30 +978,26 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private String createTransformationProject(String userId, String serverName, TransformationProject transformationProject,
-                                               String externalSourceName) throws UserNotAuthorizedException,
-                                                                                 PropertyServerException,
-                                                                                 InvalidParameterException {
-        final String methodName = "createTransformationProject";
-        DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId,
-                serverName, methodName);
+    private String createCollection(String userId, String serverName, Collection collection, String externalSourceName) throws
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException,
+                                                                                                                        InvalidParameterException {
+        final String methodName = "createCollection";
+        DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 
-        if (transformationProject == null) {
+        if (collection == null) {
             return null;
         }
 
-        String transformationProjectGUID;
-        String transformationProjectQualifiedName = transformationProject.getQualifiedName();
-        Optional<EntityDetail> transformationProjectEntity = dataEngineTransformationProjectHandler.findTransformationProjectEntity(userId,
-                transformationProjectQualifiedName);
-        if (!transformationProjectEntity.isPresent()) {
-            transformationProjectGUID = dataEngineTransformationProjectHandler.createTransformationProject(userId, transformationProject,
-                    externalSourceName);
+        String collectionGUID;
+        String collectionQualifiedName = collection.getQualifiedName();
+        Optional<EntityDetail> collectionEntity = dataEngineCollectionHandler.findCollectionEntity(userId, collectionQualifiedName);
+        if (!collectionEntity.isPresent()) {
+            collectionGUID = dataEngineCollectionHandler.createCollection(userId, collection, externalSourceName);
         } else {
-            transformationProjectGUID = transformationProjectEntity.get().getGUID();
+            collectionGUID = collectionEntity.get().getGUID();
         }
-
-        return transformationProjectGUID;
+        return collectionGUID;
     }
 
     private void addProcessHierarchyRelationships(String userId, String serverName, List<Process> processes, ProcessListResponse response,
@@ -1028,7 +1030,7 @@ public class DataEngineRESTServices {
 
     private void addProcessCollectionRelationships(String userId, String serverName, String processGUID, String collectionGUID,
                                                    String externalSourceName) throws InvalidParameterException, PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                     UserNotAuthorizedException {
 
         final String methodName = "addProcessTransformationProjectRelationships";
 
