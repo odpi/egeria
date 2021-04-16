@@ -259,8 +259,8 @@ public class DataEngineResource {
      * @return file guid
      */
     @PostMapping(path = "/data-files")
-    public GUIDResponse createDataFileAndSchema(@PathVariable String serverName, @PathVariable String userId,
-                                                @RequestBody DataFileRequestBody dataFileRequestBody) {
+    public GUIDResponse upsertDataFile(@PathVariable String serverName, @PathVariable String userId,
+                                       @RequestBody DataFileRequestBody dataFileRequestBody) {
         return restAPI.upsertDataFile(serverName, userId, dataFileRequestBody);
     }
 
