@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SchemaTypeRequestBody.class, name = "schema"),
                 @JsonSubTypes.Type(value = DatabaseRequestBody.class, name = "database"),
                 @JsonSubTypes.Type(value = DatabaseRequestBody.class, name = "table"),
-                @JsonSubTypes.Type(value = DataFileRequestBody.class, name = "dataFileBody")
+                @JsonSubTypes.Type(value = DataFileRequestBody.class, name = "dataFile")
         })
 
 public abstract class DataEngineOMASAPIRequestBody implements Serializable {
