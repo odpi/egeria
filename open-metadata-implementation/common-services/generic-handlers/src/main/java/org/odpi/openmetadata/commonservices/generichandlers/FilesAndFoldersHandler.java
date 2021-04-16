@@ -9,20 +9,15 @@ import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreP
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * FilesAndFoldersHandler provides the support for managing catalog entries about files and folders.
@@ -33,21 +28,21 @@ import java.util.Map;
  */
 public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 {
-    protected String                          serviceName;
-    protected String                          serverName;
+    private String                          serviceName;
+    private String                          serverName;
     private String                          localServerUserId;
-    protected OMRSRepositoryHelper            repositoryHelper;
-    protected RepositoryHandler               repositoryHandler;
-    protected InvalidParameterHandler         invalidParameterHandler;
+    private OMRSRepositoryHelper            repositoryHelper;
+    private RepositoryHandler               repositoryHandler;
+    private InvalidParameterHandler         invalidParameterHandler;
 
     private SoftwareServerCapabilityHandler<FILESYSTEM> fileSystemHandler;
     private AssetHandler<FOLDER>                        folderHandler;
-    protected AssetHandler<FILE>                          fileHandler;
+    private AssetHandler<FILE>                          fileHandler;
 
-    protected ConnectionHandler<OpenMetadataAPIDummyBean>                                connectionHandler;
+    private ConnectionHandler<OpenMetadataAPIDummyBean>                                connectionHandler;
     private ConnectorTypeHandler<OpenMetadataAPIDummyBean>                             connectorTypeHandler;
-    protected EndpointHandler<OpenMetadataAPIDummyBean>                                  endpointHandler;
-    protected SchemaAttributeHandler<OpenMetadataAPIDummyBean, OpenMetadataAPIDummyBean> schemaAttributeHandler;
+    private EndpointHandler<OpenMetadataAPIDummyBean>                                  endpointHandler;
+    private SchemaAttributeHandler<OpenMetadataAPIDummyBean, OpenMetadataAPIDummyBean> schemaAttributeHandler;
 
     private final static String folderDivider = "/";
     private final static String fileSystemDivider = "://";
@@ -1099,7 +1094,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    protected List<String> addFileAssetPath(String userId,
+    private List<String> addFileAssetPath(String userId,
                                           String externalSourceGUID,
                                           String externalSourceName,
                                           String fileAssetGUID,
@@ -2471,7 +2466,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @throws PropertyServerException there is a problem adding the connectorType properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected String getConnectorType(String userId,
+    private String getConnectorType(String userId,
                                     String externalSourceGUID,
                                     String externalSourceName,
                                     String connectorProviderClassName,
