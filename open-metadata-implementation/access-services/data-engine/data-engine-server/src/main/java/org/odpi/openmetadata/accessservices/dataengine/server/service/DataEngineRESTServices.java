@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.CSVFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
@@ -33,15 +34,13 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -58,7 +57,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1159,8 +1157,8 @@ public class DataEngineRESTServices {
         return true;
     }
 
-    private boolean isRequestBodyInvalid(String userId, String serverName, DataEngineOMASAPIRequestBody requestBody, String methodName) throws
-                                                                                                                                        InvalidParameterException {
+    private boolean isRequestBodyInvalid(String userId, String serverName, DataEngineOMASAPIRequestBody requestBody, String methodName)
+            throws InvalidParameterException {
         if (requestBody == null) {
             restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             return true;
@@ -1172,6 +1170,15 @@ public class DataEngineRESTServices {
         return false;
     }
 
+    /**
+     * Updates or inserts a DataFile or CSVFile, along with its schema, columns and folder hierarchy
+     *
+     * @param serverName server name
+     * @param userId user id
+     * @param dataFileRequestBody request body
+     *
+     * @return file guid
+     */
     public GUIDResponse upsertDataFile(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
 
         String methodName = "createDataFileAndSchema";

@@ -34,47 +34,76 @@ public class DataFile extends DataStore {
     private String fileType;
     private SchemaType schema;
     private List<Attribute> columns;
-
-    //needed by handler
-    private String description;
     private String pathName;
 
+    /**
+     * Gets file type
+     *
+     * @return type
+     */
     public String getFileType() {
         return fileType;
     }
 
+    /**
+     * Sets the file type
+     *
+     * @param fileType type
+     */
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
 
+    /**
+     * Gets the file schema
+     *
+     * @return schema
+     */
     public SchemaType getSchema() {
         return schema;
     }
 
+    /**
+     * Sets the file schema
+     *
+     * @param schema schema
+     */
     public void setSchema(SchemaType schema) {
         this.schema = schema;
     }
 
+    /**
+     * Gets the file columns
+     *
+     * @return columns
+     */
     public List<Attribute> getColumns() {
         return columns;
     }
 
+    /**
+     * Sets the file columns
+     *
+     * @param columns columns
+     */
     public void setColumns(List<Attribute> columns) {
         this.columns = columns;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    /**
+     * Gets the file path
+     *
+     * @return path
+     */
     public String getPathName() {
         return pathName;
     }
 
+    /**
+     * Sets the file path
+     *
+     * @param pathName path
+     */
     public void setPathName(String pathName) {
         this.pathName = pathName;
     }
@@ -85,7 +114,6 @@ public class DataFile extends DataStore {
                 ", fileType='" + fileType + "'" +
                 ", schema='" + schema + "'" +
                 ", columns='" + columns + "'" +
-                ", description='" + description + "'" +
                 ", path='" + pathName + "'" +
                 "}";
     }
@@ -99,8 +127,12 @@ public class DataFile extends DataStore {
         return Objects.equals(fileType, dataFile.fileType) &&
                 Objects.equals(schema, dataFile.schema) &&
                 Objects.equals(columns, dataFile.columns) &&
-                Objects.equals(description, dataFile.description) &&
                 Objects.equals(pathName, dataFile.pathName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), fileType, schema, columns, pathName);
     }
 
 }
