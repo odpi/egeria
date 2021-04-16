@@ -250,17 +250,13 @@ public class DataEngineResource {
     }
 
     /***
-     * Add a DataFile asset or any of its subtypes
+     * Add a DataFile asset or any of its subtype
      *
-     * @param serverName          name of server instance to call
-     * @param userId              name of the calling user
+     * @param serverName name of server instance to call
+     * @param userId name of the calling user
      * @param dataFileRequestBody properties of data file
-     * @return OCF API ConnectionResponse object describing the details for the in topic connection used
-     * or
-     *      * InvalidParameterException one of the parameters is null or invalid or
-     *      * UserNotAuthorizedException user not authorized to issue this request or
-     *      * PropertyServerException problem retrieving the discovery engine definition
      *
+     * @return file guid
      */
     @PostMapping(path = "/data-files")
     public GUIDResponse createDataFileAndSchema(@PathVariable String serverName, @PathVariable String userId,
