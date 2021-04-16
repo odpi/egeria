@@ -20,7 +20,6 @@ import java.util.TreeMap;
 @ConfigurationProperties(prefix = "role")
 public class ComponentService {
 
-    private static final String ADMIN_ROLE_PERMISSION = "*";
     private final Map<String, List<String>> visibleComponents = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public Map<String, List<String>> getVisibleComponents() {
@@ -38,9 +37,15 @@ public class ComponentService {
                 .map(visibleComponents::get)
                 .filter(Objects::nonNull)
                 .forEach(components::addAll);
-        if (components.contains(ADMIN_ROLE_PERMISSION)) {
-            return Collections.emptySet();
-        }
         return components;
+    }
+
+    /**
+     *
+     * @return the set of roles used by the app
+     * this is configuration of the application.properties with role.visibleComponents.[ROLE] values
+     */
+    public final Set<String> getAppRoles(){
+        return visibleComponents.keySet();
     }
 }
