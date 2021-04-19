@@ -288,27 +288,6 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void upsertSchemaType_withPortGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "upsertSchemaType";
-
-        mockSchemaTypeHandler(methodName);
-        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
-
-        mockPortHandler(methodName);
-        mockPortHandler("getPortGUID");
-        EntityDetail mockedPort = mock(EntityDetail.class);
-        when(mockedPort.getGUID()).thenReturn(PORT_GUID);
-        when(dataEnginePortHandler.findPortEntity(USER, QUALIFIED_NAME)).thenReturn(Optional.of(mockedPort));
-
-        SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
-
-        GUIDResponse response = dataEngineRESTServices.upsertSchemaType(USER, SERVER_NAME, requestBody);
-
-        assertEquals(GUID, response.getGUID());
-        verify(dataEnginePortHandler, times(1)).addPortSchemaRelationship(USER, PORT_GUID, GUID, methodName);
-    }
-
-    @Test
     void upsertSchemaType_ResponseWithCapturedInvalidParameterException() throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException,
@@ -357,14 +336,18 @@ class DataEngineRESTServicesTest {
         mockPortHandler("upsertPortImplementation");
         mockProcessHandler("updateProcessStatus");
         mockGetProcessGUID();
+        mockSchemaTypeHandler("upsertSchemaType");
+        mockPortHandler("upsertSchemaType");
 
-        when(dataEnginePortHandler.createPortImplementation(USER, portImplementation, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+        when(dataEnginePortHandler.createPortImplementation(USER, portImplementation, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(PORT_GUID);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
 
         GUIDResponse response = dataEngineRESTServices.upsertPortImplementation(USER, SERVER_NAME, requestBody);
 
         verify(processHandler, times(1)).updateProcessStatus(USER, PROCESS_GUID, InstanceStatus.DRAFT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(processHandler, times(1)).updateProcessStatus(USER, PROCESS_GUID, InstanceStatus.ACTIVE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        assertEquals(GUID, response.getGUID());
+        verify(dataEnginePortHandler, times(1)).addPortSchemaRelationship(USER, PORT_GUID, SCHEMA_GUID, "upsertSchemaType");
+        assertEquals(PORT_GUID, response.getGUID());
     }
 
     @Test

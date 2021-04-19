@@ -150,27 +150,6 @@ public class DataEngineResource {
     }
 
     /**
-     * Use {@link #createOrUpdatePortImplementation(String, String, PortImplementationRequestBody)} for creating a port implementation attached to
-     * a process
-     * Add ports to an existing Process entity
-     *
-     * @param serverName          name of server instance to call
-     * @param userId              the name of the calling user
-     * @param processGuid         the guid of the process
-     * @param portListRequestBody list of port unique identifiers
-     *
-     * @return unique identifier of the updated process
-     */
-    @Deprecated
-    @PostMapping(path = "/processes/{processGuid}/ports")
-    public GUIDResponse addPortsToProcess(@PathVariable("userId") String userId,
-                                          @PathVariable("serverName") String serverName,
-                                          @PathVariable("processGuid") String processGuid,
-                                          @RequestBody PortListRequestBody portListRequestBody) {
-        return new GUIDResponse();
-    }
-
-    /**
      * Add LineageMapping relationships
      *
      * @param serverName                 name of server instance to call

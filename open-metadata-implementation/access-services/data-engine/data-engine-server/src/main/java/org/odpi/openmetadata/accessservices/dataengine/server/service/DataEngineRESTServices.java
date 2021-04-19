@@ -888,10 +888,6 @@ public class DataEngineRESTServices {
 
             upsertPortImplementations(userId, serverName, portImplementations, processGUID, response, externalSourceName);
             upsertPortAliases(userId, serverName, portAliases, processGUID, response, externalSourceName);
-            //check intermediary status of the response after creating the ports
-            if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
-                return response;
-            }
 
             addLineageMappings(userId, serverName, lineageMappings, response, externalSourceName);
 

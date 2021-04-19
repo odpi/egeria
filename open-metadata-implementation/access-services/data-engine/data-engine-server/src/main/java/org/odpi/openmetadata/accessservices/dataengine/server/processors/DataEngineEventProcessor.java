@@ -5,7 +5,14 @@ package org.odpi.openmetadata.accessservices.dataengine.server.processors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.dataengine.event.*;
+import org.apache.commons.lang3.StringUtils;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
@@ -17,8 +24,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 /**
  * The Data Engine event processor is processing events from external data engines about
@@ -189,7 +194,10 @@ public class DataEngineEventProcessor {
         try {
             SchemaTypeEvent schemaEvent = OBJECT_MAPPER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
 
-            String portGUID = dataEngineRESTServices.getPortGUID(serverName, schemaEvent.getUserId(), schemaEvent.getPortQualifiedName()).orElse(null);
+            String portGUID = null;
+            if(StringUtils.isNotEmpty(schemaEvent.getPortQualifiedName())) {
+                portGUID = dataEngineRESTServices.getPortGUID(serverName, schemaEvent.getUserId(), schemaEvent.getPortQualifiedName()).orElse(null);
+            }
             dataEngineRESTServices.upsertSchemaType(schemaEvent.getUserId(), serverName, portGUID, schemaEvent.getSchemaType(),
                     schemaEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
