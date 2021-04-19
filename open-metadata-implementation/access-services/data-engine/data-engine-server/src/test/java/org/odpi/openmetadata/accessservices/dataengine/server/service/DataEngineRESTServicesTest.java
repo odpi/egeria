@@ -422,15 +422,18 @@ class DataEngineRESTServicesTest {
 
         mockPortHandler("upsertPortImplementation");
         mockProcessHandler("updateProcessStatus");
+        mockSchemaTypeHandler("upsertSchemaType");
+        mockPortHandler("upsertSchemaType");
         mockGetProcessGUID();
 
         Optional<EntityDetail> portEntity = mockEntityDetail(PORT_GUID);
         when(dataEnginePortHandler.findPortImplementationEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
-
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
         GUIDResponse response = dataEngineRESTServices.upsertPortImplementation(USER, SERVER_NAME, requestBody);
 
         verify(dataEnginePortHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEnginePortHandler, times(1)).addPortSchemaRelationship(USER, PORT_GUID, SCHEMA_GUID, "upsertSchemaType");
         assertEquals(PORT_GUID, response.getGUID());
     }
 
@@ -439,6 +442,8 @@ class DataEngineRESTServicesTest {
         mockPortHandler("upsertPortImplementation");
         mockProcessHandler("updateProcessStatus");
         mockSchemaTypeHandler("deleteObsoleteSchemaType");
+        mockSchemaTypeHandler("upsertSchemaType");
+        mockPortHandler("upsertSchemaType");
         mockGetProcessGUID();
 
         Optional<EntityDetail> portEntity = mockEntityDetail(PORT_GUID);
