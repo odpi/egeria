@@ -31,8 +31,8 @@ or contributing content to one of more of the GitHub repositories.
 
 The [Community Guide](./Community-Guide.md) describes how to connect to these channels.
 
-All participants in the Egeria community are bound by the ODPi's
-[Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
+All participants in the Egeria community are bound by the project's
+[Code of Conduct](CODE_OF_CONDUCT.md).
 
 As a member you are able to attend our meetings, just to listen, or to play an active part in the discussion.
 The online meetings are recorded to allow community members to catch up if they are not able to attend the live meeting.
@@ -55,7 +55,7 @@ Egeria contributors are members who have actively taken additional steps to prom
 
 * Provide best practices for information governance, lineage, metadata management and other related disciplines during active discussions and/or development of material
 * Actively participate in meetings and discussions
-* Promote the goals of ODPi Egeria and the benefits of open metadata to the IT community (deliver presentations, informal talks, assist at trade shows, independent blogs, etc.)
+* Promote the goals of Egeria and the benefits of open metadata to the IT community (deliver presentations, informal talks, assist at trade shows, independent blogs, etc.)
 * Assist in the recruitment of new members
 * Contribute where appropriate to documentation and code reviews, specification development, demonstration assets and other artifacts that help move Egeria forward
 
@@ -106,10 +106,10 @@ the maintainers per the voting process below.
 Emeritus maintainers can rejoin the maintainer list through a vote of the
 existing maintainers.
 
-### ODPi Egeria leadership
+### Egeria leadership
 
-The leadership of ODPi Egeria is granted through a vote of the Egeria maintainers.
-ODPi Egeria is currently led by Mandy Chessell.
+The leadership of Egeria is granted through a vote of the Egeria maintainers.
+Egeria is currently led by Mandy Chessell.
 
 ## Egeria project meetings
 
@@ -155,7 +155,7 @@ to confirm it conforms to the [Developer Certificate of Origin (DCO)](https://de
 
 The Egeria team aim to create an official release of the open metadata and governance capability every month.
 This release will be available to include in products and other technology through
-[Maven's Central Repository](https://search.maven.org), or through a download from the ODPi site.
+[Maven's Central Repository](https://search.maven.org), or through a download from the GitHub site.
 Details of the releases are maintained in the [release notes](release-notes).
 
 In between official releases, the latest build is also available to developers in GitHub.
