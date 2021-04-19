@@ -91,6 +91,9 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
 
         final String methodName = "runTests";
 
+        List<String> profilesToSkip = workPad.getProfilesToSkip();
+        ConformanceSuiteAuditCode waiting = ConformanceSuiteAuditCode.TEST_EXECUTION_WAITING;
+
         Map<String, EntityDef> entityDefs = new TreeMap<>();
         Map<String, RelationshipDef> relationshipDefs = new TreeMap<>();
         Map<String, ClassificationDef> classificationDefs = new TreeMap<>();
@@ -117,318 +120,485 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
         }
 
         // 1. Create entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_CREATION.getProfileName()))
         {
-            TestEntityCreation testEntityCreation = new TestEntityCreation(workPad, entityDef);
-            testEntityCreation.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityCreation testEntityCreation = new TestEntityCreation(workPad, entityDef);
+                testEntityCreation.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000L);
         }
 
-        ConformanceSuiteAuditCode waiting = ConformanceSuiteAuditCode.TEST_EXECUTION_WAITING;
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000L);
-
         // 2. Search entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_SEARCH.getProfileName()))
         {
-            TestEntitySearch testEntitySearch = new TestEntitySearch(workPad, entityDef);
-            testEntitySearch.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntitySearch testEntitySearch = new TestEntitySearch(workPad, entityDef);
+                testEntitySearch.executeTest();
+            }
         }
 
         // 3. Create relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_CREATION.getProfileName()))
         {
-            TestRelationshipCreation testRelationshipCreation = new TestRelationshipCreation(workPad, relationshipDef);
-            testRelationshipCreation.executeTest();
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipCreation testRelationshipCreation = new TestRelationshipCreation(workPad, relationshipDef);
+                testRelationshipCreation.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
         // 4. Search relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_SEARCH.getProfileName()))
         {
-            TestRelationshipSearch testRelationshipSearch = new TestRelationshipSearch(workPad, relationshipDef);
-            testRelationshipSearch.executeTest();
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipSearch testRelationshipSearch = new TestRelationshipSearch(workPad, relationshipDef);
+                testRelationshipSearch.executeTest();
+            }
         }
 
         // 5. Classify entities
-        for (ClassificationDef classificationDef : classificationDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_CLASSIFICATION.getProfileName()))
         {
-            TestEntityClassification testEntityClassification = new TestEntityClassification(workPad, classificationDef);
-            testEntityClassification.executeTest();
+            for (ClassificationDef classificationDef : classificationDefs.values())
+            {
+                TestEntityClassification testEntityClassification = new TestEntityClassification(workPad, classificationDef);
+                testEntityClassification.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
         // 6. Search entities by classification
-        for (ClassificationDef classificationDef : classificationDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.CLASSIFICATION_SEARCH.getProfileName()))
         {
-            TestClassificationSearch testClassificationSearch = new TestClassificationSearch(workPad, classificationDef);
-            testClassificationSearch.executeTest();
+            for (ClassificationDef classificationDef : classificationDefs.values())
+            {
+                TestClassificationSearch testClassificationSearch = new TestClassificationSearch(workPad, classificationDef);
+                testClassificationSearch.executeTest();
+            }
         }
 
         // Record the date and time prior to any instance updates
         Date priorToInstanceUpdates = new Date();
 
         // 7. Update entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_UPDATE.getProfileName()))
         {
-            TestEntityUpdate testEntityUpdate = new TestEntityUpdate(workPad, entityDef);
-            testEntityUpdate.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityUpdate testEntityUpdate = new TestEntityUpdate(workPad, entityDef);
+                testEntityUpdate.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
         // 8. Update relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_UPDATE.getProfileName()))
         {
-            TestRelationshipUpdate testRelationshipUpdate = new TestRelationshipUpdate(workPad, relationshipDef);
-            testRelationshipUpdate.executeTest();
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipUpdate testRelationshipUpdate = new TestRelationshipUpdate(workPad, relationshipDef);
+                testRelationshipUpdate.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
         // 9. Update classification properties
-        for (ClassificationDef classificationDef : classificationDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.CLASSIFICATION_UPDATE.getProfileName()))
         {
-            TestClassificationUpdate testClassificationUpdate = new TestClassificationUpdate(workPad, classificationDef);
-            testClassificationUpdate.executeTest();
-        }
+            for (ClassificationDef classificationDef : classificationDefs.values())
+            {
+                TestClassificationUpdate testClassificationUpdate = new TestClassificationUpdate(workPad, classificationDef);
+                testClassificationUpdate.executeTest();
+            }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+        }
 
         // Record the date and time prior to any undo operations
         Date priorToInstanceUndos = new Date();
 
         // 10. Undo entity updates
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_UNDO.getProfileName()))
         {
-            TestEntityUndo testEntityUndo = new TestEntityUndo(workPad, entityDef);
-            testEntityUndo.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityUndo testEntityUndo = new TestEntityUndo(workPad, entityDef);
+                testEntityUndo.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
         // 11. Undo relationship updates
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_UNDO.getProfileName()))
         {
-            TestRelationshipUndo testRelationshipUndo = new TestRelationshipUndo(workPad, relationshipDef);
-            testRelationshipUndo.executeTest();
-        }
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipUndo testRelationshipUndo = new TestRelationshipUndo(workPad, relationshipDef);
+                testRelationshipUndo.executeTest();
+            }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+        }
 
         // 12-13. Get entity instances (detail, summary, history)
         for (EntityDef entityDef : entityDefs.values())
         {
-            TestEntityRetrieval testEntityRetrieval = new TestEntityRetrieval(workPad, entityDef);
-            testEntityRetrieval.executeTest();
-            TestEntityHistoryRetrieval testEntityHistoryRetrieval = new TestEntityHistoryRetrieval(workPad, entityDef, priorToInstanceUpdates);
-            testEntityHistoryRetrieval.executeTest();
+            if (!profilesToSkip.contains(PerformanceProfile.ENTITY_RETRIEVAL.getProfileName()))
+            {
+                TestEntityRetrieval testEntityRetrieval = new TestEntityRetrieval(workPad, entityDef);
+                testEntityRetrieval.executeTest();
+            }
+            if (!profilesToSkip.contains(PerformanceProfile.ENTITY_HISTORY_RETRIEVAL.getProfileName()))
+            {
+                TestEntityHistoryRetrieval testEntityHistoryRetrieval = new TestEntityHistoryRetrieval(workPad, entityDef, priorToInstanceUpdates);
+                testEntityHistoryRetrieval.executeTest();
+            }
         }
 
         // 14-15. Get relationship instances (current, history)
         for (RelationshipDef relationshipDef : relationshipDefs.values())
         {
-            TestRelationshipRetrieval testRelationshipRetrieval = new TestRelationshipRetrieval(workPad, relationshipDef);
-            testRelationshipRetrieval.executeTest();
-            TestRelationshipHistoryRetrieval testRelationshipHistoryRetrieval = new TestRelationshipHistoryRetrieval(workPad, relationshipDef, priorToInstanceUpdates);
-            testRelationshipHistoryRetrieval.executeTest();
+            if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_RETRIEVAL.getProfileName()))
+            {
+                TestRelationshipRetrieval testRelationshipRetrieval = new TestRelationshipRetrieval(workPad, relationshipDef);
+                testRelationshipRetrieval.executeTest();
+            }
+            if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_HISTORY_RETRIEVAL.getProfileName()))
+            {
+                TestRelationshipHistoryRetrieval testRelationshipHistoryRetrieval = new TestRelationshipHistoryRetrieval(workPad, relationshipDef, priorToInstanceUpdates);
+                testRelationshipHistoryRetrieval.executeTest();
+            }
         }
 
         // 16. Search historical entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_HISTORY_SEARCH.getProfileName()))
         {
-            TestEntityHistorySearch testEntityHistoricalSearch = new TestEntityHistorySearch(workPad, entityDef, priorToInstanceUpdates);
-            testEntityHistoricalSearch.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityHistorySearch testEntityHistoricalSearch = new TestEntityHistorySearch(workPad, entityDef, priorToInstanceUpdates);
+                testEntityHistoricalSearch.executeTest();
+            }
         }
 
         // 17. Search historical relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_HISTORY_SEARCH.getProfileName()))
         {
-            TestRelationshipHistorySearch testRelationshipHistorySearch = new TestRelationshipHistorySearch(workPad, relationshipDef, priorToInstanceUpdates);
-            testRelationshipHistorySearch.executeTest();
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipHistorySearch testRelationshipHistorySearch = new TestRelationshipHistorySearch(workPad, relationshipDef, priorToInstanceUpdates);
+                testRelationshipHistorySearch.executeTest();
+            }
         }
 
         // 18-19. Graph query instances
         for (EntityDef entityDef : entityDefs.values())
         {
-            TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, entityDef);
-            testGraphQueries.executeTest();
-            TestGraphHistoryQueries testGraphHistoryQueries = new TestGraphHistoryQueries(workPad, entityDef, priorToInstanceUpdates);
-            testGraphHistoryQueries.executeTest();
+            if (!profilesToSkip.contains(PerformanceProfile.GRAPH_QUERIES.getProfileName()))
+            {
+                TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, entityDef);
+                testGraphQueries.executeTest();
+            }
+            if (!profilesToSkip.contains(PerformanceProfile.GRAPH_HISTORY_QUERIES.getProfileName()))
+            {
+                TestGraphHistoryQueries testGraphHistoryQueries = new TestGraphHistoryQueries(workPad, entityDef, priorToInstanceUpdates);
+                testGraphHistoryQueries.executeTest();
+            }
         }
 
         // 20. Re-home entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_RE_HOME.getProfileName()))
         {
-            TestEntityReHome testEntityReHome = new TestEntityReHome(workPad, entityDef);
-            testEntityReHome.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityReHome testEntityReHome = new TestEntityReHome(workPad, entityDef);
+                testEntityReHome.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
         // 21. Re-home relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_RE_HOME.getProfileName()))
         {
-            TestRelationshipReHome testRelationshipReHome = new TestRelationshipReHome(workPad, relationshipDef);
-            testRelationshipReHome.executeTest();
-        }
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipReHome testRelationshipReHome = new TestRelationshipReHome(workPad, relationshipDef);
+                testRelationshipReHome.executeTest();
+            }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
+        }
 
         // 22. Declassify entity instances
-        for (ClassificationDef classificationDef : classificationDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_DECLASSIFY.getProfileName()))
         {
-            TestEntityDeclassification testEntityDeclassification = new TestEntityDeclassification(workPad, classificationDef);
-            testEntityDeclassification.executeTest();
+            for (ClassificationDef classificationDef : classificationDefs.values())
+            {
+                TestEntityDeclassification testEntityDeclassification = new TestEntityDeclassification(workPad, classificationDef);
+                testEntityDeclassification.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
         // 23. Retype entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_RETYPE.getProfileName()))
         {
-            TestEntityRetype testEntityRetype = new TestEntityRetype(workPad, entityDef);
-            testEntityRetype.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityRetype testEntityRetype = new TestEntityRetype(workPad, entityDef);
+                testEntityRetype.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
         // 24. Retype relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_RETYPE.getProfileName()))
         {
-            TestRelationshipRetype testRelationshipRetype = new TestRelationshipRetype(workPad, relationshipDef);
-            testRelationshipRetype.executeTest();
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipRetype testRelationshipRetype = new TestRelationshipRetype(workPad, relationshipDef);
+                testRelationshipRetype.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
         // 25. Re-identify entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_RE_IDENTIFY.getProfileName()))
         {
-            TestEntityReIdentify testEntityReIdentify = new TestEntityReIdentify(workPad, entityDef);
-            testEntityReIdentify.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityReIdentify testEntityReIdentify = new TestEntityReIdentify(workPad, entityDef);
+                testEntityReIdentify.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
         // 26. Re-identify relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_RE_IDENTIFY.getProfileName()))
         {
-            TestRelationshipReIdentify testRelationshipReIdentify = new TestRelationshipReIdentify(workPad, relationshipDef);
-            testRelationshipReIdentify.executeTest();
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipReIdentify testRelationshipReIdentify = new TestRelationshipReIdentify(workPad, relationshipDef);
+                testRelationshipReIdentify.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
         // 27. Delete relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_DELETE.getProfileName()))
         {
-            TestRelationshipDelete testRelationshipDelete = new TestRelationshipDelete(workPad, relationshipDef);
-            testRelationshipDelete.executeTest();
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipDelete testRelationshipDelete = new TestRelationshipDelete(workPad, relationshipDef);
+                testRelationshipDelete.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
         // 28. Delete entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_DELETE.getProfileName()))
         {
-            TestEntityDelete testEntityDelete = new TestEntityDelete(workPad, entityDef);
-            testEntityDelete.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityDelete testEntityDelete = new TestEntityDelete(workPad, entityDef);
+                testEntityDelete.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
         // 29. Restore entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_RESTORE.getProfileName()))
         {
-            TestEntityRestore testEntityRestore = new TestEntityRestore(workPad, entityDef);
-            testEntityRestore.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityRestore testEntityRestore = new TestEntityRestore(workPad, entityDef);
+                testEntityRestore.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
         // 30. Restore relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_RESTORE.getProfileName()))
         {
-            TestRelationshipRestore testRelationshipRestore = new TestRelationshipRestore(workPad, relationshipDef);
-            testRelationshipRestore.executeTest();
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipRestore testRelationshipRestore = new TestRelationshipRestore(workPad, relationshipDef);
+                testRelationshipRestore.executeTest();
+            }
+
+            workPad.getAuditLog().logRecord(methodName,
+                    waiting.getLogMessageId(),
+                    waiting.getSeverity(),
+                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
+                    null,
+                    waiting.getSystemAction(),
+                    waiting.getUserAction());
+            Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
-        workPad.getAuditLog().logRecord(methodName,
-                waiting.getLogMessageId(),
-                waiting.getSeverity(),
-                waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                null,
-                waiting.getSystemAction(),
-                waiting.getUserAction());
-        Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
-
         // 31. Purge relationship instances
-        for (RelationshipDef relationshipDef : relationshipDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.RELATIONSHIP_PURGE.getProfileName()))
         {
-            TestRelationshipPurge testRelationshipPurge = new TestRelationshipPurge(workPad, relationshipDef);
-            testRelationshipPurge.executeTest();
+            for (RelationshipDef relationshipDef : relationshipDefs.values())
+            {
+                TestRelationshipPurge testRelationshipPurge = new TestRelationshipPurge(workPad, relationshipDef);
+                testRelationshipPurge.executeTest();
+            }
         }
 
         // 32. Purge entity instances
-        for (EntityDef entityDef : entityDefs.values())
+        if (!profilesToSkip.contains(PerformanceProfile.ENTITY_PURGE.getProfileName()))
         {
-            TestEntityPurge testEntityPurge = new TestEntityPurge(workPad, entityDef);
-            testEntityPurge.executeTest();
+            for (EntityDef entityDef : entityDefs.values())
+            {
+                TestEntityPurge testEntityPurge = new TestEntityPurge(workPad, entityDef);
+                testEntityPurge.executeTest();
+            }
         }
 
         TestEnvironment testEnvironment = new TestEnvironment(workPad);

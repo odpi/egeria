@@ -17,13 +17,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class OLSBackgroundJob {
     private String jobName;
     private int jobInterval;
+    private boolean jobEnabled = true;
+    private String jobDefaultValue;
 
     public OLSBackgroundJob() {
     }
 
-    public OLSBackgroundJob(String jobName, int jobInterval) {
+    public OLSBackgroundJob(String jobName, int jobInterval, boolean jobEnabled, String jobDefaultValue) {
         this.jobName = jobName;
         this.jobInterval = jobInterval;
+        this.jobEnabled = jobEnabled;
+        this.jobDefaultValue = jobDefaultValue;
     }
 
     /**
@@ -62,11 +66,49 @@ public class OLSBackgroundJob {
         this.jobInterval = jobInterval;
     }
 
+    /**
+     * Is job enabled.
+     *
+     * @return if the job is enabled or not
+     */
+    public boolean isJobEnabled() {
+        return jobEnabled;
+    }
+
+    /**
+     * Sets job enabled value.
+     *
+     * @param jobEnabled true/false for enabling/disabling the job
+     */
+    public void setJobEnabled(boolean jobEnabled) {
+        this.jobEnabled = jobEnabled;
+    }
+
+    /**
+     * Gets job default value.
+     *
+     * @return the job default value
+     */
+    public String getJobDefaultValue() {
+        return jobDefaultValue;
+    }
+
+    /**
+     * Sets job default value.
+     *
+     * @param jobDefaultValue the job default value
+     */
+    public void setJobDefaultValue(String jobDefaultValue) {
+        this.jobDefaultValue = jobDefaultValue;
+    }
+
     @Override
     public String toString() {
         return "OLSBackgroundJob{" +
                 "jobName=" + jobName +
                 ", jobInterval='" + jobInterval + '\'' +
+                ", jobEnabled='" + jobEnabled + '\'' +
+                ", jobDefaultValue='" + jobDefaultValue + '\'' +
                 '}';
     }
 
@@ -76,11 +118,13 @@ public class OLSBackgroundJob {
         if (o == null || getClass() != o.getClass()) return false;
         OLSBackgroundJob that = (OLSBackgroundJob) o;
         return Objects.equals(jobName, that.jobName) &&
-                jobInterval == that.jobInterval;
+                jobInterval == that.jobInterval &&
+                jobEnabled == that.jobEnabled &&
+                Objects.equals(jobDefaultValue, that.jobDefaultValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobName, jobInterval);
+        return Objects.hash(jobName, jobInterval, jobEnabled, jobDefaultValue);
     }
 }

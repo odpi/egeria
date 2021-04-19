@@ -128,7 +128,7 @@ public class DataEngineSchemaTypeHandler {
      * Find out if the SchemaType object is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
      * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the process to be searched
+     * @param qualifiedName the qualifiedName name of the schema type to be searched
      *
      * @return optional with entity details if found, empty optional if not found
      *

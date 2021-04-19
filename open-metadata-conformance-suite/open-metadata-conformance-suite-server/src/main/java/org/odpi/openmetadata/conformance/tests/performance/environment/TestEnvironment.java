@@ -57,6 +57,7 @@ public class TestEnvironment extends OpenMetadataPerformanceTestCase
         addProperty("instancesPerType", performanceWorkPad.getInstancesPerType());
         addProperty("maxSearchResults", performanceWorkPad.getMaxSearchResults());
         addProperty("waitBetweenScenarios", performanceWorkPad.getWaitBetweenScenarios());
+        addProperty("profilesToSkip", performanceWorkPad.getProfilesToSkip());
     }
 
 
