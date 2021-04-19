@@ -47,7 +47,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_SCHEMA_TYPE;
 
 /**
  * The Asset Context Handler provides methods to build graph context for schema elements.
@@ -118,7 +117,6 @@ public class AssetContextHandler {
         return context;
     }
 
-
     /**
      * Builds the asset context for a schema element.
      *
@@ -157,6 +155,21 @@ public class AssetContextHandler {
     }
 
     /**
+     * Builds the column context for a schema element
+     *
+     * @param guid the unique identifier of the column
+     *
+     * @return the columnn context of the schema element
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    public Map<String, RelationshipsContext> buildColumnContext(String userId, String guid) throws OCFCheckedExceptionBase {
+        EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, TABULAR_COLUMN);
+
+        return buildSchemaElementContext(userId, entityDetail);
+    }
+
+    /**
      * Validates that an entity is internal to DataEngine OMAS
      *
      * @param userId        the unique identifier for the user
@@ -187,13 +200,12 @@ public class AssetContextHandler {
             return false;
         }
 
-        //TODO remove check for schema type -  currently the anchorGUID for a schema type is set to itself, but it should be the port implementation
-        return repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, PORT_IMPLEMENTATION, methodName) ||
-                repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, TABULAR_SCHEMA_TYPE, methodName);
+        return repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, PORT_IMPLEMENTATION, methodName);
     }
 
     /**
      * Retrieves the anchorGUID property form a classification
+     *
      * @param classification the classification
      *
      * @return the anchorGUID property or null if missing
@@ -207,7 +219,8 @@ public class AssetContextHandler {
     }
 
     /**
-     *  Retrieves the Anchors classification from an entity
+     * Retrieves the Anchors classification from an entity
+     *
      * @param entityDetail the entity to check for the classification
      *
      * @return the Anchors classification or an empty Optional if missing

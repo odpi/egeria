@@ -113,7 +113,7 @@ public class HandlerHelper {
      * @param relationshipTypeName the type of the relationships to be retrieved
      * @param entityTypeName       the type of the entity
      *
-     * @return List of the relationships if found, empty list if not found
+     * @return Optional containing the relationship if found, empty optional if not found
      *
      * @throws UserNotAuthorizedException the user not authorized exception
      * @throws PropertyServerException    the property server exception

@@ -302,20 +302,20 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (!isLineageRelationship(relationship)) return;
 
         String relationshipType = relationship.getType().getTypeDefName();
-
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(),
+                relationship.getGUID());
         switch (relationshipType) {
             case SEMANTIC_ASSIGNMENT:
             case TERM_CATEGORIZATION:
-                log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(),
-                        relationship.getGUID());
                 String glossaryTermGUID = relationship.getEntityTwoProxy().getGUID();
                 publisher.publishGlossaryContext(glossaryTermGUID);
                 break;
             case PROCESS_HIERARCHY:
-            case LINEAGE_MAPPING:
-                log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(),
-                        relationship.getGUID());
                 publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship),
+                        AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+                break;
+            case LINEAGE_MAPPING:
+                publisher.publishLineageMappingRelationshipEvent(converter.createLineageRelationship(relationship),
                         AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
                 break;
             default:
