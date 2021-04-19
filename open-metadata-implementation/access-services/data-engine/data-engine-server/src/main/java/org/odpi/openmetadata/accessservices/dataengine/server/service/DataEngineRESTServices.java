@@ -788,16 +788,16 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeQName, EntityDetail oldSchemaType,
+    private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeQualfiedName, EntityDetail oldSchemaType,
                                           String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
                                                                             PropertyServerException {
         final String methodName = "deleteObsoleteSchemaType";
 
-        String oldSchemaTypeQName =
+        String oldSchemaTypeQualifiedName =
                 oldSchemaType.getProperties().getPropertyValue(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
-        if (!oldSchemaTypeQName.equalsIgnoreCase(schemaTypeQName)) {
+        if (!oldSchemaTypeQualifiedName.equalsIgnoreCase(schemaTypeQualfiedName)) {
             DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-            dataEngineSchemaTypeHandler.removeSchemaType(userId, oldSchemaTypeQName, externalSourceName);
+            dataEngineSchemaTypeHandler.removeSchemaType(userId, oldSchemaTypeQualifiedName, externalSourceName);
         }
     }
 
@@ -983,16 +983,16 @@ public class DataEngineRESTServices {
         DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         Set<EntityDetail> existingPorts = processHandler.getPortsForProcess(userId, processGUID, portTypeName);
-        Set<String> portQNames = existingPorts.stream()
+        Set<String> portQualifiedNames = existingPorts.stream()
                 .map(entityDetail -> entityDetail.getProperties().getPropertyValue(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME).valueAsString())
                 .collect(Collectors.toSet());
-        Set<String> newPortQNames = ports.stream().map(Referenceable::getQualifiedName).collect(Collectors.toSet());
+        Set<String> newPortQualifiedNames = ports.stream().map(Referenceable::getQualifiedName).collect(Collectors.toSet());
 
         // delete ports that are not in the process payload anymore
-        List<String> obsoletePortQNames = portQNames.stream().collect(partitioningBy(newPortQNames::contains)).get(Boolean.FALSE);
-        obsoletePortQNames.forEach(portQName -> {
+        List<String> obsoletePortQualifiedNames = portQualifiedNames.stream().collect(partitioningBy(newPortQualifiedNames::contains)).get(Boolean.FALSE);
+        obsoletePortQualifiedNames.forEach(portQualifiedName -> {
             try {
-                dataEnginePortHandler.removePort(userId, portQName, portTypeName, externalSourceName);
+                dataEnginePortHandler.removePort(userId, portQualifiedName, externalSourceName);
             } catch (InvalidParameterException error) {
                 restExceptionHandler.captureInvalidParameterException(response, error);
             } catch (PropertyServerException error) {

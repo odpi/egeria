@@ -195,12 +195,12 @@ public class AssetContextHandler {
         if (!anchorGUIDClassification.isPresent()) {
             return false;
         }
-        String anchorGUID = getAnchorGUID(anchorGUIDClassification.get());
-        if (StringUtils.isEmpty(anchorGUID)) {
+        Optional<String> anchorGUID = getAnchorGUID(anchorGUIDClassification.get());
+        if (!anchorGUID.isPresent()) {
             return false;
         }
 
-        return repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, PORT_IMPLEMENTATION, methodName);
+        return repositoryHandler.isEntityATypeOf(userId, anchorGUID.get(), ANCHOR_GUID, PORT_IMPLEMENTATION, methodName);
     }
 
     /**
@@ -208,14 +208,14 @@ public class AssetContextHandler {
      *
      * @param classification the classification
      *
-     * @return the anchorGUID property or null if missing
+     * @return the anchorGUID property or an empty optional
      */
-    private String getAnchorGUID(Classification classification) {
+    private Optional<String> getAnchorGUID(Classification classification) {
         InstancePropertyValue anchorGUIDProperty = classification.getProperties().getPropertyValue(ANCHOR_GUID);
         if (anchorGUIDProperty == null) {
-            return null;
+            return Optional.empty();
         }
-        return anchorGUIDProperty.valueAsString();
+        return Optional.of(anchorGUIDProperty.valueAsString());
     }
 
     /**

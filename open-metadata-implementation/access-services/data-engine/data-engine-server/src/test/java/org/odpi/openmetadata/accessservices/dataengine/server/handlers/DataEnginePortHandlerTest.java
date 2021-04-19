@@ -461,10 +461,10 @@ class DataEnginePortHandlerTest {
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
         when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
 
-        dataEnginePortHandler.removePort(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEnginePortHandler.removePort(USER, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(dataEngineCommonHandler, times(1)).removeEntity(USER, PORT_GUID,
-                OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(portHandler, times(1)).removePort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PORT_GUID, "portGUID",
+                "removePort");
     }
 
     private void mockDelegatedPortEntity(PortType portType) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {

@@ -133,7 +133,7 @@ public interface DataEngineClient {
                                                                               ConnectorCheckedException;
 
     /**
-     * Create or update the port alias entity with a PortDelegation relationship
+     * Create or update the port alias entity with a PortDelegation relationship. It attaches the port alias to the provided process
      *
      * @param userId               the name of the calling user
      * @param portAlias            the port alias bean

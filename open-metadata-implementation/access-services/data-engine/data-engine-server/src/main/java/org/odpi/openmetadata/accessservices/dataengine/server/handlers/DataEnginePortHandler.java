@@ -294,7 +294,8 @@ public class DataEnginePortHandler {
 
         String delegatedPortType = getPortType(delegatedPortEntity.get());
         if (!portType.getName().equalsIgnoreCase(delegatedPortType)) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName, delegatesToQualifiedName, delegatedPortType);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName, delegatesToQualifiedName,
+                    delegatedPortType);
         }
 
         String delegatedPortGUID = delegatedPortEntity.get().getGUID();
@@ -311,19 +312,20 @@ public class DataEnginePortHandler {
      *
      * @param userId             the name of the calling user
      * @param qualifiedName      qualified name of the port to be removed
-     * @param entityTypeName     the type name
      * @param externalSourceName the external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removePort(String userId, String qualifiedName, String entityTypeName, String externalSourceName) throws InvalidParameterException,
-                                                                                                                         PropertyServerException,
-                                                                                                                         UserNotAuthorizedException {
+    public void removePort(String userId, String qualifiedName, String externalSourceName) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException {
+        final String methodName = "removePort";
         Optional<EntityDetail> portOptional = findPortEntity(userId, qualifiedName);
         if (portOptional.isPresent()) {
-            dataEngineCommonHandler.removeEntity(userId, portOptional.get().getGUID(), entityTypeName, externalSourceName);
+            String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+            portHandler.removePort(userId, externalSourceGUID, externalSourceName, portOptional.get().getGUID(), portGUIDParameterName, methodName);
         }
     }
 
