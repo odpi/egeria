@@ -145,25 +145,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String createOrUpdateSchemaType(String userId, SchemaType schemaType, String portQualifiedName) throws InvalidParameterException,
-                                                                                                                  PropertyServerException,
-                                                                                                                  UserNotAuthorizedException {
-
-        invalidParameterHandler.validateUserId(userId, SCHEMA_TYPE_METHOD_NAME);
-
-        SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
-        requestBody.setSchemaType(schemaType);
-        requestBody.setPortQualifiedName(portQualifiedName);
-
-        requestBody.setExternalSourceName(externalSourceName);
-
-        return callGUIDPostRESTCall(userId, SCHEMA_TYPE_METHOD_NAME, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @Deprecated
     public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException,
                                                                                                                 UserNotAuthorizedException,

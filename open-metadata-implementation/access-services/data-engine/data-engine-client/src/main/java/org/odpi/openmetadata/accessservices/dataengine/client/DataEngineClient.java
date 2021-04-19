@@ -73,26 +73,6 @@ public interface DataEngineClient {
                                                                                  ConnectorCheckedException;
 
     /**
-     * Create or update the schema type entity, with the corresponding schema attributes and relationships. It attaches the schema type to the
-     * provided port implementation.
-     *
-     * @param userId            the name of the calling user
-     * @param schemaType        the schema type bean
-     * @param portQualifiedName the qualified name of the port
-     *
-     * @return unique identifier of the schema type in the repository
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
-     */
-    String createOrUpdateSchemaType(String userId, SchemaType schemaType, String portQualifiedName) throws InvalidParameterException,
-                                                                                                           PropertyServerException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           ConnectorCheckedException;
-
-    /**
      * Use {@link #createOrUpdatePortImplementation(String, PortImplementation, String)} for creating a port implementation attached to a process
      *
      * @param userId             the name of the calling user

@@ -169,6 +169,7 @@ public class DataEnginePortHandler {
                                                                                                                              PropertyServerException {
         final String methodName = "createPort";
         validatePortParameters(userId, port.getQualifiedName(), port.getDisplayName(), methodName);
+        invalidParameterHandler.validateGUID(processGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
         return portHandler.createPort(userId, externalSourceGUID, externalSourceName, processGUID, processGUIDParameterName, port.getQualifiedName(),
@@ -244,15 +245,15 @@ public class DataEnginePortHandler {
      * @param userId   the name of the calling user
      * @param portGUID the unique identifier of the port
      *
-     * @return retrieved entity or null
+     * @return retrieved entity or an empty optional
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public EntityDetail findSchemaTypeForPort(String userId, String portGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException {
+    public Optional<EntityDetail> findSchemaTypeForPort(String userId, String portGUID) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException {
         final String methodName = "findSchemaTypeForPort";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -260,8 +261,8 @@ public class DataEnginePortHandler {
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME);
 
-        return repositoryHandler.getEntityForRelationshipType(userId, portGUID, OpenMetadataAPIMapper.PORT_TYPE_NAME, relationshipTypeDef.getGUID(),
-                relationshipTypeDef.getName(), methodName);
+        return Optional.of(repositoryHandler.getEntityForRelationshipType(userId, portGUID, OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName));
     }
 
     /**
@@ -293,16 +294,15 @@ public class DataEnginePortHandler {
 
         String delegatedPortType = getPortType(delegatedPortEntity.get());
         if (!portType.getName().equalsIgnoreCase(delegatedPortType)) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName,
-                    delegatesToQualifiedName, delegatedPortType);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName, delegatesToQualifiedName, delegatedPortType);
         }
 
         String delegatedPortGUID = delegatedPortEntity.get().getGUID();
         if (!dataEngineCommonHandler.findRelationship(userId, portGUID, delegatedPortGUID, OpenMetadataAPIMapper.PORT_TYPE_NAME,
                 OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME).isPresent()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
-            portHandler.setupPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName,
-                    delegatedPortGUID, portGUIDParameterName, methodName);
+            portHandler.setupPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, portGUIDParameterName, delegatedPortGUID,
+                    portGUIDParameterName, methodName);
         }
     }
 

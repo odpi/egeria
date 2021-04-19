@@ -336,11 +336,12 @@ class DataEnginePortHandlerTest {
         when(repositoryHandler.getEntityForRelationshipType(USER, PORT_GUID, OpenMetadataAPIMapper.PORT_TYPE_NAME,
                 OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID, OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(entityDetail);
 
-        EntityDetail result = dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID);
+        Optional<EntityDetail> result = dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(PORT_GUID, "guid", methodName);
-        assertEquals(entityDetail, result);
+        assertTrue(result.isPresent());
+        assertEquals(entityDetail, result.get());
     }
 
     @Test

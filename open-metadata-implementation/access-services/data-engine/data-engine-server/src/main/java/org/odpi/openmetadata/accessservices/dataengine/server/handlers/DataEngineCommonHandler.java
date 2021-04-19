@@ -234,7 +234,7 @@ public class DataEngineCommonHandler {
     }
 
     /**
-     * Find out if the relationships  is already stored in the repository.
+     * Find out if the relationship is already stored in the repository.
      *
      * @param userId               the name of the calling user
      * @param firstGUID            the unique identifier of the entity at first end

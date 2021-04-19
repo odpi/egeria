@@ -98,29 +98,6 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public String createOrUpdateSchemaType(String userId, SchemaType schemaType, String portQualifiedName) throws InvalidParameterException,
-                                                                                                                  ConnectorCheckedException {
-
-        SchemaTypeEvent event = new SchemaTypeEvent();
-        event.setUserId(userId);
-        event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.SCHEMA_TYPE_EVENT);
-        event.setSchemaType(schemaType);
-        event.setPortQualifiedName(portQualifiedName);
-
-        topicConnector.sendEvent(event);
-
-        //async interaction
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws ConnectorCheckedException problem with the underlying connector (if used)
-     */
-    @Override
     @Deprecated
     public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException,
                                                                                                                 ConnectorCheckedException {

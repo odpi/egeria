@@ -160,8 +160,8 @@ public class DataEngineRESTServices {
      * @return the unique identifier of a process or empty optional
      */
     public Optional<String> getProcessGUID(String serverName, String userId, String qualifiedName) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException {
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException {
         final String methodName = "getProcessGUID";
 
         if (StringUtils.isEmpty(qualifiedName)) {
@@ -171,7 +171,7 @@ public class DataEngineRESTServices {
         DataEngineProcessHandler handler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
         Optional<EntityDetail> processEntity = handler.findProcessEntity(userId, qualifiedName);
-        return Optional.of(processEntity.map(InstanceHeader::getGUID).get());
+        return processEntity.map(InstanceHeader::getGUID);
     }
 
     /**
@@ -194,7 +194,7 @@ public class DataEngineRESTServices {
         DataEnginePortHandler handler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         Optional<EntityDetail> portEntity = handler.findPortEntity(userId, qualifiedName);
-        return Optional.of(portEntity.map(InstanceHeader::getGUID).get());
+        return portEntity.map(InstanceHeader::getGUID);
     }
 
     /**
@@ -214,9 +214,11 @@ public class DataEngineRESTServices {
         try {
             if (isRequestBodyInvalid(userId, serverName, schemaTypeRequestBody, methodName)) return response;
 
-            Optional<String> portOptional = getPortGUID(serverName, userId, schemaTypeRequestBody.getPortQualifiedName());
-            response.setGUID(upsertSchemaType(userId, serverName, portOptional.orElse(null), schemaTypeRequestBody.getSchemaType(),
-                    schemaTypeRequestBody.getExternalSourceName()));
+            String externalSourceName = schemaTypeRequestBody.getExternalSourceName();
+            String schemasTypeGUID = upsertSchemaType(userId, serverName, null, schemaTypeRequestBody.getSchemaType(),
+                    externalSourceName);
+
+            response.setGUID(schemasTypeGUID);
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -237,8 +239,7 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier (guid) of the created port
      */
-    public GUIDResponse upsertPortImplementation(String userId, String serverName,
-                                                 PortImplementationRequestBody portImplementationRequestBody) {
+    public GUIDResponse upsertPortImplementation(String userId, String serverName, PortImplementationRequestBody portImplementationRequestBody) {
         final String methodName = "upsertPortImplementation";
 
         GUIDResponse response = new GUIDResponse();
@@ -247,10 +248,14 @@ public class DataEngineRESTServices {
 
             String processGUID = getProcessGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName()).orElse(null);
             String externalSourceName = portImplementationRequestBody.getExternalSourceName();
+            PortImplementation portImplementation = portImplementationRequestBody.getPortImplementation();
 
             updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
-            response.setGUID(upsertPortImplementation(userId, serverName, portImplementationRequestBody.getPortImplementation(),
-                    processGUID, externalSourceName));
+
+            String portImplementationGUID = upsertPortImplementation(userId, serverName, portImplementation, processGUID, externalSourceName);
+            response.setGUID(portImplementationGUID);
+            upsertSchemaType(userId, serverName, portImplementationGUID, portImplementation.getSchemaType(), externalSourceName);
+
             updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -474,9 +479,9 @@ public class DataEngineRESTServices {
             dataEnginePortHandler.updatePortImplementation(userId, portEntity.get(), portImplementation, externalSourceName);
 
             if (portImplementation.getUpdateSemantic() == UpdateSemantic.REPLACE) {
-                EntityDetail schemaTypeForPort = dataEnginePortHandler.findSchemaTypeForPort(userId, portImplementationGUID);
-                if (schemaTypeForPort != null) {
-                    deleteObsoleteSchemaType(userId, serverName, portImplementation.getSchemaType().getQualifiedName(), schemaTypeForPort,
+                Optional<EntityDetail> schemaTypeForPort = dataEnginePortHandler.findSchemaTypeForPort(userId, portImplementationGUID);
+                if (schemaTypeForPort.isPresent()) {
+                    deleteObsoleteSchemaType(userId, serverName, portImplementation.getSchemaType().getQualifiedName(), schemaTypeForPort.get(),
                             externalSourceName);
                 }
             }
@@ -960,7 +965,7 @@ public class DataEngineRESTServices {
 
     private void addProcessCollectionRelationship(String userId, String serverName, String processGUID, String collectionGUID,
                                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
-                                                                                     UserNotAuthorizedException {
+                                                                                    UserNotAuthorizedException {
 
         final String methodName = "addProcessCollectionRelationship";
 

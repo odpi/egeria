@@ -295,13 +295,12 @@ class DataEngineRESTServicesTest {
         when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         mockPortHandler(methodName);
-        mockPortHandler("getExternalDataEngineByQualifiedName");
+        mockPortHandler("getPortGUID");
         EntityDetail mockedPort = mock(EntityDetail.class);
         when(mockedPort.getGUID()).thenReturn(PORT_GUID);
         when(dataEnginePortHandler.findPortEntity(USER, QUALIFIED_NAME)).thenReturn(Optional.of(mockedPort));
 
         SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
-        requestBody.setPortQualifiedName(QUALIFIED_NAME);
 
         GUIDResponse response = dataEngineRESTServices.upsertSchemaType(USER, SERVER_NAME, requestBody);
 
@@ -446,7 +445,7 @@ class DataEngineRESTServicesTest {
         when(dataEnginePortHandler.findPortImplementationEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
 
         EntityDetail mockedSchemaType = mockEntityDetailWithQualifiedName(OLD_SCHEMA_GUID, OLD_SCHEMA_QUALIFIED_NAME);
-        when(dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID)).thenReturn(mockedSchemaType);
+        when(dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID)).thenReturn(Optional.of(mockedSchemaType));
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
         GUIDResponse response = dataEngineRESTServices.upsertPortImplementation(USER, SERVER_NAME, requestBody);
@@ -634,7 +633,7 @@ class DataEngineRESTServicesTest {
         when(dataEnginePortHandler.findPortImplementationEntity(USER, QUALIFIED_NAME)).thenReturn(portEntity);
 
         EntityDetail mockedSchemaType = mockEntityDetailWithQualifiedName(OLD_SCHEMA_GUID, OLD_SCHEMA_QUALIFIED_NAME);
-        when(dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID)).thenReturn(mockedSchemaType);
+        when(dataEnginePortHandler.findSchemaTypeForPort(USER, PORT_GUID)).thenReturn(Optional.of(mockedSchemaType));
         when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
 
         when(dataEnginePortHandler.createPortAlias(USER, portAlias, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(PORT_GUID);
