@@ -209,10 +209,13 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentGlossary, suppliedGlossary);
 
-                Date termFromTime = suppliedGlossary.getEffectiveFromTime();
-                Date termToTime = suppliedGlossary.getEffectiveToTime();
-                currentGlossary.setEffectiveFromTime(termFromTime);
-                currentGlossary.setEffectiveToTime(termToTime);
+                Date glossaryFromTime = suppliedGlossary.getEffectiveFromTime();
+                Date glossaryToTime = suppliedGlossary.getEffectiveToTime();
+                if (glossaryFromTime == null) {
+                    glossaryFromTime = new Date();
+                }
+                currentGlossary.setEffectiveFromTime(glossaryFromTime);
+                currentGlossary.setEffectiveToTime(glossaryToTime);
 
                 GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
                 EntityDetail entityDetail = glossaryMapper.map(currentGlossary);

@@ -222,10 +222,13 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(updateProject, suppliedProject);
 
-                Date termFromTime = suppliedProject.getEffectiveFromTime();
-                Date termToTime = suppliedProject.getEffectiveToTime();
-                updateProject.setEffectiveFromTime(termFromTime);
-                updateProject.setEffectiveToTime(termToTime);
+                Date projectFromTime = suppliedProject.getEffectiveFromTime();
+                Date projectToTime = suppliedProject.getEffectiveToTime();
+                if (projectFromTime == null) {
+                    projectFromTime = new Date();
+                }
+                updateProject.setEffectiveFromTime(projectFromTime);
+                updateProject.setEffectiveToTime(projectToTime);
 
                 ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
                 EntityDetail entityDetail = projectMapper.map(updateProject);

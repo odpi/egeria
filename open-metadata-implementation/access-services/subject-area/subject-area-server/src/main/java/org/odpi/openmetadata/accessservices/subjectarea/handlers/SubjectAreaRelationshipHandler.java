@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -70,6 +71,13 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         try {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship omrsRelationship = mapper.map(relationship);
+            InstanceProperties instanceProperties =omrsRelationship.getProperties();
+            Date effectiveFromtime =instanceProperties.getEffectiveFromTime();
+            if (effectiveFromtime == null) {
+                // if not supplied set the effective from Date to now.
+                instanceProperties.setEffectiveFromTime(new Date());
+                omrsRelationship.setProperties(instanceProperties);
+            }
             Optional<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> createdOMRSRelationship = oMRSAPIHelper.callOMRSAddRelationship(restAPIName, userId, omrsRelationship);
             if (createdOMRSRelationship.isPresent()) {
                 R createdrelationship = mapper.map(createdOMRSRelationship.get());

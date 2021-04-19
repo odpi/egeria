@@ -368,6 +368,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
                 Date termFromTime = suppliedTerm.getEffectiveFromTime();
                 Date termToTime = suppliedTerm.getEffectiveToTime();
+
+                if (termFromTime == null) {
+                    termFromTime = new Date();
+                }
+
                 currentTerm.setEffectiveFromTime(termFromTime);
                 currentTerm.setEffectiveToTime(termToTime);
                 // always update the governance actions for a replace or an update

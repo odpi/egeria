@@ -296,10 +296,13 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentCategory, suppliedCategory);
 
-                Date termFromTime = suppliedCategory.getEffectiveFromTime();
-                Date termToTime = suppliedCategory.getEffectiveToTime();
-                currentCategory.setEffectiveFromTime(termFromTime);
-                currentCategory.setEffectiveToTime(termToTime);
+                Date categoryFromTime = suppliedCategory.getEffectiveFromTime();
+                Date categoryToTime = suppliedCategory.getEffectiveToTime();
+                if (categoryFromTime == null) {
+                    categoryFromTime = new Date();
+                }
+                currentCategory.setEffectiveFromTime(categoryFromTime);
+                currentCategory.setEffectiveToTime(categoryToTime);
 
                 CategoryMapper mapper = mappersFactory.get(CategoryMapper.class);
                 EntityDetail entityDetail = mapper.map(currentCategory);
