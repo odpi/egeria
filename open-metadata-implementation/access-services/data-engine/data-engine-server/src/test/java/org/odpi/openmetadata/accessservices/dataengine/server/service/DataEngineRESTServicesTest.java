@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.CSVFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
@@ -39,19 +40,18 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -79,6 +79,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
 import static org.testng.AssertJUnit.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
@@ -841,13 +843,32 @@ class DataEngineRESTServicesTest {
     @Test
     public void createDataFileAndSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockDataFileHandler("createDataFileAndSchema");
-        DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody();
+        DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody(getDataFile());
+        mockRegistrationHandler("createDataFileAndSchema");
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         GUIDResponse guidResponse = dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
-        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog( "FILE_TYPE_NAAME",
-                "FILE_TYPE_GUID", dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
-                dataFileRequestBody.getDataFile().getColumns(), getExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
+        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog( OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
+                OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
+                dataFileRequestBody.getDataFile().getColumns(), getDataFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "createDataFileAndSchema");
+    }
+
+    @Test
+    public void createCSVFileAndSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockDataFileHandler("createDataFileAndSchema");
+        DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody(getCsvFile());
+        mockRegistrationHandler("createDataFileAndSchema");
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+
+        GUIDResponse guidResponse = dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
+
+        verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog( OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
+                OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
+                dataFileRequestBody.getDataFile().getColumns(), getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "createDataFileAndSchema");
     }
 
@@ -927,9 +948,9 @@ class DataEngineRESTServicesTest {
         return requestBody;
     }
 
-    private DataFileRequestBody mockDataFileRequestBody(){
+    private DataFileRequestBody mockDataFileRequestBody(DataFile dataFile){
         DataFileRequestBody dataFileRequestBody = new DataFileRequestBody();
-        dataFileRequestBody.setDataFile(getDataFile());
+        dataFileRequestBody.setDataFile(dataFile);
         dataFileRequestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         return dataFileRequestBody;
@@ -1064,6 +1085,25 @@ class DataEngineRESTServicesTest {
         return dataFile;
     }
 
+    private CSVFile getCsvFile(){
+        CSVFile csvFile = new CSVFile();
+        csvFile.setQualifiedName(QUALIFIED_NAME);
+        csvFile.setDisplayName(NAME);
+        csvFile.setOwner(OWNER);
+        csvFile.setFileType(FILE_TYPE);
+        csvFile.setDescription(DESCRIPTION);
+        csvFile.setPathName(PATH);
+        csvFile.setSchema(getSchemaTypeForDataFile());
+        csvFile.setDelimiterCharacter(",");
+        csvFile.setQuoteCharacter("'");
+
+        List<Attribute> tabularColumns = new ArrayList<>();
+        tabularColumns.add(getTabularColumn());
+        csvFile.setColumns(tabularColumns);
+
+        return csvFile;
+    }
+
     private SchemaType getSchemaTypeForDataFile(){
         SchemaType schemaType = new SchemaType();
         schemaType.setQualifiedName(QUALIFIED_NAME);
@@ -1086,9 +1126,18 @@ class DataEngineRESTServicesTest {
         return tabularColumn;
     }
 
-    private Map<String, Object> getExtendedProperties(){
+    private Map<String, Object> getDataFileExtendedProperties(){
         Map<String, Object> extendedProperties = new HashMap<>();
         extendedProperties.put(FILE_TYPE, FILE_TYPE);
+
+        return extendedProperties;
+    }
+
+    private Map<String, Object> getCSVFileExtendedProperties(){
+        Map<String, Object> extendedProperties = new HashMap<>();
+        extendedProperties.put(FILE_TYPE, FILE_TYPE);
+        extendedProperties.put(DELIMITER_CHARACTER_PROPERTY_NAME, ",");
+        extendedProperties.put(QUOTE_CHARACTER_PROPERTY_NAME, "'");
 
         return extendedProperties;
     }

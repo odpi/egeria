@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -36,33 +35,25 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
  */
 public class DataEngineFolderHierarchyHandler {
 
-    private final String serviceName;
-    private final String serverName;
     private final InvalidParameterHandler invalidParameterHandler;
     private final RepositoryHandler repositoryHandler;
-    private final OMRSRepositoryHelper repositoryHelper;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final AssetHandler<FileFolder> folderHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param serviceName name of this service
-     * @param serverName name of the local server
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler manages calls to the repository services
-     * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param dataEngineCommonHandler provides common Data Engine Omas utilities
      * @param folderHandler provides utilities specific for manipulating FileFolders
      */
-    public DataEngineFolderHierarchyHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                            RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                                            DataEngineCommonHandler dataEngineCommonHandler, AssetHandler<FileFolder> folderHandler) {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
+    public DataEngineFolderHierarchyHandler(InvalidParameterHandler invalidParameterHandler,
+                                            RepositoryHandler repositoryHandler, DataEngineCommonHandler dataEngineCommonHandler,
+                                            AssetHandler<FileFolder> folderHandler) {
+
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
         this.folderHandler = folderHandler;
     }
