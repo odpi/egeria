@@ -56,6 +56,9 @@ it:
 - `maxSearchResults` controls how many results to retrieve per page for any search operations (defaults to `10`)
 - `waitBetweenScenarios` controls an optional wait-point between write and read scenarios, in case you are testing a
   repository that has an eventually-consistent index (defaults to `0` to avoid any wait)
+- `profilesToSkip` is an optional array of strings of the profile names that should be skipped during performance
+  testing (for example, to skip very long-running profiles like the graph queries at the larger scales, where thousands
+  or more relationships and entities could be returned by each query)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

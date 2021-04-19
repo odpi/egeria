@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -27,6 +29,7 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
     private int      instancesPerType = 50;
     private int      maxSearchResults = 10;
     private int      waitBetweenScenarios = 60;
+    private List<String> profilesToSkip = Collections.emptyList();
 
 
     /**
@@ -51,6 +54,8 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
         {
             tutRepositoryServerName = template.getTutRepositoryServerName();
             maxSearchResults = template.getMaxSearchResults();
+            waitBetweenScenarios = template.getWaitBetweenScenarios();
+            profilesToSkip = template.getProfilesToSkip();
         }
     }
 
@@ -146,6 +151,29 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
         this.waitBetweenScenarios = waitBetweenScenarios;
     }
 
+
+    /**
+     * Return the profiles (if any) that should be skipped during the performance test.
+     *
+     * @return list of the profile names that should be skipped during testing
+     */
+    public List<String> getProfilesToSkip()
+    {
+        return profilesToSkip;
+    }
+
+
+    /**
+     * Set up the profiles that should be skipped during the performance test.
+     *
+     * @param profilesToSkip list of profile names that should be skipped during testing
+     */
+    public void setProfilesToSkip(List<String> profilesToSkip)
+    {
+        this.profilesToSkip = profilesToSkip;
+    }
+
+
     /**
      * Standard toString method.
      *
@@ -159,6 +187,7 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
                 "instancesPerType='" + instancesPerType + '\'' +
                 "maxSearchResults='" + maxSearchResults + '\'' +
                 "waitBetweenScenarios='" + waitBetweenScenarios + '\'' +
+                "profilesToSkip=" + profilesToSkip +
                 '}';
     }
 
@@ -184,7 +213,8 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
         return Objects.equals(getTutRepositoryServerName(), that.getTutRepositoryServerName())
                 && Objects.equals(getInstancesPerType(), that.getInstancesPerType())
                 && Objects.equals(getMaxSearchResults(), that.getMaxSearchResults())
-                && Objects.equals(getWaitBetweenScenarios(), that.getWaitBetweenScenarios());
+                && Objects.equals(getWaitBetweenScenarios(), that.getWaitBetweenScenarios())
+                && Objects.equals(getProfilesToSkip(), that.getProfilesToSkip());
     }
 
 
@@ -196,6 +226,6 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
     @Override
     public int hashCode()
     {
-        return Objects.hash(getTutRepositoryServerName(), getInstancesPerType(), getMaxSearchResults(), getWaitBetweenScenarios());
+        return Objects.hash(getTutRepositoryServerName(), getInstancesPerType(), getMaxSearchResults(), getWaitBetweenScenarios(), getProfilesToSkip());
     }
 }
