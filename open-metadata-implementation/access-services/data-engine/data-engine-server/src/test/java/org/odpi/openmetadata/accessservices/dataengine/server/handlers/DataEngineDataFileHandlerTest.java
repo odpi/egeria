@@ -47,7 +47,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 class DataEngineDataFileHandlerTest {
 
     private static final String USER = "user";
-    private static final String SERVER_NAME = "server";
     private static final String METHOD = "method";
     private static final String QUALIFIED_NAME = "qualifiedName";
     private static final String NAME = "name";

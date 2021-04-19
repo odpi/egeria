@@ -38,23 +38,10 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 class DataEngineFolderHierarchyHandlerTest {
 
     private static final String USER = "user";
-    private static final String SERVER_NAME = "server";
     private static final String METHOD = "method";
-    private static final String QUALIFIED_NAME = "qualifiedName";
-    private static final String NAME = "name";
-    private static final String OWNER = "owner";
-    private static final String FILE_TYPE = "csv";
-    private static final String DESCRIPTION = "description";
     private static final String PATH = "/test/file.txt";
-    private static final String AUTHOR = "author";
-    private static final String USAGE = "usage";
-    private static final int POSITION = 1;
-    private static final String NATIVE_CLASS = "nativeClass";
-    private static final String ENCODING_STANDARD = "encodingStandard";
-    private static final String VERSION_NUMBER = "versionNumber";
     private static final String EXTERNAL_SOURCE_GUID = "externalSourceGuid";
     private static final String EXTERNAL_SOURCE_NAME = "externalSourceName";
-    private static final String SCHEMA_TYPE_GUID = "schemaTypeGuid";
     private static final String GUID_VALUE_1 = "1";
     private static final String GUID_VALUE_2 = "2";
 
