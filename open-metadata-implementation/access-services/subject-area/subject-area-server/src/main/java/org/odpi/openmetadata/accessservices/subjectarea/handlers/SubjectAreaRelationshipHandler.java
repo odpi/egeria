@@ -72,11 +72,13 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship omrsRelationship = mapper.map(relationship);
             InstanceProperties instanceProperties =omrsRelationship.getProperties();
-            Date effectiveFromtime =instanceProperties.getEffectiveFromTime();
-            if (effectiveFromtime == null) {
-                // if not supplied set the effective from Date to now.
-                instanceProperties.setEffectiveFromTime(new Date());
-                omrsRelationship.setProperties(instanceProperties);
+            if (instanceProperties != null) {
+                Date effectiveFromtime = instanceProperties.getEffectiveFromTime();
+                if (effectiveFromtime == null) {
+                    // if not supplied set the effective from Date to now.
+                    instanceProperties.setEffectiveFromTime(new Date());
+                    omrsRelationship.setProperties(instanceProperties);
+                }
             }
             Optional<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> createdOMRSRelationship = oMRSAPIHelper.callOMRSAddRelationship(restAPIName, userId, omrsRelationship);
             if (createdOMRSRelationship.isPresent()) {

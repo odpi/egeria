@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -75,7 +76,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * </ul>
      *
      * @param userId           unique identifier for requesting user, under which the request is performed
-     * @param suppliedTerm Term to create
+     * @param suppliedTerm     Term to create
      * @return response, when successful contains the created term.
      * when not successful the following Exception responses can occur
      * <ul>
@@ -108,6 +109,14 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
                 String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
                 validateCategoriesDuringCreation(userId,methodName,suppliedCategorysummaries);
+                InstanceProperties instanceProperties = termEntityDetail.getProperties();
+                if (instanceProperties == null ) {
+                    instanceProperties = new InstanceProperties();
+                }
+                if (instanceProperties.getEffectiveFromTime() == null) {
+                    instanceProperties.setEffectiveFromTime(new Date());
+                    termEntityDetail.setProperties(instanceProperties);
+                }
                 createdTermGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, termEntityDetail);
                 if (createdTermGuid != null) {
                     TermAnchor termAnchor = new TermAnchor();
@@ -368,11 +377,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
                 Date termFromTime = suppliedTerm.getEffectiveFromTime();
                 Date termToTime = suppliedTerm.getEffectiveToTime();
-
-                if (termFromTime == null) {
-                    termFromTime = new Date();
-                }
-
                 currentTerm.setEffectiveFromTime(termFromTime);
                 currentTerm.setEffectiveToTime(termToTime);
                 // always update the governance actions for a replace or an update
