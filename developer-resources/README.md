@@ -12,6 +12,7 @@ It supplements the general [Community Guide](../Community-Guide.md).
 
 * [Developer Guidelines](Developer-Guidelines.md)
     * [Why the DCO?](why-the-dco.md)
+    * [Reviewing Code Changes](Reviewing-Code-Changes.md)
     * [Creating Postman samples](Postman-Samples.md)
     * [Dependency Management](Dependency-Management.md)
     * [Developer import of Egeria content using Gradle](Consuming-Egeria-Using_Gradle.md)
