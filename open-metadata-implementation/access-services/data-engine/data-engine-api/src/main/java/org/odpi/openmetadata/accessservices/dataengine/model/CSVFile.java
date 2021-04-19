@@ -55,4 +55,9 @@ public class CSVFile extends DataFile{
                 Objects.equals(quoteCharacter, csvFile.quoteCharacter);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), delimiterCharacter, quoteCharacter);
+    }
+
 }
