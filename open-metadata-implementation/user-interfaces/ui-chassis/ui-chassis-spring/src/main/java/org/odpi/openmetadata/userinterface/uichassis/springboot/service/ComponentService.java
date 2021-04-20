@@ -3,15 +3,10 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * This component is responsible to provide model used by UI to show/hide components
@@ -31,7 +26,7 @@ public class ComponentService {
      * @param roles the list of roles
      * @return a set of  components to be displayed
      */
-    public Set<String> getVisibleComponentsForRoles(List<String> roles) {
+    public Set<String> getVisibleComponentsForRoles(Set<String> roles) {
         Set<String> components = new HashSet<>();
         roles.stream()
                 .map(visibleComponents::get)

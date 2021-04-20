@@ -66,13 +66,19 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authentication) throws IOException {
         log.info("SUCCESSFUL Authentication for user {}", request.getParameter(USERNAME));
-        authenticationService.addAuthentication(request, response, authentication);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         if( !checkRoles(authentication) || authentication.getAuthorities().isEmpty() ){
             log.warn("NO roles for user: {}", request.getParameter(USERNAME));
             response.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase());
+        } else {
+            authenticationService.addAuthentication( request, response, authentication );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+    }
+
+    private void filterRoles(Authentication authentication) {
+        authentication.getAuthorities()
+                .removeIf(a -> !appRoles.contains(a.getAuthority()));
     }
 
     private boolean checkRoles(Authentication authentication){
