@@ -59,16 +59,16 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
     public FindRelationshipsExecutor(String                    userId,
                                      String                    relationshipTypeGUID,
                                      List<String>              relationshipSubtypeGUIDs,
-                                     SearchProperties          matchProperties,
+                                     SearchProperties matchProperties,
                                      int                       fromRelationshipElement,
                                      List<InstanceStatus>      limitResultsByStatus,
                                      Date                      asOfTime,
                                      String                    sequencingProperty,
-                                     SequencingOrder           sequencingOrder,
+                                     SequencingOrder sequencingOrder,
                                      int                       pageSize,
                                      String                    localMetadataCollectionId,
-                                     AuditLog                  auditLog,
-                                     OMRSRepositoryValidator   repositoryValidator,
+                                     AuditLog auditLog,
+                                     OMRSRepositoryValidator repositoryValidator,
                                      String                    methodName)
     {
         this(userId,
@@ -115,14 +115,14 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
     private FindRelationshipsExecutor(String                    userId,
                                       String                    relationshipTypeGUID,
                                       List<String>              relationshipSubtypeGUIDs,
-                                      SearchProperties          matchProperties,
+                                      SearchProperties matchProperties,
                                       int                       fromRelationshipElement,
                                       List<InstanceStatus>      limitResultsByStatus,
                                       Date                      asOfTime,
                                       String                    sequencingProperty,
-                                      SequencingOrder           sequencingOrder,
+                                      SequencingOrder sequencingOrder,
                                       int                       pageSize,
-                                      RelationshipAccumulator   accumulator,
+                                      RelationshipAccumulator accumulator,
                                       String                    methodName)
     {
         super(userId,
@@ -225,7 +225,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(metadataCollectionId, error);
+            accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
         return true;
@@ -248,13 +248,13 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public List<Relationship>  getResults(EnterpriseOMRSRepositoryConnector  repositoryConnector) throws InvalidParameterException,
-                                                                                                         TypeErrorException,
-                                                                                                         RepositoryErrorException,
-                                                                                                         PropertyErrorException,
-                                                                                                         PagingErrorException,
-                                                                                                         FunctionNotSupportedException,
-                                                                                                         UserNotAuthorizedException
+    public List<Relationship>  getResults(EnterpriseOMRSRepositoryConnector repositoryConnector) throws InvalidParameterException,
+                                                                                                        TypeErrorException,
+                                                                                                        RepositoryErrorException,
+                                                                                                        PropertyErrorException,
+                                                                                                        PagingErrorException,
+                                                                                                        FunctionNotSupportedException,
+                                                                                                        UserNotAuthorizedException
     {
         if (accumulator.resultsReturned())
         {

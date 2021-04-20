@@ -15892,12 +15892,12 @@ public class OpenMetadataTypesArchive1_2
         final String linkedToEntity = "Asset";
 
         ClassificationDef classificationDef =  archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  false);
+                                                                                  name,
+                                                                                  null,
+                                                                                  description,
+                                                                                  descriptionGUID,
+                                                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                  false);
 
         /*
          * Build the attributes
@@ -16411,7 +16411,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "c6fe40af-cdd6-4ca7-98c4-353d2612921f";
         final String name            = "SubjectAreaOwner";
-        final String description     = "A role defining a responsibility to manage the development and maintainance of a subject area.";
+        final String description     = "A role defining a responsibility to manage the development and maintenance of a subject area.";
         final String descriptionGUID = null;
 
         final String superTypeName = "GovernanceRole";
@@ -18465,11 +18465,11 @@ public class OpenMetadataTypesArchive1_2
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                name,
-                null,
-                description,
-                descriptionGUID,
-                classificationPropagationRule);
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -22263,11 +22263,11 @@ public class OpenMetadataTypesArchive1_2
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                name,
-                null,
-                description,
-                descriptionGUID,
-                classificationPropagationRule);
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -22324,11 +22324,11 @@ public class OpenMetadataTypesArchive1_2
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                name,
-                null,
-                description,
-                descriptionGUID,
-                classificationPropagationRule);
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
 

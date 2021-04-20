@@ -143,8 +143,9 @@ To understand how to join and contribute see the
 
 We aim to operate in a transparent, accessible way for the benefit
 of the Egeria community. All participation in this project is therefore open and not
-bound to any corporate affiliation nor membership of the ODPi.
-Participants are only required to follow the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
+bound to any corporate affiliation nor membership of the [Linux Foundation](https://www.linuxfoundation.org/) or 
+[LF AI & Data Foundation](https://lfaidata.foundation/).
+Participants are only required to follow Egeria's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 
 The governance of the project is described in more detail in the
 [Egeria Operations](Egeria-Operations.md).
