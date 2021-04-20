@@ -43,7 +43,7 @@ import static org.odpi.openmetadata.accessservices.dataengine.server.util.Mocked
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-class PortHandlerTest {
+class DataEnginePortHandlerTest {
     private static final String USER = "user";
     private static final String QUALIFIED_NAME = "qualifiedName";
     private static final String NAME = "name";

@@ -30,6 +30,7 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
     private int                     instancesPerType            = 50;
     private int                     maxSearchResults            = 10;
     private int                     waitBetweenScenarios        = 0;
+    private List<String>            profilesToSkip              = Collections.emptyList();
 
     private OMRSRepositoryConnector tutRepositoryConnector      = null;
 
@@ -76,6 +77,7 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
             this.instancesPerType = configuration.getInstancesPerType();
             this.maxSearchResults = configuration.getMaxSearchResults();
             this.waitBetweenScenarios = configuration.getWaitBetweenScenarios();
+            this.profilesToSkip = configuration.getProfilesToSkip();
             super.tutName = this.tutServerName;
         }
     }
@@ -132,6 +134,16 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
     public int getWaitBetweenScenarios()
     {
         return waitBetweenScenarios;
+    }
+
+    /**
+     * Return the profiles that should be skipped (if any) by the performance test.
+     *
+     * @return list of profile names to skip
+     */
+    public List<String> getProfilesToSkip()
+    {
+        return profilesToSkip;
     }
 
     /**
@@ -618,6 +630,7 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
                 ", maxSearchResults=" + maxSearchResults +
                 ", tutType='" + tutType + '\'' +
                 ", maxPageSize=" + maxPageSize +
+                ", profilesToSkip=" + profilesToSkip +
                 '}';
     }
 }

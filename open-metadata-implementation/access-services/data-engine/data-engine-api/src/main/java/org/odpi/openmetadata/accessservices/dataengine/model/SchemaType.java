@@ -20,9 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SchemaType implements Serializable {
+public class SchemaType extends Referenceable {
     private static final long serialVersionUID = 1L;
-    private String qualifiedName;
     private String displayName;
     private String author;
     private String usage;
@@ -48,24 +47,6 @@ public class SchemaType implements Serializable {
      */
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    /**
-     * Gets qualified name.
-     *
-     * @return the qualified name
-     */
-    public String getQualifiedName() {
-        return qualifiedName;
-    }
-
-    /**
-     * Sets qualified name.
-     *
-     * @param qualifiedName the qualified name
-     */
-    public void setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
     }
 
     /**
@@ -179,7 +160,6 @@ public class SchemaType implements Serializable {
     @Override
     public String toString() {
         return "SchemaType{" +
-                "qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", author='" + author + '\'' +
                 ", usage='" + usage + '\'' +
@@ -195,8 +175,7 @@ public class SchemaType implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SchemaType that = (SchemaType) o;
-        return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(displayName, that.displayName) &&
+        return Objects.equals(displayName, that.displayName) &&
                 Objects.equals(author, that.author) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
@@ -207,7 +186,7 @@ public class SchemaType implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, displayName, author, usage, encodingStandard, versionNumber, attributeList);
+        return Objects.hash(displayName, author, usage, encodingStandard, versionNumber, attributeList);
     }
 
 }

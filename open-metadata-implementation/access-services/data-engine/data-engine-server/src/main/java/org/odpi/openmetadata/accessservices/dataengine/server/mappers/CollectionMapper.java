@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.mappers;
 
-public class TransformationProjectMapper {
+public class CollectionMapper {
 
     public static final String COLLECTION_TYPE_GUID                      = "347005ba-2b35-4670-b5a7-12c9ebed0cf7";
     public static final String COLLECTION_TYPE_NAME                      = "Collection";              /* from Area 1 */
