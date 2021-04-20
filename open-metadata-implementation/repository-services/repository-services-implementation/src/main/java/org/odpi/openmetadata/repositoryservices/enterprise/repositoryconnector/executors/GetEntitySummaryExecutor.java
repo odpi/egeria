@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
@@ -20,11 +21,11 @@ import java.util.Map;
  */
 public class GetEntitySummaryExecutor extends RepositoryExecutorBase
 {
+    protected MaintenanceAccumulator      accumulator;
     protected String                      entityGUID;
     protected Map<String, Classification> allClassifications = new HashMap<>();
 
     protected boolean                     inPhaseOne         = true;
-    protected MaintenanceAccumulator      accumulator        = new MaintenanceAccumulator();
 
 
     private EntitySummary latestEntity = null;
@@ -33,15 +34,19 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
     /**
      * Constructor takes the parameters for the request.
      *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier (guid) for the entity.
+     * @param userId unique identifier for requesting user
+     * @param entityGUID unique identifier (guid) for the entity
+     * @param auditLog logging destination
      * @param methodName calling method
      */
-    public GetEntitySummaryExecutor(String               userId,
-                                    String               entityGUID,
-                                    String               methodName)
+    public GetEntitySummaryExecutor(String   userId,
+                                    String   entityGUID,
+                                    AuditLog auditLog,
+                                    String   methodName)
     {
         super(userId, methodName);
+
+        this.accumulator = new MaintenanceAccumulator(auditLog);
 
         this.entityGUID = entityGUID;
     }
@@ -123,6 +128,7 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -190,7 +196,9 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return false;
@@ -208,10 +216,10 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntitySummary getEntitySummary() throws InvalidParameterException,
-                                                    RepositoryErrorException,
-                                                    EntityNotKnownException,
-                                                    UserNotAuthorizedException
+    public EntitySummary getEntitySummary() throws InvalidParameterException,
+                                                   RepositoryErrorException,
+                                                   EntityNotKnownException,
+                                                   UserNotAuthorizedException
     {
         if (latestEntity != null)
         {
