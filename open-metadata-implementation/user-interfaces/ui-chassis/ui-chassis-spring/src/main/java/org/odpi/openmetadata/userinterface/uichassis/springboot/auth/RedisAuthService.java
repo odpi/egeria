@@ -7,7 +7,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis.TokenRedisClient;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 
-public class RedisAuthService extends  TokenSettings implements AuthService{
+public class RedisAuthService extends TokenSettings implements AuthService{
 
     @Autowired
     TokenRedisClient tokenRedisClient;
@@ -27,17 +26,16 @@ public class RedisAuthService extends  TokenSettings implements AuthService{
     @Value("${token.absolute.timeout}")
     Integer tokenAbsoluteTimeout;
 
-    public User addAuthentication(HttpServletRequest request,
+    public void addAuthentication(HttpServletRequest request,
                                   HttpServletResponse response,
                                   Authentication authentication) {
         TokenUser tokenUser = getTokenUser(authentication);
-        String token = this.createTokenForUser(tokenUser.getUser(), tokenSecret);
+        String token = this.createTokenForUser(tokenUser, tokenSecret);
         response.addHeader(AUTH_HEADER_NAME, token);
         tokenRedisClient.set(token,
                 tokenAbsoluteTimeout.longValue() * 60 ,
                 LocalDateTime.now().plusMinutes(tokenTimeout).toString()
                 );
-        return tokenUser.getUser();
     }
 
     public Authentication getAuthentication(HttpServletRequest request) {
@@ -75,7 +73,7 @@ public class RedisAuthService extends  TokenSettings implements AuthService{
      * creates a token without expiration
      * expiration is to be validated against redis
      */
-    public String createTokenForUser(User user, String secret) {
+    public String createTokenForUser(TokenUser user, String secret) {
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())
                 .setSubject(toJSON(user))
