@@ -57,7 +57,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		AnalyticsArtifactHandler objSpy = Mockito.spy(obj);
 		
 		guidsModule = objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "module"), AnalyticsAsset.class));
 		
 		// Verify structure and content of the updated asset. 
 		assertEquals(guidsModule.getAssetsList().size(), 1, "Single asset should be updated.");
@@ -94,7 +94,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		AnalyticsArtifactHandler objSpy = Mockito.spy(obj);
 
 		guidsModule = objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "moduleShort"));
+				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "moduleShort"), AnalyticsAsset.class));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the updated asset. 
@@ -138,7 +138,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		AnalyticsArtifactHandler objSpy = Mockito.spy(obj);
 
 		guidsModule = objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "module"));
+				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "module"), AnalyticsAsset.class));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the updated asset. 
@@ -174,7 +174,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		assertSubgraph(guid, "moduleSubgraph");
 		
 		guidsModule = obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "moduleReferences"));
+				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "moduleReferences"), AnalyticsAsset.class));
 		
 		//---------------------------------------------------
 		// Verify structure and content of the updated asset. 
@@ -219,14 +219,17 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		assertSubgraph(guidModule, "moduleSubgraph");
 
 		// identifier change removes old object and creates new one with the new identifier
-		String updatedBM = baseModule.replaceFirst("\"identifier\" : \"COUNTRY\"", "\"identifier\" : \"COUNTRY1\"");
+		AnalyticsAsset updatedBM = TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class);
+		updatedBM.getContainer().get(0).setIdentifier("COUNTRY1");
+
 		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, updatedBM);
 		// Verify structure and content of the updated asset and dependent asset. 
 		assertSubgraph(guidBase, "baseModuleNewIdentifierSubgraph");
 		assertSubgraph(guidModule, "moduleRemovedReferenceSubgraph");	// two relationships were removed from moduleSubgraph.json
 		
 		// update with original definition: roll back
-		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, baseModule);
+		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, 
+				TestUtilities.readObjectJson(baseModule, AnalyticsAsset.class));
 		// Verify structure and content of the updated asset and dependent asset. 
 		assertSubgraph(guidBase, "baseModuleSubgraph");
 		assertSubgraph(guidModule, "moduleSubgraph");
@@ -265,23 +268,19 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		
 		// property updates one by one confirm that each update is completed
 		module.setDisplayName(UPDATED + MODULE_NAME);
-		strModule = TestUtilities.writeObjectJson(module);
-		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, strModule);
+		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
 		assertEquals(getAsset(assetConverter, guid, testName).getDisplayName(), UPDATED + MODULE_NAME, "Module name update failed");
 		
 		module.setDescription(UPDATED + TEST_DESCRIPTION);
-		strModule = TestUtilities.writeObjectJson(module);
-		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, strModule);
+		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
 		assertEquals(getAsset(assetConverter, guid, testName).getDescription(), UPDATED + TEST_DESCRIPTION, "Description update failed");
 
 		module.setLocation(UPDATED + UID_PATH);
-		strModule = TestUtilities.writeObjectJson(module);
-		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, strModule);
+		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
 		assertEquals(getAsset(assetConverter, guid, testName).getLocation(), UPDATED + UID_PATH, "Location update failed");
 
 		module.setLastModified(UPDATED + TIMESTAMP);
-		strModule = TestUtilities.writeObjectJson(module);
-		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, strModule);
+		objSpy.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
 		AnalyticsAsset repositoryAsset = getAsset(assetConverter, guid, testName);
 		assertEquals(repositoryAsset.getLastModified(), UPDATED + TIMESTAMP, "Last modified update failed");
 
@@ -311,7 +310,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		
 		// update report
 		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET,
-				TestUtilities.readJsonFile(FOLDER_INPUT, "report2"));
+				TestUtilities.readObjectJson(TestUtilities.readJsonFile(FOLDER_INPUT, "report2"), AnalyticsAsset.class));
 		assertSubgraph(guidReport, "report2Subgraph");
 	}
 	
@@ -338,9 +337,10 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 		
 		// modify reference from baseModule to baseModule2
 		module = module.replaceAll("iBASEMODULE", "iBASEMODULE2").replaceAll("_GOSALES_Egeria", "_GOSALES_Egeria2");
+		AnalyticsAsset asset = TestUtilities.readObjectJson(module, AnalyticsAsset.class);
 		
 		// update report
-		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, module);
+		obj.updateAssets(USER_ID, HTTP_LOCALHOST_9300_P2PD_SERVLET, asset);
 		assertSubgraph(guidModule, "module2Subgraph");
 	}	
 	/**
