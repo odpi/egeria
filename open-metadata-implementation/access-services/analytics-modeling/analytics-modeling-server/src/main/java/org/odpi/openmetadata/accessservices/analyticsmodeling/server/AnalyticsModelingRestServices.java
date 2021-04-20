@@ -19,6 +19,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ErrorRes
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ModuleResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemaTablesResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemasResponse;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -233,7 +234,7 @@ public class AnalyticsModelingRestServices {
 	 * @param artifact definition.
 	 * @return response with artifact or error description.
 	 */
-	public AnalyticsModelingOMASAPIResponse updateArtifact(String serverName, String userId, String serverCapability, String artifact) {
+	public AnalyticsModelingOMASAPIResponse updateArtifact(String serverName, String userId, String serverCapability, AnalyticsAsset artifact) {
 
 		String methodName = "updateArtifact";
 		AnalyticsModelingOMASAPIResponse ret;
