@@ -73,26 +73,6 @@ public interface DataEngineClient {
                                                                                  ConnectorCheckedException;
 
     /**
-     * Use {@link #createOrUpdatePortImplementation(String, PortImplementation, String)} for creating a port implementation attached to a process
-     *
-     * @param userId             the name of the calling user
-     * @param portImplementation the port implementation bean
-     *
-     * @return unique identifier of the port implementation in the repository
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     * @throws ConnectorCheckedException  internal problem with the connector
-     */
-    @Deprecated
-    String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws
-                                                                                                  InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException,
-                                                                                                  ConnectorCheckedException;
-
-    /**
      * Create or update the port implementation entity,with the corresponding schema type and port schema relationship. It attaches the port
      * implementation to the provided process
      *
@@ -112,26 +92,6 @@ public interface DataEngineClient {
                                                                                                                                UserNotAuthorizedException,
                                                                                                                                PropertyServerException,
                                                                                                                                ConnectorCheckedException;
-
-    /**
-     * Use {@link #createOrUpdatePortAlias(String, PortAlias, String)} for creating a port alias attached to a process
-     *
-     * @param userId    the name of the calling user
-     * @param portAlias the port alias bean
-     *
-     * @return unique identifier of the port alias in the repository
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     * @throws ConnectorCheckedException  internal problem with the connector
-     */
-    @Deprecated
-    String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException,
-                                                                              ConnectorCheckedException;
-
     /**
      * Create or update the port alias entity with a PortDelegation relationship. It attaches the port alias to the provided process
      *

@@ -145,17 +145,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    @Deprecated
-    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation, String processQualifiedName) throws
                                                                                                                                       InvalidParameterException,
                                                                                                                                       UserNotAuthorizedException,
@@ -169,17 +158,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, PORT_IMPLEMENTATION_METHOD_NAME, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException {
-        return null;
     }
 
     /**

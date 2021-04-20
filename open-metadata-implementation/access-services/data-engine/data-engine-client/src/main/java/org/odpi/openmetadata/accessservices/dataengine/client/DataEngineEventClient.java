@@ -98,19 +98,6 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    @Deprecated
-    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException,
-                                                                                                                ConnectorCheckedException {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws ConnectorCheckedException problem with the underlying connector (if used)
-     */
-    @Override
     public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation, String processQualifiedName) throws
                                                                                                                                       InvalidParameterException,
                                                                                                                                       ConnectorCheckedException {
@@ -125,18 +112,6 @@ public class DataEngineEventClient implements DataEngineClient {
         topicConnector.sendEvent(event);
 
         //async interaction
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws ConnectorCheckedException problem with the underlying connector (if used)
-     */
-    @Override
-    @Deprecated
-    public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException, ConnectorCheckedException {
         return null;
     }
 
