@@ -31,7 +31,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
 
 
     /**
-     * Construct the asset handler with information needed to work with B objects.
+     * Construct the handler with information needed to work with B objects.
      *
      * @param schemaAttributeConverter specific converter for the SCHEMA_ATTRIBUTE bean class
      * @param schemaAttributeBeanClass name of bean class that is represented by the generic class SCHEMA_ATTRIBUTE
@@ -49,21 +49,21 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param publishZones list of zones that the access service sets up in published B instances.
      * @param auditLog destination for audit log events.
      */
-    public SchemaAttributeHandler(OpenMetadataAPIGenericConverter<SCHEMA_ATTRIBUTE>       schemaAttributeConverter,
+    public SchemaAttributeHandler(OpenMetadataAPIGenericConverter<SCHEMA_ATTRIBUTE> schemaAttributeConverter,
                                   Class<SCHEMA_ATTRIBUTE>                                 schemaAttributeBeanClass,
-                                  OpenMetadataAPIGenericConverter<SCHEMA_TYPE>            schemaTypeConverter,
+                                  OpenMetadataAPIGenericConverter<SCHEMA_TYPE> schemaTypeConverter,
                                   Class<SCHEMA_TYPE>                                      schemaTypeBeanClass,
                                   String                                                  serviceName,
                                   String                                                  serverName,
-                                  InvalidParameterHandler                                 invalidParameterHandler,
-                                  RepositoryHandler                                       repositoryHandler,
-                                  OMRSRepositoryHelper                                    repositoryHelper,
+                                  InvalidParameterHandler invalidParameterHandler,
+                                  RepositoryHandler repositoryHandler,
+                                  OMRSRepositoryHelper repositoryHelper,
                                   String                                                  localServerUserId,
-                                  OpenMetadataServerSecurityVerifier                      securityVerifier,
+                                  OpenMetadataServerSecurityVerifier securityVerifier,
                                   List<String>                                            supportedZones,
                                   List<String>                                            defaultZones,
                                   List<String>                                            publishZones,
-                                  AuditLog                                                auditLog)
+                                  AuditLog auditLog)
     {
         super(schemaAttributeConverter,
               schemaAttributeBeanClass,
@@ -107,6 +107,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param userId calling user
      * @param externalSourceGUID     unique identifier of software server capability representing the caller
      * @param externalSourceName     unique name of software server capability representing the caller
+     * @param parentElementGUID  element to connect this schema attribute to
+     * @param parentElementGUIDParameterName parameter supplying parentElementGUID
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the schema attribute - used in other configuration
      * @param displayName short display name for the schema attribute
@@ -489,6 +491,143 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
 
 
     /**
+     * Returns a list of schema attributes that are linked to a schema attribute via the NestedSchemaAttribute relationship.
+     * It validates the unique identifier of the parent schema attribute, and the visibility/security of any attached asset using the
+     * supplied supported zones (needed for the calls from the OCF Metadata REST Services).
+     * Then it begins to extract the schema attributes. Exceptions occur if a schema attribute does not have a type.
+     *
+     * @param userId         String   userId of user making request.
+     * @param schemaAttributeGUID String   unique id for containing schema attribute.
+     * @param schemaAttributeGUIDParameterName String name of the parameter supplying the guid.
+     * @param startFrom   int      starting position for first returned element.
+     * @param pageSize    int      maximum number of elements to return on the call.
+     * @param methodName     calling method
+     *
+     * @return a schema attributes response
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<SCHEMA_ATTRIBUTE> getNestedSchemaAttributes(String       userId,
+                                                            String       schemaAttributeGUID,
+                                                            String       schemaAttributeGUIDParameterName,
+                                                            int          startFrom,
+                                                            int          pageSize,
+                                                            String       methodName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        return getNestedSchemaAttributes(userId, schemaAttributeGUID, schemaAttributeGUIDParameterName, supportedZones, startFrom, pageSize, methodName);
+    }
+
+
+    /**
+     * Returns a list of schema attributes that are linked to a schema attribute via the NestedSchemaAttribute relationship.
+     * It validates the unique identifier of the parent schema attribute, and the visibility/security of any attached asset using the
+     * supplied supported zones (needed for the calls from the OCF Metadata REST Services).
+     * Then it begins to extract the schema attributes. Exceptions occur if a schema attribute does not have a type.
+     *
+     * @param userId         String   userId of user making request.
+     * @param schemaAttributeGUID String   unique id for containing schema attribute.
+     * @param schemaAttributeGUIDParameterName String name of the parameter supplying the guid.
+     * @param serviceSupportedZones list of zone names for calling service
+     * @param startFrom   int      starting position for first returned element.
+     * @param pageSize    int      maximum number of elements to return on the call.
+     * @param methodName     calling method
+     *
+     * @return a schema attributes response
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<SCHEMA_ATTRIBUTE> getNestedSchemaAttributes(String       userId,
+                                                            String       schemaAttributeGUID,
+                                                            String       schemaAttributeGUIDParameterName,
+                                                            List<String> serviceSupportedZones,
+                                                            int          startFrom,
+                                                            int          pageSize,
+                                                            String       methodName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String nestedSchemaAttributeGUIDParameterName = "schemaAttributeEntity.getGUID()";
+
+        List<EntityDetail>  entities = this.getAttachedEntities(userId,
+                                                                schemaAttributeGUID,
+                                                                schemaAttributeGUIDParameterName,
+                                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                null,
+                                                                null,
+                                                                false,
+                                                                serviceSupportedZones,
+                                                                startFrom,
+                                                                pageSize,
+                                                                methodName);
+
+        List<SCHEMA_ATTRIBUTE>  results = new ArrayList<>();
+
+        if (entities != null)
+        {
+            for (EntityDetail schemaAttributeEntity : entities)
+            {
+                if (schemaAttributeEntity != null)
+                {
+                    /*
+                     * This method verifies the visibility of the entity and the security permission.
+                     */
+                    results.add(this.getSchemaAttributeFromEntity(userId,
+                                                                  schemaAttributeEntity.getGUID(),
+                                                                  nestedSchemaAttributeGUIDParameterName,
+                                                                  schemaAttributeEntity,
+                                                                  methodName));
+                }
+            }
+        }
+        else
+        {
+            /*
+             * Using the old pattern where a schema type is between the nested schema attributes.
+             */
+            EntityDetail entity = this.getAttachedEntity(userId,
+                                                         schemaAttributeGUID,
+                                                         schemaAttributeGUIDParameterName,
+                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                         OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                         methodName);
+
+            if (entity != null)
+            {
+                String schemaTypeGUIDParameterName = "schemaTypeGUID";
+
+                return getSchemaAttributesForComplexSchemaType(userId,
+                                                               entity.getGUID(),
+                                                               schemaTypeGUIDParameterName,
+                                                               null,
+                                                               null,
+                                                               supportedZones,
+                                                               startFrom,
+                                                               pageSize,
+                                                               methodName);
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+    }
+
+
+    /**
      * Retrieve the special links (like foreign keys) between attributes.
      *
      * @param userId calling user
@@ -500,7 +639,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @throws PropertyServerException    problem accessing the property server
      */
     private List<Relationship> getSchemaAttributeRelationships(String        userId,
-                                                               EntityDetail  schemaAttributeEntity,
+                                                               EntityDetail schemaAttributeEntity,
                                                                String        methodName) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
@@ -570,7 +709,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     private SCHEMA_ATTRIBUTE getSchemaAttributeFromEntity(String          userId,
                                                           String          schemaAttributeGUID,
                                                           String          schemaAttributeGUIDParameterName,
-                                                          EntityDetail    schemaAttributeEntity,
+                                                          EntityDetail schemaAttributeEntity,
                                                           String          methodName) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -630,7 +769,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             }
 
 
-            List<Relationship>  attributeRelationships = this.getSchemaAttributeRelationships(userId, schemaAttributeEntity, methodName);
+            List<Relationship> attributeRelationships = this.getSchemaAttributeRelationships(userId, schemaAttributeEntity, methodName);
 
             return schemaAttributeConverter.getNewSchemaAttributeBean(beanClass,
                                                                       schemaAttributeEntity,
@@ -912,9 +1051,9 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                       String                externalSourceGUID,
                                       String                externalSourceName,
                                       String                schemaAttributeGUID,
-                                      InstanceProperties    instanceProperties) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
+                                      InstanceProperties instanceProperties) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName = "updateSchemaAttribute";
         final String parameterName = "schemaAttributeGUID";
@@ -939,7 +1078,11 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param externalSourceGUID          unique identifier of software server capability representing the caller
      * @param externalSourceName          unique name of software server capability representing the caller
      * @param schemaAttributeGUID         unique identifier of schema attribute
+     * @param schemaAttributeGUIDParameterName  parameter supplying schemaAttributeGUID
      * @param instanceProperties          the schema attribute's properties
+     * @param isMergeUpdate               should the properties be merged with existing properties of replace them?
+     * @param methodName                  calling method
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -949,11 +1092,11 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                       String                externalSourceName,
                                       String                schemaAttributeGUID,
                                       String                schemaAttributeGUIDParameterName,
-                                      InstanceProperties    instanceProperties,
+                                      InstanceProperties instanceProperties,
                                       boolean               isMergeUpdate,
                                       String                methodName) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
