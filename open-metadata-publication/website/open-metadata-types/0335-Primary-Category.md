@@ -4,7 +4,7 @@
 # 0335 Primary Category 
 
 This Classification marks the Primary Category associated with a [GlossaryTerm](0330-Terms.md) and helps to identify it in the lineage graph. 
-It contains a single filed, `categoryQualifiedName` which represents the qualified name of the primary category associated with the term.
+It contains a single property, `categoryQualifiedName` which represents the qualified name of the primary [category](0320-Category-Hierarchy.md) associated with the term.
 
 ![UML](0335-Primary-Category.png#pagewidth)
 
