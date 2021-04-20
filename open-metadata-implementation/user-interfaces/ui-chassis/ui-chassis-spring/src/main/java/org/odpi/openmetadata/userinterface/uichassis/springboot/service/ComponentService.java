@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
