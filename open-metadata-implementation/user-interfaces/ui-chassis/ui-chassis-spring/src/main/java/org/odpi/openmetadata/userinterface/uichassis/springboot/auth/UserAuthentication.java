@@ -4,6 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.util.Collection;
 
@@ -23,12 +24,12 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getAuthorities();
+        return AuthorityUtils.createAuthorityList(user.getRoles().toArray(new String[]{}));
     }
 
     @Override
     public Object getCredentials() {
-        return user.getPassword();
+        return null;
     }
 
     @Override
