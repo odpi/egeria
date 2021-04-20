@@ -76,11 +76,6 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         }
     }
 
-    private void filterRoles(Authentication authentication) {
-        authentication.getAuthorities()
-                .removeIf(a -> !appRoles.contains(a.getAuthority()));
-    }
-
     private boolean checkRoles(Authentication authentication){
        return  authentication.getAuthorities().stream()
                 .map(r -> r.getAuthority())
