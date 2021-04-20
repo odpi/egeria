@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}")
 
-@Tag(name="Data Engine OMAS", description="The Data Engine OMAS provides APIs and events for data movement/processing engines to record the changes made to the data landscape.", externalDocs=@ExternalDocumentation(description="Data Engine Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/"))
+@Tag(name = "Data Engine OMAS", description = "The Data Engine OMAS provides APIs and events for data movement/processing engines to record the " +
+        "changes made to the data landscape.", externalDocs = @ExternalDocumentation(description = "Data Engine Open Metadata Access Service (OMAS)"
+        , url = "https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/"))
 
 public class DataEngineResource {
     private DataEngineRESTServices restAPI;
@@ -180,6 +182,7 @@ public class DataEngineResource {
         return restAPI.addLineageMappings(userId, serverName, lineageMappingsRequestBody);
     }
 
+
     /***
      * Get connection details used to access Data Engine OMAS input topic
      *
@@ -194,8 +197,40 @@ public class DataEngineResource {
      */
     @GetMapping(path = "/topics/in-topic-connection")
 
-    public ConnectionResponse getInTopicConnection(@PathVariable String                        serverName,
-                                                   @PathVariable String                        userId) {
+    public ConnectionResponse getInTopicConnection(@PathVariable String serverName,
+                                                   @PathVariable String userId) {
         return restAPI.getInTopicConnection(serverName, userId);
+    }
+
+    /**
+     * Create a Database entity with all the needed relationships
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the database
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/databases")
+    public GUIDResponse upsertDatabase(@PathVariable("userId") String userId,
+                                       @PathVariable("serverName") String serverName,
+                                       @RequestBody DatabaseRequestBody requestBody) {
+        return restAPI.upsertDatabase(userId, serverName, requestBody);
+    }
+
+    /**
+     * Create a RelationalTable entity with all the needed relationships
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the schema type
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/relational-tables")
+    public GUIDResponse upsertRelationalTable(@PathVariable("userId") String userId,
+                                              @PathVariable("serverName") String serverName,
+                                              @RequestBody RelationalTableRequestBody requestBody) {
+        return restAPI.upsertRelationalTable(userId, serverName, requestBody);
     }
 }

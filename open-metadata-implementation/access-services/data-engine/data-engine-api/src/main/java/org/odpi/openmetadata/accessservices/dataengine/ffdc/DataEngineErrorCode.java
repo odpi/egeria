@@ -56,13 +56,17 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
             "Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
             "The local server will not connect to the cohort.",
             "The connection to the connector is configured in the server configuration.  " +
-                                 "Review previous error messages to determine the precise error in the " +
-                                 "start up configuration. " +
-                                 "Correct the configuration and reconnect the server to the cohort. "),
+                    "Review previous error messages to determine the precise error in the " +
+                    "start up configuration. " +
+                    "Correct the configuration and reconnect the server to the cohort. "),
     PROCESS_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-008",
             "Process with qualifiedName {0} was not found",
             "The system is unable to create a new ProcessHierarchy relation.",
             "Correct the code in the caller to provide the correct port qualified name."),
+    DATABASE_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-009",
+            "Database with qualifiedName {0} was not found",
+            "The system is unable to create a new table attached to database",
+            "Correct the code in the caller to provide the correct database qualified name."),
     UNABLE_TO_SEND_EVENT(500, "OMAS-DATA-ENGINE-500-001",
             "An unexpected exception occurred when sending an event through connector {0} to the Data Engine OMAS out topic.  The failing " +
                     "event was {1}, the exception was {2} with message {2}",
@@ -106,6 +110,7 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
      * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     *
      * @return message definition object.
      */
     public ExceptionMessageDefinition getMessageDefinition(String... params) {

@@ -4,8 +4,10 @@
 # Samples
 
 This sample Postman collection illustrates configuring and using the DataEngine OMAS with the Egeria graph repository.
+
+### [DataEngine-technical-assets.postman_collection.json](DataEngine-technical-assets.postman_collection.json) 
  
-# [DataEngineOMAS-local-graph-integration.postman_collection.json](DataEngineOMAS-local-graph-integration.postman_collection.json)
+### [DataEngineOMAS-local-graph-integration.postman_collection.json](DataEngineOMAS-local-graph-integration.postman_collection.json)
 
 This script can be used to configure Egeria with Data Engine OMAS and the local graph repository.  
 It can be used to run through a number of different tests of the REST endpoints that Data Engine OMAS exposes. 

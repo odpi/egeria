@@ -7,17 +7,17 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.TransformationProjectMapper.NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CollectionMapper.NAME_PROPERTY_NAME;
 
-public class TransformationProjectBuilder extends ReferenceableBuilder {
+public class CollectionBuilder extends ReferenceableBuilder {
 
-    private String transformationProjectName;
+    private String collectionName;
 
-    public TransformationProjectBuilder(String qualifiedName, String transformationProjectName, String typeName,
-                                        OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
+    public CollectionBuilder(String qualifiedName, String collectionName, String typeName,
+                             OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
 
         super(qualifiedName, typeName, repositoryHelper, serviceName, serverName);
-        this.transformationProjectName = transformationProjectName;
+        this.collectionName = collectionName;
     }
     /**
      * Return the supplied bean properties in an InstanceProperties object.
@@ -31,10 +31,10 @@ public class TransformationProjectBuilder extends ReferenceableBuilder {
     @Override
     public InstanceProperties getInstanceProperties(String methodName) throws InvalidParameterException {
         InstanceProperties properties = super.getInstanceProperties(methodName);
-        if (transformationProjectName != null) {
+        if (collectionName != null) {
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    NAME_PROPERTY_NAME, transformationProjectName, methodName);
+                    NAME_PROPERTY_NAME, collectionName, methodName);
         }
         return properties;
     }
