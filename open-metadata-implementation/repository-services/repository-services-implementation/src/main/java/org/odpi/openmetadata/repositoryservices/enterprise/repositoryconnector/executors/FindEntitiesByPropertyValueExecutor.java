@@ -24,7 +24,7 @@ public class FindEntitiesByPropertyValueExecutor extends PageableRepositoryExecu
     private String             searchCriteria;
     private List<String>       limitResultsByClassification;
 
-    private EntityAccumulator  accumulator;
+    private EntityAccumulator accumulator;
 
 
     /**
@@ -62,11 +62,11 @@ public class FindEntitiesByPropertyValueExecutor extends PageableRepositoryExecu
                                                List<String>              limitResultsByClassification,
                                                Date                      asOfTime,
                                                String                    sequencingProperty,
-                                               SequencingOrder           sequencingOrder,
+                                               SequencingOrder sequencingOrder,
                                                int                       pageSize,
                                                String                    localMetadataCollectionId,
-                                               AuditLog                  auditLog,
-                                               OMRSRepositoryValidator   repositoryValidator,
+                                               AuditLog auditLog,
+                                               OMRSRepositoryValidator repositoryValidator,
                                                String                    methodName)
     {
         this(userId,
@@ -117,9 +117,9 @@ public class FindEntitiesByPropertyValueExecutor extends PageableRepositoryExecu
                                                 List<String>          limitResultsByClassification,
                                                 Date                  asOfTime,
                                                 String                sequencingProperty,
-                                                SequencingOrder       sequencingOrder,
+                                                SequencingOrder sequencingOrder,
                                                 int                   pageSize,
-                                                EntityAccumulator     accumulator,
+                                                EntityAccumulator accumulator,
                                                 String                methodName)
     {
         super(userId,
@@ -221,7 +221,7 @@ public class FindEntitiesByPropertyValueExecutor extends PageableRepositoryExecu
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(metadataCollectionId, error);
+            accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
         return true;
