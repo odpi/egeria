@@ -11,6 +11,7 @@ import javax.validation.constraints.PositiveOrZero;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.server.AnalyticsModelingRestServices;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -155,7 +156,7 @@ public class AnalyticsModelingOMASResource {
      * @param serverName  unique identifier for requested server.
      * @param userId      request user
 	 * @param serverCapability where the artifact is stored.
-	 * @param artifact definition json.
+	 * @param artifact from json definition.
 	 * @return errors or list of created assets.
 	 */
     @Operation(summary = "Update assets representing analytics artifact.")
@@ -164,7 +165,7 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
 			@RequestParam(required=true) String serverCapability,
-			@RequestBody(required=true) String artifact
+			@RequestBody(required=true) AnalyticsAsset artifact
 			) {
 
 		return restAPI.updateArtifact(serverName, userId, serverCapability, artifact);

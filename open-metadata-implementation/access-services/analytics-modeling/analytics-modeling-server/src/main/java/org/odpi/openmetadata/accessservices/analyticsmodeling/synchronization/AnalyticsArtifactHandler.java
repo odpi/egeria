@@ -383,10 +383,12 @@ public class AnalyticsArtifactHandler {
 	 * @param container bean to create.
 	 * @param parentGUID to use as parent entity.
 	 * @param anchorGUID to create anchor classification.
+	 * @param bNested to create nested container.
+	 * @param parentQName of the created container.
 	 * @return created container GUID.
-	 * @throws InvalidParameterException
-	 * @throws PropertyServerException
-	 * @throws UserNotAuthorizedException
+	 * @throws InvalidParameterException repository access error.
+	 * @throws PropertyServerException repository access error.
+	 * @throws UserNotAuthorizedException repository access error.
 	 */
 	public String createContainer(MetadataContainer container, String parentGUID, String anchorGUID, boolean bNested, String parentQName) 
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
@@ -441,9 +443,9 @@ public class AnalyticsArtifactHandler {
 	 * @param anchorGUID
 	 * @param assetEntities 
 	 * @return
-	 * @throws InvalidParameterException
-	 * @throws PropertyServerException
-	 * @throws UserNotAuthorizedException
+	 * @throws InvalidParameterException repository access error.
+	 * @throws PropertyServerException repository access error.
+	 * @throws UserNotAuthorizedException repository access error.
 	 */
 	private String updateContainer(MetadataContainer container, String parentGUID, String anchorGUID,
 			boolean bNested, String parentQName, Map<String, EntityDetail> assetEntities) 
@@ -490,9 +492,9 @@ public class AnalyticsArtifactHandler {
 	 * @param anchorGUID to create classification.
 	 * @param bNested true for child of container or item, not asset.
 	 * @param parentQName to build QName of the item.
-	 * @throws InvalidParameterException
-	 * @throws PropertyServerException
-	 * @throws UserNotAuthorizedException
+	 * @throws InvalidParameterException repository access error.
+	 * @throws PropertyServerException repository access error.
+	 * @throws UserNotAuthorizedException repository access error.
 	 */
 	public void createItem(MetadataItem item, String parentGUID, String anchorGUID, boolean bNested, String parentQName) 
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
@@ -779,23 +781,21 @@ public class AnalyticsArtifactHandler {
 	 * Update assets defined by input.
 	 * @param user making the request.
 	 * @param serverCapability where the artifact is located.
-	 * @param input definition of analytic artifact.
+	 * @param asset analytic artifact.
 	 * @return set of asset GUIDs representing the artifact.
 	 * @throws AnalyticsModelingCheckedException in case of error.
 	 */
-	public ResponseContainerAssets updateAssets(String user, String serverCapability, String input)
+	public ResponseContainerAssets updateAssets(String user, String serverCapability, AnalyticsAsset asset)
 			throws AnalyticsModelingCheckedException
 	{
 		String methodName = "updateAssets";
 		ctx.initializeSoftwareServerCapability(user, serverCapability);
 		
-		ObjectMapper mapper = new ObjectMapper();
 		List<String> guids = new ArrayList<>();
 		
 		newItem = new HashMap<>();
 		
 		try {
-			AnalyticsAsset asset = mapper.readValue(input, AnalyticsAsset.class);
 			
 			if (asset.hasMetadataModule()) {
 				String guid = updateModuleAsset(asset);
@@ -812,12 +812,6 @@ public class AnalyticsArtifactHandler {
 				guids.add(updateVisualizationAsset(asset));
 			}
 			
-		} catch (JsonProcessingException ex) {
-			throw new AnalyticsModelingCheckedException(
-					AnalyticsModelingErrorCode.INCORRECT_ARTIFACT_DEFINITION.getMessageDefinition(input),
-					this.getClass().getSimpleName(),
-					methodName,
-					ex);
 		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
 			throw new AnalyticsModelingCheckedException(
 					AnalyticsModelingErrorCode.FAILED_UPDATE_ARTIFACT.getMessageDefinition(),
@@ -1026,9 +1020,9 @@ public class AnalyticsArtifactHandler {
 	 * Remove metadata entity left after update is completed.
 	 * @param entity to remove
 	 * @param methodName requested removal.
-	 * @throws InvalidParameterException
-	 * @throws UserNotAuthorizedException
-	 * @throws PropertyServerException
+	 * @throws InvalidParameterException repository access error.
+	 * @throws UserNotAuthorizedException repository access error.
+	 * @throws PropertyServerException repository access error.
 	 */
 	public void removeMetadataObject(EntityDetail entity, String methodName)
 			throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException 
