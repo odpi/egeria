@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -71,7 +72,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship omrsRelationship = mapper.map(relationship);
             InstanceProperties instanceProperties = omrsRelationship.getProperties();
-            if (instanceProperties != null) {
+            if (instanceProperties == null) {
                 instanceProperties = new InstanceProperties();
             }
             Date effectiveFromtime = instanceProperties.getEffectiveFromTime();
@@ -193,24 +194,24 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
     }
 
     private InstanceProperties updateProperties(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship originalRelationship, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationshipToUpdate) {
-        Map<String, InstancePropertyValue> updateInstanceProperties = relationshipToUpdate.getProperties().getInstanceProperties();
-        if (originalRelationship.getProperties() != null) {
-            Map<String, InstancePropertyValue> orgInstanceProperties = originalRelationship.getProperties().getInstanceProperties();
+            Map<String, InstancePropertyValue> updateInstanceProperties = relationshipToUpdate.getProperties().getInstanceProperties();
+            if (originalRelationship.getProperties() != null) {
+                Map<String, InstancePropertyValue> orgInstanceProperties = originalRelationship.getProperties().getInstanceProperties();
 
-            // if there a property that already exists but is not in the update properties
-            // then make sure that value is not overwritten by including it in this update request.
-            for (String orgPropertyName : orgInstanceProperties.keySet()) {
-                if (!updateInstanceProperties.containsKey(orgPropertyName)) {
-                    // make sure the original value is not lost.
-                    updateInstanceProperties.put(orgPropertyName, orgInstanceProperties.get(orgPropertyName));
+                // if there a property that already exists but is not in the update properties
+                // then make sure that value is not overwritten by including it in this update request.
+                for (String orgPropertyName : orgInstanceProperties.keySet()) {
+                    if (!updateInstanceProperties.containsKey(orgPropertyName)) {
+                        // make sure the original value is not lost.
+                        updateInstanceProperties.put(orgPropertyName, orgInstanceProperties.get(orgPropertyName));
+                    }
                 }
             }
-        }
-        InstanceProperties instancePropertiesToUpdate = new InstanceProperties();
-        instancePropertiesToUpdate.setInstanceProperties(updateInstanceProperties);
+            InstanceProperties instancePropertiesToUpdate = new InstanceProperties();
+            instancePropertiesToUpdate.setInstanceProperties(updateInstanceProperties);
 
-        return instancePropertiesToUpdate;
-    }
+            return instancePropertiesToUpdate;
+        }
 
     /**
      * Delete a relationship
