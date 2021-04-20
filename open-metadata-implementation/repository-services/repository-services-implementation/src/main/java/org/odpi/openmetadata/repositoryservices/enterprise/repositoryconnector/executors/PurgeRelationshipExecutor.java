@@ -40,7 +40,7 @@ public class PurgeRelationshipExecutor extends RepositoryExecutorBase
                                      String    typeDefGUID,
                                      String    typeDefName,
                                      String    relationshipGUID,
-                                     AuditLog auditLog,
+                                     AuditLog  auditLog,
                                      String    methodName)
     {
         super(userId, methodName);
