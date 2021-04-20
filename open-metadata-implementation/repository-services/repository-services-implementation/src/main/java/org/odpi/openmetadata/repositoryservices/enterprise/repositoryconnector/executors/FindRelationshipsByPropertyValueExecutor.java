@@ -61,11 +61,11 @@ public class FindRelationshipsByPropertyValueExecutor extends PageableRepository
                                                     List<InstanceStatus>      limitResultsByStatus,
                                                     Date                      asOfTime,
                                                     String                    sequencingProperty,
-                                                    SequencingOrder           sequencingOrder,
+                                                    SequencingOrder sequencingOrder,
                                                     int                       pageSize,
                                                     String                    localMetadataCollectionId,
-                                                    AuditLog                  auditLog,
-                                                    OMRSRepositoryValidator   repositoryValidator,
+                                                    AuditLog auditLog,
+                                                    OMRSRepositoryValidator repositoryValidator,
                                                     String                    methodName)
     {
         this(userId,
@@ -114,9 +114,9 @@ public class FindRelationshipsByPropertyValueExecutor extends PageableRepository
                                                      List<InstanceStatus>      limitResultsByStatus,
                                                      Date                      asOfTime,
                                                      String                    sequencingProperty,
-                                                     SequencingOrder           sequencingOrder,
+                                                     SequencingOrder sequencingOrder,
                                                      int                       pageSize,
-                                                     RelationshipAccumulator   accumulator,
+                                                     RelationshipAccumulator accumulator,
                                                      String                    methodName)
     {
         super(userId,
@@ -215,7 +215,7 @@ public class FindRelationshipsByPropertyValueExecutor extends PageableRepository
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(metadataCollectionId, error);
+            accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
         return true;
