@@ -102,9 +102,12 @@ public class DataEngineFolderHierarchyHandler {
     private void deleteExistingNestedFileRelationships(String fileGuid, String externalSourceGuid, String externalSourceName,
                                                        String userId, String methodName)
             throws UserNotAuthorizedException, PropertyServerException {
-        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId, fileGuid, DATA_FILE_TYPE_NAME,
-                NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, methodName);
-        for(Relationship relationship : relationships) {
+        Optional<List<Relationship>> optionalRelationships = Optional.ofNullable(repositoryHandler.getRelationshipsByType(userId, fileGuid, DATA_FILE_TYPE_NAME,
+                NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, methodName));
+        if(!optionalRelationships.isPresent()){
+            return;
+        }
+        for(Relationship relationship : optionalRelationships.get()) {
             repositoryHandler.removeRelationship(userId, externalSourceGuid, externalSourceName, relationship, methodName);
         }
     }

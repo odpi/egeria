@@ -19,45 +19,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FileFolder extends DataStore {
 
-    private String pathName;
-
-    /**
-     * Gets the file path
-     *
-     * @return path
-     */
-    public String getPathName() {
-        return pathName;
-    }
-
-    /**
-     * Sets the file path
-     *
-     * @param pathName path
-     */
-    public void setPathName(String pathName) {
-        this.pathName = pathName;
-    }
-
-    @Override
-    public String toString() {
-        return "DataFile{" +
-                ", path='" + pathName + "'" +
-                "}";
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FileFolder dataFile = (FileFolder) o;
-
-        return Objects.equals(pathName, dataFile.pathName);
+        return o != null && getClass() == o.getClass();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), pathName);
+        return Objects.hash(super.hashCode());
     }
 
 }

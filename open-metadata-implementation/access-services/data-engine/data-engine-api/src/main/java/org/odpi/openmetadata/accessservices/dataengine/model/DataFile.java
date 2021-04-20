@@ -34,7 +34,6 @@ public class DataFile extends DataStore {
     private String fileType;
     private SchemaType schema;
     private List<Attribute> columns;
-    private String pathName;
 
     /**
      * Gets file type
@@ -90,31 +89,12 @@ public class DataFile extends DataStore {
         this.columns = columns;
     }
 
-    /**
-     * Gets the file path
-     *
-     * @return path
-     */
-    public String getPathName() {
-        return pathName;
-    }
-
-    /**
-     * Sets the file path
-     *
-     * @param pathName path
-     */
-    public void setPathName(String pathName) {
-        this.pathName = pathName;
-    }
-
     @Override
     public String toString() {
         return "DataFile{" +
                 ", fileType='" + fileType + "'" +
                 ", schema='" + schema + "'" +
                 ", columns='" + columns + "'" +
-                ", path='" + pathName + "'" +
                 "}";
     }
 
@@ -126,13 +106,12 @@ public class DataFile extends DataStore {
 
         return Objects.equals(fileType, dataFile.fileType) &&
                 Objects.equals(schema, dataFile.schema) &&
-                Objects.equals(columns, dataFile.columns) &&
-                Objects.equals(pathName, dataFile.pathName);
+                Objects.equals(columns, dataFile.columns);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), fileType, schema, columns, pathName);
+        return Objects.hash(super.hashCode(), fileType, schema, columns);
     }
 
 }

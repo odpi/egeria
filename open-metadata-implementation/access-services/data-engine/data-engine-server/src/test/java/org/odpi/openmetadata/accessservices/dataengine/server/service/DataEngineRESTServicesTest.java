@@ -841,14 +841,14 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    public void createDataFileAndSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void insertDataFile() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockDataFileHandler("createDataFileAndSchema");
         DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody(getDataFile());
         mockRegistrationHandler("createDataFileAndSchema");
         when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        GUIDResponse guidResponse = dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
+        dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
         verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog( OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
                 OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),
@@ -857,14 +857,14 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    public void createCSVFileAndSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void insertCSVFile() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockDataFileHandler("createDataFileAndSchema");
         DataFileRequestBody dataFileRequestBody = mockDataFileRequestBody(getCsvFile());
         mockRegistrationHandler("createDataFileAndSchema");
         when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        GUIDResponse guidResponse = dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
+        dataEngineRESTServices.upsertDataFile(SERVER_NAME, USER, dataFileRequestBody);
 
         verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog( OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
                 OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), dataFileRequestBody.getDataFile().getSchema(),

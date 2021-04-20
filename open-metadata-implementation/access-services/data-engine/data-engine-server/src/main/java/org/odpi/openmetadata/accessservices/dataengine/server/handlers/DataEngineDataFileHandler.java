@@ -93,8 +93,8 @@ public class DataEngineDataFileHandler {
             fileGuid = updateFileInRepository(userId, externalSourceGuid, externalSourceName, fileAsEntity.get(), file,
                     extendedProperties, methodName);
         } else {
-            fileGuid = createFileInRepository(fileTypeName, fileTypeGuid, file, schemaType, columns, extendedProperties,
-                    externalSourceGuid, externalSourceName, userId, methodName);
+            fileGuid = createFileInRepository(fileTypeName, fileTypeGuid, file, extendedProperties, externalSourceGuid,
+                    externalSourceName, userId, methodName);
         }
         String schemaTypeGuid = dataEngineSchemaTypeHandler.upsertSchemaType(userId, schemaType, externalSourceName);
         dataEngineCommonHandler.upsertExternalRelationship(userId, fileGuid, schemaTypeGuid, ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
@@ -118,8 +118,7 @@ public class DataEngineDataFileHandler {
         return fileAsEntity.getGUID();
     }
 
-    private String createFileInRepository(String typeName, String typeGuid, DataFile file, SchemaType schemaType,
-                                          List<Attribute> columns, Map<String, Object> extendedProperties,
+    private String createFileInRepository(String typeName, String typeGuid, DataFile file, Map<String, Object> extendedProperties,
                                           String externalSourceGuid, String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
