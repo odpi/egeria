@@ -17,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
  */
 public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
 {
-    private TypesAccumulator         accumulator;
+    private TypesAccumulator accumulator;
 
     /**
      * Simple public constructor
@@ -31,8 +31,8 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
     public GetAllTypesExecutor(String                   userId,
                                String                   methodName,
                                String                   localMetadataCollectionId,
-                               AuditLog                 auditLog,
-                               OMRSRepositoryValidator  repositoryValidator)
+                               AuditLog auditLog,
+                               OMRSRepositoryValidator repositoryValidator)
     {
         this(userId,
              methodName,
@@ -49,7 +49,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
      */
     private GetAllTypesExecutor(String                   userId,
                                 String                   methodName,
-                                TypesAccumulator         accumulator)
+                                TypesAccumulator accumulator)
     {
         super(userId, methodName, accumulator);
 
@@ -96,7 +96,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(metadataCollectionId, error);
+            accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
         return true;

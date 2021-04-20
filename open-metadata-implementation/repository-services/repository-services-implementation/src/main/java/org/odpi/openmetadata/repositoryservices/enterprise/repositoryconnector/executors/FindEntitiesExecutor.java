@@ -28,7 +28,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
     private SearchClassifications matchClassifications;
     private List<String>          instanceSubtypeGUIDs;
 
-    private EntityAccumulator  accumulator;
+    private EntityAccumulator accumulator;
 
     /**
      * Create the executor.  The parameters provide the parameters for issuing the requests and
@@ -60,17 +60,17 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
     public FindEntitiesExecutor(String                    userId,
                                 String                    entityTypeGUID,
                                 List<String>              entitySubtypeGUIDs,
-                                SearchProperties          matchProperties,
+                                SearchProperties matchProperties,
                                 int                       fromEntityElement,
                                 List<InstanceStatus>      limitResultsByStatus,
-                                SearchClassifications     matchClassifications,
+                                SearchClassifications matchClassifications,
                                 Date                      asOfTime,
                                 String                    sequencingProperty,
-                                SequencingOrder           sequencingOrder,
+                                SequencingOrder sequencingOrder,
                                 int                       pageSize,
                                 String                    localMetadataCollectionId,
-                                AuditLog                  auditLog,
-                                OMRSRepositoryValidator   repositoryValidator,
+                                AuditLog auditLog,
+                                OMRSRepositoryValidator repositoryValidator,
                                 String                    methodName)
     {
         this(userId,
@@ -117,15 +117,15 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
     private FindEntitiesExecutor(String                    userId,
                                  String                    entityTypeGUID,
                                  List<String>              entitySubtypeGUIDs,
-                                 SearchProperties          matchProperties,
+                                 SearchProperties matchProperties,
                                  int                       fromEntityElement,
                                  List<InstanceStatus>      limitResultsByStatus,
-                                 SearchClassifications     matchClassifications,
+                                 SearchClassifications matchClassifications,
                                  Date                      asOfTime,
                                  String                    sequencingProperty,
-                                 SequencingOrder           sequencingOrder,
+                                 SequencingOrder sequencingOrder,
                                  int                       pageSize,
-                                 EntityAccumulator         accumulator,
+                                 EntityAccumulator accumulator,
                                  String                    methodName)
     {
         super(userId,
@@ -231,7 +231,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(metadataCollectionId, error);
+            accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
         return true;
