@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +92,14 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 setUniqueQualifiedNameIfBlank(suppliedProject);
                 ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
                 EntityDetail projectEntityDetail = projectMapper.map(suppliedProject);
+                InstanceProperties instanceProperties = projectEntityDetail.getProperties();
+                if (instanceProperties == null ) {
+                    instanceProperties = new InstanceProperties();
+                }
+                if (instanceProperties.getEffectiveFromTime() == null) {
+                    instanceProperties.setEffectiveFromTime(new Date());
+                    projectEntityDetail.setProperties(instanceProperties);
+                }
                 String entityDetailGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, projectEntityDetail);
                 response = getProjectByGuid(userId, entityDetailGuid);
             }
@@ -222,10 +231,10 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(updateProject, suppliedProject);
 
-                Date termFromTime = suppliedProject.getEffectiveFromTime();
-                Date termToTime = suppliedProject.getEffectiveToTime();
-                updateProject.setEffectiveFromTime(termFromTime);
-                updateProject.setEffectiveToTime(termToTime);
+                Date projectFromTime = suppliedProject.getEffectiveFromTime();
+                Date projectToTime = suppliedProject.getEffectiveToTime();
+                updateProject.setEffectiveFromTime(projectFromTime);
+                updateProject.setEffectiveToTime(projectToTime);
 
                 ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
                 EntityDetail entityDetail = projectMapper.map(updateProject);
