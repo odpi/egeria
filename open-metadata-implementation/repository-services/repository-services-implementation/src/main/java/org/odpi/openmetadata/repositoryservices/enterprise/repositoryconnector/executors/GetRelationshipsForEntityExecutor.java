@@ -58,10 +58,10 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
                                              List<InstanceStatus>    limitResultsByStatus,
                                              Date                    asOfTime,
                                              String                  sequencingProperty,
-                                             SequencingOrder         sequencingOrder,
+                                             SequencingOrder sequencingOrder,
                                              int                     pageSize,
                                              String                  localMetadataCollectionId,
-                                             AuditLog                auditLog,
+                                             AuditLog auditLog,
                                              OMRSRepositoryValidator repositoryValidator,
                                              String                  methodName)
     {
@@ -109,7 +109,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
                                               List<InstanceStatus>    limitResultsByStatus,
                                               Date                    asOfTime,
                                               String                  sequencingProperty,
-                                              SequencingOrder         sequencingOrder,
+                                              SequencingOrder sequencingOrder,
                                               int                     pageSize,
                                               RelationshipAccumulator accumulator,
                                               String                  methodName)
@@ -217,7 +217,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(metadataCollectionId, error);
+            accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
         return true;

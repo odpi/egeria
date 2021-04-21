@@ -24,11 +24,12 @@ public class AssetLineageUpdateJobConfiguration extends JobConfiguration {
      * @param localServerUserId     the local server user ID
      */
     public AssetLineageUpdateJobConfiguration(LineageGraph lineageGraph, String jobName, Class<? extends Job> jobClass,
-                                              int jobInterval, AssetLineage assetLineageClient, String serverName,
-                                              String localServerUserId) {
+                                              int jobInterval, String configAssetLineageUpdateTime, AssetLineage assetLineageClient,
+                                              String serverName, String localServerUserId) {
 
         super(lineageGraph, jobName, jobClass, jobInterval);
 
+        jobDetail.getJobDataMap().put(JobConstants.CONFIG_ASSET_LINEAGE_LAST_UPDATE_TIME, configAssetLineageUpdateTime);
         jobDetail.getJobDataMap().put(JobConstants.ASSET_LINEAGE_CLIENT, assetLineageClient);
         jobDetail.getJobDataMap().put(JobConstants.ASSET_LINEAGE_SERVER_NAME, serverName);
         jobDetail.getJobDataMap().put(JobConstants.LOCAL_SERVER_USER_ID, localServerUserId);

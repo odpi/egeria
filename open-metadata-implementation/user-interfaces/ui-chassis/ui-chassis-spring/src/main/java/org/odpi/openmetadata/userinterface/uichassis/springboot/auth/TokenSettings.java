@@ -4,7 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public class TokenSettings {
+public class TokenSettings extends RoleService{
 
     @Value("${token.secret}")
     protected String tokenSecret;

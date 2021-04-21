@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.TransformationProject;
-import org.odpi.openmetadata.accessservices.dataengine.server.builders.TransformationProjectBuilder;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.TransformationProjectMapper;
+import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
+import org.odpi.openmetadata.accessservices.dataengine.server.builders.CollectionBuilder;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CollectionMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -15,18 +15,18 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.Optional;
 
-import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.TransformationProjectMapper.COLLECTION_MEMBERSHIP_NAME;
+import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CollectionMapper.COLLECTION_MEMBERSHIP_NAME;
 
 /**
- * DataEngineTransformationProjectHandler manages transformation project objects. It runs server-side in the
- * DataEngine OMAS and creates and retrieves transformation project entities through the OMRSRepositoryConnector.
+ * DataEngineCollectionHandler manages collection objects. It runs server-side in the
+ * DataEngine OMAS and creates and retrieves collections entities through the OMRSRepositoryConnector.
  */
-public class DataEngineTransformationProjectHandler {
+public class DataEngineCollectionHandler {
     private final String serviceName;
     private final String serverName;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
-    private final OpenMetadataAPIGenericHandler<TransformationProject> transformationProjectHandler;
+    private final OpenMetadataAPIGenericHandler<Collection> collectionOpenMetadataAPIGenericHandler;
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
 
@@ -39,18 +39,18 @@ public class DataEngineTransformationProjectHandler {
      * @param repositoryHelper              provides utilities for manipulating the repository services objects
      * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
      * @param dataEngineCommonHandler       provides utilities for manipulating entities
-     * @param transformationProjectHandler  handler for managing schema attributes in the metadata repositories
+     * @param collectionOpenMetadataAPIGenericHandler helps building model for creating Collection metadata associated with Process assets
      */
-    public DataEngineTransformationProjectHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                                  OMRSRepositoryHelper repositoryHelper,
-                                                  OpenMetadataAPIGenericHandler<TransformationProject> transformationProjectHandler,
-                                                  DataEngineRegistrationHandler dataEngineRegistrationHandler,
-                                                  DataEngineCommonHandler dataEngineCommonHandler) {
+    public DataEngineCollectionHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
+                                       OMRSRepositoryHelper repositoryHelper,
+                                       OpenMetadataAPIGenericHandler<Collection> collectionOpenMetadataAPIGenericHandler,
+                                       DataEngineRegistrationHandler dataEngineRegistrationHandler,
+                                       DataEngineCommonHandler dataEngineCommonHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.transformationProjectHandler = transformationProjectHandler;
+        this.collectionOpenMetadataAPIGenericHandler = collectionOpenMetadataAPIGenericHandler;
         this.dataEngineRegistrationHandler = dataEngineRegistrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
     }
@@ -60,33 +60,32 @@ public class DataEngineTransformationProjectHandler {
      * updates the existing one.
      *
      * @param userId                the name of the calling user
-     * @param transformationProject the transformationProject type values
+     * @param collection            the collection type values
      * @param externalSourceName    the unique name of the external source
      * @return unique identifier of the schema type in the repository
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String createTransformationProject(String userId, TransformationProject transformationProject, String externalSourceName)
+    public String createCollection(String userId, Collection collection, String externalSourceName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        String methodName = "createTransformationProject";
+        String methodName = "createCollection";
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(transformationProject.getQualifiedName(), TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(collection.getQualifiedName(), CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
-        TransformationProjectBuilder builder = getTransformationProjectBuilder(transformationProject);
+        CollectionBuilder builder = getCollectionBuilder(collection);
 
-        return transformationProjectHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
-                TransformationProjectMapper.COLLECTION_TYPE_GUID, TransformationProjectMapper.COLLECTION_TYPE_NAME,
-                transformationProject.getQualifiedName(), TransformationProjectMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
+        return collectionOpenMetadataAPIGenericHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
+                CollectionMapper.COLLECTION_TYPE_GUID, CollectionMapper.COLLECTION_TYPE_NAME,
+                collection.getQualifiedName(), CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
     }
 
-    TransformationProjectBuilder getTransformationProjectBuilder(TransformationProject transformationProject) {
-        TransformationProjectBuilder builder = new TransformationProjectBuilder(transformationProject.getQualifiedName(),
-                transformationProject.getName(), TransformationProjectMapper.COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
-        return builder;
+    CollectionBuilder getCollectionBuilder(Collection collection) {
+        return new CollectionBuilder(collection.getQualifiedName(),
+                collection.getName(), CollectionMapper.COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 
     /**
@@ -101,32 +100,32 @@ public class DataEngineTransformationProjectHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public Optional<EntityDetail> findTransformationProjectEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
+    public Optional<EntityDetail> findCollectionEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
             PropertyServerException,
             InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, TransformationProjectMapper.COLLECTION_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, CollectionMapper.COLLECTION_TYPE_NAME);
     }
 
     /**
-     * Create CollectionMembership relationships between a Process asset and the Transformation Project. Verifies that the
+     * Create CollectionMembership relationships between a Process asset and a Collection. Verifies that the
      * relationship is not present before creating it
      *
      * @param userId             the name of the calling user
      * @param processGUID        the unique identifier of the process
-     * @param transformationProjectGuid           the unique identifier of the collection that represents the transformation project
+     * @param collectionGUID     the unique identifier of the collection
      * @param externalSourceName the unique name of the external source
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void addProcessTransformationProjectRelationship(String userId, String processGUID, String transformationProjectGuid, String externalSourceName)
+    public void addCollectionMembershipRelationship(String userId, String processGUID, String collectionGUID, String externalSourceName)
             throws InvalidParameterException,
             UserNotAuthorizedException,
             PropertyServerException {
 
-        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, transformationProjectGuid,
-                COLLECTION_MEMBERSHIP_NAME, TransformationProjectMapper.COLLECTION_TYPE_NAME, externalSourceName,
+        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, collectionGUID,
+                COLLECTION_MEMBERSHIP_NAME, CollectionMapper.COLLECTION_TYPE_NAME, externalSourceName,
                 null);
     }
 }
