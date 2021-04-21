@@ -4,7 +4,6 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api;
 
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenUser;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.User;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,6 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,8 +36,8 @@ public class UserInfoController {
      * @throws HttpClientErrorException
      */
     @GetMapping( value ="/current")
-    public User getUser(HttpServletRequest request) throws HttpClientErrorException{
-        return getTokenUser(request).getUser();
+    public TokenUser getUser(HttpServletRequest request) throws HttpClientErrorException{
+        return getTokenUser(request);
     }
 
     /**
@@ -50,7 +48,7 @@ public class UserInfoController {
      */
     @GetMapping( value ="/components")
     public Collection<String> getVisibleComponents(HttpServletRequest request) throws HttpClientErrorException{
-        return componentService.getVisibleComponentsForRoles(getTokenUser(request).getRole());
+        return componentService.getVisibleComponentsForRoles(getTokenUser(request).getRoles());
     }
 
     /**
@@ -76,12 +74,11 @@ public class UserInfoController {
      */
     @GetMapping( value ="/roles")
     public Collection<String> getRoles(HttpServletRequest request) throws HttpClientErrorException{
-        List<String> userRoles =  getTokenUser(request).getRole();
+        TokenUser tokenUser =  getTokenUser(request);
         Set<String> appRoles  =  componentService.getAppRoles();
-        return  userRoles.stream()
-                .distinct()
-                .filter(appRoles::contains)
-                .collect(Collectors.toSet());
+        return  tokenUser.getRoles().stream()
+                .filter( appRoles::contains )
+                .collect( Collectors.toSet() );
      }
 
 }

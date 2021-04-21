@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import java.util.*;
 
@@ -86,6 +87,14 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 setUniqueQualifiedNameIfBlank(suppliedGlossary);
                 GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
                 EntityDetail glossaryEntityDetail = glossaryMapper.map(suppliedGlossary);
+                InstanceProperties instanceProperties = glossaryEntityDetail.getProperties();
+                if (instanceProperties == null ) {
+                    instanceProperties = new InstanceProperties();
+                }
+                if (instanceProperties.getEffectiveFromTime() == null) {
+                    instanceProperties.setEffectiveFromTime(new Date());
+                    glossaryEntityDetail.setProperties(instanceProperties);
+                }
                 String entityDetailGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, glossaryEntityDetail);
                 response = getGlossaryByGuid(userId, entityDetailGuid);
             }
@@ -209,10 +218,10 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentGlossary, suppliedGlossary);
 
-                Date termFromTime = suppliedGlossary.getEffectiveFromTime();
-                Date termToTime = suppliedGlossary.getEffectiveToTime();
-                currentGlossary.setEffectiveFromTime(termFromTime);
-                currentGlossary.setEffectiveToTime(termToTime);
+                Date glossaryFromTime = suppliedGlossary.getEffectiveFromTime();
+                Date glossaryToTime = suppliedGlossary.getEffectiveToTime();
+                currentGlossary.setEffectiveFromTime(glossaryFromTime);
+                currentGlossary.setEffectiveToTime(glossaryToTime);
 
                 GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
                 EntityDetail entityDetail = glossaryMapper.map(currentGlossary);
