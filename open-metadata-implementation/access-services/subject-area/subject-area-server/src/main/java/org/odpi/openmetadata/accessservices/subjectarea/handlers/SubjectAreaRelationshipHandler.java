@@ -17,6 +17,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,8 +35,8 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * Construct the Subject Area Relationship Handler
      * needed to operate within a single server instance.
      *
-     * @param oMRSAPIHelper           omrs API helper
-     * @param maxPageSize             maximum page size
+     * @param oMRSAPIHelper omrs API helper
+     * @param maxPageSize   maximum page size
      */
     public SubjectAreaRelationshipHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
         super(oMRSAPIHelper, maxPageSize);
@@ -44,11 +46,11 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * Create a relationship, which is a link between two Nodes.
      * <p>
      *
-     * @param <R> {@link Relationship} type of object for response
-     * @param restAPIName rest API name
-     * @param userId      userId under which the request is performed
-     * @param clazz       mapper Class
-     * @param relationship        relationship to create
+     * @param <R>          {@link Relationship} type of object for response
+     * @param restAPIName  rest API name
+     * @param userId       userId under which the request is performed
+     * @param clazz        mapper Class
+     * @param relationship relationship to create
      * @return response, when successful contains the created relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -64,12 +66,22 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
     public <R extends Relationship> SubjectAreaOMASAPIResponse<R> createRelationship(String restAPIName,
                                                                                      String userId,
                                                                                      Class<? extends IRelationshipMapper<R>> clazz,
-                                                                                     R relationship)
-    {
+                                                                                     R relationship) {
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
         try {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship omrsRelationship = mapper.map(relationship);
+            InstanceProperties instanceProperties = omrsRelationship.getProperties();
+            if (instanceProperties == null) {
+                instanceProperties = new InstanceProperties();
+            }
+            Date effectiveFromtime = instanceProperties.getEffectiveFromTime();
+            if (effectiveFromtime == null) {
+                // if not supplied set the effective from Date to now.
+                instanceProperties.setEffectiveFromTime(new Date());
+                omrsRelationship.setProperties(instanceProperties);
+            }
+
             Optional<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> createdOMRSRelationship = oMRSAPIHelper.callOMRSAddRelationship(restAPIName, userId, omrsRelationship);
             if (createdOMRSRelationship.isPresent()) {
                 R createdrelationship = mapper.map(createdOMRSRelationship.get());
@@ -84,7 +96,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
     /**
      * Get a relationship (relationship)
      *
-     * @param <R> {@link Relationship} type of object for response
+     * @param <R>         {@link Relationship} type of object for response
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param clazz       mapper Class
@@ -99,10 +111,9 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * </ul>
      */
     public <R extends Relationship> SubjectAreaOMASAPIResponse<R> getRelationship(String restAPIName,
-                                                                          String userId,
-                                                                          Class<? extends IRelationshipMapper<R>> clazz,
-                                                                          String guid)
-    {
+                                                                                  String userId,
+                                                                                  Class<? extends IRelationshipMapper<R>> clazz,
+                                                                                  String guid) {
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
         try {
             IRelationshipMapper<R> mapper = mappersFactory.get(clazz);
@@ -117,16 +128,17 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
         return response;
     }
 
-     /**
+    /**
      * Update a relationship.
      * <p>
-     * @param <R> {@link Relationship} type of object for response
-     * @param restAPIName rest API name
-     * @param userId      userId under which the request is performed
-     * @param relationshipGuid        unique identifier of the relationship
-     * @param clazz       mapper Class
-     * @param relationship        the relationship to update
-     * @param isReplace   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     *
+     * @param <R>              {@link Relationship} type of object for response
+     * @param restAPIName      rest API name
+     * @param userId           userId under which the request is performed
+     * @param relationshipGuid unique identifier of the relationship
+     * @param clazz            mapper Class
+     * @param relationship     the relationship to update
+     * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response,              when successful contains the updated relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -140,12 +152,11 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * </ul>
      */
     public <R extends Relationship> SubjectAreaOMASAPIResponse<R> updateRelationship(String restAPIName,
-                                                                             String userId,
-                                                                             String relationshipGuid,
-                                                                             Class<? extends IRelationshipMapper<R>> clazz,
-                                                                             R relationship,
-                                                                             Boolean isReplace)
-    {
+                                                                                     String userId,
+                                                                                     String relationshipGuid,
+                                                                                     Class<? extends IRelationshipMapper<R>> clazz,
+                                                                                     R relationship,
+                                                                                     Boolean isReplace) {
         final String methodName = "updateRelationship";
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
 
@@ -205,7 +216,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
     /**
      * Delete a relationship
      *
-     * @param <R> {@link Relationship} type of object for response
+     * @param <R>         {@link Relationship} type of object for response
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param clazz       mapper Class
@@ -224,10 +235,10 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * </ul>
      */
     public <R extends Relationship> SubjectAreaOMASAPIResponse<R> deleteRelationship(String restAPIName,
-                                                                             String userId,
-                                                                             Class<? extends IRelationshipMapper<R>> clazz,
-                                                                             String guid,
-                                                                             Boolean isPurge) {
+                                                                                     String userId,
+                                                                                     Class<? extends IRelationshipMapper<R>> clazz,
+                                                                                     String guid,
+                                                                                     Boolean isPurge) {
         final String methodName = "deleteRelationship";
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
 
@@ -254,7 +265,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <p>
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
-     * @param <R> {@link Relationship} type of object for response
+     * @param <R>         {@link Relationship} type of object for response
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param clazz       mapper Class
@@ -272,10 +283,9 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * </ul>
      */
     public <R extends Relationship> SubjectAreaOMASAPIResponse<R> restoreRelationship(String restAPIName,
-                                                                              String userId,
-                                                                              Class<? extends IRelationshipMapper<R>> clazz,
-                                                                              String guid)
-    {
+                                                                                      String userId,
+                                                                                      Class<? extends IRelationshipMapper<R>> clazz,
+                                                                                      String guid) {
         SubjectAreaOMASAPIResponse<R> response = new SubjectAreaOMASAPIResponse<>();
         try {
             oMRSAPIHelper.callOMRSRestoreRelationship(restAPIName, userId, guid);
