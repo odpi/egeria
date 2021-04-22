@@ -67,10 +67,6 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
             "Database with qualifiedName {0} was not found",
             "The system is unable to create a new table attached to database",
             "Correct the code in the caller to provide the correct database qualified name."),
-    DATA_FILE_NOT_PROVIDED(400, "OMAS-DATA-ENGINE-400-010",
-            "Missing payload to create DataFile and its Schema",
-            "The system is unable to create a new DataFile or subtype because of incorrect or missing payload.",
-            "Correct the code in the caller to provide the coherent payload. DataFile and/or Schema is null"),
     UNABLE_TO_SEND_EVENT(500, "OMAS-DATA-ENGINE-500-001",
             "An unexpected exception occurred when sending an event through connector {0} to the Data Engine OMAS out topic.  The failing " +
                     "event was {1}, the exception was {2} with message {2}",
