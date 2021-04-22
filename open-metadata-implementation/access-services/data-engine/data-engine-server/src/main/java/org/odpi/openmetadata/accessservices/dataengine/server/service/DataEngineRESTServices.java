@@ -1201,8 +1201,9 @@ public class DataEngineRESTServices {
             SchemaType schemaType = getDefaultSchemaTypeIfAbsentAndAddAttributes(file, file.getSchema(), columns);
 
             Map<String, Object> extendedProperties = getExtendedProperties(file);
-            String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME ;
             String fileTypeGuid = file instanceof CSVFile ? CSV_FILE_TYPE_GUID : DATA_FILE_TYPE_GUID ;
+            String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME ;
+            file.setFileType(fileTypeName);
 
             guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType, columns,
                     extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
