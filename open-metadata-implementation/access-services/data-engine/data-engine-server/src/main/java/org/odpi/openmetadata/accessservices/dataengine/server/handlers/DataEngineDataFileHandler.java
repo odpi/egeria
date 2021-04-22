@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
-import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -122,18 +121,13 @@ public class DataEngineDataFileHandler {
                                           String externalSourceGuid, String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        int ownerType = getDefaultOwnerTypeIfAbsent(file);
+        int ownerType = dataEngineCommonHandler.getOwnerTypeOrdinal(file.getOwnerType());
 
         return fileHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
                 file.getQualifiedName(), file.getDisplayName(), file.getDescription(), file.getZoneMembership(),
-                file.getOwner(), ownerType, null,
-                null, file.getOtherOriginValues(), file.getAdditionalProperties(),
+                file.getOwner(), ownerType, file.getOriginOrganizationGUID(),
+                file.getOriginBusinessCapabilityGUID(), file.getOtherOriginValues(), file.getAdditionalProperties(),
                 typeGuid, typeName, extendedProperties, methodName);
-    }
-
-    private int getDefaultOwnerTypeIfAbsent(DataFile file) {
-        return file.getOwnerType() == null ? OwnerType.USER_ID.getOpenTypeOrdinal()
-                : file.getOwnerType().getOpenTypeOrdinal();
     }
 
     private void validateParameters(DataFile file, SchemaType schemaType, List<Attribute> columns, String externalSourceGuid,

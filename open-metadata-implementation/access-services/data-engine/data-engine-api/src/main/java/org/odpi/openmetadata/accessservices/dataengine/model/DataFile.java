@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
+        property = "fileType")
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = DataFile.class, name = "DataFile"),

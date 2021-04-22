@@ -22,18 +22,38 @@ public class CSVFile extends DataFile{
     protected String delimiterCharacter;
     protected String quoteCharacter;
 
+    /**
+     * Get delimited character
+     *
+     * @return  delimiter character
+     */
     public String getDelimiterCharacter() {
         return delimiterCharacter;
     }
 
+    /**
+     * Set delimited character
+     *
+     * @param delimiterCharacter
+     */
     public void setDelimiterCharacter(String delimiterCharacter) {
         this.delimiterCharacter = delimiterCharacter;
     }
 
+    /**
+     * Get quote character
+     *
+     * @return quote character
+     */
     public String getQuoteCharacter() {
         return quoteCharacter;
     }
 
+    /**
+     * Set quote character
+     *
+     * @param quoteCharacter
+     */
     public void setQuoteCharacter(String quoteCharacter) {
         this.quoteCharacter = quoteCharacter;
     }

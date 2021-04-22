@@ -1186,6 +1186,10 @@ public class DataEngineRESTServices {
         String guid;
 
         try {
+            if (isRequestBodyInvalid(userId, serverName, dataFileRequestBody, methodName)){
+                return response;
+            }
+
             DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
             DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
