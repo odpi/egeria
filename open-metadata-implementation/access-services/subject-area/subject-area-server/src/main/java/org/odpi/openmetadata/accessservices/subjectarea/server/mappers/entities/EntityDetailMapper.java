@@ -258,9 +258,9 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
             if (systemAttributes.getUpdatedBy()!=null)
                 omrsEntityDetail.setUpdatedBy(systemAttributes.getUpdatedBy());
             if (systemAttributes.getCreateTime()!=null)
-                omrsEntityDetail.setCreateTime(systemAttributes.getCreateTime());
+                omrsEntityDetail.setCreateTime(new Date(systemAttributes.getCreateTime()));
             if (systemAttributes.getUpdateTime()!=null)
-                omrsEntityDetail.setUpdateTime(systemAttributes.getUpdateTime());
+                omrsEntityDetail.setUpdateTime(new Date(systemAttributes.getUpdateTime()));
             if (systemAttributes.getVersion()!=null)
                 omrsEntityDetail.setVersion(systemAttributes.getVersion());
             if (systemAttributes.getGUID()!=null)
