@@ -26,6 +26,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,6 +99,14 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
 
                 String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
+                InstanceProperties instanceProperties = categoryEntityDetail.getProperties();
+                if (instanceProperties == null ) {
+                    instanceProperties = new InstanceProperties();
+                }
+                if (instanceProperties.getEffectiveFromTime() == null) {
+                    instanceProperties.setEffectiveFromTime(new Date());
+                    categoryEntityDetail.setProperties(instanceProperties);
+                }
                 createdCategoryGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, categoryEntityDetail);
                 if (createdCategoryGuid != null) {
                     CategoryAnchor categoryAnchor = new CategoryAnchor();
@@ -296,10 +305,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentCategory, suppliedCategory);
 
-                Date termFromTime = suppliedCategory.getEffectiveFromTime();
-                Date termToTime = suppliedCategory.getEffectiveToTime();
-                currentCategory.setEffectiveFromTime(termFromTime);
-                currentCategory.setEffectiveToTime(termToTime);
+                Date categoryFromTime = suppliedCategory.getEffectiveFromTime();
+                Date categoryToTime = suppliedCategory.getEffectiveToTime();
+                currentCategory.setEffectiveFromTime(categoryFromTime);
+                currentCategory.setEffectiveToTime(categoryToTime);
 
                 CategoryMapper mapper = mappersFactory.get(CategoryMapper.class);
                 EntityDetail entityDetail = mapper.map(currentCategory);
