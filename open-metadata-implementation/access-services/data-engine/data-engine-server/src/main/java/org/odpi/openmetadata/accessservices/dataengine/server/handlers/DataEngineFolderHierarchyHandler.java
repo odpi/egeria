@@ -173,6 +173,15 @@ public class DataEngineFolderHierarchyHandler {
         return fileFolder;
     }
 
+    /**
+     * Will return the name of the last folder in pathName. Takes root folder into account.
+     * When called with argument "/folder", return value is "folder".
+     * When called with argument "/", return value is "/"
+     *
+     * @param pathName path
+     *
+     * @return folder name
+     */
     private String computeDisplayName(String pathName){
         return new File(pathName).getName().length() < 1 ? pathName : new File(pathName).getName();
     }
