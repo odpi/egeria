@@ -167,9 +167,14 @@ public class DataEngineFolderHierarchyHandler {
         FileFolder fileFolder= new FileFolder();
         fileFolder.setQualifiedName(externalSourceName + "::" + pathName);
         fileFolder.setPathName(pathName);
+        fileFolder.setDisplayName(computeDisplayName(pathName));
         fileFolder.setOwnerType(OwnerType.USER_ID);
 
         return fileFolder;
+    }
+
+    private String computeDisplayName(String pathName){
+        return new File(pathName).getName().length() < 1 ? pathName : new File(pathName).getName();
     }
 
     private void validateParameters(String fileGuid, String pathName, String externalSourceGuid, String externalSourceName,
