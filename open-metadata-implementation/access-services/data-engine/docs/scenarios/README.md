@@ -31,6 +31,8 @@ An external tool can [lookup](lookup-registration-tool.md) for the registered ex
 
 #### [Create Relational Tables](create-relational-tables.md) 
 
+#### [Create Data Files](create-data-files.md)
+
 # Sample use case
 
 [Initial load](initial-load-igc-data-stage.md) use case illustrates the integration between 
