@@ -213,8 +213,18 @@ public class SubjectAreaUtils {
 
         systemAttributes.setCreatedBy(instanceHeader.getCreatedBy());
         systemAttributes.setUpdatedBy(instanceHeader.getUpdatedBy());
-        systemAttributes.setCreateTime(instanceHeader.getCreateTime());
-        systemAttributes.setUpdateTime(instanceHeader.getUpdateTime());
+        Date createTimeDate = instanceHeader.getCreateTime();
+        Long createTimeLong =null;
+        if (createTimeDate != null) {
+            createTimeLong = createTimeDate.getTime();
+        }
+        systemAttributes.setCreateTime(createTimeLong);
+        Date updateTimeDate = instanceHeader.getUpdateTime();
+        Long updateTimeLong =null;
+        if (updateTimeDate != null) {
+            updateTimeLong = updateTimeDate.getTime();
+        }
+        systemAttributes.setUpdateTime(updateTimeLong);
         systemAttributes.setVersion(instanceHeader.getVersion());
         systemAttributes.setGUID(instanceHeader.getGUID());
         return systemAttributes;
@@ -227,9 +237,9 @@ public class SubjectAreaUtils {
             if (systemAttributes.getUpdatedBy() != null)
                 instanceAuditHeader.setUpdatedBy(systemAttributes.getUpdatedBy());
             if (systemAttributes.getCreateTime() != null)
-                instanceAuditHeader.setCreateTime(systemAttributes.getCreateTime());
+                instanceAuditHeader.setCreateTime(new Date(systemAttributes.getCreateTime()));
             if (systemAttributes.getUpdateTime() != null)
-                instanceAuditHeader.setUpdateTime(systemAttributes.getUpdateTime());
+                instanceAuditHeader.setUpdateTime(new Date(systemAttributes.getUpdateTime()));
             if (systemAttributes.getVersion() != null)
                 instanceAuditHeader.setVersion(systemAttributes.getVersion());
         }
