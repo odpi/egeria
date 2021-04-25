@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
@@ -101,7 +102,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param anchorGUID    head of the comment chain
      * @param parentGUID    String - unique id for a referenceable entity that the comment is to be attached to.
-     * @param guidParameter name of parameter that supplied the entity's unique identifier.
+     * @param parentGUIDParameterName name of parameter that supplied the entity's unique identifier.
      * @param commentType   ordinal of comment enum.
      * @param commentText   String - the text of the comment.
      * @param isPublic      should this be visible to all or private to the caller
@@ -118,7 +119,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     String      externalSourceName,
                                     String      anchorGUID,
                                     String      parentGUID,
-                                    String      guidParameter,
+                                    String      parentGUIDParameterName,
                                     int         commentType,
                                     String      commentText,
                                     boolean     isPublic,
@@ -130,7 +131,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         final String commentGUIDParameter = "commentGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(parentGUID, guidParameter, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
         invalidParameterHandler.validateText(commentText, textParameter, methodName);
 
         /*
@@ -167,7 +168,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                       externalSourceGUID,
                                       externalSourceName,
                                       parentGUID,
-                                      guidParameter,
+                                      parentGUIDParameterName,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       commentGUID,
                                       commentGUIDParameter,

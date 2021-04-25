@@ -980,6 +980,14 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                       "Review the instances from the event (passed as additional information on this log message) to determine the source of " +
                               "the error and its resolution."),
 
+    RETRY_FOR_PROXY("OMRS-AUDIT-8008",
+                    OMRSAuditLogRecordSeverity.INFO,
+                    "Retrying retrieve of an entity {0} for user {1} because only a proxy is available - attempt {2}",
+                    "The enterprise connector is retrying the call to retrieve an entity from the cohort because a proxy has been " +
+                            "returned.  This suggests one of the repositories is not current registered and so the hope is that it is returned on " +
+                            "a subsequent attempt.",
+                    "If this message occurs frequently then seek to improve the availability of the cohort members."),
+
     NULL_OMRS_EVENT_RECEIVED("OMRS-AUDIT-9002",
                              OMRSAuditLogRecordSeverity.EXCEPTION,
                              "Unable to process a received event from topic {0} because its content is null",

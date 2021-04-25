@@ -158,6 +158,7 @@ public class GetEntityExecutor extends GetEntitySummaryExecutor
         catch (EntityProxyOnlyException error)
         {
             accumulator.captureException(error);
+            getHomeClassifications(metadataCollection);
         }
         catch (RepositoryErrorException error)
         {

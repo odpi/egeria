@@ -3636,6 +3636,32 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 }
             }
         }
+        else
+        {
+            EntityProxy entityProxy = repositoryStore.getEntityProxy(entityGUID);
+
+            if (entityProxy != null)
+            {
+                List<Classification> retrievedClassifications = entityProxy.getClassifications();
+
+                if (retrievedClassifications != null)
+                {
+                    for (Classification retrievedClassification : retrievedClassifications)
+                    {
+                        if (retrievedClassification != null)
+                        {
+                            if (metadataCollectionId.equals(retrievedClassification.getMetadataCollectionId()))
+                            {
+                                /*
+                                 * Locally homed classification
+                                 */
+                                homeClassifications.add(retrievedClassification);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         if (homeClassifications.isEmpty())
         {

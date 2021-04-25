@@ -241,7 +241,6 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
     /**
      * Return the results or exception.
      *
-     * @param userId calling user
      * @param repositoryConnector enterprise connector
      * @param metadataCollection enterprise metadata collection
      *
@@ -258,8 +257,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public List<EntityDetail> getResults(String                            userId,
-                                         EnterpriseOMRSRepositoryConnector repositoryConnector,
+    public List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector,
                                          OMRSMetadataCollection            metadataCollection) throws InvalidParameterException,
                                                                                                       RepositoryErrorException,
                                                                                                       TypeErrorException,
@@ -270,7 +268,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
     {
         if (accumulator.resultsReturned())
         {
-            return accumulator.getResults(userId, repositoryConnector, metadataCollection);
+            return accumulator.getResults(repositoryConnector, metadataCollection);
         }
 
         handleCommonPagingRequestExceptions();
