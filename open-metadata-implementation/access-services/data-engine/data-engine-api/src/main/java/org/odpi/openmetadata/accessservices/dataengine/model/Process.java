@@ -37,7 +37,7 @@ public class Process extends Asset {
     }
 
     /**
-     * Gets the prcoces name.
+     * Gets the process name.
      *
      * @return the name
      */
