@@ -130,10 +130,6 @@ public class DatabaseSchemaElement implements MetadataElement, Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         DatabaseSchemaElement that = (DatabaseSchemaElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(databaseSchemaProperties, that.databaseSchemaProperties);

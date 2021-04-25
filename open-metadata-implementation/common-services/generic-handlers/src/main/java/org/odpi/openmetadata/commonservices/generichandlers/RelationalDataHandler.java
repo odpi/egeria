@@ -2649,10 +2649,16 @@ public class RelationalDataHandler<DATABASE,
     {
         final String databaseTableGUIDParameterName = "databaseTableGUID";
         final String qualifiedNameParameterName     = "qualifiedName";
+        final String dataTypeParameterName     = "dataType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, databaseTableGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        if (externalSchemaTypeGUID == null)
+        {
+            invalidParameterHandler.validateName(dataType, dataTypeParameterName, methodName);
+        }
 
         /*
          * Retrieve and validate the table that this column is for
@@ -2778,17 +2784,12 @@ public class RelationalDataHandler<DATABASE,
                 return null;
             }
 
-            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":ColumnType",
-                                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_TYPE_NAME,
-                                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_TYPE_GUID,
-                                                                        repositoryHelper,
-                                                                        serviceName,
-                                                                        serverName);
-            schemaTypeBuilder.setDataType(dataType);
-            schemaTypeBuilder.setDefaultValue(defaultValue);
-            schemaTypeBuilder.setFixedValue(fixedValue);
-            schemaTypeBuilder.setExternalSchemaTypeGUID(externalSchemaTypeGUID);
-            schemaTypeBuilder.setValidValuesSetGUID(validValuesSetGUID);
+            SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(qualifiedName,
+                                                                            externalSchemaTypeGUID,
+                                                                            dataType,
+                                                                            defaultValue,
+                                                                            fixedValue,
+                                                                            validValuesSetGUID);
 
             schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
 
@@ -2851,6 +2852,59 @@ public class RelationalDataHandler<DATABASE,
                                                         methodName);
             return null;
         }
+    }
+
+
+    /**
+     * Set up the schema type builder for the column's type.
+     *
+     * @param qualifiedName qualified name for the column
+     * @param externalSchemaTypeGUID unique identifier of a schema Type that provides the type. If null, a private schema type is used
+     * @param dataType data type name - for stored values
+     * @param defaultValue string containing default value - for stored values
+     * @param fixedValue string containing a fixed value - for a literal
+     * @param validValuesSetGUID unique identifier of a valid value set that lists the valid values for this schema
+     * @return filled out schema type builder
+     */
+    private SchemaTypeBuilder getSchemaTypeBuilder(String qualifiedName,
+                                                   String externalSchemaTypeGUID,
+                                                   String dataType,
+                                                   String defaultValue,
+                                                   String fixedValue,
+                                                   String validValuesSetGUID)
+    {
+        String schemaTypeGUID = OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID;
+        String schemaTypeName = OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME;
+
+        if (externalSchemaTypeGUID != null)
+        {
+            schemaTypeGUID = OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_GUID;
+            schemaTypeName = OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME;
+        }
+        else if (validValuesSetGUID != null)
+        {
+            schemaTypeGUID = OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_GUID;
+            schemaTypeName = OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_NAME;
+        }
+        else if (fixedValue != null)
+        {
+            schemaTypeGUID = OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_GUID;
+            schemaTypeName = OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME;
+        }
+
+        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":ColumnType",
+                                                                    schemaTypeGUID,
+                                                                    schemaTypeName,
+                                                                    repositoryHelper,
+                                                                    serviceName,
+                                                                    serverName);
+        schemaTypeBuilder.setDataType(dataType);
+        schemaTypeBuilder.setDefaultValue(defaultValue);
+        schemaTypeBuilder.setFixedValue(fixedValue);
+        schemaTypeBuilder.setExternalSchemaTypeGUID(externalSchemaTypeGUID);
+        schemaTypeBuilder.setValidValuesSetGUID(validValuesSetGUID);
+
+        return schemaTypeBuilder;
     }
 
 
@@ -3121,7 +3175,7 @@ public class RelationalDataHandler<DATABASE,
      * @param defaultValueOverride default value for this column
      * @param aliases a list of alternative names for the attribute
      * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param typeName name of the type that is a subtype of RelationalColumn - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
      * @param methodName calling method
@@ -3140,6 +3194,114 @@ public class RelationalDataHandler<DATABASE,
                                      String               dataType,
                                      String               defaultValue,
                                      String               fixedValue,
+                                     String               formula,
+                                     boolean              isDeprecated,
+                                     int                  elementPosition,
+                                     int                  minCardinality,
+                                     int                  maxCardinality,
+                                     boolean              allowsDuplicateValues,
+                                     boolean              orderedValues,
+                                     String               defaultValueOverride,
+                                     int                  sortOrder,
+                                     int                  minimumLength,
+                                     int                  length,
+                                     int                  significantDigits,
+                                     boolean              isNullable,
+                                     String               nativeJavaClass,
+                                     List<String>         aliases,
+                                     Map<String, String>  additionalProperties,
+                                     String               typeName,
+                                     Map<String, Object>  extendedProperties,
+                                     Map<String, String>  vendorProperties,
+                                     String               methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        this.updateDatabaseColumn(userId,
+                                  databaseManagerGUID,
+                                  databaseManagerName,
+                                  databaseColumnGUID,
+                                  qualifiedName,
+                                  displayName,
+                                  description,
+                                  null,
+                                  dataType,
+                                  defaultValue,
+                                  fixedValue,
+                                  null,
+                                  formula,
+                                  isDeprecated,
+                                  elementPosition,
+                                  minCardinality,
+                                  maxCardinality,
+                                  allowsDuplicateValues,
+                                  orderedValues,
+                                  defaultValueOverride,
+                                  sortOrder,
+                                  minimumLength,
+                                  length,
+                                  significantDigits,
+                                  isNullable,
+                                  nativeJavaClass,
+                                  aliases,
+                                  additionalProperties,
+                                  typeName,
+                                  extendedProperties,
+                                  vendorProperties,
+                                  methodName);
+    }
+
+
+    /**
+     * Update the metadata element representing a database column.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseColumnGUID unique identifier of the metadata element to update
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param dataType data type name - for stored values
+     * @param defaultValue string containing default value - for stored values
+     * @param fixedValue string containing fixed value - for literals
+     * @param formula String formula - for derived values
+     * @param isDeprecated is this table deprecated?
+     * @param elementPosition the position of this column in its parent table.
+     * @param minCardinality minimum number of repeating instances allowed for this column - typically 1
+     * @param maxCardinality the maximum number of repeating instances allowed for this column - typically 1
+     * @param allowsDuplicateValues  whether the same value can be used by more than one instance of this attribute
+     * @param orderedValues whether the attribute instances are arranged in an order
+     * @param sortOrder the order that the attribute instances are arranged in - if any
+     * @param minimumLength the minimum length of the data
+     * @param length the length of the data field
+     * @param significantDigits number of significant digits to the right of decimal point
+     * @param isNullable whether the field is nullable or not
+     * @param nativeJavaClass equivalent Java class implementation
+     * @param defaultValueOverride default value for this column
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabaseColumn(String               userId,
+                                     String               databaseManagerGUID,
+                                     String               databaseManagerName,
+                                     String               databaseColumnGUID,
+                                     String               qualifiedName,
+                                     String               displayName,
+                                     String               description,
+                                     String               externalSchemaTypeGUID,
+                                     String               dataType,
+                                     String               defaultValue,
+                                     String               fixedValue,
+                                     String               validValuesSetGUID,
                                      String               formula,
                                      boolean              isDeprecated,
                                      int                  elementPosition,
@@ -3228,18 +3390,24 @@ public class RelationalDataHandler<DATABASE,
                                                                                        serviceName,
                                                                                        serverName);
 
-            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":ColumnType",
-                                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_TYPE_NAME,
-                                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_TYPE_GUID,
-                                                                        repositoryHelper,
-                                                                        serviceName,
-                                                                        serverName);
-            schemaTypeBuilder.setDerivedProperties(formula);
-            schemaTypeBuilder.setDataType(dataType);
-            schemaTypeBuilder.setDefaultValue(defaultValue);
-            schemaTypeBuilder.setFixedValue(fixedValue);
+            SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(qualifiedName,
+                                                                            externalSchemaTypeGUID,
+                                                                            dataType,
+                                                                            defaultValue,
+                                                                            fixedValue,
+                                                                            validValuesSetGUID);
+
 
             schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+
+            /*
+             * The formula is set if the column is derived
+             */
+            if (formula != null)
+            {
+                schemaAttributeBuilder.setCalculatedValue(userId, databaseManagerGUID, databaseManagerName, formula, methodName);
+            }
+
             databaseColumnHandler.updateBeanInRepository(userId,
                                                          databaseManagerGUID,
                                                          databaseManagerName,

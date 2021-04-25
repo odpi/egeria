@@ -706,11 +706,11 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private SCHEMA_ATTRIBUTE getSchemaAttributeFromEntity(String          userId,
-                                                          String          schemaAttributeGUID,
-                                                          String          schemaAttributeGUIDParameterName,
+    private SCHEMA_ATTRIBUTE getSchemaAttributeFromEntity(String       userId,
+                                                          String       schemaAttributeGUID,
+                                                          String       schemaAttributeGUIDParameterName,
                                                           EntityDetail schemaAttributeEntity,
-                                                          String          methodName) throws InvalidParameterException,
+                                                          String       methodName) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
@@ -738,6 +738,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                                OpenMetadataAPIMapper.TYPE_NAME_PROPERTY_NAME,
                                                                                typeClassification.getProperties(),
                                                                                methodName);
+
                     schemaType = schemaTypeHandler.getSchemaTypeFromInstance(userId,
                                                                              schemaAttributeEntity,
                                                                              schemaTypeName,

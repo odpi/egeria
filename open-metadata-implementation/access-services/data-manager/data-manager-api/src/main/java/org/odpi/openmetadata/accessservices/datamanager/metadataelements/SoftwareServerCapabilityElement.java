@@ -132,10 +132,6 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         SoftwareServerCapabilityElement that = (SoftwareServerCapabilityElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(softwareServerCapabilitiesProperties, that.softwareServerCapabilitiesProperties);
