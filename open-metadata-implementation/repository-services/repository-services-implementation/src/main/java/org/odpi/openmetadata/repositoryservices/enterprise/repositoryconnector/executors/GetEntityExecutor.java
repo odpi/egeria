@@ -137,6 +137,10 @@ public class GetEntityExecutor extends GetEntitySummaryExecutor
                         }
                     }
                 }
+                else /* retrieving additional classifications */
+                {
+                    getHomeClassifications(metadataCollection);
+                }
             }
             else /* retrieving additional classifications */
             {

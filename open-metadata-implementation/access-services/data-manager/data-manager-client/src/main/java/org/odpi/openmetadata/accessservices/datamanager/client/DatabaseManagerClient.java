@@ -1806,12 +1806,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                     = "createDatabaseColumn";
         final String parentElementGUIDParameterName = "databaseTableGUID";
         final String propertiesParameterName        = "databaseColumnProperties";
+        final String dataTypeParameterName          = "databaseColumnProperties.dataType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
         invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
+
+        if (databaseColumnProperties.getExternalTypeGUID() == null)
+        {
+            invalidParameterHandler.validateName(databaseColumnProperties.getDataType(), dataTypeParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}/columns";
 

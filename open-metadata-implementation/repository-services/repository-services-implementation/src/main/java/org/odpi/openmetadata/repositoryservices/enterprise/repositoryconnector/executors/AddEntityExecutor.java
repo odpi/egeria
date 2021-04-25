@@ -42,10 +42,10 @@ public class AddEntityExecutor extends RepositoryExecutorBase
      */
     public AddEntityExecutor(String               userId,
                              String               entityTypeGUID,
-                             InstanceProperties initialProperties,
+                             InstanceProperties   initialProperties,
                              List<Classification> initialClassifications,
-                             InstanceStatus initialStatus,
-                             AuditLog auditLog,
+                             InstanceStatus       initialStatus,
+                             AuditLog             auditLog,
                              String               methodName)
     {
         super(userId, methodName);
@@ -75,10 +75,10 @@ public class AddEntityExecutor extends RepositoryExecutorBase
                              String               entityTypeGUID,
                              String               externalSourceGUID,
                              String               externalSourceName,
-                             InstanceProperties initialProperties,
+                             InstanceProperties   initialProperties,
                              List<Classification> initialClassifications,
-                             InstanceStatus initialStatus,
-                             AuditLog auditLog,
+                             InstanceStatus       initialStatus,
+                             AuditLog             auditLog,
                              String               methodName)
     {
         super(userId, methodName);

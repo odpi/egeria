@@ -168,6 +168,10 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
                         }
                     }
                 }
+                else /* retrieving additional classifications */
+                {
+                    getHomeClassifications(metadataCollection);
+                }
             }
             else /* retrieving additional classifications */
             {

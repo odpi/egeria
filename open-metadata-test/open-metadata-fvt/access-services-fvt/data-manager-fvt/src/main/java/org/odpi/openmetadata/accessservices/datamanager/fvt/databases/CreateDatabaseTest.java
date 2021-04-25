@@ -6,9 +6,7 @@ package org.odpi.openmetadata.accessservices.datamanager.fvt.databases;
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -53,8 +51,12 @@ public class CreateDatabaseTest
     private final static String databaseTableName        = "TestDatabaseTable";
     private final static String databaseTableDisplayName = "DatabaseTable displayName";
     private final static String databaseTableDescription = "DatabaseTable description";
-    private final static String databaseTableType        = "DatabaseTable type";
-    private final static String databaseTableVersion     = "DatabaseTable version";
+
+
+    private final static String databaseColumnName        = "TestDatabaseColumn";
+    private final static String databaseColumnDisplayName = "DatabaseColumn displayName";
+    private final static String databaseColumnDescription = "DatabaseColumn description";
+    private final static String databaseColumnType = "string";
 
 
     /**
@@ -112,6 +114,8 @@ public class CreateDatabaseTest
         String databaseManagerGUID = thisTest.getDatabaseManager(serverName, serverPlatformRootURL, userId, auditLog);
         String databaseGUID = thisTest.getDatabase(client, databaseManagerGUID, userId);
         String databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseManagerGUID, databaseGUID, userId);
+        String databaseTableGUID = thisTest.getDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
+        String databaseColumnGUID = thisTest.getDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
     }
 
 
@@ -328,7 +332,7 @@ public class CreateDatabaseTest
 
 
     /**
-     * Create a database and return its GUID.
+     * Create a database schema and return its GUID.
      *
      * @param client interface to Data Manager OMAS
      * @param databaseManagerGUID unique id of the database manager
@@ -461,7 +465,7 @@ public class CreateDatabaseTest
 
 
     /**
-     * Create a database and return its GUID.
+     * Create a database table and return its GUID.
      *
      * @param client interface to Data Manager OMAS
      * @param databaseManagerGUID unique id of the database manager
@@ -471,9 +475,9 @@ public class CreateDatabaseTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private String getDatabaseTable(DatabaseManagerClient client,
-                                     String                databaseManagerGUID,
-                                     String                databaseSchemaGUID,
-                                     String                userId) throws FVTUnexpectedCondition
+                                    String                databaseManagerGUID,
+                                    String                databaseSchemaGUID,
+                                    String                userId) throws FVTUnexpectedCondition
     {
         final String activityName = "getDatabaseTable";
 
@@ -547,7 +551,147 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
 
+            List<DatabaseColumnElement> databaseColumnList = client.getColumnsForDatabaseTable(userId, databaseTableGUID, 0, maxPageSize);
+
+            if (databaseColumnList != null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumn for getColumnsForDatabaseTable)");
+            }
+
             return databaseTableGUID;
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Throwable unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Create a database column and return its GUID.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseManagerGUID unique id of the database manager
+     * @param databaseTableGUID unique id of the database table to connect the column to
+     * @param userId calling user
+     * @return GUID of database
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String getDatabaseColumn(DatabaseManagerClient client,
+                                     String                databaseManagerGUID,
+                                     String                databaseTableGUID,
+                                     String                userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "getDatabaseColumn";
+
+        try
+        {
+            DatabaseColumnProperties  properties = new DatabaseColumnProperties();
+
+            properties.setQualifiedName(databaseColumnName);
+            properties.setDisplayName(databaseColumnDisplayName);
+            properties.setDescription(databaseColumnDescription);
+            properties.setDataType(databaseColumnType);
+
+            String databaseColumnGUID = client.createDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, properties);
+
+            if (databaseColumnGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for columnCreate)");
+            }
+
+            DatabaseColumnElement    retrievedElement = client.getDatabaseColumnByGUID(userId, databaseColumnGUID);
+            DatabaseColumnProperties retrievedColumn  = retrievedElement.getDatabaseColumnProperties();
+
+            if (retrievedColumn == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumn from Retrieve)");
+            }
+
+            if (! databaseColumnName.equals(retrievedColumn.getQualifiedName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
+            }
+            if (! databaseColumnDisplayName.equals(retrievedColumn.getDisplayName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
+            }
+            if (! databaseColumnDescription.equals(retrievedColumn.getDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
+            }
+
+            List<DatabaseColumnElement> databaseColumnList = client.getDatabaseColumnsByName(userId, databaseColumnName, 0, maxPageSize);
+
+            if (databaseColumnList == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumn for RetrieveByName)");
+            }
+            else if (databaseColumnList.isEmpty())
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseColumn list for RetrieveByName)");
+            }
+            else if (databaseColumnList.size() != 1)
+            {
+                throw new FVTUnexpectedCondition(testCaseName,
+                                                 activityName + "(DatabaseColumn list for RetrieveByName contains" + databaseColumnList.size() +
+                                                         " elements)");
+            }
+
+            retrievedElement = databaseColumnList.get(0);
+            retrievedColumn = retrievedElement.getDatabaseColumnProperties();
+
+            if (! databaseColumnName.equals(retrievedColumn.getQualifiedName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
+            }
+            if (! databaseColumnDisplayName.equals(retrievedColumn.getDisplayName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
+            }
+            if (! databaseColumnDescription.equals(retrievedColumn.getDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
+            }
+
+            databaseColumnList = client.getColumnsForDatabaseTable(userId, databaseTableGUID, 0, maxPageSize);
+
+            if (databaseColumnList == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumn for getColumnsForDatabaseTable)");
+            }
+            else if (databaseColumnList.isEmpty())
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseColumn list for getColumnsForDatabaseTable)");
+            }
+            else if (databaseColumnList.size() != 1)
+            {
+                throw new FVTUnexpectedCondition(testCaseName,
+                                                 activityName + "(DatabaseColumn list for getColumnsForDatabaseTable contains" + databaseColumnList.size() +
+                                                         " elements)");
+            }
+
+            retrievedElement = databaseColumnList.get(0);
+            retrievedColumn = retrievedElement.getDatabaseColumnProperties();
+
+            if (! databaseColumnName.equals(retrievedColumn.getQualifiedName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from getColumnsForDatabaseTable)");
+            }
+            if (! databaseColumnDisplayName.equals(retrievedColumn.getDisplayName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from getColumnsForDatabaseTable)");
+            }
+            if (! databaseColumnDescription.equals(retrievedColumn.getDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from getColumnsForDatabaseTable)");
+            }
+
+            return databaseColumnGUID;
         }
         catch (FVTUnexpectedCondition testCaseError)
         {
