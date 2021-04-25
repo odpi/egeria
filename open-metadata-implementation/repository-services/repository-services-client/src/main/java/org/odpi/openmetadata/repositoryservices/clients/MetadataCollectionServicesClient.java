@@ -1335,7 +1335,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                         List<InstanceStatus> limitResultsByStatus,
                                                         Date                 asOfTime,
                                                         String               sequencingProperty,
-                                                        SequencingOrder sequencingOrder,
+                                                        SequencingOrder      sequencingOrder,
                                                         int                  pageSize) throws InvalidParameterException,
                                                                                               TypeErrorException,
                                                                                               RepositoryErrorException,
@@ -1436,13 +1436,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
                                            List<String>              entitySubtypeGUIDs,
-                                           SearchProperties matchProperties,
+                                           SearchProperties          matchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
-                                           SearchClassifications matchClassifications,
+                                           SearchClassifications     matchClassifications,
                                            Date                      asOfTime,
                                            String                    sequencingProperty,
-                                           SequencingOrder sequencingOrder,
+                                           SequencingOrder           sequencingOrder,
                                            int                       pageSize) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
                                                                                       TypeErrorException,
@@ -1546,14 +1546,14 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      */
     public List<EntityDetail> findEntitiesByProperty(String                    userId,
                                                      String                    entityTypeGUID,
-                                                     InstanceProperties matchProperties,
-                                                     MatchCriteria matchCriteria,
+                                                     InstanceProperties        matchProperties,
+                                                     MatchCriteria             matchCriteria,
                                                      int                       fromEntityElement,
                                                      List<InstanceStatus>      limitResultsByStatus,
                                                      List<String>              limitResultsByClassification,
                                                      Date                      asOfTime,
                                                      String                    sequencingProperty,
-                                                     SequencingOrder sequencingOrder,
+                                                     SequencingOrder           sequencingOrder,
                                                      int                       pageSize) throws InvalidParameterException,
                                                                                                 RepositoryErrorException,
                                                                                                 TypeErrorException,
@@ -1660,13 +1660,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     public  List<EntityDetail> findEntitiesByClassification(String                    userId,
                                                             String                    entityTypeGUID,
                                                             String                    classificationName,
-                                                            InstanceProperties matchClassificationProperties,
-                                                            MatchCriteria matchCriteria,
+                                                            InstanceProperties        matchClassificationProperties,
+                                                            MatchCriteria             matchCriteria,
                                                             int                       fromEntityElement,
                                                             List<InstanceStatus>      limitResultsByStatus,
                                                             Date                      asOfTime,
                                                             String                    sequencingProperty,
-                                                            SequencingOrder sequencingOrder,
+                                                            SequencingOrder           sequencingOrder,
                                                             int                       pageSize) throws InvalidParameterException,
                                                                                                        TypeErrorException,
                                                                                                        RepositoryErrorException,
@@ -1778,7 +1778,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                            List<String>          limitResultsByClassification,
                                                            Date                  asOfTime,
                                                            String                sequencingProperty,
-                                                           SequencingOrder sequencingOrder,
+                                                           SequencingOrder       sequencingOrder,
                                                            int                   pageSize) throws InvalidParameterException,
                                                                                                   TypeErrorException,
                                                                                                   RepositoryErrorException,
@@ -2052,12 +2052,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
                                                  List<String>              relationshipSubtypeGUIDs,
-                                                 SearchProperties matchProperties,
+                                                 SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
                                                  List<InstanceStatus>      limitResultsByStatus,
                                                  Date                      asOfTime,
                                                  String                    sequencingProperty,
-                                                 SequencingOrder sequencingOrder,
+                                                 SequencingOrder           sequencingOrder,
                                                  int                       pageSize) throws InvalidParameterException,
                                                                                             TypeErrorException,
                                                                                             RepositoryErrorException,
@@ -2160,13 +2160,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      */
     public  List<Relationship> findRelationshipsByProperty(String                    userId,
                                                            String                    relationshipTypeGUID,
-                                                           InstanceProperties matchProperties,
-                                                           MatchCriteria matchCriteria,
+                                                           InstanceProperties        matchProperties,
+                                                           MatchCriteria             matchCriteria,
                                                            int                       fromRelationshipElement,
                                                            List<InstanceStatus>      limitResultsByStatus,
                                                            Date                      asOfTime,
                                                            String                    sequencingProperty,
-                                                           SequencingOrder sequencingOrder,
+                                                           SequencingOrder           sequencingOrder,
                                                            int                       pageSize) throws InvalidParameterException,
                                                                                                       TypeErrorException,
                                                                                                       RepositoryErrorException,
@@ -2271,7 +2271,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                 List<InstanceStatus>      limitResultsByStatus,
                                                                 Date                      asOfTime,
                                                                 String                    sequencingProperty,
-                                                                SequencingOrder sequencingOrder,
+                                                                SequencingOrder           sequencingOrder,
                                                                 int                       pageSize) throws InvalidParameterException,
                                                                                                            TypeErrorException,
                                                                                                            RepositoryErrorException,
@@ -2546,7 +2546,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                   List<String>         limitResultsByClassification,
                                                   Date                 asOfTime,
                                                   String               sequencingProperty,
-                                                  SequencingOrder sequencingOrder,
+                                                  SequencingOrder      sequencingOrder,
                                                   int                  pageSize) throws InvalidParameterException,
                                                                                         RepositoryErrorException,
                                                                                         TypeErrorException,
@@ -2640,18 +2640,18 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail addEntity(String                     userId,
-                                  String                     entityTypeGUID,
-                                  InstanceProperties initialProperties,
-                                  List<Classification>       initialClassifications,
-                                  InstanceStatus initialStatus) throws InvalidParameterException,
-                                                                       RepositoryErrorException,
-                                                                       TypeErrorException,
-                                                                       PropertyErrorException,
-                                                                       ClassificationErrorException,
-                                                                       StatusNotSupportedException,
-                                                                       FunctionNotSupportedException,
-                                                                       UserNotAuthorizedException
+    public EntityDetail addEntity(String               userId,
+                                  String               entityTypeGUID,
+                                  InstanceProperties   initialProperties,
+                                  List<Classification> initialClassifications,
+                                  InstanceStatus       initialStatus) throws InvalidParameterException,
+                                                                             RepositoryErrorException,
+                                                                             TypeErrorException,
+                                                                             PropertyErrorException,
+                                                                             ClassificationErrorException,
+                                                                             StatusNotSupportedException,
+                                                                             FunctionNotSupportedException,
+                                                                             UserNotAuthorizedException
     {
         final String methodName  = "addEntity";
         final String operationSpecificURL = "instances/entity";
@@ -2711,20 +2711,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail addExternalEntity(String                userId,
-                                          String                entityTypeGUID,
-                                          String                externalSourceGUID,
-                                          String                externalSourceName,
-                                          InstanceProperties initialProperties,
-                                          List<Classification>  initialClassifications,
-                                          InstanceStatus initialStatus) throws InvalidParameterException,
-                                                                               RepositoryErrorException,
-                                                                               TypeErrorException,
-                                                                               PropertyErrorException,
-                                                                               ClassificationErrorException,
-                                                                               StatusNotSupportedException,
-                                                                               FunctionNotSupportedException,
-                                                                               UserNotAuthorizedException
+    public EntityDetail addExternalEntity(String               userId,
+                                          String               entityTypeGUID,
+                                          String               externalSourceGUID,
+                                          String               externalSourceName,
+                                          InstanceProperties   initialProperties,
+                                          List<Classification> initialClassifications,
+                                          InstanceStatus       initialStatus) throws InvalidParameterException,
+                                                                                     RepositoryErrorException,
+                                                                                     TypeErrorException,
+                                                                                     PropertyErrorException,
+                                                                                     ClassificationErrorException,
+                                                                                     StatusNotSupportedException,
+                                                                                     FunctionNotSupportedException,
+                                                                                     UserNotAuthorizedException
     {
         final String  methodName = "addExternalEntity";
 
@@ -2769,7 +2769,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support entity proxies as first class elements.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public void addEntityProxy(String       userId,
+    public void addEntityProxy(String      userId,
                                EntityProxy entityProxy) throws InvalidParameterException,
                                                                RepositoryErrorException,
                                                                FunctionNotSupportedException,
@@ -2805,8 +2805,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail updateEntityStatus(String           userId,
-                                           String           entityGUID,
+    public EntityDetail updateEntityStatus(String         userId,
+                                           String         entityGUID,
                                            InstanceStatus newStatus) throws InvalidParameterException,
                                                                             RepositoryErrorException,
                                                                             EntityNotKnownException,
@@ -2850,8 +2850,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail updateEntityProperties(String               userId,
-                                               String               entityGUID,
+    public EntityDetail updateEntityProperties(String             userId,
+                                               String             entityGUID,
                                                InstanceProperties properties) throws InvalidParameterException,
                                                                                      RepositoryErrorException,
                                                                                      EntityNotKnownException,
@@ -3078,9 +3078,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail classifyEntity(String               userId,
-                                       String               entityGUID,
-                                       String               classificationName,
+    public EntityDetail classifyEntity(String             userId,
+                                       String             entityGUID,
+                                       String             classificationName,
                                        InstanceProperties classificationProperties) throws InvalidParameterException,
                                                                                            RepositoryErrorException,
                                                                                            EntityNotKnownException,
@@ -3144,13 +3144,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                        String               externalSourceName,
                                        ClassificationOrigin classificationOrigin,
                                        String               classificationOriginGUID,
-                                       InstanceProperties classificationProperties) throws InvalidParameterException,
-                                                                                           RepositoryErrorException,
-                                                                                           EntityNotKnownException,
-                                                                                           ClassificationErrorException,
-                                                                                           PropertyErrorException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           FunctionNotSupportedException
+                                       InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException
     {
         final String methodName = "classifyEntity (detailed)";
         final String operationSpecificURL = "instances/entity/{1}/classification/{2}/detailed";
@@ -3246,9 +3246,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail updateEntityClassification(String               userId,
-                                                   String               entityGUID,
-                                                   String               classificationName,
+    public EntityDetail updateEntityClassification(String             userId,
+                                                   String             entityGUID,
+                                                   String             classificationName,
                                                    InstanceProperties properties) throws InvalidParameterException,
                                                                                          RepositoryErrorException,
                                                                                          EntityNotKnownException,
@@ -3306,19 +3306,19 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public Relationship addRelationship(String               userId,
-                                        String               relationshipTypeGUID,
+    public Relationship addRelationship(String             userId,
+                                        String             relationshipTypeGUID,
                                         InstanceProperties initialProperties,
-                                        String               entityOneGUID,
-                                        String               entityTwoGUID,
-                                        InstanceStatus initialStatus) throws InvalidParameterException,
-                                                                             RepositoryErrorException,
-                                                                             TypeErrorException,
-                                                                             PropertyErrorException,
-                                                                             EntityNotKnownException,
-                                                                             StatusNotSupportedException,
-                                                                             FunctionNotSupportedException,
-                                                                             UserNotAuthorizedException
+                                        String             entityOneGUID,
+                                        String             entityTwoGUID,
+                                        InstanceStatus     initialStatus) throws InvalidParameterException,
+                                                                                 RepositoryErrorException,
+                                                                                 TypeErrorException,
+                                                                                 PropertyErrorException,
+                                                                                 EntityNotKnownException,
+                                                                                 StatusNotSupportedException,
+                                                                                 FunctionNotSupportedException,
+                                                                                 UserNotAuthorizedException
     {
         final String methodName  = "addRelationship";
         final String operationSpecificURL = "instances/relationship";
@@ -3377,21 +3377,21 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
-    public Relationship addExternalRelationship(String               userId,
-                                                String               relationshipTypeGUID,
-                                                String               externalSourceGUID,
-                                                String               externalSourceName,
+    public Relationship addExternalRelationship(String             userId,
+                                                String             relationshipTypeGUID,
+                                                String             externalSourceGUID,
+                                                String             externalSourceName,
                                                 InstanceProperties initialProperties,
-                                                String               entityOneGUID,
-                                                String               entityTwoGUID,
-                                                InstanceStatus initialStatus) throws InvalidParameterException,
-                                                                                     RepositoryErrorException,
-                                                                                     TypeErrorException,
-                                                                                     PropertyErrorException,
-                                                                                     EntityNotKnownException,
-                                                                                     StatusNotSupportedException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     FunctionNotSupportedException
+                                                String             entityOneGUID,
+                                                String             entityTwoGUID,
+                                                InstanceStatus     initialStatus) throws InvalidParameterException,
+                                                                                         RepositoryErrorException,
+                                                                                         TypeErrorException,
+                                                                                         PropertyErrorException,
+                                                                                         EntityNotKnownException,
+                                                                                         StatusNotSupportedException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         FunctionNotSupportedException
     {
         final String  methodName = "addExternalRelationship";
 
@@ -4232,7 +4232,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  void deleteEntityReferenceCopy(String         userId,
+    public  void deleteEntityReferenceCopy(String       userId,
                                            EntityDetail entity) throws InvalidParameterException,
                                                                        RepositoryErrorException,
                                                                        TypeErrorException,
@@ -4289,7 +4289,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  void purgeEntityReferenceCopy(String         userId,
+    public  void purgeEntityReferenceCopy(String       userId,
                                           EntityDetail entity) throws InvalidParameterException,
                                                                       RepositoryErrorException,
                                                                       TypeErrorException,
@@ -4448,7 +4448,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public void saveClassificationReferenceCopy(String         userId,
-                                                EntityDetail entity,
+                                                EntityDetail   entity,
                                                 Classification classification) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
                                                                                       TypeErrorException,
@@ -4503,7 +4503,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public  void purgeClassificationReferenceCopy(String         userId,
-                                                  EntityDetail entity,
+                                                  EntityDetail   entity,
                                                   Classification classification) throws InvalidParameterException,
                                                                                         TypeErrorException,
                                                                                         PropertyErrorException,
@@ -4590,6 +4590,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
 
+
     /**
      * Remove the reference copy of the relationship from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
@@ -4614,7 +4615,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  void deleteRelationshipReferenceCopy(String         userId,
+    public  void deleteRelationshipReferenceCopy(String       userId,
                                                  Relationship relationship) throws InvalidParameterException,
                                                                                    RepositoryErrorException,
                                                                                    TypeErrorException,
@@ -4674,7 +4675,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  void purgeRelationshipReferenceCopy(String         userId,
+    public  void purgeRelationshipReferenceCopy(String       userId,
                                                 Relationship relationship) throws InvalidParameterException,
                                                                                   RepositoryErrorException,
                                                                                   TypeErrorException,

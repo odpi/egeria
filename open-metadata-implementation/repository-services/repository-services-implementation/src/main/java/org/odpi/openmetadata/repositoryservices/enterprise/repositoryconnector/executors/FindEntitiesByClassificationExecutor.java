@@ -245,7 +245,10 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
     /**
      * Return the results or exception.
      *
+     * @param userId calling user
      * @param repositoryConnector enterprise connector
+     * @param metadataCollection enterprise metadata collection
+     *
      * @return a list of entities matching the supplied criteria null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
@@ -259,17 +262,19 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector) throws InvalidParameterException,
-                                                                                                       TypeErrorException,
-                                                                                                       RepositoryErrorException,
-                                                                                                       PropertyErrorException,
-                                                                                                       PagingErrorException,
-                                                                                                       FunctionNotSupportedException,
-                                                                                                       UserNotAuthorizedException
+    public List<EntityDetail> getResults(String                            userId,
+                                         EnterpriseOMRSRepositoryConnector repositoryConnector,
+                                         OMRSMetadataCollection            metadataCollection) throws InvalidParameterException,
+                                                                                                      TypeErrorException,
+                                                                                                      RepositoryErrorException,
+                                                                                                      PropertyErrorException,
+                                                                                                      PagingErrorException,
+                                                                                                      FunctionNotSupportedException,
+                                                                                                      UserNotAuthorizedException
     {
         if (accumulator.resultsReturned())
         {
-            return accumulator.getResults(repositoryConnector);
+            return accumulator.getResults(userId, repositoryConnector, metadataCollection);
         }
 
         handleCommonPagingRequestExceptions();
