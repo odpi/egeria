@@ -143,8 +143,11 @@ public class GovernanceLeadershipSample
         System.out.println("  Known Name: " + profile.getName());
         System.out.println("  Job Title: " + profile.getJobTitle());
         System.out.println("  Job Description: " + profile.getJobTitle());
-        System.out.println("  Work Location: " + profile.getAdditionalProperties().get(workLocationPropertyName));
-        System.out.println("  Contact Type: " + profile.getAdditionalProperties().get(contactTypePropertyName));
+        if (profile.getAdditionalProperties() != null)
+        {
+            System.out.println("  Work Location: " + profile.getAdditionalProperties().get(workLocationPropertyName));
+            System.out.println("  Contact Type: " + profile.getAdditionalProperties().get(contactTypePropertyName));
+        }
         System.out.println("----------------------------");
     }
 

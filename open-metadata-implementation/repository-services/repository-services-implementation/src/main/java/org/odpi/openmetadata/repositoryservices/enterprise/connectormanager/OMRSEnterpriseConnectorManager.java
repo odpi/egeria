@@ -103,7 +103,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     public OMRSEnterpriseConnectorManager(boolean                      enterpriseAccessEnabled,
                                           int                          maxPageSize,
                                           OMRSRepositoryContentManager repositoryContentManager,
-                                          AuditLog auditLog,
+                                          AuditLog                     auditLog,
                                           String                       localServerUserId,
                                           String                       localServerPassword)
     {
@@ -401,6 +401,11 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     private void printFederationList(String actionDescription)
     {
         List<String>  serverList = new ArrayList<>();
+
+        if (localRepositoryConnector != null)
+        {
+            serverList.add(localRepositoryConnector.getServerName());
+        }
 
         for (RegisteredConnector registeredConnector : registeredRemoteConnectors)
         {

@@ -85,35 +85,18 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
      * Retrieve the home classifications from the repository.
      *
      * @param metadataCollection repository to issue request to
-     * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity is not recognized by this repository
-     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
-     * @throws FunctionNotSupportedException this method is not supported
      */
-    protected void getHomeClassifications(OMRSMetadataCollection metadataCollection) throws InvalidParameterException,
-                                                                                            RepositoryErrorException,
-                                                                                            EntityNotKnownException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            FunctionNotSupportedException
+    protected void getHomeClassifications(OMRSMetadataCollection metadataCollection)
     {
-        List<Classification> homeClassifications;
-
-        homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID);
-
-        /*
-         * Home classifications override any matching classifications retrieved from other repositories.
-         */
-        if (homeClassifications != null)
+        try
         {
-            for (Classification homeClassification : homeClassifications)
-            {
-                if (homeClassification != null)
-                {
-                    this.allClassifications.put(homeClassification.getName(), homeClassification);
-                }
-            }
+            List<Classification> homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID);
+
+            saveClassifications(homeClassifications);
+        }
+        catch (Exception error)
+        {
+            // ignore exceptions because the returned exceptions come from the retrieval of the entity.
         }
     }
 
@@ -168,6 +151,10 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
                         }
                     }
                 }
+                else /* retrieving additional classifications */
+                {
+                    getHomeClassifications(metadataCollection);
+                }
             }
             else /* retrieving additional classifications */
             {
@@ -187,10 +174,6 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
             accumulator.captureException(error);
         }
         catch (UserNotAuthorizedException error)
-        {
-            accumulator.captureException(error);
-        }
-        catch (FunctionNotSupportedException error)
         {
             accumulator.captureException(error);
         }

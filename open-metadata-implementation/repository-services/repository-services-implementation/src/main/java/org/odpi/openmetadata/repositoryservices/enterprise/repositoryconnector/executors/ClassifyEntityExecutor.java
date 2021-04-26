@@ -55,8 +55,8 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
                                   String               externalSourceName,
                                   ClassificationOrigin classificationOrigin,
                                   String               classificationOriginGUID,
-                                  InstanceProperties classificationProperties,
-                                  AuditLog auditLog,
+                                  InstanceProperties   classificationProperties,
+                                  AuditLog             auditLog,
                                   String               methodName)
     {
         super(userId, methodName);
