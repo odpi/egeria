@@ -31,7 +31,6 @@ The development process using Git and GitHub is illustrated in Figure 1.
 The tasks below step through this process
 
 * [Installing Git on your local Machine](task-installing-git.md)
-* [Set up long path names (mandatory step for Windows)](task-set-long-path-names.md)
 * [Creating a Fork and a Clone](task-creating-a-fork-and-clone.md)
 * [Creating a Branch in a git repository](task-creating-git-branches.md)
 * [Adding your changes to a git repository](task-adding-changes-to-git.md)
