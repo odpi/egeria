@@ -27,7 +27,7 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
     private InstanceProperties matchClassificationProperties;
     private MatchCriteria      matchCriteria;
 
-    private EntityAccumulator  accumulator;
+    private EntityAccumulator accumulator;
 
 
     /**
@@ -60,16 +60,16 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
     public FindEntitiesByClassificationExecutor(String                  userId,
                                                 String                  entityTypeGUID,
                                                 String                  classificationName,
-                                                InstanceProperties      matchClassificationProperties,
-                                                MatchCriteria           matchCriteria,
+                                                InstanceProperties matchClassificationProperties,
+                                                MatchCriteria matchCriteria,
                                                 int                     fromEntityElement,
                                                 List<InstanceStatus>    limitResultsByStatus,
                                                 Date                    asOfTime,
                                                 String                  sequencingProperty,
-                                                SequencingOrder         sequencingOrder,
+                                                SequencingOrder sequencingOrder,
                                                 int                     pageSize,
                                                 String                  localMetadataCollectionId,
-                                                AuditLog                auditLog,
+                                                AuditLog auditLog,
                                                 OMRSRepositoryValidator repositoryValidator,
                                                 String                  methodName)
     {
@@ -117,15 +117,15 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
     private FindEntitiesByClassificationExecutor(String                    userId,
                                                  String                    entityTypeGUID,
                                                  String                    classificationName,
-                                                 InstanceProperties        matchClassificationProperties,
-                                                 MatchCriteria             matchCriteria,
+                                                 InstanceProperties matchClassificationProperties,
+                                                 MatchCriteria matchCriteria,
                                                  int                       fromEntityElement,
                                                  List<InstanceStatus>      limitResultsByStatus,
                                                  Date                      asOfTime,
                                                  String                    sequencingProperty,
-                                                 SequencingOrder           sequencingOrder,
+                                                 SequencingOrder sequencingOrder,
                                                  int                       pageSize,
-                                                 EntityAccumulator         accumulator,
+                                                 EntityAccumulator accumulator,
                                                  String                    methodName)
     {
         super(userId,
@@ -235,7 +235,7 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(metadataCollectionId, error);
+            accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
         return true;
