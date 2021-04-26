@@ -973,7 +973,7 @@ class DataEngineRESTServicesTest {
         Attribute schemaAttribute = new Attribute();
         schemaAttribute.setQualifiedName(QUALIFIED_NAME);
 
-        schemaType.setTabularColumns(Collections.singletonList(schemaAttribute));
+        schemaType.setAttributeList(Collections.singletonList(schemaAttribute));
 
         return schemaType;
     }

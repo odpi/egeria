@@ -28,7 +28,7 @@ public class SchemaType extends Referenceable {
     private String versionNumber;
     private String type;
     @JsonProperty("columns")
-    private List<Attribute> tabularColumns;
+    private List<Attribute> attributeList;
 
     /**
      * Gets display name.
@@ -125,17 +125,17 @@ public class SchemaType extends Referenceable {
      *
      * @return the attribute list
      */
-    public List<Attribute> getTabularColumns() {
-        return tabularColumns;
+    public List<Attribute> getAttributeList() {
+        return attributeList;
     }
 
     /**
      * Sets attribute list.
      *
-     * @param tabularColumns the attribute list
+     * @param attributeList the attribute list
      */
-    public void setTabularColumns(List<Attribute> tabularColumns) {
-        this.tabularColumns = tabularColumns;
+    public void setAttributeList(List<Attribute> attributeList) {
+        this.attributeList = attributeList;
     }
 
     /**
@@ -165,7 +165,7 @@ public class SchemaType extends Referenceable {
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", versionNumber='" + versionNumber + '\'' +
                 ", type=" + type +
-                ", attributeList=" + tabularColumns +
+                ", attributeList=" + attributeList +
                 '}';
     }
 
@@ -180,12 +180,12 @@ public class SchemaType extends Referenceable {
                 Objects.equals(encodingStandard, that.encodingStandard) &&
                 Objects.equals(versionNumber, that.versionNumber) &&
                 Objects.equals(type, that.type) &&
-                Objects.equals(tabularColumns, that.tabularColumns);
+                Objects.equals(attributeList, that.attributeList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(displayName, author, usage, encodingStandard, versionNumber, tabularColumns);
+        return Objects.hash(displayName, author, usage, encodingStandard, versionNumber, attributeList);
     }
 
 }

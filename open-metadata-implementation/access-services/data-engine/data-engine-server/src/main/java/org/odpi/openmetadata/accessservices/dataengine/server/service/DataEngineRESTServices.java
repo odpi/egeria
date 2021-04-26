@@ -1159,7 +1159,7 @@ public class DataEngineRESTServices {
             schemaType.setQualifiedName(file.getQualifiedName() +"::schema");
             schemaType.setDisplayName("Schema");
         }
-        schemaType.setTabularColumns(attributes);
+        schemaType.setAttributeList(attributes);
         return schemaType;
     }
 

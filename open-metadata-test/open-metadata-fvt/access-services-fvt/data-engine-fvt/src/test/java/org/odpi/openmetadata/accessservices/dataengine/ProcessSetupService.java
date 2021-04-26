@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -298,7 +297,7 @@ public class ProcessSetupService {
         String name = getSchemaTypeName(processName, portName);
         schemaType.setQualifiedName(name);
         schemaType.setDisplayName(getDisplayName(name));
-        schemaType.setTabularColumns(attributes);
+        schemaType.setAttributeList(attributes);
         return schemaType;
     }
 

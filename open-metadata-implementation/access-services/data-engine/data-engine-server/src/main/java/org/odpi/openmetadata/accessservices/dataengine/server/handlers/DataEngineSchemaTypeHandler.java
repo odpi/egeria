@@ -6,7 +6,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -244,7 +243,7 @@ public class DataEngineSchemaTypeHandler {
                                                                                                                                 UserNotAuthorizedException {
 
         String methodName = "upsertSchemaAttributes";
-        for (Attribute tabularColumn : schemaType.getTabularColumns()) {
+        for (Attribute tabularColumn : schemaType.getAttributeList()) {
 
             Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, tabularColumn.getQualifiedName());
 
