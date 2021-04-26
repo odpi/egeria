@@ -27,8 +27,8 @@ public class SystemAttributes implements Serializable {
     private Status status     = null;
     private String createdBy  = null;
     private String updatedBy  = null;
-    private Date createTime   = null;
-    private Date updateTime   = null;
+    private Long createTime   = null;
+    private Long updateTime   = null;
     private Long version    = null;
 
     public String getGUID() {
@@ -77,24 +77,26 @@ public class SystemAttributes implements Serializable {
 
     /**
      * The time at which this object was created.
-     * @return date
+     * @return create time in milliseconds since epoch
      */
-    public Date getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
     /**
      * The time at which this object was last updated.
-     * @return date
+     * @return update time in milliseconds since epoch
      */
-    public Date getUpdateTime() {
+    public Long getUpdateTime() {
         return updateTime;
     }
-
-    public void setUpdateTime(Date updateTime) {
+    /**
+     * Update the time at which this object was last updated in milliseconds since epoch
+     */
+    public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
     }
 

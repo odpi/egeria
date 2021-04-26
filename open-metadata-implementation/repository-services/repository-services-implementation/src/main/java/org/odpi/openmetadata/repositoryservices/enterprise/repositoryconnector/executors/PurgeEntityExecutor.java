@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -17,31 +18,34 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class PurgeEntityExecutor extends RepositoryExecutorBase
 {
+    private MaintenanceAccumulator accumulator;
     private String                 entityGUID;
     private String                 typeDefGUID;
     private String                 typeDefName;
     private boolean                entityDeleted = false;
-    private MaintenanceAccumulator accumulator   = new MaintenanceAccumulator();
 
 
 
     /**
      * Constructor takes the parameters for the request.
      *
-     * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the entity to purge.
-     * @param typeDefName unique name of the type of the entity to purge.
-     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param userId unique identifier for requesting user
+     * @param typeDefGUID unique identifier of the type of the entity to purge
+     * @param typeDefName unique name of the type of the entity to purge
+     * @param entityGUID String unique identifier (guid) for the entity
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public PurgeEntityExecutor(String    userId,
                                String    typeDefGUID,
                                String    typeDefName,
                                String    entityGUID,
+                               AuditLog  auditLog,
                                String    methodName)
     {
         super(userId, methodName);
 
+        this.accumulator = new MaintenanceAccumulator(auditLog);
         this.entityGUID = entityGUID;
         this.typeDefGUID = typeDefGUID;
         this.typeDefName = typeDefName;
@@ -58,6 +62,7 @@ public class PurgeEntityExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -95,7 +100,9 @@ public class PurgeEntityExecutor extends RepositoryExecutorBase
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return entityDeleted;

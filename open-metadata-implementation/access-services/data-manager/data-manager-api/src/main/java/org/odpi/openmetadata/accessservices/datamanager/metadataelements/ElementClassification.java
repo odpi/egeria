@@ -97,10 +97,12 @@ public class ElementClassification implements Serializable
         {
             return null;
         }
-        else
+        else if (classificationProperties.isEmpty())
         {
-            return new HashMap<>(classificationProperties);
+            return null;
         }
+
+        return classificationProperties;
     }
 
 

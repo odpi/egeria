@@ -27,6 +27,7 @@ public class DatabaseTableElement implements MetadataElement, Serializable
 
     private ElementHeader           elementHeader = null;
     private DatabaseTableProperties databaseTableProperties = null;
+    private int                     databaseColumnCount = 0;
 
 
     /**
@@ -48,6 +49,8 @@ public class DatabaseTableElement implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            databaseTableProperties = template.getDatabaseTableProperties();
+            databaseColumnCount = template.getDatabaseColumnCount();
         }
     }
 
@@ -99,6 +102,28 @@ public class DatabaseTableElement implements MetadataElement, Serializable
 
 
     /**
+     * Return the count of columns for this database table.
+     *
+     * @return int
+     */
+    public int getDatabaseColumnCount()
+    {
+        return databaseColumnCount;
+    }
+
+
+    /**
+     * Set up the count of the columns for this database.
+     *
+     * @param databaseColumnCount int
+     */
+    public void setDatabaseColumnCount(int databaseColumnCount)
+    {
+        this.databaseColumnCount = databaseColumnCount;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -108,7 +133,8 @@ public class DatabaseTableElement implements MetadataElement, Serializable
     {
         return "DatabaseTableElement{" +
                 "elementHeader=" + elementHeader +
-                ", databaseTableProperties=" + databaseTableProperties +
+                       ", databaseTableProperties=" + databaseTableProperties +
+                       ", databaseColumnCount=" + databaseColumnCount +
                 '}';
     }
 
@@ -130,13 +156,10 @@ public class DatabaseTableElement implements MetadataElement, Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         DatabaseTableElement that = (DatabaseTableElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(databaseTableProperties, that.databaseTableProperties);
+        return databaseColumnCount == that.databaseColumnCount &&
+                       Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(databaseTableProperties, that.databaseTableProperties);
     }
 
 
@@ -148,6 +171,6 @@ public class DatabaseTableElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, databaseTableProperties);
+        return Objects.hash(super.hashCode(), elementHeader, databaseTableProperties, databaseColumnCount);
     }
 }

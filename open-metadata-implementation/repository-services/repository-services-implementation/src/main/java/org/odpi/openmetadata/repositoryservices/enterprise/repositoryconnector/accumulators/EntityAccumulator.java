@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -119,7 +120,7 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
                         /*
                          * Ignore older versions of the classification
                          */
-                        if (existingClassification.getVersion() < newClassification.getVersion())
+                        if ((existingClassification == null) || (existingClassification.getVersion() < newClassification.getVersion()))
                         {
                             entityClassificationsMap.put(newClassification.getName(), newClassification);
                         }
@@ -176,9 +177,11 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
      * their request(s).
      *
      * @param repositoryConnector enterprise connector
+     * @param metadataCollection enterprise metadata collection
      * @return list of entities
      */
-    public synchronized List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector)
+    public synchronized List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector,
+                                                      OMRSMetadataCollection            metadataCollection)
     {
         if (accumulatedEntities.isEmpty())
         {
@@ -190,15 +193,18 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
 
             List<EntityDetail>  results = new ArrayList<>();
 
-            for (EntityDetail accumulatedEntity : accumulatedEntities.values())
+            if (metadataCollection != null)
             {
-                if (accumulatedEntity != null)
+                for (EntityDetail accumulatedEntity : accumulatedEntities.values())
                 {
-                    EntityDetail resultEntity = new EntityDetail(accumulatedEntity);
+                    if (accumulatedEntity != null)
+                    {
+                        EntityDetail resultEntity = new EntityDetail(accumulatedEntity);
 
-                    resultEntity.setClassifications(accumulatedClassifications.get(accumulatedEntity.getGUID()));
+                        resultEntity.setClassifications(accumulatedClassifications.get(accumulatedEntity.getGUID()));
 
-                    results.add(resultEntity);
+                        results.add(resultEntity);
+                    }
                 }
             }
 
@@ -227,7 +233,7 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
      *
      * @param repositoryConnector enterprise connector
      */
-    private  void  makeRefreshRecommendations(EnterpriseOMRSRepositoryConnector repositoryConnector)
+    private void makeRefreshRecommendations(EnterpriseOMRSRepositoryConnector repositoryConnector)
     {
         /*
          * Either no local repository or nothing accumulated so nothing to return

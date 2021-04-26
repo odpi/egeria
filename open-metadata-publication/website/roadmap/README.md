@@ -34,8 +34,8 @@ Green means that
 there is function that is either [released or technical preview](../content-status).
 Orange means there is work going on and red means it is planned but not started.
 
-![Figure 3](functional-organization-showing-implementation-status-for-2.4.png#pagewidth)
-> **Figure 3:** Status of the functions found in each layer of capability for Egeria release 2.4
+![Figure 3](functional-organization-showing-implementation-status-for-2.9.png#pagewidth)
+> **Figure 3:** Status of the functions found in each layer of capability for Egeria release 2.9
 
 This chart is being updated with each [release](../../../release-notes).
 

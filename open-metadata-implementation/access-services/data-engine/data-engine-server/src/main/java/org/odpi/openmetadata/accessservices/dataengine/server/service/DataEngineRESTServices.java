@@ -5,15 +5,42 @@ package org.odpi.openmetadata.accessservices.dataengine.server.service;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
-import org.odpi.openmetadata.accessservices.dataengine.model.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.CSVFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.rest.*;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTransformationProjectHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -30,7 +57,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +69,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.partitioningBy;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
 
 /**
  * The DataEngineRESTServices provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -137,6 +171,7 @@ public class DataEngineRESTServices {
      * @param serverName            name of server instance to call
      * @param userId                the name of the calling user
      * @param schemaTypeRequestBody properties of the schema type
+     *
      * @return the unique identifier (guid) of the created schema type
      */
     public GUIDResponse upsertSchemaType(String userId, String serverName, SchemaTypeRequestBody schemaTypeRequestBody) {
@@ -145,10 +180,8 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (schemaTypeRequestBody == null) {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-                return response;
-            }
+            if (isRequestBodyInvalid(userId, serverName, schemaTypeRequestBody, methodName)) return response;
+
 
             String newSchemaTypeGUID = upsertSchemaType(userId, serverName, schemaTypeRequestBody.getSchemaType(),
                     schemaTypeRequestBody.getExternalSourceName());
@@ -172,6 +205,7 @@ public class DataEngineRESTServices {
      * @param serverName                    name of server instance to call
      * @param userId                        the name of the calling user
      * @param portImplementationRequestBody properties of the port
+     *
      * @return the unique identifier (guid) of the created port
      */
     public GUIDResponse upsertPortImplementation(String userId, String serverName,
@@ -180,10 +214,7 @@ public class DataEngineRESTServices {
 
         GUIDResponse response = new GUIDResponse();
         try {
-            if (portImplementationRequestBody == null) {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-                return response;
-            }
+            if (isRequestBodyInvalid(userId, serverName, portImplementationRequestBody, methodName)) return response;
 
             String portImplementationGUID = upsertPortImplementationWithSchemaType(userId, serverName,
                     portImplementationRequestBody.getPortImplementation(), portImplementationRequestBody.getExternalSourceName());
@@ -207,6 +238,7 @@ public class DataEngineRESTServices {
      * @param serverName           name of server instance to call
      * @param userId               the name of the calling user
      * @param portAliasRequestBody properties of the port
+     *
      * @return the unique identifier (guid) of the created port
      */
     public GUIDResponse upsertPortAlias(String userId, String serverName, PortAliasRequestBody portAliasRequestBody) {
@@ -215,10 +247,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (portAliasRequestBody == null) {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-                return response;
-            }
+            if (isRequestBodyInvalid(userId, serverName, portAliasRequestBody, methodName)) return response;
 
             response.setGUID(upsertPortAliasWithDelegation(userId, serverName, portAliasRequestBody.getPortAlias(),
                     portAliasRequestBody.getExternalSourceName()));
@@ -249,15 +278,10 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (processHierarchyRequestBody == null) {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-                return response;
-            }
+            if (isRequestBodyInvalid(userId, serverName, processHierarchyRequestBody, methodName)) return response;
 
             response.setGUID(addProcessHierarchyToProcess(userId, serverName, processHierarchyRequestBody.getProcessHierarchy(),
                     processHierarchyRequestBody.getExternalSourceName()));
-
-
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -275,6 +299,7 @@ public class DataEngineRESTServices {
      * @param userId               the name of the calling user
      * @param serverName           name of server instance to call
      * @param processesRequestBody properties of the processes
+     *
      * @return a list unique identifiers (GUIDs) of the created/updated processes
      */
     public ProcessListResponse upsertProcesses(String userId, String serverName, ProcessesRequestBody processesRequestBody) {
@@ -283,8 +308,10 @@ public class DataEngineRESTServices {
         ProcessListResponse response = new ProcessListResponse();
 
         try {
-            if (processesRequestBody == null || CollectionUtils.isEmpty(processesRequestBody.getProcesses())) {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            if (isRequestBodyInvalid(userId, serverName, processesRequestBody, methodName)) return response;
+
+            if (CollectionUtils.isEmpty(processesRequestBody.getProcesses())) {
+                restExceptionHandler.handleMissingValue("processes", methodName);
                 return response;
             }
 
@@ -292,7 +319,6 @@ public class DataEngineRESTServices {
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         }
-
         return response;
     }
 
@@ -311,9 +337,9 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertPortAliasWithDelegation(String userId, String serverName, PortAlias portAlias, String externalSourceName) throws
-            InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                                                                  InvalidParameterException,
+                                                                                                                                  PropertyServerException,
+                                                                                                                                  UserNotAuthorizedException {
         final String methodName = "upsertPortAliasWithDelegation";
 
         log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portAlias);
@@ -331,7 +357,8 @@ public class DataEngineRESTServices {
         }
 
         if (!StringUtils.isEmpty(portAlias.getDelegatesTo())) {
-            dataEnginePortHandler.addPortDelegationRelationship(userId, portAliasGUID, portAlias.getPortType(), portAlias.getDelegatesTo(), externalSourceName);
+            dataEnginePortHandler.addPortDelegationRelationship(userId, portAliasGUID, portAlias.getPortType(), portAlias.getDelegatesTo(),
+                    externalSourceName);
         }
 
         log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, portAliasGUID);
@@ -400,8 +427,8 @@ public class DataEngineRESTServices {
      */
     public String upsertPortImplementationWithSchemaType(String userId, String serverName, PortImplementation portImplementation,
                                                          String externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException {
         final String methodName = "upsertPortImplementationWithSchemaType";
 
         log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portImplementation);
@@ -414,7 +441,7 @@ public class DataEngineRESTServices {
 
         String portImplementationGUID;
         if (!portEntity.isPresent()) {
-             portImplementationGUID = dataEnginePortHandler.createPortImplementation(userId, portImplementation, externalSourceName);
+            portImplementationGUID = dataEnginePortHandler.createPortImplementation(userId, portImplementation, externalSourceName);
         } else {
             portImplementationGUID = portEntity.get().getGUID();
             dataEnginePortHandler.updatePortImplementation(userId, portEntity.get(), portImplementation, externalSourceName);
@@ -550,6 +577,7 @@ public class DataEngineRESTServices {
      * @param serverName         name of server instance to call
      * @param processes          list of processes to be created
      * @param externalSourceName the unique name of the external source
+     *
      * @return a list unique identifiers (GUIDs) of the created/updated processes
      */
     public ProcessListResponse upsertProcesses(String userId, String serverName, List<Process> processes, String externalSourceName) {
@@ -712,9 +740,9 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertSchemaType(String userId, String serverName, SchemaType schemaType, String externalSourceName) throws
-            InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+                                                                                                                       InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException {
         final String methodName = "upsertSchemaType";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, schemaType);
@@ -728,11 +756,83 @@ public class DataEngineRESTServices {
         return schemaTypeGUID;
     }
 
+    /**
+     * Create or update the Database with corresponding associated schema type and relationship
+     *
+     * @param serverName          name of server instance to call
+     * @param userId              the name of the calling user
+     * @param databaseRequestBody properties of the database
+     *
+     * @return the unique identifier (guid) of the created database
+     */
+    public GUIDResponse upsertDatabase(String userId, String serverName, DatabaseRequestBody databaseRequestBody) {
+        final String methodName = "upsertDatabase";
+
+        GUIDResponse response = new GUIDResponse();
+        try {
+            if (!isDatabaseRequestBodyValid(userId, serverName, databaseRequestBody, methodName)) return response;
+
+            Database database = databaseRequestBody.getDatabase();
+            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
+
+            DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
+                    methodName);
+            String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, databaseRequestBody.getExternalSourceName());
+
+            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
+            response.setGUID(databaseGUID);
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        return response;
+    }
+
+    /**
+     * Create the Relational Table with Relational Columns and corresponding relationships
+     *
+     * @param serverName                 name of server instance to call
+     * @param userId                     the name of the calling user
+     * @param relationalTableRequestBody properties of the relational table
+     *
+     * @return the unique identifier (guid) of the created relational table
+     */
+    public GUIDResponse upsertRelationalTable(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody) {
+        final String methodName = "upsertRelationalTable";
+
+        GUIDResponse response = new GUIDResponse();
+
+        try {
+            if (!isRelationalTableRequestBodyValid(userId, serverName, relationalTableRequestBody, methodName)) return response;
+
+            RelationalTable relationalTable = relationalTableRequestBody.getRelationalTable();
+            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
+
+            DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
+                    methodName);
+            String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId,
+                    relationalTableRequestBody.getDatabaseQualifiedName(), relationalTable, relationalTableRequestBody.getExternalSourceName());
+
+            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
+            response.setGUID(relationalTableGUID);
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        return response;
+    }
+
     private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeGUID, String oldSchemaTypeGUID,
                                           String externalSourceName) throws
-            InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+                                                                     InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException {
         final String methodName = "deleteObsoleteSchemaType";
 
         if (!oldSchemaTypeGUID.equalsIgnoreCase(schemaTypeGUID)) {
@@ -816,20 +916,20 @@ public class DataEngineRESTServices {
             }
             DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId, serverName, methodName);
+            DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 
             Optional<EntityDetail> processEntity = processHandler.findProcessEntity(userId, qualifiedName);
             String processGUID;
-            String transformationProjectGUID = null;
+            String collectionGUID = null;
 
-            TransformationProject transformationProject = process.getTransformationProject();
-            if (transformationProject != null) {
-                String transformationProjectQualifiedName = transformationProject.getQualifiedName();
-                Optional<EntityDetail> transformationProjectEntity = dataEngineTransformationProjectHandler.findTransformationProjectEntity(userId, transformationProjectQualifiedName);
-                if (!transformationProjectEntity.isPresent()) {
-                    transformationProjectGUID = dataEngineTransformationProjectHandler.createTransformationProject(userId, transformationProject, externalSourceName);
+            Collection collection = process.getCollection();
+            if (collection != null) {
+                String collectionQualifiedName = collection.getQualifiedName();
+                Optional<EntityDetail> collectionEntity = dataEngineCollectionHandler.findCollectionEntity(userId, collectionQualifiedName);
+                if (!collectionEntity.isPresent()) {
+                    collectionGUID = dataEngineCollectionHandler.createCollection(userId, collection, externalSourceName);
                 } else {
-                    transformationProjectGUID = transformationProjectEntity.get().getGUID();
+                    collectionGUID = collectionEntity.get().getGUID();
                 }
             }
 
@@ -852,8 +952,8 @@ public class DataEngineRESTServices {
                 }
             }
 
-            if (transformationProjectGUID != null) {
-                addProcessTransformationProjectRelationships(userId, serverName, processGUID, transformationProjectGUID, externalSourceName);
+            if (collectionGUID != null) {
+                addProcessCollectionRelationships(userId, serverName, processGUID, collectionGUID, externalSourceName);
             }
 
             addProcessPortRelationships(userId, serverName, processGUID,
@@ -886,14 +986,11 @@ public class DataEngineRESTServices {
             return new ArrayList<>();
         }
         return portImplementations.stream().map(portImplementation -> portImplementation.getSchemaType().getAttributeList())
-                .flatMap(Collection::stream).collect(Collectors.toList());
+                .flatMap(java.util.Collection::stream).collect(Collectors.toList());
     }
 
     private void addAnchorGUID(String userId, String serverName, String processGUID, List<Attribute> schemaAttributes,
-                               String externalSourceName) throws
-            InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                               String externalSourceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "addAnchorGUID";
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
@@ -930,15 +1027,15 @@ public class DataEngineRESTServices {
         });
     }
 
-    private void addProcessTransformationProjectRelationships(String userId, String serverName, String processGUID, String transformationProjectGuid,
-                                             String externalSourceName) throws InvalidParameterException, PropertyServerException,
+    private void addProcessCollectionRelationships(String userId, String serverName, String processGUID, String collectionGUID,
+                                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
             UserNotAuthorizedException {
 
         final String methodName = "addProcessPortRelationships";
 
-        DataEngineTransformationProjectHandler dataEngineTransformationProjectHandler = instanceHandler.getTransformationProjectHandler(userId, serverName, methodName);
+        DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 
-        dataEngineTransformationProjectHandler.addProcessTransformationProjectRelationship(userId, transformationProjectGuid, processGUID, externalSourceName);
+        dataEngineCollectionHandler.addCollectionMembershipRelationship(userId, collectionGUID, processGUID, externalSourceName);
     }
 
     private void addProcessPortRelationships(String userId, String serverName, String processGUID, Set<String> portGUIDs, GUIDResponse response,
@@ -964,8 +1061,8 @@ public class DataEngineRESTServices {
 
     private void deleteObsoletePorts(String userId, String serverName, Set<String> newPortGUIDs, String processGUID, String portTypeName,
                                      GUIDResponse response, String externalSourceName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException {
         final String methodName = "deleteObsoletePorts";
 
         if (CollectionUtils.isEmpty(newPortGUIDs)) {
@@ -1037,4 +1134,114 @@ public class DataEngineRESTServices {
 
         return portAliasGUIDs;
     }
+
+    private boolean isDatabaseRequestBodyValid(String userId, String serverName, DatabaseRequestBody databaseRequestBody, String methodName) throws
+                                                                                                                                             InvalidParameterException {
+        if (isRequestBodyInvalid(userId, serverName, databaseRequestBody, methodName)) return false;
+
+        if (databaseRequestBody.getDatabase() == null) {
+            restExceptionHandler.handleMissingValue("database", methodName);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isRelationalTableRequestBodyValid(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody,
+                                                      String methodName) throws InvalidParameterException {
+        if (isRequestBodyInvalid(userId, serverName, relationalTableRequestBody, methodName)) return false;
+
+        if (relationalTableRequestBody.getDatabaseQualifiedName() == null) {
+            restExceptionHandler.handleMissingValue("databaseQualifiedName", methodName);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isRequestBodyInvalid(String userId, String serverName, DataEngineOMASAPIRequestBody requestBody, String methodName)
+            throws InvalidParameterException {
+        if (requestBody == null) {
+            restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            return true;
+        }
+        if (requestBody.getExternalSourceName() == null) {
+            restExceptionHandler.handleMissingValue("externalSourceName", methodName);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Updates or inserts a DataFile or CSVFile, along with its schema, columns and folder hierarchy
+     *
+     * @param serverName server name
+     * @param userId user id
+     * @param dataFileRequestBody request body
+     *
+     * @return file guid
+     */
+    public GUIDResponse upsertDataFile(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
+
+        String methodName = "createDataFileAndSchema";
+        GUIDResponse response = new GUIDResponse();
+        String guid;
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, dataFileRequestBody, methodName)){
+                return response;
+            }
+
+            DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
+            DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
+
+            String externalSourceName = dataFileRequestBody.getExternalSourceName();
+            String externalSourceGuid = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+
+            DataFile file = dataFileRequestBody.getDataFile();
+            List<Attribute> columns = file.getColumns();
+            SchemaType schemaType = getDefaultSchemaTypeIfAbsentAndAddAttributes(file, file.getSchema(), columns);
+
+            Map<String, Object> extendedProperties = getExtendedProperties(file);
+            String fileTypeGuid = file instanceof CSVFile ? CSV_FILE_TYPE_GUID : DATA_FILE_TYPE_GUID ;
+            String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME ;
+            file.setFileType(fileTypeName);
+
+            guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType, columns,
+                    extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
+
+            response.setGUID(guid);
+
+        } catch (InvalidParameterException e) {
+            restExceptionHandler.captureInvalidParameterException(response, e);
+        } catch (UserNotAuthorizedException e) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, e);
+        } catch (PropertyServerException e) {
+            restExceptionHandler.capturePropertyServerException(response, e);
+        }
+        return response;
+    }
+
+    private SchemaType getDefaultSchemaTypeIfAbsentAndAddAttributes(DataFile file, SchemaType schemaType, List<Attribute> attributes){
+        if(schemaType == null){
+            schemaType = new SchemaType();
+            schemaType.setQualifiedName(file.getQualifiedName() +"::schema");
+            schemaType.setDisplayName("Schema");
+        }
+        schemaType.setAttributeList(attributes);
+        return schemaType;
+    }
+
+    private HashMap<String, Object> getExtendedProperties(DataFile file){
+        HashMap<String, Object> extendedProperties = new HashMap<>();
+
+        if(file instanceof CSVFile){
+            CSVFile csvFile = (CSVFile) file;
+            extendedProperties.put(FILE_TYPE_PROPERTY_NAME, csvFile.getFileType());
+            extendedProperties.put(DELIMITER_CHARACTER_PROPERTY_NAME, csvFile.getDelimiterCharacter());
+            extendedProperties.put(QUOTE_CHARACTER_PROPERTY_NAME, csvFile.getQuoteCharacter());
+        } else {
+            extendedProperties.put(FILE_TYPE_PROPERTY_NAME, file.getFileType());
+        }
+        return extendedProperties;
+    }
+
 }

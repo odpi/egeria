@@ -28,14 +28,15 @@ the process hierarchy.
 
 ## More information
 
-### Related Open Metadata Type Definitions
+#### Related Open Metadata Type Definitions
+
 * [Definition of Process](0010-Base-Model.md)
 * [Linking of processes into lineage graphs](Area-7-models.md)
 * [Ports to show specific input and output flows for a process](0217-Ports.md)
 * [PortSchema relationships to describe the structure of data supported by a Port](0520-Process-Schemas.md)
 
 
-### Use of these open metadata types
+#### Use of these open metadata types
 
 * [Egeria Developer Guide](../developer-guide) for more information on connectors and how to implement them.
 * [Lineage](../lineage) describes the different types of lineage and how the open metadata types link

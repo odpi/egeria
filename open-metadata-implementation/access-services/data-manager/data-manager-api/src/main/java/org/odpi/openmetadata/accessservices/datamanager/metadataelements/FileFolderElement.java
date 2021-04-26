@@ -129,10 +129,6 @@ public class FileFolderElement implements MetadataElement, Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         FileFolderElement that = (FileFolderElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(fileFolderProperties, that.fileFolderProperties);

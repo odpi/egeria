@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
@@ -20,11 +21,11 @@ import java.util.Map;
  */
 public class GetEntitySummaryExecutor extends RepositoryExecutorBase
 {
+    protected MaintenanceAccumulator      accumulator;
     protected String                      entityGUID;
     protected Map<String, Classification> allClassifications = new HashMap<>();
 
     protected boolean                     inPhaseOne         = true;
-    protected MaintenanceAccumulator      accumulator        = new MaintenanceAccumulator();
 
 
     private EntitySummary latestEntity = null;
@@ -33,15 +34,19 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
     /**
      * Constructor takes the parameters for the request.
      *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier (guid) for the entity.
+     * @param userId unique identifier for requesting user
+     * @param entityGUID unique identifier (guid) for the entity
+     * @param auditLog logging destination
      * @param methodName calling method
      */
-    public GetEntitySummaryExecutor(String               userId,
-                                    String               entityGUID,
-                                    String               methodName)
+    public GetEntitySummaryExecutor(String   userId,
+                                    String   entityGUID,
+                                    AuditLog auditLog,
+                                    String   methodName)
     {
         super(userId, methodName);
+
+        this.accumulator = new MaintenanceAccumulator(auditLog);
 
         this.entityGUID = entityGUID;
     }
@@ -80,35 +85,18 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
      * Retrieve the home classifications from the repository.
      *
      * @param metadataCollection repository to issue request to
-     * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity is not recognized by this repository
-     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
-     * @throws FunctionNotSupportedException this method is not supported
      */
-    protected void getHomeClassifications(OMRSMetadataCollection metadataCollection) throws InvalidParameterException,
-                                                                                            RepositoryErrorException,
-                                                                                            EntityNotKnownException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            FunctionNotSupportedException
+    protected void getHomeClassifications(OMRSMetadataCollection metadataCollection)
     {
-        List<Classification> homeClassifications;
-
-        homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID);
-
-        /*
-         * Home classifications override any matching classifications retrieved from other repositories.
-         */
-        if (homeClassifications != null)
+        try
         {
-            for (Classification homeClassification : homeClassifications)
-            {
-                if (homeClassification != null)
-                {
-                    this.allClassifications.put(homeClassification.getName(), homeClassification);
-                }
-            }
+            List<Classification> homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID);
+
+            saveClassifications(homeClassifications);
+        }
+        catch (Exception error)
+        {
+            // ignore exceptions because the returned exceptions come from the retrieval of the entity.
         }
     }
 
@@ -123,6 +111,7 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -162,6 +151,10 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
                         }
                     }
                 }
+                else /* retrieving additional classifications */
+                {
+                    getHomeClassifications(metadataCollection);
+                }
             }
             else /* retrieving additional classifications */
             {
@@ -184,13 +177,11 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (FunctionNotSupportedException error)
-        {
-            accumulator.captureException(error);
-        }
         catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return false;
@@ -208,10 +199,10 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntitySummary getEntitySummary() throws InvalidParameterException,
-                                                    RepositoryErrorException,
-                                                    EntityNotKnownException,
-                                                    UserNotAuthorizedException
+    public EntitySummary getEntitySummary() throws InvalidParameterException,
+                                                   RepositoryErrorException,
+                                                   EntityNotKnownException,
+                                                   UserNotAuthorizedException
     {
         if (latestEntity != null)
         {
