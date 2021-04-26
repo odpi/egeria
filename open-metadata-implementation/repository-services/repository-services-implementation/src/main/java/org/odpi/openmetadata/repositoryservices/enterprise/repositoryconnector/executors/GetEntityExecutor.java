@@ -137,6 +137,10 @@ public class GetEntityExecutor extends GetEntitySummaryExecutor
                         }
                     }
                 }
+                else /* retrieving additional classifications */
+                {
+                    getHomeClassifications(metadataCollection);
+                }
             }
             else /* retrieving additional classifications */
             {
@@ -154,6 +158,7 @@ public class GetEntityExecutor extends GetEntitySummaryExecutor
         catch (EntityProxyOnlyException error)
         {
             accumulator.captureException(error);
+            getHomeClassifications(metadataCollection);
         }
         catch (RepositoryErrorException error)
         {

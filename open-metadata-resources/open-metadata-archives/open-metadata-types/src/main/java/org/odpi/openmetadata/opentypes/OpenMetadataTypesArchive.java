@@ -159,6 +159,8 @@ public class OpenMetadataTypesArchive
         update0137ToDos();
         update0450GovernanceRollout();
         update0217Ports();
+        update0534RelationalSchema();
+        add0335PrimaryCategoryClassification();
     }
 
 
@@ -414,6 +416,85 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * The RelationalColumnType only allows for a column to be primitive. - could be a literal, enum or external.
+     */
+    private void update0534RelationalSchema()
+    {
+        this.archiveBuilder.addTypeDefPatch(deprecateRelationalColumnType());
+    }
+
+    private TypeDefPatch deprecateRelationalColumnType()
+    {
+        final String typeName = "RelationalColumnType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0335  Add the Primary Category Classification
+     */
+    private void add0335PrimaryCategoryClassification()
+    {
+        this.archiveBuilder.addClassificationDef(addPrimaryCategoryClassification());
+    }
+
+    private ClassificationDef addPrimaryCategoryClassification()
+    {
+        final String guid            = "3a6c4ba7-3cc5-48cd-8952-bwra92da016d";
+        final String name            = "PrimaryCategory";
+        final String description     = "Defines a category as being the base category of a glossary term";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "GlossaryTerm";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 true);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "categoryQualifiedName";
+        final String attribute1Description     = "The qualified name of the primary category of a GlossaryTerm.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
     }
 }
 

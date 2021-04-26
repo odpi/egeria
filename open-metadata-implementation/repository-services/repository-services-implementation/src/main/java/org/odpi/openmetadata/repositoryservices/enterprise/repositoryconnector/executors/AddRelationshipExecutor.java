@@ -49,10 +49,10 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
     public AddRelationshipExecutor(String             userId,
                                    String             relationshipTypeGUID,
                                    InstanceProperties initialProperties,
-                                   EntityProxy entityOneProxy,
-                                   EntityProxy entityTwoProxy,
-                                   InstanceStatus initialStatus,
-                                   AuditLog auditLog,
+                                   EntityProxy        entityOneProxy,
+                                   EntityProxy        entityTwoProxy,
+                                   InstanceStatus     initialStatus,
+                                   AuditLog           auditLog,
                                    String             methodName)
     {
         super(userId, methodName);
@@ -86,10 +86,10 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
                                    String             externalSourceGUID,
                                    String             externalSourceName,
                                    InstanceProperties initialProperties,
-                                   EntityProxy entityOneProxy,
-                                   EntityProxy entityTwoProxy,
-                                   InstanceStatus initialStatus,
-                                   AuditLog auditLog,
+                                   EntityProxy        entityOneProxy,
+                                   EntityProxy        entityTwoProxy,
+                                   InstanceStatus     initialStatus,
+                                   AuditLog           auditLog,
                                    String             methodName)
     {
         super(userId, methodName);

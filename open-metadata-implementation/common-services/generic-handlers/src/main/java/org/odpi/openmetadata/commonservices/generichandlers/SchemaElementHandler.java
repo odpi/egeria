@@ -391,7 +391,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Count the number of attributes attached to an parent schema attribute or type type.
+     * Count the number of attributes attached to an parent schema attribute or schema type.
      *
      * @param userId     calling user
      * @param schemaElementGUID identifier for the parent complex schema type - this could be a schemaAttribute or a
@@ -425,7 +425,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
         {
             count = repositoryHandler.countAttachedRelationshipsByType(userId,
                                                                        schemaElementGUID,
-                                                                       OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                        methodName);

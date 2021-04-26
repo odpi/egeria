@@ -3545,6 +3545,27 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 }
             }
         }
+        else
+        {
+            EntityProxy entityProxy = graphStore.getEntityProxyFromStore(entityGUID);
+
+            if (entityProxy != null) {
+                List<Classification> retrievedClassifications = entityProxy.getClassifications();
+
+                if (retrievedClassifications != null) {
+                    for (Classification retrievedClassification : retrievedClassifications) {
+                        if (retrievedClassification != null) {
+                            if (metadataCollectionId.equals(retrievedClassification.getMetadataCollectionId())) {
+                                /*
+                                 * Locally homed classification
+                                 */
+                                homeClassifications.add(retrievedClassification);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         if (homeClassifications.isEmpty()) {
             return null;

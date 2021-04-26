@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# ODPi Egeria Release Notes
+# Egeria Release Notes
 
 Below are the official releases of Egeria.  The project aims to
 produce a new release about once a month.  Each release includes
@@ -34,10 +34,11 @@ Below are the release notes for the latest Egeria release:
   * Dependency updates
   * Important notes included on known issues
   
+## Older Releases
+
 * [Release 2.7](release-notes-2-7.md) - March 2021
   * Bug Fixes
   * Dependency updates
-## Older Releases
 
 * [Release 2.6](release-notes-2-6.md) - February 2021
   * Governance Server, replacing Stewardship, Discovery & Security Server
