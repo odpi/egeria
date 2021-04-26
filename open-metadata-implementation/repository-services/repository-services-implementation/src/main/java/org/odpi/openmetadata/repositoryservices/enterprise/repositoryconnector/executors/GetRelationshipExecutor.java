@@ -60,7 +60,7 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
     public GetRelationshipExecutor(String    userId,
                                    String    relationshipGUID,
                                    Date      asOfTime,
-                                   AuditLog auditLog,
+                                   AuditLog  auditLog,
                                    String    methodName)
     {
         super(userId, methodName);

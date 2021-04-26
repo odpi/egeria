@@ -544,7 +544,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             else
             {
                 log.error(typeName + " type is not known in TypeDef cache");
-                throwContentManagerLogicError(sourceName, methodName, thisMethodName);
+                throwContentManagerLogicError(sourceName, methodName, thisMethodName + "(" + typeName + ")");
             }
         }
 

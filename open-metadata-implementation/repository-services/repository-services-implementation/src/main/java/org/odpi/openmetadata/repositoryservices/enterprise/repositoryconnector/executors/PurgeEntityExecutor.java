@@ -40,7 +40,7 @@ public class PurgeEntityExecutor extends RepositoryExecutorBase
                                String    typeDefGUID,
                                String    typeDefName,
                                String    entityGUID,
-                               AuditLog auditLog,
+                               AuditLog  auditLog,
                                String    methodName)
     {
         super(userId, methodName);

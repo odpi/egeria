@@ -56,20 +56,20 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      * @param repositoryValidator validator for resulting relationships
      * @param methodName calling method
      */
-    public FindRelationshipsExecutor(String                    userId,
-                                     String                    relationshipTypeGUID,
-                                     List<String>              relationshipSubtypeGUIDs,
-                                     SearchProperties matchProperties,
-                                     int                       fromRelationshipElement,
-                                     List<InstanceStatus>      limitResultsByStatus,
-                                     Date                      asOfTime,
-                                     String                    sequencingProperty,
-                                     SequencingOrder sequencingOrder,
-                                     int                       pageSize,
-                                     String                    localMetadataCollectionId,
-                                     AuditLog auditLog,
+    public FindRelationshipsExecutor(String                  userId,
+                                     String                  relationshipTypeGUID,
+                                     List<String>            relationshipSubtypeGUIDs,
+                                     SearchProperties        matchProperties,
+                                     int                     fromRelationshipElement,
+                                     List<InstanceStatus>    limitResultsByStatus,
+                                     Date                    asOfTime,
+                                     String                  sequencingProperty,
+                                     SequencingOrder         sequencingOrder,
+                                     int                     pageSize,
+                                     String                  localMetadataCollectionId,
+                                     AuditLog                auditLog,
                                      OMRSRepositoryValidator repositoryValidator,
-                                     String                    methodName)
+                                     String                  methodName)
     {
         this(userId,
              relationshipTypeGUID,
@@ -112,18 +112,18 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
      * @param accumulator captures results and exceptions
      * @param methodName calling method
      */
-    private FindRelationshipsExecutor(String                    userId,
-                                      String                    relationshipTypeGUID,
-                                      List<String>              relationshipSubtypeGUIDs,
-                                      SearchProperties matchProperties,
-                                      int                       fromRelationshipElement,
-                                      List<InstanceStatus>      limitResultsByStatus,
-                                      Date                      asOfTime,
-                                      String                    sequencingProperty,
-                                      SequencingOrder sequencingOrder,
-                                      int                       pageSize,
+    private FindRelationshipsExecutor(String                  userId,
+                                      String                  relationshipTypeGUID,
+                                      List<String>            relationshipSubtypeGUIDs,
+                                      SearchProperties        matchProperties,
+                                      int                     fromRelationshipElement,
+                                      List<InstanceStatus>    limitResultsByStatus,
+                                      Date                    asOfTime,
+                                      String                  sequencingProperty,
+                                      SequencingOrder         sequencingOrder,
+                                      int                     pageSize,
                                       RelationshipAccumulator accumulator,
-                                      String                    methodName)
+                                      String                  methodName)
     {
         super(userId,
               relationshipTypeGUID,

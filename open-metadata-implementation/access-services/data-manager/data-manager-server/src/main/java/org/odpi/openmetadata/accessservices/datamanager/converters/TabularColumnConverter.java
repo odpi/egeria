@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.TabularColumnElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TabularColumnProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -99,12 +100,6 @@ public class TabularColumnConverter<B> extends DataManagerOMASConverter<B>
                     tabularColumnProperties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                     tabularColumnProperties.setAliases(this.removeAliases(instanceProperties));
 
-                    instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
-
-                    tabularColumnProperties.setDataType(this.removeDataType(instanceProperties));
-                    tabularColumnProperties.setDefaultValue(this.removeDefaultValue(instanceProperties));
-                    tabularColumnProperties.setFixedValue(this.removeFixedValue(instanceProperties));
-
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
@@ -114,7 +109,9 @@ public class TabularColumnConverter<B> extends DataManagerOMASConverter<B>
 
                     if (schemaType instanceof SchemaTypeElement)
                     {
-                        tabularColumnProperties.setSchemaType(((SchemaTypeElement) schemaType).getSchemaTypeProperties());
+                        SchemaTypeProperties schemaTypeProperties = ((SchemaTypeElement) schemaType).getSchemaTypeProperties();
+
+                        super.addSchemaTypeToColumn(schemaTypeProperties, tabularColumnProperties);
                     }
 
                     bean.setTabularColumnProperties(tabularColumnProperties);

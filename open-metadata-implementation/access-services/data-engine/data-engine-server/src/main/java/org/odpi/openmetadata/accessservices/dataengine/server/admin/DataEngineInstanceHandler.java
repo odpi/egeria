@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
@@ -185,6 +186,27 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
         }
 
         return null;
+    }
+
+    /**
+     * Retrieve the DataFile handler for the access service
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @return handler for use by the requested instance
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public DataEngineDataFileHandler getDataFileHandler(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
+                serverName, serviceOperationName);
+        return instance.getDataEngineDataFileHandler();
     }
 }
 

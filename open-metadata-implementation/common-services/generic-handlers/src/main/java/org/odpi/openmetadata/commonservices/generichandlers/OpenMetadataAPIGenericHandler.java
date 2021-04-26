@@ -116,7 +116,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
         this.auditLog                = auditLog;
 
-        this.errorHandler            = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
+        this.errorHandler            = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
 
         this.qualifiedNamePropertyNamesList = new ArrayList<>();
         this.qualifiedNamePropertyNamesList.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -1782,7 +1782,14 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         catch (PropertyServerException error)
         {
-            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            try
+            {
+                errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            }
+            catch (PropertyServerException secondError)
+            {
+                // Not able to log exception
+            }
         }
 
         return anchorGUID;
