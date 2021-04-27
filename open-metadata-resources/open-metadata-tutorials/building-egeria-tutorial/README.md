@@ -36,12 +36,12 @@ Ensure you are using version 3.5.0 or higher in order to build Egeria.
 
 Maven can be installed:
 
-- On Windows, by downloading the [binary zip archive](https://maven.apache.org/download.cgi) and
-[following Maven's installation instructions for Windows](https://maven.apache.org/guides/getting-started/windows-prerequisites.html).
 - On MacOS, by first installing the [HomeBrew](https://brew.sh) package manager and then running
 `brew install maven` from the command-line.
 - On Linux operating systems, by using your distribution's package manager (`yum install maven`, `apt-get install maven`, etc).
-
+- On Windows, you should use [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) Version 2 or above, install an appropriate Linux distribution, and follow
+  the instructions for Linux.
+  
 **Git** is an open source version control system used to store and manage Egeria's files.
 You need it installed on your machine to work with Egeria's git repositories stored on
 [GitHub](https://github.com/odpi/egeria).
