@@ -3,6 +3,9 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id "io.freefair.lombok"
+}
 
 dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
@@ -21,7 +24,6 @@ dependencies {
     testImplementation 'junit:junit'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-
 }
 
 description = 'Asset Catalog OMAS Server-side'
