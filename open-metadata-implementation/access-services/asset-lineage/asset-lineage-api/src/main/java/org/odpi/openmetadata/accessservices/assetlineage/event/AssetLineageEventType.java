@@ -38,7 +38,8 @@ public enum AssetLineageEventType implements Serializable {
     COLUMN_CONTEXT_EVENT(13, "ColumnContextEvent", "Has the context for a column"),
     ASSET_CONTEXT_EVENT(14, "AssetContextEvent", "Has the asset context for a relational table or a data file"),
     LINEAGE_MAPPINGS_EVENT(15, "LineageMappingsEvent", "Has the linege mappings for a column"),
-    UNKNOWN_ASSET_LINEAGE_EVENT(100, "UnknownAssetLineageEvent", "An AssetLineage OMAS event that is not recognized by the local handlers.");
+    UNKNOWN_ASSET_LINEAGE_EVENT(100, "UnknownAssetLineageEvent", "An AssetLineage OMAS event that is not recognized by the local handlers."),
+    LINEAGE_CONTROL_EVENT(99, "LineageControlEvent","Lineage processing control event");
 
     private static final long serialVersionUID = 1L;
 

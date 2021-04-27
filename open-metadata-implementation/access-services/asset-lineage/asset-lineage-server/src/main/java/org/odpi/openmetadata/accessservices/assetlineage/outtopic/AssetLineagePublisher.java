@@ -11,6 +11,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageControlEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
@@ -30,6 +31,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_CATEGORY;
@@ -225,6 +227,14 @@ public class AssetLineagePublisher {
         ObjectMapper objectMapper = new ObjectMapper();
         outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
 
+    }
+
+    //TODO: Javadoc
+    public void publishLineageSummaryEvent(List<String> publishedGUIDs) throws JsonProcessingException, ConnectorCheckedException {
+        LineageControlEvent event = new LineageControlEvent();
+        event.setPublishSummary(publishedGUIDs);
+        event.setAssetLineageEventType(AssetLineageEventType.LINEAGE_CONTROL_EVENT);
+        publishEvent(event);
     }
 
     /**

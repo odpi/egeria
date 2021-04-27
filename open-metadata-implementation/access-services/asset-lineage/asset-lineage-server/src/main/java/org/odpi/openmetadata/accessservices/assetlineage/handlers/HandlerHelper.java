@@ -182,14 +182,14 @@ public class HandlerHelper {
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
      */
-    public List<EntityDetail> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
+    public Optional<List<EntityDetail>> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
                                                  FindEntitiesParameters findEntitiesParameters)
             throws UserNotAuthorizedException, PropertyServerException {
         final String methodName = "findEntitiesByType";
         String typeDefGUID = getTypeByName(userId, entityTypeName);
-        return repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
+        return Optional.ofNullable(repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
-                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName);
+                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName));
     }
 
     /**

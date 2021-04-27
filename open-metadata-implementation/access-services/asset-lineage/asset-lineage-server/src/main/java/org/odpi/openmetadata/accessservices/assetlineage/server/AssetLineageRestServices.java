@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePu
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -31,7 +32,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
@@ -47,12 +51,14 @@ public class AssetLineageRestServices {
     private static final Logger log = LoggerFactory.getLogger(AssetLineageRestServices.class);
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private boolean lineageProcessActiveFlag;
 
     /**
      * Default constructor
      */
     public AssetLineageRestServices() {
         instanceHandler.registerAccessService();
+        setLineageProcessInactive();
     }
 
     /**
@@ -68,6 +74,8 @@ public class AssetLineageRestServices {
      *
      * @return a list of unique identifiers (guids) of the available entityType as a response
      */
+
+    //TODO: Update javadoc
     public GUIDListResponse publishEntities(String serverName, String userId, String entityType,
                                             FindEntitiesParameters findEntitiesParameters) {
         GUIDListResponse response = new GUIDListResponse();
@@ -75,9 +83,37 @@ public class AssetLineageRestServices {
         String methodName = "publishEntities";
         try {
             HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
+            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SearchProperties searchProperties = handlerHelper.getSearchPropertiesAfterUpdateTime(findEntitiesParameters.getUpdatedAfter());
-            List<EntityDetail> entitiesByTypeName = handlerHelper.findEntitiesByType(userId, entityType, searchProperties, findEntitiesParameters);
-            return publishEntitiesContext(userId, serverName, entityType, entitiesByTypeName);
+            AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
+
+            if (!isLineageProcessActive()) {
+
+                Optional<List<EntityDetail>> entitiesByTypeName = handlerHelper.findEntitiesByType(userId, entityType, searchProperties, findEntitiesParameters);
+
+                if (!entitiesByTypeName.isPresent()) {
+                    auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_NOT_FOUND", entityType, "0"));
+                    return response;
+                }
+
+                auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_FOUND", entityType, String.valueOf(entitiesByTypeName.get().size())));
+                response.setGUIDs(entitiesByTypeName.get().stream().map(InstanceHeader::getGUID).collect(Collectors.toList()));
+
+                CompletableFuture.supplyAsync(() -> {
+
+                    setLineageProcessActive();
+                    auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_START", entityType, String.valueOf(entitiesByTypeName.get().size())));
+                    List<String> result = publishEntitiesContext(entitiesByTypeName.get(), publisher, auditLog);
+                    auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_END", entityType, String.valueOf(result.size())));
+                    setLineageProcessInactive();
+
+                    return result;
+
+                }).thenAccept((result) -> {
+                    publishProcessingComplete(result, publisher, auditLog);
+                });
+            }
+
 
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
@@ -87,37 +123,6 @@ public class AssetLineageRestServices {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
 
-        return response;
-    }
-
-    private GUIDListResponse publishEntitiesContext(String userId, String serverName, String entityType, List<EntityDetail> entitiesByTypeName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        String methodName = "publishEntitiesContext";
-        AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-        GUIDListResponse response = new GUIDListResponse();
-        if (entitiesByTypeName == null || CollectionUtils.isEmpty(entitiesByTypeName)) {
-            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_NOT_FOUND", entityType, "0"));
-            return response;
-        }
-
-        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_FOUND", entityType,
-                String.valueOf(entitiesByTypeName.size())));
-        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES", entityType,
-                entitiesByTypeName.stream().map(InstanceHeader::getGUID).collect(Collectors.joining(","))));
-
-        AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
-        if (publisher == null) {
-            auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISHER_NOT_AVAILABLE_ERROR.getMessageDefinition());
-            return response;
-        }
-
-        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_START", entityType,
-                String.valueOf(entitiesByTypeName.size())));
-        List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher, auditLog);
-        response.setGUIDs(publishedEntitiesContext);
-        auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_END", entityType,
-                String.valueOf(publishedEntitiesContext.size())));
         return response;
     }
 
@@ -183,6 +188,16 @@ public class AssetLineageRestServices {
         CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
 
         return publishedGUIDs;
+    }
+
+    //TODO: Javadoc
+    private void publishProcessingComplete(List<String> publishedGUIDs, AssetLineagePublisher publisher, AuditLog auditLog) {
+        String methodName = "publishProcessingComplete";
+        try {
+            publisher.publishLineageSummaryEvent(publishedGUIDs);
+        } catch (Exception e) {
+            auditLog.logException(methodName, AssetLineageAuditCode.EVENT_PROCESSING_EXCEPTION.getMessageDefinition(),e);
+        }
     }
 
     /**
@@ -297,5 +312,17 @@ public class AssetLineageRestServices {
                     guids.add(relationship.getToVertex().getGuid());
                 });
         return new ArrayList<>(guids);
+    }
+
+    private boolean isLineageProcessActive() {
+        return lineageProcessActiveFlag;
+    }
+
+    private void setLineageProcessActive() {
+        lineageProcessActiveFlag = true;
+    }
+
+    private void setLineageProcessInactive() {
+        lineageProcessActiveFlag = false;
     }
 }
