@@ -5,6 +5,7 @@
 
 Release 2.9 adds:
 * Changes to metadata types
+* Changes to building Egeria on Windows
 
 Details of these and other changes are in the sections that follow.
 
@@ -26,6 +27,17 @@ model [0450 Governance Rollout](../open-metadata-publication/website/open-metada
 model [0534 Relational Schema](../open-metadata-publication/website/open-metadata-types/0534-Relational-Schemas.md).
 only allows for a column to be primitive. It could be a literal, enum or external and so this type has been deprecated
 and the appropriate schema types should be used directly.
+
+### Building Egeria on Windows
+
+To build Egeria on Windows you should use [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) Version 2 or above & install an 
+appropriate Linux distribution.
+
+Egeria should then be built & run within this environment. 
+
+IDEs such as IntelliJ and VSCode support editing and code management within the Windows GUI alongside build and execution in Linux.
+
+See [PR #5084](https://github.com/odpi/egeria/pull/5084) for more information.
 
 ### Bug fixes and other updates
 * Additional Bug Fixes
