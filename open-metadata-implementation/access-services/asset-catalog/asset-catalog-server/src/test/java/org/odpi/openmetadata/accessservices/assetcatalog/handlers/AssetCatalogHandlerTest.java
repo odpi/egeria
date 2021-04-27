@@ -543,7 +543,7 @@ public class AssetCatalogHandlerTest {
         String methodName = "searchByType";
         SearchParameters searchParams = mockSearchParams();
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
-        mockSearchString(SEARCH_CRITERIA, searchParams.isCaseInsensitive());
+        mockSearchString(SEARCH_CRITERIA, searchParams.getCaseInsensitive());
         InstanceProperties matchProperties = mockMatchProperties();
 
         OMRSMetadataCollection metadataCollection = mockMetadataCollection();
