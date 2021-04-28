@@ -4,12 +4,18 @@ package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
+import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageAssetContextHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -17,15 +23,22 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageInTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
-    private StoringServices storingServices;
+    private final StoringServices storingServices;
+    private final OpenLineageAssetContextHandler assetContextHandler;
 
-    public OpenLineageInTopicListener(StoringServices storingServices, OMRSAuditLog auditLog) {
+    public OpenLineageInTopicListener(StoringServices storingServices, OpenLineageAssetContextHandler assetContextHandler,
+                                      OMRSAuditLog auditLog) {
         this.storingServices = storingServices;
+        this.assetContextHandler = assetContextHandler;
         this.auditLog = auditLog;
     }
 
@@ -72,17 +85,27 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
         LineageRelationshipsEvent lineageRelationshipsEvent;
 
         switch (assetLineageEventHeader.getAssetLineageEventType()) {
-            case CLASSIFICATION_CONTEXT_EVENT:
             case SEMANTIC_ASSIGNMENTS_EVENT:
             case TERM_CATEGORIZATIONS_EVENT:
             case TERM_ANCHORS_EVENT:
             case CATEGORY_ANCHORS_EVENT:
-            case COLUMN_CONTEXT_EVENT:
-            case ASSET_CONTEXT_EVENT:
+                lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                storingServices.upsertEntityContext(lineageRelationshipsEvent);
+                break;
+            case CLASSIFICATION_CONTEXT_EVENT:
             case LINEAGE_MAPPINGS_EVENT:
             case PROCESS_CONTEXT_EVENT:
                 lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
                 storingServices.addEntityContext(lineageRelationshipsEvent);
+                break;
+            case COLUMN_CONTEXT_EVENT:
+                lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                requestAssetContext(lineageRelationshipsEvent);
+                storingServices.addEntityContext(lineageRelationshipsEvent);
+                break;
+            case ASSET_CONTEXT_EVENT:
+                lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                storeAssetContext(lineageRelationshipsEvent);
                 break;
             case NEW_RELATIONSHIP_EVENT:
                 lineageRelationshipEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipEvent.class);
@@ -114,6 +137,36 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                 break;
             default:
                 break;
+        }
+    }
+
+    private void storeAssetContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+        Set<GraphContext> relationships = lineageRelationshipsEvent.getRelationshipsContext().getRelationships();
+        if(!CollectionUtils.isEmpty(relationships)) {
+            storingServices.addEntityContext(relationships);
+            String entityGuid = lineageRelationshipsEvent.getRelationshipsContext().getEntityGuid();
+            auditLog.logMessage("storing Asset Context information for entity",
+                    OpenLineageServerAuditCode.ASSET_CONTEXT_INFO.getMessageDefinition(entityGuid));
+        }
+    }
+
+    private void requestAssetContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+        Optional<LineageEntity> optionalEntity = assetContextHandler.getAssetLineageEntity(lineageRelationshipsEvent);
+        if(optionalEntity.isPresent()) {
+            LineageEntity entity = optionalEntity.get();
+            String guid = entity.getGuid();
+            if(!storingServices.isEntityInGraph(guid)) {
+                try {
+                    List<String> guids = assetContextHandler.getAssetContextForEntity(guid, entity.getTypeDefName());
+                    auditLog.logMessage("requested the entity's Asset Context for entity",
+                            OpenLineageServerAuditCode.ASSET_CONTEXT_REQUEST.getMessageDefinition(guid, guids.toString()));
+                } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
+                    OpenLineageServerAuditCode errorCode = OpenLineageServerAuditCode.ASSET_CONTEXT_EXCEPTION;
+                    auditLog.logException("retrieving Asset Context exception", errorCode.getLogMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,
+                            errorCode.getFormattedLogMessage(guid, e.getMessage()), e.getMessage(), errorCode.getSystemAction(),
+                            errorCode.getUserAction(), e);
+                }
+            }
         }
     }
 

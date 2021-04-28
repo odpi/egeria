@@ -17,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
  */
 public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
 {
-    private TypesAccumulator         accumulator;
+    private TypesAccumulator accumulator;
 
     /**
      * Simple public constructor
@@ -28,11 +28,11 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
      * @param auditLog logging destination
      * @param repositoryValidator validation methods
      */
-    public GetAllTypesExecutor(String                   userId,
-                               String                   methodName,
-                               String                   localMetadataCollectionId,
-                               AuditLog                 auditLog,
-                               OMRSRepositoryValidator  repositoryValidator)
+    public GetAllTypesExecutor(String                  userId,
+                               String                  methodName,
+                               String                  localMetadataCollectionId,
+                               AuditLog                auditLog,
+                               OMRSRepositoryValidator repositoryValidator)
     {
         this(userId,
              methodName,
@@ -49,7 +49,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
      */
     private GetAllTypesExecutor(String                   userId,
                                 String                   methodName,
-                                TypesAccumulator         accumulator)
+                                TypesAccumulator accumulator)
     {
         super(userId, methodName, accumulator);
 
@@ -94,9 +94,9 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
         {
             accumulator.captureException(metadataCollectionId, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(metadataCollectionId, error);
+            accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
         return true;
@@ -125,7 +125,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
         accumulator.throwCapturedInvalidParameterException();
         accumulator.throwCapturedUserNotAuthorizedException();
         accumulator.throwCapturedRepositoryErrorException();
-        accumulator.throwCapturedThrowableException(methodName);
+        accumulator.throwCapturedGenericException(methodName);
 
         return null;
     }

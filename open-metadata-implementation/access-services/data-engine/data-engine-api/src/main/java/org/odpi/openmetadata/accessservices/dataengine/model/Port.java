@@ -19,10 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Port implements Serializable {
+public class Port extends Referenceable {
     private static final long serialVersionUID = 1L;
     private String displayName;
-    private String qualifiedName;
     @JsonProperty("type")
     private PortType portType;
     private UpdateSemantic updateSemantic;
@@ -43,24 +42,6 @@ public class Port implements Serializable {
      */
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    /**
-     * Gets qualified name.
-     *
-     * @return the qualified name
-     */
-    public String getQualifiedName() {
-        return qualifiedName;
-    }
-
-    /**
-     * Sets qualified name.
-     *
-     * @param qualifiedName the qualified name
-     */
-    public void setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
     }
 
     /**
@@ -107,7 +88,6 @@ public class Port implements Serializable {
     public String toString() {
         return "Port{" +
                 "displayName='" + displayName + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
                 ", portType=" + portType +
                 ", updateSemantic=" + updateSemantic +
                 '}';
@@ -119,13 +99,12 @@ public class Port implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Port port = (Port) o;
         return Objects.equals(displayName, port.displayName) &&
-                Objects.equals(qualifiedName, port.qualifiedName) &&
                 portType == port.portType &&
                 updateSemantic == port.updateSemantic;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(displayName, qualifiedName, portType, updateSemantic);
+        return Objects.hash(displayName, portType, updateSemantic);
     }
 }

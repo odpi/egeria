@@ -1215,7 +1215,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                     typeDef.getCategory(),
                                     methodName);
         }
-        catch (Throwable    error)
+        catch (Exception    error)
         {
            throw new RepositoryErrorException(OMRSErrorCode.BAD_TYPEDEF.getMessageDefinition(thisMethodName,
                                                                                               typeDef.getName(),
@@ -2664,7 +2664,8 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Verify that the supplied instance is in one of the supplied statuses.
+     * Verify that the supplied instance is in one of the supplied statuses. Note that if the supplied statuses are
+     * null, then only statuses that are not DELETE are considered valid.
      *
      * @param validStatuses list of statuses the instance should be in any one of them
      * @param instance instance to test
@@ -2674,17 +2675,16 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     public boolean verifyInstanceHasRightStatus(List<InstanceStatus>      validStatuses,
                                                 InstanceHeader            instance)
     {
-        if ((instance != null) && (validStatuses != null))
+        if (instance != null)
         {
-            for (InstanceStatus status : validStatuses)
+            if (validStatuses == null)
             {
-                if (status == instance.getStatus())
-                {
-                    return true;
-                }
+                return instance.getStatus() != InstanceStatus.DELETED;
             }
-
-            return false;
+            else
+            {
+                return validStatuses.contains(instance.getStatus());
+            }
         }
 
         return true;
@@ -3399,7 +3399,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             {
                 throw error;
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 /*
                  * Logic error as the instance should be valid
@@ -3808,7 +3808,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                             matchingProperties++;
                                                         }
                                                     }
-                                                    catch (Throwable error)
+                                                    catch (Exception error)
                                                     {
                                                         throw new InvalidParameterException(
                                                                 OMRSErrorCode.INVALID_SEARCH_CRITERIA.getMessageDefinition(error.getClass().getName(),
@@ -3862,13 +3862,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                     if (matchValue != null)
                     {
-                        if (matchValue.matches(expectedValue))
+                        if (expectedValue.matches(matchValue))
                         {
                             result = true;
                         }
                     }
                 }
-                catch (Throwable   exc)
+                catch (Exception   exc)
                 {
                     /*
                      * Ignore property
@@ -3914,7 +3914,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         }
                     }
                 }
-                catch (Throwable   exc)
+                catch (Exception   exc)
                 {
                     /*
                      * Ignore property
@@ -4122,7 +4122,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             boolean matchesNested = verifyMatchingInstancePropertyValues(condition.getNestedConditions(), instanceHeader, instanceProperties);
             String propertyName = condition.getProperty();
             InstancePropertyValue testValue = condition.getValue();
-            InstancePropertyValue actualValue = instanceProperties.getPropertyValue(propertyName);
+            InstancePropertyValue actualValue = null;
+            if (instanceProperties != null)
+            {
+                actualValue = instanceProperties.getPropertyValue(propertyName);
+            }
             boolean matchesProperties = true;
             BigDecimal testBD = getNumericRepresentation(testValue);
             BigDecimal actualBD = getNumericRepresentation(actualValue);
@@ -4517,7 +4521,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             /*
              * Probably a class cast error which should never occur.
@@ -4633,7 +4637,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             /*
              * Probably a class cast error which should never occur.

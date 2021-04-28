@@ -91,7 +91,7 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
             omrsTopicConnector.sendRegistryEvent(registryEvent);
             successFlag = true;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   OMRSAuditCode.SEND_REGISTRY_EVENT_ERROR.getMessageDefinition(publisherName),

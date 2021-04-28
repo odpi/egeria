@@ -36,10 +36,9 @@ public class OpenMetadataAPIMapper
     public static final String NAME_PROPERTY_NAME                        = "name";                                 /* from Asset entity */
     public static final String FORMULA_PROPERTY_NAME                     = "formula";                              /* from Process entity */
 
-
-    public static final String IS_PUBLIC_PROPERTY_NAME                   = "isPublic";   /* from feedback relationships - Area 1 */
-    public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";         /* from many entities */
-    public static final String DESCRIPTION_PROPERTY_NAME                 = "description";                          /* from Asset entity */
+    public static final String IS_PUBLIC_PROPERTY_NAME                   = "isPublic";              /* from feedback relationships - Area 1 */
+    public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";           /* from many entities */
+    public static final String DESCRIPTION_PROPERTY_NAME                 = "description";                          /* from many entity */
 
     public static final String ANCHORS_CLASSIFICATION_TYPE_GUID                  = "aa44f302-2e43-4669-a1e7-edaae414fc6e";
     public static final String ANCHORS_CLASSIFICATION_TYPE_NAME                  = "Anchors";
@@ -94,6 +93,7 @@ public class OpenMetadataAPIMapper
     public static final String ARCHIVE_SERVICE_PROPERTY_NAME                     = "archiveService";
     public static final String ARCHIVE_METHOD_PROPERTY_NAME                      = "archiveMethod";
     public static final String ARCHIVE_PROPERTIES_PROPERTY_NAME                  = "archiveProperties";
+
 
 
     public static final String REFERENCEABLE_TO_MORE_INFO_TYPE_GUID              = "1cbf059e-2c11-4e0c-8aae-1da42c1ee73f";
@@ -177,6 +177,22 @@ public class OpenMetadataAPIMapper
     public static final String LOCATION_TYPE_GUID                        = "3e09cb2b-5f15-4fd2-b004-fe0146ad8628";
     public static final String LOCATION_TYPE_NAME                        = "Location";
     /* Referenceable */
+
+
+    public static final String PROPERTY_FACET_TYPE_GUID                  = "6403a704-aad6-41c2-8e08-b9525c006f85";
+    public static final String PROPERTY_FACET_TYPE_NAME                  = "PropertyFacet";
+    /* Referenceable */
+
+    public static final String SCHEMA_VERSION_PROPERTY_NAME              = "schemaVersion";      /* from PropertyFacet entity */
+    public static final String PROPERTIES_PROPERTY_NAME                  = "properties";         /* from PropertyFacet entity */
+
+    public static final String VENDOR_PROPERTIES_DESCRIPTION_VALUE       = "vendorProperties";
+
+
+    public static final String REFERENCEABLE_TO_PROPERTY_FACET_TYPE_GUID = "58c87647-ada9-4c90-a3c3-a40ace46b1f7";
+    public static final String REFERENCEABLE_TO_PROPERTY_FACET_TYPE_NAME = "ReferenceableFacet";
+    /* End1 = Referenceable; End 2 = PropertyFacet */
+
 
     public static final String FIXED_LOCATION_CLASSIFICATION_TYPE_GUID   = "bc111963-80c7-444f-9715-946c03142dd2";
     public static final String FIXED_LOCATION_CLASSIFICATION_TYPE_NAME   = "FixedLocation";
@@ -887,13 +903,11 @@ public class OpenMetadataAPIMapper
     public static final String TERM_ASSIGNMENT_STATUS_ENUM_TYPE_GUID             = "c8fe36ac-369f-4799-af75-46b9c1343ab3";
     public static final String TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME             = "TermAssignmentStatus";
 
-    public static final String SEMANTIC_ASSIGNMENT_DESCRIPTION_PROPERTY_NAME = "description";
-    public static final String SEMANTIC_ASSIGNMENT_EXPRESSION_PROPERTY_NAME  = "expression";
-    public static final String STATUS_PROPERTY_NAME                          = "status";
-    public static final String SEMANTIC_ASSIGNMENT_CONFIDENCE_PROPERTY_NAME  = "confidence";
-    public static final String SEMANTIC_ASSIGNMENT_STEWARD_PROPERTY_NAME     = "steward";
-    public static final String SEMANTIC_ASSIGNMENT_SOURCE_PROPERTY_NAME      = "source";
-    public static final String SEMANTIC_ASSIGNMENT_CREATED_BY_PROPERTY_NAME  = "createdBy";
+    public static final String EXPRESSION_PROPERTY_NAME                          = "expression";
+    public static final String STATUS_PROPERTY_NAME                              = "status";
+    public static final String CONFIDENCE_PROPERTY_NAME                          = "confidence";
+    public static final String STEWARD_PROPERTY_NAME                             = "steward";
+    public static final String CREATED_BY_PROPERTY_NAME                          = "createdBy";
 
 
     public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_GUID       = "58520015-ce6e-47b7-a1fd-864030544819";
@@ -925,6 +939,13 @@ public class OpenMetadataAPIMapper
 
     public static final String GOVERNANCE_CLASSIFICATION_STATUS_ENUM_TYPE_GUID   = "cc540586-ac7c-41ba-8cc1-4da694a6a8e4";
     public static final String GOVERNANCE_CLASSIFICATION_STATUS_ENUM_TYPE_NAME   = "GovernanceClassificationStatus";
+    public static final int    DISCOVERED_GC_STATUS_ORDINAL                      = 0;
+    public static final int    PROPOSED_GC_STATUS_ORDINAL                        = 1;
+    public static final int    IMPORTED_GC_STATUS_ORDINAL                        = 2;
+    public static final int    VALIDATED_GC_STATUS_ORDINAL                       = 3;
+    public static final int    DEPRECATED_GC_STATUS_ORDINAL                      = 4;
+    public static final int    OBSOLETE_GC_STATUS_ORDINAL                        = 5;
+    public static final int    OTHER_GC_STATUS_ORDINAL                           = 99;
 
     public static final String CONFIDENCE_LEVEL_ENUM_TYPE_GUID                   = "ae846797-d88a-4421-ad9a-318bf7c1fe6f";
     public static final String CONFIDENCE_LEVEL_ENUM_TYPE_NAME                   = "ConfidenceLevel";
@@ -1167,6 +1188,8 @@ public class OpenMetadataAPIMapper
     public static final String KNOWN_DUPLICATE_LINK_TYPE_GUID            = "7540d9fb-1848-472e-baef-97a44b9f0c45";
     public static final String KNOWN_DUPLICATE_LINK_TYPE_NAME            = "KnownDuplicateLink";
     /* End1 = Referenceable; End 2 = Referenceable */
+
+    public static final String DUPLICATE_TYPE_PROPERTY_NAME              = "duplicateType";      /* from KnowDuplicateLink relationship */
 
     public static final String INCIDENT_REPORT_STATUS_ENUM_TYPE_GUID     = "a9d4f64b-fa24-4eb8-8bf6-308926ef2c14";
     public static final String INCIDENT_REPORT_STATUS_ENUM_TYPE_NAME     = "IncidentReportStatus";
@@ -1503,10 +1526,6 @@ public class OpenMetadataAPIMapper
     public static final String RELATIONAL_COLUMN_TYPE_NAME              = "RelationalColumn";
     /* TabularColumn */
 
-    public static final String RELATIONAL_COLUMN_TYPE_TYPE_GUID         = "f0438d80-6eb9-4fac-bcc1-5efee5babcfc";   /* from Area 5 */
-    public static final String RELATIONAL_COLUMN_TYPE_TYPE_NAME         = "RelationalColumnType";
-    /* TabularColumnType */
-
     public static final String PRIMARY_KEY_CLASSIFICATION_TYPE_GUID     = "b239d832-50bd-471b-b17a-15a335fc7f40";
     public static final String PRIMARY_KEY_CLASSIFICATION_TYPE_NAME     = "PrimaryKey";
     /* Linked to RelationalColumn */
@@ -1664,7 +1683,6 @@ public class OpenMetadataAPIMapper
     public static final String ANNOTATION_TYPE_NAME    = "Annotation";
 
     public static final String ANNOTATION_TYPE_PROPERTY_NAME       = "annotationType";        /* from Annotation entity */
-    public static final String EXPRESSION_PROPERTY_NAME            = "expression";            /* from Annotation entity */
     public static final String EXPLANATION_PROPERTY_NAME           = "explanation";           /* from Annotation entity */
     public static final String JSON_PROPERTIES_PROPERTY_NAME       = "jsonProperties";        /* from Annotation entity */
 
@@ -1677,7 +1695,6 @@ public class OpenMetadataAPIMapper
     public static final String ANNOTATION_REVIEW_TYPE_NAME         = "AnnotationReview";
 
     public static final String REVIEW_DATE_PROPERTY_NAME           = "reviewDate";     /* from AnnotationReview entity */
-    public static final String STEWARD_PROPERTY_NAME               = "steward";        /* from AnnotationReview entity */
     public static final String COMMENT_PROPERTY_NAME               = "comment";        /* from AnnotationReview entity */
 
     /* For AnnotationReviewLink relationship */

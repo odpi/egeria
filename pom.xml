@@ -22,7 +22,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>2.8-SNAPSHOT</version>
+    <version>2.10-SNAPSHOT</version>
 
     <url>https://egeria.odpi.org</url>
 
@@ -88,19 +88,7 @@
     <!-- POM packaging means that this module has sub-modules -->
     <packaging>pom</packaging>
 
-    <!-- Multiple repos for redundancy - artifacts we use are expected to be on both -->
-
     <repositories>
-        <repository>
-            <id>0-JCenter</id>
-            <url>https://jcenter.bintray.com/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
         <repository>
             <id>1-MavenCentral</id>
             <url>https://repo1.maven.org/maven2/</url>
@@ -111,19 +99,20 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>0-JCenter</id>
-            <url>https://jcenter.bintray.com/</url>
+        <!-- Needed for fixes to old jackson libraries used as transitive dependencies -->
+        <repository>
+            <id>2-Fixes</id>
+            <url>https://maven.atlassian.com/3rdparty/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
             <releases>
                 <enabled>true</enabled>
             </releases>
-        </pluginRepository>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
         <pluginRepository>
             <id>1-MavenCentral</id>
             <url>https://repo1.maven.org/maven2/</url>
@@ -174,18 +163,16 @@
         <kafka.version>2.7.0</kafka.version>
         <janus.version>0.5.3</janus.version>
         <gremlin.version>3.4.10</gremlin.version>
-        <netty.version>4.1.59.Final</netty.version>
+        <netty.version>4.1.63.Final</netty.version>
 
-        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+        <spring-boot.version>2.4.4</spring-boot.version>
         <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
-        <spring.version>5.3.1</spring.version>
-        <spring-security.version>5.4.1</spring-security.version>
-        <spring-data.version>2.4.1</spring-data.version>
-        <springdoc.version>1.4.6</springdoc.version>
-        <servo-core.version>0.13.2</servo-core.version>
-        <springdoc-plugin.version>1.2</springdoc-plugin.version>
-        <netflix-zuul.version>2.2.6.RELEASE</netflix-zuul.version>
-        <tomcat.version>9.0.40</tomcat.version>
+        <tomcat.version>9.0.45</tomcat.version>
+        <spring.version>5.3.5</spring.version>
+        <spring-security.version>5.4.5</spring-security.version>
+        <spring-data.version>2.4.7</spring-data.version>
+        <springdoc.version>1.5.6</springdoc.version>
+        <springdoc-plugin.version>1.3</springdoc-plugin.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>3.17.0</jena.version>
@@ -198,7 +185,7 @@
         <jakarta-annotation.version>1.3.5</jakarta-annotation.version>
         <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
         <gaian.version>2.1.8</gaian.version>
-        <avro.version>1.10.1</avro.version>
+        <avro.version>1.10.2</avro.version>
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
@@ -206,25 +193,25 @@
         <quartz.version>2.3.2</quartz.version>
         <lucene.version>8.4.1</lucene.version>
         <lucene-analyzers-common.version>8.6.0</lucene-analyzers-common.version>
-        <guava.version>30.1-jre</guava.version>
+        <guava.version>30.1.1-jre</guava.version>
         <tink.version>1.5.0</tink.version>
         <jsonld.version>0.13.2</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.15</commons-codec.version>
         <json-sanitizer.version>1.2.2</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.10.0</oss.version>
+        <oss.version>4.11.0</oss.version>
         <spotbugs-annotations.version>4.2.2</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.10</joda.version>
-        <jackson-asl.version>1.9.13-atlassian-2</jackson-asl.version>
+        <jackson-asl.version>1.9.13-atlassian-5</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.4</snappy.version>
         <snakeyaml.version>1.28</snakeyaml.version>
-        <classgraph.version>4.8.102</classgraph.version>
+        <classgraph.version>4.8.104</classgraph.version>
         <swagger.version>2.1.7</swagger.version>
         <groovy.version>3.0.7</groovy.version>
-        <micrometer-registry-prometheus.version>1.6.2</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.6.5</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
@@ -233,7 +220,10 @@
         <httpcore.version>4.4.14</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
-        <lettuce.version>6.0.2.RELEASE</lettuce.version>
+        <lettuce.version>6.1.0.RELEASE</lettuce.version>
+        <lombok.version>1.18.20</lombok.version>
+        <lombok-plugin.version>1.18.18.0</lombok-plugin.version>
+        <javax.servlet.version>4.0.1</javax.servlet.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
@@ -245,15 +235,15 @@
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.14.0</maven-pmd.version>
-        <owasp.version>6.1.1</owasp.version>
-        <spotbugs-maven.version>4.2.0</spotbugs-maven.version>
-        <maven-download.version>1.6.1</maven-download.version>
+        <owasp.version>6.1.5</owasp.version>
+        <spotbugs-maven.version>4.2.2</spotbugs-maven.version>
+        <maven-download.version>1.6.2</maven-download.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.6</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <frontend.plugin.version>1.11.2</frontend.plugin.version>
+        <frontend.plugin.version>1.11.3</frontend.plugin.version>
         <exec.plugin.version>3.0.0</exec.plugin.version>
         <resources.plugin.version>3.2.0</resources.plugin.version>
         <rat-plugin.version>0.13</rat-plugin.version>
@@ -265,7 +255,7 @@
         <license-plugin.version>2.0.0</license-plugin.version>
         <build-helper.version>3.2.0</build-helper.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
-        <git-commit-plugin.version>4.0.3</git-commit-plugin.version>
+        <git-commit-plugin.version>4.0.4</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
         <properties.plugin.version>1.0.0</properties.plugin.version>
@@ -413,6 +403,12 @@
                 <artifactId>jaxb-api</artifactId>
                 <version>${javax-jaxb-api.version}</version>
             </dependency>
+
+           <dependency>
+               <groupId>javax.servlet</groupId>
+               <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet.version}</version>
+           </dependency>
 
             <dependency>
                 <groupId>junit</groupId>
@@ -2627,24 +2623,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
-                <version>${netflix-zuul.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-netflix-zuul</artifactId>
-                <version>${netflix-zuul.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.netflix.servo</groupId>
-                <artifactId>servo-core</artifactId>
-                <version>${servo-core.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
                 <version>${spring-boot.version}</version>
@@ -3008,6 +2986,13 @@
                 <version>${lettuce.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -3260,12 +3245,18 @@
                     <version>${properties.plugin.version}</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-maven-plugin</artifactId>
+                    <version>${lombok-plugin.version}</version>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>
 
         <!-- Should be default, but needed to keep IntelliJ happy -->
-        <sourceDirectory>src/main/java</sourceDirectory>
+        <sourceDirectory>${project.build.directory}/delombok</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>
             <resource>
@@ -3280,6 +3271,26 @@
 
         <!-- Default compiler options - enable additional lint checks -->
         <plugins>
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>delombok</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/main/java</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/delombok</outputDirectory>
+                            <addOutputDirectory>false</addOutputDirectory>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -3390,6 +3401,8 @@
                         <exclude>data/**</exclude>
                         <exclude>**/certificates/**</exclude>
                         <exclude>**/*.p12</exclude>
+                        <exclude>**/*.crt</exclude>
+                        <exclude>**/*.key</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -3468,6 +3481,7 @@
                             <failOnWarning>true</failOnWarning>
                             <outputXML>true</outputXML>
                             <ignoredUnusedDeclaredDependencies>
+                                <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
                                 <!-- Test dependencies - should only be used in test scope. False positive from dependency check -->
                                 <ignoredUnusedDeclaredDependency>org.junit.jupiter:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.mockito:*</ignoredUnusedDeclaredDependency>
@@ -3549,7 +3563,26 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>delombok-removal</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                            <filesets>
+                                <fileset>
+                                    <directory>${project.build.sourceDirectory}</directory> <!-- assuming your root package is something like com.mycompany -->
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
         </plugins>
     </build>

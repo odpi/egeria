@@ -9,14 +9,14 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper;
+import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,7 +151,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
             {
                 localRepositoryConnector.disconnect();
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 log.error("Exception from disconnect of connector to metadata collection:" + localMetadataCollectionId + "  Error message was: " + error.getMessage());
                 throw error;
@@ -210,14 +210,15 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * @throws ConnectionCheckedException there are invalid properties in the Connection
      * @throws ConnectorCheckedException there is a problem initializing the Connector
      */
+    @Override
      public synchronized void addRemoteConnection(String         cohortName,
                                                   String         remoteServerName,
                                                   String         remoteServerType,
                                                   String         owningOrganizationName,
                                                   String         metadataCollectionId,
                                                   String         metadataCollectionName,
-                                                  Connection     remoteConnection) throws ConnectionCheckedException,
-                                                                                          ConnectorCheckedException
+                                                  Connection remoteConnection) throws ConnectionCheckedException,
+                                                                                      ConnectorCheckedException
     {
         final String   actionDescription = "Processing incoming registration request from remote cohort member";
 
@@ -232,7 +233,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                                      metadataCollectionName,
                                                                                      remoteServerType,
                                                                                      owningOrganizationName),
-                               remoteConnection.toString());
+                                remoteConnection.toString());
         }
         else if (registeredConnector.checkSameConnection(cohortName,
                                                          remoteServerName,
@@ -249,7 +250,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                                            metadataCollectionName,
                                                                                            remoteServerType,
                                                                                            owningOrganizationName),
-                               remoteConnection.toString());
+                                remoteConnection.toString());
             return;
         }
         else
@@ -299,7 +300,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         }
 
         /*
-         * Don't need to connector any more.
+         * Don't need the connector any more - only created it to check that the connection was valid.
          */
         remoteConnector.disconnect();
 
@@ -401,6 +402,11 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     {
         List<String>  serverList = new ArrayList<>();
 
+        if (localRepositoryConnector != null)
+        {
+            serverList.add(localRepositoryConnector.getServerName());
+        }
+
         for (RegisteredConnector registeredConnector : registeredRemoteConnectors)
         {
             if (registeredConnector != null)
@@ -422,6 +428,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * @param cohortName name of the cohort removing the remote connection.
      * @param metadataCollectionId Unique identifier for the metadata collection.
      */
+    @Override
     public synchronized void removeRemoteConnection(String         cohortName,
                                                     String         metadataCollectionId)
     {
@@ -480,6 +487,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      *
      * @param cohortName name of the cohort
      */
+    @Override
     public synchronized void removeCohort(String   cohortName)
     {
         /*
@@ -519,7 +527,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      *                           all repositories registered in the metadata repository cluster.
      * @return String identifier for the connectorConsumer used for the unregister call.
      */
-    public synchronized String registerConnectorConsumer(OMRSConnectorConsumer    connectorConsumer)
+    public synchronized String registerConnectorConsumer(OMRSConnectorConsumer connectorConsumer)
     {
         /*
          * Store the new connector consumer.
@@ -651,8 +659,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
             /*
              * Create the connector
              */
-            ConnectorBroker         connectorBroker     = new ConnectorBroker();
-            Connector               connector           = connectorBroker.getConnector(connection);
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+            Connector       connector       = connectorBroker.getConnector(connection);
 
             OMRSRepositoryConnector repositoryConnector = (OMRSRepositoryConnector) connector;
 
@@ -895,8 +903,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      */
     private static class RegisteredConnectorConsumer
     {
-        private String                   connectorConsumerId;
-        private OMRSConnectorConsumer    connectorConsumer;
+        private String                connectorConsumerId;
+        private OMRSConnectorConsumer connectorConsumer;
 
 
         /**

@@ -33,6 +33,9 @@ DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/server
 If the OMAG server is running, this command also unregisters the named server from the cohorts it
 is connected to.  Only use this command if the server is being permanently removed.
 
+----
+
+* Return to [operating an OMAG Server](operating-omag-server.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

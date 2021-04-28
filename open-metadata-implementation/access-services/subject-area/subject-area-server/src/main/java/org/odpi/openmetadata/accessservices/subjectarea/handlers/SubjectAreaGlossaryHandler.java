@@ -9,7 +9,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -23,6 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import java.util.*;
 
@@ -85,6 +87,14 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 setUniqueQualifiedNameIfBlank(suppliedGlossary);
                 GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
                 EntityDetail glossaryEntityDetail = glossaryMapper.map(suppliedGlossary);
+                InstanceProperties instanceProperties = glossaryEntityDetail.getProperties();
+                if (instanceProperties == null ) {
+                    instanceProperties = new InstanceProperties();
+                }
+                if (instanceProperties.getEffectiveFromTime() == null) {
+                    instanceProperties.setEffectiveFromTime(new Date());
+                    glossaryEntityDetail.setProperties(instanceProperties);
+                }
                 String entityDetailGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, glossaryEntityDetail);
                 response = getGlossaryByGuid(userId, entityDetailGuid);
             }
@@ -168,7 +178,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(String userId, String guid, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Relationship> getGlossaryRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getGlossaryRelationships";
         return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
     }
@@ -199,19 +209,19 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
-
             response = getGlossaryByGuid(userId, guid);
             if (response.head().isPresent()) {
                 Glossary currentGlossary = response.head().get();
+                checkReadOnly(methodName, currentGlossary, "update");
                 if (isReplace)
                     replaceAttributes(currentGlossary, suppliedGlossary);
                 else
                     updateAttributes(currentGlossary, suppliedGlossary);
 
-                Date termFromTime = suppliedGlossary.getEffectiveFromTime();
-                Date termToTime = suppliedGlossary.getEffectiveToTime();
-                currentGlossary.setEffectiveFromTime(termFromTime);
-                currentGlossary.setEffectiveToTime(termToTime);
+                Date glossaryFromTime = suppliedGlossary.getEffectiveFromTime();
+                Date glossaryToTime = suppliedGlossary.getEffectiveToTime();
+                currentGlossary.setEffectiveFromTime(glossaryFromTime);
+                currentGlossary.setEffectiveToTime(glossaryToTime);
 
                 GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
                 EntityDetail entityDetail = glossaryMapper.map(currentGlossary);
@@ -283,8 +293,14 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             if (isPurge) {
+                // TODO check whether whether the deleted glossary is not readonly prior to attempting a purge
                 oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, GLOSSARY_TYPE_NAME, guid);
             } else {
+                response = getGlossaryByGuid(userId, guid);
+                Glossary currentGlossary = response.head().get();
+                if (response.head().isPresent()) {
+                    checkReadOnly(methodName, currentGlossary, "delete");
+                }
                 // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
                 List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
                 if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, GLOSSARY_TYPE_NAME, methodName)) {

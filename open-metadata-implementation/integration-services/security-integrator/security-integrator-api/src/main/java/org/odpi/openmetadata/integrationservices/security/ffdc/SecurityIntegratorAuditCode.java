@@ -51,6 +51,13 @@ public enum SecurityIntegratorAuditCode implements AuditLogMessageSet
                                        "If the connector issues requests that are not permitted it is returned UserNotAuthorizedExceptions.",
                                "Check that this value is as expected.  If it is not, " +
                                        "change the configuration for this connector and restart the integration daemon."),
+
+    NULL_CONTEXT("OMIS-SECURITY-INTEGRATOR-0005",
+                 OMRSAuditLogRecordSeverity.ERROR,
+                 "Integration connector {0} has a null context",
+                 "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
+                 "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                         "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
     ;
 
 

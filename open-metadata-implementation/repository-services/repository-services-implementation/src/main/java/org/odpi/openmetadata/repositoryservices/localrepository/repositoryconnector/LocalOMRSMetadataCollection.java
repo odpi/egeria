@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataSecurity;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataDefaultRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -37,7 +38,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     private OMRSRepositoryEventProcessor outboundRepositoryEventProcessor;
     private OMRSTypeDefManager           localTypeDefManager;
 
-    private OMRSMetadataSecurity securityVerifier = new OMRSMetadataSecurity();
+    /*
+     * The security verifier is initialized with a null security verifier.
+     */
+    private OpenMetadataRepositorySecurity securityVerifier = new OMRSMetadataDefaultRepositorySecurity();
 
 
     /**
@@ -116,7 +120,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     void setSecurityVerifier(OpenMetadataRepositorySecurity securityVerifier)
     {
-        this.securityVerifier.setSecurityVerifier(securityVerifier);
+        if (securityVerifier != null)
+        {
+            this.securityVerifier = securityVerifier;
+        }
     }
 
 
@@ -1339,6 +1346,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             if (instance.getMetadataCollectionId() == null)
             {
                 instance.setMetadataCollectionId(metadataCollectionId);
+                instance.setMetadataCollectionName(metadataCollectionName);
                 instance.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
             }
 
@@ -1509,22 +1517,15 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         else
         {
-            List<EntityDetail>   resultList = new ArrayList<>();
+            List<EntityDetail> resultList = new ArrayList<>();
 
-            for (EntityDetail   entity : instanceList)
+            for (EntityDetail entity : instanceList)
             {
-                if (entity != null)
-                {
-                    try
-                    {
-                        securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entity);
-                    }
-                    catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-                    {
-                        throw new UserNotAuthorizedException(error);
-                    }
+                EntityDetail validatedEntity = this.getValidatedEntity(userId, entity);
 
-                    resultList.add(entity);
+                if (validatedEntity != null)
+                {
+                    resultList.add(validatedEntity);
                 }
             }
 
@@ -1550,26 +1551,84 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         else
         {
-            List<Relationship>   resultList = new ArrayList<>();
+            List<Relationship> resultList = new ArrayList<>();
 
-            for (Relationship   relationship : instanceList)
+            for (Relationship relationship : instanceList)
             {
-                if (relationship != null)
-                {
-                    try
-                    {
-                        securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-                    }
-                    catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-                    {
-                        throw new UserNotAuthorizedException(error);
-                    }
+                Relationship validatedRelationship = this.getValidatedRelationship(userId, relationship);
 
-                    resultList.add(relationship);
+                if (validatedRelationship != null)
+                {
+                    resultList.add(validatedRelationship);
                 }
             }
 
             return resultList;
+        }
+    }
+
+
+    /**
+     * Set up the local provenance for an element retrieved from the local repository and call the security verifier
+     * to determine if the relationship should be retrieved.
+     *
+     * @param userId calling user
+     * @param retrievedEntity relationship retrieved from the real repository
+     * @return validated relationship or null (which means pretend this was not retrieved)
+     * @throws UserNotAuthorizedException the security connector prevented access to the relationship
+     */
+    private EntityDetail getValidatedEntity(String       userId,
+                                            EntityDetail retrievedEntity) throws UserNotAuthorizedException
+    {
+        if (retrievedEntity != null)
+        {
+            setLocalProvenanceThroughoutEntity(retrievedEntity);
+            setLocalProvenanceInEntityClassifications(retrievedEntity.getClassifications());
+
+            try
+            {
+                return securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, retrievedEntity);
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Set up the local provenance for an element retrieved from the local repository and call the security verifier
+     * to determine if the relationship should be retrieved.
+     *
+     * @param userId calling user
+     * @param retrievedRelationship relationship retrieved from the real repository
+     * @return validated relationship or null (which means pretend this was not retrieved)
+     * @throws UserNotAuthorizedException the security connector prevented access to the relationship
+     */
+    private Relationship getValidatedRelationship(String       userId,
+                                                  Relationship retrievedRelationship) throws UserNotAuthorizedException
+    {
+        if (retrievedRelationship != null)
+        {
+            setLocalProvenanceThroughoutRelationship(retrievedRelationship);
+
+            try
+            {
+                return securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, retrievedRelationship);
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+        }
+        else
+        {
+            return null;
         }
     }
 
@@ -1657,12 +1716,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public EntityDetail  isEntityKnown(String    userId,
-                                       String    guid) throws InvalidParameterException,
-                                                              RepositoryErrorException,
-                                                              UserNotAuthorizedException
+    public EntityDetail isEntityKnown(String userId,
+                                      String guid) throws InvalidParameterException,
+                                                          RepositoryErrorException,
+                                                          UserNotAuthorizedException
     {
-        final String  methodName = "isEntityKnown";
+        final String methodName = "isEntityKnown";
 
         /*
          * Validate parameters
@@ -1672,26 +1731,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Perform operation
          */
-
         EntityDetail entity = realMetadataCollection.isEntityKnown(userId, guid);
 
-        if (entity != null)
-        {
-            setLocalProvenanceThroughoutEntity(entity);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entity);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-        }
-
-        return entity;
+        return this.getValidatedEntity(userId, entity);
     }
 
 
@@ -1715,7 +1757,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                  EntityNotKnownException,
                                                                  UserNotAuthorizedException
     {
-        final String  methodName        = "getEntitySummary";
+        final String  methodName = "getEntitySummary";
 
         /*
          * Validate parameters
@@ -1725,11 +1767,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Perform operation
          */
-        EntitySummary entity =  realMetadataCollection.getEntitySummary(userId, guid);
+        EntitySummary entity = realMetadataCollection.getEntitySummary(userId, guid);
+
+        repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
         if (entity != null)
         {
-
             setLocalProvenance(entity);
             setLocalProvenanceInEntityClassifications(entity.getClassifications());
 
@@ -1739,11 +1782,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             try
             {
                 securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
             {
                 throw new UserNotAuthorizedException(error);
             }
-
         }
 
         return entity;
@@ -1783,24 +1826,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid);
 
-        if (entity != null)
-        {
+        repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
-            setLocalProvenanceThroughoutEntity(entity);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-        }
-
-        return entity;
+        return this.getValidatedEntity(userId, entity);
     }
 
 
@@ -1830,7 +1858,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     FunctionNotSupportedException,
                                                                     UserNotAuthorizedException
     {
-        final String  methodName        = "getEntityDetail";
+        final String methodName = "getEntityDetail";
 
         /*
          * Validate parameters
@@ -1840,28 +1868,64 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Perform operation
          */
+        EntityDetail entity = realMetadataCollection.getEntityDetail(userId, guid, asOfTime);
 
-        EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid, asOfTime);
+        repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
-        if (entity != null)
-        {
+        return this.getValidatedEntity(userId, entity);
+    }
 
-            setLocalProvenanceThroughoutEntity(entity);
+    
+    /**
+     * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<EntityDetail>} of each historical version of the entity detail within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
+     *                                   at the time requested.
+     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<EntityDetail> getEntityDetailHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    EntityNotKnownException,
+                                                                                                    EntityProxyOnlyException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String  methodName        = "getEntityDetailHistory";
 
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
+        /*
+         * Validate parameters
+         */
+        this.getInstanceHistoryParameterValidation(userId, guid, fromTime, toTime, methodName);
 
-        }
+        /*
+         * Perform operation
+         */
+        List<EntityDetail> history = realMetadataCollection.getEntityDetailHistory(userId, guid, fromTime, toTime, startFromElement, pageSize, sequencingOrder);
 
-        return entity;
+        return this.securityVerifyReadEntityList(userId, setLocalProvenanceInEntityList(history));
     }
 
 
@@ -1874,9 +1938,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -1956,9 +2020,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
@@ -2048,9 +2112,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param matchClassifications Optional list of entity classifications to match.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
@@ -2142,9 +2206,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
@@ -2235,9 +2299,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2340,25 +2404,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         Relationship relationship = realMetadataCollection.isRelationshipKnown(userId, guid);
 
-        if (relationship != null)
-        {
-
-            setLocalProvenanceThroughoutRelationship(relationship);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-
-        }
-
-        return relationship;
+        return this.getValidatedRelationship(userId, relationship);
     }
 
 
@@ -2392,29 +2438,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Process operation
          */
-
         Relationship relationship = realMetadataCollection.getRelationship(userId, guid);
-
-        if (relationship != null)
-        {
-
-            setLocalProvenanceThroughoutRelationship(relationship);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-        }
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
-        return relationship;
+        return this.getValidatedRelationship(userId, relationship);
     }
 
 
@@ -2454,26 +2482,60 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         Relationship relationship = realMetadataCollection.getRelationship(userId, guid, asOfTime);
 
-        if (relationship != null)
-        {
-
-            setLocalProvenanceThroughoutRelationship(relationship);
-
-            /*
-             * Check operation is allowed
-             */
-            try
-            {
-                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-            {
-                throw new UserNotAuthorizedException(error);
-            }
-        }
-
         repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
-        return relationship;
+        return this.getValidatedRelationship(userId, relationship);
+    }
+
+
+    /**
+     * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
+     * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<Relationship>} of each historical version of the relationship within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
+     *                                       at the time requested.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<Relationship> getRelationshipHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    RelationshipNotKnownException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String  methodName = "getRelationshipHistory";
+
+        /*
+         * Validate parameters
+         */
+        this.getInstanceHistoryParameterValidation(userId, guid, fromTime, toTime, methodName);
+
+        /*
+         * Perform operation
+         */
+        List<Relationship> history = realMetadataCollection.getRelationshipHistory(userId, guid, fromTime, toTime, startFromElement, pageSize, sequencingOrder);
+
+        return this.securityVerifyReadRelationshipList(userId, setLocalProvenanceInRelationshipList(history));
     }
 
 
@@ -2490,9 +2552,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2579,9 +2641,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2668,9 +2730,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param fromRelationshipElement Element number of the results to skip to when building the results list
      *                                to return.  Zero means begin at the start of the results.  This is used
      *                                to retrieve the results over a number of pages.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2744,9 +2806,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
      * @param endEntityGUID the other entity that defines the scope of the query.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @return InstanceGraph the sub-graph that represents the returned linked entities and their relationships.
@@ -2806,9 +2868,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *                          all entities found, irrespective of their type.
      * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
      *                                all relationships found, irrespective of their type.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
@@ -2882,9 +2944,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param startEntityGUID unique identifier of the starting entity
      * @param entityTypeGUIDs list of guids of types to search for.  Null means any type.
      * @param fromEntityElement starting element for results list.  Used in paging.  Zero means first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
@@ -3304,11 +3366,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param entityGUID unique identifier (guid) for the requested entity.
      * @param entityDetail the requested entity.
      * @param methodName calling method
-     * @return current entity
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      */
-    private EntityDetail validateEntityCanBeUpdatedByRepository(String           entityGUID,
+    private void validateEntityCanBeUpdatedByRepository(String           entityGUID,
                                                                 EntityDetail     entityDetail,
                                                                 String           methodName) throws InvalidParameterException,
                                                                                                     EntityNotKnownException
@@ -3319,14 +3380,14 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 if (metadataCollectionId.equals(entityDetail.getMetadataCollectionId()))
                 {
-                    return entityDetail;
+                    return;
                 }
             }
             else if (entityDetail.getInstanceProvenanceType() == InstanceProvenanceType.EXTERNAL_SOURCE)
             {
                 if (metadataCollectionId.equals(entityDetail.getReplicatedBy()))
                 {
-                    return entityDetail;
+                    return;
                 }
             }
 
@@ -6149,7 +6210,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             /*
              * Save entity
              */
-            realMetadataCollection.saveEntityReferenceCopy(userId, entity);
+            if (securityVerifier.validateEntityReferenceCopySave(entity))
+            {
+                realMetadataCollection.saveEntityReferenceCopy(userId, entity);
+            }
         }
     }
 
@@ -6445,6 +6509,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * Validate that the entity GUID is ok
          */
         EntityDetail entity = this.isEntityKnown(userId, entityGUID);
+
         if (entity != null)
         {
             if (metadataCollectionId.equals(entity.getMetadataCollectionId()))
@@ -6458,21 +6523,19 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        if (produceEventsForRealConnector)
-        {
-            /*
-             * Send refresh message
-             */
-            outboundRepositoryEventProcessor.processRefreshEntityRequested(repositoryName,
-                                                                           metadataCollectionId,
-                                                                           localServerName,
-                                                                           localServerType,
-                                                                           localOrganizationName,
-                                                                           typeDefGUID,
-                                                                           typeDefName,
-                                                                           entityGUID,
-                                                                           homeMetadataCollectionId);
-        }
+        /*
+         * Process refresh request - This event is always generated by the local metadata collection.
+         * The home repository can choose whether to reply.
+         */
+        outboundRepositoryEventProcessor.processRefreshEntityRequested(repositoryName,
+                                                                       metadataCollectionId,
+                                                                       localServerName,
+                                                                       localServerType,
+                                                                       localOrganizationName,
+                                                                       typeDefGUID,
+                                                                       typeDefName,
+                                                                       entityGUID,
+                                                                       homeMetadataCollectionId);
     }
 
 
@@ -6662,7 +6725,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             /*
              * Save relationship
              */
-            realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
+            if (securityVerifier.validateRelationshipReferenceCopySave(relationship))
+            {
+                realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
+            }
         }
     }
 
@@ -6884,21 +6950,19 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        if (produceEventsForRealConnector)
-        {
-            /*
-             * Process refresh request
-             */
-            outboundRepositoryEventProcessor.processRefreshRelationshipRequest(repositoryName,
-                                                                               metadataCollectionId,
-                                                                               localServerName,
-                                                                               localServerType,
-                                                                               localOrganizationName,
-                                                                               typeDefGUID,
-                                                                               typeDefName,
-                                                                               relationshipGUID,
-                                                                               homeMetadataCollectionId);
-        }
+        /*
+         * Process refresh request - This event is always generated by the local metadata collection.
+         * The home repository can choose whether to reply.
+         */
+        outboundRepositoryEventProcessor.processRefreshRelationshipRequest(repositoryName,
+                                                                           metadataCollectionId,
+                                                                           localServerName,
+                                                                           localServerType,
+                                                                           localOrganizationName,
+                                                                           typeDefGUID,
+                                                                           typeDefName,
+                                                                           relationshipGUID,
+                                                                           homeMetadataCollectionId);
     }
 
 
@@ -6939,9 +7003,69 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                               UserNotAuthorizedException,
                                                                               FunctionNotSupportedException
     {
-      
-        //delegate processing to the real metadata collection
-        realMetadataCollection.saveInstanceReferenceCopies(userId, instances);
-      
+        /*
+         * It is necessary to filter out all of the instances that should not be saved before passing the
+         * instances to the real connector.  The validated instances are packed back into an instance graph to
+         * pass on the batch so that the real repository connector can benefit from the batch.
+         */
+        if (instances != null)
+        {
+            InstanceGraph validatedInstances = null;
+
+            List<EntityDetail> entities = instances.getEntities();
+
+            if ((entities != null) && (! entities.isEmpty()))
+            {
+                List<EntityDetail> validatedEntities = new ArrayList<>();
+
+                for (EntityDetail entity : entities)
+                {
+                    if ((entity != null) && (securityVerifier.validateEntityReferenceCopySave(entity)))
+                    {
+                        validatedEntities.add(entity);
+                    }
+                }
+
+                if (! validatedEntities.isEmpty())
+                {
+                    validatedInstances = new InstanceGraph();
+
+                    validatedInstances.setEntities(validatedEntities);
+                }
+            }
+
+            List<Relationship> relationships = instances.getRelationships();
+
+            if ((relationships != null) && (! relationships.isEmpty()))
+            {
+                List<Relationship> validatedRelationships = new ArrayList<>();
+
+                for (Relationship relationship : relationships)
+                {
+                    if ((relationship != null) && (securityVerifier.validateRelationshipReferenceCopySave(relationship)))
+                    {
+                        validatedRelationships.add(relationship);
+                    }
+                }
+
+                if (! validatedRelationships.isEmpty())
+                {
+                    if (validatedInstances == null)
+                    {
+                        validatedInstances = new InstanceGraph();
+                    }
+
+                    validatedInstances.setRelationships(validatedRelationships);
+                }
+            }
+
+            if (validatedInstances != null)
+            {
+                /*
+                 * delegate processing to the real metadata collection
+                 */
+                realMetadataCollection.saveInstanceReferenceCopies(userId, validatedInstances);
+            }
+        }
     }
 }

@@ -30,10 +30,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumElementDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * MetadataElementHandler manages MetadataElement objects from the Governance Action Framework (GAF).
@@ -307,6 +304,17 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                             repositoryHelper);
         }
 
+        int attachmentAtEnd = 0;
+
+        if (startingAtEnd == 1)
+        {
+            attachmentAtEnd = 2;
+        }
+        else if (startingAtEnd == 2)
+        {
+            attachmentAtEnd = 1;
+        }
+
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     elementGUID,
                                                                     guidParameterName,
@@ -315,7 +323,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     relationshipTypeName,
                                                                     null,
                                                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
-                                                                    startingAtEnd,
+                                                                    attachmentAtEnd,
                                                                     startFrom,
                                                                     pageSize,
                                                                     methodName);
@@ -1370,10 +1378,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         MetadataElementBuilder builder = new MetadataElementBuilder(repositoryHelper, serviceName, serverName);
 
-        InstanceProperties classificationProperties = builder.getInstanceProperties(propertyHelper.getElementPropertiesAsMap(properties),
+        InstanceProperties classificationProperties = builder.getInstanceProperties(this.getElementPropertiesAsOMRSMap(properties),
                                                                                     effectiveFrom,
-                                                                                    effectiveTo,
-                                                                                    methodName);
+                                                                                    effectiveTo);
 
         this.setClassificationInRepository(userId,
                                            null,
@@ -1429,10 +1436,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         MetadataElementBuilder builder = new MetadataElementBuilder(repositoryHelper, serviceName, serverName);
 
-        InstanceProperties classificationProperties = builder.getInstanceProperties(propertyHelper.getElementPropertiesAsMap(properties),
+        InstanceProperties classificationProperties = builder.getInstanceProperties(this.getElementPropertiesAsOMRSMap(properties),
                                                                                     null,
-                                                                                    null,
-                                                                                    methodName);
+                                                                                    null);
 
         this.setClassificationInRepository(userId,
                                            null,
@@ -1592,10 +1598,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         MetadataElementBuilder builder = new MetadataElementBuilder(repositoryHelper, serviceName, serverName);
 
-        InstanceProperties relationshipProperties = builder.getInstanceProperties(propertyHelper.getElementPropertiesAsMap(properties),
-                                                                                    effectiveFrom,
-                                                                                    effectiveTo,
-                                                                                    methodName);
+        InstanceProperties relationshipProperties = builder.getInstanceProperties(this.getElementPropertiesAsOMRSMap(properties),
+                                                                                  effectiveFrom,
+                                                                                  effectiveTo);
         super.linkElementToElement(userId,
                                    null,
                                    null,
@@ -1613,6 +1618,36 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+
+    /**
+     * Convert an element properties object into a map.
+     *
+     * @param properties packed properties
+     * @return properties stored in Java map
+     */
+    public Map<String, InstancePropertyValue> getElementPropertiesAsOMRSMap(ElementProperties    properties) throws InvalidParameterException
+    {
+        if (properties != null)
+        {
+            Map<String, PropertyValue>         propertyValues = properties.getInstanceProperties();
+            Map<String, InstancePropertyValue> resultingMap   = new HashMap<>();
+
+            if (propertyValues != null)
+            {
+                for (String mapPropertyName : propertyValues.keySet())
+                {
+                    PropertyValue         actualPropertyValue = properties.getPropertyValue(mapPropertyName);
+                    InstancePropertyValue instancePropertyValue = this.getInstancePropertyValue(actualPropertyValue);
+
+                    resultingMap.put(mapPropertyName, instancePropertyValue);
+                }
+            }
+
+            return resultingMap;
+        }
+
+        return null;
+    }
 
 
     /**
@@ -1645,10 +1680,9 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         MetadataElementBuilder builder = new MetadataElementBuilder(repositoryHelper, serviceName, serverName);
 
-        InstanceProperties relationshipProperties = builder.getInstanceProperties(propertyHelper.getElementPropertiesAsMap(properties),
+        InstanceProperties relationshipProperties = builder.getInstanceProperties(this.getElementPropertiesAsOMRSMap(properties),
                                                                                   null,
-                                                                                  null,
-                                                                                  methodName);
+                                                                                  null);
         this.updateRelationshipProperties(userId,
                                           null,
                                           null,

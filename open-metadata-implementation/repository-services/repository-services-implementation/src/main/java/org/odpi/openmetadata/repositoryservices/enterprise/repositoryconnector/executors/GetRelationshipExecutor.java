@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
@@ -15,28 +16,32 @@ import java.util.Date;
  */
 public class GetRelationshipExecutor extends RepositoryExecutorBase
 {
+    private MaintenanceAccumulator accumulator;
     private String                 relationshipGUID;
     private boolean                allExceptions         = true;
     private Date                   asOfTime              = null;
     private Relationship           retrievedRelationship = null;
-    private MaintenanceAccumulator accumulator           = new MaintenanceAccumulator();
 
 
 
     /**
      * Constructor takes the parameters for the request.
      *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipGUID unique identifier (guid) for the relationship.
-     * @param allExceptions is the a isRelationshipKnown or getRelationship request.
+     * @param userId unique identifier for requesting user
+     * @param relationshipGUID unique identifier (guid) for the relationship
+     * @param allExceptions is the a isRelationshipKnown or getRelationship request
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public GetRelationshipExecutor(String    userId,
                                    String    relationshipGUID,
                                    boolean   allExceptions,
+                                   AuditLog auditLog,
                                    String    methodName)
     {
         super(userId, methodName);
+
+        this.accumulator = new MaintenanceAccumulator(auditLog);
 
         this.relationshipGUID = relationshipGUID;
         this.allExceptions = allExceptions;
@@ -49,14 +54,18 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID unique identifier (guid) for the new entity's type.
      * @param asOfTime is this a historical query.
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public GetRelationshipExecutor(String    userId,
                                    String    relationshipGUID,
                                    Date      asOfTime,
+                                   AuditLog  auditLog,
                                    String    methodName)
     {
         super(userId, methodName);
+
+        this.accumulator = new MaintenanceAccumulator(auditLog);
 
         this.relationshipGUID = relationshipGUID;
         this.asOfTime = asOfTime;
@@ -73,6 +82,7 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -123,9 +133,11 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return result;
@@ -141,9 +153,9 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  Relationship isRelationshipKnown() throws InvalidParameterException,
-                                                      RepositoryErrorException,
-                                                      UserNotAuthorizedException
+    public Relationship isRelationshipKnown() throws InvalidParameterException,
+                                                     RepositoryErrorException,
+                                                     UserNotAuthorizedException
     {
         if (retrievedRelationship != null)
         {
@@ -169,12 +181,12 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      *                                         the requested GUID stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  Relationship getRelationship() throws InvalidParameterException,
-                                                  RepositoryErrorException,
-                                                  RelationshipNotKnownException,
-                                                  UserNotAuthorizedException
+    public Relationship getRelationship() throws InvalidParameterException,
+                                                 RepositoryErrorException,
+                                                 RelationshipNotKnownException,
+                                                 UserNotAuthorizedException
     {
-        Relationship  relationship = this.isRelationshipKnown();
+        Relationship relationship = this.isRelationshipKnown();
 
         if (relationship != null)
         {
@@ -199,13 +211,13 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  Relationship  getRelationshipHistory() throws InvalidParameterException,
-                                                          RepositoryErrorException,
-                                                          RelationshipNotKnownException,
-                                                          FunctionNotSupportedException,
-                                                          UserNotAuthorizedException
+    public Relationship getRelationshipHistory() throws InvalidParameterException,
+                                                        RepositoryErrorException,
+                                                        RelationshipNotKnownException,
+                                                        FunctionNotSupportedException,
+                                                        UserNotAuthorizedException
     {
-        Relationship  relationship = this.getRelationship();
+        Relationship relationship = this.getRelationship();
 
         if (relationship != null)
         {

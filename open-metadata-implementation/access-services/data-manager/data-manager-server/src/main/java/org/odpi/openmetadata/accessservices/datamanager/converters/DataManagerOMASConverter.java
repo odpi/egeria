@@ -3,9 +3,8 @@
 package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DataItemSortOrder;
+import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ElementClassification;
-import org.odpi.openmetadata.accessservices.datamanager.properties.OwnerCategory;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -419,5 +418,40 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
         }
 
         return DataItemSortOrder.UNKNOWN;
+    }
+
+
+
+
+    /**
+     * Set up the properties that can be extracted form the schema type.
+     *
+     * @param schemaTypeProperties schema type properties
+     * @param columnProperties output column properties
+     */
+    void addSchemaTypeToColumn(SchemaTypeProperties schemaTypeProperties,
+                               TabularColumnProperties columnProperties)
+    {
+        if (schemaTypeProperties instanceof PrimitiveSchemaTypeProperties)
+        {
+            columnProperties.setDataType(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDataType());
+            columnProperties.setDefaultValue(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
+        }
+        else if (schemaTypeProperties instanceof LiteralSchemaTypeProperties)
+        {
+            columnProperties.setDataType(((LiteralSchemaTypeProperties) schemaTypeProperties).getDataType());
+            columnProperties.setFixedValue(((LiteralSchemaTypeProperties) schemaTypeProperties).getFixedValue());
+        }
+        else if (schemaTypeProperties instanceof EnumSchemaTypeProperties)
+        {
+            columnProperties.setDataType(((EnumSchemaTypeProperties) schemaTypeProperties).getDataType());
+            columnProperties.setDefaultValue(((EnumSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
+            columnProperties.setValidValuesSetGUID(((EnumSchemaTypeProperties) schemaTypeProperties).getValidValueSetGUID());
+        }
+        else if (schemaTypeProperties instanceof ExternalSchemaTypeProperties)
+        {
+            columnProperties.setDataType(((ExternalSchemaTypeProperties) schemaTypeProperties).getDataType());
+            columnProperties.setExternalTypeGUID(((ExternalSchemaTypeProperties) schemaTypeProperties).getExternalSchemaTypeGUID());
+        }
     }
 }

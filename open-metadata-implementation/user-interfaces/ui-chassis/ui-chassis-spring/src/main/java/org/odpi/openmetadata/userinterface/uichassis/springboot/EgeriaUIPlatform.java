@@ -18,7 +18,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +27,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.PostConstruct;
 
-@EnableZuulProxy
 @SpringBootApplication
 @ComponentScan(basePackages = {"${scan.packages}"})
 @Configuration
@@ -59,23 +57,6 @@ public class EgeriaUIPlatform {
             }
         };
     }
-
-
-    @Bean
-    @ConditionalOnProperty(value = "cors.allowed-origins")
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                if(allowedOrigins.length>0) {
-                    registry.addMapping("/**")
-                            .allowedOrigins(allowedOrigins);
-                }
-            }
-        };
-    }
-
-
 
     @Bean
     public AssetCatalog getAssetCatalog(@Value("${omas.server.url}") String serverUrl,

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
@@ -37,29 +37,6 @@ public class SubjectAreaUtils {
 
     private static final String className = SubjectAreaUtils.class.getName();
 
-    public static boolean isTopLevelGlossaryObject(String entityName) {
-        boolean isTopLevelGlossaryObject = false;
-        if (entityName.equals("Glossary") ||
-                entityName.equals("Node") ||
-                entityName.equals("GlossaryCategory")
-        ) {
-            isTopLevelGlossaryObject = true;
-        }
-        return isTopLevelGlossaryObject;
-    }
-
-    public static boolean isGovernanceActionClassification(String classificationName) {
-        boolean isGovernanceActionClassification = false;
-        if (classificationName.equals("Confidence") ||
-                classificationName.equals("Confidentiality") ||
-                classificationName.equals("Retention") ||
-                classificationName.equals("Criticality")
-        ) {
-            isGovernanceActionClassification = true;
-        }
-        return isGovernanceActionClassification;
-    }
-
     public static InstanceType createTemplateFromTypeDef(TypeDef typeDef) {
         InstanceType template = new InstanceType();
         template.setTypeDefName(typeDef.getName());
@@ -78,90 +55,56 @@ public class SubjectAreaUtils {
         return template;
     }
 
-    public static boolean isTerm(String typeName) {
-        return typeName.equals("GlossaryTerm");
-    }
-
-    public static boolean isCategory(String typeName) {
-        return typeName.equals("GlossaryCategory");
-    }
-
-    public static boolean isGlossary(String typeName) {
-        return typeName.equals("Glossary");
-    }
-
-    public static void addStringToInstanceProperty(String key, String value, InstanceProperties instanceProperties) {
-        PrimitivePropertyValue primitivePropertyValue;
-        primitivePropertyValue = new PrimitivePropertyValue();
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        primitivePropertyValue.setPrimitiveValue(value);
-        instanceProperties.setProperty(key, primitivePropertyValue);
-    }
-
     /**
      * Convert a Category to a CategorySummary
      *
      * @param category to convert
-     * @param line {@link Line}
+     * @param relationship {@link Relationship}
      * @return CategorySummary
      */
-    public static CategorySummary extractCategorySummaryFromCategory(Category category, Line line) {
+    public static CategorySummary extractCategorySummaryFromCategory(Category category, Relationship relationship) {
         CategorySummary categorySummary = new CategorySummary();
-        extractNodeSummary(category, line, categorySummary);
+        extractNodeSummary(category, relationship, categorySummary);
         return categorySummary;
     }
 
-    private static void extractNodeSummary(Node node, Line line, NodeSummary nodeSummary) {
+    private static void extractNodeSummary(Node node, Relationship relationship, NodeSummary nodeSummary) {
         nodeSummary.setQualifiedName(node.getQualifiedName());
         nodeSummary.setName(node.getName());
         nodeSummary.setGuid(node.getSystemAttributes().getGUID());
         nodeSummary.setFromEffectivityTime(node.getEffectiveFromTime());
         nodeSummary.setToEffectivityTime(node.getEffectiveToTime());
-        nodeSummary.setRelationshipguid(line.getGuid());
-        nodeSummary.setFromRelationshipEffectivityTime(line.getEffectiveFromTime());
-        nodeSummary.setToRelationshipEffectivityTime(line.getEffectiveToTime());
+        nodeSummary.setRelationshipguid(relationship.getGuid());
+        nodeSummary.setFromRelationshipEffectivityTime(relationship.getEffectiveFromTime());
+        nodeSummary.setToRelationshipEffectivityTime(relationship.getEffectiveToTime());
     }
 
-    /**
-     * extract iconSummary if this media is an icon
-     *
-     * @param relatedMedia related media
-     * @return iconSummaru or null
-     */
-    public static IconSummary extractIconSummaryFromRelatedMedia(EntityDetail relatedMedia) {
-        IconSummary icon = null;
-        // if (relatedMedia.getMediaUsage().contains(MediaUsage.Icon.getOrdinal()))
-        {
-            icon = new IconSummary();
-            //TODO sort out icons - add a mapper ?
-        }
-        return icon;
-    }
+
 
     /**
      * Extract Glossary Summary
      *
      * @param glossary the glossary that is to be summarised
-     * @param line     the line to the glossary, which feeds part of the node summary
+     * @param relationship     the relationship to the glossary, which feeds part of the node summary
      * @return Glossary Summary or null
      */
-    public static GlossarySummary extractGlossarySummaryFromGlossary(Glossary glossary, Line line) {
+    public static GlossarySummary extractGlossarySummaryFromGlossary(Glossary glossary, Relationship relationship) {
         if (glossary == null) return null;
         GlossarySummary glossarySummary = new GlossarySummary();
-        extractNodeSummary(glossary, line, glossarySummary);
+        extractNodeSummary(glossary, relationship, glossarySummary);
         return glossarySummary;
     }
 
     /**
      * Get glossary guid from anchors
      *
-     * @param line - {@link TermAnchor} or {@link CategoryAnchor}
+     * @param relationship - {@link TermAnchor} or {@link CategoryAnchor}
      * @return glossaryGuid
      * */
-    public static String getGlossaryGuidFromAnchor(Line line) {
+    public static String getGlossaryGuidFromAnchor(Relationship relationship) {
         String glossaryGuid = null;
-        if (line instanceof  TermAnchor || line instanceof CategoryAnchor) {
-            glossaryGuid = line.getEnd1().getNodeGuid();
+        if (relationship instanceof  TermAnchor || relationship instanceof CategoryAnchor) {
+            glossaryGuid = relationship.getEnd1().getNodeGuid();
         }
         return glossaryGuid;
     }
@@ -270,8 +213,18 @@ public class SubjectAreaUtils {
 
         systemAttributes.setCreatedBy(instanceHeader.getCreatedBy());
         systemAttributes.setUpdatedBy(instanceHeader.getUpdatedBy());
-        systemAttributes.setCreateTime(instanceHeader.getCreateTime());
-        systemAttributes.setUpdateTime(instanceHeader.getUpdateTime());
+        Date createTimeDate = instanceHeader.getCreateTime();
+        Long createTimeLong =null;
+        if (createTimeDate != null) {
+            createTimeLong = createTimeDate.getTime();
+        }
+        systemAttributes.setCreateTime(createTimeLong);
+        Date updateTimeDate = instanceHeader.getUpdateTime();
+        Long updateTimeLong =null;
+        if (updateTimeDate != null) {
+            updateTimeLong = updateTimeDate.getTime();
+        }
+        systemAttributes.setUpdateTime(updateTimeLong);
         systemAttributes.setVersion(instanceHeader.getVersion());
         systemAttributes.setGUID(instanceHeader.getGUID());
         return systemAttributes;
@@ -284,9 +237,9 @@ public class SubjectAreaUtils {
             if (systemAttributes.getUpdatedBy() != null)
                 instanceAuditHeader.setUpdatedBy(systemAttributes.getUpdatedBy());
             if (systemAttributes.getCreateTime() != null)
-                instanceAuditHeader.setCreateTime(systemAttributes.getCreateTime());
+                instanceAuditHeader.setCreateTime(new Date(systemAttributes.getCreateTime()));
             if (systemAttributes.getUpdateTime() != null)
-                instanceAuditHeader.setUpdateTime(systemAttributes.getUpdateTime());
+                instanceAuditHeader.setUpdateTime(new Date(systemAttributes.getUpdateTime()));
             if (systemAttributes.getVersion() != null)
                 instanceAuditHeader.setVersion(systemAttributes.getVersion());
         }

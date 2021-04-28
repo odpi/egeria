@@ -7,7 +7,7 @@ The [Configuration Document](../concepts/configuration-document.md)
 is the place where the configuration for a single [OMAG Server](../concepts/omag-server.md)
 is stored.  This may include security certificates and passwords.
 
-By default the configuration document is stored in its own file named:
+By default the configuration document is stored in its own encrypted file named:
 
 ```
 omag.server.{serverName}.config

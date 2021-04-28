@@ -28,7 +28,10 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +92,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME;
 
 public class LineageGraphConnector extends LineageGraphConnectorBase {
 
@@ -146,7 +150,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     @Override
-    public void schedulerTask() {
+    public void performLineageGraphJob() {
         try {
             //TODO investigate possibility of adding the PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG again
             List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, PROCESS).toList();
@@ -168,6 +172,21 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 g.tx().rollback();
             }
         }
+    }
+
+    @Override
+    public void saveAssetLineageUpdateTime(LocalDateTime date) {
+        g.getGraph().variables().set(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME, date.toString());
+    }
+
+    @Override
+    public Optional<LocalDateTime> getAssetLineageUpdateTime() {
+        Optional<Object> lastUpdateTime = g.getGraph().variables().get(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME);
+        if(lastUpdateTime.isPresent()) {
+            String lastUpdateTimeValue = (String) lastUpdateTime.get();
+            return Optional.of(LocalDateTime.parse(lastUpdateTimeValue, DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        }
+        return Optional.empty();
     }
 
     /**
@@ -386,6 +405,59 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
             }
         });
+    }
+
+    @Override
+    public void removeObsoleteEdgesFromGraph(String entityGUID, Set<GraphContext> graphContext) {
+        Map<String, List<String>> otherNodesByRelationshipType = new HashMap<>();
+        for (GraphContext context : graphContext) {
+            otherNodesByRelationshipType.putIfAbsent(context.getRelationshipType(), new ArrayList<>());
+            if (entityGUID.equals(context.getFromVertex().getGuid())) {
+                otherNodesByRelationshipType.get(context.getRelationshipType()).add(context.getToVertex().getGuid());
+            } else {
+                otherNodesByRelationshipType.get(context.getRelationshipType()).add(context.getFromVertex().getGuid());
+            }
+        }
+
+        for (Map.Entry<String, List<String>> mapEntry : otherNodesByRelationshipType.entrySet()) {
+            String relationshipType = mapEntry.getKey();
+            List<String> graphContextVerticesGUIDs = mapEntry.getValue();
+            List<String> neighboursGUIDs = getNeighbourNodesGUIDs(entityGUID, relationshipType);
+            if (isDifferentGraphContext(graphContextVerticesGUIDs, neighboursGUIDs)) {
+                removeObsoleteEdges(entityGUID, relationshipType, graphContextVerticesGUIDs, neighboursGUIDs);
+            }
+        }
+    }
+
+    private List<String> getNeighbourNodesGUIDs(String entityGUID, String relationshipType) {
+        Iterator<Vertex> exitingVertices = g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGUID).bothE(relationshipType).otherV();
+        List<String> existingGUIDs = new ArrayList<>();
+        while (exitingVertices.hasNext()) {
+            existingGUIDs.add((String) exitingVertices.next().property(PROPERTY_KEY_ENTITY_GUID).value());
+        }
+        return existingGUIDs;
+    }
+
+    private boolean isDifferentGraphContext(List<String> newVertices, List<String> neighboursGUIDs) {
+        return !neighboursGUIDs.containsAll(newVertices) || neighboursGUIDs.size() != newVertices.size();
+    }
+
+    private void removeObsoleteEdges(String entityGUID, String relationshipType, List<String> newVertices, List<String> neighboursGUIDs) {
+        Function<Edge, GraphTraversal<Edge, Edge>> dropEdgeFromGraph = (e) -> g.E(e.id()).drop().iterate();
+
+        List<String> obsoleteNeighbours = neighboursGUIDs.stream().filter(xx -> !newVertices.contains(xx)).collect(Collectors.toList());
+        if (obsoleteNeighbours.isEmpty()) {
+            return;
+        }
+        Iterator<Edge> existingEdges = g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGUID).bothE(relationshipType);
+        while (existingEdges.hasNext()) {
+            Edge edge = existingEdges.next();
+            String inVertexGuid = (String) edge.inVertex().property(PROPERTY_KEY_ENTITY_GUID).value();
+            String outVertexGuid = (String) edge.outVertex().property(PROPERTY_KEY_ENTITY_GUID).value();
+            if (obsoleteNeighbours.contains(inVertexGuid) || obsoleteNeighbours.contains(outVertexGuid)) {
+                commit(graphFactory, g, dropEdgeFromGraph, edge, "Could not drop edge " + edge.id());
+            }
+        }
     }
 
     private void upsertToGraph(LineageEntity fromEntity, LineageEntity toEntity,
@@ -789,5 +861,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         return new LineageVertexResponse(lineageVertex);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEntityInGraph(String guid) {
+        return !g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).toList().isEmpty();
+    }
 }
 

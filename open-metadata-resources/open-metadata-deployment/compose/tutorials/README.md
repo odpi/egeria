@@ -25,7 +25,9 @@ Components included are:
    - Factory server     - factory:9443 internally, localhost:19446 externally
    - Egeria ui          - ui:8443 internally (https), localhost:18443 externally (https)
    - Static content     - staticui:80 internally (https), localhost:10080 externally (https)
- * kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
+   - nginx              - nginx:443 internally (https), localhost:10443 externally (https)
+   - presentation       - presentation:8091 internally (https), localhost:18091 externally (https) 
+* kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
  * zookeeper - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image
  * notebook - notebook:8888 internally, localhost:18888 externally (lab version, base image) - see https://jupyter-docker-stacks.readthedocs.io/en/latest/
 
@@ -39,7 +41,9 @@ Components included are:
  - To start the environment `docker-compose -f ./egeria-tutorial.yaml up`
  - you will notice all the components starting. As the notebook server starts it will also load
    the latest notebooks we have available directly from git.
- - go to http://localhost:18888 to interact with the Jupyter Notebook 
+ - go to http://localhost:18888 to interact with the Jupyter Notebook
+ - use https://localhost:18091 to interact with the React UI (Tex, Rex, Dino)
+ - use https://localhost:10443 to interact with the Polymer UI (this is a proxy that uses uistatic & ui for content)
  - To stop the environment : `docker-compose -f ./egeria-tutorial.yaml down`
  - To refresh the images (recommended to pick up latest code) : `docker-compose -f ./egeria-tutorial.yaml pull`
  
@@ -54,11 +58,11 @@ Components included are:
  ```
 $ docker ps                                                                                                                                                                                                                                                                                                                            [10:43:05]
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                                                             NAMES
-668a0cb4c603        odpi/jupyter:2.8-SNAPSHOT   "tini -g -- start.sh…"   4 minutes ago       Up 4 minutes        0.0.0.0:18888->8888/tcp                                           tutorials_notebook_1
-dd0061d76740        odpi/egeria:2.8-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19446->9443/tcp   tutorials_factory_1
-b4529b10242e        odpi/egeria:2.8-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19443->9443/tcp   tutorials_core_1
-9ca6fac8eeb4        odpi/egeria:2.8-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19445->9443/tcp   tutorials_dev_1
-edd729d03841        odpi/egeria:2.8-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19444->9443/tcp   tutorials_datalake_1
+668a0cb4c603        odpi/jupyter:2.10-SNAPSHOT   "tini -g -- start.sh…"   4 minutes ago       Up 4 minutes        0.0.0.0:18888->8888/tcp                                           tutorials_notebook_1
+dd0061d76740        odpi/egeria:2.10-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19446->9443/tcp   tutorials_factory_1
+b4529b10242e        odpi/egeria:2.10-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19443->9443/tcp   tutorials_core_1
+9ca6fac8eeb4        odpi/egeria:2.10-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19445->9443/tcp   tutorials_dev_1
+edd729d03841        odpi/egeria:2.10-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19444->9443/tcp   tutorials_datalake_1
 ea3884c6ceb8        bitnami/kafka:latest        "/opt/bitnami/script…"   4 minutes ago       Up 4 minutes        0.0.0.0:19092->9092/tcp                                           tutorials_kafka_1
 b076f6ddc67c        bitnami/zookeeper:latest    "/opt/bitnami/script…"   4 minutes ago       Up 4 minutes        2888/tcp, 3888/tcp, 8080/tcp, 0.0.0.0:12181->2181/tcp             tutorials_zookeeper_1
 
@@ -85,7 +89,7 @@ issue or incompatibility.
 $ docker logs tutorials_core_1                                                                                                                                                                                                                                                                                                         [10:43:39]
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -cp "." -jar /deployments/server/server-chassis-spring-2.8-SNAPSHOT.jar  
+INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -cp "." -jar /deployments/server/server-chassis-spring-2.10-SNAPSHOT.jar  
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _

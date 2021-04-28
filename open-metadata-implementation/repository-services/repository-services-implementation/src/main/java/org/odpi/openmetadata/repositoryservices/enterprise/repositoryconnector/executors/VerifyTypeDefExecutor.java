@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
@@ -16,9 +17,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 public class VerifyTypeDefExecutor extends RepositoryExecutorBase
 {
     private TypeDef                typeDef;
+    private MaintenanceAccumulator accumulator;
     private boolean                result      = false;
     private boolean                resultSet   = false;
-    private MaintenanceAccumulator accumulator = new MaintenanceAccumulator();
 
 
     /**
@@ -26,15 +27,18 @@ public class VerifyTypeDefExecutor extends RepositoryExecutorBase
      *
      * @param userId unique identifier for requesting user.
      * @param typeDef  TypeDef structure describing the TypeDef to test.
+     * @param auditLog logging destination
      * @param methodName calling method
      */
-    public VerifyTypeDefExecutor(String  userId,
-                                 TypeDef typeDef,
-                                 String  methodName)
+    public VerifyTypeDefExecutor(String   userId,
+                                 TypeDef  typeDef,
+                                 AuditLog auditLog,
+                                 String   methodName)
     {
         super(userId, methodName);
 
         this.typeDef = typeDef;
+        accumulator = new MaintenanceAccumulator(auditLog);
     }
 
 
@@ -48,6 +52,7 @@ public class VerifyTypeDefExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -84,9 +89,11 @@ public class VerifyTypeDefExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(super.methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return resultSet;
@@ -121,7 +128,7 @@ public class VerifyTypeDefExecutor extends RepositoryExecutorBase
 
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(super.methodName);
+        accumulator.throwCapturedGenericException(super.methodName);
         accumulator.throwCapturedTypeDefNotSupportedException();
         accumulator.throwCapturedInvalidTypeDefException();
         accumulator.throwCapturedInvalidParameterException();

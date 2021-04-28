@@ -544,7 +544,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             else
             {
                 log.error(typeName + " type is not known in TypeDef cache");
-                throwContentManagerLogicError(sourceName, methodName, thisMethodName);
+                throwContentManagerLogicError(sourceName, methodName, thisMethodName + "(" + typeName + ")");
             }
         }
 
@@ -2583,7 +2583,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param sourceName source of the event
      * @param additionalInformation object from event being processed
      */
-    private void logUnexpectedException(Throwable   error,
+    private void logUnexpectedException(Exception   error,
                                         String      actionDescription,
                                         String      sourceName,
                                         String      additionalInformation)
@@ -2769,7 +2769,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             log.debug("TypeDef not added because repository has a logic error: " + typeDef);
             log.debug("TypeDefKnownException: ", error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             logUnexpectedException(error,
                                    actionDescription,
@@ -2777,7 +2777,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                    typeDef.toString());
 
             log.debug("TypeDef not added because repository has an unexpected error: " + typeDef);
-            log.debug("Throwable: ", error);
+            log.debug("Exception: ", error);
         }
     }
 
@@ -2952,7 +2952,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             log.debug("TypeDef not added because repository has a logic error: " + attributeTypeDef);
             log.debug("TypeDefKnownException: ", error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             logUnexpectedException(error,
                                    actionDescription,
@@ -2960,7 +2960,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                    attributeTypeDef.toString());
 
             log.debug("TypeDef not added because repository has an unexpected error: " + attributeTypeDef);
-            log.debug("Throwable: ", error);
+            log.debug("Exception: ", error);
         }
     }
 
@@ -3116,14 +3116,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 log.debug("PatchErrorException: ", error);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logUnexpectedException(error, actionDescription, sourceName, typeDefPatch.toString());
 
             if (log.isDebugEnabled())
             {
                 log.debug("Patch not applied because of an error " + typeDefPatch);
-                log.debug("Throwable: ", error);
+                log.debug("Exception: ", error);
             }
         }
     }
@@ -3238,14 +3238,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 log.debug("TypeDefNotKnownException: ", error);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logUnexpectedException(error, actionDescription, sourceName, typeDefName + " (" + typeDefGUID + ")");
 
             if (log.isDebugEnabled())
             {
                 log.debug("Type not deleted because of an error " + typeDefName);
-                log.debug("Throwable: ", error);
+                log.debug("Exception: ", error);
             }
         }
     }
@@ -3360,14 +3360,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 log.debug("TypeDefNotKnownException: ", error);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logUnexpectedException(error, actionDescription, sourceName, attributeTypeDefName + " (" + attributeTypeDefGUID + ")");
 
             if (log.isDebugEnabled())
             {
                 log.debug("Type not deleted because of an error " + attributeTypeDefName);
-                log.debug("Throwable: ", error);
+                log.debug("Exception: ", error);
             }
         }
     }

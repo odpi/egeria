@@ -116,7 +116,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
         this.auditLog                = auditLog;
 
-        this.errorHandler            = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
+        this.errorHandler            = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
 
         this.qualifiedNamePropertyNamesList = new ArrayList<>();
         this.qualifiedNamePropertyNamesList.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -1782,7 +1782,14 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         catch (PropertyServerException error)
         {
-            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            try
+            {
+                errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            }
+            catch (PropertyServerException secondError)
+            {
+                // Not able to log exception
+            }
         }
 
         return anchorGUID;
@@ -2139,7 +2146,7 @@ public class OpenMetadataAPIGenericHandler<B>
         }
 
         /*
-         * Finally test to see if the type is connected to an API operation or API schema type.
+         * Next test to see if the type is connected to an API operation or API schema type.
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
@@ -2190,11 +2197,27 @@ public class OpenMetadataAPIGenericHandler<B>
             return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
         }
 
+        /*
+         * Finally test that this schema type is attached directly to a port.
+         */
+        relationship = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                     schemaTypeGUID,
+                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                                     methodName);
+        if (relationship != null)
+        {
+            EntityProxy proxy = relationship.getEntityOneProxy();
+
+            return proxy.getGUID();
+        }
+
 
         /*
-         * If none of these relationships are present, then this schema type is the anchor.
+         * If none of these relationships are present, then this schema type has no anchor.
          */
-        return schemaTypeGUID;
+        return null;
     }
 
 
@@ -2743,6 +2766,51 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+    /**
+     * Validates that the current anchorGUID is correct and updates it if it is not.
+     *
+     * @param targetGUID unique identifier of the element to validate
+     * @param targetElement target entity already retrieved
+     * @param targetTypeName type of entity to validate
+     * @param originalAnchorGUID the original anchor guid - may be null
+     * @param methodName calling method
+     *
+     * @return the new anchor GUID
+     *
+     * @throws InvalidParameterException probably the type of the entity is not correct
+     * @throws PropertyServerException there is a problem with the repository
+     * @throws UserNotAuthorizedException the local server user id is not able to update the entity
+     */
+    private String reEvaluateAnchorGUID(String       targetGUID,
+                                        String       targetTypeName,
+                                        EntityDetail targetElement,
+                                        String       originalAnchorGUID,
+                                        String       methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        /*
+         * Find out the anchorGUID by following the relationships
+         */
+        String newAnchorGUID = this.deriveAnchorGUID(targetGUID, targetTypeName, methodName);
+
+        /*
+         * The anchorGUID has changed
+         */
+        if (((newAnchorGUID == null) && (originalAnchorGUID != null)) ||
+            ((newAnchorGUID != null) && (! newAnchorGUID.equals(originalAnchorGUID))))
+        {
+            if (targetElement != null)
+            {
+                this.maintainAnchorGUIDInClassification(targetGUID, targetElement, newAnchorGUID, methodName);
+            }
+        }
+
+        return newAnchorGUID;
+    }
+
+
     /**
      * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an update.
      *
@@ -2877,19 +2945,12 @@ public class OpenMetadataAPIGenericHandler<B>
                                           connectToEntity,
                                           suppliedSupportedZones,
                                           methodName);
-
-            return connectToEntity;
         }
 
         /*
          * Most referenceables have an independent lifecycle.  They are their own anchor.  This method is handling the special cases.
          */
         EntityDetail anchorEntity = null;
-
-        if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
-        {
-            anchorEntity = connectToEntity;
-        }
 
         /*
          * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
@@ -3710,8 +3771,21 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 if (! forLineage)
                 {
-
+                    try
+                    {
+                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
+                        {
+                            entity = null;
+                        }
+                    }
+                    catch (ClassificationErrorException error)
+                    {
+                        /*
+                         * Since this classification is not supported, it can not be attached to the entity
+                         */
+                    }
                 }
+
                 return entity;
             }
         }
@@ -4189,7 +4263,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
-     * @param attachmentEntityEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
      * @param methodName calling method
@@ -4466,8 +4540,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is pre-loaded with
-     * properties that should override the properties from the the template.  This is the method to call from
-     * the specific handlers
+     * properties that should override the properties from the the template.  This is the method to call from the specific handlers.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
@@ -4504,6 +4577,7 @@ public class OpenMetadataAPIGenericHandler<B>
         TemplateProgress templateProgress = createBeanFromTemplate(userId,
                                                                    externalSourceGUID,
                                                                    externalSourceName,
+                                                                   true,
                                                                    new TemplateProgress(),
                                                                    templateGUID,
                                                                    templateGUIDParameterName,
@@ -4516,6 +4590,19 @@ public class OpenMetadataAPIGenericHandler<B>
 
         if (templateProgress != null)
         {
+            /*
+             * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
+             * updated, there is a possibility of making complementary changes to the entities that were derived from it.
+             */
+            repositoryHandler.createRelationship(localServerUserId,
+                                                 OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 templateProgress.newBeanGUID,
+                                                 templateGUID,
+                                                 null,
+                                                 methodName);
+
             return templateProgress.newBeanGUID;
         }
 
@@ -4528,21 +4615,24 @@ public class OpenMetadataAPIGenericHandler<B>
      * The purpose of taking note of the parts of the template graph processed is to prevent
      * situations where elements are processed more than once - creating distorted or "infinite" results.
      */
-    class TemplateProgress
+    static class TemplateProgress
     {
         String              newBeanGUID          = null; /* GUID of last new entity created - ultimately this is returned to the original caller*/
         String              previousTemplateGUID = null; /* GUID of last template entity processed - prevents processing a relationship twice */
         Map<String, String> coveredGUIDMap       = new HashMap<>(); /* Map of template GUIDs to new bean GUIDs that have been processed - prevents replicating the same entity twice */
+        String              beanAnchorGUID       = null; /* value of the anchor to set into the new beans */
     }
 
 
     /**
      * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is pre-loaded with
-     * properties that should override the properties from the the template.
+     * properties that should override the properties from the the template.  This method is called iterative for each entity anchored to the
+     * original template.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param firstIteration is this the first call to this method?
      * @param templateProgress current new bean, previous GUID and list of entities from the template that have been processed (so we only create new elements one-to-one when there are cyclic relationships)
      * @param templateGUID unique identifier of existing entity to use
      * @param templateGUIDParameterName name of parameter passing the templateGUID
@@ -4563,6 +4653,7 @@ public class OpenMetadataAPIGenericHandler<B>
     private TemplateProgress createBeanFromTemplate(String                        userId,
                                                     String                        externalSourceGUID,
                                                     String                        externalSourceName,
+                                                    boolean                       firstIteration,
                                                     TemplateProgress              templateProgress,
                                                     String                        templateGUID,
                                                     String                        templateGUIDParameterName,
@@ -4588,7 +4679,7 @@ public class OpenMetadataAPIGenericHandler<B>
         if (templateEntity != null)
         {
             /*
-             * Check that the template is visible to the calling user.
+             * Check that the template is visible to the calling user.  If the template is an anchor, its own entity is returned.
              */
             EntityDetail templateAnchorEntity = this.validateAnchorEntity(userId,
                                                                           templateGUID,
@@ -4598,6 +4689,12 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           false,
                                                                           supportedZones,
                                                                           methodName);
+            String templateAnchorGUID = null;
+            if (templateAnchorEntity != null)
+            {
+                templateAnchorGUID = templateAnchorEntity.getGUID();
+            }
+
 
             /*
              * Verify that the user is permitted to create a new bean.
@@ -4612,7 +4709,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
             /*
              * All OK to create the new bean, now work out the classifications.  Start with the classifications from the template (ignoring Anchors
-             * and LatestChange) and then overlay the classifications set up in the builder.
+             * and LatestChange) and then overlay the classifications set up in the builder and the appropriate anchor.
              */
             Map<String, Classification> newClassificationMap = new HashMap<>();
 
@@ -4630,6 +4727,26 @@ public class OpenMetadataAPIGenericHandler<B>
                     }
                 }
             }
+
+            /*
+             * If the template has another anchor set up then this same anchor needs to be established for the new bean.
+             */
+            if ((firstIteration) && (templateAnchorGUID != null) && (! templateGUID.equals(templateAnchorGUID)))
+            {
+                /*
+                 * Need to use the same anchor as the template.  This occurs the first time through the iteration if the initial
+                 * template object has an anchor.
+                 */
+                propertyBuilder.setAnchors(userId, templateAnchorGUID, methodName);
+            }
+            else if (! firstIteration)
+            {
+                /*
+                 * A bean anchor has been set up on a previous iteration.
+                 */
+                propertyBuilder.setAnchors(userId, templateProgress.beanAnchorGUID, methodName);
+            }
+
 
             List<Classification> builderClassifications = propertyBuilder.getEntityClassifications();
             if (builderClassifications != null)
@@ -4664,6 +4781,15 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   methodName);
 
             /*
+             * This is the first time through the iteration and so we need to capture the top level bean's guid to act as the anchor for all other
+             * beans that are created as a result of this templated creation.
+             */
+            if (firstIteration)
+            {
+                templateProgress.beanAnchorGUID = newEntityGUID;
+            }
+
+            /*
              * The real value of templates is that they cover the creation of a cluster of metadata instances.  The last step is to explore
              * the graph of linked elements and replicate the structure for the new bean.
              */
@@ -4674,23 +4800,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                newEntityGUID,
                                                                newEntityParameterName,
                                                                templateGUID,
-                                                               templateAnchorEntity.getGUID(),
+                                                               templateAnchorGUID,
                                                                entityTypeName,
                                                                uniqueParameterValue,
                                                                methodName);
 
-            /*
-             * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
-             * updated, there is a possibility of making complementary changes to the entities that were derived from it.
-             */
-            repositoryHandler.createRelationship(localServerUserId,
-                                                 OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 newEntityGUID,
-                                                 templateGUID,
-                                                 null,
-                                                 methodName);
 
             templateProgress.newBeanGUID = newEntityGUID;
         }
@@ -4811,23 +4925,28 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                       supportedZones,
                                                                                       methodName);
 
+                    String nextTemplateAnchorGUID = null;
+                    if (nextTemplateEntityAnchor != null)
+                    {
+                        nextTemplateAnchorGUID = nextTemplateEntityAnchor.getGUID();
+                    }
                     String nextBeanEntityGUID;
 
-                    if ((nextTemplateEntityAnchor == null) || (! templateAnchorGUID.equals(nextTemplateEntityAnchor.getGUID())))
-                    {
-                        /*
-                         * The linked entity is either not got an anchorGUID or has a different anchorGUID.
-                         * However we still need to create the relationship between the start bean and the linked entity.
-                         */
-                        nextBeanEntityGUID = nextTemplateEntity.getGUID();
-                    }
-                    else if (templateProgress.coveredGUIDMap.keySet().contains(nextTemplateEntity.getGUID()))
+                    if (templateProgress.coveredGUIDMap.keySet().contains(nextTemplateEntity.getGUID()))
                     {
                         /*
                          * The template entity has already been replicated and so we just need to create the
                          * relationship from the equivalent new bean to the start bean.
                          */
                         nextBeanEntityGUID = templateProgress.coveredGUIDMap.get(nextTemplateEntity.getGUID());
+                    }
+                    else if ((nextTemplateAnchorGUID == null) || (! nextTemplateAnchorGUID.equals(templateAnchorGUID)))
+                    {
+                        /*
+                         * The linked entity is either not got an anchorGUID or has a different anchorGUID.
+                         * However we still need to create the relationship between the start bean and the linked entity.
+                         */
+                        nextBeanEntityGUID = nextTemplateEntity.getGUID();
                     }
                     else
                     {
@@ -4884,6 +5003,7 @@ public class OpenMetadataAPIGenericHandler<B>
                         templateProgress = this.createBeanFromTemplate(userId,
                                                                          externalSourceGUID,
                                                                          externalSourceName,
+                                                                         false,
                                                                          templateProgress,
                                                                          nextTemplateEntity.getGUID(),
                                                                          nextTemplateEntityGUIDParameterName,
@@ -5131,31 +5251,30 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * Update is OK so record that it occurred in the LatestChange classification if there is an anchor entity.
              */
+            final String actionDescriptionTemplate = "Updating properties in %s %s";
+            String actionDescription = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
+
             if (anchorEntity != null)
             {
-                final String actionDescriptionTemplate = "Updating properties in %s %s";
-
-                String actionDescription         = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
-                int    latestChangeTargetOrdinal = OpenMetadataAPIMapper.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL;
-                String attachmentGUID            = entityGUID;
-                String attachmentTypeName        = entityTypeName;
-
-                /*
-                 * If the anchor entity is the the one being updated then adjust the latest change information.
-                 */
-                if (entityGUID.equals(anchorEntity.getGUID()))
-                {
-                    latestChangeTargetOrdinal = OpenMetadataAPIMapper.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL;
-                    attachmentGUID            = null;
-                    attachmentTypeName        = null;
-                }
-
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             latestChangeTargetOrdinal,
+                                             OpenMetadataAPIMapper.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
                                              OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
-                                             attachmentGUID,
-                                             attachmentTypeName,
+                                             entityGUID,
+                                             entityTypeName,
+                                             null,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            {
+                this.addLatestChangeToAnchor(originalEntity,
+                                             OpenMetadataAPIMapper.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             null,
+                                             null,
                                              null,
                                              userId,
                                              actionDescription,
@@ -5300,31 +5419,30 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * Update is OK so record that it occurred in the LatestChange classification if there is an anchor entity.
              */
+            final String actionDescriptionTemplate = "Updating instance status in %s %s";
+            String actionDescription = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
+
             if (anchorEntity != null)
             {
-                final String actionDescriptionTemplate = "Updating instance status in %s %s";
-
-                String actionDescription         = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
-                int    latestChangeTargetOrdinal = OpenMetadataAPIMapper.ATTACHMENT_STATUS_LATEST_CHANGE_TARGET_ORDINAL;
-                String attachmentGUID            = entityGUID;
-                String attachmentTypeName        = entityTypeName;
-
-                /*
-                 * If the anchor entity is the the one being updated then adjust the latest change information.
-                 */
-                if (entityGUID.equals(anchorEntity.getGUID()))
-                {
-                    latestChangeTargetOrdinal = OpenMetadataAPIMapper.ENTITY_STATUS_LATEST_CHANGE_TARGET_ORDINAL;
-                    attachmentGUID            = null;
-                    attachmentTypeName        = null;
-                }
-
                 this.addLatestChangeToAnchor(anchorEntity,
-                                             latestChangeTargetOrdinal,
+                                             OpenMetadataAPIMapper.ATTACHMENT_STATUS_LATEST_CHANGE_TARGET_ORDINAL,
                                              OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
-                                             attachmentGUID,
-                                             attachmentTypeName,
+                                             entityGUID,
+                                             entityTypeName,
+                                             null,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            {
+                this.addLatestChangeToAnchor(originalEntity,
+                                             OpenMetadataAPIMapper.ENTITY_STATUS_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             null,
+                                             null,
                                              null,
                                              userId,
                                              actionDescription,
@@ -5486,6 +5604,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               serviceSupportedZones,
                                                               methodName);
 
+        /*
+         * At this point, archiving is only supported on the anchor entity.  This needs to change (eg to be able to archive schema elements)
+         * by adding logic very similar to the templating logic that makes sure the archive processing travels down the hiierarchy and does not
+         * cover the whole anchored entity.
+         */
         invalidParameterHandler.validateAnchorGUID(entityGUID,
                                                    entityGUIDParameterName,
                                                    anchorEntity,
@@ -5569,8 +5692,7 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
 
         /*
-         * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is deleted.
-         * (This is why we explicitly delete the relationship to the parent element before calling this method).
+         * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is archived.
          */
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
                                                                                        userId,
@@ -9566,18 +9688,32 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(attachingGUID, attachingGUIDParameterName, methodName);
 
+        EntityDetail  startingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                startingGUID,
+                                                                                startingGUIDParameterName,
+                                                                                startingElementTypeName,
+                                                                                methodName);
+
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
                                                                              startingGUID,
-                                                                             startingGUIDParameterName,
                                                                              startingElementTypeName,
+                                                                             startingElementEntity,
+                                                                             startingGUIDParameterName,
                                                                              false,
                                                                              suppliedSupportedZones,
                                                                              methodName);
 
+        EntityDetail  attachingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                 attachingGUID,
+                                                                                 attachingGUIDParameterName,
+                                                                                 attachingElementTypeName,
+                                                                                 methodName);
+
         EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
                                                                               attachingGUID,
-                                                                              attachingGUIDParameterName,
                                                                               attachingElementTypeName,
+                                                                              attachingElementEntity,
+                                                                              attachingGUIDParameterName,
                                                                               false,
                                                                               suppliedSupportedZones,
                                                                               methodName);
@@ -9589,94 +9725,163 @@ public class OpenMetadataAPIGenericHandler<B>
          */
 
         Relationship relationship = repositoryHandler.createRelationship(userId,
-                                                                       attachmentTypeGUID,
-                                                                       externalSourceGUID,
-                                                                       externalSourceName,
-                                                                       startingGUID,
-                                                                       attachingGUID,
-                                                                       relationshipProperties,
-                                                                       methodName);
+                                                                         attachmentTypeGUID,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         startingGUID,
+                                                                         attachingGUID,
+                                                                         relationshipProperties,
+                                                                         methodName);
+
+        /*
+         * Final stage is to add the latest change classification to the anchor(s).
+         * The act of creating the relationship may set up the anchor GUID in either element.
+         */
+        String startingElementAnchorGUID;
+
+        if (startingElementAnchorEntity == null)
+        {
+            startingElementAnchorGUID = this.reEvaluateAnchorGUID(startingGUID,
+                                                                  startingElementTypeName,
+                                                                  startingElementEntity,
+                                                                  null,
+                                                                  methodName);
+
+            if (startingElementAnchorGUID != null)
+            {
+                if ((attachingElementAnchorEntity != null) && (attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID)))
+                {
+                    startingElementAnchorEntity = attachingElementAnchorEntity;
+                }
+                else
+                {
+                    final String anchorGUIDParameterName = "startingElementAnchorGUID";
+
+                    startingElementAnchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                    startingElementAnchorGUID,
+                                                                                    anchorGUIDParameterName,
+                                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                    methodName);
+                }
+            }
+            else
+            {
+                startingElementAnchorGUID = startingGUID;
+            }
+        }
+        else
+        {
+            startingElementAnchorGUID = startingElementAnchorEntity.getGUID();
+        }
+
+        if (attachingElementAnchorEntity == null)
+        {
+            String attachingElementAnchorGUID = this.reEvaluateAnchorGUID(attachingGUID,
+                                                                          attachingElementTypeName,
+                                                                          attachingElementEntity,
+                                                                          null,
+                                                                          methodName);
+
+            if (attachingElementAnchorGUID != null)
+            {
+                if (attachingElementAnchorGUID.equals(startingElementAnchorGUID))
+                {
+                    attachingElementAnchorEntity = startingElementAnchorEntity;
+                }
+                else
+                {
+                    final String anchorGUIDParameterName = "attachingElementAnchorGUID";
+
+                    attachingElementAnchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                     attachingElementAnchorGUID,
+                                                                                     anchorGUIDParameterName,
+                                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                     methodName);
+                }
+            }
+        }
+
 
         /*
          * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
          */
-        if ((startingElementAnchorEntity != null) || (attachingElementAnchorEntity != null))
-        {
-            final String actionDescriptionTemplate = "Linking %s %s to %s %s";
+        final String actionDescriptionTemplate = "Linking %s %s to %s %s";
 
-            String actionDescription = String.format(actionDescriptionTemplate,
-                                                     startingElementTypeName,
-                                                     startingGUID,
-                                                     attachingElementTypeName,
-                                                     attachingGUID);
-
-            if (startingElementAnchorEntity != null)
-            {
-                int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-
-                if (startingGUID.equals(startingElementAnchorEntity.getGUID()))
-                {
-                    latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-                }
-
-                this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                              latestChangeTarget,
-                                              OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
-                                              null,
-                                              attachingGUID,
-                                              attachingElementTypeName,
-                                              attachmentTypeName,
-                                              userId,
-                                              actionDescription,
-                                              methodName);
-            }
-            else
-            {
-                /*
-                 * Now that this relationship is in place, the anchorGUID might be set up
-                 */
-                this.reEvaluateAnchorGUID(startingGUID,
-                                          startingGUIDParameterName,
-                                          startingElementTypeName,
-                                          null,
-                                          methodName);
-            }
-
-            if (attachingElementAnchorEntity != null)
-            {
-                /*
-                 * Only need to add latestChange if the anchor of the attached element is different
-                 */
-                if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID()))
-                {
-                    int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-
-                    if (attachingGUID.equals(attachingElementAnchorEntity.getGUID()))
-                    {
-                        latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-                    }
-                    this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                                 latestChangeTarget,
-                                                 OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
-                                                 null,
-                                                 startingGUID,
+        String actionDescription = String.format(actionDescriptionTemplate,
                                                  startingElementTypeName,
-                                                 attachmentTypeName,
-                                                 userId,
-                                                 actionDescription,
-                                                 methodName);
-                }
+                                                 startingGUID,
+                                                 attachingElementTypeName,
+                                                 attachingGUID);
+
+        if (startingElementAnchorEntity != null)
+        {
+            this.addLatestChangeToAnchor(startingElementAnchorEntity,
+                                         OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         null,
+                                         attachingGUID,
+                                         attachingElementTypeName,
+                                         attachmentTypeName,
+                                         userId,
+                                         actionDescription,
+                                         methodName);
+        }
+        else
+        {
+            if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            {
+                this.addLatestChangeToAnchor(startingElementEntity,
+                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             attachingGUID,
+                                             attachingElementTypeName,
+                                             attachmentTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
             }
-            else
+        }
+
+        if (attachingElementAnchorEntity != null)
+        {
+            /*
+             * Only need to add latestChange if the anchor of the attached element is different from the starting element
+             */
+            if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
+            {
+                this.addLatestChangeToAnchor(attachingElementAnchorEntity,
+                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             startingGUID,
+                                             startingElementTypeName,
+                                             attachmentTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
+        }
+        else if (! attachingGUID.equals(startingElementAnchorGUID))
+        {
+            /*
+             * The attaching element does not have an anchor and is different from the starting element's anchor
+             */
+            if (repositoryHelper.isTypeOf(serviceName, attachingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
             {
                 /*
-                 * Now that this relationship is in place, the anchorGUID may now be set up
+                 * The attaching element is an anchor in its own right.
                  */
-                this.reEvaluateAnchorGUID(attachingGUID,
-                                          attachingGUIDParameterName,
-                                          attachingElementTypeName,
-                                          null,
-                                          methodName);
+                this.addLatestChangeToAnchor(attachingElementEntity,
+                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             startingGUID,
+                                             startingElementTypeName,
+                                             attachmentTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
             }
         }
 
@@ -9793,18 +9998,39 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(attachingGUID, attachingGUIDParameterName, methodName);
 
+        EntityDetail  startingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                startingGUID,
+                                                                                startingGUIDParameterName,
+                                                                                startingElementTypeName,
+                                                                                methodName);
+
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
                                                                              startingGUID,
-                                                                             startingGUIDParameterName,
                                                                              startingElementTypeName,
+                                                                             startingElementEntity,
+                                                                             startingGUIDParameterName,
                                                                              false,
                                                                              suppliedSupportedZones,
                                                                              methodName);
 
+        String startingElementAnchorGUID = startingGUID;
+
+        if (startingElementAnchorEntity != null)
+        {
+            startingElementAnchorGUID = startingElementAnchorEntity.getGUID();
+        }
+
+        EntityDetail  attachingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                 attachingGUID,
+                                                                                 attachingGUIDParameterName,
+                                                                                 attachingElementTypeName,
+                                                                                 methodName);
+
         EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
                                                                               attachingGUID,
-                                                                              attachingGUIDParameterName,
                                                                               attachingElementTypeName,
+                                                                              attachingElementEntity,
+                                                                              attachingGUIDParameterName,
                                                                               false,
                                                                               suppliedSupportedZones,
                                                                               methodName);
@@ -9840,26 +10066,33 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
              */
-            if ((startingElementAnchorEntity != null) || (attachingElementAnchorEntity != null))
+            final String actionDescriptionTemplate = "Updating link from %s %s to %s %s";
+
+            String actionDescription = String.format(actionDescriptionTemplate,
+                                                     startingElementTypeName,
+                                                     startingGUID,
+                                                     attachingElementTypeName,
+                                                     attachingGUID);
+
+            if (startingElementAnchorEntity != null)
             {
-                final String actionDescriptionTemplate = "Updating link from %s %s to %s %s";
-
-                String actionDescription = String.format(actionDescriptionTemplate,
-                                                         startingElementTypeName,
-                                                         startingGUID,
-                                                         attachingElementTypeName,
-                                                         attachingGUID);
-
-                if (startingElementAnchorEntity != null)
+                this.addLatestChangeToAnchor(startingElementAnchorEntity,
+                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             attachingGUID,
+                                             attachingElementTypeName,
+                                             attachmentTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
+            else
+            {
+                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
                 {
-                    int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-
-                    if (startingGUID.equals(startingElementAnchorEntity.getGUID()))
-                    {
-                        latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-                    }
-                    this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                                 latestChangeTarget,
+                    this.addLatestChangeToAnchor(startingElementEntity,
+                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
                                                  OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
                                                  null,
                                                  attachingGUID,
@@ -9869,51 +10102,60 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  actionDescription,
                                                  methodName);
                 }
-                else
+
+                /*
+                 * Now that this relationship is in place, the anchorGUID might be set up
+                 */
+                this.reEvaluateAnchorGUID(startingGUID,
+                                          startingElementTypeName,
+                                          startingElementEntity,
+                                          null,
+                                          methodName);
+            }
+
+            if (attachingElementAnchorEntity != null)
+            {
+                /*
+                 * Only need to add latestChange if the anchor of the attached element is different
+                 */
+                if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
                 {
-                    /*
-                     * Now that this relationship is in place, the anchorGUID might be set up
-                     */
-                    this.reEvaluateAnchorGUID(startingGUID,
-                                              startingGUIDParameterName,
-                                              startingElementTypeName,
-                                              null,
-                                              methodName);
+                    this.addLatestChangeToAnchor(attachingElementAnchorEntity,
+                                                 OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 startingGUID,
+                                                 startingElementTypeName,
+                                                 attachmentTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
+                }
+            }
+            else
+            {
+                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                {
+                    this.addLatestChangeToAnchor(attachingElementEntity,
+                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 startingGUID,
+                                                 startingElementTypeName,
+                                                 attachmentTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
                 }
 
-                if (attachingElementAnchorEntity != null)
-                {
-                    if (!attachingElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID()))
-                    {
-                        int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-
-                        if (attachingGUID.equals(attachingElementAnchorEntity.getGUID()))
-                        {
-                            latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-                        }
-                        this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                                     latestChangeTarget,
-                                                     OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
-                                                     null,
-                                                     startingGUID,
-                                                     startingElementTypeName,
-                                                     attachmentTypeName,
-                                                     userId,
-                                                     actionDescription,
-                                                     methodName);
-                    }
-                }
-                else
-                {
-                    /*
-                     * Now that this relationship is in place, the anchorGUID may now be set up
-                     */
-                    this.reEvaluateAnchorGUID(attachingGUID,
-                                              attachingGUIDParameterName,
-                                              attachingElementTypeName,
-                                              null,
-                                              methodName);
-                }
+                /*
+                 * Now that this relationship is in place, the anchorGUID may now be set up
+                 */
+                this.reEvaluateAnchorGUID(attachingGUID,
+                                          attachingElementTypeName,
+                                          attachingElementEntity,
+                                          null,
+                                          methodName);
             }
         }
     }
@@ -10029,21 +10271,42 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(newAttachingGUID, newAttachingGUIDParameterName, methodName);
 
+        EntityDetail  startingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                startingGUID,
+                                                                                startingGUIDParameterName,
+                                                                                startingElementTypeName,
+                                                                                methodName);
+
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
                                                                              startingGUID,
-                                                                             startingGUIDParameterName,
                                                                              startingElementTypeName,
+                                                                             startingElementEntity,
+                                                                             startingGUIDParameterName,
                                                                              false,
                                                                              suppliedSupportedZones,
                                                                              methodName);
 
-        EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                              newAttachingGUID,
-                                                                              newAttachingGUIDParameterName,
-                                                                              newAttachingElementTypeName,
-                                                                              false,
-                                                                              suppliedSupportedZones,
-                                                                              methodName);
+        String startingElementAnchorGUID = startingGUID;
+
+        if (startingElementAnchorEntity != null)
+        {
+            startingElementAnchorGUID = startingElementAnchorEntity.getGUID();
+        }
+
+        EntityDetail  newAttachingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                    newAttachingGUID,
+                                                                                    newAttachingGUIDParameterName,
+                                                                                    newAttachingElementTypeName,
+                                                                                    methodName);
+
+        EntityDetail newAttachingElementAnchorEntity = this.validateAnchorEntity(userId,
+                                                                                 newAttachingGUID,
+                                                                                 newAttachingElementTypeName,
+                                                                                 newAttachingElementEntity,
+                                                                                 newAttachingGUIDParameterName,
+                                                                                 false,
+                                                                                 suppliedSupportedZones,
+                                                                                 methodName);
 
         /*
          * The calls above validate the existence of the two entities and that they are visible to the user.
@@ -10110,28 +10373,44 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
          */
-        if ((startingElementAnchorEntity != null) || (attachingElementAnchorEntity != null))
+        final String actionDescriptionTemplate = "Relinking %s %s from %s %s to %s %s";
+
+        String actionDescription = String.format(actionDescriptionTemplate,
+                                                 startingElementTypeName,
+                                                 startingGUID,
+                                                 oldAttachingElementTypeName,
+                                                 oldAttachingGUID,
+                                                 newAttachingElementTypeName,
+                                                 newAttachingGUID);
+
+        if (startingElementAnchorEntity != null)
         {
-            final String actionDescriptionTemplate = "Relinking %s %s from %s %s to %s %s";
+            this.addLatestChangeToAnchor(startingElementAnchorEntity,
+                                         OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                         OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                         null,
+                                         newAttachingGUID,
+                                         newAttachingElementTypeName,
+                                         attachmentTypeName,
+                                         userId,
+                                         actionDescription,
+                                         methodName);
 
-            String actionDescription = String.format(actionDescriptionTemplate,
-                                                     startingElementTypeName,
-                                                     startingGUID,
-                                                     oldAttachingElementTypeName,
-                                                     oldAttachingGUID,
-                                                     newAttachingElementTypeName,
-                                                     newAttachingGUID);
-
-            if (startingElementAnchorEntity != null)
+            /*
+             * Now that this relationship has changed, the anchorGUID may now be wrong
+             */
+            this.reEvaluateAnchorGUID(startingGUID,
+                                      startingElementTypeName,
+                                      startingElementEntity,
+                                      startingElementAnchorEntity.getGUID(),
+                                      methodName);
+        }
+        else
+        {
+            if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
             {
-                int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-
-                if (startingGUID.equals(startingElementAnchorEntity.getGUID()))
-                {
-                    latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-                }
-                this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                             latestChangeTarget,
+                this.addLatestChangeToAnchor(startingElementEntity,
+                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
                                              OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              newAttachingGUID,
@@ -10140,27 +10419,27 @@ public class OpenMetadataAPIGenericHandler<B>
                                              userId,
                                              actionDescription,
                                              methodName);
-
-                /*
-                 * Now that this relationship is in place, the anchorGUID may now be wrong
-                 */
-                this.reEvaluateAnchorGUID(startingGUID,
-                                          startingGUIDParameterName,
-                                          startingElementTypeName,
-                                          startingElementAnchorEntity.getGUID(),
-                                          methodName);
             }
 
-            if (attachingElementAnchorEntity != null)
-            {
-                int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
+            /*
+             * Now that this relationship has changed, the anchorGUID may now be wrong
+             */
+            this.reEvaluateAnchorGUID(startingGUID,
+                                      startingElementTypeName,
+                                      startingElementEntity,
+                                      null,
+                                      methodName);
+        }
 
-                if (newAttachingGUID.equals(attachingElementAnchorEntity.getGUID()))
-                {
-                    latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-                }
-                this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                             latestChangeTarget,
+        if (newAttachingElementAnchorEntity != null)
+        {
+            /*
+             * Only need to add latestChange if the anchor of the attached element is different
+             */
+            if (! newAttachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
+            {
+                this.addLatestChangeToAnchor(newAttachingElementAnchorEntity,
+                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
                                              OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
                                              null,
                                              startingGUID,
@@ -10169,16 +10448,41 @@ public class OpenMetadataAPIGenericHandler<B>
                                              userId,
                                              actionDescription,
                                              methodName);
-
-                /*
-                 * Now that this relationship is gone, the anchorGUID may now be wrong
-                 */
-                this.reEvaluateAnchorGUID(newAttachingGUID,
-                                          newAttachingGUIDParameterName,
-                                          newAttachingElementTypeName,
-                                          attachingElementAnchorEntity.getGUID(),
-                                          methodName);
             }
+
+            /*
+             * Now that this relationship has changed, the anchorGUID may now be wrong
+             */
+            this.reEvaluateAnchorGUID(newAttachingGUID,
+                                      newAttachingElementTypeName,
+                                      newAttachingElementEntity,
+                                      newAttachingElementAnchorEntity.getGUID(),
+                                      methodName);
+        }
+        else
+        {
+            if (repositoryHelper.isTypeOf(serviceName, newAttachingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            {
+                this.addLatestChangeToAnchor(newAttachingElementEntity,
+                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             startingGUID,
+                                             startingElementTypeName,
+                                             attachmentTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
+
+            /*
+             * Now that this relationship has changed, the anchorGUID may now be wrong
+             */
+            this.reEvaluateAnchorGUID(newAttachingGUID,
+                                      newAttachingElementTypeName,
+                                      newAttachingElementEntity,
+                                      null,
+                                      methodName);
         }
     }
 
@@ -10420,21 +10724,42 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(attachedGUID, attachedGUIDParameterName, methodName);
 
+        EntityDetail startingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                               startingGUID,
+                                                                               startingGUIDParameterName,
+                                                                               startingElementTypeName,
+                                                                               methodName);
+
         EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
                                                                              startingGUID,
-                                                                             startingGUIDParameterName,
                                                                              startingElementTypeName,
+                                                                             startingElementEntity,
+                                                                             startingGUIDParameterName,
                                                                              false,
                                                                              suppliedSupportedZones,
                                                                              methodName);
 
-        EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                              attachedGUID,
-                                                                              attachedGUIDParameterName,
-                                                                              attachedElementTypeName,
-                                                                              false,
-                                                                              suppliedSupportedZones,
-                                                                              methodName);
+        String startingElementAnchorGUID = startingGUID;
+
+        if (startingElementAnchorEntity != null)
+        {
+            startingElementAnchorGUID = startingElementAnchorEntity.getGUID();
+        }
+
+        EntityDetail attachedElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                               attachedGUID,
+                                                                               attachedGUIDParameterName,
+                                                                               attachedElementTypeName,
+                                                                               methodName);
+
+        EntityDetail attachedElementAnchorEntity = this.validateAnchorEntity(userId,
+                                                                             attachedGUID,
+                                                                             attachedElementTypeName,
+                                                                             attachedElementEntity,
+                                                                             attachedGUIDParameterName,
+                                                                             false,
+                                                                             suppliedSupportedZones,
+                                                                             methodName);
 
         /*
          * The unlink only occurs if there is a relationship.
@@ -10466,9 +10791,107 @@ public class OpenMetadataAPIGenericHandler<B>
             }
 
             /*
+             * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
+             */
+            final String actionDescriptionTemplate = "Unlinking %s %s from %s %s";
+
+            String actionDescription = String.format(actionDescriptionTemplate,
+                                                     startingElementTypeName,
+                                                     startingGUID,
+                                                     attachedElementTypeName,
+                                                     attachedGUID);
+
+
+            if (startingElementAnchorEntity != null)
+            {
+                this.addLatestChangeToAnchor(startingElementAnchorEntity,
+                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             attachedGUID,
+                                             attachedElementTypeName,
+                                             attachmentTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+
+                /*
+                 * Now that this relationship is gone, the anchorGUID may now be wrong
+                 */
+                this.reEvaluateAnchorGUID(startingGUID,
+                                          startingGUIDParameterName,
+                                          startingElementTypeName,
+                                          startingElementAnchorEntity.getGUID(),
+                                          methodName);
+            }
+            else
+            {
+                if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                {
+                    this.addLatestChangeToAnchor(startingElementEntity,
+                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 attachedGUID,
+                                                 attachedElementTypeName,
+                                                 attachmentTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
+                }
+            }
+
+            if (attachedElementAnchorEntity != null)
+            {
+                /*
+                 * Only need to add latestChange if the anchor of the attached element is different
+                 */
+                if (! attachedElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
+                {
+                    this.addLatestChangeToAnchor(attachedElementAnchorEntity,
+                                                 OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 startingGUID,
+                                                 startingElementTypeName,
+                                                 attachmentTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
+                }
+
+                /*
+                 * Now that this relationship is gone, the anchorGUID may now be wrong
+                 */
+                this.reEvaluateAnchorGUID(attachedGUID,
+                                          attachedGUIDParameterName,
+                                          attachedElementTypeName,
+                                          attachedElementAnchorEntity.getGUID(),
+                                          methodName);
+            }
+            else
+            {
+                if (repositoryHelper.isTypeOf(serviceName, attachedElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                {
+                    this.addLatestChangeToAnchor(startingElementEntity,
+                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 startingGUID,
+                                                 startingElementTypeName,
+                                                 attachmentTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
+                }
+            }
+
+
+            /*
              * If the attached element has the same anchor GUID as the starting element then the attached element should be deleted.
              */
-            if ((attachingElementAnchorEntity != null) && (attachingElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
+            if ((attachedElementAnchorEntity != null) && (startingElementAnchorEntity != null) &&
+                        (attachedElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
             {
                 this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
@@ -10479,83 +10902,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                             attachedElementTypeName,
                                             null,
                                             null,
-                                            attachingElementAnchorEntity,
+                                            attachedElementAnchorEntity,
                                             methodName);
-
-                attachingElementAnchorEntity = null;
-            }
-
-            /*
-             * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
-             */
-            if ((startingElementAnchorEntity != null) || (attachingElementAnchorEntity != null))
-            {
-                final String actionDescriptionTemplate = "Unlinking %s %s to %s %s";
-
-                String actionDescription = String.format(actionDescriptionTemplate,
-                                                         startingElementTypeName,
-                                                         startingGUID,
-                                                         attachedElementTypeName,
-                                                         attachedGUID);
-
-                if (startingElementAnchorEntity != null)
-                {
-                    int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-
-                    if (startingGUID.equals(startingElementAnchorEntity.getGUID()))
-                    {
-                        latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-                    }
-
-                    this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                                 latestChangeTarget,
-                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
-                                                 null,
-                                                 attachedGUID,
-                                                 attachedElementTypeName,
-                                                 attachmentTypeName,
-                                                 userId,
-                                                 actionDescription,
-                                                 methodName);
-
-                    /*
-                     * Now that this relationship is gone, the anchorGUID may now be wrong
-                     */
-                    this.reEvaluateAnchorGUID(startingGUID,
-                                              startingGUIDParameterName,
-                                              startingElementTypeName,
-                                              startingElementAnchorEntity.getGUID(),
-                                              methodName);
-                }
-
-                if (attachingElementAnchorEntity != null)
-                {
-                    int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-
-                    if (attachedGUID.equals(attachingElementAnchorEntity.getGUID()))
-                    {
-                        latestChangeTarget = OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
-                    }
-                    this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                                 latestChangeTarget,
-                                                 OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
-                                                 null,
-                                                 startingGUID,
-                                                 startingElementTypeName,
-                                                 attachmentTypeName,
-                                                 userId,
-                                                 actionDescription,
-                                                 methodName);
-
-                    /*
-                     * Now that this relationship is gone, the anchorGUID may now be wrong
-                     */
-                    this.reEvaluateAnchorGUID(attachedGUID,
-                                              attachedGUIDParameterName,
-                                              attachedElementTypeName,
-                                              attachingElementAnchorEntity.getGUID(),
-                                              methodName);
-                }
             }
         }
     }

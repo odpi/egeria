@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
@@ -19,26 +20,30 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class RestoreEntityExecutor extends RepositoryExecutorBase
 {
+    private MaintenanceAccumulator accumulator;
     private String                 entityGUID;
     private EntityDetail           restoredEntity = null;
-    private MaintenanceAccumulator accumulator    = new MaintenanceAccumulator();
 
 
 
     /**
      * Constructor takes the parameters for the request.
      *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier (guid) for the entity.
+     * @param userId unique identifier for requesting user
+     * @param entityGUID unique identifier (guid) for the entity
+     * @param auditLog logging destination
      * @param methodName calling method
      */
-    public RestoreEntityExecutor(String userId,
-                                 String entityGUID,
-                                 String methodName)
+    public RestoreEntityExecutor(String   userId,
+                                 String   entityGUID,
+                                 AuditLog auditLog,
+                                 String   methodName)
     {
         super(userId, methodName);
 
         this.entityGUID = entityGUID;
+        this.accumulator = new MaintenanceAccumulator(auditLog);
+
     }
 
 
@@ -89,9 +94,11 @@ public class RestoreEntityExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return result;
@@ -125,7 +132,7 @@ public class RestoreEntityExecutor extends RepositoryExecutorBase
         accumulator.throwCapturedEntityNotDeletedException();
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(methodName);
+        accumulator.throwCapturedGenericException(methodName);
         accumulator.throwCapturedEntityNotKnownException();
         accumulator.throwCapturedInvalidParameterException();
         accumulator.throwCapturedFunctionNotSupportedException();

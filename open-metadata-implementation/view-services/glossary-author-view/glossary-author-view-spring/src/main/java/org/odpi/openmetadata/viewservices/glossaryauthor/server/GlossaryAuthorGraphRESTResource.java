@@ -32,18 +32,18 @@ public class GlossaryAuthorGraphRESTResource {
     }
 
     /**
-     * Get the graph of nodes and lines radiating out from a node.
+     * Get the graph of nodes and relationships radiating out from a node.
      *
-     * Return the nodes and lines that radiate out from the supplied node (identified by a GUID).
-     * The results are scoped by types of Lines, types of nodes and classifications as well as level.
+     * Return the nodes and relationships that radiate out from the supplied node (identified by a GUID).
+     * The results are scoped by types of relationships, types of nodes and classifications as well as level.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
      * @param guid the starting point of the query.
      * @param nodeFilterStr Comma separated list of node names to include in the query results.  Null means include
      *                          all entities found, irrespective of their type.
-     * @param lineFilterStr comma separated list of line names to include in the query results.  Null means include
-     *                                all lines found, irrespective of their type.
+     * @param relationshipFilterStr comma separated list of relationship names to include in the query results.  Null means include
+     *                                all relationships found, irrespective of their type.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param statusFilter By default only active instances are returned. Specify ALL to see all instance in any status.
@@ -63,17 +63,17 @@ public class GlossaryAuthorGraphRESTResource {
                                                       @PathVariable String guid,
                                                       @RequestParam(value = "asOfTime", required=false) Date asOfTime,
                                                       @RequestParam(value = "nodeFilter", required=false)String nodeFilterStr,
-                                                      @RequestParam(value = "lineFilter", required=false)String lineFilterStr,
+                                                      @RequestParam(value = "relationshipFilter", required=false)String relationshipFilterStr,
                                                       @RequestParam(value = "statusFilter", required=false)StatusFilter statusFilter   // may need to extend this for controlled terms
                                                      ) {
 
-        return restAPI.getGraph(serverName, userId, guid, asOfTime,  nodeFilterStr, lineFilterStr, statusFilter);
+        return restAPI.getGraph(serverName, userId, guid, asOfTime,  nodeFilterStr, relationshipFilterStr, statusFilter);
     }
     /**
-     * Get the graph statistics of nodes and lines radiating out from a node.
+     * Get the graph statistics of nodes and relationships radiating out from a node.
      *
-     * Return the nodes and lines statistics that radiate out from the supplied node (identified by a GUID).
-     * The results are scoped by types of Lines, types of nodes and classifications as well as level.
+     * Return the nodes and relationships statistics that radiate out from the supplied node (identified by a GUID).
+     * The results are scoped by types of relationships, types of nodes and classifications as well as level.
      *
      * The graph statistics include counts that the user can use to scope the query, to reduce the number of nodes displayed.
      * This is combat the issue that a large number of nodes being displayed would make the screen too busy and unusable.
@@ -83,8 +83,8 @@ public class GlossaryAuthorGraphRESTResource {
      * @param guid the starting point of the query.
      * @param nodeFilterStr Comma separated list of node names to include in the query results.  Null means include
      *                          all entities found, irrespective of their type.
-     * @param lineFilterStr comma separated list of line names to include in the query results.  Null means include
-     *                                all lines found, irrespective of their type.
+     * @param relationshipFilterStr comma separated list of relationship names to include in the query results.  Null means include
+     *                                all relationships found, irrespective of their type.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param statusFilter By default only active instances are returned. Specify ALL to see all instance in any status.
@@ -104,10 +104,10 @@ public class GlossaryAuthorGraphRESTResource {
                                                                       @PathVariable String guid,
                                                                       @RequestParam(value = "asOfTime", required=false) Date asOfTime,
                                                                       @RequestParam(value = "nodeFilter", required=false)String nodeFilterStr,
-                                                                      @RequestParam(value = "lineFilter", required=false)String lineFilterStr,
+                                                                      @RequestParam(value = "relationshipFilter", required=false)String relationshipFilterStr,
                                                                       @RequestParam(value = "statusFilter", required=false)StatusFilter statusFilter   // may need to extend this for controlled terms
                                                                      ) {
 
-        return restAPI.getGraphCounts(serverName, userId, guid, asOfTime, nodeFilterStr, lineFilterStr, statusFilter);
+        return restAPI.getGraphCounts(serverName, userId, guid, asOfTime, nodeFilterStr, relationshipFilterStr, statusFilter);
     }
 }

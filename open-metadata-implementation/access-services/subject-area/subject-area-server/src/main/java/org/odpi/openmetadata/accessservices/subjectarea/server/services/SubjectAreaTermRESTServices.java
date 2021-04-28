@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -139,20 +139,20 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(String serverName,
-                                                                 String userId,
-                                                                 String guid,
-                                                                 Date asOfTime,
-                                                                 Integer startingFrom,
-                                                                 Integer pageSize,
-                                                                 SequencingOrder sequencingOrder,
-                                                                 String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getTermRelationships(String serverName,
+                                                                         String userId,
+                                                                         String guid,
+                                                                         Date asOfTime,
+                                                                         Integer startingFrom,
+                                                                         Integer pageSize,
+                                                                         SequencingOrder sequencingOrder,
+                                                                         String sequencingProperty
+                                                                        ) {
         String methodName = "getTermRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -238,7 +238,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @param userId       userId under which the request is performed
      * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
-     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceAction content is always replaced.
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceClassification content is always replaced.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>

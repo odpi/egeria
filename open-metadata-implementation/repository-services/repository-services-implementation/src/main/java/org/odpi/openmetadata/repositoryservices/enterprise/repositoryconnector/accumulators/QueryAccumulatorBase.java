@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.HashMap;
@@ -17,7 +18,6 @@ import java.util.Map;
 public class QueryAccumulatorBase extends ExceptionAccumulatorBase
 {
     protected String                  localMetadataCollectionId;
-    protected AuditLog                auditLog;
     protected OMRSRepositoryValidator repositoryValidator;
 
     private int                  responsesRequired  = 0;
@@ -34,13 +34,12 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param repositoryValidator validator provides common validation routines
      */
     QueryAccumulatorBase(String                  localMetadataCollectionId,
-                         AuditLog                auditLog,
+                         AuditLog auditLog,
                          OMRSRepositoryValidator repositoryValidator)
     {
-        super();
+        super(auditLog);
 
         this.localMetadataCollectionId = localMetadataCollectionId;
-        this.auditLog = auditLog;
         this.repositoryValidator = repositoryValidator;
 
         this.registerExecutor();
@@ -116,7 +115,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param exception  exception from remote call
      */
     public synchronized void captureException(String                          metadataCollectionId,
-                                              ClassificationErrorException    exception)
+                                              ClassificationErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         classificationErrorException = exception;
@@ -130,7 +129,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param exception  exception from remote call
      */
     public synchronized void captureException(String                     metadataCollectionId,
-                                              EntityNotKnownException    exception)
+                                              EntityNotKnownException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         entityNotKnownException = exception;
@@ -145,7 +144,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param exception  exception from remote call
      */
     public synchronized void captureException(String                           metadataCollectionId,
-                                              FunctionNotSupportedException    exception)
+                                              FunctionNotSupportedException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         functionNotSupportedException = exception;
@@ -159,7 +158,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param exception  exception from remote call
      */
     public synchronized void captureException(String                     metadataCollectionId,
-                                              InvalidParameterException  exception)
+                                              InvalidParameterException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         invalidParameterException = exception;
@@ -173,7 +172,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param exception  exception from remote call
      */
     public synchronized void captureException(String                     metadataCollectionId,
-                                              PagingErrorException     exception)
+                                              PagingErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         pagingErrorException = exception;
@@ -187,7 +186,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param exception  exception from remote call
      */
     public synchronized void captureException(String                     metadataCollectionId,
-                                              PropertyErrorException     exception)
+                                              PropertyErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         propertyErrorException = exception;
@@ -215,7 +214,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param exception  exception from remote call
      */
     public synchronized void captureException(String                     metadataCollectionId,
-                                              RepositoryErrorException   exception)
+                                              RepositoryErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         repositoryErrorException = exception;
@@ -229,7 +228,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param exception  exception from remote call
      */
     public synchronized void captureException(String               metadataCollectionId,
-                                              TypeErrorException   exception)
+                                              TypeErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         typeErrorException = exception;
@@ -253,13 +252,22 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     /**
      * Save the supplied exception.
      *
+     * @param actionDescription caller,s activity description
      * @param metadataCollectionId unique identifier for metadata collection this issued this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureGenericException(String     metadataCollectionId,
-                                                     Throwable  exception)
+    public synchronized void captureGenericException(String     actionDescription,
+                                                     String     metadataCollectionId,
+                                                     Exception  exception)
     {
         setRequestReturned(metadataCollectionId, 0);
         anotherException = exception;
+
+        auditLog.logException(actionDescription,
+                              OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_REPOSITORY.getMessageDefinition(exception.getClass().getName(),
+                                                                                                      metadataCollectionId,
+                                                                                                      actionDescription,
+                                                                                                      exception.getMessage()),
+                              exception);
     }
 }

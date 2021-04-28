@@ -46,23 +46,21 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
         }
         // set classifications
         mapOmrsClassificationsToNode(omrsEntityDetail, node);
+        // set readonly
+        if (omrsEntityDetail.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT) {
+            node.setReadOnly(true);
+        }
     }
 
     /**
-     * Map  EntityDetail properties to Node properties. This method calls out to methods that are overridden for the different Nodes.
+     * Map EntityDetail properties to Node properties. This method calls out to methods that are overridden for the different Nodes.
      * @param node supplied Node to be updated
      * @param omrsEntityDetailProperties entity detail properties
      */
     private void mapEntityDetailPropertiesToNode(N node, InstanceProperties omrsEntityDetailProperties) {
-        // copy over effectivity
-        Date effectivityFromtime = null;
-        Date effectivityTotime = null;
-        if (omrsEntityDetailProperties.getEffectiveFromTime() != null) {
-            effectivityFromtime = omrsEntityDetailProperties.getEffectiveFromTime();
-        }
-        if (omrsEntityDetailProperties.getEffectiveToTime() !=null) {
-            effectivityTotime = omrsEntityDetailProperties.getEffectiveToTime();
-        }
+        // copy over effectivity - the values could be null
+        Date effectivityFromtime = omrsEntityDetailProperties.getEffectiveFromTime();
+        Date effectivityTotime = omrsEntityDetailProperties.getEffectiveToTime();
 
         node.setEffectiveFromTime(effectivityFromtime);
         node.setEffectiveToTime(effectivityTotime);
@@ -181,16 +179,8 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
 
         Date effectiveFromTime = node.getEffectiveFromTime();
         Date effectiveToTime =node.getEffectiveToTime();
-        if (effectiveFromTime == null ) {
-            instanceProperties.setEffectiveFromTime(new Date());
-        } else {
-            instanceProperties.setEffectiveFromTime(effectiveFromTime);
-        }
-        if (effectiveToTime == null) {
-            instanceProperties.setEffectiveToTime(new Date());
-        } else {
-            instanceProperties.setEffectiveToTime((effectiveToTime));
-        }
+        instanceProperties.setEffectiveFromTime(effectiveFromTime);
+        instanceProperties.setEffectiveToTime((effectiveToTime));
     }
     private void mapOmrsClassificationsToNode(EntityDetail omrsEntityDetail, N node) {
         List<Classification> omrsclassifications = omrsEntityDetail.getClassifications();
@@ -248,6 +238,12 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
 
     /**
      * Map a Node (a Subject Area OMAS) concept to an EntityDetail (an OMRS concept)
+     *
+     * Note that this does not map the readonly flag to the provenance, the caller needs
+     * to handle this if required. Readonly flag is only for update / delete and restore processing
+     * can proceed, in these cases the omrs entity should be looked up first, so this mapping would
+     * not be called.
+     *
      * @param node supplied node, which is a Subject Area Concept
      * @return EntityDetail, which is an OMRS concept
      */
@@ -262,9 +258,9 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
             if (systemAttributes.getUpdatedBy()!=null)
                 omrsEntityDetail.setUpdatedBy(systemAttributes.getUpdatedBy());
             if (systemAttributes.getCreateTime()!=null)
-                omrsEntityDetail.setCreateTime(systemAttributes.getCreateTime());
+                omrsEntityDetail.setCreateTime(new Date(systemAttributes.getCreateTime()));
             if (systemAttributes.getUpdateTime()!=null)
-                omrsEntityDetail.setUpdateTime(systemAttributes.getUpdateTime());
+                omrsEntityDetail.setUpdateTime(new Date(systemAttributes.getUpdateTime()));
             if (systemAttributes.getVersion()!=null)
                 omrsEntityDetail.setVersion(systemAttributes.getVersion());
             if (systemAttributes.getGUID()!=null)

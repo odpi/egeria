@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -21,6 +22,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class ClassifyEntityExecutor extends RepositoryExecutorBase
 {
+    private MaintenanceAccumulator accumulator;
     private String                 entityGUID;
     private String                 classificationName;
     private String                 externalSourceGUID;
@@ -29,21 +31,21 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
     private String                 classificationOriginGUID;
     private InstanceProperties     classificationProperties;
 
-    private EntityDetail           updatedEntity = null;
-    private MaintenanceAccumulator accumulator   = new MaintenanceAccumulator();
+    private EntityDetail updatedEntity = null;
 
 
     /**
      * Constructor takes the parameters for the request.
      *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier (guid) for the entity.
-     * @param classificationName String name for the classification.
-     * @param externalSourceGUID unique identifier (guid) for the external source.
-     * @param externalSourceName unique name for the external source.
+     * @param userId unique identifier for requesting user
+     * @param entityGUID unique identifier (guid) for the entity
+     * @param classificationName String name for the classification
+     * @param externalSourceGUID unique identifier (guid) for the external source
+     * @param externalSourceName unique name for the external source
      * @param classificationOrigin source of the classification
      * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
-     * @param classificationProperties list of properties to set in the classification.
+     * @param classificationProperties list of properties to set in the classification
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public ClassifyEntityExecutor(String               userId,
@@ -54,9 +56,12 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
                                   ClassificationOrigin classificationOrigin,
                                   String               classificationOriginGUID,
                                   InstanceProperties   classificationProperties,
+                                  AuditLog             auditLog,
                                   String               methodName)
     {
         super(userId, methodName);
+
+        this.accumulator              = new MaintenanceAccumulator(auditLog);
 
         this.entityGUID               = entityGUID;
         this.classificationName       = classificationName;
@@ -78,6 +83,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -135,9 +141,11 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return result;
@@ -174,7 +182,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
 
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(methodName);
+        accumulator.throwCapturedGenericException(methodName);
         accumulator.throwCapturedEntityNotKnownException();
         accumulator.throwCapturedInvalidParameterException();
         accumulator.throwCapturedFunctionNotSupportedException();

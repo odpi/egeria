@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
@@ -19,26 +20,29 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class RestoreRelationshipExecutor extends RepositoryExecutorBase
 {
+    private MaintenanceAccumulator accumulator;
     private String                 relationshipGUID;
     private Relationship           restoredRelationship = null;
-    private MaintenanceAccumulator accumulator          = new MaintenanceAccumulator();
 
 
 
     /**
      * Constructor takes the parameters for the request.
      *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipGUID unique identifier (guid) for the relationship.
+     * @param userId unique identifier for requesting user
+     * @param relationshipGUID unique identifier (guid) for the relationship
+     * @param auditLog logging destination
      * @param methodName calling method
      */
-    public RestoreRelationshipExecutor(String userId,
-                                       String relationshipGUID,
-                                       String methodName)
+    public RestoreRelationshipExecutor(String   userId,
+                                       String   relationshipGUID,
+                                       AuditLog auditLog,
+                                       String   methodName)
     {
         super(userId, methodName);
 
         this.relationshipGUID = relationshipGUID;
+        this.accumulator      = new MaintenanceAccumulator(auditLog);
     }
 
 
@@ -52,6 +56,7 @@ public class RestoreRelationshipExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -89,9 +94,11 @@ public class RestoreRelationshipExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return result;
@@ -125,7 +132,7 @@ public class RestoreRelationshipExecutor extends RepositoryExecutorBase
         accumulator.throwCapturedRelationshipNotDeletedException();
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(methodName);
+        accumulator.throwCapturedGenericException(methodName);
         accumulator.throwCapturedRelationshipNotKnownException();
         accumulator.throwCapturedInvalidParameterException();
         accumulator.throwCapturedFunctionNotSupportedException();

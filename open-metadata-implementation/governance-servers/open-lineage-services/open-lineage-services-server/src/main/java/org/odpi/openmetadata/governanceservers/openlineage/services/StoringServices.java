@@ -3,18 +3,20 @@
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Set;
 
 public class StoringServices {
 
     private static final Logger log = LoggerFactory.getLogger(StoringServices.class);
 
-    private LineageGraph lineageGraph;
+    private final LineageGraph lineageGraph;
 
     public StoringServices(LineageGraph graphStore) {
         this.lineageGraph = graphStore;
@@ -23,15 +25,23 @@ public class StoringServices {
     /**
      * Delegates the call for the creation of entities and relationships to the connector
      */
-    public void addEntityContext(ProcessLineageEvent processLineageEvent) {
-        lineageGraph.storeToGraph(processLineageEvent.getContext());
+    public void addEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+        lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
 
     /**
      * Delegates the call for the creation of entities and relationships to the connector
      */
-    public void addEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+    public void upsertEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+        String termGUID = lineageRelationshipsEvent.getRelationshipsContext().getEntityGuid();
+        lineageGraph.removeObsoleteEdgesFromGraph(termGUID, lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
         lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
+    }
+    /**
+     * Delegates the call for the creation of entities and relationships to the connector
+     */
+    public void addEntityContext(Set<GraphContext> relationships) {
+        lineageGraph.storeToGraph(relationships);
     }
 
     /**
@@ -56,7 +66,6 @@ public class StoringServices {
      * Delegates the call for the update of a classification to the connector
      */
     public void updateClassification(LineageRelationshipsEvent lineageRelationshipsEvent) {
-        log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
         lineageGraph.updateClassification(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
 
@@ -88,6 +97,16 @@ public class StoringServices {
         log.debug("Open Lineage Services is processing an DeleteClassificationEvent event");
 
         lineageGraph.deleteClassification(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
+    }
+
+    /**
+     * Check entity existence boolean in the graph through the lineage connector.
+     *
+     * @param guid the guid
+     * @return the boolean
+     */
+    public boolean isEntityInGraph(String guid) {
+        return lineageGraph.isEntityInGraph(guid);
     }
 
 }

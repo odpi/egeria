@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
@@ -149,16 +150,20 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                 if (fileInFolder(fileGUID))
                 {
-                    Map<String, String> requestParameters = new HashMap<>();
-                    List<String> actionTargetGUIDs = new ArrayList<>();
+                    Map<String, String>   requestParameters = new HashMap<>();
+                    List<NewActionTarget> actionTargets = new ArrayList<>();
 
-                    actionTargetGUIDs.add(fileGUID);
+                    NewActionTarget actionTarget = new NewActionTarget();
+
+                    actionTarget.setActionTargetGUID(fileGUID);
+                    actionTarget.setActionTargetName(actionTargetName);
+                    actionTargets.add(actionTarget);
 
                     if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
                     {
                         initiateProcess(newElementProcessName,
                                         null,
-                                        actionTargetGUIDs);
+                                        actionTargets);
                     }
                     else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
                     {
@@ -174,13 +179,13 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                         initiateProcess(updatedElementProcessName,
                                         requestParameters,
-                                        actionTargetGUIDs);
+                                        actionTargets);
                     }
                     else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
                     {
                         initiateProcess(deletedElementProcessName,
                                         null,
-                                        actionTargetGUIDs);
+                                        actionTargets);
                     }
                     else
                     {
@@ -192,7 +197,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         {
                             initiateProcess(classifiedElementProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                         else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES)
                         {
@@ -209,13 +214,13 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                             initiateProcess(reclassifiedElementProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                         else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_CLASSIFICATION)
                         {
                             initiateProcess(declassifiedElementProcessName,
                                             requestParameters,
-                                            actionTargetGUIDs);
+                                            actionTargets);
                         }
                     }
                 }
@@ -265,11 +270,14 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
         try
         {
-            String parentFolderGUID = getFolderGUID(fileGUID);
+            String parentFolderGUID = getFolderGUID(fileGUID, "NestedFile");
 
             if (GenericFolderWatchdogGovernanceActionProvider.DIRECT_REQUEST_TYPE.equals(governanceContext.getRequestType()))
             {
-                return parentFolderGUID.equals(folderGUID);
+                if (parentFolderGUID != null)
+                {
+                    return parentFolderGUID.equals(folderGUID);
+                }
             }
             else
             {
@@ -280,7 +288,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         return true;
                     }
 
-                    parentFolderGUID = getFolderGUID(parentFolderGUID);
+                    parentFolderGUID = getFolderGUID(parentFolderGUID, "FolderHierarchy");
                 }
             }
 
@@ -294,7 +302,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
 
     /**
-     * Return the unique identifier of a folder by navigating form the file.
+     * Return the unique identifier of a folder by navigating from the file.
      *
      * @param fileGUID file unique identifier
      *
@@ -303,15 +311,16 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
      * @throws UserNotAuthorizedException the userId for the connector does not have the authority it needs
      * @throws PropertyServerException there is a problem with the metadata server(s)
      */
-    private String getFolderGUID(String  fileGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    private String getFolderGUID(String  fileGUID,
+                                 String  relationshipName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         String folderGUID = null;
 
         List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                                                       2,
-                                                                                                                                      "NestedFile",
+                                                                                                                                      relationshipName,
                                                                                                                                       0,
                                                                                                                                       0);
 
@@ -328,6 +337,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
         return folderGUID;
     }
+
 
     /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()

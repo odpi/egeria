@@ -457,17 +457,32 @@ public class RepositoryErrorHandler
      * @param error  caught exception
      * @param methodName  name of the method making the call
      * @param typeName  name of the property in error
+     * @throws PropertyServerException no audit log
      */
-    public void handleUnsupportedAnchorsType(Throwable  error,
+    public void handleUnsupportedAnchorsType(Exception  error,
                                              String     methodName,
-                                             String     typeName)
+                                             String     typeName) throws PropertyServerException
     {
-        auditLog.logException(methodName, RepositoryHandlerAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
-                                                                                                                typeName,
-                                                                                                                methodName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                error.getMessage()),
-                              error);
+        if (auditLog != null)
+        {
+            auditLog.logException(methodName, RepositoryHandlerAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
+                                                                                                                    typeName,
+                                                                                                                    methodName,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                                  error);
+        }
+        else
+        {
+            throw new PropertyServerException(RepositoryHandlerErrorCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
+                                                                                                                    typeName,
+                                                                                                                    methodName,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
+        }
     }
 
 

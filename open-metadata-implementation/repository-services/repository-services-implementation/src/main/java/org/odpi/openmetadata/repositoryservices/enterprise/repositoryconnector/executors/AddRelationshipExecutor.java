@@ -3,8 +3,12 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
@@ -16,15 +20,16 @@ import org.slf4j.LoggerFactory;
  */
 public class AddRelationshipExecutor extends RepositoryExecutorBase
 {
-    private String                 relationshipTypeGUID;
-    private InstanceProperties     initialProperties;
-    private EntityProxy            entityOneProxy;
-    private EntityProxy            entityTwoProxy;
-    private InstanceStatus         initialStatus;
-    private String                 externalSourceGUID = null;
-    private String                 externalSourceName = null;
-    private Relationship           newRelationship    = null;
-    private MaintenanceAccumulator accumulator        = new MaintenanceAccumulator();
+    private MaintenanceAccumulator accumulator;
+
+    private String             relationshipTypeGUID;
+    private InstanceProperties initialProperties;
+    private EntityProxy        entityOneProxy;
+    private EntityProxy        entityTwoProxy;
+    private InstanceStatus     initialStatus;
+    private String             externalSourceGUID = null;
+    private String             externalSourceName = null;
+    private Relationship       newRelationship    = null;
 
     private static final Logger log = LoggerFactory.getLogger(AddRelationshipExecutor.class);
 
@@ -32,12 +37,13 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
     /**
      * Constructor takes the parameters for the request.
      *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new entity's type.
-     * @param initialProperties initial list of properties for the new relationship - null means no properties.
-     * @param entityOneProxy   the unique identifier of one of the entities that the relationship is connecting together.
-     * @param entityTwoProxy   the unique identifier of the other entity that the relationship is connecting together.
-     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param userId unique identifier for requesting user
+     * @param relationshipTypeGUID unique identifier (guid) for the new entity's type
+     * @param initialProperties initial list of properties for the new relationship - null means no properties
+     * @param entityOneProxy   the unique identifier of one of the entities that the relationship is connecting together
+     * @param entityTwoProxy   the unique identifier of the other entity that the relationship is connecting together
+     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public AddRelationshipExecutor(String             userId,
@@ -46,9 +52,12 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
                                    EntityProxy        entityOneProxy,
                                    EntityProxy        entityTwoProxy,
                                    InstanceStatus     initialStatus,
+                                   AuditLog           auditLog,
                                    String             methodName)
     {
         super(userId, methodName);
+
+        this.accumulator = new MaintenanceAccumulator(auditLog);
 
         this.relationshipTypeGUID = relationshipTypeGUID;
         this.initialProperties = initialProperties;
@@ -69,6 +78,7 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
      * @param entityOneProxy   the unique identifier of one of the entities that the relationship is connecting together.
      * @param entityTwoProxy   the unique identifier of the other entity that the relationship is connecting together.
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public AddRelationshipExecutor(String             userId,
@@ -79,9 +89,12 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
                                    EntityProxy        entityOneProxy,
                                    EntityProxy        entityTwoProxy,
                                    InstanceStatus     initialStatus,
+                                   AuditLog           auditLog,
                                    String             methodName)
     {
         super(userId, methodName);
+
+        this.accumulator = new MaintenanceAccumulator(auditLog);
 
         this.relationshipTypeGUID = relationshipTypeGUID;
         this.externalSourceGUID = externalSourceGUID;
@@ -103,6 +116,7 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -176,9 +190,11 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return result;
@@ -224,7 +240,7 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
         accumulator.throwCapturedPropertyErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
         accumulator.throwCapturedFunctionNotSupportedException();
-        accumulator.throwCapturedThrowableException(methodName);
+        accumulator.throwCapturedGenericException(methodName);
 
         return null;
     }
@@ -241,7 +257,7 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
      */
     private boolean ensureEntityEndKnown(String                 userId,
                                          String                 entityGUID,
-                                         EntityProxy            entityProxy,
+                                         EntityProxy entityProxy,
                                          OMRSMetadataCollection metadataCollection)
     {
         try
@@ -256,12 +272,12 @@ public class AddRelationshipExecutor extends RepositoryExecutorBase
                 metadataCollection.addEntityProxy(userId, entityProxy);
                 return true;
             }
-            catch (Throwable proxyError)
+            catch (Exception proxyError)
             {
                 log.debug("Error from adding proxy: " + proxyError.getMessage());
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             log.debug("Error from querying entity: " + error.getMessage());
         }

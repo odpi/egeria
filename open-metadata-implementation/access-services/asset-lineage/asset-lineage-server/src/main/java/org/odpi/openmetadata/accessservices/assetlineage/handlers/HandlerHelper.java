@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
@@ -100,6 +101,33 @@ public class HandlerHelper {
 
         return relationships.stream().filter(relationship -> relationship.getEntityOneProxy() != null && relationship.getEntityTwoProxy() != null)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Return the relationship of the requested type connected to the starting entity.
+     * The assumption is that this is a 0..1 relationship so one relationship (or an empty Optional) is returned.
+     * If lots of relationships are found then the PropertyServerException is thrown.
+     *
+     * @param userId               the unique identifier for the user
+     * @param entityGUID           the unique identifier of the entity for which the relationships are retrieved
+     * @param relationshipTypeName the type of the relationships to be retrieved
+     * @param entityTypeName       the type of the entity
+     *
+     * @return Optional containing the relationship if found, empty optional if not found
+     *
+     * @throws UserNotAuthorizedException the user not authorized exception
+     * @throws PropertyServerException    the property server exception
+     * @throws InvalidParameterException  the invalid parameter exception
+     */
+    Optional<Relationship> getUniqueRelationshipByType(String userId, String entityGUID, String relationshipTypeName, String entityTypeName) throws
+                                                                                                                                              OCFCheckedExceptionBase {
+        final String methodName = "getUniqueRelationshipsByType";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, GUID_PARAMETER, methodName);
+
+        String typeGuid = getTypeByName(userId, relationshipTypeName);
+        return Optional.of(repositoryHandler.getUniqueRelationshipByType(userId, entityGUID, entityTypeName, typeGuid, relationshipTypeName, methodName));
     }
 
     /**
@@ -381,5 +409,21 @@ public class HandlerHelper {
         context.addAll(buildContextForRelationships(userId, startEntity.getGUID(), relationships).getRelationships());
 
         return getEntityAtTheEnd(userId, startEntity.getGUID(), relationships.get(0));
+    }
+
+
+    /**
+     * Validate asset's GUID and it being in the specific supported zones.
+     *
+     * @param entityDetail   the entity detail
+     * @param methodName     the method name
+     * @param supportedZones the supported zones
+     *
+     * @throws InvalidParameterException the invalid parameter exception
+     */
+    public void validateAsset(EntityDetail entityDetail, String methodName, List<String> supportedZones) throws InvalidParameterException {
+        invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(), GUID_PARAMETER,
+                getAssetZoneMembership(entityDetail.getClassifications()), supportedZones, ASSET_LINEAGE_OMAS, methodName);
     }
 }

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 /**
@@ -11,11 +13,13 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 public class MaintenanceAccumulator extends ExceptionAccumulatorBase
 {
     /**
-     * Default constructor
+     * Constructor
+     *
+     * @param auditLog logging destination
      */
-    public MaintenanceAccumulator()
+    public MaintenanceAccumulator(AuditLog auditLog)
     {
-        super();
+        super(auditLog);
     }
 
 
@@ -79,7 +83,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(InvalidParameterException  exception)
+    public synchronized void captureException(InvalidParameterException exception)
     {
         invalidParameterException = exception;
     }
@@ -90,7 +94,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(InvalidTypeDefException  exception)
+    public synchronized void captureException(InvalidTypeDefException exception)
     {
         invalidTypeDefException = exception;
     }
@@ -101,7 +105,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(PropertyErrorException  exception)
+    public synchronized void captureException(PropertyErrorException exception)
     {
         propertyErrorException = exception;
     }
@@ -112,7 +116,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(RelationshipNotDeletedException  exception)
+    public synchronized void captureException(RelationshipNotDeletedException exception)
     {
         relationshipNotDeletedException = exception;
     }
@@ -123,7 +127,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(RelationshipNotKnownException  exception)
+    public synchronized void captureException(RelationshipNotKnownException exception)
     {
         relationshipNotKnownException = exception;
     }
@@ -134,7 +138,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(RepositoryErrorException  exception)
+    public synchronized void captureException(RepositoryErrorException exception)
     {
         repositoryErrorException = exception;
     }
@@ -145,7 +149,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(StatusNotSupportedException  exception)
+    public synchronized void captureException(StatusNotSupportedException exception)
     {
         statusNotSupportedException = exception;
     }
@@ -154,11 +158,22 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
     /**
      * Save the supplied exception.
      *
+     * @param actionDescription description of caller's activity eg methodName
+     * @param metadataCollectionId metadata collection id of repository returning this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureGenericException(Throwable  exception)
+    public synchronized void captureGenericException(String     actionDescription,
+                                                     String     metadataCollectionId,
+                                                     Exception  exception)
     {
         anotherException = exception;
+
+        auditLog.logException(actionDescription,
+                              OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_REPOSITORY.getMessageDefinition(exception.getClass().getName(),
+                                                                                                      metadataCollectionId,
+                                                                                                      actionDescription,
+                                                                                                      exception.getMessage()),
+                              exception);
     }
 
 
@@ -167,7 +182,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public void captureException(TypeDefConflictException  exception)
+    public void captureException(TypeDefConflictException exception)
     {
         typeDefConflictException = exception;
     }
@@ -178,7 +193,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public void captureException(TypeDefNotSupportedException  exception)
+    public void captureException(TypeDefNotSupportedException exception)
     {
         typeDefNotSupportedException = exception;
     }
@@ -189,7 +204,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public void captureException(TypeDefNotKnownException  exception)
+    public void captureException(TypeDefNotKnownException exception)
     {
         typeDefNotKnownException = exception;
     }
@@ -200,7 +215,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public void captureException(TypeErrorException  exception)
+    public void captureException(TypeErrorException exception)
     {
         typeErrorException = exception;
     }
@@ -211,7 +226,7 @@ public class MaintenanceAccumulator extends ExceptionAccumulatorBase
      *
      * @param exception  exception from remote call
      */
-    public void captureException(UserNotAuthorizedException  exception)
+    public void captureException(UserNotAuthorizedException exception)
     {
         userNotAuthorizedException = exception;
     }

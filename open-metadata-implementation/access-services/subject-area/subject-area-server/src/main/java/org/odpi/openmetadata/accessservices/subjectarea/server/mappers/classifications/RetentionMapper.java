@@ -49,11 +49,13 @@ public class RetentionMapper extends ClassificationMapper{
         retention.setAssociatedGUID(stringValue);
 
         Date dateValue = repositoryHelper.getDateProperty(omrsapiHelper.getServiceName(), "archiveAfter", omrsClassificationProperties, "");
-        retention.setArchiveAfter(dateValue);
-
+        if (dateValue !=null) {
+            retention.setArchiveAfter(dateValue.getTime());
+        }
         dateValue = repositoryHelper.getDateProperty(omrsapiHelper.getServiceName(), "deleteAfter", omrsClassificationProperties, "");
-        retention.setDeleteAfter(dateValue);
-
+        if (dateValue !=null) {
+            retention.setDeleteAfter(dateValue.getTime());
+        }
         Integer intValue = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(), "confidence", omrsClassificationProperties, "");
         retention.setConfidence(intValue);
 
@@ -107,14 +109,14 @@ public class RetentionMapper extends ClassificationMapper{
 
         if (retention.getArchiveAfter()!=null) {
             PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
             primitivePropertyValue.setPrimitiveValue(retention.getArchiveAfter());
             instanceProperties.setProperty("archiveAfter", primitivePropertyValue);
         }
 
         if (retention.getDeleteAfter()!=null) {
             PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
             primitivePropertyValue.setPrimitiveValue(retention.getDeleteAfter());
             instanceProperties.setProperty("deleteAfter", primitivePropertyValue);
         }

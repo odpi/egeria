@@ -590,7 +590,7 @@ public class DatabaseManagerRESTServices
                                                                                           databaseManagerName,
                                                                                           startFrom,
                                                                                           pageSize,
-                                                                                         methodName);
+                                                                                          methodName);
 
             response.setElementList(databaseAssets);
         }
@@ -2429,9 +2429,11 @@ public class DatabaseManagerRESTServices
                                          databaseColumnProperties.getQualifiedName(),
                                          databaseColumnProperties.getDisplayName(),
                                          databaseColumnProperties.getDescription(),
+                                         databaseColumnProperties.getExternalTypeGUID(),
                                          databaseColumnProperties.getDataType(),
                                          databaseColumnProperties.getDefaultValue(),
                                          databaseColumnProperties.getFixedValue(),
+                                         databaseColumnProperties.getValidValuesSetGUID(),
                                          databaseColumnProperties.getFormula(),
                                          databaseColumnProperties.getIsDeprecated(),
                                          databaseColumnProperties.getElementPosition(),
