@@ -86,15 +86,6 @@ class DataEngineResourceTest {
     }
 
     @Test
-    void testAddPortsToProcess() {
-        PortListRequestBody requestBody = new PortListRequestBody();
-        String processGuid = "processGuid";
-        dataEngineResource.addPortsToProcess(USER, SERVER_NAME, processGuid, requestBody);
-
-        verify(dataEngineRestServices, times(1)).addPortsToProcess(USER, SERVER_NAME, processGuid, requestBody);
-    }
-
-    @Test
     void testAddLineageMappings() {
         LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
         dataEngineResource.addLineageMappings(USER, SERVER_NAME, requestBody);

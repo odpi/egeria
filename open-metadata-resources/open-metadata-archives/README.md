@@ -61,12 +61,12 @@ added to the repository.
 
 ## Inside an Open Metadata Archive
 
-The open metadata archive has three parts to it.  This is shown in **Figure 1**.
+The open metadata archive has three parts to it.  This is shown in **Figure 4**.
 The header defines the type of archive and its properties.  Then there is the type store.
 This contains new types and updates to types (patches).  Finally there is the instance store.
 This contains new instances (entities, relationships and classifications).
 
-![Figure 4](../../open-metadata-implementation/repository-services/docs/open-metadata-archive-structure.png)
+![Figure 4](../../open-metadata-implementation/repository-services/docs/open-metadata-archive-structure.png#pagewidth)
 > **Figure 4:** Inside an Open Metadata Archive
 
 The archive loads in the following order:

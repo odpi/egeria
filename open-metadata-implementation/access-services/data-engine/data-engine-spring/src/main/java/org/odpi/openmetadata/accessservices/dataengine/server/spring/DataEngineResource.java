@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
@@ -161,24 +160,6 @@ public class DataEngineResource {
                                                     @PathVariable("serverName") String serverName,
                                                     @RequestBody ProcessesRequestBody processesRequestBody) {
         return restAPI.upsertProcesses(userId, serverName, processesRequestBody);
-    }
-
-    /**
-     * Add ports to an existing Process entity
-     *
-     * @param serverName          name of server instance to call
-     * @param userId              the name of the calling user
-     * @param processGuid         the guid of the process
-     * @param portListRequestBody list of port unique identifiers
-     *
-     * @return unique identifier of the updated process
-     */
-    @PostMapping(path = "/processes/{processGuid}/ports")
-    public GUIDResponse addPortsToProcess(@PathVariable("userId") String userId,
-                                          @PathVariable("serverName") String serverName,
-                                          @PathVariable("processGuid") String processGuid,
-                                          @RequestBody PortListRequestBody portListRequestBody) {
-        return restAPI.addPortsToProcess(userId, serverName, processGuid, portListRequestBody);
     }
 
     /**
