@@ -139,6 +139,15 @@ class GraphOMRSRelationshipMapper {
 
         // Other properties can be removed if set to null
 
+        if (relationship.getReIdentifiedFromGUID() != null) {
+            edge.property(PROPERTY_KEY_RELATIONSHIP_REIDENTIFIED_FROM_GUID, relationship.getReIdentifiedFromGUID());
+        }
+        else {
+            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_REIDENTIFIED_FROM_GUID);
+            if (ep != null)
+                ep.remove();
+        }
+
         if (relationship.getMetadataCollectionName() != null) {
             edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME, relationship.getMetadataCollectionName());
         }
@@ -372,6 +381,7 @@ class GraphOMRSRelationshipMapper {
         final String methodName = "mapEdgeToRelationship";
 
         relationship.setGUID((String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_GUID));
+        relationship.setReIdentifiedFromGUID((String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_REIDENTIFIED_FROM_GUID));
         relationship.setMetadataCollectionId((String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID));
         relationship.setMetadataCollectionName((String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME));
         relationship.setCreatedBy((String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_CREATED_BY));
