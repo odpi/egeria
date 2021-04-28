@@ -145,13 +145,15 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException {
+    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation, String processQualifiedName) throws
+                                                                                                                                      InvalidParameterException,
+                                                                                                                                      UserNotAuthorizedException,
+                                                                                                                                      PropertyServerException {
         invalidParameterHandler.validateUserId(userId, PORT_IMPLEMENTATION_METHOD_NAME);
 
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         requestBody.setPortImplementation(portImplementation);
+        requestBody.setProcessQualifiedName(processQualifiedName);
 
         requestBody.setExternalSourceName(externalSourceName);
 
@@ -162,15 +164,16 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException {
+    public String createOrUpdatePortAlias(String userId, PortAlias portAlias, String processQualifiedName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException {
         final String methodName = PORT_ALIAS_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         requestBody.setPortAlias(portAlias);
+        requestBody.setProcessQualifiedName(processQualifiedName);
 
         requestBody.setExternalSourceName(externalSourceName);
 
@@ -215,25 +218,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         requestBody.setExternalSourceName(externalSourceName);
 
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addPortsToProcess(String userId, List<String> portQualifiedNames, String processGUID) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException {
-        final String methodName = PORTS_TO_PROCESS_METHOD_NAME;
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        PortListRequestBody requestBody = new PortListRequestBody();
-        requestBody.setPorts(portQualifiedNames);
-
-        requestBody.setExternalSourceName(externalSourceName);
-
-        callVoidPostRESTCall(userId, methodName, PORTS_TO_PROCESS_URL_TEMPLATE, requestBody, processGUID);
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,

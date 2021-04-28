@@ -1526,10 +1526,6 @@ public class OpenMetadataAPIMapper
     public static final String RELATIONAL_COLUMN_TYPE_NAME              = "RelationalColumn";
     /* TabularColumn */
 
-    public static final String RELATIONAL_COLUMN_TYPE_TYPE_GUID         = "f0438d80-6eb9-4fac-bcc1-5efee5babcfc";   /* from Area 5 */
-    public static final String RELATIONAL_COLUMN_TYPE_TYPE_NAME         = "RelationalColumnType";
-    /* TabularColumnType */
-
     public static final String PRIMARY_KEY_CLASSIFICATION_TYPE_GUID     = "b239d832-50bd-471b-b17a-15a335fc7f40";
     public static final String PRIMARY_KEY_CLASSIFICATION_TYPE_NAME     = "PrimaryKey";
     /* Linked to RelationalColumn */

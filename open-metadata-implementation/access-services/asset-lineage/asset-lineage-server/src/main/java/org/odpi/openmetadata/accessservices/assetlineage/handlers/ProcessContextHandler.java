@@ -102,14 +102,14 @@ public class ProcessContextHandler {
         Multimap<String, RelationshipsContext> context = ArrayListMultimap.create();
         context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), relationshipsContext);
 
-        List<Relationship> transformationProject = handlerHelper.getRelationshipsByType(userId, processGUID, COLLECTION_MEMBERSHIP, PROCESS);
-        if (!CollectionUtils.isEmpty(transformationProject)) {
-            RelationshipsContext transformationProjectRelationshipsContext = handlerHelper.buildContextForRelationships(userId, processGUID, transformationProject);
-            for (Relationship transformationProjectRelationship : transformationProject) {
-                EntityDetail transformationProjectEntity = handlerHelper.getEntityAtTheEnd(userId, processGUID, transformationProjectRelationship);
-                handlerHelper.addContextForRelationships(userId, transformationProjectEntity, COLLECTION_MEMBERSHIP, transformationProjectRelationshipsContext.getRelationships());
+        List<Relationship> collection = handlerHelper.getRelationshipsByType(userId, processGUID, COLLECTION_MEMBERSHIP, PROCESS);
+        if (!CollectionUtils.isEmpty(collection)) {
+            RelationshipsContext collectionMembershipContext = handlerHelper.buildContextForRelationships(userId, processGUID, collection);
+            for (Relationship collectionMembership : collection) {
+                EntityDetail collectionEntity = handlerHelper.getEntityAtTheEnd(userId, processGUID, collectionMembership);
+                handlerHelper.addContextForRelationships(userId, collectionEntity, COLLECTION_MEMBERSHIP, collectionMembershipContext.getRelationships());
             }
-            context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), transformationProjectRelationshipsContext);
+            context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), collectionMembershipContext);
         }
 
         Set<LineageEntity> tabularColumns = relationshipsContext.getRelationships().stream()
@@ -169,8 +169,7 @@ public class ProcessContextHandler {
                     relationshipsContext);
 
             if (tabularColumn == null) {
-                log.error("No entity TabularColumn has been found for the the TabularSchemaType with guid {}", tabularSchemaType.getGUID());
-
+                log.error("No entity TabularColumn has been found for the PortImplementation with guid {}", port.getGUID());
                 throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(), this.getClass().getName(), "Retrieving Relationship");
             }
         }

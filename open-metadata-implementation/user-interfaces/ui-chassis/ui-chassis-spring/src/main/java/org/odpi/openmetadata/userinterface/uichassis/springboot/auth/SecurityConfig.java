@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis.TokenRedisClient;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -17,7 +17,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,8 +29,12 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired(required = false)
     TokenClient tokenClient;
 
+    @Autowired
+    private ComponentService componentService;
+
     @Value("${cors.allowed-origins}")
     List<String> allowedOrigins;
+
 
     public SecurityConfig() {
         super(true);
@@ -59,26 +62,28 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new LoggingRequestFilter("/api/auth/login"), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(
-                    new LoginFilter("/api/auth/login",
-                            authenticationManager(),
-                            authService,
-                            getAuthenticationExceptionHandler()),UsernamePasswordAuthenticationFilter.class)
-
-        ;
+                    new LoginFilter.LoginFilterBuilder()
+                            .url("/api/auth/login")
+                            .authManager(authenticationManager())
+                            .exceptionHandler(getAuthenticationExceptionHandler())
+                            .authService(authService)
+                            .appRoles(componentService.getAppRoles())
+                            .build(),
+                            UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
     @ConditionalOnProperty(value = "cors.allowed-origins")
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         if( allowedOrigins!=null && allowedOrigins.size() > 0) {
             configuration.setAllowedOrigins(allowedOrigins);
-            configuration.setAllowedMethods(Arrays.asList("*"));
+            configuration.setAllowedMethods(Arrays.asList("GET","POST"));
             configuration.addExposedHeader("x-auth-token");
-            configuration.setAllowedHeaders(Arrays.asList("*"));
+            configuration.setAllowedHeaders(Arrays.asList("content-type","x-auth-token"));
+            source.registerCorsConfiguration("/**", configuration);
         }
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 

@@ -243,9 +243,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -357,9 +357,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
@@ -426,8 +426,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             if (entity != null)
             {
-                if ((entity.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
+                if ((repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
@@ -456,9 +455,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param matchClassifications Optional list of entity classifications to match.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
@@ -524,14 +523,10 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             if (entity != null)
             {
-                if ((entity.getStatus() != InstanceStatus.DELETED) &&
-                        (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entitySubtypeGUIDs, entity)) &&
-                        (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
-                        (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)) &&
-                        (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
-                                entity,
-                                entity.getProperties()
-                        )))
+                if ((repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entitySubtypeGUIDs, entity)) &&
+                    (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
+                    (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)) &&
+                    (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties, entity, entity.getProperties())))
                 {
                     foundEntities.add(entity);
                 }
@@ -556,9 +551,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
@@ -629,8 +624,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             if (entity != null)
             {
-                if ((entity.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
+                if ((repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyEntityIsClassified(classificationList, entity)))
                 {
@@ -683,9 +677,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param fromEntityElement  the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus  By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus  By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification  List of classifications that must be present on all returned entities.
      * @param asOfTime  Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty  String name of the property that is to be used to sequence the results.
@@ -751,8 +745,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             if (entity != null)
             {
-                if ((entity.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
+                if ((repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
@@ -894,9 +887,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -963,13 +956,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             if (relationship != null)
             {
-                if ((relationship.getStatus() != InstanceStatus.DELETED) &&
-                        (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationshipSubtypeGUIDs, relationship)) &&
-                        (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
-                        (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
-                                relationship,
-                                relationship.getProperties()
-                        )))
+                if ((repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationshipSubtypeGUIDs, relationship)) &&
+                    (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
+                    (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties, relationship, relationship.getProperties())))
                 {
                     foundRelationships.add(relationship);
                 }
@@ -997,9 +986,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -1069,8 +1058,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             if (relationship != null)
             {
-                if ((relationship.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
+                if ((repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
                                                                               relationship,
@@ -1103,9 +1091,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param fromRelationshipElement Element number of the results to skip to when building the results list
      *                                to return.  Zero means begin at the start of the results.  This is used
      *                                to retrieve the results over a number of pages.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -1168,8 +1156,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             if (relationship != null)
             {
-                if ((relationship.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
+                if ((repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                      relationship.getProperties(),
@@ -1199,9 +1186,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                          all entities found, irrespective of their type.
      * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
      *                                all relationships found, irrespective of their type.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
@@ -3044,22 +3031,67 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to make changes
          */
+        EntityDetail   deletedEntity = new EntityDetail(entity);
+        deletedEntity.setStatusOnDelete(entity.getStatus());
+        deletedEntity.setStatus(InstanceStatus.DELETED);
+        deletedEntity = repositoryHelper.incrementVersion(userId, entity, deletedEntity);
+
         EntityDetail   updatedEntity = new EntityDetail(entity);
-
         updatedEntity.setGUID(newEntityGUID);
-
+        updatedEntity.setReIdentifiedFromGUID(entityGUID);
         updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
-        repositoryStore.removeEntityFromStore(entity);
+        EntityProxy deletedEntityProxy = repositoryHelper.getNewEntityProxy(repositoryName, deletedEntity);
+        EntityProxy newEntityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
+
+        /*
+         * Locate/re-point relationships for entity
+         */
+        try
+        {
+            List<Relationship> relationships = this.getRelationshipsForEntity(userId,
+                    entityGUID,
+                    null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    10000);
+
+
+            if (relationships != null)
+            {
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        if (relationship.getEntityOneProxy().getGUID().equals(entityGUID))
+                        {
+                            relationship.setEntityOneProxy(newEntityProxy);
+                        }
+                        else if (relationship.getEntityTwoProxy().getGUID().equals(entityGUID))
+                        {
+                            relationship.setEntityTwoProxy(newEntityProxy);
+                        }
+                        repositoryStore.updateRelationshipInStore(relationship);
+                    }
+                }
+            }
+        }
+        catch (Throwable  error)
+        {
+            // nothing to do - keep going
+        }
+
+        repositoryStore.updateEntityInStore(deletedEntity);
         repositoryStore.createEntityInStore(updatedEntity);
 
         /*
          * The repository store maintains an entity proxy for use with relationships.
          */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
-
-        repositoryStore.addEntityProxyToStore(entityProxy);
-        repositoryStore.removeEntityProxyFromStore(entityGUID);
+        repositoryStore.updateEntityProxyInStore(deletedEntityProxy);
+        repositoryStore.addEntityProxyToStore(newEntityProxy);
 
         return updatedEntity;
     }
@@ -3308,13 +3340,17 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to make changes
          */
+        Relationship   deletedRelationship = new Relationship(relationship);
+        deletedRelationship.setStatusOnDelete(relationship.getStatus());
+        deletedRelationship.setStatus(InstanceStatus.DELETED);
+        deletedRelationship = repositoryHelper.incrementVersion(userId, relationship, deletedRelationship);
+
         Relationship   updatedRelationship = new Relationship(relationship);
-
         updatedRelationship.setGUID(newRelationshipGUID);
-
+        updatedRelationship.setReIdentifiedFromGUID(relationshipGUID);
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
 
-        repositoryStore.removeRelationshipFromStore(relationship);
+        repositoryStore.updateRelationshipInStore(deletedRelationship);
         repositoryStore.createRelationshipInStore(updatedRelationship);
 
         return updatedRelationship;
@@ -3595,6 +3631,32 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                              * Locally homed classification
                              */
                             homeClassifications.add(retrievedClassification);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            EntityProxy entityProxy = repositoryStore.getEntityProxy(entityGUID);
+
+            if (entityProxy != null)
+            {
+                List<Classification> retrievedClassifications = entityProxy.getClassifications();
+
+                if (retrievedClassifications != null)
+                {
+                    for (Classification retrievedClassification : retrievedClassifications)
+                    {
+                        if (retrievedClassification != null)
+                        {
+                            if (metadataCollectionId.equals(retrievedClassification.getMetadataCollectionId()))
+                            {
+                                /*
+                                 * Locally homed classification
+                                 */
+                                homeClassifications.add(retrievedClassification);
+                            }
                         }
                     }
                 }

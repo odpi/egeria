@@ -116,7 +116,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
         this.auditLog                = auditLog;
 
-        this.errorHandler            = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
+        this.errorHandler            = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
 
         this.qualifiedNamePropertyNamesList = new ArrayList<>();
         this.qualifiedNamePropertyNamesList.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -1782,7 +1782,14 @@ public class OpenMetadataAPIGenericHandler<B>
         }
         catch (PropertyServerException error)
         {
-            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            try
+            {
+                errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            }
+            catch (PropertyServerException secondError)
+            {
+                // Not able to log exception
+            }
         }
 
         return anchorGUID;
@@ -2139,7 +2146,7 @@ public class OpenMetadataAPIGenericHandler<B>
         }
 
         /*
-         * Finally test to see if the type is connected to an API operation or API schema type.
+         * Next test to see if the type is connected to an API operation or API schema type.
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                      schemaTypeGUID,
@@ -2190,11 +2197,27 @@ public class OpenMetadataAPIGenericHandler<B>
             return getAnchorGUIDForSchemaType(userId, proxy.getGUID(), methodName);
         }
 
+        /*
+         * Finally test that this schema type is attached directly to a port.
+         */
+        relationship = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                     schemaTypeGUID,
+                                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                     OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                                                     OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                                     methodName);
+        if (relationship != null)
+        {
+            EntityProxy proxy = relationship.getEntityOneProxy();
+
+            return proxy.getGUID();
+        }
+
 
         /*
-         * If none of these relationships are present, then this schema type is the anchor.
+         * If none of these relationships are present, then this schema type has no anchor.
          */
-        return schemaTypeGUID;
+        return null;
     }
 
 

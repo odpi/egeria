@@ -192,7 +192,7 @@ class DataEngineCommonHandlerTest {
         Relationship mockedRelationship = mock(Relationship.class);
         when(mockedRelationship.getGUID()).thenReturn(RELATIONSHIP_GUID);
         when(repositoryHandler.getRelationshipBetweenEntities(USER, FIRST_GUID, ENTITY_TYPE_NAME, SECOND_GUID, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(mockedRelationship);
+                RELATIONSHIP_TYPE_NAME, "findRelationship")).thenReturn(mockedRelationship);
 
         RelationshipDifferences mockedDifferences = mock(RelationshipDifferences.class);
         when(mockedDifferences.hasInstancePropertiesDifferences()).thenReturn(true);
@@ -236,6 +236,26 @@ class DataEngineCommonHandlerTest {
                 ENTITY_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
+    }
+
+
+    @Test
+    void findRelationship() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
+        Relationship mockedRelationship = mock(Relationship.class);
+
+        String methodName = "findRelationship";
+        when(repositoryHandler.getRelationshipBetweenEntities(USER, FIRST_GUID, ENTITY_TYPE_NAME, SECOND_GUID, RELATIONSHIP_TYPE_GUID,
+                RELATIONSHIP_TYPE_NAME, methodName)).thenReturn(mockedRelationship);
+
+        Optional<Relationship> result = dataEngineCommonHandler.findRelationship(USER, FIRST_GUID, SECOND_GUID, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_NAME);
+
+        assertTrue(result.isPresent());
+        assertEquals(mockedRelationship, result.get());
+
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(FIRST_GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(SECOND_GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
     }
 
     private void mockTypeDef(String typeName, String typeGUID) {

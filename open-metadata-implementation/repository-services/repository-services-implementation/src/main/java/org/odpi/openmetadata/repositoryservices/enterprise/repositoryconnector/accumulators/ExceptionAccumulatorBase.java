@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
@@ -10,6 +11,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class ExceptionAccumulatorBase
 {
+    AuditLog auditLog;
+
     ClassificationErrorException    classificationErrorException    = null;
     EntityNotDeletedException       entityNotDeletedException       = null;
     EntityNotKnownException         entityNotKnownException         = null;
@@ -33,9 +36,12 @@ public class ExceptionAccumulatorBase
 
     /**
      * Constructor restricted to use by this package
+     *
+     * @param auditLog logging destination
      */
-    ExceptionAccumulatorBase()
+    ExceptionAccumulatorBase(AuditLog auditLog)
     {
+        this.auditLog = auditLog;
     }
 
 

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage;
 
-import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -34,16 +33,16 @@ public interface AssetLineageInterface {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 
     /**
-     * Provide the asset context of an entity - used for data files and relational tables.
+     * Publishes the asset context of an entity - used for data files and relational tables.
      * @param userId     the caller user Id
      * @param guid       the guid of the entity
      * @param entityType the entity type
-     * @return a RelationshipsContext     object containing the relationships that describe the entity's context
+     * @return list of the entities' guids in the asset context
      * @throws InvalidParameterException  the invalid parameter exception
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
      */
-    RelationshipsContext provideAssetContext(String userId, String guid, String entityType)
+    List<String> publishAssetContext(String userId, String guid, String entityType)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 
 }
