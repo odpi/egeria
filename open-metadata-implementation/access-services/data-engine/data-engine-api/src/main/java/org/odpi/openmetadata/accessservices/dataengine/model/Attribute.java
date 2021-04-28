@@ -5,9 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +40,6 @@ public class Attribute extends Referenceable {
     private String fixedValue;
     private String externalTypeGUID;
     private String validValuesSetGUID;
-    private String anchorGUID;
 
     /**
      * Return the simple name of the schema element.
@@ -429,24 +426,6 @@ public class Attribute extends Referenceable {
         this.validValuesSetGUID = validValuesSetGUID;
     }
 
-    /**
-     * Gets anchor guid.
-     *
-     * @return the anchor guid
-     */
-    public String getAnchorGUID() {
-        return anchorGUID;
-    }
-
-    /**
-     * Sets anchor guid.
-     *
-     * @param anchorGUID the anchor guid
-     */
-    public void setAnchorGUID(String anchorGUID) {
-        this.anchorGUID = anchorGUID;
-    }
-
     @Override
     public String toString() {
         return "Attribute{" +
@@ -459,7 +438,6 @@ public class Attribute extends Referenceable {
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
-                ", anchorGUID='" + anchorGUID + '\'' +
                 ", nativeClass='" + nativeClass + '\'' +
                 ", aliases=" + aliases +
                 ", sortOrder=" + sortOrder +
@@ -494,7 +472,6 @@ public class Attribute extends Referenceable {
                 Objects.equals(defaultValueOverride, attribute.defaultValueOverride) &&
                 Objects.equals(dataType, attribute.dataType) &&
                 Objects.equals(defaultValue, attribute.defaultValue) &&
-                Objects.equals(anchorGUID, attribute.anchorGUID) &&
                 Objects.equals(nativeClass, attribute.nativeClass) &&
                 Objects.equals(aliases, attribute.aliases) &&
                 sortOrder == attribute.sortOrder &&
@@ -508,7 +485,7 @@ public class Attribute extends Referenceable {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), displayName, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues, position,
-                defaultValueOverride, dataType, defaultValue, anchorGUID, nativeClass, aliases, sortOrder, description, precision, length,
+                defaultValueOverride, dataType, defaultValue, nativeClass, aliases, sortOrder, description, precision, length,
                 minimumLength, isNullable, isDeprecated, fixedValue, externalTypeGUID, validValuesSetGUID);
     }
 }

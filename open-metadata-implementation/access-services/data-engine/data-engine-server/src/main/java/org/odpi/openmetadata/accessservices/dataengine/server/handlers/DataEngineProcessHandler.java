@@ -57,7 +57,7 @@ public class DataEngineProcessHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param assetHandler            provides utilities for manipulating the repository services assets
      * @param dataEngineCommonHandler provides utilities for manipulating entities
-     * @param registrationHandler     creates software server capability entities
+     * @param registrationHandler     provides utilities for manipulating software server capability entities
      **/
     public DataEngineProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                     RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
@@ -162,28 +162,6 @@ public class DataEngineProcessHandler {
     }
 
     /**
-     * Create ProcessPort relationships between a Process asset and the corresponding Ports. Verifies that the
-     * relationship is not present before creating it
-     *
-     * @param userId             the name of the calling user
-     * @param processGUID        the unique identifier of the process
-     * @param portGUID           the unique identifier of the port
-     * @param externalSourceName the unique name of the external source
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void addProcessPortRelationship(String userId, String processGUID, String portGUID, String externalSourceName)
-            throws InvalidParameterException,
-                   UserNotAuthorizedException,
-                   PropertyServerException {
-        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, portGUID,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName,
-                null);
-    }
-
-    /**
      * Update the process instance status
      *
      * @param userId             the name of the calling user
@@ -195,10 +173,10 @@ public class DataEngineProcessHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void updateProcessStatus(String userId, String processGUID, InstanceStatus instanceStatus, String externalSourceName)
-            throws InvalidParameterException,
-                   UserNotAuthorizedException,
-                   PropertyServerException {
+    public void updateProcessStatus(String userId, String processGUID, InstanceStatus instanceStatus, String externalSourceName) throws
+                                                                                                                                 InvalidParameterException,
+                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                 PropertyServerException {
 
         final String methodName = "updateProcessStatus";
         final String processGUIDParameterName = "processGUID";
@@ -222,15 +200,15 @@ public class DataEngineProcessHandler {
      * @param processGUID  the unique identifier of the process
      * @param portTypeName the type of the port to be retrieved
      *
-     * @return A set of unique identifiers for the retrieved ports or an empty set
+     * @return A set of the retrieved ports or an empty set
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public Set<String> getPortsForProcess(String userId, String processGUID, String portTypeName) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException {
+    public Set<EntityDetail> getPortsForProcess(String userId, String processGUID, String portTypeName) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException {
         final String methodName = "getPortsForProcess";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -245,8 +223,7 @@ public class DataEngineProcessHandler {
             return new HashSet<>();
         }
 
-        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName))
-                .map(InstanceHeader::getGUID).collect(Collectors.toSet());
+        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName)).collect(Collectors.toSet());
     }
 
     private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws InvalidParameterException {
