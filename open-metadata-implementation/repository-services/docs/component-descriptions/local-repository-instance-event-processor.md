@@ -3,8 +3,8 @@
 
 # Local Repository Instance Event Processor
 
-
-
+Supports the introduction of incoming instances from [Open Metadata Archives](../open-metadata-archive.md)
+or other [cohort members](../cohort-member.md).
 
 ----
 * Return to [repository services component descriptions](.)
