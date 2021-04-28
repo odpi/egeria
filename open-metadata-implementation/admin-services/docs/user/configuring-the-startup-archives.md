@@ -12,6 +12,7 @@ following types of [OMAG Servers](../concepts/omag-server.md).
 * [Metadata Server](../concepts/metadata-server.md)
 * [Repository Proxy](../concepts/repository-proxy.md)
 
+These OMAG Servers are collectively called [Cohort Members](../concepts/cohort-member.md).
 
 Typically open metadata archives are stored as files.  To configure the load of a file
 use the following command.  The file should be specified either as a fully qualified path name
@@ -26,7 +27,7 @@ Alternatively it is possible to set up the list of open metadata archives as a l
 [Connections](../../../frameworks/open-connector-framework/docs/concepts/connection.md).
 These connections refer to connectors that can read and retrieve the open metadata archive content.
 ```
-POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserID}/servers/serverName/open-metadata-archives
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives
 { list of connections }
 ```
 This option can be used when the open metadata archives are not stored in a file, or a different
