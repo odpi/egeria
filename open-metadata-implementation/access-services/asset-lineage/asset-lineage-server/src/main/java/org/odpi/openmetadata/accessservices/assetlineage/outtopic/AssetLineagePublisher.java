@@ -11,7 +11,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageControlEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
@@ -19,6 +19,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.Classification
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSummary;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
@@ -31,7 +32,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_CATEGORY;
@@ -230,10 +230,10 @@ public class AssetLineagePublisher {
     }
 
     //TODO: Javadoc
-    public void publishLineageSummaryEvent(List<String> publishedGUIDs) throws JsonProcessingException, ConnectorCheckedException {
-        LineageControlEvent event = new LineageControlEvent();
-        event.setPublishSummary(publishedGUIDs);
-        event.setAssetLineageEventType(AssetLineageEventType.LINEAGE_CONTROL_EVENT);
+    public void publishLineageSummaryEvent(LineagePublishSummary summary) throws JsonProcessingException, ConnectorCheckedException {
+        LineageSyncEvent event = new LineageSyncEvent();
+        event.setPublishSummary(summary);
+        event.setAssetLineageEventType(AssetLineageEventType.LINEAGE_SYNC_EVENT);
         publishEvent(event);
     }
 

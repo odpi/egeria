@@ -12,12 +12,13 @@ import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAu
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSummary;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -51,67 +52,66 @@ public class AssetLineageRestServices {
     private static final Logger log = LoggerFactory.getLogger(AssetLineageRestServices.class);
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private boolean lineageProcessActiveFlag;
+    private boolean publishLineageTaskActiveFlag;
+    private static String LINEAGE_PROCESSING_STARTED = "LINEAGE_PROCESSING_STARTED";
+    private static String LINEAGE_PROCESSING_COMPLETED = "LINEAGE_PROCESSING_COMPLETED";
 
     /**
      * Default constructor
      */
     public AssetLineageRestServices() {
         instanceHandler.registerAccessService();
-        setLineageProcessInactive();
+        setPublishLineageTaskInactive();
     }
 
+
     /**
-     * Scan the cohort for the given type and filtering based on the findEntitiesParameters.
-     * Providing only the updatedAfter filed in findEntitiesParameters will publish only the entities that were updated
-     * in the cohort after that date.
-     * Publish the context for each entity on the AL OMAS out Topic
+     * //TODO: To be renamed to publishLineage()
+     *
+     * publishLineage interface is used to request lineage related metadata to be sent out on-demand for scenarios such as initial load of metadata or pull based changes.
+     * The method provides non-blocking like, async interface for executing time/resource intensive tasks in background thread (i.e. building lineage context for collection of entities).
+     * It is implemented using concurrent processing APIs based on {@link java.util.concurrent.CompletableFuture}
+     *
+     * How it works:
+     * Based on the findEntitiesParameters provided, scans the cohort for the given type and finds list of matching entities.
+     * Providing updatedAfter filed in findEntitiesParameters will retrieve only the entities that were changed from that point in time.
+     * Once entities are found, it spins up *asynchronous* background task that will build the lineage context and publish respective output as events on the asset-lineage output topic.
+     * Note that only single background task can be active at given time (per server instance controlled by `publishLineageTaskActiveFlag`). All subsequent requests will result in empty response until the task if finished.
+     * At the end lineage sync event is published to notify the external systems sending summary of the work completed.
      *
      * @param serverName             name of server instance to call
      * @param userId                 the name of the calling user
      * @param entityType             the type of the entity to search for
      * @param findEntitiesParameters filtering used to reduce the scope of the search
      *
-     * @return a list of unique identifiers (guids) of the available entityType as a response
+     * @return a collection of unique identifiers (guids) of the available entities that will produce lineage events.
+     *  OR empty collection in case there is noting to be processed or the background task is already busy (active).
      */
-
-    //TODO: Update javadoc
     public GUIDListResponse publishEntities(String serverName, String userId, String entityType,
                                             FindEntitiesParameters findEntitiesParameters) {
         GUIDListResponse response = new GUIDListResponse();
 
         String methodName = "publishEntities";
         try {
+
             HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
             AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SearchProperties searchProperties = handlerHelper.getSearchPropertiesAfterUpdateTime(findEntitiesParameters.getUpdatedAfter());
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
 
-            if (!isLineageProcessActive()) {
+            if (!isPublishLineageTaskActive()) {
 
+                //TODO: Right now using system local time. Revisit whether we change UTC time.
+                Long cutOffTime = System.currentTimeMillis();
                 Optional<List<EntityDetail>> entitiesByTypeName = handlerHelper.findEntitiesByType(userId, entityType, searchProperties, findEntitiesParameters);
 
                 if (!entitiesByTypeName.isPresent()) {
-                    auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_NOT_FOUND", entityType, "0"));
                     return response;
                 }
 
-                auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("ENTITIES_FOUND", entityType, String.valueOf(entitiesByTypeName.get().size())));
                 response.setGUIDs(entitiesByTypeName.get().stream().map(InstanceHeader::getGUID).collect(Collectors.toList()));
-
-                CompletableFuture.supplyAsync(() -> {
-
-                    setLineageProcessActive();
-                    auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_START", entityType, String.valueOf(entitiesByTypeName.get().size())));
-                    List<String> result = publishEntitiesContext(entitiesByTypeName.get(), publisher, auditLog);
-                    auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition("PUBLISH_SEQUENCE_END", entityType, String.valueOf(result.size())));
-                    setLineageProcessInactive();
-
-                    return result;
-
-                }).thenAccept((result) -> {
-                    publishProcessingComplete(result, publisher, auditLog);
-                });
+                CompletableFuture.supplyAsync(buildAndPublishLineageContext(auditLog,publisher,entitiesByTypeName.get()))
+                        .thenAccept((result) -> sendLineagePublishSummary(result, cutOffTime, publisher, auditLog));
             }
 
 
@@ -124,6 +124,27 @@ public class AssetLineageRestServices {
         }
 
         return response;
+    }
+
+    /**
+     * Supplier of lineage processing result for input entities
+     *
+     * @param auditLog instance of auditLog logging interface
+     * @param publisher instance of the asset-lineage topic publisher
+     * @param entities entity detail collection to be processed
+     * @return Supplier object to be used for async processing
+     */
+    private Supplier<List<String>> buildAndPublishLineageContext(AuditLog auditLog, AssetLineagePublisher publisher, List<EntityDetail> entities) {
+      return () -> {
+          String methodName = "buildAndPublishLineageContext";
+          setPublishLineageTaskActive();
+          auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition(LINEAGE_PROCESSING_STARTED, entities.get(0).getType().getTypeDefName(), String.valueOf(entities.size())));
+          List<String> publishedGUIDs = entities.parallelStream().map(entityDetail -> publishEntityContext(publisher, entityDetail, auditLog)).collect(Collectors.toList());
+          CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
+          auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition(LINEAGE_PROCESSING_COMPLETED, entities.get(0).getType().getTypeDefName(), String.valueOf(publishedGUIDs.size())));
+          setPublishLineageTaskInactive();
+          return publishedGUIDs;
+      };
     }
 
     /**
@@ -153,10 +174,6 @@ public class AssetLineageRestServices {
 
             auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("ENTITY_FOUND", entityType, guid));
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
-            if (publisher == null) {
-                auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISHER_NOT_AVAILABLE_ERROR.getMessageDefinition());
-                return response;
-            }
 
             String publishedEntitiesContext = publishEntityContext(publisher, entity, auditLog);
             response.setGUIDs(Collections.singletonList(publishedEntitiesContext));
@@ -169,35 +186,6 @@ public class AssetLineageRestServices {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
         return response;
-    }
-
-
-    /**
-     * Returns the list of entity GUIDs that were published on the Out Topic
-     *
-     * @param entitiesByType list of found entities for the requested type
-     * @param publisher      Asset Lineage publisher
-     *
-     * @return the list of entity GUIDs published on the Asset Lineage Out Topic
-     */
-    private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType, AssetLineagePublisher publisher, AuditLog auditLog) {
-
-        List<String> publishedGUIDs = entitiesByType.parallelStream().map(entityDetail ->
-                publishEntityContext(publisher, entityDetail, auditLog)).collect(Collectors.toList());
-
-        CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
-
-        return publishedGUIDs;
-    }
-
-    //TODO: Javadoc
-    private void publishProcessingComplete(List<String> publishedGUIDs, AssetLineagePublisher publisher, AuditLog auditLog) {
-        String methodName = "publishProcessingComplete";
-        try {
-            publisher.publishLineageSummaryEvent(publishedGUIDs);
-        } catch (Exception e) {
-            auditLog.logException(methodName, AssetLineageAuditCode.EVENT_PROCESSING_EXCEPTION.getMessageDefinition(),e);
-        }
     }
 
     /**
@@ -304,6 +292,27 @@ public class AssetLineageRestServices {
         return response;
     }
 
+    /**
+     *
+     * Publishes summary for completed publishLineage processing sequence.
+     *
+     * @param publishedGUIDs list of guids published as result of the processing.
+     * @param lineageTimestamp the point in time for which lineage process was executed
+     * @param publisher instance of the asset-lineage topic publisher
+     * @param auditLog instance of auditLog logging interface
+     */
+    private void sendLineagePublishSummary(List<String> publishedGUIDs, Long lineageTimestamp, AssetLineagePublisher publisher, AuditLog auditLog) {
+        String methodName = "sendLineagePublishSummary";
+        try {
+            LineagePublishSummary publishSummary = new LineagePublishSummary();
+            publishSummary.setItems(publishedGUIDs);
+            publishSummary.setLineageTimestamp(lineageTimestamp);
+            publisher.publishLineageSummaryEvent(publishSummary);
+        } catch (JsonProcessingException | ConnectorCheckedException e) {
+            auditLog.logException(methodName, AssetLineageAuditCode.PUBLISH_EVENT_ERROR.getMessageDefinition(),e);
+        }
+    }
+
     private List<String> getEntityGUIDsFromAssetContext(RelationshipsContext assetContext) {
         Set<String> guids = new HashSet<>();
         assetContext.getRelationships()
@@ -314,15 +323,16 @@ public class AssetLineageRestServices {
         return new ArrayList<>(guids);
     }
 
-    private boolean isLineageProcessActive() {
-        return lineageProcessActiveFlag;
+
+    private boolean isPublishLineageTaskActive() {
+        return publishLineageTaskActiveFlag;
     }
 
-    private void setLineageProcessActive() {
-        lineageProcessActiveFlag = true;
+    private void setPublishLineageTaskActive() {
+        publishLineageTaskActiveFlag = true;
     }
 
-    private void setLineageProcessInactive() {
-        lineageProcessActiveFlag = false;
+    private void setPublishLineageTaskInactive() {
+        publishLineageTaskActiveFlag = false;
     }
 }

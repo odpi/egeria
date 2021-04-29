@@ -177,7 +177,7 @@ public class HandlerHelper {
      * @param searchProperties       searchProperties used in the filtering
      * @param findEntitiesParameters filtering used to reduce the scope of the search
      *
-     * @return a list with entities matching the supplied parameters;
+     * @return Optional container for collection of EntityDetails (if any) matching the supplied parameters.
      *
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
