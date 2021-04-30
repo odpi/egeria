@@ -28,7 +28,7 @@ dependencies {
     testImplementation ("org.junit.jupiter:junit-jupiter-params")
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
-    compile localGroovy()
+    testImplementation localGroovy()
     testImplementation 'org.apache.commons:commons-lang3'
 
 }
