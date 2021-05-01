@@ -15,7 +15,7 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic'
     implementation 'org.apache.jena:jena-core'
     implementation 'org.slf4j:slf4j-api'
-    runtimeOnly 'org.apache.jena:jena-arq:3.16.0'
+    runtimeOnly 'org.apache.jena:jena-arq:4.0.0'
     testImplementation 'org.testng:testng'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 

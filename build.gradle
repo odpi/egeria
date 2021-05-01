@@ -197,7 +197,7 @@ allprojects {
             runtimeOnly("joda-time:joda-time:2.10.10")
             implementation("org.yaml:snakeyaml:1.28")
             runtimeOnly("org.antlr:antlr-runtime:3.5.2")
-            runtimeOnly("org.apache.jena:jena-arq:3.17.0")
+            runtimeOnly("org.apache.jena:jena-arq:4.0.0")
             runtimeOnly("org.codehaus.jackson:jackson-core-asl:1.9.13")
             runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:1.9.13-atlassian-2")
             runtimeOnly("org.janusgraph:janusgraph-berkeleyje:${janusVersion}")
