@@ -95,7 +95,7 @@ allprojects {
             //implementation("com.ibm.gaiandb:gaian":"")
             implementation("ch.qos.logback:logback-classic:${logbackVersion}")
             implementation("ch.qos.logback:logback-core:${logbackVersion}")
-            implementation("com.datastax.oss:java-driver-core:4.11.0")
+            implementation("com.datastax.oss:java-driver-core:4.11.1")
             implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
