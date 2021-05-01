@@ -158,7 +158,7 @@
         <testng.version>7.4.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <jackson.version>2.12.2</jackson.version>
+        <jackson.version>2.12.3</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.7.0</kafka.version>
         <janus.version>0.5.3</janus.version>
