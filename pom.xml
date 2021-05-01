@@ -201,7 +201,7 @@
         <json-sanitizer.version>1.2.2</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.11.0</oss.version>
-        <spotbugs-annotations.version>4.2.2</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.2.3</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.10</joda.version>
         <jackson-asl.version>1.9.13-atlassian-5</jackson-asl.version>
