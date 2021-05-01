@@ -204,7 +204,7 @@
         <spotbugs-annotations.version>4.2.2</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.10</joda.version>
-        <jackson-asl.version>1.9.13-atlassian-5</jackson-asl.version>
+        <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.4</snappy.version>
         <snakeyaml.version>1.28</snakeyaml.version>
