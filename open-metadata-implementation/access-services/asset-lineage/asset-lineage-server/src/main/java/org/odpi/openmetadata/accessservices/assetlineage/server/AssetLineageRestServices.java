@@ -101,7 +101,6 @@ public class AssetLineageRestServices {
 
             if (!isPublishLineageTaskActive()) {
 
-                //TODO: Right now using system local time. Revisit whether we change UTC time.
                 Long cutOffTime = System.currentTimeMillis();
                 Optional<List<EntityDetail>> entitiesByTypeName = handlerHelper.findEntitiesByType(userId, entityType, searchProperties, findEntitiesParameters);
 

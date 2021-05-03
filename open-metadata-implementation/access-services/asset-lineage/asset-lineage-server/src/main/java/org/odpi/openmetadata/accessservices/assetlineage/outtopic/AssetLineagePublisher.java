@@ -229,7 +229,14 @@ public class AssetLineagePublisher {
 
     }
 
-    //TODO: Javadoc
+    /**
+     *
+     * Publish LineageSyncEvent that contains LineagePublishSummary details.
+     *
+     * @param summary details about lineage processing and publish activity completed by Asset Lineage OMAS.
+     * @throws JsonProcessingException
+     * @throws ConnectorCheckedException
+     */
     public void publishLineageSummaryEvent(LineagePublishSummary summary) throws JsonProcessingException, ConnectorCheckedException {
         LineageSyncEvent event = new LineageSyncEvent();
         event.setPublishSummary(summary);

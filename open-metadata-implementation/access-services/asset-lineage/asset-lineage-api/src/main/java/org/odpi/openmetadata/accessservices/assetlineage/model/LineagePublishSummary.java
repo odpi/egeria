@@ -16,28 +16,28 @@ import java.util.List;
 @ToString
 /**
  *
- * LineagePublishSummary is used to describe summary as result of AssetLineage lineagePublish activity that completed.
+ * LineagePublishSummary describes details about lineage processing and publish activity completed by Asset Lineage OMAS.
  *
  */
 public class LineagePublishSummary {
     /**
-     * The list GUIDs for the items published as result of lineagePublish activity.
+     * The list GUIDs for the items published after lineage processing activity completed.
      * -- GETTER --
      * Get items published.
-     * @return the list of GUIDs representing items published.
+     * @return the collection of GUIDs representing items published.
      * -- SETTER --
      * Set items published.
-     * @param items list with GUIDs representing items published.
+     * @param items collection of GUIDs for the items published.
      */
     private List<String> items;
     /**
-     * The point in time used to perform lineagePublish activity.
+     * The point in time (cutoff time) when the entities used for lineage processing were retrieved from the cohort.
      * -- GETTER --
-     * Gets the time when lineagePublish activity was performed.
+     * Gets the timestamp.
      * @return Long representing epoch time milliseconds.
      * -- SETTER --
-     * Sets the time when lineagePublish activity was performed.
-     * @param  lineageTimestamp representing epoch time milliseconds
+     * Sets the timestamp.
+     * @param  lineageTimestamp representing epoch time milliseconds.
      */
     private Long lineageTimestamp;
 }

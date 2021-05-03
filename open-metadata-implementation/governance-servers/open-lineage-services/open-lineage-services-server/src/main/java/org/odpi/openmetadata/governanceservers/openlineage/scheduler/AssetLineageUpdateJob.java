@@ -33,8 +33,8 @@ public class AssetLineageUpdateJob implements Job {
     private static final String GLOSSARY_TERM = "GlossaryTerm";
     private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Run AssetLineageUpdateJob task at {} {}";
     private static final String RUNNING_FAILURE = "AssetLineageUpdateJob task execution at {} {} failed because of the following exception {}";
-    private static final String ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR = "AssetLineageUpdateJob default value from " +
-            "config was defined as '{}' and it should have an ISO-8601 format such as '{}'. The job will shutdown and won't start again. " +
+    private static final String ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR = "AssetLineageUpdateJob default value" +
+            " was defined as '{}' and it should have an ISO-8601 format such as '{}'. The job will shutdown and won't start again. " +
             "Correct the default value and restart the server instance.";
 
     @Override
@@ -72,13 +72,16 @@ public class AssetLineageUpdateJob implements Job {
     }
 
     /**
-     * Gets asset lineage last update time. The result will be the one saved in the graph, if any. If no value is in the
-     * graph, then it searches for a value in the job' data map that came from the jobs configuration call.
      *
-     * @param configAssetLineageDefaultTime the config asset lineage default time
+     * Gets the best candidate for last known time when lineage was published for entities.
+     * This timestamp is kept in the graph store, if present this is used.
+     * If not, tries the default preset value provided by the user in the configuration document.
+     * In none of the above, empty value is returned - means most probably no initial lineage load process was completed before.
+     *
+     * @param configAssetLineageDefaultTime the asset lineage config default time
      * @param storedUpdateTime    the update time retrieved form the graph store
-     * @param localDateTime                 the local date time indicating this running time, used as format
-     * @return the asset lineage last update time
+     * @param localDateTime       the local date time indicating the actual job execution time
+     * @return the asset lineage last known update time
      */
     private Optional<LocalDateTime> getAssetLineageLastUpdateTime(String configAssetLineageDefaultTime, Optional<Long> storedUpdateTime,
                                                                   LocalDateTime localDateTime) throws JobExecutionException {
