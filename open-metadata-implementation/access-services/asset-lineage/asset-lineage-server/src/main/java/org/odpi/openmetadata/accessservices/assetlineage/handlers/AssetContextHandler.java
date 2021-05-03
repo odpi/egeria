@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
@@ -12,14 +13,17 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ANCHOR_GUID;
@@ -39,7 +43,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.MEDIA_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
@@ -113,7 +117,6 @@ public class AssetContextHandler {
         return context;
     }
 
-
     /**
      * Builds the asset context for a schema element.
      *
@@ -152,6 +155,21 @@ public class AssetContextHandler {
     }
 
     /**
+     * Builds the column context for a schema element
+     *
+     * @param guid the unique identifier of the column
+     *
+     * @return the columnn context of the schema element
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    public Map<String, RelationshipsContext> buildColumnContext(String userId, String guid) throws OCFCheckedExceptionBase {
+        EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, TABULAR_COLUMN);
+
+        return buildSchemaElementContext(userId, entityDetail);
+    }
+
+    /**
      * Validates that an entity is internal to DataEngine OMAS
      *
      * @param userId        the unique identifier for the user
@@ -163,21 +181,60 @@ public class AssetContextHandler {
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private boolean isInternalTabularColumn(String userId, EntityDetail tabularColumn) throws InvalidParameterException, PropertyServerException,
-                                                                                              UserNotAuthorizedException {
+    private boolean isInternalTabularColumn(String userId, EntityDetail tabularColumn) throws OCFCheckedExceptionBase {
         String methodName = "isInternalTabularColumn";
 
-        InstancePropertyValue anchorGUIDProperty = tabularColumn.getProperties().getPropertyValue(ANCHOR_GUID);
-        if(anchorGUIDProperty == null) {
+        Optional<Relationship> relationship = handlerHelper.getUniqueRelationshipByType(userId, tabularColumn.getGUID(), ATTRIBUTE_FOR_SCHEMA,
+                TABULAR_COLUMN);
+        if (!relationship.isPresent()) {
             return false;
         }
 
-        String anchorGUID = anchorGUIDProperty.valueAsString();
-        if (StringUtils.isEmpty(anchorGUID)) {
+        EntityDetail schemaType = handlerHelper.getEntityAtTheEnd(userId, tabularColumn.getGUID(), relationship.get());
+        Optional<Classification> anchorGUIDClassification = getAnchorsClassification(schemaType);
+        if (!anchorGUIDClassification.isPresent()) {
+            return false;
+        }
+        Optional<String> anchorGUID = getAnchorGUID(anchorGUIDClassification.get());
+        if (!anchorGUID.isPresent()) {
             return false;
         }
 
-        return repositoryHandler.isEntityATypeOf(userId, anchorGUID, ANCHOR_GUID, PROCESS, methodName);
+        return repositoryHandler.isEntityATypeOf(userId, anchorGUID.get(), ANCHOR_GUID, PORT_IMPLEMENTATION, methodName);
+    }
+
+    /**
+     * Retrieves the anchorGUID property form a classification
+     *
+     * @param classification the classification
+     *
+     * @return the anchorGUID property or an empty optional
+     */
+    private Optional<String> getAnchorGUID(Classification classification) {
+        InstancePropertyValue anchorGUIDProperty = classification.getProperties().getPropertyValue(ANCHOR_GUID);
+        if (anchorGUIDProperty == null) {
+            return Optional.empty();
+        }
+        return Optional.of(anchorGUIDProperty.valueAsString());
+    }
+
+    /**
+     * Retrieves the Anchors classification from an entity
+     *
+     * @param entityDetail the entity to check for the classification
+     *
+     * @return the Anchors classification or an empty Optional if missing
+     */
+    private Optional<Classification> getAnchorsClassification(EntityDetail entityDetail) {
+        List<Classification> classifications = entityDetail.getClassifications();
+        if (CollectionUtils.isEmpty(classifications)) {
+            return Optional.empty();
+        }
+        for (Classification classification : classifications) {
+            if ("Anchors".equalsIgnoreCase(classification.getName()))
+                return Optional.of(classification);
+        }
+        return Optional.empty();
     }
 
     /**
