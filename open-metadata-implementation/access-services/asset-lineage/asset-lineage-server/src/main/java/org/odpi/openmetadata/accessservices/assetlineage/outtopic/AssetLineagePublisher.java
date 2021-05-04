@@ -15,6 +15,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
@@ -50,6 +51,7 @@ public class AssetLineagePublisher {
     private final ProcessContextHandler processContextHandler;
     private final ClassificationHandler classificationHandler;
     private final GlossaryContextHandler glossaryHandler;
+    private final AssetContextHandler assetContextHandler;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -68,6 +70,7 @@ public class AssetLineagePublisher {
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
+        this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
     }
 
     /**
@@ -184,8 +187,9 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    public void publishLineageRelationshipEvent(LineageRelationship lineageRelationship,
-                                                AssetLineageEventType eventType) throws ConnectorCheckedException, JsonProcessingException {
+    public void publishLineageRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
+                                                                                                                          ConnectorCheckedException,
+                                                                                                                          JsonProcessingException {
         LineageRelationshipEvent event = new LineageRelationshipEvent();
 
         event.setLineageRelationship(lineageRelationship);
@@ -253,14 +257,35 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    public void publishLineageEntityEvent(LineageEntity lineageEntity,
-                                          AssetLineageEventType lineageEventType) throws ConnectorCheckedException, JsonProcessingException {
+    public void publishLineageEntityEvent(LineageEntity lineageEntity, AssetLineageEventType lineageEventType) throws ConnectorCheckedException,
+                                                                                                                      JsonProcessingException {
         LineageEntityEvent event = new LineageEntityEvent();
 
         event.setLineageEntity(lineageEntity);
         event.setAssetLineageEventType(lineageEventType);
 
         publishEvent(event);
+    }
+
+    /**
+     * Publishes a {@link LineageRelationshipEvent} containing a {@link LineageRelationship}. For each end of the relationship it publishes a
+     * {@link LineageRelationshipsEvent} containing the column context if available
+     *
+     * @param lineageRelationship the LineageRelationship to be published
+     * @param eventType           the type on the event
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    public void publishLineageMappingRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
+                                                                                                                                 OCFCheckedExceptionBase,
+                                                                                                                                 JsonProcessingException {
+        publishLineageRelationshipEvent(lineageRelationship, eventType);
+
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
+                lineageRelationship.getSourceEntity().getGuid())));
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
+                lineageRelationship.getTargetEntity().getGuid())));
     }
 
     /**
@@ -282,7 +307,5 @@ public class AssetLineagePublisher {
 
         return true;
     }
-
-
 }
 

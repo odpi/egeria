@@ -169,8 +169,7 @@ public class ProcessContextHandler {
                     relationshipsContext);
 
             if (tabularColumn == null) {
-                log.error("No entity TabularColumn has been found for the the TabularSchemaType with guid {}", tabularSchemaType.getGUID());
-
+                log.error("No entity TabularColumn has been found for the PortImplementation with guid {}", port.getGUID());
                 throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(), this.getClass().getName(), "Retrieving Relationship");
             }
         }

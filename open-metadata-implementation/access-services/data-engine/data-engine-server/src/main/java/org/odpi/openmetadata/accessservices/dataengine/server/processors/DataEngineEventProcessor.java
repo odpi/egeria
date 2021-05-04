@@ -5,7 +5,14 @@ package org.odpi.openmetadata.accessservices.dataengine.server.processors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.dataengine.event.*;
+import org.apache.commons.lang3.StringUtils;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
@@ -78,8 +85,10 @@ public class DataEngineEventProcessor {
         try {
             PortAliasEvent portAliasEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortAliasEvent.class);
 
+            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, portAliasEvent.getUserId(),
+                    portAliasEvent.getProcessQualifiedName()).orElse(null);
             dataEngineRESTServices.upsertPortAliasWithDelegation(portAliasEvent.getUserId(), serverName, portAliasEvent.getPort(),
-                    portAliasEvent.getExternalSourceName());
+                    processGUID, portAliasEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -98,7 +107,8 @@ public class DataEngineEventProcessor {
         try {
             ProcessHierarchyEvent processHierarchyEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessHierarchyEvent.class);
 
-            dataEngineRESTServices.addProcessHierarchyToProcess(processHierarchyEvent.getUserId(), serverName, processHierarchyEvent.getProcessHierarchy(),
+            dataEngineRESTServices.addProcessHierarchyToProcess(processHierarchyEvent.getUserId(), serverName,
+                    processHierarchyEvent.getProcessHierarchy(),
                     processHierarchyEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -118,29 +128,10 @@ public class DataEngineEventProcessor {
         try {
             PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortImplementationEvent.class);
 
-            dataEngineRESTServices.upsertPortImplementationWithSchemaType(portImplementationEvent.getUserId(), serverName,
-                    portImplementationEvent.getPortImplementation(), portImplementationEvent.getExternalSourceName());
-
-        } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
-            logException(dataEngineEvent, methodName, e);
-        }
-    }
-
-    /**
-     * Process a {@link ProcessToPortListEvent}
-     *
-     * @param dataEngineEvent the event to be processed
-     */
-    public void processProcessToPortListEvent(String dataEngineEvent) {
-        final String methodName = "processProcessToPortListEvent";
-
-        log.trace(DEBUG_MESSAGE_METHOD, methodName);
-
-        try {
-            ProcessToPortListEvent processToPortListEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessToPortListEvent.class);
-
-            dataEngineRESTServices.addPortsToProcess(processToPortListEvent.getUserId(), serverName, processToPortListEvent.getProcessGUID(),
-                    processToPortListEvent.getPorts(), processToPortListEvent.getExternalSourceName());
+            String processGUID = dataEngineRESTServices.getProcessGUID(serverName, portImplementationEvent.getUserId(),
+                    portImplementationEvent.getProcessQualifiedName()).orElse(null);
+            dataEngineRESTServices.upsertPortImplementation(portImplementationEvent.getUserId(), serverName,
+                    portImplementationEvent.getPortImplementation(), processGUID, portImplementationEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
@@ -167,8 +158,6 @@ public class DataEngineEventProcessor {
             FFDCResponseBase response = new FFDCResponseBase();
             dataEngineRESTServices.addLineageMappings(lineageMappingsEvent.getUserId(), serverName, lineageMappingsEvent.getLineageMappings(),
                     response, lineageMappingsEvent.getExternalSourceName());
-
-
         } catch (JsonProcessingException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
             logException(dataEngineEvent, methodName, e);
         }
@@ -186,9 +175,8 @@ public class DataEngineEventProcessor {
         try {
             ProcessesEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessesEvent.class);
 
-            dataEngineRESTServices.upsertProcesses(processesEvent.getUserId(), serverName,
-                    processesEvent.getProcesses(), processesEvent.getExternalSourceName());
-
+            dataEngineRESTServices.upsertProcesses(processesEvent.getUserId(), serverName, processesEvent.getProcesses(),
+                    processesEvent.getExternalSourceName());
         } catch (JsonProcessingException e) {
             log.debug("Exception in parsing event from in Data Engine In Topic", e);
             logException(dataEngineEvent, methodName, e);
@@ -205,12 +193,16 @@ public class DataEngineEventProcessor {
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
             SchemaTypeEvent schemaEvent = OBJECT_MAPPER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
-            dataEngineRESTServices.upsertSchemaType(schemaEvent.getUserId(), serverName, schemaEvent.getSchemaType(),
+
+            String portGUID = null;
+            if(StringUtils.isNotEmpty(schemaEvent.getPortQualifiedName())) {
+                portGUID = dataEngineRESTServices.getPortGUID(serverName, schemaEvent.getUserId(), schemaEvent.getPortQualifiedName()).orElse(null);
+            }
+            dataEngineRESTServices.upsertSchemaType(schemaEvent.getUserId(), serverName, portGUID, schemaEvent.getSchemaType(),
                     schemaEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(schemaTypeEvent, methodName, e);
         }
-
     }
 
     private void logException(String dataEngineEvent, String methodName, Exception e) {

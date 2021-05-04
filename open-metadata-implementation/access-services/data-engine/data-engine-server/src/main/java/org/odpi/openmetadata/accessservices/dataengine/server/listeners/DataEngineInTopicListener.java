@@ -66,9 +66,6 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                         case PORT_IMPLEMENTATION_EVENT:
                             dataEngineEventProcessor.processPortImplementationEvent(dataEngineEvent);
                             break;
-                        case PROCESS_TO_PORT_LIST_EVENT:
-                            dataEngineEventProcessor.processProcessToPortListEvent(dataEngineEvent);
-                            break;
                         case PROCESSES_EVENT:
                             dataEngineEventProcessor.processProcessesEvent(dataEngineEvent);
                             break;
