@@ -14,16 +14,17 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEvent
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSummary;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
-import org.odpi.openmetadata.accessservices.assetlineage.model.SyncUpdateContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -239,10 +240,11 @@ public class AssetLineagePublisher {
                 neighbourGuids.addAll(toVertexGuids);
             }
         }
-        SyncUpdateContext syncUpdateContext = new SyncUpdateContext();
-        syncUpdateContext.setEntityGuid(entityGUID);
-        syncUpdateContext.setNeighboursGUID(neighbourGuids);
-        LineageSyncEvent event = new LineageSyncEvent(syncUpdateContext);
+        LineageSyncUpdateContext lineageSyncUpdateContext = new LineageSyncUpdateContext();
+        lineageSyncUpdateContext.setEntityGUID(entityGUID);
+        lineageSyncUpdateContext.setNeighboursGUID(neighbourGuids);
+        LineageSyncEvent event = new LineageSyncEvent();
+        event.setSyncUpdateContext(lineageSyncUpdateContext);
 
         event.setAssetLineageEventType(LINEAGE_SYNC_EVENT);
         publishEvent(event);
@@ -322,6 +324,21 @@ public class AssetLineagePublisher {
         ObjectMapper objectMapper = new ObjectMapper();
         outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
 
+    }
+
+    /**
+     *
+     * Publish LineageSyncEvent that contains LineagePublishSummary details.
+     *
+     * @param summary details about lineage processing and publish activity completed by Asset Lineage OMAS.
+     * @throws JsonProcessingException
+     * @throws ConnectorCheckedException
+     */
+    public void publishLineageSummaryEvent(LineagePublishSummary summary) throws JsonProcessingException, ConnectorCheckedException {
+        LineageSyncEvent event = new LineageSyncEvent();
+        event.setPublishSummary(summary);
+        event.setAssetLineageEventType(AssetLineageEventType.LINEAGE_SYNC_EVENT);
+        publishEvent(event);
     }
 
     /**

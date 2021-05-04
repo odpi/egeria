@@ -5,9 +5,13 @@ package org.odpi.openmetadata.accessservices.assetlineage.event;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetlineage.model.SyncUpdateContext;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSummary;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext;
 
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,43 +23,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString
+/**
+ *
+ * LineageSyncEvent is used to notify external consumers about AssetLineage internal processing.
+ * It can contain details such as publishSummary and/or updateSummary created by corresponding internal processing phases of AssetLineage.
+ *
+ */
 public class LineageSyncEvent extends AssetLineageEventHeader {
-    
-    private SyncUpdateContext syncUpdateContext;
 
-    public LineageSyncEvent() {
-    }
-
-    public LineageSyncEvent(SyncUpdateContext syncUpdateContext) {
-        this.syncUpdateContext = syncUpdateContext;
-
-    }
-
-    public SyncUpdateContext getSyncUpdate() {
-        return syncUpdateContext;
-    }
-
-    public void setSyncUpdate(SyncUpdateContext syncUpdateContext) {
-        this.syncUpdateContext = syncUpdateContext;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LineageSyncEvent that = (LineageSyncEvent) o;
-        return Objects.equals(syncUpdateContext, that.syncUpdateContext);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(syncUpdateContext);
-    }
-
-    @Override
-    public String toString() {
-        return "LineageSyncEvent{" +
-                "syncUpdateContext=" + syncUpdateContext +
-                '}';
-    }
+    /**
+     * LineagePublishSummary is used to describe summary as result of AssetLineage lineagePublish activity that completed.
+     */
+    private LineagePublishSummary publishSummary;
+    private LineageSyncUpdateContext syncUpdateContext;
 }

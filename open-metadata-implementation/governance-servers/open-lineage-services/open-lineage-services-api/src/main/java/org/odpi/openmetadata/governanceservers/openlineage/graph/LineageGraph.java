@@ -87,16 +87,16 @@ public interface LineageGraph extends OpenLineageGraphConnector {
     /**
      * Save last asset lineage update time in the graph
      *
-     * @param date the date
+     * @param timestamp the standard epoch time in milliseconds
      */
-    void saveAssetLineageUpdateTime(LocalDateTime date);
+    void saveAssetLineageUpdateTime(Long timestamp);
 
     /**
      * Gets last asset lineage update time from the graph
      *
-     * @return the asset lineage update time
+     * @return last update time represented as epoch time milliseconds
      */
-    Optional<LocalDateTime> getAssetLineageUpdateTime();
+    Optional<Long> getAssetLineageUpdateTime();
 
     /**
      * Returns whether an entity exists in the graph or not

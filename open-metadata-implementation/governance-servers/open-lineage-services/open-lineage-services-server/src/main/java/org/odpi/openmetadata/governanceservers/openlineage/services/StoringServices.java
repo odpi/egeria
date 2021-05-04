@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationsh
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
-import org.odpi.openmetadata.accessservices.assetlineage.model.SyncUpdateContext;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +100,23 @@ public class StoringServices {
     }
 
     /**
+     * Applies lineageSyncEvent using lineage storage connector.
+     * @param lineageSyncEvent event to be delegated to the respective connector interface.
+     */
+    public void apply(LineageSyncEvent lineageSyncEvent) {
+        log.debug("Open Lineage Services is processing LineageSyncEvent event");
+        // publishSummary
+        if (lineageSyncEvent.getPublishSummary() != null) {
+            lineageGraph.saveAssetLineageUpdateTime(lineageSyncEvent.getPublishSummary().getLineageTimestamp());
+        }
+        // updateSummary...
+        if (lineageSyncEvent.getSyncUpdateContext() != null) {
+            lineageGraph.updateNeighbours(lineageSyncEvent.getSyncUpdateContext().getEntityGUID(),
+                    lineageSyncEvent.getSyncUpdateContext().getNeighboursGUID());
+        }
+    }
+
+    /**
      * Check entity existence boolean in the graph through the lineage connector.
      *
      * @param guid the guid
@@ -108,19 +124,5 @@ public class StoringServices {
      */
     public boolean isEntityInGraph(String guid) {
         return lineageGraph.isEntityInGraph(guid);
-    }
-
-
-    /**
-     * Updates the relationships of an entity based on the syncEvent received
-     * @param lineageSyncEvent contains the entity who's relationships need updating and
-     *                         a list of current nodes that have a direct link to it
-     */
-    public void updateNeighbours(LineageSyncEvent lineageSyncEvent) {
-        SyncUpdateContext syncUpdateContext = lineageSyncEvent.getSyncUpdate();
-        if (syncUpdateContext == null) {
-            return;
-        }
-        lineageGraph.updateNeighbours(syncUpdateContext.getEntityGuid(), syncUpdateContext.getNeighboursGUID());
     }
 }

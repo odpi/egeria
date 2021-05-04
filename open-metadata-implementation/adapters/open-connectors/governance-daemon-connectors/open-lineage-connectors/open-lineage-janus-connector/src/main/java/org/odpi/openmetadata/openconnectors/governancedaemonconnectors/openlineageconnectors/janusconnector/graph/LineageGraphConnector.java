@@ -174,16 +174,15 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     @Override
-    public void saveAssetLineageUpdateTime(LocalDateTime date) {
-        g.getGraph().variables().set(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME, date.toString());
+    public void saveAssetLineageUpdateTime(Long lastUpdateTime) {
+        g.getGraph().variables().set(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME, lastUpdateTime);
     }
 
     @Override
-    public Optional<LocalDateTime> getAssetLineageUpdateTime() {
-        Optional<Object> lastUpdateTime = g.getGraph().variables().get(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME);
+    public Optional<Long> getAssetLineageUpdateTime() {
+        Optional<Long> lastUpdateTime = g.getGraph().variables().get(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME);
         if(lastUpdateTime.isPresent()) {
-            String lastUpdateTimeValue = (String) lastUpdateTime.get();
-            return Optional.of(LocalDateTime.parse(lastUpdateTimeValue, DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            return lastUpdateTime;
         }
         return Optional.empty();
     }
