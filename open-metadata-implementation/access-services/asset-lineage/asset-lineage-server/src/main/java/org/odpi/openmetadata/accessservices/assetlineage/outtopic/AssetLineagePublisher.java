@@ -14,12 +14,15 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEvent
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.SyncUpdateContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -30,8 +33,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType.LINEAGE_SYNC_EVENT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_CATEGORY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
 
@@ -42,12 +51,14 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetLineagePublisher {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
+    private static final String VERTICAL_LINEAGE_EVENTS_CHUNK_SIZE = "verticalLineageEventsChunkSize";
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final OpenMetadataTopicConnector outTopicConnector;
     private final String serverUserName;
     private final ProcessContextHandler processContextHandler;
     private final ClassificationHandler classificationHandler;
     private final GlossaryContextHandler glossaryHandler;
+    private int verticalLineageEventsChunkSize;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -57,8 +68,8 @@ public class AssetLineagePublisher {
      * @param serverName        name of the user of the server instance
      * @param serverUserName    name of this server instance
      */
-    public AssetLineagePublisher(OpenMetadataTopicConnector outTopicConnector, String serverName, String serverUserName) throws
-                                                                                                                         OCFCheckedExceptionBase {
+    public AssetLineagePublisher(OpenMetadataTopicConnector outTopicConnector, String serverName, String serverUserName,
+                                 Map<String, Object> accessServiceOptions) throws OCFCheckedExceptionBase {
         String methodName = "AssetLineagePublisher";
 
         this.outTopicConnector = outTopicConnector;
@@ -66,6 +77,13 @@ public class AssetLineagePublisher {
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
+        if (accessServiceOptions != null && accessServiceOptions.get(VERTICAL_LINEAGE_EVENTS_CHUNK_SIZE) != null) {
+            verticalLineageEventsChunkSize = (int) accessServiceOptions.get(VERTICAL_LINEAGE_EVENTS_CHUNK_SIZE);
+        }
+        if (verticalLineageEventsChunkSize < 1) {
+            verticalLineageEventsChunkSize = 1;
+        }
+        
     }
 
     /**
@@ -122,8 +140,8 @@ public class AssetLineagePublisher {
             log.info("Context not found for the entity {} ", entityDetail.getGUID());
         }
 
-        publishLineageRelationshipsEvents(glossaryTermContext);
-
+        publishVerticalLineageRelationshipsEvents(glossaryTermContext);
+        publishLineageSyncUpdateEvent(entityDetail.getGUID(), glossaryTermContext);
 
         return glossaryTermContext;
     }
@@ -152,6 +170,81 @@ public class AssetLineagePublisher {
         }
     }
 
+
+    /**
+     * Publishes events for the relationships of an entity based on the context map. The context is built in chunks of relationships configurable by verticalLineageEventsChunkSize. 
+     *
+     * @param contextMap the context map to be published
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    private void publishVerticalLineageRelationshipsEvents(Multimap<String, RelationshipsContext> contextMap) throws JsonProcessingException,
+            ConnectorCheckedException {
+        for (String eventType : contextMap.keySet()) {
+            for (RelationshipsContext relationshipsContext : contextMap.get(eventType)) {
+                if (CollectionUtils.isNotEmpty(relationshipsContext.getRelationships())) {
+                    int noOfRelationships = relationshipsContext.getRelationships().size();
+                    int chunksToSend = (noOfRelationships / verticalLineageEventsChunkSize) + 1;
+                    Iterator<GraphContext> relationshipsIterator = relationshipsContext.getRelationships().iterator();
+
+                    for (int i = 0; i < chunksToSend; i++) {
+                        Set<GraphContext> chunk = new HashSet<>();
+                        for (int j = 0; j < verticalLineageEventsChunkSize && relationshipsIterator.hasNext(); j++) {
+                            chunk.add(relationshipsIterator.next());
+                        }
+                        RelationshipsContext relationshipContextChunk = new RelationshipsContext();
+                        relationshipContextChunk.setRelationships(chunk);
+                        relationshipContextChunk.setEntityGuid(relationshipsContext.getEntityGuid());
+                        LineageRelationshipsEvent event = new LineageRelationshipsEvent();
+                        event.setRelationshipsContext(relationshipContextChunk);
+                        event.setAssetLineageEventType(AssetLineageEventType.getByEventTypeName(eventType));
+
+                        publishEvent(event);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Publishes a LINEAGE_SYNC_EVENT which contains the GUID of the entity that was updated and all its neighbour entities' GUIDs
+     * 
+     * @param entityGUID the GUID of the published entity
+     * @param contextMap the context map that was published
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    private void publishLineageSyncUpdateEvent(String entityGUID, Multimap<String, RelationshipsContext> contextMap) throws JsonProcessingException,
+            ConnectorCheckedException {
+        Set<String> neighbourGuids = new HashSet<>();
+        for (String eventType : contextMap.keySet()) {
+            for (RelationshipsContext relationshipsContext : contextMap.get(eventType)) {
+
+                List<String> fromVertexGuids = relationshipsContext.getRelationships()
+                        .stream()
+                        .map(r -> r.getFromVertex().getGuid())
+                        .filter(str -> !str.equals(entityGUID))
+                        .collect(Collectors.toList());
+                List<String> toVertexGuids = relationshipsContext.getRelationships()
+                        .stream()
+                        .map(r -> r.getToVertex().getGuid())
+                        .filter(str -> !str.equals(entityGUID))
+                        .collect(Collectors.toList());
+
+                neighbourGuids.addAll(fromVertexGuids);
+                neighbourGuids.addAll(toVertexGuids);
+            }
+        }
+        SyncUpdateContext syncUpdateContext = new SyncUpdateContext();
+        syncUpdateContext.setEntityGuid(entityGUID);
+        syncUpdateContext.setNeighboursGUID(neighbourGuids);
+        LineageSyncEvent event = new LineageSyncEvent(syncUpdateContext);
+
+        event.setAssetLineageEventType(LINEAGE_SYNC_EVENT);
+        publishEvent(event);
+    }
+    
     /**
      * @param entityDetail          entity to get context
      * @param assetLineageEventType event type to get published

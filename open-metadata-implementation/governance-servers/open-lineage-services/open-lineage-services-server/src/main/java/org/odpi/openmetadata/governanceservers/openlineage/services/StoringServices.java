@@ -5,8 +5,10 @@ package org.odpi.openmetadata.governanceservers.openlineage.services;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.SyncUpdateContext;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +37,6 @@ public class StoringServices {
      */
     public void addEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
         String termGUID = lineageRelationshipsEvent.getRelationshipsContext().getEntityGuid();
-        lineageGraph.removeObsoleteEdgesFromGraph(termGUID, lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
         lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
 
@@ -112,4 +113,11 @@ public class StoringServices {
         return lineageGraph.isEntityInGraph(guid);
     }
 
+    public void updateNeighbours(LineageSyncEvent lineageSyncEvent) {
+        SyncUpdateContext syncUpdateContext = lineageSyncEvent.getSyncUpdate();
+        if (syncUpdateContext == null) {
+            return;
+        }
+        lineageGraph.updateNeighbours(syncUpdateContext.getEntityGuid(), syncUpdateContext.getNeighboursGUID());
+    }
 }

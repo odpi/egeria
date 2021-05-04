@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEvent
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -83,7 +84,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
         LineageRelationshipEvent lineageRelationshipEvent;
         LineageEntityEvent lineageEntityEvent;
         LineageRelationshipsEvent lineageRelationshipsEvent;
-
+        LineageSyncEvent lineageSyncEvent;
         switch (assetLineageEventHeader.getAssetLineageEventType()) {
             case CLASSIFICATION_CONTEXT_EVENT:
             case SEMANTIC_ASSIGNMENTS_EVENT:
@@ -132,6 +133,9 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                 lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
                 storingServices.deleteClassification(lineageRelationshipsEvent);
                 break;
+            case LINEAGE_SYNC_EVENT:
+                lineageSyncEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageSyncEvent.class);
+                storingServices.updateNeighbours(lineageSyncEvent);
             default:
                 break;
         }
