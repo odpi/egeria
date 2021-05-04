@@ -32,7 +32,7 @@ public class VerifyAttributeTypeDefExecutor extends RepositoryExecutorBase
      */
     public VerifyAttributeTypeDefExecutor(String           userId,
                                           AttributeTypeDef attributeTypeDef,
-                                          AuditLog auditLog,
+                                          AuditLog         auditLog,
                                           String           methodName)
     {
         super(userId, methodName);

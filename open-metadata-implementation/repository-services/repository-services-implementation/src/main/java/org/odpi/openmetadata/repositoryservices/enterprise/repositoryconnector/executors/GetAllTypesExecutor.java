@@ -28,10 +28,10 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
      * @param auditLog logging destination
      * @param repositoryValidator validation methods
      */
-    public GetAllTypesExecutor(String                   userId,
-                               String                   methodName,
-                               String                   localMetadataCollectionId,
-                               AuditLog auditLog,
+    public GetAllTypesExecutor(String                  userId,
+                               String                  methodName,
+                               String                  localMetadataCollectionId,
+                               AuditLog                auditLog,
                                OMRSRepositoryValidator repositoryValidator)
     {
         this(userId,

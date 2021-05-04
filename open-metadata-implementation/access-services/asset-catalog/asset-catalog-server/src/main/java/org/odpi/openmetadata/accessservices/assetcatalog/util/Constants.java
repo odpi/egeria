@@ -1,9 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetcatalog.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * Constants for Open Metadata Types (names and guid)
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Constants {
 
     public static final String REFERENCEABLE = "Referenceable";
@@ -95,6 +99,4 @@ public final class Constants {
     public static final String GUID_PARAMETER = "GUID";
     public static final String SEARCH_PARAMETER = "searchParameter";
     public static final String ADDITIONAL_PROPERTIES_PROPERTY_NAME = "additionalProperties";
-    private Constants() {
-    }
 }

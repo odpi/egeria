@@ -179,9 +179,10 @@ public class OperationalServicesResource
     @PostMapping(path = "/instance/open-metadata-archives/file")
 
     @Operation(summary="Load open metadata archive",
-            description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
-                    "archive into an OMAG server.  It will only be successful if the server has a local repository defined.",
-            externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
+               description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
+                                   "archive that is readable through the connector identified by the connection.  " +
+                                   "It can be used with OMAG servers that are of type Cohort Member.",
+               externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
                     url="https://egeria.odpi.org/open-metadata-resources/open-metadata-archives/index.html"))
 
     public VoidResponse addOpenMetadataArchiveFile(@PathVariable String userId,
@@ -205,8 +206,9 @@ public class OperationalServicesResource
     @PostMapping(path = "/instance/open-metadata-archives/connection")
 
     @Operation(summary="Load open metadata archive",
-            description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
-                    "archive into an OMAG server.  It will only be successful if the server has a local repository defined.",
+               description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
+                                   "archive that is readable through the connector identified by the connection.  " +
+                                   "It can be used with OMAG servers that are of type Cohort Member.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
                     url="https://egeria.odpi.org/open-metadata-resources/open-metadata-archives/index.html"))
 

@@ -6,7 +6,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEven
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.SyncUpdateContext;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
@@ -28,18 +27,17 @@ public class StoringServices {
     /**
      * Delegates the call for the creation of entities and relationships to the connector
      */
-    public void addEntityContext(ProcessLineageEvent processLineageEvent) {
-        lineageGraph.storeToGraph(processLineageEvent.getContext());
+    public void addEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+        lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
 
     /**
      * Delegates the call for the creation of entities and relationships to the connector
      */
-    public void addEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
+    public void upsertEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
         String termGUID = lineageRelationshipsEvent.getRelationshipsContext().getEntityGuid();
         lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
-
     /**
      * Delegates the call for the creation of entities and relationships to the connector
      */
@@ -69,7 +67,6 @@ public class StoringServices {
      * Delegates the call for the update of a classification to the connector
      */
     public void updateClassification(LineageRelationshipsEvent lineageRelationshipsEvent) {
-        log.debug("Open Lineage Services is processing an UpdateClassificationEvent event");
         lineageGraph.updateClassification(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
 
@@ -113,6 +110,12 @@ public class StoringServices {
         return lineageGraph.isEntityInGraph(guid);
     }
 
+
+    /**
+     * Updates the relationships of an entity based on the syncEvent received
+     * @param lineageSyncEvent contains the entity who's relationships need updating and
+     *                         a list of current nodes that have a direct link to it
+     */
     public void updateNeighbours(LineageSyncEvent lineageSyncEvent) {
         SyncUpdateContext syncUpdateContext = lineageSyncEvent.getSyncUpdate();
         if (syncUpdateContext == null) {

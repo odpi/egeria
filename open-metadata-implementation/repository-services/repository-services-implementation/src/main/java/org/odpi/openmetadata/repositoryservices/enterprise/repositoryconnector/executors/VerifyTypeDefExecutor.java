@@ -31,7 +31,7 @@ public class VerifyTypeDefExecutor extends RepositoryExecutorBase
      * @param methodName calling method
      */
     public VerifyTypeDefExecutor(String   userId,
-                                 TypeDef typeDef,
+                                 TypeDef  typeDef,
                                  AuditLog auditLog,
                                  String   methodName)
     {

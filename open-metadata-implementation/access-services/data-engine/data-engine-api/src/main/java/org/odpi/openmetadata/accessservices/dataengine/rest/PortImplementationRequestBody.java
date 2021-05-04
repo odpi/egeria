@@ -15,9 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PortImplementationRequestBody extends PortAliasRequestBody {
+public class PortImplementationRequestBody extends DataEngineOMASAPIRequestBody {
+    private String processQualifiedName;
     private PortImplementation portImplementation;
 
+    public String getProcessQualifiedName() {
+        return processQualifiedName;
+    }
+
+    public void setProcessQualifiedName(String processQualifiedName) {
+        this.processQualifiedName = processQualifiedName;
+    }
     public PortImplementation getPortImplementation() {
         return portImplementation;
     }

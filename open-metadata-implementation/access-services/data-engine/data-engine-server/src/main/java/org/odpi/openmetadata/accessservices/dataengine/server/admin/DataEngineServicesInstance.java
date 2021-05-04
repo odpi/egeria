@@ -4,31 +4,40 @@ package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataengine.model.FileFolder;
+import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.CollectionCoverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.DataFileConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseColumnConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseSchemaConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseTableConverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.FileFolderConverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.PortConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaAttributeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaTypeConverter;
-import org.odpi.openmetadata.accessservices.dataengine.server.converters.CollectionCoverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.PortHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
@@ -54,6 +63,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEnginePortHandler dataEnginePortHandler;
     private final DataEngineRelationalDataHandler dataEngineRelationalDataHandler;
     private final Connection inTopicConnection;
+    private final DataEngineDataFileHandler dataEngineDataFileHandler;
+    private final DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -123,6 +134,10 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                             publishZones,
                             auditLog);
 
+            final PortHandler<Port> portHandler = new PortHandler<>(new PortConverter<>(repositoryHelper, serviceName, serverName), Port.class,
+                    serviceName, serverName, invalidParameterHandler, repositoryHandler,repositoryHelper, localServerUserId, securityVerifier,
+                    supportedZones, defaultZones, publishZones, auditLog);
+
             dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper);
 
@@ -137,9 +152,21 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                     repositoryHelper, collectionOpenMetadataAPIGenericHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
 
             dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    dataEngineCommonHandler);
+                    dataEngineCommonHandler, portHandler, dataEngineRegistrationHandler);
             dataEngineRelationalDataHandler = new DataEngineRelationalDataHandler(serviceName, serverName, invalidParameterHandler,
                     repositoryHandler, repositoryHelper, relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+
+
+            final AssetHandler<FileFolder> folderHandler = new AssetHandler<>(new FileFolderConverter<>(repositoryHelper, serviceName, serverName),
+                    FileFolder.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                    localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+            dataEngineFolderHierarchyHandler = new DataEngineFolderHierarchyHandler(invalidParameterHandler,
+                    repositoryHandler, dataEngineCommonHandler, folderHandler);
+            final AssetHandler<DataFile> fileHandler = new AssetHandler<>(new DataFileConverter<>(repositoryHelper, serviceName, serverName),
+                    DataFile.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                    localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+            dataEngineDataFileHandler = new DataEngineDataFileHandler(invalidParameterHandler, repositoryHelper,
+                    dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler, dataEngineFolderHierarchyHandler);
 
         } else {
             final String methodName = "new ServiceInstance";
@@ -205,5 +232,12 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      */
     Connection getInTopicConnection() {
         return inTopicConnection;
+    }
+
+    /**
+     * Return the handler for DataFile
+     */
+    public DataEngineDataFileHandler getDataEngineDataFileHandler() {
+        return dataEngineDataFileHandler;
     }
 }
