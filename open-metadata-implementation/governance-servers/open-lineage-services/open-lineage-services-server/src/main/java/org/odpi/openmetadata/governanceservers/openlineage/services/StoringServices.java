@@ -108,7 +108,6 @@ public class StoringServices {
      * @param lineageSyncEvent event to be delegated to the respective connector interface.
      */
     public void apply(LineageSyncEvent lineageSyncEvent) {
-        log.debug("Open Lineage Services is processing LineageSyncEvent event");
         // publishSummary
         if(lineageSyncEvent.getPublishSummary()!=null)
             lineageGraph.saveAssetLineageUpdateTime(lineageSyncEvent.getPublishSummary().getLineageTimestamp());

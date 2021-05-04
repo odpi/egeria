@@ -31,7 +31,7 @@ public class AssetLineageUpdateJob implements Job {
     private static final Logger log = LoggerFactory.getLogger(AssetLineageUpdateJob.class);
 
     private static final String GLOSSARY_TERM = "GlossaryTerm";
-    private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Run AssetLineageUpdateJob task at {} {}";
+    private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Polling asset-lineage for changes as of time {} {}";
     private static final String RUNNING_FAILURE = "AssetLineageUpdateJob task execution at {} {} failed because of the following exception {}";
     private static final String ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR = "AssetLineageUpdateJob default value" +
             " was defined as '{}' and it should have an ISO-8601 format such as '{}'. The job will shutdown and won't start again. " +
@@ -40,7 +40,6 @@ public class AssetLineageUpdateJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         LocalDateTime localDateTime = now(ZoneId.systemDefault());
-        log.debug(RUN_ASSET_LINEAGE_UPDATE_JOB, localDateTime, ZoneId.systemDefault().getId());
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
         performTask(localDateTime, dataMap);
     }
@@ -64,6 +63,7 @@ public class AssetLineageUpdateJob implements Job {
             Optional<Long> storedAssetLineageUpdateTime = lineageGraph.getAssetLineageUpdateTime();
             Optional<LocalDateTime> assetLineageLastUpdateTime = getAssetLineageLastUpdateTime(configAssetLineageDefaultTime,
                     storedAssetLineageUpdateTime, localDateTime);
+            log.debug(RUN_ASSET_LINEAGE_UPDATE_JOB, assetLineageLastUpdateTime.get(), ZoneId.systemDefault().getId());
             assetLineageClient.publishEntities(localServerName, localServerUserId, GLOSSARY_TERM, assetLineageLastUpdateTime);
 
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
