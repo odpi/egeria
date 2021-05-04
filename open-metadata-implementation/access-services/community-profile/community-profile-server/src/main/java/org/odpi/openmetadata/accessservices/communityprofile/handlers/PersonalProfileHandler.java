@@ -8,9 +8,12 @@ import org.odpi.openmetadata.accessservices.communityprofile.builders.PersonalPr
 import org.odpi.openmetadata.accessservices.communityprofile.converters.PersonalProfileConverter;
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalProfileMapper;
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.UserIdentityMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -70,6 +73,7 @@ public class PersonalProfileHandler
         this.repositoryHandler = repositoryHandler;
 
         this.userIdentityHandler = new UserIdentityHandler(serviceName,
+                                                           serverName,
                                                            invalidParameterHandler,
                                                            repositoryHelper,
                                                            repositoryHandler,
@@ -91,30 +95,28 @@ public class PersonalProfileHandler
      * @param personalProfileEntity principle entity of the profile.
      * @param methodName calling method
      *
-     * @return PersonalProfile bean or null if it does not exist.
+     * @return PersonalProfileProperties bean or null if it does not exist.
      * @throws InvalidParameterException one of the userIds is null
      * @throws PropertyServerException the metadata repository is not available
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      */
-    public PersonalProfile getPersonalProfile(String         userId,
-                                              EntityDetail   personalProfileEntity,
-                                              String         methodName) throws InvalidParameterException,
+    public PersonalProfileProperties getPersonalProfile(String         userId,
+                                                        EntityDetail   personalProfileEntity,
+                                                        String         methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        List<UserIdentity> associatedUserIds = userIdentityHandler.getAssociatedUserIds(userId,
-                                                                                        personalProfileEntity.getGUID(),
-                                                                                        methodName);
+        List<UserIdentityElement> associatedUserIds = userIdentityHandler.getAssociatedUserIds(userId,
+                                                                                                  personalProfileEntity.getGUID(),
+                                                                                                  methodName);
 
-        List<ContactMethod> contactMethods = contactMethodHandler.getContactMethods(userId,
-                                                                                    personalProfileEntity.getGUID(),
-                                                                                    methodName);
+        List<ContactMethodElement> contactMethods = contactMethodHandler.getContactMethods(userId,
+                                                                                           personalProfileEntity.getGUID(),
+                                                                                           methodName);
 
-        PersonalProfileConverter converter = new PersonalProfileConverter(personalProfileEntity,
-                                                                          associatedUserIds,
-                                                                          contactMethods,
-                                                                          repositoryHelper,
-                                                                          serviceName);
+        PersonalProfileConverter<PersonalProfileElement> converter = new PersonalProfileConverter<>(repositoryHelper,
+                                                                                                  serviceName,
+                                                                                                  serverName);
 
         return converter.getBean();
     }
@@ -127,14 +129,14 @@ public class PersonalProfileHandler
      * @param profileUserId userId associated with the profile.
      * @param methodName calling method
      *
-     * @return PersonalProfile bean or null if it does not exist.
+     * @return PersonalProfileProperties bean or null if it does not exist.
      * @throws InvalidParameterException one of the userIds is null
      * @throws PropertyServerException the metadata repository is not available
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      */
-    public PersonalProfile getPersonalProfile(String   userId,
-                                              String   profileUserId,
-                                              String   methodName) throws InvalidParameterException,
+    public PersonalProfileProperties getPersonalProfile(String   userId,
+                                                        String   profileUserId,
+                                                        String   methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
@@ -328,28 +330,28 @@ public class PersonalProfileHandler
 
 
     /**
-     * Convert the returned entity into a PersonalProfile bean.  The entity is an anchor entity - so this method
-     * retrieves contact details as well as the userIds associated with the PersonalProfile.
+     * Convert the returned entity into a PersonalProfileProperties bean.  The entity is an anchor entity - so this method
+     * retrieves contact details as well as the userIds associated with the PersonalProfileProperties.
      *
      * @param userId calling user
      * @param entity personal profile entity
      * @param methodName calling method.
      *
-     * @return PersonalProfile bean
+     * @return PersonalProfileProperties bean
      * @throws InvalidParameterException the unique identifier of the entity is either null or invalid.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    private PersonalProfile  getPersonalProfileBean(String       userId,
-                                                    EntityDetail entity,
-                                                    String       methodName) throws InvalidParameterException,
+    private PersonalProfileProperties getPersonalProfileBean(String       userId,
+                                                             EntityDetail entity,
+                                                             String       methodName) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
         if (entity != null)
         {
-            List<UserIdentity> associatedUserIds = userIdentityHandler.getAssociatedUserIds(userId, entity.getGUID(), methodName);
-            List<ContactMethod> contactDetails = contactMethodHandler.getContactMethods(userId, entity.getGUID(), methodName);
+            List<UserIdentity>            associatedUserIds = userIdentityHandler.getAssociatedUserIds(userId, entity.getGUID(), methodName);
+            List<ContactMethodProperties> contactDetails    = contactMethodHandler.getContactMethods(userId, entity.getGUID(), methodName);
 
             PersonalProfileConverter converter = new PersonalProfileConverter(entity,
                                                                               associatedUserIds,
@@ -376,9 +378,9 @@ public class PersonalProfileHandler
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonalProfile getPersonalProfileByGUID(String        userId,
-                                                    String        profileGUID,
-                                                    String        methodName) throws InvalidParameterException,
+    public PersonalProfileProperties getPersonalProfileByGUID(String        userId,
+                                                              String        profileGUID,
+                                                              String        methodName) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
@@ -409,9 +411,9 @@ public class PersonalProfileHandler
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonalProfile getPersonalProfileByQualifiedName(String        userId,
-                                                             String        qualifiedName,
-                                                             String        methodName) throws InvalidParameterException,
+    public PersonalProfileProperties getPersonalProfileByQualifiedName(String        userId,
+                                                                       String        qualifiedName,
+                                                                       String        methodName) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
@@ -454,11 +456,11 @@ public class PersonalProfileHandler
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<PersonalProfile> getPersonalProfilesByName(String        userId,
-                                                           String        name,
-                                                           int           startFrom,
-                                                           int           pageSize,
-                                                           String        methodName) throws InvalidParameterException,
+    public List<PersonalProfileProperties> getPersonalProfilesByName(String        userId,
+                                                                     String        name,
+                                                                     int           startFrom,
+                                                                     int           pageSize,
+                                                                     String        methodName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
@@ -483,7 +485,7 @@ public class PersonalProfileHandler
 
         if (entities != null)
         {
-            List<PersonalProfile>  personalProfiles = new ArrayList<>();
+            List<PersonalProfileProperties> personalProfiles = new ArrayList<>();
 
             for (EntityDetail entity : entities)
             {

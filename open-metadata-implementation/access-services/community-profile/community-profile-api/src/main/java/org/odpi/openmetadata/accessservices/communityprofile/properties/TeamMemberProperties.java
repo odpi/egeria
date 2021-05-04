@@ -11,12 +11,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TeamMember describes a person who is a member of a team.
+ * TeamMemberProperties describes a person who is a member of a team.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TeamMember extends PersonalRoleProperties
+public class TeamMemberProperties extends PersonalRoleProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class TeamMember extends PersonalRoleProperties
     /**
      * Default constructor
      */
-    public TeamMember()
+    public TeamMemberProperties()
     {
         super();
     }
@@ -37,7 +37,7 @@ public class TeamMember extends PersonalRoleProperties
      *
      * @param template object to copy
      */
-    public TeamMember(TeamMember template)
+    public TeamMemberProperties(TeamMemberProperties template)
     {
         super(template);
 
@@ -101,7 +101,7 @@ public class TeamMember extends PersonalRoleProperties
     @Override
     public String toString()
     {
-        return "TeamMember{" +
+        return "TeamMemberProperties{" +
                        "membershipPosition='" + membershipPosition + '\'' +
                        ", teamGUID='" + teamGUID + '\'' +
                        ", domainIdentifier=" + getDomainIdentifier() +
@@ -137,7 +137,7 @@ public class TeamMember extends PersonalRoleProperties
         {
             return false;
         }
-        TeamMember that = (TeamMember) objectToCompare;
+        TeamMemberProperties that = (TeamMemberProperties) objectToCompare;
         return Objects.equals(getMembershipPosition(), that.getMembershipPosition());
     }
 

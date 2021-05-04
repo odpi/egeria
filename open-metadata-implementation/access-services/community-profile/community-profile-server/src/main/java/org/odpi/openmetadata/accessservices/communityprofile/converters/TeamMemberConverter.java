@@ -4,14 +4,14 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.TeamMemberMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.TeamMember;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.TeamMemberProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * TeamMemberConverter generates a TeamMember bean from an TeamMember entity
+ * TeamMemberConverter generates a TeamMemberProperties bean from an TeamMemberProperties entity
  * and a relationship to it.
  */
 public class TeamMemberConverter extends CommonHeaderConverter
@@ -40,11 +40,11 @@ public class TeamMemberConverter extends CommonHeaderConverter
      *
      * @return bean
      */
-    public TeamMember getBean()
+    public TeamMemberProperties getBean()
     {
         final String methodName = "getBean";
 
-        TeamMember  bean = new TeamMember();
+        TeamMemberProperties bean = new TeamMemberProperties();
 
         super.updateBean(bean);
 

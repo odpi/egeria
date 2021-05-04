@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonRoleMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRole;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * PersonRoleConverter generates a PersonRole bean from an PersonRole entity and the relationships connected to it.
+ * PersonRoleConverter generates a PersonRoleProperties bean from an PersonRoleProperties entity and the relationships connected to it.
  */
 public class PersonRoleConverter extends CommonHeaderConverter
 {
@@ -47,11 +47,11 @@ public class PersonRoleConverter extends CommonHeaderConverter
      *
      * @return bean
      */
-    public PersonRole getBean()
+    public PersonRoleProperties getBean()
     {
         final String methodName = "getBean";
 
-        PersonRole  bean = new PersonRole();
+        PersonRoleProperties bean = new PersonRoleProperties();
 
         super.updateBean(bean);
 

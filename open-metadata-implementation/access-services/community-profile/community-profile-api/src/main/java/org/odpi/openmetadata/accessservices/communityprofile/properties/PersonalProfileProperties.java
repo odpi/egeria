@@ -13,27 +13,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The PersonalProfile describes an individual.  Information about the
+ * The PersonalProfileProperties describes an individual.  Information about the
  * personal profile is stored as an Person entity in the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonalProfile extends ActorHeader
+public class PersonalProfileProperties extends ActorProfileProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              fullName             = null;
-    private String              jobTitle             = null;
-    private List<UserIdentity>  associatedUserIds    = null;
-    private Map<String, Object> extendedProperties   = null;
-    private Map<String, String> additionalProperties = null;
+    private String fullName = null;
+    private String jobTitle = null;
 
 
     /**
      * Default Constructor
      */
-    public PersonalProfile()
+    public PersonalProfileProperties()
     {
         super();
     }
@@ -44,7 +41,7 @@ public class PersonalProfile extends ActorHeader
      *
      * @param template object being copied
      */
-    public PersonalProfile(PersonalProfile template)
+    public PersonalProfileProperties(PersonalProfileProperties template)
     {
         super (template);
 
@@ -52,14 +49,12 @@ public class PersonalProfile extends ActorHeader
         {
             this.fullName = template.getFullName();
             this.jobTitle = template.getJobTitle();
-            this.associatedUserIds = template.getAssociatedUserIds();
-            this.extendedProperties = template.getExtendedProperties();
-            this.additionalProperties = template.getAdditionalProperties();
         }
     }
 
+
     /**
-     * Return the full name for this person.
+     * Return the full legal name for this person.
      *
      * @return string name
      */
@@ -70,7 +65,7 @@ public class PersonalProfile extends ActorHeader
 
 
     /**
-     * Set up the full name for this person.
+     * Set up the full legal name for this person.
      *
      * @param fullName string name
      */
@@ -103,105 +98,6 @@ public class PersonalProfile extends ActorHeader
 
 
     /**
-     * Return the userIds associated with the profile.
-     *
-     * @return list of userIds
-     */
-    public List<UserIdentity> getAssociatedUserIds()
-    {
-        if (associatedUserIds == null)
-        {
-            return null;
-        }
-        else if (associatedUserIds.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(associatedUserIds);
-        }
-    }
-
-
-    /**
-     * Set up the userIds associated with the profile.
-     *
-     * @param associatedUserIds list of userIds
-     */
-    public void setAssociatedUserIds(List<UserIdentity> associatedUserIds)
-    {
-        this.associatedUserIds = associatedUserIds;
-    }
-
-
-    /**
-     * Return any properties associated with the subclass of this element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setExtendedProperties(Map<String, Object> additionalProperties)
-    {
-        this.extendedProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return any additional properties associated with the element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -209,25 +105,17 @@ public class PersonalProfile extends ActorHeader
     @Override
     public String toString()
     {
-        return "PersonalProfile{" +
-                "fullName='" + fullName + '\'' +
-                ", jobTitle='" + jobTitle + '\'' +
-                ", associatedUserIds=" + associatedUserIds +
-                ", extendedProperties=" + extendedProperties +
-                ", additionalProperties=" + additionalProperties +
-                ", contactDetails=" + getContactDetails() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                ", originId='" + getOriginId() + '\'' +
-                ", originName='" + getOriginName() + '\'' +
-                ", originType='" + getOriginType() + '\'' +
-                ", originLicense='" + getOriginLicense() + '\'' +
-                '}';
+        return "PersonalProfileProperties{" +
+                       "knownName='" + getKnownName() + '\'' +
+                       ", fullName='" + fullName + '\'' +
+                       ", jobTitle='" + jobTitle + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -252,10 +140,9 @@ public class PersonalProfile extends ActorHeader
         {
             return false;
         }
-        PersonalProfile that = (PersonalProfile) objectToCompare;
-        return Objects.equals(getAssociatedUserIds(), that.getAssociatedUserIds()) &&
-                Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+        PersonalProfileProperties that = (PersonalProfileProperties) objectToCompare;
+        return Objects.equals(fullName, that.fullName) &&
+                       Objects.equals(jobTitle, that.jobTitle);
     }
 
 
@@ -267,7 +154,6 @@ public class PersonalProfile extends ActorHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getAssociatedUserIds(),
-                            getExtendedProperties(), getAdditionalProperties());
+        return Objects.hash(super.hashCode(), fullName, jobTitle);
     }
 }

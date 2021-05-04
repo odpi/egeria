@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.properties;
+package org.odpi.openmetadata.accessservices.communityprofile.metadataelements;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementClassification;
@@ -61,15 +61,15 @@ public class ClassificationTest
      */
     @Test public void testNullObject()
     {
-        Classification    nullObject = new Classification();
+        ElementClassification nullObject = new ElementClassification();
 
-        assertTrue(nullObject.getName() == null);
-        assertTrue(nullObject.getProperties() == null);
+        assertTrue(nullObject.getClassificationName() == null);
+        assertTrue(nullObject.getClassificationProperties() == null);
 
-        nullObject = new Classification(null);
+        nullObject = new ElementClassification(null);
 
-        assertTrue(nullObject.getName() == null);
-        assertTrue(nullObject.getProperties() == null);
+        assertTrue(nullObject.getClassificationName() == null);
+        assertTrue(nullObject.getClassificationProperties() == null);
     }
 
 

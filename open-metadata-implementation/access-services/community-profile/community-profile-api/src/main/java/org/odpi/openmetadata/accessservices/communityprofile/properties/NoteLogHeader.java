@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ActorHeader covers the properties that are common between a Team and a Person.
+ * NoteLogHeader covers the properties that are common between a CommunityForum and a PersonalNoteLog.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,12 +26,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = CommunityForum.class, name = "CommunityForum"),
         @JsonSubTypes.Type(value = PersonalNoteLog.class, name = "PersonalNoteLog")
 })
-public abstract class NoteLogHeader extends ReferenceableHeader
+public abstract class NoteLogHeader extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private Map<String, Object> extendedProperties   = null;
-    private Map<String, String> additionalProperties = null;
+    private boolean isPublic = false;
 
 
     /**
@@ -54,76 +53,32 @@ public abstract class NoteLogHeader extends ReferenceableHeader
 
         if (template != null)
         {
-            extendedProperties = template.getExtendedProperties();
-            additionalProperties = template.getAdditionalProperties();
+            isPublic = template.getIsPublic();
         }
     }
 
 
     /**
-     * Return any properties associated with the subclass of this element.
+     * Return if the link to the note log is private to the creating user.
      *
-     * @return map of property names to property values
+     * @return boolean
      */
-    public Map<String, Object> getExtendedProperties()
+    public boolean getIsPublic()
     {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
+        return isPublic;
     }
 
 
     /**
-     * Set up any additional properties associated with the element.
+     * Set up whether the link to the note log is private to the creating user or not.
      *
-     * @param additionalProperties map of property names to property values
+     * @param aPublic boolean
      */
-    public void setExtendedProperties(Map<String, Object> additionalProperties)
+    public void setIsPublic(boolean aPublic)
     {
-        this.extendedProperties = additionalProperties;
+        isPublic = aPublic;
     }
 
-
-    /**
-     * Return any additional properties associated with the element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
 
 
     /**
@@ -135,16 +90,13 @@ public abstract class NoteLogHeader extends ReferenceableHeader
     public String toString()
     {
         return "NoteLogHeader{" +
-                "extendedProperties=" + extendedProperties +
-                ", additionalProperties=" + additionalProperties +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                '}';
+                       "isPublic=" + isPublic +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -170,8 +122,7 @@ public abstract class NoteLogHeader extends ReferenceableHeader
             return false;
         }
         NoteLogHeader that = (NoteLogHeader) objectToCompare;
-        return  Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+        return isPublic == that.isPublic;
     }
 
 
@@ -183,6 +134,6 @@ public abstract class NoteLogHeader extends ReferenceableHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getExtendedProperties(), getAdditionalProperties());
+        return Objects.hash(super.hashCode(), getIsPublic());
     }
 }

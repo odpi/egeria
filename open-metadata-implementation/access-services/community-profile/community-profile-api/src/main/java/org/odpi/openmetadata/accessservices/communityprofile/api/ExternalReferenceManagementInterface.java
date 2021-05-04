@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ExternalReference;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -30,10 +30,10 @@ public interface ExternalReferenceManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<ExternalReference> findExternalReferencesById(String     userId,
-                                                       String     resourceId,
-                                                       int        startFrom,
-                                                       int        pageSize) throws InvalidParameterException,
+    List<ExternalReferenceProperties> findExternalReferencesById(String     userId,
+                                                                 String     resourceId,
+                                                                 int        startFrom,
+                                                                 int        pageSize) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException;
 
@@ -51,10 +51,10 @@ public interface ExternalReferenceManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<ExternalReference> findExternalReferencesByURL(String     userId,
-                                                        String     url,
-                                                        int        startFrom,
-                                                        int        pageSize) throws InvalidParameterException,
+    List<ExternalReferenceProperties> findExternalReferencesByURL(String     userId,
+                                                                  String     url,
+                                                                  int        startFrom,
+                                                                  int        pageSize) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException;
 
@@ -71,8 +71,8 @@ public interface ExternalReferenceManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    ExternalReference getExternalReference(String     userId,
-                                           String     externalReferenceGUID) throws InvalidParameterException,
+    ExternalReferenceProperties getExternalReference(String     userId,
+                                                     String     externalReferenceGUID) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException;
 
@@ -91,10 +91,10 @@ public interface ExternalReferenceManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<ExternalReference> retrieveAttachedExternalReferences(String     userId,
-                                                               String     attachedToGUID,
-                                                               int        startFrom,
-                                                               int        pageSize) throws InvalidParameterException,
+    List<ExternalReferenceProperties> retrieveAttachedExternalReferences(String     userId,
+                                                                         String     attachedToGUID,
+                                                                         int        startFrom,
+                                                                         int        pageSize) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException;
 
@@ -151,10 +151,10 @@ public interface ExternalReferenceManagementInterface
      * @param resourceURL URL to access the resource.
      * @param resourceVersion version number of the resource.
      * @param owningOrganization organization the owns the resource.
-     * @param resourceProperties properties defined as part of a subclass of ExternalReference
+     * @param resourceProperties properties defined as part of a subclass of ExternalReferenceProperties
      * @param additionalProperties arbitrary additional properties.
      *
-     * @return unique identifier (guid) of the new ExternalReference.
+     * @return unique identifier (guid) of the new ExternalReferenceProperties.
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.

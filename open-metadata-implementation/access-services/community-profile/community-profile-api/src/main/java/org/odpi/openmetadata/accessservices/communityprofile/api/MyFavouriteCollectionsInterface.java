@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.*;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.AssetCollectionMember;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CommunityCollectionMember;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ProjectCollectionMember;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -26,16 +27,14 @@ public interface MyFavouriteCollectionsInterface
      * @return list of asset details
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any collections.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     List<AssetCollectionMember> getMyAssets(String userId,
-                                            int startFrom,
-                                            int pageSize) throws InvalidParameterException,
-                                                                 NoProfileForUserException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException;
+                                            int    startFrom,
+                                            int    pageSize) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException;
 
 
     /**
@@ -45,15 +44,13 @@ public interface MyFavouriteCollectionsInterface
      * @param assetGUID  unique identifier of the asset.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any collections.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void  addToMyAssets(String userId,
                         String assetGUID) throws InvalidParameterException,
-                                                   NoProfileForUserException,
-                                                   PropertyServerException,
-                                                   UserNotAuthorizedException;
+                                                 PropertyServerException,
+                                                 UserNotAuthorizedException;
 
 
     /**
@@ -63,15 +60,13 @@ public interface MyFavouriteCollectionsInterface
      * @param assetGUID  unique identifier of the asset.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any collections.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void  removeFromMyAssets(String userId,
                              String assetGUID) throws InvalidParameterException,
-                                                        NoProfileForUserException,
-                                                        PropertyServerException,
-                                                        UserNotAuthorizedException;
+                                                      PropertyServerException,
+                                                      UserNotAuthorizedException;
 
 
     /**
@@ -84,16 +79,14 @@ public interface MyFavouriteCollectionsInterface
      * @return list of project details
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any collections.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     List<ProjectCollectionMember> getMyProjects(String userId,
-                                                int startFrom,
-                                                int pageSize) throws InvalidParameterException,
-                                                                     NoProfileForUserException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException;
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException;
 
 
     /**
@@ -103,15 +96,13 @@ public interface MyFavouriteCollectionsInterface
      * @param projectGUID  unique identifier of the project.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any collections.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void  addToMyProjects(String userId,
                           String projectGUID) throws InvalidParameterException,
-                                                       NoProfileForUserException,
-                                                       PropertyServerException,
-                                                       UserNotAuthorizedException;
+                                                     PropertyServerException,
+                                                     UserNotAuthorizedException;
 
 
     /**
@@ -121,15 +112,13 @@ public interface MyFavouriteCollectionsInterface
      * @param projectGUID  unique identifier of the project.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any collections.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void  removeFromMyProjects(String userId,
                                String projectGUID) throws InvalidParameterException,
-                                                            NoProfileForUserException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException;
+                                                          PropertyServerException,
+                                                          UserNotAuthorizedException;
 
 
     /**
@@ -142,16 +131,14 @@ public interface MyFavouriteCollectionsInterface
      * @return list of community details
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any collections.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     List<CommunityCollectionMember> getMyCommunities(String userId,
-                                                     int startFrom,
-                                                     int pageSize) throws InvalidParameterException,
-                                                                          NoProfileForUserException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException;
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException;
 
 
     /**
@@ -161,13 +148,11 @@ public interface MyFavouriteCollectionsInterface
      * @param communityGUID  unique identifier of the community.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any collections.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void  addToMyCommunities(String userId,
                              String communityGUID) throws InvalidParameterException,
-                                                          NoProfileForUserException,
                                                           PropertyServerException,
                                                           UserNotAuthorizedException;
 
@@ -178,14 +163,12 @@ public interface MyFavouriteCollectionsInterface
      * @param userId     userId of user making request.
      * @param communityGUID  unique identifier of the community.
      *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any collections.
-     * @throws PropertyServerException there is a problem updating information in the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws PropertyServerException there is a problem updating information in the property server(s)
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
      */
     void  removeFromMyCommunities(String userId,
                                   String communityGUID) throws InvalidParameterException,
-                                                               NoProfileForUserException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException;
 

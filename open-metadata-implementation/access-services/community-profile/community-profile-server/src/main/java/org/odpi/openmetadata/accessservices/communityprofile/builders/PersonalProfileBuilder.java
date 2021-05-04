@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * PersonalProfileBuilder creates repository entities and relationships from properties for a personal
- * profile.  Specifically, a single PersonalProfile is represented as a Person entity with an optional ContributionRecord
+ * profile.  Specifically, a single PersonalProfileProperties is represented as a Person entity with an optional ContributionRecord
  * entity linked to the Person using a PersonalContribution relationship.  Each Person entity must be linked to
  * at least one UserIdentity via a ProfileIdentity relationship.  In addition, Person is optionally linked to
  * multiple ContactDetails entities via the ContactThrough relationship.

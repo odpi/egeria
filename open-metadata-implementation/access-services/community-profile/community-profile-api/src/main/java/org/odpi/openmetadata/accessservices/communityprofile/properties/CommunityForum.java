@@ -49,40 +49,12 @@ public class CommunityForum extends NoteLogHeader
     public String toString()
     {
         return "CommunityForum{" +
-                "typeProperties=" + getExtendedProperties() +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                '}';
-    }
-
-
-    /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        return super.equals(objectToCompare);
-    }
-
-
-    /**
-     * Hash code for this object
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return super.hashCode();
+                       "isPublic=" + getIsPublic() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

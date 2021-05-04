@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.TeamLeaderMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.TeamLeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;

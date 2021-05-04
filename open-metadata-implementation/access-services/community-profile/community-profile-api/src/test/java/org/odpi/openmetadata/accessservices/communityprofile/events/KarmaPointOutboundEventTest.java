@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementHeader;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;
@@ -14,11 +16,12 @@ import static org.testng.Assert.assertTrue;
  */
 public class KarmaPointOutboundEventTest
 {
-    private static CommunityProfileOutboundEventType eventType  = CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT;
-    private static PersonalProfile                   testPP     = new PersonalProfile();
-    private static String                            testPPGUID = "TestPersonalProfileGUID";
-    private static String                            testUserId = "TestUserId";
-    private static long                              plateau    = 9;
+    private static CommunityProfileOutboundEventType eventType           = CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT;
+    private static PersonalProfileElement            testPP              = new PersonalProfileElement();
+    private static String                            testPPGUID          = "TestPersonalProfileGUID";
+    private static String                            testPPQualifiedName = "TestPersonalProfileQName";
+    private static String                            testUserId          = "TestUserId";
+    private static long                              plateau             = 9;
     private static long                              points     = 40;
 
 
@@ -27,7 +30,13 @@ public class KarmaPointOutboundEventTest
      */
     public KarmaPointOutboundEventTest()
     {
-        testPP.setGUID(testPPGUID);
+        PersonalProfileProperties properties = new PersonalProfileProperties();
+        properties.setQualifiedName(testPPQualifiedName);
+
+        ElementHeader header = new ElementHeader();
+        header.setGUID(testPPGUID);
+        testPP.setElementHeader(header);
+        testPP.setPersonalProfileProperties(properties);
     }
 
 

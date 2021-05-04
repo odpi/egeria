@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * PersonalProfileConverter generates a PersonalProfile bean from a PersonalProfile entity.
+ * PersonalProfileConverter generates a PersonalProfileProperties bean from a PersonalProfileProperties entity.
  */
 public class ContributionRecordConverter extends CommonHeaderConverter
 {

@@ -6,19 +6,20 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ExternalReference stores information about an link to an external resource that is relevant to a personal
+ * ExternalReferenceProperties stores information about an link to an external resource that is relevant to a personal
  * profile or a community.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalReference extends CommonHeader
+public class ExternalReferenceProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -37,7 +38,7 @@ public class ExternalReference extends CommonHeader
     /**
      * Default constructor
      */
-    public ExternalReference()
+    public ExternalReferenceProperties()
     {
         super();
     }
@@ -48,10 +49,8 @@ public class ExternalReference extends CommonHeader
      *
      * @param template element to copy
      */
-    public ExternalReference(ExternalReference template)
+    public ExternalReferenceProperties(ExternalReferenceProperties template)
     {
-        super(template);
-
         if (template != null)
         {
             linkId               = template.getLinkId();
@@ -299,7 +298,7 @@ public class ExternalReference extends CommonHeader
     @Override
     public String toString()
     {
-        return "ExternalReference{" +
+        return "ExternalReferenceProperties{" +
                 "resourceId='" + resourceId + '\'' +
                 ", linkId='" + linkId + '\'' +
                 ", resourceDisplayName='" + resourceDisplayName + '\'' +
@@ -310,13 +309,6 @@ public class ExternalReference extends CommonHeader
                 ", organization='" + owningOrganization + '\'' +
                 ", extendedProperties=" + extendedProperties +
                 ", additionalProperties=" + additionalProperties +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                ", originId='" + getOriginId() + '\'' +
-                ", originName='" + getOriginName() + '\'' +
-                ", originType='" + getOriginType() + '\'' +
-                ", originLicense='" + getOriginLicense() + '\'' +
                 '}';
     }
 
@@ -342,7 +334,7 @@ public class ExternalReference extends CommonHeader
         {
             return false;
         }
-        ExternalReference that = (ExternalReference) objectToCompare;
+        ExternalReferenceProperties that = (ExternalReferenceProperties) objectToCompare;
         return Objects.equals(getResourceId(), that.getResourceId()) &&
                 Objects.equals(getLinkId(), that.getLinkId()) &&
                 Objects.equals(getResourceDisplayName(), that.getResourceDisplayName()) &&

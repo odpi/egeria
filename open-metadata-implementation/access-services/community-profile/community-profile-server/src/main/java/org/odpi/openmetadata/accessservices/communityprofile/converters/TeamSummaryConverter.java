@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.TeamSummaryMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.TeamSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TeamSummaryConverter generates a TeamSummary bean from an Team entity and the relationships connected to it.
+ * TeamSummaryConverter generates a TeamSummary bean from an TeamProperties entity and the relationships connected to it.
  */
 public class TeamSummaryConverter extends CommonHeaderConverter
 {

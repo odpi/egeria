@@ -4,16 +4,14 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalRoleMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalRole;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * PersonalRoleConverter generates a PersonalRole from an PersonRole entity
+ * PersonalRoleConverter generates a PersonalRole from an PersonRoleProperties entity
  */
 public class PersonalRoleConverter extends CommonHeaderConverter
 {

@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonalMessage extends CommentHeader
+public class PersonalMessage extends CommentProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -48,39 +48,15 @@ public class PersonalMessage extends CommentHeader
     public String toString()
     {
         return "PersonalMessage{" +
-                "qualifiedName='" + getQualifiedName() + '\'' +
-                ", text='" + getText() + '\'' +
-                ", commentProperties=" + getExtendedProperties() +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", userId='" + getUserId() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                '}';
-    }
-
-
-    /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        return super.equals(objectToCompare);
-    }
-
-
-    /**
-     * Hash code for this object
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return super.hashCode();
+                       "commentType=" + getCommentType() +
+                       ", commentText='" + getCommentText() + '\'' +
+                       ", user='" + getUser() + '\'' +
+                       ", isPublic=" + getIsPublic() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

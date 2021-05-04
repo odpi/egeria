@@ -26,13 +26,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum ToDoStatus implements Serializable
 {
-    OPEN        (0,  "Open",        "The to do has been documented but no action taken."),
-    IN_PROGRESS (1,  "In Progress", "The assigned person is working on the action defined in the to do."),
-    WAITING     (2,  "Waiting",     "The assigned person is unable to proceed because another action needs to complete first."),
-    COMPLETE    (3,  "Complete",    "The requested action is complete."),
-    ABANDONED   (99, "Abandoned",   "The requested action has been abandoned and will never complete.");
+    OPEN        (0,  0,  "Open",        "The to do has been documented but no action taken."),
+    IN_PROGRESS (1,  1,  "In Progress", "The assigned person is working on the action defined in the to do."),
+    WAITING     (2,  2,  "Waiting",     "The assigned person is unable to proceed because another action needs to complete first."),
+    COMPLETE    (3,  3,  "Complete",    "The requested action is complete."),
+    ABANDONED   (99, 99, "Abandoned",   "The requested action has been abandoned and will never complete.");
 
     private static final long serialVersionUID = 1L;
+
+    public static final String ENUM_TYPE_GUID  = "7197ea39-334d-403f-a70b-d40231092df7";
+    public static final String ENUM_TYPE_NAME  = "ToDoStatus";
+
+    private int    openTypeOrdinal;
 
     private int            ordinal;
     private String         name;
@@ -46,12 +51,35 @@ public enum ToDoStatus implements Serializable
      * @param name default string name of the enumeration
      * @param description default string description of the enumeration
      */
-    ToDoStatus(int  ordinal, String name, String description)
+    ToDoStatus(int    ordinal,
+               int    openTypeOrdinal,
+               String name,
+               String description)
     {
         this.ordinal = ordinal;
         this.name = name;
+        this.openTypeOrdinal = openTypeOrdinal;
         this.description = description;
     }
+
+
+    /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
 
 
     /**

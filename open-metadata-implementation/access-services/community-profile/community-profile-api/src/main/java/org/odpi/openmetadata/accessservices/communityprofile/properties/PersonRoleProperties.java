@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PersonRole covers a role that has been defined in an organization.  One of more people
+ * PersonRoleProperties covers a role that has been defined in an organization.  One of more people
  * can be assigned to a role.  The optional headCount determines the maximum number of people that should be
  * appointed (open metadata does not enforce this level but sends a notification if the headCount
  * level is breached.) It also returns how many people are currently appointed to the role.
@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonRole extends PersonalRoleProperties
+public class PersonRoleProperties extends PersonalRoleProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class PersonRole extends PersonalRoleProperties
     /**
      * Default constructor
      */
-    public PersonRole()
+    public PersonRoleProperties()
     {
         super();
     }
@@ -41,7 +41,7 @@ public class PersonRole extends PersonalRoleProperties
      *
      * @param template object to copy
      */
-    public PersonRole(PersonRole template)
+    public PersonRoleProperties(PersonRoleProperties template)
     {
         super(template);
     }
@@ -121,7 +121,7 @@ public class PersonRole extends PersonalRoleProperties
     @Override
     public String toString()
     {
-        return "PersonRole{" +
+        return "PersonRoleProperties{" +
                        "headCountLimitSet=" + headCountLimitSet +
                        ", headCount=" + headCount +
                        ", appointmentCount=" + appointmentCount +
@@ -158,7 +158,7 @@ public class PersonRole extends PersonalRoleProperties
         {
             return false;
         }
-        PersonRole that = (PersonRole) objectToCompare;
+        PersonRoleProperties that = (PersonRoleProperties) objectToCompare;
         return getHeadCountLimitSet() == that.getHeadCountLimitSet() &&
                 getHeadCount() == that.getHeadCount() &&
                 getAppointmentCount() == that.getAppointmentCount();

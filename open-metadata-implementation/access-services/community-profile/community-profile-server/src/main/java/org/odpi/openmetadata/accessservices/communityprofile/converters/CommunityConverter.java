@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.CommunityMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Community;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * CommunityConverter generates an Community bean from an Community entity.
+ * CommunityConverter generates an CommunityProperties bean from an CommunityProperties entity.
  */
 public class CommunityConverter extends CommonHeaderConverter
 {
@@ -41,11 +41,11 @@ public class CommunityConverter extends CommonHeaderConverter
      *
      * @return bean
      */
-    public Community getBean()
+    public CommunityProperties getBean()
     {
         final String methodName = "getBean";
 
-        Community  bean = new Community();
+        CommunityProperties bean = new CommunityProperties();
 
         super.updateBean(bean);
 

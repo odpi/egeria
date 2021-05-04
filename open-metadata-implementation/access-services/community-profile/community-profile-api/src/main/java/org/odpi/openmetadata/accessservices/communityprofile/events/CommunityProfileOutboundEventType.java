@@ -47,9 +47,9 @@ public enum CommunityProfileOutboundEventType implements Serializable
                                                "A new project has been added to one of the personal collections."),
     PROJECT_REMOVED_FROM_COLLECTION_EVENT     (23,  "Project Removed From Collection",
                                                "A project has been removed from one of the personal collections."),
-    NEW_COMMUNITY_IN_COLLECTION_EVENT         (24,  "New Community In Collection",
+    NEW_COMMUNITY_IN_COLLECTION_EVENT         (24,  "New CommunityProperties In Collection",
                                                "A new community has been added to one of the personal collections."),
-    COMMUNITY_REMOVED_FROM_COLLECTION_EVENT   (25,  "Community Removed From Collection",
+    COMMUNITY_REMOVED_FROM_COLLECTION_EVENT   (25,  "CommunityProperties Removed From Collection",
                                                "A community has been removed from one of the personal collections.");
 
     private static final long     serialVersionUID = 1L;

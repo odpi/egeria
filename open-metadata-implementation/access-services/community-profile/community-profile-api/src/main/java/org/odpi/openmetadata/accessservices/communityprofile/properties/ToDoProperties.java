@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * To Do describes an action - it may be assigned to a person role (see PersonRoleAction).
  */
-public class ToDo extends ReferenceableHeader
+public class ToDoProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -23,7 +23,7 @@ public class ToDo extends ReferenceableHeader
     /**
      * Default constructor
      */
-    public ToDo()
+    public ToDoProperties()
     {
         super();
     }
@@ -34,7 +34,7 @@ public class ToDo extends ReferenceableHeader
      *
      * @param template object to copy
      */
-    public ToDo(ToDo template)
+    public ToDoProperties(ToDoProperties template)
     {
         super(template);
 
@@ -235,22 +235,18 @@ public class ToDo extends ReferenceableHeader
     @Override
     public String toString()
     {
-        return "ToDo{" +
-                "creationTime=" + creationTime +
-                ", priority=" + priority +
-                ", dueTime=" + dueTime +
-                ", completionTime=" + completionTime +
-                ", status=" + status +
-                ", extendedProperties=" + extendedProperties +
-                ", additionalProperties=" + additionalProperties +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                '}';
+        return "ToDoProperties{" +
+                       "creationTime=" + creationTime +
+                       ", priority=" + priority +
+                       ", dueTime=" + dueTime +
+                       ", completionTime=" + completionTime +
+                       ", status=" + status +
+                       ", extendedProperties=" + extendedProperties +
+                       ", additionalProperties=" + additionalProperties +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       '}';
     }
 
 
@@ -275,14 +271,14 @@ public class ToDo extends ReferenceableHeader
         {
             return false;
         }
-        ToDo toDo = (ToDo) objectToCompare;
-        return getPriority() == toDo.getPriority() &&
-                Objects.equals(getCreationTime(), toDo.getCreationTime()) &&
-                Objects.equals(getDueTime(), toDo.getDueTime()) &&
-                Objects.equals(getCompletionTime(), toDo.getCompletionTime()) &&
-                getStatus() == toDo.getStatus() &&
-                Objects.equals(getExtendedProperties(), toDo.getExtendedProperties()) &&
-                Objects.equals(getAdditionalProperties(), toDo.getAdditionalProperties());
+        ToDoProperties toDoProperties = (ToDoProperties) objectToCompare;
+        return getPriority() == toDoProperties.getPriority() &&
+                Objects.equals(getCreationTime(), toDoProperties.getCreationTime()) &&
+                Objects.equals(getDueTime(), toDoProperties.getDueTime()) &&
+                Objects.equals(getCompletionTime(), toDoProperties.getCompletionTime()) &&
+                getStatus() == toDoProperties.getStatus() &&
+                Objects.equals(getExtendedProperties(), toDoProperties.getExtendedProperties()) &&
+                Objects.equals(getAdditionalProperties(), toDoProperties.getAdditionalProperties());
     }
 
 

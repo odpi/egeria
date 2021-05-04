@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * CommunityForumConverter generates a CommunityForum from an PersonRole entity
+ * CommunityForumConverter generates a CommunityForum from an PersonRoleProperties entity
  */
 public class CommunityForumConverter extends CommonHeaderConverter
 {

@@ -2,59 +2,115 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Like;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.LikeElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.LikeProperties;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
- * LikeConverter generates an Like bean from an Like entity and its attachment to a Referenceable.
+ * LikeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a RatingElement bean.
  */
-public class LikeConverter extends CommonHeaderConverter
+public class LikeConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(LikeConverter.class);
-
     /**
-     * Constructor captures the initial content with relationship
+     * Constructor
      *
-     * @param entity properties to convert
-     * @param relationship properties to convert
-     * @param repositoryHelper helper object to parse entity/relationship
+     * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public LikeConverter(EntityDetail         entity,
-                         Relationship         relationship,
-                         OMRSRepositoryHelper repositoryHelper,
-                         String               serviceName)
+    public LikeConverter(OMRSRepositoryHelper repositoryHelper,
+                         String               serviceName,
+                         String               serverName)
     {
-
-        super(entity, relationship, repositoryHelper, serviceName);
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public Like getBean()
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        Like  bean = new Like();
-
-        super.updateBean(bean);
-
-        if (relationship != null)
+        try
         {
-            bean.setUserId(relationship.getCreatedBy());
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
+
+            if (returnBean instanceof LikeElement)
+            {
+                LikeElement    bean           = (LikeElement) returnBean;
+                LikeProperties likeProperties = new LikeProperties();
+
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                InstanceProperties instanceProperties;
+
+                if (entity != null)
+                {
+                    likeProperties.setUser(entity.getCreatedBy());
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
+
+                if (relationship != null)
+                {
+                    instanceProperties = new InstanceProperties(relationship.getProperties());
+
+                    likeProperties.setIsPublic(this.getIsPublic(instanceProperties));
+                }
+
+                bean.setProperties(likeProperties);
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
-        log.debug("Bean: " + bean.toString());
+        return null;
+    }
 
-        return bean;
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
+    {
+        return getNewBean(beanClass, entity, null, methodName);
     }
 }

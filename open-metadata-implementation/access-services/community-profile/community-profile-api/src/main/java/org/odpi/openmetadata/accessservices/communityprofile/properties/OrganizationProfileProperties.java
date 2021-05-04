@@ -10,20 +10,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Organization describes a top-level team in an organization.  It adds no attributes, but is a marker for
+ * OrganizationProfileProperties describes a top-level team in an organization.  It adds no attributes, but is a marker for
  * the top of a departmental structure.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Organization extends TeamProperties
+public class OrganizationProfileProperties extends TeamProfileProperties
 {
     private static final long    serialVersionUID = 1L;
 
     /**
      * Default constructor
      */
-    public Organization()
+    public OrganizationProfileProperties()
     {
         super();
     }
@@ -34,7 +34,7 @@ public class Organization extends TeamProperties
      *
      * @param template object to copy
      */
-    public Organization(Organization template)
+    public OrganizationProfileProperties(OrganizationProfileProperties template)
     {
         super(template);
     }
@@ -45,22 +45,18 @@ public class Organization extends TeamProperties
      *
      * @return return string containing the property names and values
      */
-
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    
+    @Override
+    public String toString()
+    {
+        return "OrganizationProfileProperties{" +
+                       "teamType='" + getTeamType() + '\'' +
+                       ", knownName='" + getKnownName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
+    }
 }

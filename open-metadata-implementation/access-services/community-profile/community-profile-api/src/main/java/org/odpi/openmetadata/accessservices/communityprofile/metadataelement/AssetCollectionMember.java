@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.properties;
+package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.OwnerType;
 
 import java.util.*;
 
@@ -19,14 +21,7 @@ public class AssetCollectionMember extends CollectionMemberHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              owner                = null;
-    private OwnerType           ownerType            = null;
-    private List<String>        zoneMembership       = null;
-    private String              lastChange           = null;
-    private Date                dateAssetCreated     = null;
-    private Date                dateAssetLastUpdated = null;
-    private Map<String, Object> extendedProperties   = null;
-    private Map<String, String> additionalProperties = null;
+    private AssetProperties properties = null;
 
 
     /**
@@ -49,242 +44,32 @@ public class AssetCollectionMember extends CollectionMemberHeader
 
         if (template != null)
         {
-            this.owner = template.getOwner();
-            this.ownerType = template.getOwnerType();
-            this.zoneMembership = template.getZoneMembership();
-            this.lastChange = template.getLastChange();
-            this.dateAssetCreated = template.getDateAssetCreated();
-            this.dateAssetLastUpdated = template.getDateAssetLastUpdated();
-            this.extendedProperties = template.getExtendedProperties();
-            this.additionalProperties = template.getAdditionalProperties();
-        }
-    }
-
-
-
-    /**
-     * Return the owner for this asset.  This is the user id of the person or engine that is responsible for
-     * managing this asset.
-     *
-     * @return string id
-     */
-    public String getOwner()
-    {
-        return owner;
-    }
-
-
-    /**
-     * Set up the owner for this asset.  This is the user id of the person or engine that is responsible for
-     * managing this asset.
-     *
-     * @param owner string id
-     */
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
-    }
-
-
-    /**
-     * Return the type of owner identifier used in the owner field (default is userId).
-     *
-     * @return OwnerType enum
-     */
-    public OwnerType getOwnerType()
-    {
-        return ownerType;
-    }
-
-
-    /**
-     * Set up the type of owner identifier used in the owner field (default is userId).
-     *
-     * @param ownerType OwnerType enum
-     */
-    public void setOwnerType(OwnerType ownerType)
-    {
-        this.ownerType = ownerType;
-    }
-
-
-    /**
-     * Return the names of the zones that this asset is a member of.
-     *
-     * @return list of zone names
-     */
-    public List<String> getZoneMembership()
-    {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return zoneMembership;
+            properties = template.getProperties();
         }
     }
 
 
     /**
-     * Set up the names of the zones that this asset is a member of.
+     * Return the properties of the asset.
      *
-     * @param zoneMembership list of zone names
+     * @return properties
      */
-    public void setZoneMembership(List<String> zoneMembership)
+    public AssetProperties getProperties()
     {
-        this.zoneMembership = zoneMembership;
+        return properties;
     }
 
 
     /**
-     * Return the description of the last change to the asset.  This is free form text.
+     * Set up the asset properties.
      *
-     * @return string description
+     * @param properties  properties
      */
-    public String getLastChange()
+    public void setProperties(AssetProperties properties)
     {
-        return lastChange;
+        this.properties = properties;
     }
 
-
-    /**
-     * Set up the description of the last change to the asset.  This is free form text.
-     *
-     * @param lastChange string description
-     */
-    public void setLastChange(String lastChange)
-    {
-        this.lastChange = lastChange;
-    }
-
-
-    /**
-     * Return the date that the asset was created.
-     *
-     * @return date
-     */
-    public Date getDateAssetCreated()
-    {
-        if (dateAssetCreated == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(dateAssetCreated.getTime());
-        }
-    }
-
-
-    /**
-     * Set up the date that the asset was created.
-     *
-     * @param dateAssetCreated date
-     */
-    public void setDateAssetCreated(Date dateAssetCreated)
-    {
-        this.dateAssetCreated = dateAssetCreated;
-    }
-
-
-    /**
-     * Return the date that the asset was last updated.
-     *
-     * @return date
-     */
-    public Date getDateAssetLastUpdated()
-    {
-        if (dateAssetLastUpdated == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(dateAssetLastUpdated.getTime());
-        }
-    }
-
-
-    /**
-     * Set up the date that the asset was last updated.
-     *
-     * @param dateAssetLastUpdated date
-     */
-    public void setDateAssetLastUpdated(Date dateAssetLastUpdated)
-    {
-        this.dateAssetLastUpdated = dateAssetLastUpdated;
-    }
-
-
-    /**
-     * Return any properties associated with the subclass of this element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setExtendedProperties(Map<String, Object> additionalProperties)
-    {
-        this.extendedProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return any additional properties associated with the element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
 
 
     /**
@@ -296,20 +81,10 @@ public class AssetCollectionMember extends CollectionMemberHeader
     public String toString()
     {
         return "AssetCollectionMember{" +
-                       "owner='" + owner + '\'' +
-                       ", ownerType=" + ownerType +
-                       ", zoneMembership=" + zoneMembership +
-                       ", lastChange='" + lastChange + '\'' +
-                       ", dateAssetCreated=" + dateAssetCreated +
-                       ", dateAssetLastUpdated=" + dateAssetLastUpdated +
-                       ", extendedProperties=" + extendedProperties +
-                       ", additionalProperties=" + additionalProperties +
+                       "properties=" + properties +
+                       ", elementHeader=" + getElementHeader() +
                        ", dateAddedToCollection=" + getDateAddedToCollection() +
                        ", membershipRationale='" + getMembershipRationale() + '\'' +
-                       ", watchStatus=" + getWatchStatus() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
                        '}';
     }
 
@@ -336,14 +111,7 @@ public class AssetCollectionMember extends CollectionMemberHeader
             return false;
         }
         AssetCollectionMember that = (AssetCollectionMember) objectToCompare;
-        return Objects.equals(getOwner(), that.getOwner()) &&
-                Objects.equals(getOwnerType(), that.getOwnerType()) &&
-                Objects.equals(getZoneMembership(), that.getZoneMembership()) &&
-                Objects.equals(getLastChange(), that.getLastChange()) &&
-                Objects.equals(getDateAssetCreated(), that.getDateAssetCreated()) &&
-                Objects.equals(getDateAssetLastUpdated(), that.getDateAssetLastUpdated()) &&
-                Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+        return Objects.equals(properties, that.properties);
     }
 
 
@@ -355,7 +123,6 @@ public class AssetCollectionMember extends CollectionMemberHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getOwner(), getOwnerType(), getZoneMembership(), getLastChange(), getDateAssetCreated(),
-                            getDateAssetLastUpdated(), getExtendedProperties(), getAdditionalProperties());
+        return Objects.hash(super.hashCode(), properties);
     }
 }

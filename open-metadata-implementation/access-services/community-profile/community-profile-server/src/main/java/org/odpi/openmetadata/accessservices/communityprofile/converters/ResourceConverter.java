@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.ResourceMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Resource;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ResourceConverter generates an Resource bean from an Referenceable entity.
+ * ResourceConverter generates an ResourceProperties bean from an Referenceable entity.
  */
 public class ResourceConverter extends CommonHeaderConverter
 {
@@ -38,11 +38,11 @@ public class ResourceConverter extends CommonHeaderConverter
      *
      * @return bean
      */
-    public Resource getBean()
+    public ResourceProperties getBean()
     {
         final String methodName = "getBean";
 
-        Resource  bean = new Resource();
+        ResourceProperties bean = new ResourceProperties();
 
         super.updateBean(bean);
 

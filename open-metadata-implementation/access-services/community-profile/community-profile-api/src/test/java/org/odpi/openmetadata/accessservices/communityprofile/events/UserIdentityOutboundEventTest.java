@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementHeader;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  * Validate that the UserIdentityOutboundEvent bean can be cloned, compared, serialized, deserialized and printed as a String.
@@ -16,8 +17,9 @@ public class UserIdentityOutboundEventTest
 {
     private static CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.NEW_USER_IDENTITY_EVENT;
     private static String testUserId = "TestUserId";
+    private static UserIdentityProperties properties = new UserIdentityProperties();
 
-    private UserIdentity bean = new UserIdentity();
+    private UserIdentityElement bean = new UserIdentityElement();
 
 
     /**
@@ -25,7 +27,8 @@ public class UserIdentityOutboundEventTest
      */
     public UserIdentityOutboundEventTest()
     {
-        bean.setUserId(testUserId);
+        properties.setQualifiedName(testUserId);
+        bean.setProperties(properties);
     }
 
 
@@ -53,6 +56,21 @@ public class UserIdentityOutboundEventTest
     private void validateResultObject(UserIdentityOutboundEvent resultObject)
     {
         assertTrue(resultObject.getEventType().equals(eventType));
+
+        UserIdentityElement resultBean = resultObject.getUserIdentity();
+
+        assertNotNull(resultBean);
+
+        UserIdentityProperties resultProperties = resultBean.getProperties();
+
+        assertNotNull(resultProperties);
+
+        String resultQName = resultProperties.getQualifiedName();
+
+        assertNotNull(resultQName);
+
+        assertTrue(properties.equals(resultProperties));
+        assertTrue(testUserId.equals(resultQName));
         assertTrue(bean.equals(resultObject.getUserIdentity()));
     }
 

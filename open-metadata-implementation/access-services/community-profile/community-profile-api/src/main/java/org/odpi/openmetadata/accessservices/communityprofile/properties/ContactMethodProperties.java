@@ -6,30 +6,31 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ContactMethod describes a single mechanism that can be used to contact an individual.
+ * ContactMethodProperties describes a single mechanism that can be used to contact an individual.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ContactMethod extends CommonHeader
+public class ContactMethodProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private ContactMethodType    type = null;
-    private String               service = null;
-    private String               value = null;
+    private ContactMethodType type = null;
+    private String            service = null;
+    private String            value = null;
 
 
     /**
      * Default constructor
      */
-    public ContactMethod()
+    public ContactMethodProperties()
     {
         super();
     }
@@ -40,10 +41,8 @@ public class ContactMethod extends CommonHeader
      *
      * @param template object to copy
      */
-    public ContactMethod(ContactMethod  template)
+    public ContactMethodProperties(ContactMethodProperties template)
     {
-        super(template);
-
         if (template != null)
         {
             type = template.getType();
@@ -127,14 +126,16 @@ public class ContactMethod extends CommonHeader
     @Override
     public String toString()
     {
-        return "ContactMethod{" +
-                "type=" + type +
-                ", service='" + service + '\'' +
-                ", value='" + value + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                '}';
+        return "ContactMethodProperties{" +
+                       "type=" + type +
+                       ", service='" + service + '\'' +
+                       ", value='" + value + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -159,7 +160,7 @@ public class ContactMethod extends CommonHeader
         {
             return false;
         }
-        ContactMethod that = (ContactMethod) objectToCompare;
+        ContactMethodProperties that = (ContactMethodProperties) objectToCompare;
         return getType() == that.getType() &&
                 Objects.equals(getService(), that.getService()) &&
                 Objects.equals(getValue(), that.getValue());

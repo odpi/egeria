@@ -14,24 +14,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Community describes the core properties of a community.
+ * CommunityProperties describes the core properties of a community.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Community extends ReferenceableHeader
+public class CommunityProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              mission              = null;
-    private Map<String, Object> extendedProperties   = null;
-    private Map<String, String> additionalProperties = null;
+    private String name        = null;
+    private String description = null;
+    private String mission     = null;
 
 
     /**
      * Default constructor
      */
-    public Community()
+    public CommunityProperties()
     {
         super();
     }
@@ -42,16 +42,60 @@ public class Community extends ReferenceableHeader
      *
      * @param template object to copy
      */
-    public Community(Community template)
+    public CommunityProperties(CommunityProperties template)
     {
         super(template);
 
         if (template != null)
         {
+            name = template.getName();
+            description = template.getDescription();
             mission = template.getMission();
-            extendedProperties = template.getExtendedProperties();
-            additionalProperties = template.getAdditionalProperties();
         }
+    }
+
+
+    /**
+     * Return the name of the community.
+     *
+     * @return string name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the community.
+     *
+     * @param name string name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Return the description of the community's aims and operations.
+     *
+     * @return text
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Set up the description of the community's aims and operations.
+     *
+     * @param description text
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
 
@@ -78,73 +122,6 @@ public class Community extends ReferenceableHeader
 
 
     /**
-     * Return any properties associated with the subclass of this element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setExtendedProperties(Map<String, Object> additionalProperties)
-    {
-        this.extendedProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return any additional properties associated with the element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -152,18 +129,16 @@ public class Community extends ReferenceableHeader
     @Override
     public String toString()
     {
-        return "Community{" +
-                "mission='" + mission + '\'' +
-                ", extendedProperties=" + extendedProperties +
-                ", additionalProperties=" + additionalProperties +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                '}';
+        return "CommunityProperties{" +
+                       "name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", mission='" + mission + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -188,10 +163,10 @@ public class Community extends ReferenceableHeader
         {
             return false;
         }
-        Community community = (Community) objectToCompare;
+        CommunityProperties community = (CommunityProperties) objectToCompare;
         return Objects.equals(getMission(), community.getMission()) &&
-                Objects.equals(getExtendedProperties(), community.getExtendedProperties()) &&
-                Objects.equals(getAdditionalProperties(), community.getAdditionalProperties());
+                Objects.equals(getName(), community.getName()) &&
+                Objects.equals(getDescription(), community.getDescription());
     }
 
 
@@ -203,6 +178,6 @@ public class Community extends ReferenceableHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMission(), getExtendedProperties(), getAdditionalProperties());
+        return Objects.hash(super.hashCode(), getMission(), getName(), getDescription());
     }
 }

@@ -1,10 +1,11 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.properties;
+package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 
 import java.util.Objects;
 
@@ -21,9 +22,7 @@ public class CommunityCollectionMember extends CollectionMemberHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private String name        = null;
-    private String description = null;
-    private String mission     = null;
+    private CommunityProperties properties = null;
 
     /**
      * Default constructor
@@ -45,79 +44,31 @@ public class CommunityCollectionMember extends CollectionMemberHeader
 
         if (template != null)
         {
-            name = template.getName();
-            description = template.getDescription();
-            mission = template.getMission();
+            properties = template.getProperties();
         }
     }
 
 
-
     /**
-     * Return the name of the community.
+     * Return the properties of the community.
      *
-     * @return string name
+     * @return properties
      */
-    public String getName()
+    public CommunityProperties getProperties()
     {
-        return name;
+        return properties;
     }
 
 
     /**
-     * Set up the name of the community.
+     * Set up the community properties.
      *
-     * @param name string name
+     * @param properties  properties
      */
-    public void setName(String name)
+    public void setProperties(CommunityProperties properties)
     {
-        this.name = name;
+        this.properties = properties;
     }
-
-
-    /**
-     * Return the description of the community's aims and operations.
-     *
-     * @return text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the community's aims and operations.
-     *
-     * @param description text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the mission for this project.
-     *
-     * @return string id
-     */
-    public String getMission()
-    {
-        return mission;
-    }
-
-
-    /**
-     * Set up the mission for this project.
-     *
-     * @param mission string id
-     */
-    public void setMission(String mission)
-    {
-        this.mission = mission;
-    }
-
 
 
     /**
@@ -129,17 +80,10 @@ public class CommunityCollectionMember extends CollectionMemberHeader
     public String toString()
     {
         return "CommunityCollectionMember{" +
-                       "name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       ", mission='" + mission + '\'' +
+                       "properties=" + properties +
+                       ", elementHeader=" + getElementHeader() +
                        ", dateAddedToCollection=" + getDateAddedToCollection() +
                        ", membershipRationale='" + getMembershipRationale() + '\'' +
-                       ", watchStatus=" + getWatchStatus() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -165,10 +109,8 @@ public class CommunityCollectionMember extends CollectionMemberHeader
         {
             return false;
         }
-        CommunityProperties community = (CommunityProperties) objectToCompare;
-        return Objects.equals(getMission(), community.getMission()) &&
-                       Objects.equals(getName(), community.getName()) &&
-                       Objects.equals(getDescription(), community.getDescription());
+        CommunityCollectionMember that = (CommunityCollectionMember) objectToCompare;
+        return Objects.equals(properties, that.properties);
     }
 
 
@@ -180,6 +122,6 @@ public class CommunityCollectionMember extends CollectionMemberHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMission(), getName(), getDescription());
+        return Objects.hash(super.hashCode(), getProperties());
     }
 }

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.mappers;
  * ContributionRecordMapper provides property name mapping for ContributionRecords that are linked off of
  * Personal Profiles via a PersonalContribution relationship.
  *
- * Specifically, a single PersonalProfile is represented as a Person entity with an optional ContributionRecord
+ * Specifically, a single PersonalProfileProperties is represented as a Person entity with an optional ContributionRecord
  * entity linked to the Person using a PersonalContribution relationship.
  */
 public class ContributionRecordMapper

@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.properties;
+package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.MetadataElement;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,9 +25,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = ProjectCollectionMember.class, name = "ProjectCollectionMember"),
         @JsonSubTypes.Type(value = CommunityCollectionMember.class, name = "CommunityCollectionMember")
 })
-public class CollectionMemberHeader implements MetadataElement, Serializable
+public abstract class CollectionMemberHeader implements MetadataElement, Serializable
 {
     private static final long    serialVersionUID = 1L;
+
+    private ElementHeader        elementHeader = null;
 
     private Date         dateAddedToCollection = null;
     private String       membershipRationale   = null;
@@ -50,13 +51,36 @@ public class CollectionMemberHeader implements MetadataElement, Serializable
      */
     public CollectionMemberHeader(CollectionMemberHeader template)
     {
-        super(template);
-
         if (template != null)
         {
+            this.elementHeader = template.getElementHeader();
             this.dateAddedToCollection = template.getDateAddedToCollection();
             this.membershipRationale = template.getMembershipRationale();
         }
+    }
+
+
+    /**
+     * Return the element header associated with the properties.
+     *
+     * @return element header object
+     */
+    @Override
+    public ElementHeader getElementHeader()
+    {
+        return elementHeader;
+    }
+
+
+    /**
+     * Set up the element header associated with the properties.
+     *
+     * @param elementHeader element header object
+     */
+    @Override
+    public void setElementHeader(ElementHeader elementHeader)
+    {
+        this.elementHeader = elementHeader;
     }
 
 
@@ -120,13 +144,9 @@ public class CollectionMemberHeader implements MetadataElement, Serializable
     public String toString()
     {
         return "CollectionMemberHeader{" +
-                       "dateAddedToCollection=" + dateAddedToCollection +
+                       "elementHeader=" + elementHeader +
+                       ", dateAddedToCollection=" + dateAddedToCollection +
                        ", membershipRationale='" + membershipRationale + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -148,14 +168,10 @@ public class CollectionMemberHeader implements MetadataElement, Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         CollectionMemberHeader that = (CollectionMemberHeader) objectToCompare;
-        return Objects.equals(getDateAddedToCollection(), that.getDateAddedToCollection()) &&
-                Objects.equals(getMembershipRationale(), that.getMembershipRationale()) &&
-                getWatchStatus() == that.getWatchStatus();
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(dateAddedToCollection, that.dateAddedToCollection) &&
+                       Objects.equals(membershipRationale, that.membershipRationale);
     }
 
 
@@ -167,6 +183,6 @@ public class CollectionMemberHeader implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDateAddedToCollection(), getMembershipRationale(), getWatchStatus());
+        return Objects.hash(super.hashCode(), getElementHeader(), getDateAddedToCollection(), getMembershipRationale());
     }
 }

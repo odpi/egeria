@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Classification;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProfileElementHeader;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -67,14 +66,14 @@ public class CommunityProfileElementConverter
      *
      * @param bean output bean
      */
-    void updateBean(CommunityProfileElementHeader  bean)
+    void updateBean(ElementHeader bean)
     {
         if (entity != null)
         {
             InstanceType instanceType = entity.getType();
             if (instanceType != null)
             {
-                bean.setTypeName(instanceType.getTypeDefName());
+                bean.setType(instanceType.getTypeDefName());
                 bean.setTypeDescription(instanceType.getTypeDefDescription());
             }
 

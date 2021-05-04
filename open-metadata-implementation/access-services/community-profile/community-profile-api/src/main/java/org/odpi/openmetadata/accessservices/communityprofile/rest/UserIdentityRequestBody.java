@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 
 import java.util.Objects;
 
@@ -18,12 +19,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UserIdentityRequestBody extends CommunityProfileOMASAPIRequestBody
+public class UserIdentityRequestBody extends MetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private String qualifiedName = null;
-
+    private UserIdentityProperties properties = null;
 
     /**
      * Default constructor
@@ -44,30 +44,30 @@ public class UserIdentityRequestBody extends CommunityProfileOMASAPIRequestBody
 
         if (template != null)
         {
-            this.qualifiedName = template.getQualifiedName();
+            this.properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the the unique employee number for this governance officer.
+     * Return the properties for this user identity.
      *
-     * @return String identifier
+     * @return properties bean
      */
-    public String getQualifiedName()
+    public UserIdentityProperties getProperties()
     {
-        return qualifiedName;
+        return properties;
     }
 
 
     /**
-     * Set up the unique employee number for this governance officer.
+     * Set up the properties for this user identity.
      *
-     * @param qualifiedName String identifier
+     * @param properties properties bean
      */
-    public void setQualifiedName(String qualifiedName)
+    public void setProperties(UserIdentityProperties properties)
     {
-        this.qualifiedName = qualifiedName;
+        this.properties = properties;
     }
 
 
@@ -80,7 +80,9 @@ public class UserIdentityRequestBody extends CommunityProfileOMASAPIRequestBody
     public String toString()
     {
         return "UserIdentityRequestBody{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
+                       "properties=" + properties +
+                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
     }
 
@@ -102,8 +104,12 @@ public class UserIdentityRequestBody extends CommunityProfileOMASAPIRequestBody
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         UserIdentityRequestBody that = (UserIdentityRequestBody) objectToCompare;
-        return Objects.equals(getQualifiedName(), that.getQualifiedName());
+        return Objects.equals(properties, that.properties);
     }
 
 
@@ -115,6 +121,6 @@ public class UserIdentityRequestBody extends CommunityProfileOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(getQualifiedName());
+        return Objects.hash(super.hashCode(), properties);
     }
 }

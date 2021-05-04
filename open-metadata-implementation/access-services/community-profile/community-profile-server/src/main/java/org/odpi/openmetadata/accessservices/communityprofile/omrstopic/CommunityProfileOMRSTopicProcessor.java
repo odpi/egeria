@@ -5,12 +5,13 @@ package org.odpi.openmetadata.accessservices.communityprofile.omrstopic;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.ContributionRecordHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalProfileMapper;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicProcessor;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
+import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -42,9 +43,9 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 
     private int                              karmaPointIncrement;
 
-    private PersonalProfileHandler           personalProfileHandler;
-    private ContributionRecordHandler        contributionRecordHandler;
-    private UserIdentityHandler              userIdentityHandler;
+    private PersonalProfileHandler                   personalProfileHandler;
+    private ContributionRecordHandler                contributionRecordHandler;
+    private UserIdentityHandler<UserIdentityElement> userIdentityHandler;
 
     private String                           serverUserId;
 
@@ -109,9 +110,9 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 
                 try
                 {
-                    PersonalProfile personalProfile = personalProfileHandler.getPersonalProfile(serverUserId,
-                                                                                                contributingUserId,
-                                                                                                methodName);
+                    PersonalProfileProperties personalProfile = personalProfileHandler.getPersonalProfile(serverUserId,
+                                                                                                          contributingUserId,
+                                                                                                          methodName);
 
                     if (personalProfile != null)
                     {

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.ReviewMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Review;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.StarRating;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;

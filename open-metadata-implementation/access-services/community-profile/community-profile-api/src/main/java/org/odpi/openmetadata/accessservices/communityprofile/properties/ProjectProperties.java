@@ -13,26 +13,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ProjectCollectionMember describes a project that is a member of an individual's my-projects collection.
+ * ProjectProperties describes a project.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProjectCollectionMember extends CollectionMemberHeader
+public class ProjectProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              status               = null;
-    private Date                startDate            = null;
-    private Date                plannedEndDate       = null;
-    private Map<String, Object> extendedProperties   = null;
-    private Map<String, String> additionalProperties = null;
+    private String name           = null;
+    private String description    = null;
+    private String status         = null;
+    private Date   startDate      = null;
+    private Date   plannedEndDate = null;
 
 
     /**
      * Default constructor
      */
-    public ProjectCollectionMember()
+    public ProjectProperties()
     {
         super();
     }
@@ -43,18 +43,63 @@ public class ProjectCollectionMember extends CollectionMemberHeader
      *
      * @param template object to copy
      */
-    public ProjectCollectionMember(ProjectCollectionMember template)
+    public ProjectProperties(ProjectProperties template)
     {
         super(template);
 
         if (template != null)
         {
+            this.name = template.getName();
+            this.description = template.getDescription();
             this.status = template.getStatus();
             this.startDate = template.getStartDate();
             this.plannedEndDate = template.getPlannedEndDate();
-            this.extendedProperties = template.getExtendedProperties();
-            this.additionalProperties = template.getAdditionalProperties();
         }
+    }
+
+
+
+    /**
+     * Return the name of the project.
+     *
+     * @return string name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the project.
+     *
+     * @param name string name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Return the description of the project.
+     *
+     * @return text
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Set up the description of the project.
+     *
+     * @param description text
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
 
@@ -140,72 +185,6 @@ public class ProjectCollectionMember extends CollectionMemberHeader
 
 
     /**
-     * Return any properties associated with the subclass of this element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setExtendedProperties(Map<String, Object> additionalProperties)
-    {
-        this.extendedProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return any additional properties associated with the element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -213,18 +192,17 @@ public class ProjectCollectionMember extends CollectionMemberHeader
     @Override
     public String toString()
     {
-        return "ProjectCollectionMember{" +
-                       "status='" + status + '\'' +
+        return "ProjectProperties{" +
+                       "name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", status='" + status + '\'' +
                        ", startDate=" + startDate +
                        ", plannedEndDate=" + plannedEndDate +
-                       ", extendedProperties=" + extendedProperties +
-                       ", additionalProperties=" + additionalProperties +
-                       ", dateAddedToCollection=" + getDateAddedToCollection() +
-                       ", membershipRationale='" + getMembershipRationale() + '\'' +
-                       ", watchStatus=" + getWatchStatus() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -250,10 +228,12 @@ public class ProjectCollectionMember extends CollectionMemberHeader
         {
             return false;
         }
-        ProjectCollectionMember that = (ProjectCollectionMember) objectToCompare;
-        return Objects.equals(getStatus(), that.getStatus()) &&
-                Objects.equals(getStartDate(), that.getStartDate()) &&
-                Objects.equals(getPlannedEndDate(), that.getPlannedEndDate());
+        ProjectProperties that = (ProjectProperties) objectToCompare;
+        return Objects.equals(status, that.status) &&
+                       Objects.equals(getName(), that.getName()) &&
+                       Objects.equals(getDescription(), that.getDescription()) &&
+                       Objects.equals(startDate, that.startDate) &&
+                       Objects.equals(plannedEndDate, that.plannedEndDate);
     }
 
 
@@ -265,6 +245,6 @@ public class ProjectCollectionMember extends CollectionMemberHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getStatus(), getStartDate(), getPlannedEndDate());
+        return Objects.hash(super.hashCode(), getName(), getDescription(), getStatus(), getStartDate(), getPlannedEndDate());
     }
 }

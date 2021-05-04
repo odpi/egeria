@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.converters.UserIden
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalProfileMapper;
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.UserIdentityMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -31,6 +31,7 @@ import java.util.List;
 public class UserIdentityHandler
 {
     private String                  serviceName;
+    private String                  serverName;
     private RepositoryErrorHandler  errorHandler;
     private RepositoryHandler       repositoryHandler;
     private OMRSRepositoryHelper    repositoryHelper;
@@ -45,18 +46,21 @@ public class UserIdentityHandler
      * needed to operate within a single server instance.
      *
      * @param serviceName name of the consuming service
+     * @param serverName name of this server
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper helper used by the converters
      * @param repositoryHandler handler for calling the repository services
      * @param errorHandler handler for repository service errors
      */
     public UserIdentityHandler(String                  serviceName,
+                               String                  serverName,
                                InvalidParameterHandler invalidParameterHandler,
                                OMRSRepositoryHelper    repositoryHelper,
                                RepositoryHandler       repositoryHandler,
                                RepositoryErrorHandler  errorHandler)
     {
         this.serviceName = serviceName;
+        this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.errorHandler = errorHandler;
@@ -68,18 +72,22 @@ public class UserIdentityHandler
      * Create a userIdentity from an entity.
      *
      * @param userIdentityEntity principle entity of the profile.
+     * @param methodName calling method
      *
      * @return UserIdentity bean or null if it does not exist.
+     * @throws PropertyServerException problem creating bean
      */
-    public UserIdentity getUserIdentity(EntityDetail   userIdentityEntity)
+    private UserIdentityElement getUserIdentity(EntityDetail userIdentityEntity,
+                                                String       methodName) throws PropertyServerException
     {
-        UserIdentityConverter converter = new UserIdentityConverter(userIdentityEntity,
-                                                                    repositoryHelper,
-                                                                    serviceName);
+        UserIdentityConverter<UserIdentityElement> converter = new UserIdentityConverter<>(repositoryHelper,
+                                                                                           serviceName,
+                                                                                           serverName);
 
-        return converter.getBean();
+        return converter.getNewBean(UserIdentityElement.class,
+                                    userIdentityEntity,
+                                    methodName);
     }
-
 
 
     /**
@@ -146,7 +154,7 @@ public class UserIdentityHandler
 
 
     /**
-     * Add the UserIdentity entity for a PersonalProfile.
+     * Add the UserIdentity entity for a PersonalProfileProperties.
      *
      * @param userId userId of the calling user.
      * @param profileUserId userId of the profile owner.
@@ -279,20 +287,21 @@ public class UserIdentityHandler
         invalidParameterHandler.validateGUID(profileGUID, guidParameter, methodName);
         invalidParameterHandler.validateName(obsoleteIdentity, nameParameter, methodName);
 
-        List<UserIdentity>  associatedUserIds = this.getAssociatedUserIds(userId, profileGUID, methodName);
+        List<UserIdentityElement>  associatedUserIds = this.getAssociatedUserIds(userId, profileGUID, methodName);
 
         if (associatedUserIds != null)
         {
             String  userIdentityGUID = null;
             boolean anotherIdentity = false;
 
-            for (UserIdentity userIdentity : associatedUserIds)
+            for (UserIdentityElement userIdentity : associatedUserIds)
             {
-                if (userIdentity != null)
+                if ((userIdentity != null) && (userIdentity.getElementHeader() != null) && (userIdentity.getProperties() != null))
                 {
-                    if (obsoleteIdentity.equals(userIdentity.getUserId()))
+
+                    if (obsoleteIdentity.equals(userIdentity.getProperties().getQualifiedName()))
                     {
-                        userIdentityGUID = userIdentity.getGUID();
+                        userIdentityGUID = userIdentity.getElementHeader().getGUID();
                     }
                     else
                     {
@@ -406,9 +415,9 @@ public class UserIdentityHandler
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<UserIdentity>  getAssociatedUserIds(String   userId,
-                                             String   profileGUID,
-                                             String   methodName) throws InvalidParameterException,
+    List<UserIdentityElement>  getAssociatedUserIds(String   userId,
+                                                    String   profileGUID,
+                                                    String   methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
@@ -425,7 +434,7 @@ public class UserIdentityHandler
                                                                                                 methodName);
         if (userIdentityRelationships != null)
         {
-            List<UserIdentity>  userIdentities = new ArrayList<>();
+            List<UserIdentityElement>  userIdentities = new ArrayList<>();
 
             for (Relationship relationship : userIdentityRelationships)
             {
@@ -442,11 +451,9 @@ public class UserIdentityHandler
                                                                                 entityProxyName,
                                                                                 UserIdentityMapper.USER_IDENTITY_TYPE_NAME,
                                                                                 methodName);
-                        UserIdentityConverter converter = new UserIdentityConverter(entity,
-                                                                                    repositoryHelper,
-                                                                                    serviceName);
 
-                        UserIdentity bean = converter.getBean();
+                        UserIdentityElement bean = this.getUserIdentity(entity, methodName);
+
 
                         if (bean != null)
                         {

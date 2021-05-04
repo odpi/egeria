@@ -24,13 +24,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = CommunityForumContribution.class, name = "CommunityForumContribution"),
         @JsonSubTypes.Type(value = PersonalNote.class, name = "PersonalNote")
 })
-public abstract class NoteEntryHeader extends CommonHeader
+public abstract class NoteEntryHeader extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private     String                  qualifiedName      = null;
-    private     String                  title              = null;
-    private     String                  text               = null;
+    private String user  = null;
+    private String title = null;
+    private String text  = null;
 
 
     /**
@@ -53,32 +53,30 @@ public abstract class NoteEntryHeader extends CommonHeader
 
         if (template != null)
         {
-            qualifiedName = template.getQualifiedName();
+            user = template.getUser();
             title = template.getTitle();
             text = template.getText();
         }
     }
 
-
     /**
-     * Return the unique name for this element.
+     * Return the user id of the person who created the tag.  Null means the user id is not known.
      *
-     * @return string name
+     * @return String tagging user
      */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
+    public String getUser() {
+        return user;
     }
 
 
     /**
-     * Set up the unique name for this element.
+     * Set up the user id of the person who created the tag.  Null means the user id is not known.
      *
-     * @param qualifiedName string name
+     * @param user String identifier of the creator of the tag.
      */
-    public void setQualifiedName(String qualifiedName)
+    public void setUser(String user)
     {
-        this.qualifiedName = qualifiedName;
+        this.user = user;
     }
 
 
@@ -135,17 +133,15 @@ public abstract class NoteEntryHeader extends CommonHeader
     public String toString()
     {
         return "NoteEntryHeader{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                ", originId='" + getOriginId() + '\'' +
-                ", originName='" + getOriginName() + '\'' +
-                ", originType='" + getOriginType() + '\'' +
-                ", originLicense='" + getOriginLicense() + '\'' +
-                '}';
+                       "user='" + user + '\'' +
+                       ", title='" + title + '\'' +
+                       ", text='" + text + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -171,7 +167,7 @@ public abstract class NoteEntryHeader extends CommonHeader
             return false;
         }
         NoteEntryHeader that = (NoteEntryHeader) objectToCompare;
-        return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
+        return Objects.equals(getUser(), that.getUser()) &&
                 Objects.equals(getTitle(), that.getTitle()) &&
                 Objects.equals(getText(), that.getText());
     }
@@ -185,6 +181,6 @@ public abstract class NoteEntryHeader extends CommonHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getQualifiedName(), getTitle(), getText());
+        return Objects.hash(super.hashCode(), getUser(), getTitle(), getText());
     }
 }

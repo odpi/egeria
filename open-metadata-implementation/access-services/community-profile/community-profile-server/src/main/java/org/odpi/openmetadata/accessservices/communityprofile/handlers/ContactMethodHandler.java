@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.handlers;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -71,9 +71,9 @@ public class ContactMethodHandler
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<ContactMethod>  getContactMethods(String   userId,
-                                           String   profileGUID,
-                                           String   methodName) throws InvalidParameterException,
+    List<ContactMethodProperties>  getContactMethods(String   userId,
+                                                     String   profileGUID,
+                                                     String   methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {

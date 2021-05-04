@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.TeamMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Team;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TeamConverter generates a Team bean from an Team entity and the relationships connected to it.
+ * TeamConverter generates a TeamProperties bean from an TeamProperties entity and the relationships connected to it.
  */
 public class TeamConverter extends CommonHeaderConverter
 {
@@ -48,11 +47,11 @@ public class TeamConverter extends CommonHeaderConverter
      *
      * @return bean
      */
-    public Team getBean()
+    public TeamProperties getBean()
     {
         final String methodName = "getBean";
 
-        Team  bean = new Team();
+        TeamProperties bean = new TeamProperties();
 
         super.updateBean(bean);
 

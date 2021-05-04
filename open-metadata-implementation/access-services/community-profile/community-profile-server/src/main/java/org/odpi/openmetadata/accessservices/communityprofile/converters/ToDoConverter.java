@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.ToDoMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDo;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -43,11 +43,11 @@ public class ToDoConverter extends CommonHeaderConverter
      *
      * @return bean
      */
-    public ToDo getBean()
+    public ToDoProperties getBean()
     {
         final String methodName = "getBean";
 
-        ToDo  bean = new ToDo();
+        ToDoProperties bean = new ToDoProperties();
 
         super.updateBean(bean);
 

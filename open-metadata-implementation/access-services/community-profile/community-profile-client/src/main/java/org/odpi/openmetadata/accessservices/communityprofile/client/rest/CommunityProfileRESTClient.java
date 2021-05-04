@@ -1,13 +1,9 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.client;
+package org.odpi.openmetadata.accessservices.communityprofile.client.rest;
 
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.NoProfileForUserException;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.CountResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClientBase;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -16,9 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 /**
  * CommunityProfileRESTClient is responsible for issuing calls to the Community Profile OMAS REST APIs.
  */
-class CommunityProfileRESTClient extends FFDCRESTClientBase
+public class CommunityProfileRESTClient extends FFDCRESTClient
 {
-    private CommunityProfileRESTExceptionHandler localRESTExceptionHandler = new CommunityProfileRESTExceptionHandler();
 
     /**
      * Constructor for no authentication with audit log.
@@ -30,9 +25,9 @@ class CommunityProfileRESTClient extends FFDCRESTClientBase
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    CommunityProfileRESTClient(String    serverName,
-                               String    serverPlatformURLRoot,
-                               AuditLog auditLog) throws InvalidParameterException
+    public CommunityProfileRESTClient(String    serverName,
+                                      String    serverPlatformURLRoot,
+                                      AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -46,8 +41,8 @@ class CommunityProfileRESTClient extends FFDCRESTClientBase
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    CommunityProfileRESTClient(String serverName,
-                               String serverPlatformURLRoot) throws InvalidParameterException
+    public CommunityProfileRESTClient(String serverName,
+                                      String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -64,11 +59,11 @@ class CommunityProfileRESTClient extends FFDCRESTClientBase
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    CommunityProfileRESTClient(String   serverName,
-                               String   serverPlatformURLRoot,
-                               String   userId,
-                               String   password,
-                               AuditLog auditLog) throws InvalidParameterException
+    public CommunityProfileRESTClient(String   serverName,
+                                      String   serverPlatformURLRoot,
+                                      String   userId,
+                                      String   password,
+                                      AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -84,102 +79,34 @@ class CommunityProfileRESTClient extends FFDCRESTClientBase
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    CommunityProfileRESTClient(String serverName,
-                               String serverPlatformURLRoot,
-                               String userId,
-                               String password) throws InvalidParameterException
+    public CommunityProfileRESTClient(String serverName,
+                                      String serverPlatformURLRoot,
+                                      String userId,
+                                      String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
     /**
-     * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return VoidResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException unable to locate the profile for this userId.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    VoidResponse callVoidPostRESTCall(String    methodName,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws InvalidParameterException,
-                                                               NoProfileForUserException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
-    {
-        VoidResponse restResult =  this.callPostRESTCall(methodName,
-                                                         VoidResponse.class,
-                                                         urlTemplate,
-                                                         requestBody,
-                                                         params);
-
-        localRESTExceptionHandler.detectAndThrowNoProfileForUserException(methodName, restResult);
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a guid object.
-     *
-     * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return GUIDResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    public GUIDResponse callGUIDPostRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object    requestBody,
-                                             Object... params) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        GUIDResponse restResult = this.callPostRESTCall(methodName,
-                                                        GUIDResponse.class,
-                                                        urlTemplate,
-                                                        requestBody,
-                                                        params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-
-
-    /**
-     * Issue a GET REST call that returns a CountResponse object.
+     * Issue a GET REST call that returns a MetadataSourceResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return CountResponse
+     * @return MetadataSourceResponse
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public CountResponse callCountGetRESTCall(String    methodName,
-                                              String    urlTemplate,
-                                              Object... params) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public MetadataSourceResponse callMetadataSourceGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
-        CountResponse restResult =  this.callGetRESTCall(methodName, CountResponse.class, urlTemplate, params);
+        MetadataSourceResponse restResult = this.callGetRESTCall(methodName, MetadataSourceResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -188,7 +115,85 @@ class CommunityProfileRESTClient extends FFDCRESTClientBase
 
 
     /**
-     * Issue a GET REST call that returns a PersonalProfileResponse object.
+     * Issue a GET REST call that returns a UserIdentityElement in a response object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return UserIdentityResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public UserIdentityResponse callUserIdentityGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        UserIdentityResponse restResult = this.callGetRESTCall(methodName, UserIdentityResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of UserIdentityElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return UserIdentityListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public UserIdentityListResponse callUserIdentityListGetRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object... params)  throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        UserIdentityListResponse restResult = this.callGetRESTCall(methodName, UserIdentityListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of UserIdentityElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return UserIdentityListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public UserIdentityListResponse callUserIdentityListPostRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object    requestBody,
+                                                                     Object... params)  throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        UserIdentityListResponse restResult = this.callPostRESTCall(methodName, UserIdentityListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a PersonalProfileElement in a response  object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -199,11 +204,11 @@ class CommunityProfileRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    PersonalProfileResponse callPersonalProfileGetRESTCall(String    methodName,
-                                                           String    urlTemplate,
-                                                           Object... params) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public PersonalProfileResponse callPersonalProfileGetRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         PersonalProfileResponse restResult = this.callGetRESTCall(methodName, PersonalProfileResponse.class, urlTemplate, params);
 
@@ -214,7 +219,7 @@ class CommunityProfileRESTClient extends FFDCRESTClientBase
 
 
     /**
-     * Issue a GET REST call that returns a list of PersonalProfile objects.
+     * Issue a GET REST call that returns a list of PersonalProfileElements in a response object.
      *
      * @param methodName  name of the method being called
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
@@ -224,11 +229,11 @@ class CommunityProfileRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    PersonalProfileListResponse callPersonalProfileListGetRESTCall(String    methodName,
-                                                                   String    urlTemplate,
-                                                                   Object... params)  throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public PersonalProfileListResponse callPersonalProfileListGetRESTCall(String    methodName,
+                                                                          String    urlTemplate,
+                                                                          Object... params)  throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         PersonalProfileListResponse restResult = this.callGetRESTCall(methodName, PersonalProfileListResponse.class, urlTemplate, params);
 
@@ -250,11 +255,11 @@ class CommunityProfileRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    AssetListResponse callAssetListGetRESTCall(String    methodName,
-                                               String    urlTemplate,
-                                               Object... params)  throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public AssetListResponse callAssetListGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params)  throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         AssetListResponse restResult = this.callGetRESTCall(methodName, AssetListResponse.class, urlTemplate, params);
 

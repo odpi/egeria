@@ -49,41 +49,14 @@ public class CommunityForumContribution extends NoteEntryHeader
     public String toString()
     {
         return "CommunityForumContribution{" +
-                "qualifiedName='" + getQualifiedName() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", text='" + getText() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                ", originId='" + getOriginId() + '\'' +
-                ", originName='" + getOriginName() + '\'' +
-                ", originType='" + getOriginType() + '\'' +
-                ", originLicense='" + getOriginLicense() + '\'' +
-                '}';
-    }
-
-
-    /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        return super.equals(objectToCompare);
-    }
-
-
-    /**
-     * Hash code for this object
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return super.hashCode();
+                       "user='" + getUser() + '\'' +
+                       ", title='" + getTitle() + '\'' +
+                       ", text='" + getText() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

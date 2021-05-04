@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.properties;
+package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityMembershipType;
 
 import java.util.Objects;
 
@@ -11,23 +12,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CommunityMember describes an individual who is a member of a community.
+ * CommunityMembershipElement describes an individual who is a member of a community.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommunityMember extends PersonalRoleProperties
+public class CommunityMembershipElement extends PersonalRoleElement
 {
     private static final long    serialVersionUID = 1L;
 
-    private CommunityMembershipType   membershipType = null;
-    private String                    communityGUID = null;
+    private CommunityMembershipType membershipType = null;
+    private String                  communityGUID  = null;
 
 
     /**
      * Default constructor
      */
-    public CommunityMember()
+    public CommunityMembershipElement()
     {
         super();
     }
@@ -38,7 +39,7 @@ public class CommunityMember extends PersonalRoleProperties
      *
      * @param template object to copy
      */
-    public CommunityMember(CommunityMember template)
+    public CommunityMembershipElement(CommunityMembershipElement template)
     {
         super(template);
 
@@ -102,17 +103,11 @@ public class CommunityMember extends PersonalRoleProperties
     @Override
     public String toString()
     {
-        return "CommunityMember{" +
+        return "CommunityMembershipElement{" +
                        "membershipType=" + membershipType +
                        ", communityGUID='" + communityGUID + '\'' +
-                       ", domainIdentifier=" + getDomainIdentifier() +
-                       ", roleId='" + getRoleId() + '\'' +
-                       ", scope='" + getScope() + '\'' +
-                       ", title='" + getTitle() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       ", elementHeader=" + getElementHeader() +
+                       ", properties=" + getProperties() +
                        '}';
     }
 
@@ -134,11 +129,7 @@ public class CommunityMember extends PersonalRoleProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        CommunityMember that = (CommunityMember) objectToCompare;
+        CommunityMembershipElement that = (CommunityMembershipElement) objectToCompare;
         return getMembershipType() == that.getMembershipType() &&
                 Objects.equals(getCommunityGUID(), that.getCommunityGUID());
     }

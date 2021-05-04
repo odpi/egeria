@@ -20,35 +20,42 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum StarRating implements Serializable
 {
-    NO_RECOMMENDATION (0, "X", "No recommendation"),
-    ONE_STAR          (1, "*", "Poor"),
-    TWO_STARS         (2, "**", "Usable"),
-    THREE_STARS       (3, "***", "Good"),
-    FOUR_STARS        (4, "****", "Very Good"),
-    FIVE_STARS        (5, "*****", "Excellent");
+    NO_RECOMMENDATION(0, 0, "X", "No recommendation"),
+    ONE_STAR         (1, 1, "*", "Poor"),
+    TWO_STARS        (2, 2, "**", "Usable"),
+    THREE_STARS      (3, 3, "***", "Good"),
+    FOUR_STARS       (4, 4, "****", "Very Good"),
+    FIVE_STARS       (5, 5, "*****", "Excellent");
+
+    public static final String ENUM_TYPE_GUID  = "77fea3ef-6ec1-4223-8408-38567e9d3c93";
+    public static final String ENUM_TYPE_NAME  = "StarRating";
+
+    private int    openTypeOrdinal;
+
+    private int    ordinal;
+    private String name;
+    private String description;
 
     private static final long     serialVersionUID = 1L;
 
-    private int    ordinal;
-    private String symbol;
-    private String description;
-
 
     /**
-     * Typical Constructor
+     * Constructor to set up the instance of this enum.
      *
-     * @param ordinal identifier
-     * @param symbol short name
-     * @param description longer description
+     * @param ordinal code number
+     * @param openTypeOrdinal code number from the equivalent Enum Type
+     * @param name default name
+     * @param description default description
      */
-    StarRating(int ordinal, String symbol, String description)
+    StarRating(int    ordinal,
+               int    openTypeOrdinal,
+               String name,
+               String description)
     {
-        /*
-         * Save the values supplied
-         */
-        this.ordinal = ordinal;
-        this.symbol = symbol;
-        this.description = description;
+        this.ordinal         = ordinal;
+        this.openTypeOrdinal = openTypeOrdinal;
+        this.name            = name;
+        this.description     = description;
     }
 
 
@@ -70,7 +77,7 @@ public enum StarRating implements Serializable
      */
     public String getName()
     {
-        return symbol;
+        return name;
     }
 
 
@@ -86,6 +93,33 @@ public enum StarRating implements Serializable
 
 
     /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -93,6 +127,6 @@ public enum StarRating implements Serializable
     @Override
     public String toString()
     {
-        return "StarRating : " + symbol;
+        return "StarRating: " + name ;
     }
 }

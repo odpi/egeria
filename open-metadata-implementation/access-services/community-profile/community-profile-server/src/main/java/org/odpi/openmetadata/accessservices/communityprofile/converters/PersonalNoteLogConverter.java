@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * PersonalNoteLogConverter generates a PersonalNoteLog from an PersonRole entity
+ * PersonalNoteLogConverter generates a PersonalNoteLog from an PersonRoleProperties entity
  */
 public class PersonalNoteLogConverter extends CommonHeaderConverter
 {

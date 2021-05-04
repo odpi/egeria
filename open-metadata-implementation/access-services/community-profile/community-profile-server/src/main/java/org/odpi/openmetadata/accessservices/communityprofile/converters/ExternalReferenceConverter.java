@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.ExternalReferenceMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ExternalReference;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ExternalReferenceConverter generates an ExternalReference bean from an ExternalReference entity
+ * ExternalReferenceConverter generates an ExternalReferenceProperties bean from an ExternalReferenceProperties entity
  * and a Relationship to it.
  */
 public class ExternalReferenceConverter extends CommonHeaderConverter
@@ -42,11 +42,11 @@ public class ExternalReferenceConverter extends CommonHeaderConverter
      *
      * @return bean
      */
-    public ExternalReference getBean()
+    public ExternalReferenceProperties getBean()
     {
         final String methodName = "getBean";
 
-        ExternalReference  bean = new ExternalReference();
+        ExternalReferenceProperties bean = new ExternalReferenceProperties();
 
         super.updateBean(bean);
 

@@ -34,6 +34,7 @@
         <module>community-profile-client</module>
         <module>community-profile-server</module>
         <module>community-profile-spring</module>
+        <module>community-profile-topic-connectors</module>
     </modules>
 
 
