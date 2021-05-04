@@ -8,6 +8,11 @@ it can be started and stopped multiple times.
 
 * [Starting and stopping an OMAG Server](starting-and-stopping-omag-server.md)
 
+It is possible to load an [OpenMetadata Archive](../../../../open-metadata-resources/open-metadata-archives)
+into running OMAG Servers that are of type [Cohort Member](../concepts/cohort-member.md).
+
+* [Adding an Open Metadata Archive to a running server](adding-archive-to-running-server.md)
+
 In addition there are different platform services that
 can be used to find out more about the operation of the servers.
 

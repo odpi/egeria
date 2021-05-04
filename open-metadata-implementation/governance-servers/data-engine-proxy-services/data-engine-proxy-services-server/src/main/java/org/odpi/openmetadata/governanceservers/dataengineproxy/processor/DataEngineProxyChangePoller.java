@@ -124,9 +124,7 @@ public class DataEngineProxyChangePoller implements Runnable {
 
                 // Send the changes, and ordering here is important
                 upsertSchemaTypes(oldestSinceSync, changesCutoff);
-                upsertPortImplementations(oldestSinceSync, changesCutoff);
                 upsertProcesses(oldestSinceSync, changesCutoff);
-                upsertPortAliases(oldestSinceSync, changesCutoff);
                 upsertProcessHierarchies(oldestSinceSync, changesCutoff);
                 upsertLineageMappings(oldestSinceSync, changesCutoff);
 
@@ -171,25 +169,6 @@ public class DataEngineProxyChangePoller implements Runnable {
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
     }
 
-    private void upsertPortImplementations(Date changesLastSynced,
-                                           Date changesCutoff) throws
-            InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException,
-            ConnectorCheckedException {
-        final String methodName = "upsertPortImplementations";
-        final String type = "PortImplementations";
-        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
-        log.info(" ... getting changed port implementations.");
-        List<PortImplementation> changedPortImplementations = connector.getChangedPortImplementations(changesLastSynced, changesCutoff);
-        if (changedPortImplementations != null) {
-            for (PortImplementation changedPortImplementation : changedPortImplementations) {
-                dataEngineOMASClient.createOrUpdatePortImplementation(userId, changedPortImplementation);
-            }
-        }
-        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
-    }
-
     private void upsertProcesses(Date changesLastSynced,
                                  Date changesCutoff) throws
             InvalidParameterException,
@@ -208,24 +187,6 @@ public class DataEngineProxyChangePoller implements Runnable {
                 }
             } else{
                 dataEngineOMASClient.createOrUpdateProcesses(userId, changedProcesses);
-            }
-        }
-        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
-    }
-
-    private void upsertPortAliases(Date changesLastSynced,
-                                   Date changesCutoff) throws
-            InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException,
-            ConnectorCheckedException {
-        final String methodName = "upsertPortAliases";
-        final String type = "PortAliases";
-        auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
-        List<PortAlias> changedPortAliases = connector.getChangedPortAliases(changesLastSynced, changesCutoff);
-        if (changedPortAliases != null) {
-            for (PortAlias changedPortAlias : changedPortAliases) {
-                dataEngineOMASClient.createOrUpdatePortAlias(userId, changedPortAlias);
             }
         }
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));

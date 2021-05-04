@@ -87,11 +87,14 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
         LineageSyncEvent lineageSyncEvent;
 
         switch (assetLineageEventHeader.getAssetLineageEventType()) {
-            case CLASSIFICATION_CONTEXT_EVENT:
             case SEMANTIC_ASSIGNMENTS_EVENT:
             case TERM_CATEGORIZATIONS_EVENT:
             case TERM_ANCHORS_EVENT:
             case CATEGORY_ANCHORS_EVENT:
+                lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
+                storingServices.upsertEntityContext(lineageRelationshipsEvent);
+                break;
+            case CLASSIFICATION_CONTEXT_EVENT:
             case LINEAGE_MAPPINGS_EVENT:
             case PROCESS_CONTEXT_EVENT:
                 lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);

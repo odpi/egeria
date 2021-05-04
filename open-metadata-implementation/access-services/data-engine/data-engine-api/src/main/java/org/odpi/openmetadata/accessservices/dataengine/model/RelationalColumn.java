@@ -51,7 +51,6 @@ public class RelationalColumn extends Attribute {
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
                 ", dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
                 "formula='" + formula + '\'' +
                 '}';
     }

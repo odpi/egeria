@@ -19,8 +19,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SchemaTypeEvent extends DataEngineEventHeader{
-
+    private String portQualifiedName;
     private SchemaType schemaType;
+
+    /**
+     * Gets the port qualified name.
+     *
+     * @return the port qualified name
+     */
+    public String getPortQualifiedName() {
+        return portQualifiedName;
+    }
+
+    /**
+     * Sets the port qualified name.
+     *
+     * @param portQualifiedName the port qualified name
+     */
+    public void setPortQualifiedName(String portQualifiedName) {
+        this.portQualifiedName = portQualifiedName;
+    }
 
     /**
      * Gets schema type.
@@ -45,18 +63,20 @@ public class SchemaTypeEvent extends DataEngineEventHeader{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SchemaTypeEvent that = (SchemaTypeEvent) o;
-        return Objects.equals(schemaType, that.schemaType);
+        return Objects.equals(portQualifiedName, that.portQualifiedName) &&
+                Objects.equals(schemaType, that.schemaType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(schemaType);
+        return Objects.hash(portQualifiedName, schemaType);
     }
 
     @Override
     public String toString() {
         return "SchemaTypeEvent{" +
-                "schemaType=" + schemaType +
-                "} " + super.toString();
+                "portQualifiedName='" + portQualifiedName + '\'' +
+                ", schemaType=" + schemaType +
+                '}';
     }
 }
