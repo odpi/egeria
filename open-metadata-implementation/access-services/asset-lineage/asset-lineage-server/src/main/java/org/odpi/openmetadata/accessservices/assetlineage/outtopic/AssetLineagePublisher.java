@@ -11,13 +11,16 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSummary;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
@@ -48,6 +51,7 @@ public class AssetLineagePublisher {
     private final ProcessContextHandler processContextHandler;
     private final ClassificationHandler classificationHandler;
     private final GlossaryContextHandler glossaryHandler;
+    private final AssetContextHandler assetContextHandler;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -66,6 +70,7 @@ public class AssetLineagePublisher {
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
+        this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
     }
 
     /**
@@ -182,8 +187,9 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    public void publishLineageRelationshipEvent(LineageRelationship lineageRelationship,
-                                                AssetLineageEventType eventType) throws ConnectorCheckedException, JsonProcessingException {
+    public void publishLineageRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
+                                                                                                                          ConnectorCheckedException,
+                                                                                                                          JsonProcessingException {
         LineageRelationshipEvent event = new LineageRelationshipEvent();
 
         event.setLineageRelationship(lineageRelationship);
@@ -228,6 +234,21 @@ public class AssetLineagePublisher {
     }
 
     /**
+     *
+     * Publish LineageSyncEvent that contains LineagePublishSummary details.
+     *
+     * @param summary details about lineage processing and publish activity completed by Asset Lineage OMAS.
+     * @throws JsonProcessingException
+     * @throws ConnectorCheckedException
+     */
+    public void publishLineageSummaryEvent(LineagePublishSummary summary) throws JsonProcessingException, ConnectorCheckedException {
+        LineageSyncEvent event = new LineageSyncEvent();
+        event.setPublishSummary(summary);
+        event.setAssetLineageEventType(AssetLineageEventType.LINEAGE_SYNC_EVENT);
+        publishEvent(event);
+    }
+
+    /**
      * Publish lineage entity event
      *
      * @param lineageEntity    - lineage entity
@@ -236,14 +257,35 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    public void publishLineageEntityEvent(LineageEntity lineageEntity,
-                                          AssetLineageEventType lineageEventType) throws ConnectorCheckedException, JsonProcessingException {
+    public void publishLineageEntityEvent(LineageEntity lineageEntity, AssetLineageEventType lineageEventType) throws ConnectorCheckedException,
+                                                                                                                      JsonProcessingException {
         LineageEntityEvent event = new LineageEntityEvent();
 
         event.setLineageEntity(lineageEntity);
         event.setAssetLineageEventType(lineageEventType);
 
         publishEvent(event);
+    }
+
+    /**
+     * Publishes a {@link LineageRelationshipEvent} containing a {@link LineageRelationship}. For each end of the relationship it publishes a
+     * {@link LineageRelationshipsEvent} containing the column context if available
+     *
+     * @param lineageRelationship the LineageRelationship to be published
+     * @param eventType           the type on the event
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    public void publishLineageMappingRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
+                                                                                                                                 OCFCheckedExceptionBase,
+                                                                                                                                 JsonProcessingException {
+        publishLineageRelationshipEvent(lineageRelationship, eventType);
+
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
+                lineageRelationship.getSourceEntity().getGuid())));
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
+                lineageRelationship.getTargetEntity().getGuid())));
     }
 
     /**
@@ -265,7 +307,5 @@ public class AssetLineagePublisher {
 
         return true;
     }
-
-
 }
 

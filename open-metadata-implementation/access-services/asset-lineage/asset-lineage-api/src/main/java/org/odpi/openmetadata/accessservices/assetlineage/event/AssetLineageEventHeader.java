@@ -22,10 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ProcessLineageEvent.class, name = "ProcessLineageEvent"),
         @JsonSubTypes.Type(value = LineageEntityEvent.class, name = "LineageEntityEvent"),
         @JsonSubTypes.Type(value = LineageRelationshipEvent.class, name = "LineageRelationshipEvent"),
-        @JsonSubTypes.Type(value = LineageRelationshipsEvent.class, name = "LineageRelationshipsEvent")
+        @JsonSubTypes.Type(value = LineageRelationshipsEvent.class, name = "LineageRelationshipsEvent"),
+        @JsonSubTypes.Type(value = LineageSyncEvent.class, name = "LineageSyncEvent")
 })
 
 public abstract class AssetLineageEventHeader {

@@ -104,6 +104,33 @@ public class HandlerHelper {
     }
 
     /**
+     * Return the relationship of the requested type connected to the starting entity.
+     * The assumption is that this is a 0..1 relationship so one relationship (or an empty Optional) is returned.
+     * If lots of relationships are found then the PropertyServerException is thrown.
+     *
+     * @param userId               the unique identifier for the user
+     * @param entityGUID           the unique identifier of the entity for which the relationships are retrieved
+     * @param relationshipTypeName the type of the relationships to be retrieved
+     * @param entityTypeName       the type of the entity
+     *
+     * @return Optional containing the relationship if found, empty optional if not found
+     *
+     * @throws UserNotAuthorizedException the user not authorized exception
+     * @throws PropertyServerException    the property server exception
+     * @throws InvalidParameterException  the invalid parameter exception
+     */
+    Optional<Relationship> getUniqueRelationshipByType(String userId, String entityGUID, String relationshipTypeName, String entityTypeName) throws
+                                                                                                                                              OCFCheckedExceptionBase {
+        final String methodName = "getUniqueRelationshipsByType";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, GUID_PARAMETER, methodName);
+
+        String typeGuid = getTypeByName(userId, relationshipTypeName);
+        return Optional.of(repositoryHandler.getUniqueRelationshipByType(userId, entityGUID, entityTypeName, typeGuid, relationshipTypeName, methodName));
+    }
+
+    /**
      * Retrieves guid for a specific type
      *
      * @param userId      String - userId of user making request.
@@ -177,19 +204,19 @@ public class HandlerHelper {
      * @param searchProperties       searchProperties used in the filtering
      * @param findEntitiesParameters filtering used to reduce the scope of the search
      *
-     * @return a list with entities matching the supplied parameters;
+     * @return Optional container for collection of EntityDetails (if any) matching the supplied parameters.
      *
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
      */
-    public List<EntityDetail> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
+    public Optional<List<EntityDetail>> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
                                                  FindEntitiesParameters findEntitiesParameters)
             throws UserNotAuthorizedException, PropertyServerException {
         final String methodName = "findEntitiesByType";
         String typeDefGUID = getTypeByName(userId, entityTypeName);
-        return repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
+        return Optional.ofNullable(repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
-                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName);
+                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName));
     }
 
     /**
@@ -391,6 +418,7 @@ public class HandlerHelper {
      * @param entityDetail   the entity detail
      * @param methodName     the method name
      * @param supportedZones the supported zones
+     *
      * @throws InvalidParameterException the invalid parameter exception
      */
     public void validateAsset(EntityDetail entityDetail, String methodName, List<String> supportedZones) throws InvalidParameterException {

@@ -55,7 +55,8 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, ConnectorCheckedException {
+    public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException,
+                                                                                                                    ConnectorCheckedException {
 
         DataEngineRegistrationEvent event = new DataEngineRegistrationEvent();
         event.setUserId(userId);
@@ -76,7 +77,7 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public String createOrUpdateSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException, ConnectorCheckedException  {
+    public String createOrUpdateSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException, ConnectorCheckedException {
 
         SchemaTypeEvent event = new SchemaTypeEvent();
         event.setUserId(userId);
@@ -97,13 +98,16 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException, ConnectorCheckedException {
+    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation, String processQualifiedName) throws
+                                                                                                                                      InvalidParameterException,
+                                                                                                                                      ConnectorCheckedException {
 
         PortImplementationEvent event = new PortImplementationEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setEventType(DataEngineEventType.PORT_IMPLEMENTATION_EVENT);
         event.setPortImplementation(portImplementation);
+        event.setProcessQualifiedName(processQualifiedName);
 
         topicConnector.sendEvent(event);
 
@@ -118,13 +122,15 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException, ConnectorCheckedException {
+    public String createOrUpdatePortAlias(String userId, PortAlias portAlias, String processQualifiedName) throws InvalidParameterException,
+                                                                                                                  ConnectorCheckedException {
 
         PortAliasEvent event = new PortAliasEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setEventType(DataEngineEventType.PORT_ALIAS_EVENT);
         event.setPort(portAlias);
+        event.setProcessQualifiedName(processQualifiedName);
 
         topicConnector.sendEvent(event);
 
@@ -167,25 +173,6 @@ public class DataEngineEventClient implements DataEngineClient {
         event.setExternalSourceName(externalSource);
         event.setEventType(DataEngineEventType.LINEAGE_MAPPINGS_EVENT);
         event.setLineageMappings(lineageMappings);
-
-        topicConnector.sendEvent(event);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws ConnectorCheckedException problem with the underlying connector (if used)
-     */
-    @Override
-    public void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException, ConnectorCheckedException {
-
-        ProcessToPortListEvent event = new ProcessToPortListEvent();
-        event.setUserId(userId);
-        event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.PROCESS_TO_PORT_LIST_EVENT);
-        event.setPorts(portGUIDs);
-        event.setProcessGUID(processGUID);
 
         topicConnector.sendEvent(event);
     }
