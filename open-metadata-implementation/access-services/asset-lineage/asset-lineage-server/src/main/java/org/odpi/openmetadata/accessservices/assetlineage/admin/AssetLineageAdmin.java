@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -73,6 +74,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             this.serverName = instance.getServerName();
 
             Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+            Map<String, Object> accessServiceOptions = accessServiceConfigurationProperties.getAccessServiceOptions();
             if (outTopicConnection != null) {
                 OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection,
                         accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
@@ -81,7 +83,8 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                         repositoryConnector.getRepositoryHelper(), outTopicConnector, serverName,
                         serverUserName,
                         lineageClassificationTypes,
-                        auditLog);
+                        auditLog,
+                        accessServiceOptions);
 
                 super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(),
                         serverName,
