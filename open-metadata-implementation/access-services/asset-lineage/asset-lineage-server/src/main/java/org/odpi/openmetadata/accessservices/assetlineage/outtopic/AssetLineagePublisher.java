@@ -53,7 +53,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetLineagePublisher {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
-    private static final String VERTICAL_LINEAGE_EVENTS_CHUNK_SIZE = "verticalLineageEventsChunkSize";
+    private static final String GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE = "glossaryTermLineageEventsChunkSize";
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final OpenMetadataTopicConnector outTopicConnector;
     private final String serverUserName;
@@ -61,7 +61,7 @@ public class AssetLineagePublisher {
     private final ClassificationHandler classificationHandler;
     private final GlossaryContextHandler glossaryHandler;
     private final AssetContextHandler assetContextHandler;
-    private int verticalLineageEventsChunkSize;
+    private int glossaryTermLineageEventsChunkSize;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -81,11 +81,11 @@ public class AssetLineagePublisher {
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
         this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
-        if (accessServiceOptions != null && accessServiceOptions.get(VERTICAL_LINEAGE_EVENTS_CHUNK_SIZE) != null) {
-            verticalLineageEventsChunkSize = (int) accessServiceOptions.get(VERTICAL_LINEAGE_EVENTS_CHUNK_SIZE);
+        if (accessServiceOptions != null && accessServiceOptions.get(GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE) != null) {
+            glossaryTermLineageEventsChunkSize = (int) accessServiceOptions.get(GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE);
         }
-        if (verticalLineageEventsChunkSize < 1) {
-            verticalLineageEventsChunkSize = 1;
+        if (glossaryTermLineageEventsChunkSize < 1) {
+            glossaryTermLineageEventsChunkSize = 1;
         }
 
     }
@@ -144,7 +144,7 @@ public class AssetLineagePublisher {
             log.info("Context not found for the entity {} ", entityDetail.getGUID());
         }
 
-        publishVerticalLineageRelationshipsEvents(glossaryTermContext);
+        publishGlossaryTermLineageRelationshipsEvents(glossaryTermContext);
         publishLineageSyncUpdateEvent(entityDetail.getGUID(), glossaryTermContext);
 
         return glossaryTermContext;
@@ -176,25 +176,25 @@ public class AssetLineagePublisher {
 
 
     /**
-     * Publishes events for the relationships of an entity based on the context map. The context is built in chunks of relationships configurable by verticalLineageEventsChunkSize.
+     * Publishes events for the relationships of an entity based on the context map. The context is built in chunks of relationships configurable by glossaryTermLineageEventsChunkSize.
      *
      * @param contextMap the context map to be published
      *
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    private void publishVerticalLineageRelationshipsEvents(Multimap<String, RelationshipsContext> contextMap) throws JsonProcessingException,
+    private void publishGlossaryTermLineageRelationshipsEvents(Multimap<String, RelationshipsContext> contextMap) throws JsonProcessingException,
             ConnectorCheckedException {
         for (String eventType : contextMap.keySet()) {
             for (RelationshipsContext relationshipsContext : contextMap.get(eventType)) {
                 if (CollectionUtils.isNotEmpty(relationshipsContext.getRelationships())) {
                     int noOfRelationships = relationshipsContext.getRelationships().size();
-                    int chunksToSend = (noOfRelationships / verticalLineageEventsChunkSize) + 1;
+                    int chunksToSend = (noOfRelationships / glossaryTermLineageEventsChunkSize) + 1;
                     Iterator<GraphContext> relationshipsIterator = relationshipsContext.getRelationships().iterator();
 
                     for (int i = 0; i < chunksToSend; i++) {
                         Set<GraphContext> chunk = new HashSet<>();
-                        for (int j = 0; j < verticalLineageEventsChunkSize && relationshipsIterator.hasNext(); j++) {
+                        for (int j = 0; j < glossaryTermLineageEventsChunkSize && relationshipsIterator.hasNext(); j++) {
                             chunk.add(relationshipsIterator.next());
                         }
                         RelationshipsContext relationshipContextChunk = new RelationshipsContext();
