@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
@@ -97,6 +98,17 @@ public class StoringServices {
         log.debug("Open Lineage Services is processing an DeleteClassificationEvent event");
 
         lineageGraph.deleteClassification(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
+    }
+
+    /**
+     * Applies lineageSyncEvent using lineage storage connector.
+     * @param lineageSyncEvent event to be delegated to the respective connector interface.
+     */
+    public void apply(LineageSyncEvent lineageSyncEvent) {
+        // publishSummary
+        if(lineageSyncEvent.getPublishSummary()!=null)
+            lineageGraph.saveAssetLineageUpdateTime(lineageSyncEvent.getPublishSummary().getLineageTimestamp());
+        // updateSummary...
     }
 
     /**
