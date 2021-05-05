@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -52,16 +53,20 @@ public class AssetLineageRestServices {
     private static final Logger log = LoggerFactory.getLogger(AssetLineageRestServices.class);
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private boolean publishLineageTaskActiveFlag;
-    private static String LINEAGE_PROCESSING_STARTED = "LINEAGE_PROCESSING_STARTED";
-    private static String LINEAGE_PROCESSING_COMPLETED = "LINEAGE_PROCESSING_COMPLETED";
+
+    private AtomicBoolean publishLineageTaskActive = new AtomicBoolean(false);
+
+    private static final String PROCESS_STARTED = "PROCESS_STARTED";
+    private static final String PROCESS_COMPLETED = "PROCESS_COMPLETED";
+    private static final String ENTITY_CONTEXT_PUBLISHED = "ENTITY_CONTEXT_PUBLISHED";
+    private static final String ENTITY_CONTEXT_ERROR = "ENTITY_CONTEXT_ERROR";
+
 
     /**
      * Default constructor
      */
     public AssetLineageRestServices() {
         instanceHandler.registerAccessService();
-        setPublishLineageTaskInactive();
     }
 
 
@@ -76,7 +81,7 @@ public class AssetLineageRestServices {
      * Based on the findEntitiesParameters provided, scans the cohort for the given type and finds list of matching entities.
      * Providing updatedAfter filed in findEntitiesParameters will retrieve only the entities that were changed from that point in time.
      * Once entities are found, it spins up *asynchronous* background task that will build the lineage context and publish respective output as events on the asset-lineage output topic.
-     * Note that only single background task can be active at given time (per server instance controlled by `publishLineageTaskActiveFlag`). All subsequent requests will result in empty response until the task if finished.
+     * Note that only single background task can be active at given time (per server instance controlled by `publishLineageTaskActive`). All subsequent requests will result in empty response until the task if finished.
      * At the end lineage sync event is published to notify the external systems sending summary of the work completed.
      *
      * @param serverName             name of server instance to call
@@ -89,9 +94,10 @@ public class AssetLineageRestServices {
      */
     public GUIDListResponse publishEntities(String serverName, String userId, String entityType,
                                             FindEntitiesParameters findEntitiesParameters) {
-        GUIDListResponse response = new GUIDListResponse();
 
         String methodName = "publishEntities";
+        GUIDListResponse response = new GUIDListResponse();
+
         try {
 
             HandlerHelper handlerHelper = instanceHandler.getHandlerHelper(userId, serverName, methodName);
@@ -99,7 +105,7 @@ public class AssetLineageRestServices {
             SearchProperties searchProperties = handlerHelper.getSearchPropertiesAfterUpdateTime(findEntitiesParameters.getUpdatedAfter());
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
 
-            if (!isPublishLineageTaskActive()) {
+            if (!publishLineageTaskActive.get()) {
 
                 Long cutOffTime = System.currentTimeMillis();
                 Optional<List<EntityDetail>> entitiesByTypeName = handlerHelper.findEntitiesByType(userId, entityType, searchProperties, findEntitiesParameters);
@@ -109,8 +115,14 @@ public class AssetLineageRestServices {
                 }
 
                 response.setGUIDs(entitiesByTypeName.get().stream().map(InstanceHeader::getGUID).collect(Collectors.toList()));
-                CompletableFuture.supplyAsync(buildAndPublishLineageContext(auditLog,publisher,entitiesByTypeName.get()))
-                        .thenAccept((result) -> sendLineagePublishSummary(result, cutOffTime, publisher, auditLog));
+
+                CompletableFuture.supplyAsync(buildAndPublishLineageContext(auditLog,publisher,entitiesByTypeName, entityType))
+                        .thenAccept((result) ->
+                            result.ifPresent(publishedItems -> {
+                                sendLineagePublishSummary(publishedItems, cutOffTime, publisher, auditLog);
+                                publishLineageTaskActive.set(false);
+                            })
+                        );
             }
 
 
@@ -133,16 +145,18 @@ public class AssetLineageRestServices {
      * @param entities entity detail collection to be processed
      * @return Supplier object to be used for async processing
      */
-    private Supplier<List<String>> buildAndPublishLineageContext(AuditLog auditLog, AssetLineagePublisher publisher, List<EntityDetail> entities) {
+    private Supplier<Optional<List<String>>> buildAndPublishLineageContext(AuditLog auditLog, AssetLineagePublisher publisher, Optional<List<EntityDetail>> entities, String entityType) {
       return () -> {
           String methodName = "buildAndPublishLineageContext";
-          setPublishLineageTaskActive();
-          auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition(LINEAGE_PROCESSING_STARTED, entities.get(0).getType().getTypeDefName(), String.valueOf(entities.size())));
-          List<String> publishedGUIDs = entities.parallelStream().map(entityDetail -> publishEntityContext(publisher, entityDetail, auditLog)).collect(Collectors.toList());
-          CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
-          auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition(LINEAGE_PROCESSING_COMPLETED, entities.get(0).getType().getTypeDefName(), String.valueOf(publishedGUIDs.size())));
-          setPublishLineageTaskInactive();
-          return publishedGUIDs;
+          Optional<List<String>> result = Optional.empty();
+          publishLineageTaskActive.set(true);
+          if(entities.isPresent()) {
+              auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition(PROCESS_STARTED, entityType, String.valueOf(entities.get().size())));
+              result = Optional.of(entities.get().parallelStream().map(entityDetail -> publishEntityContext(publisher, entityDetail, auditLog)).collect(Collectors.toList()));
+              CollectionUtils.filter(result.get(), PredicateUtils.notNullPredicate());
+              auditLog.logMessage(methodName, AssetLineageAuditCode.PUBLISH_PROCESS_INFO.getMessageDefinition(PROCESS_COMPLETED, entityType, String.valueOf(result.get().size())));
+          }
+          return result;
       };
     }
 
@@ -199,14 +213,12 @@ public class AssetLineageRestServices {
         String methodName = "publishEntityContext";
 
         try {
-            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("BUILDING_CONTEXT_STARTED",
-                    entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
             String result = publishContext(entityDetail, publisher);
-            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("PUBLISHED",
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition(ENTITY_CONTEXT_PUBLISHED,
                     entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
             return result;
         } catch (Exception e) {
-            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition("FAILED_TO_PUBLISH",
+            auditLog.logMessage(methodName, AssetLineageAuditCode.ENTITY_INFO.getMessageDefinition(ENTITY_CONTEXT_ERROR,
                     entityDetail.getType().getTypeDefName(), entityDetail.getGUID()));
             auditLog.logException(methodName, AssetLineageAuditCode.ENTITY_ERROR.getMessageDefinition(entityDetail.getType().getTypeDefName(),
                     entityDetail.getGUID()), e);
@@ -322,16 +334,4 @@ public class AssetLineageRestServices {
         return new ArrayList<>(guids);
     }
 
-
-    private boolean isPublishLineageTaskActive() {
-        return publishLineageTaskActiveFlag;
-    }
-
-    private void setPublishLineageTaskActive() {
-        publishLineageTaskActiveFlag = true;
-    }
-
-    private void setPublishLineageTaskInactive() {
-        publishLineageTaskActiveFlag = false;
-    }
 }
