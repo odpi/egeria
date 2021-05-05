@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
@@ -83,6 +84,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
         LineageRelationshipEvent lineageRelationshipEvent;
         LineageEntityEvent lineageEntityEvent;
         LineageRelationshipsEvent lineageRelationshipsEvent;
+        LineageSyncEvent lineageSyncEvent;
 
         switch (assetLineageEventHeader.getAssetLineageEventType()) {
             case SEMANTIC_ASSIGNMENTS_EVENT:
@@ -135,6 +137,9 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                 lineageRelationshipsEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageRelationshipsEvent.class);
                 storingServices.deleteClassification(lineageRelationshipsEvent);
                 break;
+            case LINEAGE_SYNC_EVENT:
+                lineageSyncEvent = OBJECT_MAPPER.readValue(assetLineageEvent, LineageSyncEvent.class);
+                storingServices.apply(lineageSyncEvent);
             default:
                 break;
         }
