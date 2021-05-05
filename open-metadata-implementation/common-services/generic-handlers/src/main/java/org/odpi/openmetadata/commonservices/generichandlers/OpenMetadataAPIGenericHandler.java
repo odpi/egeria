@@ -2014,7 +2014,7 @@ public class OpenMetadataAPIGenericHandler<B>
                          * It is only allowed to be connected to one entity if it is anchored.  If it could be anchored to one entity and then
                          * connected to another then this logic does not work.
                          */
-                        case OpenMetadataAPIMapper.REFERENCEABLE_TO_COLLECTION_TYPE_GUID:
+                        case OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID:
                         case OpenMetadataAPIMapper.REFERENCEABLE_TO_REFERENCE_VALUE_TYPE_GUID:
                         case OpenMetadataAPIMapper.REFERENCEABLE_TO_NOTE_LOG_TYPE_GUID:
                             if (entityOneGUID.equals(targetGUID))
@@ -4368,6 +4368,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters is invalid
@@ -7198,8 +7199,9 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requestedEntityGUID unique identifier of the entity to retrieve from the repository
      * @param requestedEntityGUIDParameterName name of the parameter supplying the GUID
      * @param requestedEntityTypeName name of type of entity to retrieve
-     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
-     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param forLineage the query is to support lineage retrieval
      * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
@@ -7276,6 +7278,23 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 /*
                  * Since this classification is not supported, it can not be attached to the entity
+                 */
+            }
+        }
+
+        if (! forLineage)
+        {
+            try
+            {
+                if (repositoryHelper.getClassificationFromEntity(serviceName, retrievedEntity, OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME, methodName) != null)
+                {
+                    beanValid = false;
+                }
+            }
+            catch (ClassificationErrorException error)
+            {
+                /*
+                 * All ok
                  */
             }
         }
@@ -8146,6 +8165,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters is invalid
@@ -8682,9 +8702,9 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
      * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
      *                        RegEx partial match
-     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
-     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
-     * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not.
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
@@ -10201,7 +10221,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Deleted the existing relationship between the starting element and another element then create a new relationship
-     * between the starting element element and the new attaching element.
+     * between the starting element and the new attaching element.
      *
      * If successful this updates the LatestChange in each one's anchor entity (if they have one).
      * Both elements must be visible to the user to allow the relinking.
