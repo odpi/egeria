@@ -125,7 +125,9 @@ public class DataEngineConnectionAndEndpointHandler {
                 CONNECTION_TYPE_NAME, qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, connectionBuilder, methodName);
     }
 
-    private void upsertEndpoint(String networkAddress, String externalSourceGuid, String externalSourceName, String userId, String methodName, String connectionGuid, String endpointQualifiedName) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void upsertEndpoint(String networkAddress, String externalSourceGuid, String externalSourceName, String userId,
+                                String methodName, String connectionGuid, String endpointQualifiedName)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String endpointGuid;
         Optional<EntityDetail> optionalEndpoint = dataEngineCommonHandler.findEntity(userId, endpointQualifiedName, ENDPOINT_TYPE_NAME);
         if(optionalEndpoint.isPresent()){

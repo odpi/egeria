@@ -53,6 +53,8 @@ class DataEngineRelationalDataHandlerTest {
     @Mock
     RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn,
             SchemaType> relationalDataHandler;
+    @Mock
+    private DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
 
     @InjectMocks
     private DataEngineRelationalDataHandler dataEngineRelationalDataHandler;

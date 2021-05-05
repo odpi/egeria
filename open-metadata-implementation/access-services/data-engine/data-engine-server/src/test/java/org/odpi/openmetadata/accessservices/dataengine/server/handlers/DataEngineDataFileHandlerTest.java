@@ -64,6 +64,7 @@ class DataEngineDataFileHandlerTest {
     private static final String EXTERNAL_SOURCE_NAME = "externalSourceName";
     private static final String SCHEMA_TYPE_GUID = "schemaTypeGuid";
     private static final String GUID_VALUE = "1";
+    private static final String NETWORK_ADDRESS = "networkAddress";
 
     @Mock
     private OMRSRepositoryHelper repositoryHelper;
@@ -82,6 +83,9 @@ class DataEngineDataFileHandlerTest {
 
     @Mock
     private DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler;
+
+    @Mock
+    private DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
 
     @InjectMocks
     private DataEngineDataFileHandler dataEngineDataFileHandler;
@@ -108,6 +112,8 @@ class DataEngineDataFileHandlerTest {
                 ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, EXTERNAL_SOURCE_NAME,null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, PATH, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, USER, METHOD);
+        verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
+                CSV_FILE_TYPE_NAME, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
     }
 
     @Test
@@ -133,6 +139,8 @@ class DataEngineDataFileHandlerTest {
                 ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, EXTERNAL_SOURCE_NAME,null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, PATH, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, USER, METHOD);
+        verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
+                CSV_FILE_TYPE_NAME, NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
     }
 
     private void mockDataEngineCommonHandler(boolean update)
@@ -169,6 +177,7 @@ class DataEngineDataFileHandlerTest {
         csvFile.setPathName(PATH);
         csvFile.setDelimiterCharacter(",");
         csvFile.setQuoteCharacter("\"");
+        csvFile.setNetworkAddress(NETWORK_ADDRESS);
 
         return csvFile;
     }
