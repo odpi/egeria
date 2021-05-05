@@ -34,6 +34,8 @@ public class DataFile extends DataStore {
     private String fileType;
     private SchemaType schema;
     private List<Attribute> columns;
+    // Needed to create Endpoint, which in turn is internally generated along with Connection, not provided by user
+    private String networkAddress;
 
     /**
      * Gets file type
@@ -89,12 +91,32 @@ public class DataFile extends DataStore {
         this.columns = columns;
     }
 
+    /**
+     * Gets the network address
+     *
+     * @return columns
+     */
+    public String getNetworkAddress() {
+        return networkAddress;
+    }
+
+    /**
+     * Sets the network address. Needed to create Endpoint, which in turn is internally generated along with Connection,
+     * not provided by user
+     *
+     * @param networkAddress network address
+     */
+    public void setNetworkAddress(String networkAddress) {
+        this.networkAddress = networkAddress;
+    }
+
     @Override
     public String toString() {
         return "DataFile{" +
                 ", fileType='" + fileType + "'" +
                 ", schema='" + schema + "'" +
                 ", columns='" + columns + "'" +
+                ", networkAddress='" + networkAddress + "'" +
                 "}";
     }
 
@@ -106,12 +128,13 @@ public class DataFile extends DataStore {
 
         return Objects.equals(fileType, dataFile.fileType) &&
                 Objects.equals(schema, dataFile.schema) &&
-                Objects.equals(columns, dataFile.columns);
+                Objects.equals(columns, dataFile.columns) &&
+                Objects.equals(networkAddress, dataFile.networkAddress);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), fileType, schema, columns);
+        return Objects.hash(super.hashCode(), fileType, schema, columns, networkAddress);
     }
 
 }
