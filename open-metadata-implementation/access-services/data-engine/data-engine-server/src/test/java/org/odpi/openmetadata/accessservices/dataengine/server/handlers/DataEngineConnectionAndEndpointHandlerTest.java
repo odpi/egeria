@@ -45,7 +45,6 @@ class DataEngineConnectionAndEndpointHandlerTest {
     private static final String ENDPOINT_QUALIFIED_NAME = CONNECTION_QUALIFIED_NAME + "::endpoint" ;
     private static final String EXTERNAL_SOURCE_GUID = "externalSourceGuid";
     private static final String EXTERNAL_SOURCE_NAME = "externalSourceName";
-    private static final String GUID_VALUE = "1";
     private static final String NETWORK_ADDRESS = "networkAddress";
 
     @Mock
