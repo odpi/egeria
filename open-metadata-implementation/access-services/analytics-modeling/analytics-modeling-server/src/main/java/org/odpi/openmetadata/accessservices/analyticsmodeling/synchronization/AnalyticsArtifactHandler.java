@@ -22,6 +22,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.co
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.AssetConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters.SchemaTypeConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAssetUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsMetadata;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AssetReference;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
@@ -110,11 +111,11 @@ public class AnalyticsArtifactHandler {
 		try {
 			AnalyticsAsset asset = mapper.readValue(input, AnalyticsAsset.class);
 			
-			if (asset.hasMetadataModule() || !asset.isVisualization()) {
+			if (AnalyticsAssetUtils.hasMetadataModule(asset) || !AnalyticsAssetUtils.isVisualization(asset)) {
 				guids.add(createModuleAsset(asset));
 			}
 			
-			if (asset.isVisualization()) {
+			if (AnalyticsAssetUtils.isVisualization(asset)) {
 				guids.add(createVisualizationAsset(asset));
 			}
 			
@@ -260,7 +261,7 @@ public class AnalyticsArtifactHandler {
 				null,	//originOrganizationCapabilityGUID,
 				null,	//originBusinessCapabilityGUID,
 				null,	//otherOriginValues,
-				asset.buildAdditionalProperties(),	//additionalProperties, 
+				AnalyticsAssetUtils.buildAdditionalProperties(asset),	//additionalProperties, 
 				assetTypeGuid, assetTypeName,
 				null,	//extended properties
 				methodName);
@@ -287,7 +288,7 @@ public class AnalyticsArtifactHandler {
 	private String createVisualizationAsset(AnalyticsAsset report) 
 			throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException 
 	{
-		if (resolver == null || !report.hasMetadataModule()) {
+		if (resolver == null || !AnalyticsAssetUtils.hasMetadataModule(report)) {
 			resolver = new IdentifierResolver(ctx, report);
 		}
 		
@@ -329,7 +330,7 @@ public class AnalyticsArtifactHandler {
 	{
 		String methodName = "updateModuleAsset";
 
-		if (resolver == null || !report.hasMetadataModule()) {
+		if (resolver == null || !AnalyticsAssetUtils.hasMetadataModule(report)) {
 			resolver = new IdentifierResolver(ctx, report);
 		}
 		
@@ -797,24 +798,24 @@ public class AnalyticsArtifactHandler {
 		
 		try {
 			
-			if (asset.hasMetadataModule()) {
+			if (AnalyticsAssetUtils.hasMetadataModule(asset)) {
 				String guid = updateModuleAsset(asset);
 				guids.add(guid);
 				
 				updateDependentAssets(guid);
 				
-			} else if (!asset.isVisualization()) {
+			} else if (!AnalyticsAssetUtils.isVisualization(asset)) {
 				// update empty module: no metadata definitions maybe all were removed
 				guids.add(updateModuleAsset(asset));
 			}
 			
-			if (asset.isVisualization()) {
+			if (AnalyticsAssetUtils.isVisualization(asset)) {
 				guids.add(updateVisualizationAsset(asset));
 			}
 			
 		} catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException ex) {
 			throw new AnalyticsModelingCheckedException(
-					AnalyticsModelingErrorCode.FAILED_UPDATE_ARTIFACT.getMessageDefinition(),
+					AnalyticsModelingErrorCode.FAILED_UPDATE_ARTIFACT.getMessageDefinition(user, asset.getQualifiedName(), ex.getLocalizedMessage()),
 					this.getClass().getSimpleName(),
 					methodName,
 					ex);
@@ -1061,11 +1062,11 @@ public class AnalyticsArtifactHandler {
 		updateAssetReferences(asset, assetRepo);
 		
 		
-		if (asset.isModified(assetRepo)) {
+		if (AnalyticsAssetUtils.isModified(asset, assetRepo)) {
 			assetHandler.updateAsset(ctx.getUserId(), ssc.getGUID(), ssc.getSource(),
 					asset.getGuid(), "assetGUID", 
 					asset.getQualifiedName(), asset.getDisplayName(), asset.getDescription(), 
-					asset.buildAdditionalProperties(), assetTypeGuid, assetTypeName, 
+					AnalyticsAssetUtils.buildAdditionalProperties(asset), assetTypeGuid, assetTypeName, 
 					null, methodName);
 			return true;
 		}
@@ -1116,7 +1117,7 @@ public class AnalyticsArtifactHandler {
 
 		// delete the removed asset references from repository
 		for (Relationship rel : mapReferences.values()) {
-			AssetReference reference = assetRepo.getAssetReferenceByGuid(rel.getEntityTwoProxy().getGUID());
+			AssetReference reference = AnalyticsAssetUtils.getAssetReferenceByGuid(assetRepo, rel.getEntityTwoProxy().getGUID());
 			if (reference != null) {
 				// old references to this alias are invalid
 				invalidAliases.add(reference.getAlias() + IdentifierResolver.NAME_SEPARATOR);

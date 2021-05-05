@@ -50,6 +50,7 @@ public class Constants {
 	public static final String SYNC_NATIVE_CLASS = "nativeClass";
 	public static final String TYPE = "type";
 	public static final String TYPE_SUFFIX = "_type";
+	public static final String UID = "uid";
 	public static final String USER_ID = "userId";
 	public static final String VERSION = "version";
 	public static final String ZONE_MEMBERSHIP = "zoneMembership";

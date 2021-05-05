@@ -3,6 +3,9 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,10 +16,23 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.Id
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.SchemaAttribute;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
 
 /**
  *	Base class for analytics metadata provides common attributes. 
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = MetadataContainer.class, name = "MetadataContainer"),
+                @JsonSubTypes.Type(value = MetadataItem.class, name = "MetadataItem")
+        })
 public abstract class AnalyticsMetadata extends SchemaAttribute {
 
 	private String identifier;				// 3rd party system identifier within parent element
