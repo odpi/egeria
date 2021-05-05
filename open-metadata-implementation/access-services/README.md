@@ -128,11 +128,6 @@ only have access to the data they have been authorized to see.
   The Governance Program OMAS provides the ability to maintain a governance program in the open metadata repositories.
 It is designed for governance and CDO tools.
 
-* **[information-view](information-view)** - create virtual views over data.
-
-  The Information View OMAS provides information on existing assets plus the ability to define views over these assets.
-This OMAS is used by BI reporting tools and virtualization/federation tools to configure their engines.
-
 * **[it-infrastructure](it-infrastructure)** - manage metadata about deployed infrastructure.
 
   The IT Infrastructure OMAS provides support for the design and planning of the information infrastructure
@@ -148,12 +143,18 @@ management and governance.
   The Project Management OMAS supports the metadata associated with projects and campaigns.
 These projects and campaigns may be for governance projects, or generic data use projects.
 
+* **[security-manager](security-manager)** - exchange security related metadata with security services such as Apache Ranger.
+
+  The Security Manager OMAS provides the services to exchange security tags with access control and data
+protection technology services.  It is called by the [Security Integrator OMIS](../integration-services/security-integrator).
+
 * **[security-officer](security-officer)** - set up rules to protect data.
 
   The Security Officer OMAS provides the services to support the definition of roles and 
 rules for managing the protection of metadata and assets, plus work with the audit
 logs captured by the open metadata and governance tools.
 It is typically used by the security, compliance and auditing teams.
+
 
 * **[software-developer](software-developer)** - deliver useful metadata to software developers.
 
