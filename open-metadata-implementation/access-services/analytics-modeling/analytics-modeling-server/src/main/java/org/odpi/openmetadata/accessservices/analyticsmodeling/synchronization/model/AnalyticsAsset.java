@@ -4,21 +4,21 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.Asset;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 
-
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class AnalyticsAsset extends Asset {
 
 	private String uid;					// external unique identifiers
@@ -34,34 +34,6 @@ public class AnalyticsAsset extends Asset {
 
 	private List<MetadataContainer> visualization;
 	
-	public void addContainer(MetadataContainer child) {
-		if (container == null) {
-			container = new ArrayList<>();
-		}
-		container.add(child);
-	}
-
-	public MetadataContainer removeContainer(int index) {
-		if (container != null && container.size() > index) {
-			return container.remove(index);
-		}
-		return null;
-	}
-
-	public MetadataContainer getContainer(int index) {
-		if (container != null && container.size() > index) {
-			return container.get(index);
-		}
-		return null;
-	}
-	
-	public void addItem(MetadataItem item) {
-		if (this.item == null) {
-			this.item = new ArrayList<>();
-		}
-		this.item.add(item);
-	}
-
 	public String getType() {
 		return type;
 	}
@@ -86,26 +58,12 @@ public class AnalyticsAsset extends Asset {
 		this.sourceGuid = sourceGuid;
 	}
 
-	public void addSourceGuid(String guid) {
-		if (sourceGuid == null) {
-			sourceGuid = new ArrayList<>();
-		}
-		sourceGuid.add(guid);
-	}
-
 	public List<AssetReference> getReference() {
 		return reference;
 	}
 
 	public void setReference(List<AssetReference> reference) {
 		this.reference = reference;
-	}
-
-	public void addReference(AssetReference theReference) {
-		if (reference == null) {
-			reference = new ArrayList<>();
-		}
-		reference.add(theReference);
 	}
 
 	public List<MetadataContainer> getContainer() {
@@ -167,15 +125,6 @@ public class AnalyticsAsset extends Asset {
 		this.lastModified = lastModified;
 	}
 
-	public boolean isVisualization() {
-		return visualization != null;
-	}
-	
-	public boolean hasMetadataModule() {
-		return (container != null && !container.isEmpty())
-				|| (item != null && !item.isEmpty());
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		
@@ -206,56 +155,4 @@ public class AnalyticsAsset extends Asset {
     {
         return Objects.hash(super.hashCode(), uid, location, type, lastModified);
     }
-	
-	/**
-	 * Check if internal data of the asset is modified.
-	 * @param asset to check.
-	 * @return true if modified.
-	 * @throws AnalyticsModelingCheckedException if different assets are compared. 
-	 */
-	public boolean isModified(AnalyticsAsset asset) throws AnalyticsModelingCheckedException {
-		if (!Objects.equals(guid, asset.guid)) {
-			// only same instance should be compared
-			String methodName = "isModified";
-			throw new AnalyticsModelingCheckedException(
-					AnalyticsModelingErrorCode.ILLEGAL_OPERATION.getMessageDefinition(methodName, asset.getQualifiedName()),
-					this.getClass().getSimpleName(),
-					methodName);
-		}
-		return     !Objects.equals(lastModified, asset.lastModified)
-				|| !Objects.equals(uid, asset.uid)
-				|| !Objects.equals(location, asset.location)
-				|| !Objects.equals(type, asset.type)
-				|| !Objects.equals(reference, asset.reference);
-	}
-	
-	public Map<String, String> buildAdditionalProperties() {
-		Map<String, String>  additionalProperties = new HashMap<>();
-        additionalProperties.put(Constants.TYPE, this.getType());
-        additionalProperties.put(Constants.LASTMODIFIED, this.getLastModified());
-        additionalProperties.put(Constants.LOCATION, this.getLocation());
-
-        if (this.getReference() != null ) {
-            try {
-    			String references = new ObjectMapper().writeValueAsString(this.getReference());
-    	        additionalProperties.put(Constants.REFERENCE, references);
-    		} catch (JsonProcessingException e) {
-    			// log to execution context
-    		}
-        }
-        return additionalProperties;
-	}
-	
-	/**
-	 * Find reference to asset with GUID.
-	 * @param guid to search.
-	 * @return asset reference or null.
-	 */
-	public AssetReference getAssetReferenceByGuid(String guid) {
-		if (reference == null) {
-			return null;
-		}
-		return reference.stream().filter(r->guid.equals(r.getGuid())).findFirst().orElse(null);
-	}
-
 }

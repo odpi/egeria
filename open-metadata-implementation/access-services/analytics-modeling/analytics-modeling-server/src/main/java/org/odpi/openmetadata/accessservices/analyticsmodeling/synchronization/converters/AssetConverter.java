@@ -56,6 +56,7 @@ public class AssetConverter extends OpenMetadataAPIGenericConverter<AnalyticsAss
 			bean.setAdditionalProperties(props);
 			
 			if (props != null) {
+				bean.setUid(props.get(Constants.UID));
 				bean.setType(props.get(Constants.TYPE));
 				bean.setLocation(props.get(Constants.LOCATION));
 				bean.setLastModified(props.get(Constants.LASTMODIFIED));
