@@ -35,6 +35,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -101,6 +102,16 @@ public class ProcessContextHandler {
         Multimap<String, RelationshipsContext> context = ArrayListMultimap.create();
         context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), relationshipsContext);
 
+        List<Relationship> collection = handlerHelper.getRelationshipsByType(userId, processGUID, COLLECTION_MEMBERSHIP, PROCESS);
+        if (!CollectionUtils.isEmpty(collection)) {
+            RelationshipsContext collectionMembershipContext = handlerHelper.buildContextForRelationships(userId, processGUID, collection);
+            for (Relationship collectionMembership : collection) {
+                EntityDetail collectionEntity = handlerHelper.getEntityAtTheEnd(userId, processGUID, collectionMembership);
+                handlerHelper.addContextForRelationships(userId, collectionEntity, COLLECTION_MEMBERSHIP, collectionMembershipContext.getRelationships());
+            }
+            context.put(AssetLineageEventType.PROCESS_CONTEXT_EVENT.getEventTypeName(), collectionMembershipContext);
+        }
+
         Set<LineageEntity> tabularColumns = relationshipsContext.getRelationships().stream()
                 .filter(relationship -> relationship.getRelationshipType().equalsIgnoreCase(ATTRIBUTE_FOR_SCHEMA))
                 .map(GraphContext::getToVertex).collect(Collectors.toSet());
@@ -158,8 +169,7 @@ public class ProcessContextHandler {
                     relationshipsContext);
 
             if (tabularColumn == null) {
-                log.error("No entity TabularColumn has been found for the the TabularSchemaType with guid {}", tabularSchemaType.getGUID());
-
+                log.error("No entity TabularColumn has been found for the PortImplementation with guid {}", port.getGUID());
                 throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(), this.getClass().getName(), "Retrieving Relationship");
             }
         }

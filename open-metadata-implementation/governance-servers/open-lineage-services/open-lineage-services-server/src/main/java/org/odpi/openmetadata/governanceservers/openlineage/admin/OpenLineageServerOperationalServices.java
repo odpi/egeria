@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.AssetLineage;
+import org.odpi.openmetadata.adminservices.configuration.properties.OLSBackgroundJob;
 import org.odpi.openmetadata.adminservices.configuration.properties.OLSSimplifiedAccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
@@ -20,15 +22,22 @@ import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageAssetContextHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.OpenLineageInTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.scheduler.AssetLineageUpdateJob;
+import org.odpi.openmetadata.governanceservers.openlineage.scheduler.AssetLineageUpdateJobConfiguration;
+import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfiguration;
+import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConstants;
+import org.odpi.openmetadata.governanceservers.openlineage.scheduler.LineageGraphJob;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServerInstance;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
-import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfiguration;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -37,6 +46,8 @@ import org.slf4j.LoggerFactory;
  */
 public class OpenLineageServerOperationalServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerOperationalServices.class);
+
+    private static final String EMPTY_STRING = "";
 
     private final String localServerName;
     private final String localServerUserId;
@@ -48,8 +59,8 @@ public class OpenLineageServerOperationalServices {
     private OMRSAuditLog auditLog;
     private LineageGraph lineageGraphConnector;
     private OpenMetadataTopicConnector inTopicConnector;
-    private JobConfiguration backgroundJob;
-    private int jobIntervalInSeconds = 120;
+    private AssetLineage assetLineageClient;
+    private List<JobConfiguration> backgroundJobs;
 
     /**
      * Constructor used at server startup.
@@ -100,7 +111,6 @@ public class OpenLineageServerOperationalServices {
         final String actionDescription = "Initialize Open lineage Services";
         Connection lineageGraphConnection = openLineageServerConfig.getLineageGraphConnection();
         Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
-        jobIntervalInSeconds = openLineageServerConfig.getJobIntervalInSeconds();
 
         this.lineageGraphConnector = (LineageGraph) getConnector(lineageGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR);
@@ -111,7 +121,7 @@ public class OpenLineageServerOperationalServices {
 
         OpenLineageHandler openLineageHandler = new OpenLineageHandler(lineageGraphConnector);
 
-        initializeAndStartBackgroundJob();
+        initializeAndStartBackgroundJobs();
 
         this.openLineageServerInstance = new
                 OpenLineageServerInstance(
@@ -123,8 +133,47 @@ public class OpenLineageServerOperationalServices {
         logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
     }
 
-    private void initializeAndStartBackgroundJob() {
-        this.backgroundJob = new JobConfiguration(lineageGraphConnector, jobIntervalInSeconds);
+    private void initializeAndStartBackgroundJobs() {
+        backgroundJobs = new ArrayList<>();
+
+        Optional<OLSBackgroundJob> lineageGraphJob = getJob(JobConstants.LINEAGE_GRAPH_JOB);
+        if (isJobEnabled(lineageGraphJob)) {
+            int lineageGraphJobInterval = getJobInterval(lineageGraphJob);
+            backgroundJobs.add(new JobConfiguration(lineageGraphConnector, JobConstants.LINEAGE_GRAPH_JOB, LineageGraphJob.class,
+                    lineageGraphJobInterval));
+        }
+
+        Optional<OLSBackgroundJob> assetLineageUpdateJob = getJob(JobConstants.ASSET_LINEAGE_UPDATE_JOB);
+        if (isJobEnabled(assetLineageUpdateJob)) {
+            int assetLineageJobInterval = getJobInterval(assetLineageUpdateJob);
+            String configAssetLineageLastUpdateTime = getDefaultValue(assetLineageUpdateJob);
+
+            String assetLineageServerName = openLineageServerConfig.getAccessServiceConfig().getServerName();
+            backgroundJobs.add(new AssetLineageUpdateJobConfiguration(lineageGraphConnector, JobConstants.ASSET_LINEAGE_UPDATE_JOB,
+                    AssetLineageUpdateJob.class, assetLineageJobInterval, configAssetLineageLastUpdateTime, assetLineageClient,
+                    assetLineageServerName, localServerUserId));
+        }
+
+        backgroundJobs.forEach(JobConfiguration::schedule);
+    }
+
+    private int getJobInterval(Optional<OLSBackgroundJob> job) {
+        return job.map(OLSBackgroundJob::getJobInterval).orElse(JobConstants.DEFAULT_JOB_INTERVAL_IN_SECONDS);
+    }
+
+    private boolean isJobEnabled(Optional<OLSBackgroundJob> job) {
+        return job.map(OLSBackgroundJob::isJobEnabled).orElse(Boolean.TRUE);
+    }
+
+    private String getDefaultValue(Optional<OLSBackgroundJob> job) {
+        return job.map(OLSBackgroundJob::getJobDefaultValue).orElse(EMPTY_STRING);
+    }
+
+    private Optional<OLSBackgroundJob> getJob(String name) {
+        return openLineageServerConfig.getBackgroundJobs()
+                .stream()
+                .filter(job -> name.equals(job.getJobName()))
+                .findAny();
     }
 
     /**
@@ -223,8 +272,8 @@ public class OpenLineageServerOperationalServices {
         inTopicConnector.setAuditLog(auditLog);
         StoringServices storingServices = new StoringServices(lineageGraphConnector);
         OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
-        AssetLineage assetLineage = new AssetLineage(accessServiceConfig.getServerName(), accessServiceConfig.getServerPlatformUrlRoot());
-        OpenLineageAssetContextHandler assetContextHandler = new OpenLineageAssetContextHandler(localServerUserId, assetLineage);
+        assetLineageClient = new AssetLineage(accessServiceConfig.getServerName(), accessServiceConfig.getServerPlatformUrlRoot());
+        OpenLineageAssetContextHandler assetContextHandler = new OpenLineageAssetContextHandler(localServerUserId, assetLineageClient);
         OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices,
                 assetContextHandler, auditLog);
         inTopicConnector.registerListener(openLineageInTopicListener);
@@ -346,13 +395,13 @@ public class OpenLineageServerOperationalServices {
     }
 
     /**
-     *  Triggers stop sequence on the background job implementation
+     *  Triggers stop sequence on the background jobs implementations
      */
     private void stopBackgroundJob() {
-        if (backgroundJob != null)
-            backgroundJob.stop();
+        if (CollectionUtils.isNotEmpty(backgroundJobs)) {
+            backgroundJobs.forEach(JobConfiguration::stop);
+        }
     }
-
 
     /**
      * Disconnect the passed OpenLineageGraphConnector.

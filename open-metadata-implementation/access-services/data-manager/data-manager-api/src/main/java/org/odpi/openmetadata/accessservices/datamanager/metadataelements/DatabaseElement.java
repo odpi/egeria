@@ -46,6 +46,7 @@ public class DatabaseElement implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            databaseProperties = template.getDatabaseProperties();
         }
     }
 
@@ -124,10 +125,6 @@ public class DatabaseElement implements MetadataElement, Serializable
             return true;
         }
         if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
         {
             return false;
         }

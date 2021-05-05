@@ -4,13 +4,27 @@ package org.odpi.openmetadata.accessservices.dataengine.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.dataengine.rest.*;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The DataEngineResource provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -20,7 +34,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}")
 
-@Tag(name="Data Engine OMAS", description="The Data Engine OMAS provides APIs and events for data movement/processing engines to record the changes made to the data landscape.", externalDocs=@ExternalDocumentation(description="Data Engine Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/"))
+@Tag(name = "Data Engine OMAS", description = "The Data Engine OMAS provides APIs and events for data movement/processing engines to record the " +
+        "changes made to the data landscape.", externalDocs = @ExternalDocumentation(description = "Data Engine Open Metadata Access Service (OMAS)"
+        , url = "https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/"))
 
 public class DataEngineResource {
     private DataEngineRESTServices restAPI;
@@ -147,24 +163,6 @@ public class DataEngineResource {
     }
 
     /**
-     * Add ports to an existing Process entity
-     *
-     * @param serverName          name of server instance to call
-     * @param userId              the name of the calling user
-     * @param processGuid         the guid of the process
-     * @param portListRequestBody list of port unique identifiers
-     *
-     * @return unique identifier of the updated process
-     */
-    @PostMapping(path = "/processes/{processGuid}/ports")
-    public GUIDResponse addPortsToProcess(@PathVariable("userId") String userId,
-                                          @PathVariable("serverName") String serverName,
-                                          @PathVariable("processGuid") String processGuid,
-                                          @RequestBody PortListRequestBody portListRequestBody) {
-        return restAPI.addPortsToProcess(userId, serverName, processGuid, portListRequestBody);
-    }
-
-    /**
      * Add LineageMapping relationships
      *
      * @param serverName                 name of server instance to call
@@ -180,6 +178,7 @@ public class DataEngineResource {
         return restAPI.addLineageMappings(userId, serverName, lineageMappingsRequestBody);
     }
 
+
     /***
      * Get connection details used to access Data Engine OMAS input topic
      *
@@ -194,8 +193,56 @@ public class DataEngineResource {
      */
     @GetMapping(path = "/topics/in-topic-connection")
 
-    public ConnectionResponse getInTopicConnection(@PathVariable String                        serverName,
-                                                   @PathVariable String                        userId) {
+    public ConnectionResponse getInTopicConnection(@PathVariable String serverName,
+                                                   @PathVariable String userId) {
         return restAPI.getInTopicConnection(serverName, userId);
     }
+
+    /**
+     * Create a Database entity with all the needed relationships
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the database
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/databases")
+    public GUIDResponse upsertDatabase(@PathVariable("userId") String userId,
+                                       @PathVariable("serverName") String serverName,
+                                       @RequestBody DatabaseRequestBody requestBody) {
+        return restAPI.upsertDatabase(userId, serverName, requestBody);
+    }
+
+    /**
+     * Create a RelationalTable entity with all the needed relationships
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the schema type
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/relational-tables")
+    public GUIDResponse upsertRelationalTable(@PathVariable("userId") String userId,
+                                              @PathVariable("serverName") String serverName,
+                                              @RequestBody RelationalTableRequestBody requestBody) {
+        return restAPI.upsertRelationalTable(userId, serverName, requestBody);
+    }
+
+    /***
+     * Add a DataFile asset or any of its subtype
+     *
+     * @param serverName name of server instance to call
+     * @param userId name of the calling user
+     * @param dataFileRequestBody properties of data file
+     *
+     * @return file guid
+     */
+    @PostMapping(path = "/data-files")
+    public GUIDResponse upsertDataFile(@PathVariable String serverName, @PathVariable String userId,
+                                       @RequestBody DataFileRequestBody dataFileRequestBody) {
+        return restAPI.upsertDataFile(serverName, userId, dataFileRequestBody);
+    }
+
 }

@@ -69,6 +69,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.SCHEMA_TYPE_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.COLLECTION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TRANSFORMATION_PROJECT_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.DESTINATION_CONDENSATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_ANTONYM;
@@ -756,27 +758,9 @@ public class LineageGraphConnectorHelper {
         Iterator<Vertex> tableAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(RELATIONAL_TABLE));
         commitTransaction();
         if (tableAsset.hasNext()) {
-            properties.put(RELATIONAL_TABLE_KEY, tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
-
-        Iterator<Vertex> relationalDBSchemaType =
-                g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(2).or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE));
-        commitTransaction();
-        if (relationalDBSchemaType.hasNext()) {
-            properties.put(SCHEMA_TYPE_KEY, relationalDBSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
-
-        Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(4).or(hasLabel(DATABASE));
-        commitTransaction();
-        if (database.hasNext()) {
-            properties.put(DATABASE_KEY,
-                    database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
-
-        Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(5).hasLabel(CONNECTION);
-        commitTransaction();
-        if (connection.hasNext()) {
-            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            Vertex tableAssetVertex = tableAsset.next();
+            properties.put(RELATIONAL_TABLE_KEY, getDisplayNameForVertex(tableAssetVertex));
+            properties.putAll(getRelationalTableProperties(g, tableAssetVertex.id()));
         }
 
         return properties;
@@ -788,13 +772,7 @@ public class LineageGraphConnectorHelper {
         Iterator<Vertex> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE));
         commitTransaction();
         if (tabularSchemaType.hasNext()) {
-            Vertex tabularSchemaTypeVertex = tabularSchemaType.next();
-            if (tabularSchemaTypeVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).isPresent()) {
-                properties.put(SCHEMA_TYPE_KEY, tabularSchemaTypeVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-            } else if (tabularSchemaTypeVertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).isPresent()) {
-                properties.put(SCHEMA_TYPE_KEY,
-                        tabularSchemaTypeVertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).value().toString());
-            }
+            properties.put(SCHEMA_TYPE_KEY, getDisplayNameForVertex(tabularSchemaType.next()));
         }
 
         Iterator<Vertex> dataFileAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2)
@@ -833,25 +811,32 @@ public class LineageGraphConnectorHelper {
                 g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE));
         commitTransaction();
         if (relationalDBSchemaType.hasNext()) {
-            properties.put(SCHEMA_TYPE_KEY,
-                    relationalDBSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(SCHEMA_TYPE_KEY, getDisplayNameForVertex(relationalDBSchemaType.next()));
         }
 
         Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(3).or(hasLabel(DATABASE));
         commitTransaction();
         if (database.hasNext()) {
-            properties.put(DATABASE_KEY,
-                    database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(DATABASE_KEY, getDisplayNameForVertex(database.next()));
         }
 
         Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(4).hasLabel(CONNECTION);
         commitTransaction();
         if (connection.hasNext()) {
-            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(CONNECTION_KEY, getDisplayNameForVertex(connection.next()));
         }
 
         return properties;
 
+    }
+
+    private String getDisplayNameForVertex(Vertex vertex) {
+        if (vertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).isPresent()) {
+            return vertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString();
+        } else if (vertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).isPresent()) {
+            return vertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).value().toString();
+        }
+        return null;
     }
 
     private Map<String, String> getDataFileProperties(GraphTraversalSource g, Object vertexId) {
@@ -908,14 +893,11 @@ public class LineageGraphConnectorHelper {
 
     private Map<String, String> getProcessProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
-
-        GraphTraversal<Vertex, ? extends Property<Object>> qualifiedNameTraversal = g.V(vertexId).properties(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME);
+        Iterator<Vertex> transformationProject = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(COLLECTION));
         commitTransaction();
-        if (qualifiedNameTraversal.hasNext()) {
-            String value = (String) qualifiedNameTraversal.next().value();
-            properties.put(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME, value);
+        if (transformationProject.hasNext()) {
+            properties.put(TRANSFORMATION_PROJECT_KEY, transformationProject.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
-
         return properties;
     }
 

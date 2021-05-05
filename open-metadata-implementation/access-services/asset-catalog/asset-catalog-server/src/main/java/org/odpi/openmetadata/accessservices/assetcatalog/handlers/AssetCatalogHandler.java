@@ -557,11 +557,11 @@ public class AssetCatalogHandler {
 
         OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
 
-        if(searchParameters.isExactMatch()) {
-            searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, searchParameters.isCaseInsensitive());
+        if(searchParameters.getExactMatch()) {
+            searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, searchParameters.getCaseInsensitive());
         }
         else {
-            searchCriteria = repositoryHelper.getContainsRegex(searchCriteria, searchParameters.isCaseInsensitive());
+            searchCriteria = repositoryHelper.getContainsRegex(searchCriteria, searchParameters.getCaseInsensitive());
         }
 
         for (String type : types) {

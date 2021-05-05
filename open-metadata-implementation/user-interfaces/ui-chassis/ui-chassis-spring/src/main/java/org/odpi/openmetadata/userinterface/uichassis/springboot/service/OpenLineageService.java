@@ -25,8 +25,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -211,27 +209,8 @@ public class OpenLineageService {
         }
         Graph graph = new Graph(nodes, edges);
         lineageGraphDisplayRulesService.applyRules(graph);
-        nodes.stream().filter(node -> SUB_PROCESS.equals(node.getGroup())).forEach(this::extractTransformationProjectFromQualifiedName);
 
         return graph;
-    }
-
-
-
-    private void extractTransformationProjectFromQualifiedName(Node node) {
-        if (node.getProperties() == null) {
-            return;
-        }
-        String qualifiedName = node.getProperties().get(VERTEX_INSTANCE_PROPQUALIFIED_NAME);
-        if (qualifiedName == null) {
-            return;
-        }
-        Pattern pattern = Pattern.compile(TRANSFORMATION_PROJECT_NAME_PATTERN, Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(qualifiedName);
-        if (matcher.find()) {
-            node.getProperties().put(TRANSFORMATION_PROJECT, matcher.group(1));
-        }
-        node.getProperties().remove(VERTEX_INSTANCE_PROPQUALIFIED_NAME);
     }
 
     /**
