@@ -41,11 +41,12 @@ class DataEngineConnectionAndEndpointHandlerTest {
     private static final String USER = "user";
     private static final String METHOD = "method";
     private static final String ASSET_QUALIFIED_NAME = "qualifiedName";
-    private static final String CONNECTION_QUALIFIED_NAME = ASSET_QUALIFIED_NAME + "::connection" ;
-    private static final String ENDPOINT_QUALIFIED_NAME = CONNECTION_QUALIFIED_NAME + "::endpoint" ;
     private static final String EXTERNAL_SOURCE_GUID = "externalSourceGuid";
     private static final String EXTERNAL_SOURCE_NAME = "externalSourceName";
+    private static final String PROTOCOL = "protocol";
     private static final String NETWORK_ADDRESS = "networkAddress";
+    private static final String CONNECTION_QUALIFIED_NAME = CONNECTION_TYPE_NAME + "::" + PROTOCOL + "::" + NETWORK_ADDRESS ;
+    private static final String ENDPOINT_QUALIFIED_NAME = ENDPOINT_TYPE_NAME + "::" + PROTOCOL + "::" + NETWORK_ADDRESS ;
 
     @Mock
     private OMRSRepositoryHelper repositoryHelper;
@@ -65,8 +66,8 @@ class DataEngineConnectionAndEndpointHandlerTest {
     void insertConnectionAndEndpoint() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockDataEngineCommonHandler(true);
 
-        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME, NETWORK_ADDRESS,
-                EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME, PROTOCOL,
+                NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME);
 
@@ -91,8 +92,8 @@ class DataEngineConnectionAndEndpointHandlerTest {
     void updateConnectionAndEndpoint() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockDataEngineCommonHandler(true);
 
-        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME, NETWORK_ADDRESS,
-                EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+        dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME, PROTOCOL,
+                NETWORK_ADDRESS, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, ASSET_QUALIFIED_NAME, CSV_FILE_TYPE_NAME);
 

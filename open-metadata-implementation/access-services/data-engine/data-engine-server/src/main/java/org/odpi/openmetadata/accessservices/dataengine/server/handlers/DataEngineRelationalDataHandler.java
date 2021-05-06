@@ -119,8 +119,12 @@ public class DataEngineRelationalDataHandler {
         }
         addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
         upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
-        this.dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                database.getNetworkAddress(), externalSourceGUID, externalSourceName, userId, methodName);
+
+        if(database.getProtocol() != null && database.getNetworkAddress() != null) {
+            this.dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),
+                    OpenMetadataAPIMapper.DATABASE_TYPE_NAME, database.getProtocol(), database.getNetworkAddress(),
+                    externalSourceGUID, externalSourceName, userId, methodName);
+        }
 
         return databaseGUID;
     }

@@ -26,6 +26,7 @@ public class Database extends DataStore {
     private DatabaseSchema databaseSchema;
 
     // Needed to create Endpoint, which in turn is internally generated along with Connection, not provided by user
+    private String protocol;
     private String networkAddress;
 
 
@@ -129,12 +130,33 @@ public class Database extends DataStore {
     }
 
     /**
-     * Set the network address needed for Endpoint
+     * Sets the network address. Needed to create Endpoint, which in turn is internally generated along with Connection,
+     * not provided by user
      *
      * @param networkAddress network address
      */
     public void setNetworkAddress(String networkAddress) {
         this.networkAddress = networkAddress;
+    }
+
+    /**
+     * Get an Endpoint protocol
+     *
+     * @return network address
+     *
+     */
+    public String getProtocol() {
+        return protocol;
+    }
+
+    /**
+     * Sets the protocol. Needed to create Endpoint, which in turn is internally generated along with Connection,
+     * not provided by user
+     *
+     * @param protocol protocol
+     */
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
     /**
@@ -152,6 +174,7 @@ public class Database extends DataStore {
                 ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
                 ", databaseSchema=" + databaseSchema +
                 ", networkAddress=" + networkAddress +
+                ", protocol=" + protocol +
                 '}';
     }
 
@@ -166,12 +189,13 @@ public class Database extends DataStore {
                 Objects.equals(databaseInstance, database.databaseInstance) &&
                 Objects.equals(databaseImportedFrom, database.databaseImportedFrom) &&
                 Objects.equals(databaseSchema, database.databaseSchema) &&
-                Objects.equals(networkAddress, database.networkAddress);
+                Objects.equals(networkAddress, database.networkAddress) &&
+                Objects.equals(protocol, database.protocol);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), databaseType, databaseVersion, databaseInstance, databaseImportedFrom,
-                databaseSchema, networkAddress);
+                databaseSchema, networkAddress, protocol);
     }
 }

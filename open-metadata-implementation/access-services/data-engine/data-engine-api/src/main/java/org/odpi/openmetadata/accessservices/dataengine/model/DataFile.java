@@ -34,8 +34,10 @@ public class DataFile extends DataStore {
     private String fileType;
     private SchemaType schema;
     private List<Attribute> columns;
+
     // Needed to create Endpoint, which in turn is internally generated along with Connection, not provided by user
     private String networkAddress;
+    private String protocol;
 
     /**
      * Gets file type
@@ -110,6 +112,26 @@ public class DataFile extends DataStore {
         this.networkAddress = networkAddress;
     }
 
+    /**
+     * Get an Endpoint protocol
+     *
+     * @return network address
+     *
+     */
+    public String getProtocol() {
+        return protocol;
+    }
+
+    /**
+     * Sets the protocol. Needed to create Endpoint, which in turn is internally generated along with Connection,
+     * not provided by user
+     *
+     * @param protocol protocol
+     */
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
     @Override
     public String toString() {
         return "DataFile{" +
@@ -117,6 +139,7 @@ public class DataFile extends DataStore {
                 ", schema='" + schema + "'" +
                 ", columns='" + columns + "'" +
                 ", networkAddress='" + networkAddress + "'" +
+                ", protocol='" + protocol + "'" +
                 "}";
     }
 
@@ -129,12 +152,13 @@ public class DataFile extends DataStore {
         return Objects.equals(fileType, dataFile.fileType) &&
                 Objects.equals(schema, dataFile.schema) &&
                 Objects.equals(columns, dataFile.columns) &&
-                Objects.equals(networkAddress, dataFile.networkAddress);
+                Objects.equals(networkAddress, dataFile.networkAddress) &&
+                Objects.equals(protocol, dataFile.protocol);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), fileType, schema, columns, networkAddress);
+        return Objects.hash(super.hashCode(), fileType, schema, columns, networkAddress, protocol);
     }
 
 }

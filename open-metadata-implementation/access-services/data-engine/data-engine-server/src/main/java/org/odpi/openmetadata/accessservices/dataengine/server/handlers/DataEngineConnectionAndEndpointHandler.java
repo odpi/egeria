@@ -26,6 +26,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROTOCOL_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 
 
@@ -82,22 +83,24 @@ public class DataEngineConnectionAndEndpointHandler {
      * @throws PropertyServerException if errors in repository
      * @throws UserNotAuthorizedException if user not authorized
      */
-    public void upsertConnectionAndEndpoint(String assetQualifiedName, String assetTypeName, String networkAddress, String externalSourceGuid,
-                                            String externalSourceName, String userId, String methodName)
+    public void upsertConnectionAndEndpoint(String assetQualifiedName, String assetTypeName, String protocol, String networkAddress,
+                                            String externalSourceGuid, String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        validateParameters(assetQualifiedName, assetTypeName, externalSourceGuid, externalSourceName, userId, methodName);
+        validateParameters(assetQualifiedName, assetTypeName, protocol, networkAddress, externalSourceGuid, externalSourceName,
+                userId, methodName);
         Optional<EntityDetail> optionalAsset = dataEngineCommonHandler.findEntity(userId, assetQualifiedName, assetTypeName);
         if(!optionalAsset.isPresent()){
             return;
         }
 
-        String connectionQualifiedName = assetQualifiedName + "::connection";
+        String connectionQualifiedName = CONNECTION_TYPE_NAME + "::" + protocol + "::" + networkAddress;
         String connectionGuid = upsertConnection(externalSourceGuid, externalSourceName, userId, methodName, optionalAsset.get(),
                 connectionQualifiedName);
 
-        String endpointQualifiedName = connectionQualifiedName + "::endpoint";
-        upsertEndpoint(networkAddress, externalSourceGuid, externalSourceName, userId, methodName, connectionGuid, endpointQualifiedName);
+        String endpointQualifiedName = ENDPOINT_TYPE_NAME + "::" + protocol + "::" + networkAddress;
+        upsertEndpoint(protocol, networkAddress, externalSourceGuid, externalSourceName, userId, methodName, connectionGuid,
+                endpointQualifiedName);
     }
 
     private String upsertConnection(String externalSourceGuid, String externalSourceName, String userId, String methodName,
@@ -125,49 +128,59 @@ public class DataEngineConnectionAndEndpointHandler {
                 CONNECTION_TYPE_NAME, qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, connectionBuilder, methodName);
     }
 
-    private void upsertEndpoint(String networkAddress, String externalSourceGuid, String externalSourceName, String userId,
-                                String methodName, String connectionGuid, String endpointQualifiedName)
+    private void upsertEndpoint(String protocol, String networkAddress, String externalSourceGuid, String externalSourceName,
+                                String userId, String methodName, String connectionGuid, String endpointQualifiedName)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String endpointGuid;
         Optional<EntityDetail> optionalEndpoint = dataEngineCommonHandler.findEntity(userId, endpointQualifiedName, ENDPOINT_TYPE_NAME);
         if(optionalEndpoint.isPresent()){
-            updateEndpoint(optionalEndpoint.get(), networkAddress, externalSourceGuid, externalSourceName, userId, methodName);
+            updateEndpoint(optionalEndpoint.get(), protocol, networkAddress, externalSourceGuid, externalSourceName, userId, methodName);
             endpointGuid = optionalEndpoint.get().getGUID();
         } else {
-            endpointGuid = createEndpoint(endpointQualifiedName, externalSourceGuid, externalSourceName, userId, methodName);
+            endpointGuid = createEndpoint(protocol, networkAddress, endpointQualifiedName, externalSourceGuid,
+                    externalSourceName, userId, methodName);
         }
         dataEngineCommonHandler.upsertExternalRelationship(userId, endpointGuid, connectionGuid,
                 CONNECTION_ENDPOINT_TYPE_NAME, ENDPOINT_TYPE_NAME, externalSourceName, null);
     }
 
-    private String createEndpoint(String qualifiedName, String externalSourceGuid, String externalSourceName, String userId,
-                                String methodName)
+    private String createEndpoint(String protocol, String networkAddress, String qualifiedName, String externalSourceGuid,
+                                  String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        EndpointBuilder endpointBuilder = new EndpointBuilder(qualifiedName, ENDPOINT_TYPE_GUID, ENDPOINT_TYPE_NAME,
-                repositoryHelper, serviceName, serverName);
+        EndpointBuilder endpointBuilder = new EndpointBuilder(protocol, networkAddress, qualifiedName, ENDPOINT_TYPE_GUID,
+                ENDPOINT_TYPE_NAME, repositoryHelper, serviceName, serverName);
         return endpointHandler.createBeanInRepository(userId, externalSourceGuid, externalSourceName, ENDPOINT_TYPE_GUID,
                 ENDPOINT_TYPE_NAME, qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, endpointBuilder, methodName);
     }
 
-    private void updateEndpoint(EntityDetail endpoint, String networkAddress, String externalSourceGuid,
+    private void updateEndpoint(EntityDetail endpoint,String protocol, String networkAddress, String externalSourceGuid,
                                 String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
-        propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        propertyValue.setPrimitiveValue(networkAddress);
+        PrimitivePropertyValue protocolAsPropertyValue = new PrimitivePropertyValue();
+        protocolAsPropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        protocolAsPropertyValue.setPrimitiveValue(protocol);
+
+        PrimitivePropertyValue networkAddressAsPropertyValue = new PrimitivePropertyValue();
+        networkAddressAsPropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        networkAddressAsPropertyValue.setPrimitiveValue(networkAddress);
 
         InstanceProperties properties = endpoint.getProperties();
-        properties.setProperty(NETWORK_ADDRESS_PROPERTY_NAME, propertyValue);
+        properties.setProperty(PROTOCOL_PROPERTY_NAME, protocolAsPropertyValue);
+        properties.setProperty(NETWORK_ADDRESS_PROPERTY_NAME, networkAddressAsPropertyValue);
 
         endpointHandler.updateBeanInRepository(userId, externalSourceGuid, externalSourceName, endpoint.getGUID(),
                 "guid", ENDPOINT_TYPE_GUID, ENDPOINT_TYPE_NAME, properties, false, methodName);
     }
 
-    private void validateParameters(String qualifiedName, String typeName, String externalSourceGuid, String externalSourceName,
-                                    String userId, String methodName) throws InvalidParameterException {
+    private void validateParameters(String qualifiedName, String typeName,String protocol, String networkAddress,
+                                    String externalSourceGuid, String externalSourceName, String userId, String methodName)
+            throws InvalidParameterException {
+
         invalidParameterHandler.validateName(qualifiedName, "qualifiedName", methodName);
         invalidParameterHandler.validateName(typeName, "typeName", methodName);
+        invalidParameterHandler.validateName(protocol, "protocol", methodName);
+        invalidParameterHandler.validateName(networkAddress, "networkAddress", methodName);
         invalidParameterHandler.validateName(externalSourceGuid, "externalSourceGuid", methodName);
         invalidParameterHandler.validateName(externalSourceName, "externalSourceName", methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
