@@ -34,7 +34,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class IdentifierResolver {
 	
 	private static String CLIENT           = org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants.ANALYTICS_MODELING_OMAS_NAME;
-	private static String ANY_QNAME_REGEX = "::.*";
 	public static String NAME_SEPARATOR    = ".";
 	
 	private ExecutionContext ctx;
@@ -219,7 +218,7 @@ public class IdentifierResolver {
 	public List<EntityDetail> getSchemaAttributes(String assetQualifiedName, String methodName) {
 		
 		List<EntityDetail> metadata = new ArrayList<>();
-		String pattern = QualifiedNameUtils.escapeQualifiedNameRegExPattern(assetQualifiedName) + ANY_QNAME_REGEX;
+		String pattern = ctx.getRepositoryHelper().getStartsWithRegex(assetQualifiedName + "::");
 
 		try {
 			List<EntityDetail> metadataPage;
