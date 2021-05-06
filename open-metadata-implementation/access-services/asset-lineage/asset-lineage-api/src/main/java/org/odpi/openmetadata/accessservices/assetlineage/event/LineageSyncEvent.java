@@ -10,10 +10,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSummary;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext;
+
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The lineage event contains information used for internal processing of data
+ *
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,4 +39,5 @@ public class LineageSyncEvent extends AssetLineageEventHeader {
      * LineagePublishSummary is used to describe summary as result of AssetLineage lineagePublish activity that completed.
      */
     private LineagePublishSummary publishSummary;
+    private LineageSyncUpdateContext syncUpdateContext;
 }

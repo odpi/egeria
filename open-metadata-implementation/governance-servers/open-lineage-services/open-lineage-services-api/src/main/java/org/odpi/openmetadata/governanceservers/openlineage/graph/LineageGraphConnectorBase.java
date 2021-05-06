@@ -20,7 +20,7 @@ public abstract class LineageGraphConnectorBase extends ConnectorBase implements
     public abstract void storeToGraph(Set<GraphContext> graphContext);
 
     @Override
-    public abstract void removeObsoleteEdgesFromGraph(String entityGUID, Set<GraphContext> graphContext);
+    public abstract void updateNeighbours(String nodeGUID, Set<String> neighboursGUIDS);
 
     @Override
     public abstract void updateEntity(LineageEntity lineageEntity);
