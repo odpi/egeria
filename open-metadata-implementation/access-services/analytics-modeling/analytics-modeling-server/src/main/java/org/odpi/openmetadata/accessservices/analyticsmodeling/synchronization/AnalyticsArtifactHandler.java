@@ -1062,7 +1062,7 @@ public class AnalyticsArtifactHandler {
 		updateAssetReferences(asset, assetRepo);
 		
 		
-		if (AnalyticsAssetUtils.isModified(asset, assetRepo)) {
+		if (!asset.equals(assetRepo)) {
 			assetHandler.updateAsset(ctx.getUserId(), ssc.getGUID(), ssc.getSource(),
 					asset.getGuid(), "assetGUID", 
 					asset.getQualifiedName(), asset.getDisplayName(), asset.getDescription(), 

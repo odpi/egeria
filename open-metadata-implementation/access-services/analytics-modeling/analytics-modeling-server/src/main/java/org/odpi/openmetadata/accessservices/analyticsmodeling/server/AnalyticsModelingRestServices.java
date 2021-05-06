@@ -253,7 +253,9 @@ public class AnalyticsModelingRestServices {
 			ret = handleErrorResponse(e, methodName);
 		} catch (InvalidParameterException e) {
 			ret = handleInvalidParameterResponse(e, methodName);
-		}
+		} catch (Exception e) {
+			ret = handleExceptionResponse(e, methodName);
+        }
 		
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
@@ -302,6 +304,17 @@ public class AnalyticsModelingRestServices {
 	private AnalyticsModelingOMASAPIResponse handleInvalidParameterResponse(InvalidParameterException e, String methodName)	{
 		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
 				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition(e.getParameterName()),
+				this.getClass().getSimpleName(),
+				methodName,
+				e);
+		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
+		getExceptionHandler().captureThrowable(ret, error, methodName);
+		return ret;
+	}
+	
+	private AnalyticsModelingOMASAPIResponse handleExceptionResponse(Exception e, String methodName)	{
+		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
+				AnalyticsModelingErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(e.getClass().getName(), methodName, e.getLocalizedMessage()),
 				this.getClass().getSimpleName(),
 				methodName,
 				e);

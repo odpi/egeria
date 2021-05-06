@@ -6,13 +6,10 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.m
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 
 /**
@@ -113,25 +110,6 @@ public class AnalyticsAssetUtils {
 	public static boolean hasMetadataModule(AnalyticsAsset asset) {
 		return (asset.getContainer() != null && !asset.getContainer().isEmpty())
 				|| (asset.getItem() != null && !asset.getItem().isEmpty());
-	}
-
-	/**
-	 * Check if internal data of the asset is modified.
-	 * @param asset LHS to compare.
-	 * @param asset2 RHS to compare.
-	 * @return true if modified.
-	 * @throws AnalyticsModelingCheckedException if different assets are compared. 
-	 */
-	public static boolean isModified(AnalyticsAsset asset, AnalyticsAsset asset2) throws AnalyticsModelingCheckedException {
-		if (!Objects.equals(asset.getGuid(), asset2.getGuid())) {
-			// only same instance should be compared
-			String methodName = "isModified";
-			throw new AnalyticsModelingCheckedException(
-					AnalyticsModelingErrorCode.ILLEGAL_OPERATION.getMessageDefinition(methodName, asset.getQualifiedName()),
-					AnalyticsAssetUtils.class.getSimpleName(),
-					methodName);
-		}
-		return  !asset.equals(asset2);
 	}
 
 	/**
