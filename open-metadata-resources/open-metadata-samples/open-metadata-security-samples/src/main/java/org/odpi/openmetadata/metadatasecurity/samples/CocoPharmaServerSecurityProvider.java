@@ -18,7 +18,7 @@ public class CocoPharmaServerSecurityProvider extends OpenMetadataServerSecurity
     {
         super();
 
-        Class<?>        connectorClass = CocoPharmaServerSecurityConnector.class;
+        Class<?>        connectorClass = AbstractCocoPharmaServerSecurityConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
     }
