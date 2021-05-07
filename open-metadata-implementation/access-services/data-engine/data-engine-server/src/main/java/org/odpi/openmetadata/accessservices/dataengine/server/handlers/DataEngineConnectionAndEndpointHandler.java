@@ -12,9 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Optional;
@@ -25,8 +22,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROTOCOL_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 
 
@@ -122,10 +117,14 @@ public class DataEngineConnectionAndEndpointHandler {
                                   String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        ConnectionBuilder connectionBuilder = new ConnectionBuilder(qualifiedName, CONNECTION_TYPE_GUID, CONNECTION_TYPE_NAME,
-                repositoryHelper, serviceName, serverName);
+        ConnectionBuilder connectionBuilder = getConnectionBuilder(qualifiedName);
         return connectionHandler.createBeanInRepository(userId, externalSourceGuid, externalSourceName, CONNECTION_TYPE_GUID,
                 CONNECTION_TYPE_NAME, qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, connectionBuilder, methodName);
+    }
+
+    ConnectionBuilder getConnectionBuilder(String qualifiedName) {
+        return new ConnectionBuilder(qualifiedName, CONNECTION_TYPE_GUID, CONNECTION_TYPE_NAME,
+                repositoryHelper, serviceName, serverName);
     }
 
     private void upsertEndpoint(String protocol, String networkAddress, String externalSourceGuid, String externalSourceName,
@@ -134,7 +133,8 @@ public class DataEngineConnectionAndEndpointHandler {
         String endpointGuid;
         Optional<EntityDetail> optionalEndpoint = dataEngineCommonHandler.findEntity(userId, endpointQualifiedName, ENDPOINT_TYPE_NAME);
         if(optionalEndpoint.isPresent()){
-            updateEndpoint(optionalEndpoint.get(), protocol, networkAddress, externalSourceGuid, externalSourceName, userId, methodName);
+            updateEndpoint(protocol, networkAddress, endpointQualifiedName, optionalEndpoint.get().getGUID(),
+                    externalSourceGuid, externalSourceName, userId, methodName);
             endpointGuid = optionalEndpoint.get().getGUID();
         } else {
             endpointGuid = createEndpoint(protocol, networkAddress, endpointQualifiedName, externalSourceGuid,
@@ -148,29 +148,25 @@ public class DataEngineConnectionAndEndpointHandler {
                                   String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        EndpointBuilder endpointBuilder = new EndpointBuilder(protocol, networkAddress, qualifiedName, ENDPOINT_TYPE_GUID,
-                ENDPOINT_TYPE_NAME, repositoryHelper, serviceName, serverName);
+        EndpointBuilder endpointBuilder = getEndpointBuilder(protocol, networkAddress, qualifiedName);
         return endpointHandler.createBeanInRepository(userId, externalSourceGuid, externalSourceName, ENDPOINT_TYPE_GUID,
                 ENDPOINT_TYPE_NAME, qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, endpointBuilder, methodName);
     }
 
-    private void updateEndpoint(EntityDetail endpoint,String protocol, String networkAddress, String externalSourceGuid,
-                                String externalSourceName, String userId, String methodName)
+    private void updateEndpoint(String protocol, String networkAddress, String qualifiedName, String guid,
+                                String externalSourceGuid, String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        PrimitivePropertyValue protocolAsPropertyValue = new PrimitivePropertyValue();
-        protocolAsPropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        protocolAsPropertyValue.setPrimitiveValue(protocol);
 
-        PrimitivePropertyValue networkAddressAsPropertyValue = new PrimitivePropertyValue();
-        networkAddressAsPropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        networkAddressAsPropertyValue.setPrimitiveValue(networkAddress);
+        EndpointBuilder endpointBuilder = getEndpointBuilder(protocol, networkAddress, qualifiedName);
 
-        InstanceProperties properties = endpoint.getProperties();
-        properties.setProperty(PROTOCOL_PROPERTY_NAME, protocolAsPropertyValue);
-        properties.setProperty(NETWORK_ADDRESS_PROPERTY_NAME, networkAddressAsPropertyValue);
+        endpointHandler.updateBeanInRepository(userId, externalSourceGuid, externalSourceName, guid,
+                "guid", ENDPOINT_TYPE_GUID, ENDPOINT_TYPE_NAME,
+                endpointBuilder.getInstanceProperties("updateEndpoint"), false, methodName);
+    }
 
-        endpointHandler.updateBeanInRepository(userId, externalSourceGuid, externalSourceName, endpoint.getGUID(),
-                "guid", ENDPOINT_TYPE_GUID, ENDPOINT_TYPE_NAME, properties, false, methodName);
+    EndpointBuilder getEndpointBuilder(String protocol, String networkAddress, String qualifiedName) {
+        return new EndpointBuilder(protocol, networkAddress, qualifiedName, ENDPOINT_TYPE_GUID,
+                ENDPOINT_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 
     private void validateParameters(String qualifiedName, String typeName,String protocol, String networkAddress,
