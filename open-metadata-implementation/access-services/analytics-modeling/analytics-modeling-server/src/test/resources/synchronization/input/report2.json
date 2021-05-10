@@ -87,10 +87,10 @@
 		      "sourceId" : [ "COUNTRY.COUNTRY" ],
 		      "type" : "dataItem"
 	       }, {
-		      "displayName" : "Quantity",
-		      "identifier" : "QUANTITY",
-		      "sourceId" : [ "SALES.QUANTITY" ],
-		      "expression" : "QUANTITY",
+		      "displayName" : "Quantity Adjusted",
+		      "identifier" : "ADJUSTEDQUANTITY",
+		      "sourceId" : [ "ADJUSTEDQUANTITY" ],
+		      "expression" : "ADJUSTEDQUANTITY",
 		      "type" : "dataItem"
 	       } ]
 	    } ]
