@@ -61,9 +61,12 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
         // copy over effectivity - the values could be null
         Date effectivityFromtime = omrsEntityDetailProperties.getEffectiveFromTime();
         Date effectivityTotime = omrsEntityDetailProperties.getEffectiveToTime();
-
-        node.setEffectiveFromTime(effectivityFromtime);
-        node.setEffectiveToTime(effectivityTotime);
+        if (effectivityFromtime != null) {
+            node.setEffectiveFromTime(effectivityFromtime.getTime());
+        }
+        if (effectivityTotime != null) {
+            node.setEffectiveToTime(effectivityTotime.getTime());
+        }
         // copy over properties
         Iterator<String> omrsPropertyIterator = omrsEntityDetailProperties.getPropertyNames();
         NodeType nodeType = node.getNodeType();
@@ -177,10 +180,10 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
      */
     private void mapNodeEffectivityToInstanceProperties(N node, InstanceProperties instanceProperties) {
 
-        Date effectiveFromTime = node.getEffectiveFromTime();
-        Date effectiveToTime =node.getEffectiveToTime();
-        instanceProperties.setEffectiveFromTime(effectiveFromTime);
-        instanceProperties.setEffectiveToTime((effectiveToTime));
+        Long effectiveFromTime = node.getEffectiveFromTime();
+        Long effectiveToTime =node.getEffectiveToTime();
+        instanceProperties.setEffectiveFromTime(new Date(effectiveFromTime));
+        instanceProperties.setEffectiveToTime(new Date(effectiveToTime));
     }
     private void mapOmrsClassificationsToNode(EntityDetail omrsEntityDetail, N node) {
         List<Classification> omrsclassifications = omrsEntityDetail.getClassifications();

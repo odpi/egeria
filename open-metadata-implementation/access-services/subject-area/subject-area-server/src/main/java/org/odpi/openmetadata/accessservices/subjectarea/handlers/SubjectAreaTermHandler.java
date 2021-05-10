@@ -375,8 +375,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentTerm, suppliedTerm);
 
-                Date termFromTime = suppliedTerm.getEffectiveFromTime();
-                Date termToTime = suppliedTerm.getEffectiveToTime();
+                Long termFromTime = suppliedTerm.getEffectiveFromTime();
+                Long termToTime = suppliedTerm.getEffectiveToTime();
                 currentTerm.setEffectiveFromTime(termFromTime);
                 currentTerm.setEffectiveToTime(termToTime);
                 // always update the governance actions for a replace or an update

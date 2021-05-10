@@ -305,8 +305,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentCategory, suppliedCategory);
 
-                Date categoryFromTime = suppliedCategory.getEffectiveFromTime();
-                Date categoryToTime = suppliedCategory.getEffectiveToTime();
+                Long categoryFromTime = suppliedCategory.getEffectiveFromTime();
+                Long categoryToTime = suppliedCategory.getEffectiveToTime();
                 currentCategory.setEffectiveFromTime(categoryFromTime);
                 currentCategory.setEffectiveToTime(categoryToTime);
 
