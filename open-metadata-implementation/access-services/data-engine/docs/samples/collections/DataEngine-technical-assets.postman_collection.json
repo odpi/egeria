@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "49d7a8ec-4c21-4da8-a70b-702ecfe9f5a7",
+		"_postman_id": "e2e88ac2-bff8-42bb-bea2-17af2252ba3a",
 		"name": "DataEngine - technical assets",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -263,7 +263,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"externalSourceName\": \"Company::Project::ExternalDataEngine\",\n    \"file\": {\n        \"fileType\": \"dataFile\",\n        \"qualifiedName\": \"(file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"pathName\": \"/home/files/dataFile.dat\",\n        \"additionalProperties\": {\n            \"key1\": \"value1\",\n            \"key2\": \"value2\"\n        },\n        \"owner\": \"owner\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"ZONE_1\"\n        ],\n        \"createTime\": \"1617095893010\",\n        \"modifiedTime\": \"1617095893010\",\n        \"description\": \"Data file description.\",\n        \"protocol\" : \"ftp\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=DATAFILE.DAT::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-A DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-A-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-A-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-1\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            },\n            {\n                \"qualifiedName\": \"(file)=DATAFILE.DAT::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-B DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-B-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-B-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-2\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            }\n        ]\n    }\n}",
+					"raw": "{\n    \"externalSourceName\": \"Company::Project::ExternalDataEngine\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"pathName\": \"/home/files/dataFile.dat\",\n        \"additionalProperties\": {\n            \"key1\": \"value1\",\n            \"key2\": \"value2\"\n        },\n        \"owner\": \"owner\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"ZONE_1\"\n        ],\n        \"createTime\": \"1617095893010\",\n        \"modifiedTime\": \"1617095893010\",\n        \"description\": \"Data file description.\",\n        \"protocol\" : \"ftp\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=DATAFILE.DAT::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-A DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-A-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-A-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-1\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            },\n            {\n                \"qualifiedName\": \"(file)=DATAFILE.DAT::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\",\n                \"additionalProperties\": {\n                    \"key-1\": \"value-1\",\n                    \"key-2\": \"value-2\"\n                },\n                \"description\": \"COLUMN-B DESCRIPTION\",\n                \"position\": 0,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1,\n                \"allowsDuplicateValues\": false,\n                \"orderedValues\": false,\n                \"defaultValueOverride\": \"COLUMN-B-DEFAULT-VALUE\",\n                \"nativeClass\": \"COLUMN-B-NATIVE-CLSAS\",\n                \"aliases\": [\n                    \"COLUMN-2\"\n                ],\n                \"dataItemSortOrder\": \"UNKNOWN\"\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -271,7 +271,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-file",
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
 					"host": [
 						"{{base-url}}"
 					],
@@ -283,7 +283,7 @@
 						"data-engine",
 						"users",
 						"{{user-id}}",
-						"data-file"
+						"data-files"
 					]
 				}
 			},
@@ -337,7 +337,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-file",
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
 					"host": [
 						"{{base-url}}"
 					],
@@ -349,7 +349,7 @@
 						"data-engine",
 						"users",
 						"{{user-id}}",
-						"data-file"
+						"data-files"
 					]
 				}
 			},

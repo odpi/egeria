@@ -20,7 +20,7 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-eng
 {
     "externalSourceName" : "Company::Project::ExternalDataEngine",
     "file" :{
-        "type" : "dataFile", 
+        "type" : "DataFile", 
         "qualifiedName" : "(file)=DATAFILE.DAT",
         "displayName" : "dataFile.dat",
         "pathName" : "/home/files/dataFile.dat",
