@@ -134,8 +134,9 @@ public class Asset extends Referenceable
             return false;
         }
         Asset asset = (Asset) objectToCompare;
-        return Objects.equals(getDisplayName(), asset.getDisplayName()) &&
-                Objects.equals(getDescription(), asset.getDescription());
+        return Objects.equals(getDisplayName(), asset.getDisplayName())
+        		&& Objects.equals(getDescription(), asset.getDescription())
+        		&& super.equals(objectToCompare);
     }
 
 
