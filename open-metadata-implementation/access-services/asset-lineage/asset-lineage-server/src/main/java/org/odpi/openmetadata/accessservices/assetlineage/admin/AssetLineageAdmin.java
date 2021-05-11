@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -119,7 +120,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                     .getAccessServiceOptions()
                     .get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
             if (lineageClassificationTypesProperty != null) {
-                return (Set<String>) lineageClassificationTypesProperty;
+                return new HashSet<>((List<String>)lineageClassificationTypesProperty);
             }
         }
 
