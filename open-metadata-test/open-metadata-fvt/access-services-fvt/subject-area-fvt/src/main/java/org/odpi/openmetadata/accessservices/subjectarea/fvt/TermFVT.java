@@ -262,7 +262,7 @@ public class TermFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected from glossary summary time "+glossarySummary.getFromEffectivityTime() + " to equal " +fromGlossaryTime);
         }
         if (glossarySummary.getToEffectivityTime().longValue() != toGlossaryTime.longValue()) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected to glossary summary time "+glossarySummary.getToEffectivityTime() + " to equal " +toGlossaryTime.);
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected to glossary summary time "+glossarySummary.getToEffectivityTime() + " to equal " + toGlossaryTime);
         }
 
         if (glossarySummary.getRelationshipguid() == null) {
