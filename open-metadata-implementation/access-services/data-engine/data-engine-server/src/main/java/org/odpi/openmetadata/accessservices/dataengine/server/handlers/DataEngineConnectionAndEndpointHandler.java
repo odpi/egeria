@@ -123,7 +123,7 @@ public class DataEngineConnectionAndEndpointHandler {
     }
 
     ConnectionBuilder getConnectionBuilder(String qualifiedName) {
-        return new ConnectionBuilder(qualifiedName, CONNECTION_TYPE_GUID, CONNECTION_TYPE_NAME,
+        return new ConnectionBuilder(CONNECTION_TYPE_NAME, qualifiedName, CONNECTION_TYPE_GUID, CONNECTION_TYPE_NAME,
                 repositoryHelper, serviceName, serverName);
     }
 
@@ -165,7 +165,7 @@ public class DataEngineConnectionAndEndpointHandler {
     }
 
     EndpointBuilder getEndpointBuilder(String protocol, String networkAddress, String qualifiedName) {
-        return new EndpointBuilder(protocol, networkAddress, qualifiedName, ENDPOINT_TYPE_GUID,
+        return new EndpointBuilder(ENDPOINT_TYPE_NAME, protocol, networkAddress, qualifiedName, ENDPOINT_TYPE_GUID,
                 ENDPOINT_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 

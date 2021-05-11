@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROTOCOL_PROPERTY_NAME;
 
@@ -15,12 +16,14 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
  */
 public class EndpointBuilder extends ReferenceableBuilder {
 
+    private final String name;
     private final String protocol;
     private final String networkAddress;
 
-    public EndpointBuilder(String protocol, String networkAddress, String qualifiedName, String typeId, String typeName,
-                           OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
+    public EndpointBuilder(String name, String protocol, String networkAddress, String qualifiedName, String typeId,
+                           String typeName, OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
         super(qualifiedName, typeId, typeName, repositoryHelper, serviceName, serverName);
+        this.name = name;
         this.protocol = protocol;
         this.networkAddress = networkAddress;
     }
@@ -37,14 +40,19 @@ public class EndpointBuilder extends ReferenceableBuilder {
 
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (networkAddress != null) {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, NETWORK_ADDRESS_PROPERTY_NAME,
-                    networkAddress, methodName);
+        if (name != null) {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, NAME_PROPERTY_NAME,
+                    name, methodName);
         }
 
         if (protocol != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, PROTOCOL_PROPERTY_NAME,
                     protocol, methodName);
+        }
+
+        if (networkAddress != null) {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, NETWORK_ADDRESS_PROPERTY_NAME,
+                    networkAddress, methodName);
         }
 
         return properties;
