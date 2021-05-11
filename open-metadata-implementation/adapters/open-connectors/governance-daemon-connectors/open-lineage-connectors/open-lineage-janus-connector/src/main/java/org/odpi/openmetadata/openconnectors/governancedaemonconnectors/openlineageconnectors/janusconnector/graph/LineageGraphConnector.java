@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -175,16 +174,15 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     @Override
-    public void saveAssetLineageUpdateTime(LocalDateTime date) {
-        g.getGraph().variables().set(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME, date.toString());
+    public void saveAssetLineageUpdateTime(Long lastUpdateTime) {
+        g.getGraph().variables().set(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME, lastUpdateTime);
     }
 
     @Override
-    public Optional<LocalDateTime> getAssetLineageUpdateTime() {
-        Optional<Object> lastUpdateTime = g.getGraph().variables().get(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME);
+    public Optional<Long> getAssetLineageUpdateTime() {
+        Optional<Long> lastUpdateTime = g.getGraph().variables().get(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME);
         if(lastUpdateTime.isPresent()) {
-            String lastUpdateTimeValue = (String) lastUpdateTime.get();
-            return Optional.of(LocalDateTime.parse(lastUpdateTimeValue, DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            return lastUpdateTime;
         }
         return Optional.empty();
     }
@@ -407,30 +405,22 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         });
     }
 
+    /**
+     * Updates the neighbours of a node by removing all the entities that no longer have a relationship with it.
+     *
+     * @param nodeGUID - the identifier of the entity that was updated
+     * @param neighboursGUIDS - the identifiers of the nodes that have a direct relationship to the entity
+     */
     @Override
-    public void removeObsoleteEdgesFromGraph(String entityGUID, Set<GraphContext> graphContext) {
-        Map<String, List<String>> otherNodesByRelationshipType = new HashMap<>();
-        for (GraphContext context : graphContext) {
-            otherNodesByRelationshipType.putIfAbsent(context.getRelationshipType(), new ArrayList<>());
-            if (entityGUID.equals(context.getFromVertex().getGuid())) {
-                otherNodesByRelationshipType.get(context.getRelationshipType()).add(context.getToVertex().getGuid());
-            } else {
-                otherNodesByRelationshipType.get(context.getRelationshipType()).add(context.getFromVertex().getGuid());
-            }
-        }
-
-        for (Map.Entry<String, List<String>> mapEntry : otherNodesByRelationshipType.entrySet()) {
-            String relationshipType = mapEntry.getKey();
-            List<String> graphContextVerticesGUIDs = mapEntry.getValue();
-            List<String> neighboursGUIDs = getNeighbourNodesGUIDs(entityGUID, relationshipType);
-            if (isDifferentGraphContext(graphContextVerticesGUIDs, neighboursGUIDs)) {
-                removeObsoleteEdges(entityGUID, relationshipType, graphContextVerticesGUIDs, neighboursGUIDs);
-            }
+    public void updateNeighbours(String nodeGUID, Set<String> neighboursGUIDS){
+        List<String> existingNeighboursGUIDs = getAllNeighbours(nodeGUID);
+        if (isDifferentGraphContext(neighboursGUIDS, existingNeighboursGUIDs)) {
+            removeObsoleteEdges(nodeGUID, neighboursGUIDS, existingNeighboursGUIDs);
         }
     }
 
-    private List<String> getNeighbourNodesGUIDs(String entityGUID, String relationshipType) {
-        Iterator<Vertex> exitingVertices = g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGUID).bothE(relationshipType).otherV();
+    private List<String> getAllNeighbours(String entityGUID) {
+        Iterator<Vertex> exitingVertices = g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGUID).bothE().otherV();
         List<String> existingGUIDs = new ArrayList<>();
         while (exitingVertices.hasNext()) {
             existingGUIDs.add((String) exitingVertices.next().property(PROPERTY_KEY_ENTITY_GUID).value());
@@ -438,18 +428,18 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         return existingGUIDs;
     }
 
-    private boolean isDifferentGraphContext(List<String> newVertices, List<String> neighboursGUIDs) {
-        return !neighboursGUIDs.containsAll(newVertices) || neighboursGUIDs.size() != newVertices.size();
+    private boolean isDifferentGraphContext(Set<String> newVertices, List<String> neighboursGUIDs) {
+        return  neighboursGUIDs.size() != newVertices.size() || !neighboursGUIDs.containsAll(newVertices);
     }
 
-    private void removeObsoleteEdges(String entityGUID, String relationshipType, List<String> newVertices, List<String> neighboursGUIDs) {
+    private void removeObsoleteEdges(String entityGUID, Set<String> newVertices, List<String> neighboursGUIDs) {
         Function<Edge, GraphTraversal<Edge, Edge>> dropEdgeFromGraph = (e) -> g.E(e.id()).drop().iterate();
 
-        List<String> obsoleteNeighbours = neighboursGUIDs.stream().filter(xx -> !newVertices.contains(xx)).collect(Collectors.toList());
+        List<String> obsoleteNeighbours = neighboursGUIDs.stream().filter(existingVertex -> !newVertices.contains(existingVertex)).collect(Collectors.toList());
         if (obsoleteNeighbours.isEmpty()) {
             return;
         }
-        Iterator<Edge> existingEdges = g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGUID).bothE(relationshipType);
+        Iterator<Edge> existingEdges = g.V().has(PROPERTY_KEY_ENTITY_GUID, entityGUID).bothE();
         while (existingEdges.hasNext()) {
             Edge edge = existingEdges.next();
             String inVertexGuid = (String) edge.inVertex().property(PROPERTY_KEY_ENTITY_GUID).value();

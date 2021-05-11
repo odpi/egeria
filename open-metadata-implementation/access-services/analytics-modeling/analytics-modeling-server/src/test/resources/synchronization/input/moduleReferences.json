@@ -1,0 +1,67 @@
+{
+  "displayName" : "_DM_Egeria",
+  "uid" : "iMODULE",
+  "location": "CAMID(\"::Anonymous\")/folder[@name='My Folders']/folder[@name='Egeria']/module[@name='_DM_Egeria']",
+  "type" : "module",
+  "reference" : [ {
+    "uid" : "iBASEMODULE",
+    "location" : "CAMID(\":\")/dataSource[@name='_GOSALES_Egeria']/dataSourceConnection[@name='_GOSALES_Egeria']/dataSourceSchema[@name='GOSALES/dbo']/baseModule[@name='dbo']",
+    "alias" : "M1"
+  } ],
+  "container" : [ {
+    "displayName" : "Country",
+    "identifier" : "COUNTRY",
+    "sourceId" : [ "M1.COUNTRY" ],
+    "type" : "querySubject",
+    "item" : [ {
+      "displayName" : "Country",
+      "identifier" : "COUNTRY",
+      "type" : "queryItem",
+      "expression" : "promptForCountry()",
+      "dataType" : "VARCHAR(40)"
+
+    }, {
+      "displayName" : "Country Code",
+      "identifier" : "COUNTRYCODE",
+      "sourceId" : [ "M1.COUNTRY.COUNTRY", "M1.COUNTRY.COUNTRYCODE" ],
+      "type" : "queryItem",
+      "expression" : "COUNTRYCODE + COUNTRY",
+      "dataType" : "INTEGER"
+    } ]
+  }, {
+    "displayName" : "Sales",
+    "identifier" : "SALES",
+    "sourceId" : [ "M1.SALES" ],
+    "type" : "querySubject",
+    "item" : [ {
+      "displayName" : "Sales Country Code",
+      "identifier" : "SALESCOUNTRYCODE",
+      "sourceId" : [ "M1.SALES.SALESCOUNTRYCODE" ],
+      "type" : "queryItem",
+      "expression" : "SALESCOUNTRYCODE",
+      "dataType" : "INTEGER"
+    }, {
+      "displayName" : "Quantity",
+      "identifier" : "QUANTITY",
+      "sourceId" : [ "M1.SALES.QUANTITY" ],
+      "type" : "queryItem",
+      "expression" : "QUANTITY",
+      "dataType" : "INTEGER"
+    } ]
+  } ],
+  "item" : [ {
+      "displayName" : "Adjusted Quantity",
+      "identifier" : "ADJUSTEDQUANTITY",
+      "sourceId" : [ "SALES.QUANTITY", "SALES.SALESCOUNTRYCODE" ],
+      "type" : "queryItem",
+      "expression" : "if (SALES.SALESCOUNTRYCODE == 'CAN') then 0.95*SALES.QUANTITY else SALES.QUANTITY end",
+      "dataType" : "INTEGER"
+    }, {
+      "displayName" : "Country Name",
+      "identifier" : "COUNTRYNAME",
+      "sourceId" : [ "COUNTRY.COUNTRYCODE" ],
+      "type" : "queryItem",
+      "expression" : "upper(COUNTRY.COUNTRYCODE)",
+      "dataType" : "VARCHAR(40)"
+  } ]
+}
