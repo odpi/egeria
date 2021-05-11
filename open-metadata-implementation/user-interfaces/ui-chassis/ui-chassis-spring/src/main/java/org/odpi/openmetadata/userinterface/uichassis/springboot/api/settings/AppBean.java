@@ -17,6 +17,10 @@ public class AppBean implements Serializable {
     public AppBean(@Value("${app.title: }") String title){
         this.title = title;
     }
+    
+    public AppBean(@Value("${app.description: }") String description){
+        this.description = description;
+    }
 
     /**
      *
