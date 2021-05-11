@@ -183,7 +183,6 @@ public class OpenLineageServiceTest {
         List<Node> nodes = responseGraph.getNodes();
         assertNotNull("List of nodes is null", nodes);
         List<String> nodesIds = nodes.stream().map(Node::getId).collect(Collectors.toList());
-        System.out.println(nodes);
         assertEquals("Response should contain 4 nodes", 4, nodes.size());
         assertTrue("Response doesn't contain all nodes", nodesIds.containsAll(Arrays.asList("p0","p30", "p2")));
 
