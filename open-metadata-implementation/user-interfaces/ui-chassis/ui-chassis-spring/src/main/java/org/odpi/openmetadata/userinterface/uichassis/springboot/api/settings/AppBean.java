@@ -13,16 +13,25 @@ import java.io.Serializable;
 @Component
 public class AppBean implements Serializable {
     private final String title;
+    private final String description;
 
-    public AppBean(@Value("${app.title: }") String title){
+    public AppBean(@Value("${app.title: }") String title,
+                   @Value("${app.description: }") String description){
         this.title = title;
+        this.description = description;
     }
 
     /**
-     *
      * @return title field
      */
     public String getTitle() {
         return title;
+    }
+
+    /**
+     * @return description field
+     */
+    public String getDescription() {
+        return description;
     }
 }
