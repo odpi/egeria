@@ -79,6 +79,10 @@
     "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=QUANTITY",
     "type" : "DerivedSchemaTypeQueryTarget"
   }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=ADJUSTEDQUANTITY",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=SALESCOUNTRYCODE",
+    "type" : "DerivedSchemaTypeQueryTarget"
+  }, {
     "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=COUNTRY",
     "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRYCODE",
     "type" : "NestedSchemaAttribute"
@@ -87,12 +91,12 @@
     "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRY",
     "type" : "NestedSchemaAttribute"
   }, {
-    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRY",
-    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRY",
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRYCODE",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRYCODE",
     "type" : "DerivedSchemaTypeQueryTarget"
   }, {
     "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRYCODE",
-    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRYCODE",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=COUNTRY::(SchemaAttribute)=COUNTRY",
     "type" : "DerivedSchemaTypeQueryTarget"
   }, {
     "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=COUNTRYNAME",

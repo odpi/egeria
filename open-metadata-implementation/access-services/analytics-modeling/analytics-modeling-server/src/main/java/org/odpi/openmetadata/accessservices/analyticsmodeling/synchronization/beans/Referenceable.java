@@ -4,7 +4,9 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.b
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -24,8 +26,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class Referenceable {
 
-    protected String                                  qualifiedName                           = null;
-    protected Map<String, String>                     additionalProperties                    = null;
+    protected String              qualifiedName        = null;
+    protected Map<String, String> additionalProperties = null;
+    
+    
+    /**
+     * GUID of the entity in repository used to create bean.
+     */
+    protected String              guid                 = null;
 
 
     /**
@@ -64,6 +72,30 @@ public class Referenceable {
 
 
     /**
+     * Returns the stored guid for the metadata entity.
+     * If no guid is available then the null is returned.
+     *
+     * @return guid
+     */
+    public String getGuid()
+    {
+        return guid;
+    }
+
+
+
+    /**
+     * Set up the guid.
+     *
+     * @param guid String name
+     */
+    public void setGuid(String guid)
+    {
+        this.guid = guid;
+    }
+
+
+    /**
      * Returns the stored qualified name property for the metadata entity.
      * If no qualified name is available then the empty string is returned.
      *
@@ -73,7 +105,6 @@ public class Referenceable {
     {
         return qualifiedName;
     }
-
 
     /**
      * Set up additional properties.
@@ -127,6 +158,8 @@ public class Referenceable {
      *
      * @param objectToCompare supplied object
      * @return boolean result of comparison
+     * 
+     * GUID is not used in equals(...) to compare beans from repository and request. 
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -139,10 +172,7 @@ public class Referenceable {
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+
         Referenceable that = (Referenceable) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
@@ -150,7 +180,7 @@ public class Referenceable {
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

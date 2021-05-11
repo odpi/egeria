@@ -1,0 +1,53 @@
+{
+  "node" : [ {
+    "displayName" : "_DM_Egeria",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE",
+    "type" : "module",
+    "classification" : [ "LatestChange" ]
+  }, {
+    "displayName" : "null",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(ComplexSchemaType)=module",
+    "type" : "null",
+    "classification" : [ "Anchors" ]
+  }, {
+    "displayName" : "Country Name",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=COUNTRYNAME",
+    "type" : "queryItem",
+    "classification" : [ "Anchors", "TypeEmbeddedAttribute" ]
+  }, {
+    "displayName" : "Sales",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=SALES",
+    "type" : "querySubject",
+    "classification" : [ "Anchors", "TypeEmbeddedAttribute" ]
+  }, {
+    "displayName" : "Quantity",
+    "qName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=QUANTITY",
+    "type" : "queryItem",
+    "classification" : [ "Anchors", "TypeEmbeddedAttribute" ]
+  } ],
+  "edge" : [ {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE",
+    "type" : "DataContentForDataSet"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(ComplexSchemaType)=module",
+    "type" : "AssetSchemaType"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(ComplexSchemaType)=module",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=COUNTRYNAME",
+    "type" : "AttributeForSchema"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(ComplexSchemaType)=module",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=SALES",
+    "type" : "AttributeForSchema"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=SALES",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=QUANTITY",
+    "type" : "NestedSchemaAttribute"
+  }, {
+    "from" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=QUANTITY",
+    "to" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE::(SchemaAttribute)=SALES::(SchemaAttribute)=QUANTITY",
+    "type" : "DerivedSchemaTypeQueryTarget"
+  } ]
+}
