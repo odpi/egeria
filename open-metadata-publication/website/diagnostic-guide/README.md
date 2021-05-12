@@ -59,7 +59,7 @@ So now consider each phase of the process.
             
     * **Gather diagnostics** - This is where you are looking to capture the evidence that may identify
     both the source of the error and the nature of the failure.
-    The different types of diagnostics that are available are described [here](diagnostic-sources.png).
+    The different types of diagnostics that are available are described [here](diagnostic-sources.md).
     If the problem is in the Egeria code,
     rather than its runtime environment, then the 
     [Egeria diagnostics may also defined how to fix the problem](ffdc.md).
