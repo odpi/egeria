@@ -53,7 +53,7 @@ public class PrimaryCategoryRule implements Rule {
 
 
     /**
-     * In order to mark the primaryCategory accordingly the graph is iterated and based on the existence of a classification the nodes & edges are altered
+     * In order to mark the primaryCategory accordingly the graph is iterated and based on the existence of a classification the nodes and edges are altered
      *
      * @param graph           the lineage graph
      * @param queriedNodeGUID the guid of the queried node used to identify it in the graph
