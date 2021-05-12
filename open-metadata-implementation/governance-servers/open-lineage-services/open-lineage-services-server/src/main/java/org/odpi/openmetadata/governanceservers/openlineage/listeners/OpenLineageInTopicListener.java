@@ -163,7 +163,7 @@ public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
                 try {
                     List<String> guids = assetContextHandler.getAssetContextForEntity(guid, entity.getTypeDefName());
                     auditLog.logMessage("requested the entity's Asset Context for entity",
-                            OpenLineageServerAuditCode.ASSET_CONTEXT_REQUEST.getMessageDefinition(guid, guids.toString()));
+                            OpenLineageServerAuditCode.ASSET_CONTEXT_REQUEST.getMessageDefinition(guid, guids != null ? guids.toString() : ""));
                 } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
                     OpenLineageServerAuditCode errorCode = OpenLineageServerAuditCode.ASSET_CONTEXT_EXCEPTION;
                     auditLog.logException("retrieving Asset Context exception", errorCode.getLogMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,
