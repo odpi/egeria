@@ -7,6 +7,8 @@
 
 Figure 1 shows the choices you have when [gathering diagnostics](.) for a problem related to the
 OMAG Server Platform and the servers and services that run on it.
+These are in addition to the diagnostics from the container services, and the services that either call or are
+called by the services running on the OMAG Server Platform.
 
 ![Diagnostic Sources](diagnostic-sources.png)
 > **Figure 1:** Diagnostic sources for the OMAG Server Platform
@@ -42,7 +44,6 @@ Specifically they are:
   OMAG Server Platform.
   [More Information ...](diagnostic-apis.md)
 
-   
 * **Egeria UIs** - The Egeria UIs help to visualize the state of the repositories and the Egeria Ecosystem.
   [More Information ...](https://github.com/odpi/egeria-react-ui)
 
@@ -52,7 +53,8 @@ Specifically they are:
 
 * **Egeria Community** - If you are completely stuck, or believe there is a bug in the Egeria content,
   You can [raise an issue](https://github.com/odpi/egeria/issues) that describes the problem you are seeing,
-  the diagnostics you have collected, the conclusions you have come to and the help that you need.
+  a description of your runtime topology, the diagnostics you have collected, the conclusions you have come to
+  and the help that you need.
   More information on the Egeria community can be found [here](../../../Community-Guide.md).
 
 

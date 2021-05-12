@@ -45,8 +45,102 @@ Process finished with exit code 1
 This may occur because the platform is already running (all be it in a zombie state)
 or it has been set up to use the same port as another process.
 The port is configured in the start up properties of the OMAG Server Platform.
-[See the Administration Guide](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-omag-server-platform.md)
-for information on how to change the OMAG Server Platform's configuration guide.
+See the [Administration Guide](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-omag-server-platform.md)
+for information on how to change the OMAG Server Platform's configuration.
+
+
+## Missing Trust Store
+
+The OMAG Server Platform uses security certificates to identify itself as it communicates with other trusted
+processes in the open metadata ecosystem.   During start up, it needs access to its trust store.
+This is a file called `truststore.p12`.
+If it is missing, the following errors occur at OMAG Server Platform start up.
+
+```
+MyBox:~/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target$ java -jar server-chassis-spring-2.10-SNAPSHOT.jar
+ Project Egeria - Open Metadata and Governance
+    ____   __  ___ ___    ______   _____                                 ____   _         _     ___
+   / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
+  / / / // /|_/ // /| | / / __    \__ \ / _ \ / __/| | / // _ \ / __/  / /_/ // //   |  / _\ / /_ /  | /  _// || |
+ / /_/ // /  / // ___ |/ /_/ /   ___/ //  __// /   | |/ //  __// /    /  __ // // /  \ / /_ /  _// / // /  / / / /
+ \____//_/  /_//_/  |_|\____/   /____/ \___//_/    |___/ \___//_/    /_/    /_/ \__/\//___//_/   \__//_/  /_/ /_/
+
+ :: Powered by Spring Boot (v2.4.4) ::
+
+2021-04-28 16:00:18.467  INFO 48842 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9443 (https)
+2021-04-28 16:00:22.212 ERROR 48842 --- [           main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat server
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:181) ~[spring-context-5.3.5.jar!/:5.3.5]
+	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54) ~[spring-context-5.3.5.jar!/:5.3.5]
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:356) ~[spring-context-5.3.5.jar!/:5.3.5]
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) ~[na:na]
+	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:155) ~[spring-context-5.3.5.jar!/:5.3.5]
+	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:123) ~[spring-context-5.3.5.jar!/:5.3.5]
+	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:935) ~[spring-context-5.3.5.jar!/:5.3.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:586) ~[spring-context-5.3.5.jar!/:5.3.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:144) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:769) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:761) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:426) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:326) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1313) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1302) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.odpi.openmetadata.serverchassis.springboot.OMAGServerPlatform.main(OMAGServerPlatform.java:93) ~[classes!/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49) ~[server-chassis-spring-2.10-SNAPSHOT.jar:na]
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:107) ~[server-chassis-spring-2.10-SNAPSHOT.jar:na]
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58) ~[server-chassis-spring-2.10-SNAPSHOT.jar:na]
+	at org.springframework.boot.loader.PropertiesLauncher.main(PropertiesLauncher.java:467) ~[server-chassis-spring-2.10-SNAPSHOT.jar:na]
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat server
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:229) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle.start(WebServerStartStopLifecycle.java:43) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178) ~[spring-context-5.3.5.jar!/:5.3.5]
+	... 23 common frames omitted
+Caused by: java.lang.IllegalArgumentException: standardService.connector.startFailed
+	at org.apache.catalina.core.StandardService.addConnector(StandardService.java:243) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.addPreviouslyRemovedConnectors(TomcatWebServer.java:282) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:213) ~[spring-boot-2.4.4.jar!/:2.4.4]
+	... 25 common frames omitted
+Caused by: org.apache.catalina.LifecycleException: Protocol handler start failed
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1074) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.catalina.core.StandardService.addConnector(StandardService.java:239) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	... 27 common frames omitted
+Caused by: java.lang.IllegalArgumentException: /home/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/truststore.p12 (No such file or directory)
+	at org.apache.tomcat.util.net.AbstractJsseEndpoint.createSSLContext(AbstractJsseEndpoint.java:99) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.tomcat.util.net.AbstractJsseEndpoint.initialiseSsl(AbstractJsseEndpoint.java:71) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:258) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.tomcat.util.net.AbstractEndpoint.bindWithCleanup(AbstractEndpoint.java:1204) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.tomcat.util.net.AbstractEndpoint.start(AbstractEndpoint.java:1290) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.coyote.AbstractProtocol.start(AbstractProtocol.java:614) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1071) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	... 29 common frames omitted
+Caused by: java.io.FileNotFoundException: /home/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/truststore.p12 (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method) ~[na:na]
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:219) ~[na:na]
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157) ~[na:na]
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:112) ~[na:na]
+	at java.base/sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:86) ~[na:na]
+	at java.base/sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:184) ~[na:na]
+	at org.apache.catalina.startup.CatalinaBaseConfigurationSource.getResource(CatalinaBaseConfigurationSource.java:118) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.tomcat.util.net.SSLUtilBase.getStore(SSLUtilBase.java:197) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.tomcat.util.net.SSLHostConfig.getTruststore(SSLHostConfig.java:730) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.tomcat.util.net.SSLUtilBase.getTrustManagers(SSLUtilBase.java:423) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.tomcat.util.net.SSLUtilBase.createSSLContext(SSLUtilBase.java:246) ~[tomcat-embed-core-9.0.45.jar!/:na]
+	at org.apache.tomcat.util.net.AbstractJsseEndpoint.createSSLContext(AbstractJsseEndpoint.java:97) ~[tomcat-embed-core-9.0.45.jar!/:na]
+
+```
+Notice the message:
+```
+Caused by: java.io.FileNotFoundException: /home/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/truststore.p12 (No such file or directory)
+
+```
+There is more information on how to set up the trust store for an OMAG Server Platform in the
+[Administration Guide](../../../open-metadata-implementation/admin-services/docs/user/omag-server-platform-transport-level-security.md).
 
 ----
 

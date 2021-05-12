@@ -41,9 +41,11 @@ So now consider each phase of the process.
         * Has it ever worked or has it just stopped working?
         * If it has just stopped working, what has changed recently?
         * Who does it affect?  Everyone?  Specific users?  Running in specific environments?
+        * What is the context of the problem?  For example, what is the deployment topology in terms of the machines,
+       containers, OMAG Server Platforms, OMAG Services and connected services (such as Apache Kafka).
   
     * **Classifying the problem** - Identifying the type of problem guides you to which diagnostics will be helpful.
-       For example, consider these options:
+       For example, consider the following options, and also identify whether this is a consistent or intermittent error.
        
         * The platform failed to start
         * The platform failed while it was running
@@ -52,6 +54,7 @@ So now consider each phase of the process.
         * A connector within a server failed to start up properly
         * A connector within a server detected and error
         * A request to a server failed with an exception
+        * A request to a server hangs
         * A request to a server produces the wrong results
         * A server is failing to join a cohort
         * Metadata is not being shared across the cohort
@@ -75,7 +78,7 @@ So now consider each phase of the process.
   * **Understand the actual behavior** - compare and contrast how it is actually working with
   how it should be working.
   
-  * **Classify the behavior** - identify the nature of the behavior you are seeing.
+  * **Classify the behavior** - identify the nature of the behavior you are seeing. 
   For example:
     * **Not Implemented** - The desired behavior is not yet implemented - or in development.
     * **Bad Environment** - The OMAG Server Platform's runtime (container) environment is incorrect or failing or lacking resources.
@@ -87,6 +90,10 @@ So now consider each phase of the process.
     * **Bad connector implementation** - An error in the implementation of a connector.
     * **Egeria platform bug** - one of the subsystems of Egeria is not operating correctly.
     
+  With this information, it may be possible to match what is occurring in your environment with
+  descriptions of common errors, or errors found by other users of Egeria.  These will hopefully
+  also include a description of how to fix the problem.
+  
 * **Taking Action** - Once the cause of the problem is understood, you next need to fix it. There are three parts to this: 
 
   * **Agree necessary changes** - Sometimes the diagnostics describe how to fix the problem, sometimes that are
