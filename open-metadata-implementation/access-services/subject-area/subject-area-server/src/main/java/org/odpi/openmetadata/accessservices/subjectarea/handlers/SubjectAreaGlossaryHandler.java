@@ -218,8 +218,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentGlossary, suppliedGlossary);
 
-                Date glossaryFromTime = suppliedGlossary.getEffectiveFromTime();
-                Date glossaryToTime = suppliedGlossary.getEffectiveToTime();
+                Long glossaryFromTime = suppliedGlossary.getEffectiveFromTime();
+                Long glossaryToTime = suppliedGlossary.getEffectiveToTime();
                 currentGlossary.setEffectiveFromTime(glossaryFromTime);
                 currentGlossary.setEffectiveToTime(glossaryToTime);
 

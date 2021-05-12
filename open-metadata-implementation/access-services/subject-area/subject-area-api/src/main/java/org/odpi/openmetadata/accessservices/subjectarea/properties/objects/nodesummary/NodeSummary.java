@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,11 +30,11 @@ public class NodeSummary implements Serializable {
     private String qualifiedName = null;
     private Set<IconSummary> icons = null;
     private String guid = null;
-    private Date fromEffectivityTime = null;
-    private Date toEffectivityTime = null;
+    private Long fromEffectivityTime = null;
+    private Long toEffectivityTime = null;
     private String relationshipguid = null;
-    private Date fromRelationshipEffectivityTime = null;
-    private Date toRelationshipEffectivityTime = null;
+    private Long fromRelationshipEffectivityTime = null;
+    private Long toRelationshipEffectivityTime = null;
 
     /**
      * Type of the other end of this relationship
@@ -120,7 +119,7 @@ public class NodeSummary implements Serializable {
      *
      * @return Date date effective from which this node is effective
      */
-    public Date getFromEffectivityTime() {
+    public Long getFromEffectivityTime() {
         return fromEffectivityTime;
     }
 
@@ -129,7 +128,7 @@ public class NodeSummary implements Serializable {
      *
      * @param fromEffectivityTime date from which this node is effective
      */
-    public void setFromEffectivityTime(Date fromEffectivityTime) {
+    public void setFromEffectivityTime(Long fromEffectivityTime) {
         this.fromEffectivityTime = fromEffectivityTime;
     }
 
@@ -139,7 +138,7 @@ public class NodeSummary implements Serializable {
      * @return Date to which this node is effective
      */
 
-    public Date getToEffectivityTime() {
+    public Long getToEffectivityTime() {
         return toEffectivityTime;
     }
 
@@ -148,7 +147,7 @@ public class NodeSummary implements Serializable {
      *
      * @param toEffectivityTime date to which this node is effective
      */
-    public void setToEffectivityTime(Date toEffectivityTime) {
+    public void setToEffectivityTime(Long toEffectivityTime) {
         this.toEffectivityTime = toEffectivityTime;
     }
 
@@ -175,7 +174,7 @@ public class NodeSummary implements Serializable {
      *
      * @return Date date from which the relationship is effective
      */
-    public Date getFromRelationshipEffectivityTime() {
+    public Long getFromRelationshipEffectivityTime() {
         return fromRelationshipEffectivityTime;
     }
 
@@ -184,7 +183,7 @@ public class NodeSummary implements Serializable {
      *
      * @param fromRelationshipEffectivityTime date from which the relationship is effective
      */
-    public void setFromRelationshipEffectivityTime(Date fromRelationshipEffectivityTime) {
+    public void setFromRelationshipEffectivityTime(Long fromRelationshipEffectivityTime) {
         this.fromRelationshipEffectivityTime = fromRelationshipEffectivityTime;
     }
 
@@ -193,7 +192,7 @@ public class NodeSummary implements Serializable {
      *
      * @return date from which the relationship is effective
      */
-    public Date getToRelationshipEffectivityTime() {
+    public Long getToRelationshipEffectivityTime() {
         return toRelationshipEffectivityTime;
     }
 
@@ -202,7 +201,7 @@ public class NodeSummary implements Serializable {
      *
      * @param toRelationshipEffectivityTime date to which the relationship is effective
      */
-    public void setToRelationshipEffectivityTime(Date toRelationshipEffectivityTime) {
+    public void setToRelationshipEffectivityTime(Long toRelationshipEffectivityTime) {
         this.toRelationshipEffectivityTime = toRelationshipEffectivityTime;
     }
 

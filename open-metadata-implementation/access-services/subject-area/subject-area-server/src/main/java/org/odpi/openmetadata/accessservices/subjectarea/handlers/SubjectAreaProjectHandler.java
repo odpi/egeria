@@ -231,8 +231,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(updateProject, suppliedProject);
 
-                Date projectFromTime = suppliedProject.getEffectiveFromTime();
-                Date projectToTime = suppliedProject.getEffectiveToTime();
+                Long projectFromTime = suppliedProject.getEffectiveFromTime();
+                Long projectToTime = suppliedProject.getEffectiveToTime();
                 updateProject.setEffectiveFromTime(projectFromTime);
                 updateProject.setEffectiveToTime(projectToTime);
 
