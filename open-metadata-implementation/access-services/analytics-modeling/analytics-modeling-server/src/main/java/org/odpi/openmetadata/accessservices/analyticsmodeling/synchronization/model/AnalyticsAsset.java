@@ -4,16 +4,27 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model;
 
 
-import java.util.ArrayList;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 import java.util.List;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.Asset;
 
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class AnalyticsAsset extends Asset {
 
 	private String uid;					// external unique identifiers
 	private String location;			// external location of the asset
 	private String type;				// type defines asset content
+	private String lastModified;		// string timestamp
 
 	private List<String> sourceGuid;	// GUIDs of external metadata objects
 
@@ -22,36 +33,7 @@ public class AnalyticsAsset extends Asset {
 	private List<MetadataItem> item;
 
 	private List<MetadataContainer> visualization;
-
-
-	public void addContainer(MetadataContainer child) {
-		if (container == null) {
-			container = new ArrayList<>();
-		}
-		container.add(child);
-	}
-
-	public MetadataContainer removeContainer(int index) {
-		if (container != null && container.size() > index) {
-			return container.remove(index);
-		}
-		return null;
-	}
-
-	public MetadataContainer getContainer(int index) {
-		if (container != null && container.size() > index) {
-			return container.get(index);
-		}
-		return null;
-	}
 	
-	public void addItem(MetadataItem item) {
-		if (this.item == null) {
-			this.item = new ArrayList<>();
-		}
-		this.item.add(item);
-	}
-
 	public String getType() {
 		return type;
 	}
@@ -76,26 +58,12 @@ public class AnalyticsAsset extends Asset {
 		this.sourceGuid = sourceGuid;
 	}
 
-	public void addSourceGuid(String guid) {
-		if (sourceGuid == null) {
-			sourceGuid = new ArrayList<>();
-		}
-		sourceGuid.add(guid);
-	}
-
 	public List<AssetReference> getReference() {
 		return reference;
 	}
 
 	public void setReference(List<AssetReference> reference) {
 		this.reference = reference;
-	}
-
-	public void addReference(AssetReference theReference) {
-		if (reference == null) {
-			reference = new ArrayList<>();
-		}
-		reference.add(theReference);
 	}
 
 	public List<MetadataContainer> getContainer() {
@@ -141,14 +109,50 @@ public class AnalyticsAsset extends Asset {
 		this.location = location;
 	}
 	
-	public boolean isVisualization() {
-		return visualization != null;
+	/**
+	 * Get string time stamp when the module was modified.
+	 * @return the lastModified
+	 */
+	public String getLastModified() {
+		return lastModified;
+	}
+
+	/**
+	 * Set string time stamp when the module was modified.
+	 * @param lastModified the lastModified to set
+	 */
+	public void setLastModified(String lastModified) {
+		this.lastModified = lastModified;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (this == obj) {
+			return true;
+		}
+		
+		if (!(obj instanceof AnalyticsAsset)) {
+			return false;
+		}
+		
+		AnalyticsAsset asset = (AnalyticsAsset)obj;
+		
+		return Objects.equals(uid, asset.uid)
+				&& Objects.equals(location, asset.location)
+				&& Objects.equals(type, asset.type)
+				&& Objects.equals(lastModified, asset.lastModified)
+				&& super.equals(asset);
 	}
 	
-	public boolean hasMetadataModule() {
-		return (container != null && !container.isEmpty())
-				|| (item != null && !item.isEmpty());
-	}
-
-
+    /**
+     * Return a number that represents the contents of this object.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), uid, location, type, lastModified);
+    }
 }

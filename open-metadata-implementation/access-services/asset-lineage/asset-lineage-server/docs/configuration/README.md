@@ -16,6 +16,11 @@ This OMAS supports the configuration of the specific list of lineage classificat
 
 * [Configuring the lineage classifications](configuring-the-lineage-classifications.md)
 
+The size of lineage events for the type GlossaryTerm can be configured using the parameter `glossaryTermLineageEventsChunkSize` set up in `accessServiceOptions`.
+The value of `glossaryTermLineageEventsChunkSize` represents the number of relationships related to the GlossaryTerm that will be included in each event.
+If `glossaryTermLineageEventsChunkSize` is not defined, the default value is 1 and for each relationship an event will be generated. 
+
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
