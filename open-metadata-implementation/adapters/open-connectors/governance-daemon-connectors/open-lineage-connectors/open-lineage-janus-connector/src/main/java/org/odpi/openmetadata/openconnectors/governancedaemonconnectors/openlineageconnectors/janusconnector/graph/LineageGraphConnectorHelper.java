@@ -875,7 +875,7 @@ public class LineageGraphConnectorHelper {
         Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(CONNECTION));
         commitTransaction();
         if (connection.hasNext()) {
-            return Optional.of(connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            return Optional.of( this.getDisplayNameForVertex(connection.next()) );
         }
         return Optional.empty();
     }
