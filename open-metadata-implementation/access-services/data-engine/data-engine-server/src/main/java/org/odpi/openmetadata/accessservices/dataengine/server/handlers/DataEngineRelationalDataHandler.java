@@ -38,6 +38,7 @@ public class DataEngineRelationalDataHandler {
     private final RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType> relationalDataHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
+    private final DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -53,9 +54,9 @@ public class DataEngineRelationalDataHandler {
      **/
     public DataEngineRelationalDataHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                            RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                                           RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn,
-                                                   SchemaType> relationalDataHandler,
-                                           DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
+                                           RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType> relationalDataHandler,
+                                           DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler,
+                                           DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler) {
 
         this.serviceName = serviceName;
         this.serverName = serverName;
@@ -65,6 +66,7 @@ public class DataEngineRelationalDataHandler {
         this.relationalDataHandler = relationalDataHandler;
         this.registrationHandler = registrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
+        this.dataEngineConnectionAndEndpointHandler = dataEngineConnectionAndEndpointHandler;
     }
 
     /**
@@ -117,6 +119,12 @@ public class DataEngineRelationalDataHandler {
         }
         addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
         upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
+
+        if(database.getProtocol() != null && database.getNetworkAddress() != null) {
+            this.dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),
+                    OpenMetadataAPIMapper.DATABASE_TYPE_NAME, database.getProtocol(), database.getNetworkAddress(),
+                    externalSourceGUID, externalSourceName, userId, methodName);
+        }
 
         return databaseGUID;
     }

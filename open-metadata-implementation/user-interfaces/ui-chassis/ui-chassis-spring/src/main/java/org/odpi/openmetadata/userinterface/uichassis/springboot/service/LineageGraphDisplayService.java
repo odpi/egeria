@@ -37,7 +37,7 @@ public class LineageGraphDisplayService {
      * This method applies the rules defined in the properties file on the graph.
      *
      * @param graph           graph processed from the response from open lineage
-     * @param queriedNodeGUID
+     * @param queriedNodeGUID the GUID of the queried node
      */
     public void applyRules(Graph graph, String queriedNodeGUID) {
         if (rules == null) {
