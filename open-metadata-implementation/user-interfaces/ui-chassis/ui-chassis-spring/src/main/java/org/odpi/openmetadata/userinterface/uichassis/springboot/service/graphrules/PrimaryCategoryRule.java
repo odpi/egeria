@@ -130,7 +130,7 @@ public class PrimaryCategoryRule implements Rule {
      */
     private String getPrimaryCategoryGUID(List<Node> nodes, String primaryCategoryQualifiedName) {
         for (Node node : nodes) {
-            if (primaryCategoryQualifiedName.equals(node.getQualifiedName())) {
+            if (node.getQualifiedName().equals(primaryCategoryQualifiedName)) {
                 return node.getId();
             }
         }
