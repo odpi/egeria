@@ -227,7 +227,10 @@ public class TermFVT {
         if (results.size() != spacedTermcount +1 ) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected spaced " + spacedTermcount+1 + " back on the find got "  +results.size());
         }
-        Term term = results.get(0);
+
+        Term term = termForFind4;
+        // we need to find a term that has our glossary so we can see how the summary changes when we change the
+        // glossary effectivity
         long now = new Date().getTime();
         Long fromTermTime = new Date(now+6*1000*60*60*24).getTime();
         Long toTermTime = new Date(now+7*1000*60*60*24).getTime();
@@ -238,7 +241,7 @@ public class TermFVT {
         if (updatedFutureTerm.getEffectiveFromTime().longValue()!=fromTermTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term from time to update");
         }
-        if (updatedFutureTerm.getEffectiveToTime() !=toTermTime) {
+        if (updatedFutureTerm.getEffectiveToTime().longValue() !=toTermTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term to time to update");
         }
         Long fromGlossaryTime = new Date(now+8*1000*60*60*24).getTime();

@@ -139,8 +139,14 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
      * @param instanceProperties instance properties to update
      */
     private void mapRelationshipEffectivityToInstanceProperties(R relationship, InstanceProperties instanceProperties) {
-        instanceProperties.setEffectiveFromTime(new Date(relationship.getEffectiveFromTime()));
-        instanceProperties.setEffectiveToTime(new Date(relationship.getEffectiveToTime()));
+        Long fromTime = relationship.getEffectiveFromTime();
+        Long toTime = relationship.getEffectiveToTime();
+        if (fromTime != null) {
+            instanceProperties.setEffectiveFromTime(new Date(fromTime));
+        }
+        if (toTime != null) {
+            instanceProperties.setEffectiveToTime(new Date(toTime));
+        }
     }
 
     /**
