@@ -39,8 +39,8 @@ public class InvertEdgeRule implements Rule {
 
 
     /** Inverts the edge direction based on the configured parameters
-     * @param graph
-     * @param queriedNodeGUID
+     * @param graph           the lineage graph
+     * @param queriedNodeGUID the guid of the queried node used to identify it in the graph
      */
     public void apply(Graph graph, String queriedNodeGUID) {
         for (Edge edge : graph.getEdges()) {

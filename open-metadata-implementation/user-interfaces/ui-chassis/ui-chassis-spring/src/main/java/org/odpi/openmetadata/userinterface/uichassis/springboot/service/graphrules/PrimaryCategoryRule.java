@@ -124,9 +124,9 @@ public class PrimaryCategoryRule implements Rule {
     /**
      * Get the get the GUID of the node based on it's qualifiedName
      *
-     * @param nodes
-     * @param primaryCategoryQualifiedName
-     * @return
+     * @param nodes the nodes of the graphg
+     * @param primaryCategoryQualifiedName qualified name of the category whos GUID is searched
+     * @return the GUID of thr primary category
      */
     private String getPrimaryCategoryGUID(List<Node> nodes, String primaryCategoryQualifiedName) {
         for (Node node : nodes) {
@@ -140,9 +140,9 @@ public class PrimaryCategoryRule implements Rule {
     /**
      * Marks the relationships between a GlossaryTerm and it's Categories either as REFERENCING_CATEGORY or PRIMARY_CATEGORY
      *
-     * @param edges
-     * @param glossaryTermGUID
-     * @param primaryCategoryGUID
+     * @param edges of the graph
+     * @param glossaryTermGUID  guid of the GlossaryTerm
+     * @param primaryCategoryGUID guid of the primary category
      */
     private void markRelationships(List<Edge> edges, String glossaryTermGUID, String primaryCategoryGUID) {
         edges.stream()
