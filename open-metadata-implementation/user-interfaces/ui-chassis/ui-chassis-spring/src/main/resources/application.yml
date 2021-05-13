@@ -1,9 +1,19 @@
 lineage-display-config:
   rules:
-    -
-     edgeType: SemanticAssignment
-     destinationNodeType: GlossaryTerm
-     sourceNodeType: GlossaryCategory
-    -
-     edgeType : TermCategorization
+    invertEdge:
+      - edgeType: SemanticAssignment
+        destinationNodeType: GlossaryTerm
+        sourceNodeType: GlossaryCategory
+      - edgeType: TermCategorization
+        destinationNodeType: GlossaryTerm
+        sourceNodeType: GlossaryCategory
+    primaryCategory:
+      - edgeType: Classification
+        sourceNodeType: GlossaryTerm
+        destinationNodeType: PrimaryCategory
+        classificationProperty: categoryQualifiedName
+    removeNodes:
+      - queriedNodeType: TabularColumn
+        nodeTypesToRemove:
+          - TabularSchemaType
 
