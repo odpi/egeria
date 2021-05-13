@@ -42,7 +42,7 @@ If the OMAG Server Platform is running but the requested server is not running t
 
 ## The requested service is not active on the called server
 
-If the ser
+If the server is not running when a request is made, but the platform is running then this is the type of response returned.
 
 ```json
 {
@@ -64,6 +64,37 @@ If the ser
     }
 }
 ```
+
+## A request is using the wrong metadata provenance
+
+The following exception is from an integration daemon that has been set up with a null
+[metadataSourceQualifiedName property](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-integration-services.md)
+making it different to that used when the metadata it is managing was created.
+
+The nested message `OMAG-REPOSITORY-HANDLER-400-008` can also occur through other services if metadata is managed with
+the wrong provenance values.
+
+```
+Wed May 12 20:27:47 BST 2021 postgresConnectorServer Exception POSTGRES-CONNECTOR-0002 The method updateView generated a UserNotAuthorized. org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException OMAG-REPOSITORY-HANDLER-400-008 Method updateDatabaseView is unable to modify ClassificationDef instance 947016c6-b812-4bc8-a0f4-2e44bb640603 because it is has metadata provenance of External Source with an externalSourceGUID of 6abf01f2-75d0-489b-94e6-df704fc6753b and an externalSourceName of myDBServer and user OMAGServer issued a request with the Local Cohort metadata provenance set
+Wed May 12 20:27:47 BST 2021 postgresConnectorServer Exception POSTGRES-CONNECTOR-0002 Supplementary information: log record id 618af417-9c97-45a1-bdfb-af7906a8b40c org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException returned message of OMAG-REPOSITORY-HANDLER-400-008 Method updateDatabaseView is unable to modify ClassificationDef instance 947016c6-b812-4bc8-a0f4-2e44bb640603 because it is has metadata provenance of External Source with an externalSourceGUID of 6abf01f2-75d0-489b-94e6-df704fc6753b and an externalSourceName of myDBServer because user OMAGServer is using a local cohort interface and stacktrace of
+UserNotAuthorizedException{userId='OMAGServer', reportedHTTPCode=400, reportingClassName='org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler', reportingActionDescription='updateDatabaseView', reportedErrorMessageId='OMAG-REPOSITORY-HANDLER-400-008', reportedErrorMessageParameters=[updateDatabaseView, ClassificationDef, 947016c6-b812-4bc8-a0f4-2e44bb640603, External Source, 6abf01f2-75d0-489b-94e6-df704fc6753b, myDBServer, OMAGServer], reportedSystemAction='The system is unable to modify the requested instance because it does not have ownership rights to the instance.', reportedUserAction='Route the request through a process that is set up to use the correct external source identifiers.', reportedCaughtException=null, relatedProperties={userId=OMAGServer}}
+	at org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler.throwUserNotAuthorizedException(RESTExceptionHandler.java:338)
+	at org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler.detectAndThrowStandardExceptions(RESTExceptionHandler.java:122)
+	at org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient.callVoidPostRESTCall(FFDCRESTClient.java:309)
+	at org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient.updateDatabaseView(DatabaseManagerClient.java:1552)
+	at org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext.updateDatabaseView(DatabaseIntegratorContext.java:737)
+	at org.odpi.openmetadata.adapters.connectors.integration.postgres.PostgresDatabaseConnector.updateView(PostgresDatabaseConnector.java:745)
+	at org.odpi.openmetadata.adapters.connectors.integration.postgres.PostgresDatabaseConnector.updateViews(PostgresDatabaseConnector.java:673)
+	at org.odpi.openmetadata.adapters.connectors.integration.postgres.PostgresDatabaseConnector.updateSchema(PostgresDatabaseConnector.java:394)
+	at org.odpi.openmetadata.adapters.connectors.integration.postgres.PostgresDatabaseConnector.updateSchemas(PostgresDatabaseConnector.java:312)
+	at org.odpi.openmetadata.adapters.connectors.integration.postgres.PostgresDatabaseConnector.updateDatabase(PostgresDatabaseConnector.java:219)
+	at org.odpi.openmetadata.adapters.connectors.integration.postgres.PostgresDatabaseConnector.refresh(PostgresDatabaseConnector.java:90)
+	at org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler.refreshConnector(IntegrationConnectorHandler.java:420)
+	at org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread.run(IntegrationDaemonThread.java:106)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+```
+
+There is more information on [metadata provenance here](../metadata-provenance).
 
 ----
 
