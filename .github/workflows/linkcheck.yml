@@ -24,8 +24,8 @@ jobs:
 #          title: Broken links
 #          content-filepath: ./errors.txt
 #          labels: documentation, consumability, tidy up
-       - name: Upload errors
-         uses: actions/upload-artifact@v2
-         with:
-           name: Link Check Errors
-           path: errors.txt
+      - name: Upload errors
+        uses: actions/upload-artifact@v2
+        with:
+          name: Link Check Errors
+          path: errors.txt
