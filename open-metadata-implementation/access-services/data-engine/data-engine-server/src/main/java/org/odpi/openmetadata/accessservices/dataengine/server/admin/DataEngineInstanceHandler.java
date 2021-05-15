@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
@@ -86,6 +87,27 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
         return instance.getDataEngineRegistrationHandler();
     }
 
+    /**
+     * Retrieve the common handler for the access service
+     *
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
+     * @param serviceOperationName name of called operation
+     *
+     * @return handler for use by the requested instance
+     *
+     * @throws InvalidParameterException  no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
+     */
+    public DataEngineCommonHandler getCommonHandler(String userId, String serverName, String serviceOperationName) throws
+                                                                                                                    InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        return instance.getDataEngineCommonHandler();
+    }
     /**
      * Retrieve the data engine schema type handler for the access service
      *
