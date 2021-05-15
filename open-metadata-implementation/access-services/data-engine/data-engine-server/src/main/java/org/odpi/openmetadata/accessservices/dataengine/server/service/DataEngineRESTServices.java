@@ -199,8 +199,8 @@ public class DataEngineRESTServices {
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public void deleteExternalDataEngine(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
-                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
-                                                                       FunctionNotSupportedException {
+                                         DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
+                                                                               FunctionNotSupportedException {
         final String methodName = "deleteExternalDataEngine";
 
         DataEngineRegistrationHandler dataEngineRegistrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
@@ -360,7 +360,7 @@ public class DataEngineRESTServices {
      */
     public void deleteSchemaType(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                  DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException,
-            PropertyServerException, FunctionNotSupportedException, EntityNotDeletedException {
+                                                                       PropertyServerException, FunctionNotSupportedException, EntityNotDeletedException {
         final String methodName = "deleteSchemaType";
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
@@ -371,7 +371,7 @@ public class DataEngineRESTServices {
         }
 
         if (!schemaTypeGUIDOptional.isPresent()) {
-            throwEntityNotDeletedException(userId, serverName, methodName);
+            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
         }
         String schemaTypeGUID = schemaTypeGUIDOptional.get();
         dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID, externalSourceName, deleteSemantic);
@@ -495,7 +495,7 @@ public class DataEngineRESTServices {
         }
 
         if (!portGUIDOptional.isPresent()) {
-            throwEntityNotDeletedException(userId, serverName, methodName);
+            throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
         }
 
         String portGUID = portGUIDOptional.get();
@@ -505,7 +505,7 @@ public class DataEngineRESTServices {
             Optional<EntityDetail> schemaType = dataEnginePortHandler.findSchemaTypeForPort(userId, portGUID);
             if (schemaType.isPresent()) {
                 deleteSchemaType(userId, serverName, externalSourceName, schemaType.get().getGUID(), null, deleteSemantic);
-           }
+            }
         }
 
         dataEnginePortHandler.removePort(userId, portGUID, externalSourceName, deleteSemantic);
@@ -609,13 +609,13 @@ public class DataEngineRESTServices {
      */
     public void deleteProcesses(String userId, String serverName, String externalSourceName, List<String> guids, List<String> qualifiedNames,
                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-            FunctionNotSupportedException, EntityNotDeletedException {
+                                                                      FunctionNotSupportedException, EntityNotDeletedException {
         final String methodName = "deleteProcesses";
         if (CollectionUtils.isNotEmpty(qualifiedNames)) {
             for (String qualifiedName : qualifiedNames) {
                 Optional<String> processGUIDOptional = getProcessGUID(serverName, userId, qualifiedName);
                 if (!processGUIDOptional.isPresent()) {
-                    throwEntityNotDeletedException(userId, serverName, methodName);
+                    throwEntityNotDeletedException(userId, serverName, methodName, qualifiedName);
                 }
                 deleteProcess(userId, serverName, externalSourceName, processGUIDOptional.get(), deleteSemantic);
             }
@@ -1116,6 +1116,7 @@ public class DataEngineRESTServices {
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
      * @param process    properties of the process
+     *
      * @return the unique identifier (guid) of the created process
      */
     private GUIDResponse upsertProcess(String userId, String serverName, Process process, String externalSourceName) {
@@ -1419,11 +1420,11 @@ public class DataEngineRESTServices {
         return extendedProperties;
     }
 
-    private void throwEntityNotDeletedException(String userId, String serverName, String methodName) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException,
-                                                                                                            EntityNotDeletedException {
+    private void throwEntityNotDeletedException(String userId, String serverName, String methodName, String qualifiedName) throws InvalidParameterException,
+                                                                                                                                  UserNotAuthorizedException,
+                                                                                                                                  PropertyServerException,
+                                                                                                                                  EntityNotDeletedException {
         DataEngineCommonHandler dataEngineCommonHandler = instanceHandler.getCommonHandler(userId, serverName, methodName);
-        dataEngineCommonHandler.throwEntityNotDeletedException(DataEngineErrorCode.PORT_NOT_FOUND, methodName);
+        dataEngineCommonHandler.throwEntityNotDeletedException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, qualifiedName);
     }
 }
