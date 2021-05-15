@@ -26,7 +26,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * Default constructor registers the access service
      */
     public DataEngineInstanceHandler() {
-        super(AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceName()+ " OMAS");
+        super(AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceName() + " OMAS");
 
         DataEngineRegistration.registerAccessService();
     }
@@ -40,14 +40,14 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      *
      * @return handler for use by the requested instance
      *
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
     public DataEngineProcessHandler getProcessHandler(String userId, String serverName, String serviceOperationName) throws
-                                                                                                           InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException {
+                                                                                                                     InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
@@ -56,11 +56,10 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
 
 
     public DataEngineCollectionHandler getCollectionHandler(String userId, String serverName, String serviceOperationName) throws
-            InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
-        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
-                serverName, serviceOperationName);
+                                                                                                                           InvalidParameterException,
+                                                                                                                           UserNotAuthorizedException,
+                                                                                                                           PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         return instance.getDataEngineCollecttionHandler();
     }
@@ -68,23 +67,21 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     /**
      * Retrieve the registration handler for the access service
      *
-     * @param userId     calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
      * @param serviceOperationName name of called operation
      *
      * @return handler for use by the requested instance
      *
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
-    public DataEngineRegistrationHandler getRegistrationHandler(String userId, String serverName,
-                                                                String serviceOperationName) throws
-                                                                                                 InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException {
-        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
-                serverName, serviceOperationName);
+    public DataEngineRegistrationHandler getRegistrationHandler(String userId, String serverName, String serviceOperationName) throws
+                                                                                                                               InvalidParameterException,
+                                                                                                                               UserNotAuthorizedException,
+                                                                                                                               PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         return instance.getDataEngineRegistrationHandler();
     }
@@ -98,17 +95,15 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      *
      * @return handler for use by the requested instance
      *
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
-    public DataEngineSchemaTypeHandler getDataEngineSchemaTypeHandler(String userId, String serverName,
-                                                                      String serviceOperationName) throws
-                                                                                                   InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException {
-        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
-                serverName, serviceOperationName);
+    public DataEngineSchemaTypeHandler getDataEngineSchemaTypeHandler(String userId, String serverName, String serviceOperationName) throws
+                                                                                                                                     InvalidParameterException,
+                                                                                                                                     UserNotAuthorizedException,
+                                                                                                                                     PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         return instance.getDataEngineSchemaTypeHandler();
     }
@@ -122,16 +117,14 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      *
      * @return handler for use by the requested instance
      *
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
-    public DataEnginePortHandler getPortHandler(String userId, String serverName, String serviceOperationName) throws
-                                                                                                     InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException {
-        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
-                serverName, serviceOperationName);
+    public DataEnginePortHandler getPortHandler(String userId, String serverName, String serviceOperationName) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         return instance.getPortHandler();
     }
@@ -145,16 +138,15 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      *
      * @return handler for use by the requested instance
      *
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
     public DataEngineRelationalDataHandler getRelationalDataHandler(String userId, String serverName, String serviceOperationName) throws
-                                                                                                               InvalidParameterException,
-                                                                                                               UserNotAuthorizedException,
-                                                                                                               PropertyServerException {
-        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
-                serverName, serviceOperationName);
+                                                                                                                                   InvalidParameterException,
+                                                                                                                                   UserNotAuthorizedException,
+                                                                                                                                   PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         return instance.getDataEngineRelationalDataHandler();
     }
@@ -162,26 +154,22 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     /**
      * Return the connection used in the client to create a connector to access events to the input topic.
      *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
      * @return connection object for client
-     * @throws InvalidParameterException no available instance for the requested server
+     *
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
-    public Connection getInTopicConnection(String userId,
-                                    String serverName,
-                                    String serviceOperationName) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException
-    {
-        DataEngineServicesInstance instance = (DataEngineServicesInstance)super.getServerServiceInstance(userId,
-                serverName,
-                serviceOperationName);
+    public Connection getInTopicConnection(String userId, String serverName, String serviceOperationName) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
-        if (instance != null)
-        {
+        if (instance != null) {
             return instance.getInTopicConnection();
         }
 

@@ -5,35 +5,34 @@
 
 Create a SchemaType with SchemaAttributes and relationships
 
+More examples can be found in the
+[sample collection](../../../docs/samples/collections/DE_endpoints.postman_collection.json)
 ```
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/schema-types/
 
 {
-  "schema":  {
-  "qualifiedName": "schemaQuyalifiedName",
-  "displayName": "schema display name",
-  "author": "author",
-  "usage": "usage",
-  "columns": [
-    {
-      "qualifiedName": "firstColumnQualifiedName",
-      "displayName": "display",
-      "elementPosition": 0,
-      "cardinality": "none",
-      "dataType": "INTEGER",
-      "encodingStandard": "encoding",
-      "versionNumber": "12",
+    "schema": {
+        "qualifiedName": "extern:fr:6c18e03b7e4f44089462e858538bd5d2",
+        "displayName": "EMPLOYEE",
+        "columns": [
+            {
+                "qualifiedName": "source-schema-attribute-qualified-name",
+                "displayName": "DEPT",
+                "elementPosition": 0
+            },
+            {
+                "qualifiedName": "(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=EMPSTATUS",
+                "displayName": "EMPSTATUS",
+                "elementPosition": 0
+            },
+            {
+                "qualifiedName": "(host_(engine))=engine::(data_connection)=EMPLOYEE_extern:fr:16feb06d8fde48eca2851815b6de99dd::(database_schema)=public::(database_table)=EMPLOYEE::(database_column)=FNAME",
+                "displayName": "FNAME",
+                "elementPosition": 0
+            }
+        ]
     },
-    {
-      "qualifiedName": "secondColumnQualifiedName",
-      "displayName": "display second",
-      "elementPosition": 0,
-      "cardinality": "none",
-      "dataType": "INTEGER"
-    }
-   ]
-  },
-  "externalSourceName": "dataEngine"
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
 }
 ```
 `externalSourceName` - qualifiedName of the external data engine tool.
