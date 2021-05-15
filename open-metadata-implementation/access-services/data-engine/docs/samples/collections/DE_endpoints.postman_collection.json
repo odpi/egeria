@@ -898,7 +898,7 @@
 			"response": []
 		},
 		{
-			"name": "4.2. Delete Processes CopyColumns&CopyColumnFlow",
+			"name": "4.2. Delete Processes CopyColumns&CopyColumnsFlow",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -926,7 +926,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"qualifiedNames\": [\n        \"(process)=CopyColumsFlow::(process)=CopyColumns\",\n        \"(process)=CopyColumsFlow\"\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"qualifiedNames\": [\n        \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"(process)=CopyColumnsFlow\"\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
