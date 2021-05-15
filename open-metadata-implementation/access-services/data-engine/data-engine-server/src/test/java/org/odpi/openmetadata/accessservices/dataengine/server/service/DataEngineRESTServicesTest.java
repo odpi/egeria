@@ -894,7 +894,7 @@ class DataEngineRESTServicesTest {
                                                      FunctionNotSupportedException {
         mockPortHandler("deletePort");
         mockPortHandler("getPortGUID");
-        mockSchemaTypeHandler("deletePort");
+        mockSchemaTypeHandler("deleteSchemaType");
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
@@ -912,7 +912,7 @@ class DataEngineRESTServicesTest {
                                             FunctionNotSupportedException {
         mockPortHandler("deletePort");
         mockPortHandler("getPortGUID");
-        mockSchemaTypeHandler("deletePort");
+        mockSchemaTypeHandler("deleteSchemaType");
 
         DeleteRequestBody deleteRequestBody =  getDeleteRequestBody();
         deleteRequestBody.setGuid(GUID);
@@ -932,7 +932,7 @@ class DataEngineRESTServicesTest {
     void deleteProcesses_withQualifiedName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                FunctionNotSupportedException {
         mockPortHandler("deletePort");
-        mockSchemaTypeHandler("deletePort");
+        mockSchemaTypeHandler("deleteSchemaType");
         mockProcessHandler("deleteProcess");
         mockProcessHandler("getProcessGUID");
 
@@ -960,7 +960,7 @@ class DataEngineRESTServicesTest {
     void deleteProcesses_withGuids() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
                                                     FunctionNotSupportedException {
         mockPortHandler("deletePort");
-        mockSchemaTypeHandler("deletePort");
+        mockSchemaTypeHandler("deleteSchemaType");
         mockProcessHandler("deleteProcess");
         mockProcessHandler("getProcessGUID");
 
