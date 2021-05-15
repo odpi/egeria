@@ -96,7 +96,7 @@ public class DataEngineRESTServices {
     public static final String EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING = "Exception while adding lineage mapping {} : {}";
     public static final String EXCEPTION_WHILE_CREATING_PROCESS = "Exception while creating process {} : {}";
     public static final String EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY = "Exception while creating process relationships for process {} : {}";
-
+    private static final String DEBUG_DELETE_MESSAGE = "DataEngine OMAS deleted entity with GUID {}";
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     private final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
@@ -173,7 +173,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            deleteDataEngine(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+            deleteExternalDataEngine(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -196,7 +196,7 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
-    public void deleteDataEngine(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+    public void deleteExternalDataEngine(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                  DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
                                                                        FunctionNotSupportedException {
         final String methodName = "deleteExternalDataEngine";
@@ -213,6 +213,7 @@ public class DataEngineRESTServices {
         }
 
         dataEngineRegistrationHandler.removeExternalDataEngine(userId, qualifiedName, externalSourceName, deleteSemantic);
+        log.debug(DEBUG_DELETE_MESSAGE, guid);
     }
 
     /**
@@ -362,15 +363,17 @@ public class DataEngineRESTServices {
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        Optional<String> schemaTypeGUID = Optional.ofNullable(guid);
-        if (!schemaTypeGUID.isPresent()) {
-            schemaTypeGUID = getSchemaTypeGUID(serverName, userId, qualifiedName);
+        Optional<String> schemaTypeGUIDOptional = Optional.ofNullable(guid);
+        if (!schemaTypeGUIDOptional.isPresent()) {
+            schemaTypeGUIDOptional = getSchemaTypeGUID(serverName, userId, qualifiedName);
         }
 
-        if (!schemaTypeGUID.isPresent()) {
+        if (!schemaTypeGUIDOptional.isPresent()) {
             return;
         }
-        dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID.get(), externalSourceName, deleteSemantic);
+        String schemaTypeGUID = schemaTypeGUIDOptional.get();
+        dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID, externalSourceName, deleteSemantic);
+        log.debug(DEBUG_DELETE_MESSAGE, guid);
     }
 
     /**
@@ -499,13 +502,12 @@ public class DataEngineRESTServices {
         if (PORT_IMPLEMENTATION_TYPE_NAME.equalsIgnoreCase(portType)) {
             Optional<EntityDetail> schemaType = dataEnginePortHandler.findSchemaTypeForPort(userId, portGUID);
             if (schemaType.isPresent()) {
-                DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName,
-                        methodName);
-                dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.get().getGUID(), externalSourceName, deleteSemantic);
-            }
+                deleteSchemaType(userId, serverName, externalSourceName, schemaType.get().getGUID(), null, deleteSemantic);
+           }
         }
 
         dataEnginePortHandler.removePort(userId, portGUID, externalSourceName, deleteSemantic);
+        log.debug(DEBUG_DELETE_MESSAGE, guid);
     }
 
 
@@ -642,6 +644,7 @@ public class DataEngineRESTServices {
             deletePort(userId, serverName, externalSourceName, port.getGUID(), null, PORT_ALIAS_TYPE_NAME, deleteSemantic);
         }
         processHandler.removeProcess(userId, processGUID, externalSourceName, deleteSemantic);
+        log.debug(DEBUG_DELETE_MESSAGE, processGUID);
     }
 
     /**
@@ -1109,7 +1112,6 @@ public class DataEngineRESTServices {
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
      * @param process    properties of the process
-     *
      * @return the unique identifier (guid) of the created process
      */
     private GUIDResponse upsertProcess(String userId, String serverName, Process process, String externalSourceName) {

@@ -288,8 +288,6 @@ public class DataEngineCommonHandler {
         repositoryHandler.removeEntity(userId, externalSourceGUID, externalSourceName, entityGUID,
                 "entityGUID", entityTypeDef.getGUID(), entityTypeDef.getName(),
                 null, null, methodName);
-
-        repositoryHandler.purgeEntity(userId, entityGUID, entityTypeDef.getGUID(), entityTypeDef.getName(), methodName);
     }
 
     /**

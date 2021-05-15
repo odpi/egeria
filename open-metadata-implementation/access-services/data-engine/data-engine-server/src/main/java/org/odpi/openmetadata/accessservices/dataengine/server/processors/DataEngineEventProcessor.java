@@ -230,7 +230,7 @@ public class DataEngineEventProcessor {
         try {
             DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
 
-            dataEngineRESTServices.deleteDataEngine(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+            dataEngineRESTServices.deleteExternalDataEngine(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException e) {
             logException(dataEngineEvent, methodName, e);
