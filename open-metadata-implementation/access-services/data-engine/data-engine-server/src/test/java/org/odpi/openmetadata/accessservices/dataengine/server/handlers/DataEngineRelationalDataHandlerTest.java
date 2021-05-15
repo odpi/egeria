@@ -36,6 +36,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -53,6 +54,8 @@ class DataEngineRelationalDataHandlerTest {
     @Mock
     RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn,
             SchemaType> relationalDataHandler;
+    @Mock
+    private DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
 
     @InjectMocks
     private DataEngineRelationalDataHandler dataEngineRelationalDataHandler;
@@ -81,6 +84,8 @@ class DataEngineRelationalDataHandlerTest {
     private static final String COLUMN_DATA_TYPE = "String";
     private static final String COLUMN_FORMULA = "formula";
     private static final String COLUMN_GUID = "column_guid";
+    private static final String PROTOCOL = "protocol";
+    private static final String NETWORK_ADDRESS = "networkAddress";
 
     @Test
     void upsertDatabase_create_withDefaultSchema() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -107,6 +112,8 @@ class DataEngineRelationalDataHandlerTest {
                 database.getOwnerType().getOpenTypeOrdinal(), database.getZoneMembership(), database.getOriginOrganizationGUID(),
                 database.getOriginBusinessCapabilityGUID(), database.getOtherOriginValues(), null,
                 OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null, null, "upsertDatabaseSchema");
+        verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
+                DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER, "upsertDatabase");
     }
 
     private void verifyInvalidParameterHandlerInvocations(String methodName) throws
@@ -142,6 +149,9 @@ class DataEngineRelationalDataHandlerTest {
                 database.getZoneMembership(), database.getOriginOrganizationGUID(), database.getOriginBusinessCapabilityGUID(),
                 database.getOtherOriginValues(), null, OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                 null, null, "upsertDatabaseSchema");
+        verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
+                DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER, "upsertDatabase");
+
     }
 
     @Test
@@ -173,6 +183,9 @@ class DataEngineRelationalDataHandlerTest {
                 database.getZoneMembership(), database.getOriginOrganizationGUID(), database.getOriginBusinessCapabilityGUID(),
                 database.getOtherOriginValues(), null, OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                 null, null, "upsertDatabaseSchema");
+
+        verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
+                DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER, "upsertDatabase");
     }
 
     @Test
@@ -279,6 +292,8 @@ class DataEngineRelationalDataHandlerTest {
         database.setDatabaseVersion(DATABASE_VERSION);
         database.setDatabaseInstance(DATABASE_INSTANCE);
         database.setDatabaseImportedFrom(DATABASE_IMPORTED_FROM);
+        database.setProtocol(PROTOCOL);
+        database.setNetworkAddress(NETWORK_ADDRESS);
 
         return database;
     }

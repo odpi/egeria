@@ -1,10 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-# Apache Kafka
+# Apache Kafka (and Apache Zookeeper)
 
 Apache Kafka is an event bus that is used to pass events between different Egeria servers.
-Its home page provides documentation and a download page.
+It uses Apache Zookeeper to manage its components in a cluster.
+Both technologies can be downloaded from Kafka's home page.
 
 * [https://kafka.apache.org/](https://kafka.apache.org/)
 
@@ -53,6 +54,10 @@ $ kill -9 80637
 $ kill -9 80929
 $
 ```
+
+----
+
+* Return to [Tools](.)
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

@@ -180,8 +180,12 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                 if (!isReplace) {
                     // copy over with effectivity dates - honour what is in the request. So null means we lose any effectivity time that are set.
                     InstanceProperties instanceProperties = updateProperties(originalRelationship, relationshipToUpdate);
-                    instanceProperties.setEffectiveFromTime(relationship.getEffectiveFromTime());
-                    instanceProperties.setEffectiveToTime(relationship.getEffectiveToTime());
+                    if (relationship.getEffectiveFromTime() != null) {
+                        instanceProperties.setEffectiveFromTime(new Date(relationship.getEffectiveFromTime()));
+                    }
+                    if (relationship.getEffectiveToTime() != null) {
+                        instanceProperties.setEffectiveToTime(new Date(relationship.getEffectiveToTime()));
+                    }
                     relationshipToUpdate.setProperties(instanceProperties);
                 }
                 oMRSAPIHelper.callOMRSUpdateRelationship(restAPIName, userId, relationshipToUpdate);
