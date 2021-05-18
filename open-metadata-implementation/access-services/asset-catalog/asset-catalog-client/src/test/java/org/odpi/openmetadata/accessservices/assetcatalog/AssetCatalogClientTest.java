@@ -54,7 +54,7 @@ public class AssetCatalogClientTest {
 
     @Before
     public void before() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         assetCatalog = new AssetCatalog(SERVER_NAME, SERVER_URL);
         Field connectorField = ReflectionUtils.findField(AssetCatalog.class, "clientConnector");

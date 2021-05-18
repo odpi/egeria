@@ -34,7 +34,7 @@ public class TestInMemoryEntityNeighbourhood
 
     public void setup()
     {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

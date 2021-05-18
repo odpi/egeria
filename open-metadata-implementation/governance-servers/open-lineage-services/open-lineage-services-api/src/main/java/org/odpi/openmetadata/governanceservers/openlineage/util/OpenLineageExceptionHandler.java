@@ -10,7 +10,7 @@ public class OpenLineageExceptionHandler extends RESTExceptionHandler {
     public void captureOpenLineageException(FFDCResponseBase response, OpenLineageException e) {
         response.setRelatedHTTPCode(e.getReportedHTTPCode());
         response.setExceptionClassName(e.getClass().getName());
-        response.setExceptionErrorMessage(e.getErrorMessage());
+        response.setExceptionErrorMessage(e.getReportedErrorMessage());
         response.setExceptionSystemAction(e.getReportedSystemAction());
         response.setExceptionUserAction(e.getReportedUserAction());
     }

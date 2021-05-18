@@ -303,8 +303,12 @@ public class OpenLineageServerOperationalServices {
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
+                null,
+                null,
                 errorCode.getSystemAction(),
-                errorCode.getUserAction());
+                errorCode.getUserAction(),
+                null,
+                null);
         logException(auditCode, actionDescription, e);
         throw e;
     }
@@ -326,8 +330,12 @@ public class OpenLineageServerOperationalServices {
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
+                null,
+                null,
                 errorCode.getSystemAction(),
-                errorCode.getUserAction());
+                errorCode.getUserAction(),
+                null,
+                null);
     }
 
     /**
@@ -346,8 +354,12 @@ public class OpenLineageServerOperationalServices {
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
+                null,
+                null,
                 errorCode.getSystemAction(),
-                errorCode.getUserAction());
+                errorCode.getUserAction(),
+                null,
+                null);
     }
 
     /**
@@ -363,9 +375,13 @@ public class OpenLineageServerOperationalServices {
         throw new OMAGConfigurationErrorException(e.getReportedHTTPCode(),
                 e.getReportingClassName(),
                 e.getReportingActionDescription(),
-                e.getErrorMessage(),
+                e.getReportedErrorMessage(),
+                e.getReportedErrorMessageId(),
+                e.getReportedErrorMessageParameters(),
                 e.getReportedSystemAction(),
-                e.getReportedUserAction());
+                e.getReportedUserAction(),
+                e.getReportedCaughtExceptionClassName(),
+                e.getRelatedProperties());
     }
 
     /**

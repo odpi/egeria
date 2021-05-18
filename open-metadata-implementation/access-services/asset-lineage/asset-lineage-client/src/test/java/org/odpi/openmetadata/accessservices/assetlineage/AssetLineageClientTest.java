@@ -39,7 +39,7 @@ public class AssetLineageClientTest {
 
     @Before
     public void before() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         assetLineage = new AssetLineage(SERVER_NAME, SERVER_URL);
         Field connectorField = ReflectionUtils.findField(AssetLineage.class, "clientConnector");

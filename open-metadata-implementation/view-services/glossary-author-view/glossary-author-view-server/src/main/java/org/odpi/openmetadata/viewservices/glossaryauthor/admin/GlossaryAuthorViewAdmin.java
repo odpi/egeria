@@ -94,7 +94,9 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
             // todo - not valid to use private exception from SubjectArea OMAS
         } catch (InvalidParameterException iae) {
             writeAuditLogPassingErrorMessage(auditLog, actionDescription, GlossaryAuthorViewAuditCode.SERVICE_INSTANCE_FAILURE, iae.getMessage());
-            throw new OMAGConfigurationErrorException(iae.getReportedHTTPCode(), iae.getReportingClassName(), iae.getReportingActionDescription(), iae.getErrorMessage(), iae.getReportedSystemAction(), iae.getReportedUserAction());
+            throw new OMAGConfigurationErrorException(iae.getReportedHTTPCode(), iae.getReportingClassName(), iae.getReportingActionDescription(),
+                    iae.getReportedErrorMessage(), iae.getReportedErrorMessageId(), iae.getReportedErrorMessageParameters(),
+                    iae.getReportedSystemAction(), iae.getReportedUserAction(), iae.getReportedCaughtExceptionClassName(), iae.getRelatedProperties());
         }
     }
 

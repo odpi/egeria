@@ -55,7 +55,7 @@ public class GlossaryViewClientTest {
 
     @Before
     public void before() throws Exception{
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         underTest = new GlossaryViewClient(SERVER_NAME, SERVER_PLATFORM_URL, USER_ID, USER_PASSWORD);
 

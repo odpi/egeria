@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.glossaryview.server.admin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 /**
@@ -20,18 +20,18 @@ public class GlossaryViewServiceInstance extends OMASServiceInstance
      * Access Service Registry and in the instance map
      *
      * @param omrsRepositoryConnector responsible for servicing the REST calls
-     * @param omrsAuditLog            audit log
+     * @param auditLog                audit log
      * @param localServerUserId       userId for server requests
      * @param maxPageSize             maximum values to return on any single call
      * @throws NewInstanceException if a problem occurred during initialization
      */
     public GlossaryViewServiceInstance(OMRSRepositoryConnector omrsRepositoryConnector,
-                                       OMRSAuditLog            omrsAuditLog,
+                                       AuditLog                auditLog,
                                        String                  localServerUserId,
                                        int                     maxPageSize) throws NewInstanceException {
 
         super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceFullName(),
-              omrsRepositoryConnector, null, null, null, omrsAuditLog, localServerUserId, maxPageSize);
+              omrsRepositoryConnector, null, null, null, auditLog, localServerUserId, maxPageSize);
     }
 
 }

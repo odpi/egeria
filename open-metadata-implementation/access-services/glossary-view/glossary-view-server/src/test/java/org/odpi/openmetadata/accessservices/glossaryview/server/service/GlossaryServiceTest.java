@@ -99,7 +99,8 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
     @Test
     public void throwOmrsExceptionOnGetEntityByGUID() throws Exception{
         PropertyServerException exception = new PropertyServerException(501, "className-getEntityByGUID", "actionDescription-getEntityByGUID",
-                "errorMessage-getEntityByGUID", "systemAction-getEntityByGUID", "userAction-getEntityByGUID");
+                "errorMessage-getEntityByGUID", null, null, "systemAction-getEntityByGUID", "userAction-getEntityByGUID", null, null);
+
         when(repositoryHandler.getEntityByGUID(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq("guid"),
                 eq(GLOSSARY_TYPE_NAME), eq("getGlossary"))).thenThrow(exception);
 
@@ -111,8 +112,8 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
     @Test
     public void throwOmrsExceptionOnGetEntitiesForRelationshipType() throws Exception{
         PropertyServerException exception = new PropertyServerException(501, "className-getEntitiesForRelationshipType",
-                "actionDescription--getEntitiesForRelationshipType", "errorMessage--getEntitiesForRelationshipType",
-                "systemAction--getEntitiesForRelationshipType", "userAction--getEntitiesForRelationshipType");
+                "actionDescription--getEntitiesForRelationshipType", "errorMessage--getEntitiesForRelationshipType", null, null,
+                "systemAction--getEntitiesForRelationshipType", "userAction--getEntitiesForRelationshipType", null, null);
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(GLOSSARY_TYPE_NAME),
                 eq(EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_GUID), eq(EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_NAME), anyInt(), anyInt(),
                 eq("getExternalGlossaryLinks"))).thenThrow(exception);

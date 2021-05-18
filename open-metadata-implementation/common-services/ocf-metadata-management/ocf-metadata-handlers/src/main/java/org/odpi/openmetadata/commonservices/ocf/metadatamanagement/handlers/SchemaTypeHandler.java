@@ -639,64 +639,6 @@ public class SchemaTypeHandler extends RootHandler
 
 
     /**
-     * Add the schema type from an external source to the repository. This call is deprecated because it is no longer
-     * necessary.  Change caller to use addSchemaAttribute and delete this method when no longer used.
-     *
-     * @param userId   calling userId
-     * @param schemaAttribute object to add
-     * @param externalSourceGUID unique identifier(guid) for the external source.
-     * @param externalSourceName unique name for the external source.
-     * @return unique identifier of the schemaAttribute in the repository.
-     * @throws InvalidParameterException  the schemaAttribute bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    @Deprecated
-    public String addExternalSchemaAttribute(String               userId,
-                                             SchemaAttribute      schemaAttribute,
-                                             String               externalSourceGUID,
-                                             String               externalSourceName) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
-    {
-        return addSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttribute);
-    }
-
-
-    /**
-     * Update a stored schema attribute.  This method is deprecated because the provenance information is not available.
-     *
-     * @param userId                      userId
-     * @param existingSchemaAttributeGUID unique identifier of the existing schemaAttribute entity
-     * @param schemaAttribute             new schemaAttribute values
-     * @return unique identifier of the schemaAttribute in the repository.
-     * @throws InvalidParameterException  the schemaAttribute bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    @Deprecated
-    public String updateSchemaAttribute(String           userId,
-                                        String           existingSchemaAttributeGUID,
-                                        SchemaAttribute  schemaAttribute) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
-    {
-        final String methodName = "updateSchemaAttribute";
-
-        SchemaAttributeBuilder builder = this.getSchemaAttributeBuilder(schemaAttribute);
-
-        repositoryHandler.updateEntity(userId,
-                                       existingSchemaAttributeGUID,
-                                       this.getSchemaAttributeTypeGUID(schemaAttribute),
-                                       this.getSchemaAttributeTypeName(schemaAttribute),
-                                       builder.getInstanceProperties(methodName),
-                                       methodName);
-
-        return existingSchemaAttributeGUID;
-    }
-
-
-    /**
      * Return the appropriate schemaAttribute builder for the supplied schema attribute bean.
      *
      * @param schemaAttribute object with properties
@@ -1146,40 +1088,6 @@ public class SchemaTypeHandler extends RootHandler
                                                                                          UserNotAuthorizedException
     {
         return addSchemaType(userId, externalSourceGUID, externalSourceName, schemaType);
-    }
-
-
-    /**
-     * Update a stored schemaType.  This method is deprecated because it does not pass provenance information -
-     * assuming local cohort provenance.
-     *
-     * @param userId                 userId
-     * @param existingSchemaTypeGUID unique identifier of the existing schemaType entity
-     * @param schemaType             new schemaType values
-     * @return GUID of existing schema type
-     * @throws InvalidParameterException  the schemaType bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    @Deprecated
-    public String updateSchemaType(String      userId,
-                                   String      existingSchemaTypeGUID,
-                                   SchemaType  schemaType) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
-    {
-        final String methodName = "updateSchemaType";
-
-        SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaType);
-
-        repositoryHandler.updateEntity(userId,
-                                       existingSchemaTypeGUID,
-                                       this.getSchemaTypeTypeGUID(schemaType),
-                                       this.getSchemaTypeTypeName(schemaType),
-                                       schemaTypeBuilder.getInstanceProperties(methodName),
-                                       methodName);
-
-        return existingSchemaTypeGUID;
     }
 
 

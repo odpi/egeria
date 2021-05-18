@@ -47,7 +47,7 @@ public class AssetCatalogRelationshipServiceTest {
 
     @Before
     public void before() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         Field instanceHandlerField = ReflectionUtils.findField(AssetCatalogRelationshipRESTService.class, "instanceHandler");
         instanceHandlerField.setAccessible(true);

@@ -44,7 +44,7 @@ public class ColumnContextBuilderTest {
 
     @Before
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         helper = new TestDataHelper();
         when(omrsRepositoryConnector.getMetadataCollection()).thenReturn(omrsMetadataCollection);
