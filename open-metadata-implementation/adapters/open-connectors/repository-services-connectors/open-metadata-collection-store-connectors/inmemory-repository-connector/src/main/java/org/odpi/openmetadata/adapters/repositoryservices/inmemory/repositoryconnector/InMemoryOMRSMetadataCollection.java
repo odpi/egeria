@@ -3894,7 +3894,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             }
             catch (ClassificationErrorException error)
             {
-                throw new TypeErrorException(error);
+                // Do nothing: this simply means the repository did not have the classification reference copy stored
+                // anyway, so nothing to remove (no-op)
             }
         }
     }
