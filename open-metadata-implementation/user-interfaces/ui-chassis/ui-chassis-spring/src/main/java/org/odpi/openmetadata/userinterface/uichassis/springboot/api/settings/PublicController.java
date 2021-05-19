@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/public")
 public class PublicController {
 
-    @Value("${theme:default}")
-    String theme;
-
     @Autowired
     AppBean app;
 

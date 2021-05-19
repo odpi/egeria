@@ -33,7 +33,7 @@ public class UserInfoController {
      *
      * @param request the http request
      * @return current authenticated user
-     * @throws HttpClientErrorException
+     * @throws HttpClientErrorException exception when executing the request
      */
     @GetMapping( value ="/current")
     public TokenUser getUser(HttpServletRequest request) throws HttpClientErrorException{
@@ -44,7 +44,7 @@ public class UserInfoController {
      *
      * @param request the http request
      * @return visible ui components according to user roles
-     * @throws HttpClientErrorException
+     * @throws HttpClientErrorException exception when executing the request
      */
     @GetMapping( value ="/components")
     public Collection<String> getVisibleComponents(HttpServletRequest request) throws HttpClientErrorException{
@@ -70,7 +70,7 @@ public class UserInfoController {
      *
      * @param request the http request
      * @return the intersection between user roles and app roles
-     * @throws HttpClientErrorException
+     * @throws HttpClientErrorException exception when executing the request
      */
     @GetMapping( value ="/roles")
     public Collection<String> getRoles(HttpServletRequest request) throws HttpClientErrorException{
