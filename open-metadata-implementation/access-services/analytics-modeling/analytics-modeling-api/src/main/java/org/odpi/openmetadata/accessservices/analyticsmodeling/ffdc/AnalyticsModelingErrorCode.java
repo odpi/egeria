@@ -169,6 +169,11 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"User {0} failed to update artifact {1}. Cause: {2}",
 			"The system is unable to process the request.",
 			"Review the exception to resolve the issue and repeat request to fix artifact."),
+	FAILED_DELETE_ARTIFACT(
+			"OMAS-ANALYTICS-MODELING-028", 
+			"User {0} failed to delete asset {1}. Cause: {2}",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue and repeat request to fix artifact."),
 	
     UNEXPECTED_EXCEPTION(400, "OMAG-ANALYTICS-MODELING-499",
             "An unexpected {0} exception was caught by {1}; error message was {2}",

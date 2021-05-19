@@ -39,6 +39,7 @@ public class AnalyticsModelingRestServices {
 	
 	private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AnalyticsModelingRestServices.class),
 			AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName());
+	
 	private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 	
 	public RESTExceptionHandler getExceptionHandler() {
@@ -260,6 +261,43 @@ public class AnalyticsModelingRestServices {
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
 	}
+	
+	/**
+	 * Delete analytics artifact defined by unique identifier.
+	 * @param serverName where to create artifact.
+	 * @param userId requested the operation.
+	 * @param serverCapability source where artifact persist.
+	 * @param identifier of the artifact in the 3rd party system.
+	 * @return response with status of the operation.
+	 */
+	public AnalyticsModelingOMASAPIResponse deleteArtifact(String serverName, String userId, String serverCapability,
+			String identifier) {
+		
+		String methodName = "deleteArtifact";
+		AnalyticsModelingOMASAPIResponse ret;
+		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+		try {
+
+			validateUrlParameters(serverName, userId, null, null, null, null, methodName);
+
+			AssetsResponse response = new AssetsResponse();
+			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
+					.deleteAssets(userId, serverCapability, identifier);
+			response.setAssetList(assets);
+			ret = response;
+		} catch (AnalyticsModelingCheckedException e) {
+			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
+		} catch (Exception e) {
+			ret = handleExceptionResponse(e, methodName);
+        }
+		
+		restCallLogger.logRESTCallReturn(token, ret.toString());
+		return ret;
+	}
+
 	
 	/**
 	 * Validate path and query parameters from URL.

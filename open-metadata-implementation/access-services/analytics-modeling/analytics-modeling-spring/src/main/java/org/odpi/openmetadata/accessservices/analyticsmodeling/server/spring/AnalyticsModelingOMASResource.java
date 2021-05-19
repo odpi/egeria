@@ -170,4 +170,23 @@ public class AnalyticsModelingOMASResource {
 
 		return restAPI.updateArtifact(serverName, userId, serverCapability, artifact);
 	}
+    
+    /**
+	 * Delete assets in repository defined by artifact unique identifier.
+     * @param serverName  unique identifier for requested server.
+     * @param userId      request user
+	 * @param serverCapability where the artifact is stored.
+	 * @param identifier of the artifact in 3rd party system.
+	 * @return errors or list of created assets.
+	 */
+    @Operation(summary = "Delete assets that represent analytics artifact.")
+	@PutMapping(path = "/sync")
+	public AnalyticsModelingOMASAPIResponse deleteArtifact(
+			@PathVariable("serverName") String serverName,
+            @PathVariable("userId") String userId,
+			@RequestParam(required=true) String serverCapability,
+			@RequestParam(required=true) String identifier)
+    {
+		return restAPI.deleteArtifact(serverName, userId, serverCapability, identifier);
+	}
 }

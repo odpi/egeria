@@ -30,6 +30,7 @@ public class Constants {
 	public static final String NOTE_LOG = "NoteLog";
 	public static final String ODBC_TYPE = "odbc_type";
 	public static final String OWNER_TYPE = "ownerType";
+	public static final String PARAM_NAME_ASSET_GUID = "assetGUID";
 	public static final String PARAM_NAME_PARENT_GUID = "parentGUID";
 	public static final String PATCH_LEVEL = "patchLevel";
 	public static final String POSITION = "position";
