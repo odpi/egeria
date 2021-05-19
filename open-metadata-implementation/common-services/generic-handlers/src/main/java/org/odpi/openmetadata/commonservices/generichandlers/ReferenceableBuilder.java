@@ -390,7 +390,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         InstanceProperties properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                     null,
                                                                     OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
-                                                                    archiveDate == null ? archiveDate : new Date(),
+                                                                    archiveDate != null ? archiveDate : new Date(),
                                                                     methodName);
 
         if (archiveUser != null)
