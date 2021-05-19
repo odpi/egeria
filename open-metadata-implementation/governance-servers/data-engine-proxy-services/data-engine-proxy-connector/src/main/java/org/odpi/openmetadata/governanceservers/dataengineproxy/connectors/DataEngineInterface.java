@@ -64,15 +64,6 @@ public interface DataEngineInterface {
     List<SchemaType> getChangedSchemaTypes(Date from, Date to);
 
     /**
-     * Retrieve a list of the changed port implementations between the dates and times provided.
-     *
-     * @param from the date and time from which to look for changes (exclusive)
-     * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<PortImplementation>}
-     */
-    List<PortImplementation> getChangedPortImplementations(Date from, Date to);
-
-    /**
      * Retrieve a list of the changed processes between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
@@ -80,15 +71,6 @@ public interface DataEngineInterface {
      * @return {@code List<Process>}
      */
     List<Process> getChangedProcesses(Date from, Date to);
-
-    /**
-     * Retrieve a list of the changed port aliases between the dates and times provided.
-     *
-     * @param from the date and time from which to look for changes (exclusive)
-     * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<PortAlias>}
-     */
-    List<PortAlias> getChangedPortAliases(Date from, Date to);
 
     /**
      * Retrieve a list of the changed process hierarchies between the dates and times provided.

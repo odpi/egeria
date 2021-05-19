@@ -34,6 +34,7 @@ public class DataEngineDataFileHandler {
     private final AssetHandler<DataFile> fileHandler;
     private final DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private final DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler;
+    private final DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -48,18 +49,20 @@ public class DataEngineDataFileHandler {
     public DataEngineDataFileHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
                                      DataEngineCommonHandler dataEngineCommonHandler, AssetHandler<DataFile> fileHandler,
                                      DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler,
-                                     DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler) {
+                                     DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler,
+                                     DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
         this.fileHandler = fileHandler;
         this.dataEngineSchemaTypeHandler = dataEngineSchemaTypeHandler;
         this.dataEngineFolderHierarchyHandler = dataEngineFolderHierarchyHandler;
+        this.dataEngineConnectionAndEndpointHandler = dataEngineConnectionAndEndpointHandler;
     }
 
     /**
      * Constructs a DataFile or CSVFile, its specific TabularSchemaType and its TabularColumns. It also calls for the creation
-     * of its folder structure
+     * of its folder structure, the Connection and Endpoint
      *
      * @param fileTypeName file type name
      * @param fileTypeGuid file type guid
@@ -70,7 +73,7 @@ public class DataEngineDataFileHandler {
      * @param externalSourceGuid external source guid
      * @param externalSourceName external source name
      * @param userId user id
-     * @param methodName mathod name
+     * @param methodName method name
      *
      * @return guid of data file
      *
@@ -100,6 +103,11 @@ public class DataEngineDataFileHandler {
                 fileTypeName, externalSourceName, null);
         dataEngineFolderHierarchyHandler.upsertFolderHierarchy(fileGuid, file.getPathName(), externalSourceGuid, externalSourceName,
                 userId, methodName);
+
+        if(file.getProtocol() != null && file.getNetworkAddress() != null) {
+            dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(file.getQualifiedName(), fileTypeName, file.getProtocol(),
+                    file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId, methodName);
+        }
 
         return fileGuid;
     }

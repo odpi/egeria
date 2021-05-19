@@ -87,7 +87,7 @@ public class EffectiveDatesFVT
 
         Term gotTerm5 = termFVT.getTermByGUID(term5.getSystemAttributes().getGUID());
         FVTUtils.validateNode(gotTerm5);
-        checkTermGlossaryEffectivity(futureGloss, term5);
+        checkTermGlossaryEffectivity(futureGloss, gotTerm5);
 
         // update the term so that its effective dates not longer are compatible with the glossary
         Term futureTerm = termFVT.updateTermToFuture(gotTerm5.getSystemAttributes().getGUID(), term5);
@@ -102,13 +102,41 @@ public class EffectiveDatesFVT
             // error always expect a glossary
             throw new SubjectAreaFVTCheckedException("ERROR: Term expected no associated future Glossary");
         }
-        if (glossary.getEffectiveFromTime().getTime() != term.getGlossary().getFromEffectivityTime().getTime()) {
+        Long glossaryFrom =glossary.getEffectiveFromTime();
+        Long termGlossaryFrom =term.getGlossary().getFromEffectivityTime();
+        Long glossaryTo =glossary.getEffectiveToTime();
+        Long termGlossaryTo =term.getGlossary().getToEffectivityTime();
+
+        if (glossaryFrom == null && termGlossaryFrom != null) {
             // error
-            throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary from Time does not match the glossaries");
+            throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary fromTime not null but glossaries is null");
         }
-        if (glossary.getEffectiveToTime().getTime() != term.getGlossary().getToEffectivityTime().getTime()) {
+        if (glossaryFrom != null && termGlossaryFrom == null) {
             // error
-            throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary to Time does not match the glossaries");
+            throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary fromTime  null but glossaries is not null");
+        }
+        if (glossaryTo == null && termGlossaryTo != null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary toTime not null but glossaries is null");
+        }
+        if (glossaryTo != null && termGlossaryTo == null) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary toTime null but glossaries is not null");
+        }
+        if (glossaryFrom != null && termGlossaryFrom != null) {
+            if (glossaryFrom.longValue() != termGlossaryFrom.longValue()) {
+                // error
+                throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary fromTime " + termGlossaryFrom.longValue() + " does not match the glossaries " + glossaryFrom.longValue());
+            }
+
+        }
+
+        if (glossaryTo != null && termGlossaryTo != null) {
+            if (glossaryTo.longValue() != termGlossaryTo.longValue()) {
+                // error
+                throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary toTime " + termGlossaryTo.longValue() + " does not match the glossaries " + glossaryTo.longValue());
+            }
+
         }
     }
 }
