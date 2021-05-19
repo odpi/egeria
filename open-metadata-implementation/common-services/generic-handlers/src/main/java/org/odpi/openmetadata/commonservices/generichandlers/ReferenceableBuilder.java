@@ -396,7 +396,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         if (archiveUser != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                               	                      properties,
+                                                                      properties,
                                                                       OpenMetadataAPIMapper.ARCHIVE_USER_PROPERTY_NAME,
                                                                       archiveUser,
                                                                       methodName);
