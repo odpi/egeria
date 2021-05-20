@@ -17,7 +17,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -110,7 +109,7 @@ class DataEngineDataFileHandlerTest {
                         getExtendedProperties(), METHOD);
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
-                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, EXTERNAL_SOURCE_NAME,null);
+                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, PATH, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
@@ -126,9 +125,8 @@ class DataEngineDataFileHandlerTest {
         mockRepositoryHelper();
         mockDataEngineSchemaTypeHandler();
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
-                OpenMetadataAPIMapper.CSV_FILE_TYPE_GUID, csvFile, schemaType, columns, getExtendedProperties(),
-                EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType, columns,
+                getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, CSV_FILE_TYPE_NAME);
         verify(fileHandler, times(1)).
@@ -137,7 +135,7 @@ class DataEngineDataFileHandlerTest {
                         getExtendedProperties(), METHOD);
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
-                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, EXTERNAL_SOURCE_NAME,null);
+                ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, PATH, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, USER, METHOD);
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
@@ -146,7 +144,7 @@ class DataEngineDataFileHandlerTest {
 
     private void mockDataEngineCommonHandler(boolean update)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        if(update){
+        if (update) {
             EntityDetail entityDetail = new EntityDetail();
             entityDetail.setGUID(GUID_VALUE);
 
@@ -156,7 +154,7 @@ class DataEngineDataFileHandlerTest {
         when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CSV_FILE_TYPE_NAME)).thenReturn(Optional.empty());
     }
 
-    private void mockRepositoryHelper(){
+    private void mockRepositoryHelper() {
         TypeDef entityTypeDef = mock(TypeDef.class);
         when(entityTypeDef.getGUID()).thenReturn(CSV_FILE_TYPE_GUID);
         when(entityTypeDef.getName()).thenReturn(CSV_FILE_TYPE_NAME);
@@ -168,7 +166,7 @@ class DataEngineDataFileHandlerTest {
         when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getTabularSchema(), EXTERNAL_SOURCE_NAME)).thenReturn(SCHEMA_TYPE_GUID);
     }
 
-    private CSVFile getCsvFile(){
+    private CSVFile getCsvFile() {
         CSVFile csvFile = new CSVFile();
         csvFile.setQualifiedName(QUALIFIED_NAME);
         csvFile.setDisplayName(NAME);
@@ -184,7 +182,7 @@ class DataEngineDataFileHandlerTest {
         return csvFile;
     }
 
-    private SchemaType getTabularSchema(){
+    private SchemaType getTabularSchema() {
         SchemaType tabularSchema = new SchemaType();
         tabularSchema.setQualifiedName(QUALIFIED_NAME);
         tabularSchema.setDisplayName(NAME);
@@ -196,7 +194,7 @@ class DataEngineDataFileHandlerTest {
         return tabularSchema;
     }
 
-    private List<Attribute> getTabularColumns(){
+    private List<Attribute> getTabularColumns() {
         List<Attribute> tabularColumns = new ArrayList<>();
 
         Attribute tabularColumn = new Attribute();
@@ -212,7 +210,7 @@ class DataEngineDataFileHandlerTest {
         return tabularColumns;
     }
 
-    private Map<String, Object> getExtendedProperties(){
+    private Map<String, Object> getExtendedProperties() {
         Map<String, Object> extendedProperties = new HashMap<>();
         extendedProperties.put(FILE_TYPE, FILE_TYPE);
         extendedProperties.put(DELIMITER_CHARACTER_PROPERTY_NAME, ",");
