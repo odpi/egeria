@@ -57,7 +57,6 @@ stages:
               options: >-
                   --batch-mode
                   -e
-                  -s .m2/settings.xml
                   -Ddocker
                   -Ddocker.taglatest
                   -Ddocker.repo=odpi
