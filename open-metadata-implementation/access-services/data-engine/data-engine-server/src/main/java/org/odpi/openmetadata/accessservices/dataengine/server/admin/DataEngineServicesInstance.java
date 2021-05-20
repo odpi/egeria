@@ -69,6 +69,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEngineRelationalDataHandler dataEngineRelationalDataHandler;
     private final Connection inTopicConnection;
     private final DataEngineDataFileHandler dataEngineDataFileHandler;
+    private final DataEngineCommonHandler dataEngineCommonHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -150,7 +151,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper);
 
-        final DataEngineCommonHandler dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
+        dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
                     repositoryHandler, repositoryHelper, dataEngineRegistrationHandler);
 
         final ReferenceableHandler<org.odpi.openmetadata.accessservices.dataengine.model.Connection> connectionHandler =
@@ -257,5 +258,12 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      */
     public DataEngineDataFileHandler getDataEngineDataFileHandler() {
         return dataEngineDataFileHandler;
+    }
+
+    /**
+     * Returns the common handler
+     */
+    public DataEngineCommonHandler getDataEngineCommonHandler() {
+        return dataEngineCommonHandler;
     }
 }

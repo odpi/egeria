@@ -15,7 +15,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-
+    implementation project(':open-metadata-implementation:common-services:generic-handlers')
 }
 
 description = 'Data Engine OMAS with Spring'
