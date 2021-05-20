@@ -1185,7 +1185,7 @@ public class AnalyticsArtifactHandler {
 	 * @param serverCapability source of artifact.
 	 * @param identifier of the artifact.
 	 * @return list of affected GUIDs.
-	 * @throws AnalyticsModelingCheckedException
+	 * @throws AnalyticsModelingCheckedException in case of error.
 	 */
 	public ResponseContainerAssets deleteAssets(String userId, String serverCapability, String identifier) 
 			throws AnalyticsModelingCheckedException 
