@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -22,7 +23,9 @@ public class SoftwareServerCapability implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String qualifiedName;
-    private String displayName;
+    @JsonProperty("displayName")
+    private String name;
+
     private String description;
     private String engineType;
     private String engineVersion;
@@ -34,17 +37,17 @@ public class SoftwareServerCapability implements Serializable {
      *
      * @return the display name
      */
-    public String getDisplayName() {
-        return displayName;
+    public String getName() {
+        return name;
     }
 
     /**
      * Sets display name.
      *
-     * @param displayName the display name
+     * @param name the display name
      */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -159,7 +162,7 @@ public class SoftwareServerCapability implements Serializable {
     public String toString() {
         return "DataEngineRegistrationRequestBody{" +
                 ", qualifiedName='" + qualifiedName + '\'' +
-                ", displayName='" + displayName + '\'' +
+                ", displayName='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", engineType='" + engineType + '\'' +
                 ", engineVersion='" + engineVersion + '\'' +
@@ -174,7 +177,7 @@ public class SoftwareServerCapability implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         SoftwareServerCapability that = (SoftwareServerCapability) o;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(engineType, that.engineType) &&
                 Objects.equals(engineVersion, that.engineVersion) &&
@@ -184,7 +187,7 @@ public class SoftwareServerCapability implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, displayName, description, engineType, engineVersion, patchLevel, source);
+        return Objects.hash(qualifiedName, name, description, engineType, engineVersion, patchLevel, source);
     }
 
 }

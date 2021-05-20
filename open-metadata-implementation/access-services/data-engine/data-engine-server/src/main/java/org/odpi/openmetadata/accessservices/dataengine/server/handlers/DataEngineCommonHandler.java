@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.RelationshipDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public class DataEngineCommonHandler {
                                                                             PropertyServerException {
         final String methodName = "createExternalEntity";
 
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
 
@@ -108,7 +109,7 @@ public class DataEngineCommonHandler {
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
 
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         repositoryHandler.updateEntity(userId, externalSourceGUID, externalSourceName, entityGUID, entityTypeDef.getGUID(),
                 entityTypeName, instanceProperties, null, methodName);
@@ -213,7 +214,7 @@ public class DataEngineCommonHandler {
         invalidParameterHandler.validateGUID(firstGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateGUID(secondGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         Optional<Relationship> relationship = findRelationship(userId, firstGUID, secondGUID, firstEntityTypeName, relationshipTypeName);
         if (!relationship.isPresent()) {
@@ -275,15 +276,16 @@ public class DataEngineCommonHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    protected void removeEntity(String userId, String entityGUID, String entityTypeName, String externalSourceName)
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    protected void removeEntity(String userId, String entityGUID, String entityTypeName, String externalSourceName) throws InvalidParameterException,
+                                                                                                                           PropertyServerException,
+                                                                                                                           UserNotAuthorizedException {
         final String methodName = "removeEntity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
         repositoryHandler.removeEntity(userId, externalSourceGUID, externalSourceName, entityGUID,
                 "entityGUID", entityTypeDef.getGUID(), entityTypeDef.getName(),
                 null, null, methodName);
@@ -324,5 +326,10 @@ public class DataEngineCommonHandler {
                                                                                                                       InvalidParameterException {
 
         throw new InvalidParameterException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName, "qualifiedName");
+    }
+
+    public void throwEntityNotDeletedException(DataEngineErrorCode errorCode, String methodName, String... params) throws EntityNotDeletedException {
+
+        throw new EntityNotDeletedException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName);
     }
 }
