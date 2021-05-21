@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.CollectionBuilder;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CollectionMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -36,6 +35,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TO_COLLECTION_TYPE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -72,12 +75,11 @@ class DataEngineCollectionHandlerTest {
         Collection collection = getCollection();
         CollectionBuilder mockedBuilder = Mockito.mock(CollectionBuilder.class);
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        when(assetHandler.createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                CollectionMapper.COLLECTION_TYPE_GUID, CollectionMapper.COLLECTION_TYPE_NAME, QUALIFIED_NAME,
-                CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName)).thenReturn(GUID);
+        when(assetHandler.createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, COLLECTION_TYPE_GUID,
+                COLLECTION_TYPE_NAME, QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName)).thenReturn(GUID);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
@@ -85,28 +87,25 @@ class DataEngineCollectionHandlerTest {
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
-                CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, methodName);
     }
 
     @Test
     void createProcessUserNotAuthorizedExceptionTest() throws UserNotAuthorizedException, PropertyServerException,
-            NoSuchMethodException,
-            InstantiationException,
-            IllegalAccessException, InvalidParameterException, InvocationTargetException {
+                                                              NoSuchMethodException,
+                                                              InstantiationException,
+                                                              IllegalAccessException, InvalidParameterException, InvocationTargetException {
         String methodName = "createCollection";
 
         Collection collection = getCollection();
         CollectionBuilder mockedBuilder = Mockito.mock(CollectionBuilder.class);
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(assetHandler).createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                CollectionMapper.COLLECTION_TYPE_GUID, CollectionMapper.COLLECTION_TYPE_NAME, QUALIFIED_NAME,
-                CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName);
+        doThrow(mockedException).when(assetHandler).createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, methodName);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
@@ -121,8 +120,7 @@ class DataEngineCollectionHandlerTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(GUID);
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CollectionMapper.COLLECTION_TYPE_NAME))
-                .thenReturn(optionalOfMockedEntity);
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, COLLECTION_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
 
         Optional<EntityDetail> result = dataEngineCollectionHandler.findCollectionEntity(USER, QUALIFIED_NAME);
 
@@ -132,9 +130,9 @@ class DataEngineCollectionHandlerTest {
 
     @Test
     void findProcessNotExistingTest() throws UserNotAuthorizedException, PropertyServerException,
-            InvalidParameterException {
+                                             InvalidParameterException {
 
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, CollectionMapper.COLLECTION_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, COLLECTION_TYPE_NAME)).thenReturn(Optional.empty());
 
         Optional<EntityDetail> result = dataEngineCollectionHandler.findCollectionEntity(USER, QUALIFIED_NAME);
 
@@ -143,11 +141,11 @@ class DataEngineCollectionHandlerTest {
 
     @Test
     void addProcessCollectionRelationshipTest() throws UserNotAuthorizedException, PropertyServerException,
-            InvalidParameterException {
+                                                       InvalidParameterException {
         dataEngineCollectionHandler.addCollectionMembershipRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, PROCESS_GUID, GUID,
-                CollectionMapper.COLLECTION_MEMBERSHIP_NAME, CollectionMapper.COLLECTION_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                REFERENCEABLE_TO_COLLECTION_TYPE_NAME, COLLECTION_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
 

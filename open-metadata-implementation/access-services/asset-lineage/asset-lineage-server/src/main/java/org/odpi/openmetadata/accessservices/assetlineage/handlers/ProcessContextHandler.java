@@ -87,9 +87,8 @@ public class ProcessContextHandler {
 
         List<Relationship> processPorts = handlerHelper.getRelationshipsByType(userId, processGUID, PROCESS_PORT, PROCESS);
         if (CollectionUtils.isEmpty(processPorts)) {
-            log.error("No relationships Process Port has been found for the entity with guid {}", processGUID);
-
-            throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(), this.getClass().getName(), "Retrieving Relationship");
+            log.warn("No relationships Process Port has been found for the Process with guid {}", processGUID);
+            return ArrayListMultimap.create();
         }
 
         RelationshipsContext relationshipsContext = handlerHelper.buildContextForRelationships(userId, processGUID, processPorts);
@@ -169,8 +168,7 @@ public class ProcessContextHandler {
                     relationshipsContext);
 
             if (tabularColumn == null) {
-                log.error("No entity TabularColumn has been found for the PortImplementation with guid {}", port.getGUID());
-                throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(), this.getClass().getName(), "Retrieving Relationship");
+                log.warn("No entity TabularColumn has been found for the PortImplementation with guid {}", port.getGUID());
             }
         }
     }

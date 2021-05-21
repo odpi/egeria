@@ -109,7 +109,7 @@ public class ProcessSetupService {
     public SoftwareServerCapability createExternalDataEngine(String userId, DataEngineClient dataEngineOMASClient)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException {
         SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
-        softwareServerCapability.setDisplayName(DATA_ENGINE_DISPLAY_NAME);
+        softwareServerCapability.setName(DATA_ENGINE_DISPLAY_NAME);
         softwareServerCapability.setQualifiedName(DATA_ENGINE_NAME);
         softwareServerCapability.setDescription(DATA_ENGINE_DESCRIPTION);
         softwareServerCapability.setEngineType(DATA_ENGINE_TYPE);

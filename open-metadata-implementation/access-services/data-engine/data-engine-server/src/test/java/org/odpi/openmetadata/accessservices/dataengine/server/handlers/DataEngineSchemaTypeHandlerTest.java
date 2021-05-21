@@ -13,10 +13,9 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder;
@@ -33,6 +32,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -51,6 +51,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler.SCHEMA_TYPE_GUID_PARAMETER_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -104,7 +116,7 @@ class DataEngineSchemaTypeHandlerTest {
 
     @BeforeEach
     void setup() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
     }
 
     @Test
@@ -112,7 +124,7 @@ class DataEngineSchemaTypeHandlerTest {
                                                       TypeErrorException {
         String methodName = "upsertSchemaType";
 
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SchemaTypePropertiesMapper.SCHEMA_TYPE_TYPE_NAME))
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SCHEMA_TYPE_TYPE_NAME))
                 .thenReturn(Optional.empty());
 
         SchemaType schemaType = getSchemaType();
@@ -123,38 +135,35 @@ class DataEngineSchemaTypeHandlerTest {
 
         SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributePropertiesBuilder(attribute);
         doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
-        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME))
-                .thenReturn(Optional.empty());
-        mockTypeDef(SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
+        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
+        mockTypeDef(TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
 
 
         final String schemaTypeGUIDParameterName = "schemaTypeGUID";
         final String qualifiedNameParameterName = "schemaAttribute.getQualifiedName()";
         when(schemaAttributeHandler.createNestedSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                GUID, schemaTypeGUIDParameterName, OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
-                OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                attribute.getQualifiedName(), qualifiedNameParameterName, schemaAttributeBuilder, "createSchemaAttribute"))
+                GUID, schemaTypeGUIDParameterName, TABULAR_SCHEMA_TYPE_TYPE_NAME, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, attribute.getQualifiedName(), qualifiedNameParameterName, schemaAttributeBuilder,
+                "createSchemaAttribute"))
                 .thenReturn(ATTRIBUTE_GUID);
 
         Classification classification = new Classification();
         classification.setName("classificationName");
         when(repositoryHelper.getNewClassification("serviceName", null, null,
-                InstanceProvenanceType.LOCAL_COHORT, USER, OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME, ClassificationOrigin.ASSIGNED, null,
-                schemaTypeBuilder.getTypeEmbeddedInstanceProperties(OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME)))
+                InstanceProvenanceType.LOCAL_COHORT, USER, TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME, TABULAR_COLUMN_TYPE_NAME,
+                ClassificationOrigin.ASSIGNED, null,
+                schemaTypeBuilder.getTypeEmbeddedInstanceProperties(TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME)))
                 .thenReturn(classification);
 
         String result = dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1))
-                .validateName(QUALIFIED_NAME, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        verify(invalidParameterHandler, times(1))
-                .validateName(NAME, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(NAME, DISPLAY_NAME_PROPERTY_NAME, methodName);
         verify(schemaAttributeHandler, times(1)).createNestedSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                GUID, schemaTypeGUIDParameterName, OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
-                OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                GUID, schemaTypeGUIDParameterName, TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                 attribute.getQualifiedName(), qualifiedNameParameterName, schemaAttributeBuilder, "createSchemaAttribute");
     }
 
@@ -163,14 +172,14 @@ class DataEngineSchemaTypeHandlerTest {
                                                       TypeErrorException {
         String methodName = "upsertSchemaType";
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         SchemaType schemaType = getSchemaType();
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
         doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
 
-        EntityDetail schemaTypeEntity = mockFindEntity(QUALIFIED_NAME, GUID, SchemaTypePropertiesMapper.SCHEMA_TYPE_TYPE_NAME);
+        EntityDetail schemaTypeEntity = mockFindEntity(QUALIFIED_NAME, GUID, SCHEMA_TYPE_TYPE_NAME);
 
         EntityDetail schemaTypeUpdatedEntity = mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(GUID, null)).thenReturn(schemaTypeUpdatedEntity);
@@ -181,28 +190,27 @@ class DataEngineSchemaTypeHandlerTest {
 
         SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributePropertiesBuilder(attribute);
         doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
-        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME))
+        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME))
                 .thenReturn(Optional.empty());
-        mockTypeDef(SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME, SchemaTypePropertiesMapper.TYPE_EMBEDDED_ATTRIBUTE_NAME);
+        mockTypeDef(TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
 
         final String schemaTypeGUIDParameterName = "schemaTypeGUID";
         final String qualifiedNameParameterName = "schemaAttribute.getQualifiedName()";
         when(schemaAttributeHandler.createNestedSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                GUID, schemaTypeGUIDParameterName, OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
-                OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                GUID, schemaTypeGUIDParameterName, TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                 attribute.getQualifiedName(), qualifiedNameParameterName, schemaAttributeBuilder, "createSchemaAttribute"))
                 .thenReturn(ATTRIBUTE_GUID);
 
         Classification classification = new Classification();
         classification.setName("classificationName");
         when(repositoryHelper.getNewClassification("serviceName", null, null,
-                InstanceProvenanceType.LOCAL_COHORT, USER, OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME, ClassificationOrigin.ASSIGNED, null,
-                schemaTypeBuilder.getTypeEmbeddedInstanceProperties(OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME)))
+                InstanceProvenanceType.LOCAL_COHORT, USER, TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                TABULAR_COLUMN_TYPE_NAME, ClassificationOrigin.ASSIGNED, null,
+                schemaTypeBuilder.getTypeEmbeddedInstanceProperties(TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME)))
                 .thenReturn(classification);
 
-        EntityDetail schemaAttributeEntity = mockFindEntity(ATTRIBUTE_QUALIFIED_NAME, ATTRIBUTE_GUID,
-                SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+        EntityDetail schemaAttributeEntity = mockFindEntity(ATTRIBUTE_QUALIFIED_NAME, ATTRIBUTE_GUID, SCHEMA_ATTRIBUTE_TYPE_NAME);
 
         EntityDetail schemaAttributeUpdatedEntity = mock(EntityDetail.class);
         when(dataEngineCommonHandler.buildEntityDetail(ATTRIBUTE_GUID, null)).thenReturn(schemaAttributeUpdatedEntity);
@@ -210,7 +218,7 @@ class DataEngineSchemaTypeHandlerTest {
         when((attributeDifferences.hasInstancePropertiesDifferences())).thenReturn(Boolean.TRUE);
         when(repositoryHelper.getEntityDetailDifferences(schemaAttributeEntity, schemaAttributeUpdatedEntity, true))
                 .thenReturn(attributeDifferences);
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
@@ -220,9 +228,9 @@ class DataEngineSchemaTypeHandlerTest {
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
-                SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+                QUALIFIED_NAME_PROPERTY_NAME, methodName);
         verify(invalidParameterHandler, times(1)).validateName(NAME,
-                SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+                DISPLAY_NAME_PROPERTY_NAME, methodName);
         verify(schemaTypeHandler, times(1)).updateSchemaType(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, schemaTypeBuilder);
         verify(schemaAttributeHandler, times(1)).updateSchemaAttribute(USER,
@@ -243,11 +251,10 @@ class DataEngineSchemaTypeHandlerTest {
         SchemaType schemaType = getSchemaType();
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER,
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SchemaTypePropertiesMapper.SCHEMA_TYPE_TYPE_NAME))
-                .thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.empty());
 
         doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
 
@@ -263,15 +270,14 @@ class DataEngineSchemaTypeHandlerTest {
     @Test
     void addLineageMappingRelationship() throws UserNotAuthorizedException, PropertyServerException,
                                                 InvalidParameterException {
-        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
-        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SCHEMA_ATTRIBUTE_TYPE_NAME);
+        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SCHEMA_ATTRIBUTE_TYPE_NAME);
 
         dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                LINEAGE_MAPPING_TYPE_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
     @Test
@@ -284,12 +290,12 @@ class DataEngineSchemaTypeHandlerTest {
                                                                                  InvalidParameterException {
         final String methodName = "addLineageMappingRelationship";
 
-        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
-        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+        mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SCHEMA_ATTRIBUTE_TYPE_NAME);
+        mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, SCHEMA_ATTRIBUTE_TYPE_NAME);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(dataEngineCommonHandler).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                LINEAGE_MAPPING_TYPE_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
@@ -303,7 +309,7 @@ class DataEngineSchemaTypeHandlerTest {
     void addLineageMappingRelationship_throwsInvalidParameterException() throws UserNotAuthorizedException,
                                                                                 PropertyServerException,
                                                                                 InvalidParameterException {
-        when(dataEngineCommonHandler.findEntity(USER, TARGET_QUALIFIED_NAME, SchemaTypePropertiesMapper.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, TARGET_QUALIFIED_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
 
         dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
@@ -313,29 +319,37 @@ class DataEngineSchemaTypeHandlerTest {
     }
 
     @Test
-    void removeSchemaType() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    void removeSchemaType() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, FunctionNotSupportedException {
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, SCHEMA_TYPE_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
 
         //mock getSchemaAttributesForSchemaType
-        mockTypeDef(SchemaTypePropertiesMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
+        mockTypeDef(TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(ATTRIBUTE_GUID);
         List<EntityDetail> entityDetails = Collections.singletonList(entityDetail);
-        when(repositoryHandler.getEntitiesForRelationshipType(USER, GUID, SchemaTypePropertiesMapper.SCHEMA_TYPE_TYPE_NAME,
-                OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                SchemaTypePropertiesMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0,
+        when(repositoryHandler.getEntitiesForRelationshipType(USER, GUID, SCHEMA_TYPE_TYPE_NAME,
+                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0,
                 "getSchemaAttributesForSchemaType")).thenReturn(entityDetails);
 
-        dataEngineSchemaTypeHandler.removeSchemaType(USER, QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD);
 
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID,
-                SchemaTypePropertiesMapper.TABULAR_COLUMN_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                TABULAR_COLUMN_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID,
-                SchemaTypePropertiesMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                TABULAR_SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+    }
+
+    @Test
+    void removeSchemaType_throwsFunctionNotSupportedException() {
+        FunctionNotSupportedException thrown = assertThrows(FunctionNotSupportedException.class, () ->
+                dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT));
+
+        assertTrue(thrown.getMessage().contains("OMRS-METADATA-COLLECTION-501-001"));
     }
 
     private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
@@ -388,8 +402,7 @@ class DataEngineSchemaTypeHandlerTest {
                 attribute.getDisplayName(), null, attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(),
                 false, attribute.getDefaultValueOverride(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
                 0, 0, 0, 0, false, null, null, null,
-                OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID, OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME,
-                null, repositoryHelper, "serviceName", "serverName");
+                TABULAR_COLUMN_TYPE_GUID, TABULAR_COLUMN_TYPE_NAME, null, repositoryHelper, "serviceName", "serverName");
         Classification classification = new Classification();
         classification.setName("classification");
         schemaAttributeBuilder.setClassification(classification);
@@ -400,7 +413,6 @@ class DataEngineSchemaTypeHandlerTest {
         return new SchemaTypeBuilder(schemaType.getQualifiedName(), schemaType.getDisplayName(), null,
                 schemaType.getVersionNumber(), false, schemaType.getAuthor(), schemaType.getUsage(),
                 schemaType.getEncodingStandard(), null, null,
-                SchemaTypePropertiesMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID, SchemaTypePropertiesMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
-                null, repositoryHelper, "serviceName", "serverName");
+                TABULAR_SCHEMA_TYPE_TYPE_GUID, TABULAR_SCHEMA_TYPE_TYPE_NAME, null, repositoryHelper, "serviceName", "serverName");
     }
 }

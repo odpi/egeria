@@ -20,7 +20,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -73,6 +75,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             this.serverName = instance.getServerName();
 
             Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+            Map<String, Object> accessServiceOptions = accessServiceConfigurationProperties.getAccessServiceOptions();
             if (outTopicConnection != null) {
                 OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection,
                         accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
@@ -81,7 +84,8 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                         repositoryConnector.getRepositoryHelper(), outTopicConnector, serverName,
                         serverUserName,
                         lineageClassificationTypes,
-                        auditLog);
+                        auditLog,
+                        accessServiceOptions);
 
                 super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(),
                         serverName,
@@ -116,7 +120,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                     .getAccessServiceOptions()
                     .get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
             if (lineageClassificationTypesProperty != null) {
-                return (Set<String>) lineageClassificationTypesProperty;
+                return new HashSet<>((List<String>)lineageClassificationTypesProperty);
             }
         }
 

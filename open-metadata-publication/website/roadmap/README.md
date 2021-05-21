@@ -61,31 +61,37 @@ following third party connectors:
 * [IBM Information Governance Catalog (IGC)](https://github.com/odpi/egeria-connector-ibm-information-server)
 * [Apache Atlas](https://github.com/odpi/egeria-connector-hadoop-ecosystem)
 
-Through 2020, our focus has shifted to the integration platform as we add
+Through 2020, our focus shifted to the integration platform as we added
 [connector implementations](../developer-guide/what-is-a-connector.md) for popular third party
-technologies and standards and build out the integration user interface (UI) that will
-enable an organization to:
-* configure OMAG Servers on OMAG Server Platforms.
+technologies and standards (see [connector catalog](../connector-catalog))
+and built out the [ecosystem user interface (UI)](https://github.com/odpi/egeria-react-ui) that
+enables an organization to:
+* configure OMAG Servers on OMAG Server Platforms
 * visualize the open metadata types through the type explorer (TEX)
 * visualize open metadata instances in a single repository or
 across the open metadata repository cohorts that a server is connected to.
 * visualize to cohort and query the operational status of the OMAG servers
-and services operating in the open metadata ecosystem.
-* configure OMAG servers and deploy them to OMAG Server Platforms.
+and services operating in the open metadata ecosystem
+* configure OMAG servers and deploy them to OMAG Server Platforms
 
-The integration UI makes calls to specialized REST services supported by a type of OMAG Server
+The ecosystem UI makes calls to specialized REST services supported by a type of OMAG Server
 called the [View Server](../../../open-metadata-implementation/admin-services/docs/concepts/view-server.md).  The view server is new for 2020 and enables the REST APIs
 to the UIs to be deployed in a DMZ and the metadata servers to be behind an
 additional firewall.  It also takes much of the load for supporting
 end users off of the metadata servers.
   
-In 2020 there is also support for a new type of OMAG Server called the
+In 2020 there was also support for a new type of OMAG Server called the
 [Integration Daemon](../../../open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md).
 This server supports integration services
 that can host integration connectors
 dedicated to exchanging metadata with specific third party technologies.
 
-The support for the governance solutions naturally
+2021 has a focus on governing metadata.  There is a new OMAG Server called
+the [Engine Host](../../../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
+that runs metadata discovery engines and governance engines.
+These are supported by new [Access Services](../../../open-metadata-implementation/access-services) for governance.
+
+Support for the governance solutions naturally
 follows along, building on the two lower levels.
 The governance solutions themselves complement specific metadata and governance
 solutions available in the market today.  Egeria is focused on filling in the gaps to
@@ -93,14 +99,13 @@ support individuals that are setting up and running an open metadata ecosystem a
 take advantage of the enterprise perspective it beings.
 
 The first solution is **Historical Lineage Exploration**.
-This is approaching its first tech preview release around third quarter 2020.
+This was made available as a tech preview in late 2020.
 This provides a user interface for finding assets and viewing their lineage
 along with a dedicated governance server called the
 [Open Lineage Server](../../../open-metadata-implementation/admin-services/docs/concepts/open-lineage-server.md).
  
 Next will be the Subject Area Management solution closely followed by the others
-in 2021.
-
+in 2021 and beyond.
 
 ----
 Return to [Home Page](../../../index.md)
