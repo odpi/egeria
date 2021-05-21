@@ -23,6 +23,19 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
 	}
 	
     /**
+     * Helper function for specific template class.
+     * 
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public AnalyticsMetadata getNewBean(EntityDetail entity, String methodName) throws PropertyServerException
+    {
+    	return getNewBean(SchemaAttribute.class, entity, methodName);
+    }
+
+    /**
      * Using the supplied entity, return a new instance of the bean. This is used for beans that have
      * contain a combination of the properties from an entity.
      *

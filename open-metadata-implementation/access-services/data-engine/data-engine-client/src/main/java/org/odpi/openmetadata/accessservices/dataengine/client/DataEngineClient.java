@@ -37,6 +37,23 @@ public interface DataEngineClient {
                                                                                         ConnectorCheckedException;
 
     /**
+     * Delete a list of processes
+     *
+     * @param userId         the name of the calling user
+     * @param qualifiedNames the qualified names of the processes to be deleted
+     * @param guids          the unique identifiers of the processes to be deleted
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteProcesses(String userId, List<String> qualifiedNames, List<String> guids) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                ConnectorCheckedException;
+
+    /**
      * Create or update the software server capability entity
      *
      * @param userId                   the name of the calling user
@@ -55,6 +72,23 @@ public interface DataEngineClient {
                                                                                                              ConnectorCheckedException;
 
     /**
+     * Delete the external data engine
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the external data engine
+     * @param guid          the unique identifier of the external data engine
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteExternalDataEngine(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException,
+                                                                                           ConnectorCheckedException;
+
+    /**
      * Create or update the schema type entity, with the corresponding schema attributes and relationships
      *
      * @param userId     the name of the calling user
@@ -71,6 +105,23 @@ public interface DataEngineClient {
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException,
                                                                                  ConnectorCheckedException;
+
+    /**
+     * Delete the schema type
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of schema type
+     * @param guid          the unique identifier of the external data engine
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteSchemaType(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   ConnectorCheckedException;
 
     /**
      * Create or update the port implementation entity,with the corresponding schema type and port schema relationship. It attaches the port
@@ -92,6 +143,24 @@ public interface DataEngineClient {
                                                                                                                                UserNotAuthorizedException,
                                                                                                                                PropertyServerException,
                                                                                                                                ConnectorCheckedException;
+
+    /**
+     * Delete the port implementation
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of port
+     * @param guid          the unique identifier of the external data engine
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deletePortImplementation(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           ConnectorCheckedException;
+
     /**
      * Create or update the port alias entity with a PortDelegation relationship. It attaches the port alias to the provided process
      *
@@ -110,6 +179,23 @@ public interface DataEngineClient {
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException,
                                                                                                            ConnectorCheckedException;
+
+    /**
+     * Delete the port alias
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of port
+     * @param guid          the unique identifier of the external data engine
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  ConnectorCheckedException;
 
     /**
      * Add a ProcessHierarchy relationship to a process
@@ -144,6 +230,7 @@ public interface DataEngineClient {
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException,
                                                                                         ConnectorCheckedException;
+
     /**
      * Sets external source system name using the data engine client
      *

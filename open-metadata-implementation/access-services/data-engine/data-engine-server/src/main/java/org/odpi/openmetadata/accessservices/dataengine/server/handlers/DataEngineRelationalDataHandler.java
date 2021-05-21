@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -24,6 +23,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
 
 /**
  * DataEngineRelationalDataHandler manages Databases and RelationalTables objects from the property server.  It runs server-side in the DataEngine
@@ -38,6 +45,7 @@ public class DataEngineRelationalDataHandler {
     private final RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType> relationalDataHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
+    private final DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -53,9 +61,9 @@ public class DataEngineRelationalDataHandler {
      **/
     public DataEngineRelationalDataHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                            RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                                           RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn,
-                                                   SchemaType> relationalDataHandler,
-                                           DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
+                                           RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType> relationalDataHandler,
+                                           DataEngineRegistrationHandler registrationHandler, DataEngineCommonHandler dataEngineCommonHandler,
+                                           DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler) {
 
         this.serviceName = serviceName;
         this.serverName = serverName;
@@ -65,6 +73,7 @@ public class DataEngineRelationalDataHandler {
         this.relationalDataHandler = relationalDataHandler;
         this.registrationHandler = registrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
+        this.dataEngineConnectionAndEndpointHandler = dataEngineConnectionAndEndpointHandler;
     }
 
     /**
@@ -86,7 +95,7 @@ public class DataEngineRelationalDataHandler {
         final String methodName = "upsertDatabase";
         validateParameters(userId, methodName, database.getQualifiedName(), database.getDisplayName());
 
-        String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         Optional<EntityDetail> originalDatabaseEntity = findDatabaseEntity(userId, database.getQualifiedName());
 
         int ownerTypeOrdinal = dataEngineCommonHandler.getOwnerTypeOrdinal(database.getOwnerType());
@@ -98,7 +107,7 @@ public class DataEngineRelationalDataHandler {
                     database.getPathName(), database.getCreateTime(), database.getModifiedTime(), database.getEncodingType(),
                     database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(), database.getDatabaseType(),
                     database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
-                    database.getAdditionalProperties(), OpenMetadataAPIMapper.DATABASE_TYPE_NAME, null,
+                    database.getAdditionalProperties(), DATABASE_TYPE_NAME, null,
                     null, methodName);
         } else {
             databaseGUID = originalDatabaseEntity.get().getGUID();
@@ -108,7 +117,7 @@ public class DataEngineRelationalDataHandler {
                     database.getCreateTime(), database.getModifiedTime(), database.getEncodingType(), database.getEncodingLanguage(),
                     database.getEncodingDescription(), database.getEncodingProperties(), database.getDatabaseType(), database.getDatabaseVersion(),
                     database.getDatabaseInstance(), database.getDatabaseImportedFrom(), database.getAdditionalProperties(),
-                    OpenMetadataAPIMapper.DATABASE_TYPE_NAME, null, null, methodName);
+                    DATABASE_TYPE_NAME, null, null, methodName);
         }
 
         DatabaseSchema databaseSchema = database.getDatabaseSchema();
@@ -117,6 +126,12 @@ public class DataEngineRelationalDataHandler {
         }
         addAssetProperties(databaseSchema, database.getOwner(), database.getOwnerType(), database.getZoneMembership());
         upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
+
+        if(database.getProtocol() != null && database.getNetworkAddress() != null) {
+            this.dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),
+                    DATABASE_TYPE_NAME, database.getProtocol(), database.getNetworkAddress(),
+                    externalSourceGUID, externalSourceName, userId, methodName);
+        }
 
         return databaseGUID;
     }
@@ -136,7 +151,7 @@ public class DataEngineRelationalDataHandler {
     private Optional<EntityDetail> findDatabaseEntity(String userId, String qualifiedName) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataAPIMapper.DATABASE_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, DATABASE_TYPE_NAME);
     }
 
     /**
@@ -157,11 +172,11 @@ public class DataEngineRelationalDataHandler {
                                                                                                                                     UserNotAuthorizedException {
         final String methodName = "upsertDatabaseSchema";
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(databaseSchema.getQualifiedName(), OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(databaseSchema.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         Optional<EntityDetail> originalDatabaseSchemaEntity = dataEngineCommonHandler.findEntity(userId, databaseSchema.getQualifiedName(),
-                OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
+                DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
 
         int ownerTypeOrdinal = dataEngineCommonHandler.getOwnerTypeOrdinal(databaseSchema.getOwnerType());
         if (!originalDatabaseSchemaEntity.isPresent()) {
@@ -169,16 +184,14 @@ public class DataEngineRelationalDataHandler {
                     databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(), databaseSchema.getOwner(),
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
-                    databaseSchema.getAdditionalProperties(), OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                    null, null, methodName);
+                    databaseSchema.getAdditionalProperties(),DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null, null, methodName);
         } else {
             String databaseSchemaGUID = originalDatabaseSchemaEntity.get().getGUID();
             relationalDataHandler.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(), databaseSchema.getOwner(),
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
-                    databaseSchema.getAdditionalProperties(), OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                    null, null, methodName);
+                    databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null, null, methodName);
         }
     }
 
@@ -202,9 +215,9 @@ public class DataEngineRelationalDataHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
-        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME);
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, DATA_CONTENT_FOR_DATA_SET_TYPE_NAME);
 
-        EntityDetail entity = repositoryHandler.getEntityForRelationshipType(userId, databaseGUID, OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+        EntityDetail entity = repositoryHandler.getEntityForRelationshipType(userId, databaseGUID, DATABASE_TYPE_NAME,
                 relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName);
 
         if (entity == null) {
@@ -236,10 +249,10 @@ public class DataEngineRelationalDataHandler {
 
         validateParameters(userId, methodName, relationalTable.getQualifiedName(), relationalTable.getDisplayName());
 
-        String externalSourceGUID = registrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         Optional<EntityDetail> originalRelationalTableEntity = dataEngineCommonHandler.findEntity(userId, relationalTable.getQualifiedName(),
-                OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME);
+                RELATIONAL_TABLE_TYPE_NAME);
 
         String relationalTableGUID;
         if (!originalRelationalTableEntity.isPresent()) {
@@ -247,13 +260,13 @@ public class DataEngineRelationalDataHandler {
             relationalTableGUID = relationalDataHandler.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
+                    RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
         } else {
             relationalTableGUID = originalRelationalTableEntity.get().getGUID();
             relationalDataHandler.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.isDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
+                    RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
         }
 
         upsertRelationalColumns(userId, externalSourceGUID, externalSourceName, relationalTableGUID, relationalTable.getColumns());
@@ -287,7 +300,7 @@ public class DataEngineRelationalDataHandler {
             int sortOrder = dataEngineCommonHandler.getSortOrder(column);
 
             Optional<EntityDetail> originalRelationalColumnEntity = dataEngineCommonHandler.findEntity(userId, column.getQualifiedName(),
-                    OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME);
+                    RELATIONAL_COLUMN_TYPE_NAME);
             if (!originalRelationalColumnEntity.isPresent()) {
                 relationalDataHandler.createDatabaseColumn(userId, externalSourceGUID, externalSourceName, relationalTableGUID,
                         column.getQualifiedName(), column.getDisplayName(), column.getDescription(), column.getExternalTypeGUID(),
@@ -295,7 +308,7 @@ public class DataEngineRelationalDataHandler {
                         column.isDeprecated(), column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(),
                         column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder,
                         column.getMinimumLength(), column.getLength(), column.getPrecision(), column.isNullable(), column.getNativeClass(),
-                        column.getAliases(), column.getAdditionalProperties(), OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME, null,
+                        column.getAliases(), column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null,
                         null, methodName);
             } else {
                 relationalDataHandler.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName,
@@ -304,7 +317,7 @@ public class DataEngineRelationalDataHandler {
                         column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                         column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder, column.getMinimumLength(), column.getLength(),
                         column.getPrecision(), column.isNullable(), column.getNativeClass(), column.getAliases(),
-                        column.getAdditionalProperties(), OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME, null,
+                        column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null,
                         null, methodName);
             }
         }
@@ -379,7 +392,7 @@ public class DataEngineRelationalDataHandler {
      */
     private void validateParameters(String userId, String methodName, String qualifiedName, String displayName) throws InvalidParameterException {
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(displayName, OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(displayName, DISPLAY_NAME_PROPERTY_NAME, methodName);
     }
 }

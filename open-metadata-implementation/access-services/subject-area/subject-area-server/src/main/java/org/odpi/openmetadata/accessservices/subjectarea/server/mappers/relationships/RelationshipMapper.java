@@ -11,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -138,8 +139,14 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
      * @param instanceProperties instance properties to update
      */
     private void mapRelationshipEffectivityToInstanceProperties(R relationship, InstanceProperties instanceProperties) {
-        instanceProperties.setEffectiveFromTime(relationship.getEffectiveFromTime());
-        instanceProperties.setEffectiveToTime(relationship.getEffectiveToTime());
+        Long fromTime = relationship.getEffectiveFromTime();
+        Long toTime = relationship.getEffectiveToTime();
+        if (fromTime != null) {
+            instanceProperties.setEffectiveFromTime(new Date(fromTime));
+        }
+        if (toTime != null) {
+            instanceProperties.setEffectiveToTime(new Date(toTime));
+        }
     }
 
     /**

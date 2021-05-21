@@ -1,0 +1,951 @@
+{
+	"info": {
+		"_postman_id": "9f5b347c-0ad4-4ea0-b0ec-b1059ca49be6",
+		"name": "DE endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1.1 Register external tool",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dataEngine\":\n    {\n        \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n        \"displayName\": \"ExternalDataEngine\",\n        \"description\": \"Requesting to register external data engine capability\",\n        \"engineType\": \"DataEngine\",\n        \"engineVersion\": \"1\",\n        \"enginePatchLevel\": \"1\",\n        \"vendor\": \"Companny\",\n        \"version\": \"1\",\n        \"source\": \"source\"\n    }\n}\n"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/registration",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.2 Delete external tool - function not supported",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/registration",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.3 Create CSVFile - names.csv",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv\",\n        \"displayName\": \"names.csv\",\n        \"pathName\": \"/data/files/test/names.csv\",\n        \"additionalProperties\": {\n            \"include_for_business_lineage\": true,\n            \"path\": \"/data/files/test\",\n            \"store_type\": \"Local\"\n        },\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id\",\n                \"displayName\": \"Id\",\n                \"additionalProperties\": {\n                    \"odbc_type\": \"BIGINT\"\n                },\n                \"allowDuplicates\": true,\n                \"deprecated\": false,\n                \"nullable\": false,\n                \"position\": 1,\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First\",\n                \"displayName\": \"First\",\n                \"additionalProperties\": {\n                    \"odbc_type\": \"VARCHAR\"\n                },\n                \"allowDuplicates\": true,\n                \"deprecated\": false,\n                \"nullable\": true,\n                \"position\": 2,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last\",\n                \"displayName\": \"Last\",\n                \"additionalProperties\": {\n                    \"odbc_type\": \"VARCHAR\"\n                },\n                \"allowDuplicates\": true,\n                \"deprecated\": false,\n                \"nullable\": true,\n                \"position\": 3,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location\",\n                \"displayName\": \"Location\",\n                \"additionalProperties\": {\n                    \"odbc_type\": \"VARCHAR\"\n                },\n                \"allowDuplicates\": true,\n                \"deprecated\": false,\n                \"nullable\": false,\n                \"position\": 4,\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"data-files"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.4 Create CSVFile - emplname.csv",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv\",\n        \"displayName\": \"emplname.csv\",\n        \"pathName\": \"/data/files/test/emplname.csv\",\n        \"additionalProperties\": {\n            \"include_for_business_lineage\": true,\n            \"path\": \"/data/files/test\",\n            \"store_type\": \"Local\"\n        },\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=EMPID\",\n                \"displayName\": \"EMPID\",\n                \"additionalProperties\": {\n                    \"odbc_type\": \"BIGINT\"\n                },\n                \"allowDuplicates\": true,\n                \"deprecated\": false,\n                \"nullable\": false,\n                \"position\": 1,\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=FNAME\",\n                \"displayName\": \"FNAME\",\n                \"additionalProperties\": {\n                    \"odbc_type\": \"VARCHAR\"\n                },\n                \"allowDuplicates\": true,\n                \"deprecated\": false,\n                \"nullable\": true,\n                \"position\": 2,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LNAME\",\n                \"displayName\": \"LNAME\",\n                \"additionalProperties\": {\n                    \"odbc_type\": \"VARCHAR\"\n                },\n                \"allowDuplicates\": true,\n                \"deprecated\": false,\n                \"nullable\": true,\n                \"position\": 3,\n                \"minCardinality\": 0,\n                \"maxCardinality\": 1\n            },\n            {\n                \"qualifiedName\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LOCID\",\n                \"displayName\": \"LOCID\",\n                \"additionalProperties\": {\n                    \"odbc_type\": \"VARCHAR\"\n                },\n                \"allowDuplicates\": true,\n                \"deprecated\": false,\n                \"nullable\": false,\n                \"position\": 4,\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-files",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"data-files"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.1. Crerate schema type - virtual asset",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"schema\": {\n        \"qualifiedName\": \"extern:virtual:asset\",\n        \"displayName\": \"EMPLOYEE\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"extern:virtual:asset:schema-attribute-1\",\n                \"displayName\": \"DEPT\",\n                \"elementPosition\": 0\n            },\n            {\n                \"qualifiedName\": \"extern:virtual:asset:schema-attribute-2\",\n                \"displayName\": \"EMPSTATUS\",\n                \"elementPosition\": 0\n            }\n        ]\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/schema-types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"schema-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.2 Delete schema type - virtual asset",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"extern:virtual:asset\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/schema-types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"schema-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.1. Create Process CopyColumns",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"processes\": [\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n            \"displayName\": \"CopyColumns\",\n            \"name\": \"CopyColumns\",\n            \"description\": \"CopyColumns is (sub)process that describes the low level implementation activities performed by a platform or tool.\",\n            \"owner\": \"Platform User\",\n            \"updateSemantic\": \"REPLACE\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.2. Create PortImplementation NamesFileInputPort",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"processQualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n    \"portImplementation\": {\n        \"displayName\": \"NamesFileInputPort\",\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n        \"updateSemantic\": \"REPLACE\",\n        \"type\": \"INPUT_PORT\",\n        \"schema\": {\n            \"displayName\": \"NamesFileInputSchema\",\n            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema\",\n            \"author\": \"Platform User\",\n            \"columns\": [\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n                    \"displayName\": \"Last\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0,\n                    \"dataType\": \"VARCHAR\"\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n                    \"displayName\": \"First\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 1,\n                    \"dataType\": \"VARCHAR\"\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n                    \"displayName\": \"Id\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 2,\n                    \"dataType\": \"INTEGER\"\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n                    \"displayName\": \"Location\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 3,\n                    \"dataType\": \"INTEGER\"\n                }\n            ]\n        }\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-implementations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.3. Create PortImplementation EmplnameFileOutputPort",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"processQualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n    \"portImplementation\": {\n        \"displayName\": \"EmplnameFileOutputPort\",\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n        \"updateSemantic\": \"REPLACE\",\n        \"type\": \"OUTPUT_PORT\",\n        \"schema\": {\n            \"displayName\": \"EmplnameFileOutputSchema\",\n            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema\",\n            \"author\": \"Platform User\",\n            \"columns\": [\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n                    \"displayName\": \"EMPID\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n                    \"displayName\": \"FNAME\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n                    \"displayName\": \"LOCID\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0\n                },\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n                    \"displayName\": \"LNAME\",\n                    \"minCardinality\": 0,\n                    \"maxCardinality\": 0,\n                    \"allowsDuplicateValues\": false,\n                    \"orderedValues\": false,\n                    \"position\": 0\n                }\n            ]\n        }\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-implementations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.4. Add lineage mappings for CopyColumns process",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"lineageMappings\": [\n        {\n            \"sourceAttribute\":  \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\"\n        },\n        {\n            \"sourceAttribute\":  \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\"\n        },\n        {\n            \"sourceAttribute\":  \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\"\n        },\n        {\n            \"sourceAttribute\":  \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n            \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n            \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=EMPID\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n            \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=FNAME\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n            \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LNAME\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n            \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LOCID\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/lineage-mappings",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"lineage-mappings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.5. Create Process CopyColumnsFlow",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"processes\": [\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n            \"displayName\": \"CopyColumnsFlow\",\n            \"name\": \"CopyColumnsFlow\",\n            \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n            \"owner\": \"Platform User\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.6. Create PortAlias ReadInputFilePortAlias",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"processQualifiedName\": \"(process)=CopyColumnsFlow\",\n    \"portAlias\": {\n        \"displayName\": \"ReadInputFilePortAlias\",\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=ReadInputFilePortAlias\",\n        \"updateSemantic\": \"REPLACE\",\n        \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n        \"type\": \"INPUT_PORT\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-aliases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.7. Create PortAlias WriteOutputFilePortAlias",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"processQualifiedName\": \"(process)=CopyColumnsFlow\",\n    \"portAlias\": {\n        \"displayName\": \"WriteOutputFilePortAlias\",\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=WriteOutputFilePortAlias\",\n        \"updateSemantic\": \"REPLACE\",\n        \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n        \"type\": \"OUTPUT_PORT\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-aliases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.8. Add process hierarchy relationship",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"processHierarchy\": {\n        \"parentProcess\": \"(process)=CopyColumnsFlow\",\n        \"childProcess\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"containmentType\": \"OWNED\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/process-hierarchies",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"process-hierarchies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.9. Delete PortAlias ReadInputFilePortAlias",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=ReadInputFilePortAlias\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-aliases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.10. Delete Process CopyColumnsFlow",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedNames\": [\n        \"(process)=CopyColumnsFlow\"\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.11. Delete PortImplementation NamesFileInputPort",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-implementations",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"port-implementations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.12. Delete Process CopyColumns",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedNames\": [\n        \"(process)=CopyColumnsFlow::(process)=CopyColumns\"\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.1. Create Processes - CopyColumns&CopyColumnFlow",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"processes\": [\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n            \"displayName\": \"CopyColumns\",\n            \"name\": \"CopyColumns\",\n            \"description\": \"CopyColumns is (sub)process that describes the low level implementation activities performed by a platform or tool.\",\n            \"owner\": \"Platform User\",\n            \"portImplementations\": [\n                {\n                    \"displayName\": \"NamesFileInputPort\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n                    \"updateSemantic\": \"REPLACE\",\n                    \"type\": \"INPUT_PORT\",\n                    \"schema\": {\n                        \"displayName\": \"NamesFileInputSchema\",\n                        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema\",\n                        \"author\": \"Platform User\",\n                        \"columns\": [\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n                                \"displayName\": \"Last\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0,\n                                \"dataType\": \"VARCHAR\"\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n                                \"displayName\": \"First\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 1,\n                                \"dataType\": \"VARCHAR\"\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n                                \"displayName\": \"Id\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 2,\n                                \"dataType\": \"INTEGER\"\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n                                \"displayName\": \"Location\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 3,\n                                \"dataType\": \"INTEGER\"\n                            }\n                        ]\n                    }\n                },\n                {\n                    \"displayName\": \"EmplnameFileOutputPort\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n                    \"updateSemantic\": \"REPLACE\",\n                    \"type\": \"OUTPUT_PORT\",\n                    \"schema\": {\n                        \"displayName\": \"EmplnameFileOutputSchema\",\n                        \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema\",\n                        \"author\": \"Platform User\",\n                        \"columns\": [\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n                                \"displayName\": \"EMPID\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n                                \"displayName\": \"FNAME\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n                                \"displayName\": \"LOCID\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0\n                            },\n                            {\n                                \"qualifiedName\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n                                \"displayName\": \"LNAME\",\n                                \"minCardinality\": 0,\n                                \"maxCardinality\": 0,\n                                \"allowsDuplicateValues\": false,\n                                \"orderedValues\": false,\n                                \"position\": 0\n                            }\n                        ]\n                    }\n                }\n            ],\n            \"lineageMappings\": [\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Id\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\"\n                },\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=First\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\"\n                },\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Last\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\"\n                },\n                {\n                    \"sourceAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=names.csv::(data_file_record)=names::(data_file_field)=Location\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location\",\n                    \"targetAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=EMPID\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=EMPID\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=FNAME\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=FNAME\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LNAME\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LNAME\"\n                },\n                {\n                    \"sourceAttribute\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputSchema::(column)=LOCID\",\n                    \"targetAttribute\": \"(host)=HOST::(data_file_folder)=/::(data_file_folder)=data::(data_file_folder)=files::(data_file_folder)=test::(data_file)=emplname.csv::(data_file_record)=emplname::(data_file_field)=LOCID\"\n                }\n            ],\n            \"updateSemantic\": \"REPLACE\",\n            \"parentProcesses\": [\n                {\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n                    \"containmentType\": \"OWNED\"\n                }\n            ]\n        },\n        {\n            \"qualifiedName\": \"(process)=CopyColumnsFlow\",\n            \"displayName\": \"CopyColumnsFlow\",\n            \"name\": \"CopyColumnsFlow\",\n            \"description\": \"CopyColumnsFlow describes high level process input and output and mappings between (sub)processes (if any).\",\n            \"owner\": \"Platform User\",\n            \"portAliases\": [\n                {\n                    \"displayName\": \"ReadInputFilePortAlias\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=ReadInputFilePortAlias\",\n                    \"updateSemantic\": \"REPLACE\",\n                    \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n                    \"type\": \"INPUT_PORT\"\n                },\n                {\n                    \"displayName\": \"WriteOutputFilePortAlias\",\n                    \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=WriteOutputFilePortAlias\",\n                    \"updateSemantic\": \"REPLACE\",\n                    \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n                    \"type\": \"OUTPUT_PORT\"\n                }\n            ],\n            \"lineageMappings\": [],\n            \"updateSemantic\": \"REPLACE\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.2. Delete Processes CopyColumns&CopyColumnsFlow",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedNames\": [\n        \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"(process)=CopyColumnsFlow\"\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
