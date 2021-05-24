@@ -9,11 +9,21 @@ The Software Developer OMAS provides APIs and events for software developer
 tools and applications that help developers make good use of the
 standards and best practices defined for the data landscape.
 
-For example, it supports search for data structure implementation snippets
-based on search criteria such as glossary terms and/or language.
+It supports the documentation of the component structure of a software capability
+and the ability to link it to the [digital services](../digital-service) it supports
+for the business.  
 
+As the software developer works on the implementation, 
+the Software Developer OMAS supports APIs to search for data structure implementation snippets
+based on search criteria such as glossary terms and/or language.
 It also provides information about the most appropriate data sources
-to use for particular situations.
+to use for particular situations along with details of reference data values and sets.
+Using these services augments the software component model for the software capability.
+
+Finally it enables the documentation of the packaging as the components are moved into the
+[DevOps Pipeline](../dev-ops).
+
+## Design
 
 The module structure for the Software Developer OMAS is as follows:
 
