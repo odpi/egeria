@@ -2,16 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
-
 import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceLeadershipInterface;
-import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReference;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
+import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceOfficerAppointee;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceOfficerElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceOfficerHistory;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -19,7 +19,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * GovernanceProgramLeadership provides the client-side interface for the Governance Program Open Metadata Access Service (OMAS).
@@ -27,15 +26,14 @@ import java.util.Map;
  * of the server that is running the Open Metadata Access Services.  This server is responsible for locating and
  * managing the governance program definitions exchanged with this client.
  */
-public class GovernanceProgramLeadership  implements GovernanceLeadershipInterface
+public class GovernanceProgramLeadership implements GovernanceLeadershipInterface
 {
     private String                      serverName;               /* Initialized in constructor */
     private String                      serverPlatformURLRoot;    /* Initialized in constructor */
     private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
-    private AuditLog                auditLog                = null;
+    private NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -108,7 +106,6 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         this.serverName            = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
-        this.auditLog              = auditLog;
     }
 
 
@@ -140,68 +137,44 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         this.serverName            = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
-        this.auditLog              = auditLog;
     }
 
 
     /**
-     * Create the governance officer appointment.
+     * Create the governance officer role.
      *
      * @param userId the name of the calling user.
-     * @param governanceDomain  the governance domain for the governance officer.
-     * @param appointmentId  the unique identifier of the governance officer.
-     * @param appointmentContext  the context in which the governance officer is appointed.
-     *                            This may be an organizational scope, location, or scope of assets.
-     * @param title job title for the governance officer.
-     * @param additionalProperties additional properties for the governance officer.
-     * @param externalReferences links to addition information.  This could be, for example, the home page
-     *                           for the governance officer, or details of the role.
-     * @return Unique identifier (guid) of the governance officer.
+     * @param properties the description of the governance officer role
+     *
+     * @return Unique identifier (guid) of the governance officer
+     *
      * @throws InvalidParameterException the governance domain, title or appointment id is null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public String createGovernanceOfficer(String                     userId,
-                                          GovernanceDomain           governanceDomain,
-                                          String                     appointmentId,
-                                          String                     appointmentContext,
-                                          String                     title,
-                                          Map<String, String>        additionalProperties,
-                                          List<ExternalReference>    externalReferences) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException
+    public String createGovernanceOfficer(String                      userId,
+                                          GovernanceOfficerProperties properties) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
         final String   methodName = "createGovernanceOfficer";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers";
 
-        final String   appointmentIdParameterName = "appointmentId";
+        final String   roleIdParameterName = "roleId";
         final String   titleParameterName = "title";
-        final String   governanceDomainParameterName = "governanceDomain";
+        final String   propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
-        invalidParameterHandler.validateName(title, titleParameterName, methodName);
-        exceptionHandler.validateGovernanceDomain(governanceDomain, governanceDomainParameterName, methodName);
-
-        GovernanceOfficerDetailsRequestBody  requestBody = new GovernanceOfficerDetailsRequestBody();
-        requestBody.setGovernanceDomain(governanceDomain);
-        requestBody.setAppointmentId(appointmentId);
-        requestBody.setAppointmentContext(appointmentContext);
-        requestBody.setTitle(title);
-        requestBody.setAdditionalProperties(additionalProperties);
-        requestBody.setExternalReferences(externalReferences);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getRoleId(), roleIdParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,
-                                                                  requestBody,
+                                                                  properties,
                                                                   serverName,
                                                                   userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUID();
     }
@@ -211,114 +184,80 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * Update selected fields for the governance officer.
      *
      * @param userId the name of the calling user.
-     * @param governanceOfficerGUID unique identifier (guid) of the governance officer.
-     * @param governanceDomain  the governance domain for the governance officer.
-     * @param appointmentId  the unique identifier of the governance officer.
-     * @param appointmentContext  the context in which the governance officer is appointed.
-     *                            This may be an organizational scope, location, or scope of assets.
-     * @param title job title for the governance officer.
-     * @param additionalProperties additional properties for the governance officer.
-     * @param externalReferences links to addition information.  This could be, for example, the home page
-     *                           for the governance officer, or details of the role.
+     * @param governanceOfficerGUID unique identifier (guid) of the governance officer
+     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
+     * @param properties the description of the governance officer role
+     *
      * @throws InvalidParameterException the title is null or the governanceDomain/appointmentId does not match the
      *                                   the existing values associated with the governanceOfficerGUID.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public void   updateGovernanceOfficer(String                     userId,
-                                          String                     governanceOfficerGUID,
-                                          GovernanceDomain           governanceDomain,
-                                          String                     appointmentId,
-                                          String                     appointmentContext,
-                                          String                     title,
-                                          Map<String, String>        additionalProperties,
-                                          List<ExternalReference>    externalReferences)  throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
+    public void   updateGovernanceOfficer(String                      userId,
+                                          String                      governanceOfficerGUID,
+                                          boolean                     isMergeUpdate,
+                                          GovernanceOfficerProperties properties)  throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         final String   methodName = "updateGovernanceOfficer";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}?isMergeUpdate={3}";
 
         final String   guidParameterName = "governanceOfficerGUID";
-        final String   appointmentIdParameterName = "appointmentId";
+        final String   roleIdParameterName = "roleId";
         final String   titleParameterName = "title";
-        final String   governanceDomainParameterName = "governanceDomain";
+        final String   propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceOfficerGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
-        invalidParameterHandler.validateName(title, titleParameterName, methodName);
-        exceptionHandler.validateGovernanceDomain(governanceDomain, governanceDomainParameterName, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        GovernanceOfficerDetailsRequestBody  requestBody = new GovernanceOfficerDetailsRequestBody();
-        requestBody.setGovernanceDomain(governanceDomain);
-        requestBody.setAppointmentId(appointmentId);
-        requestBody.setAppointmentContext(appointmentContext);
-        requestBody.setTitle(title);
-        requestBody.setAdditionalProperties(additionalProperties);
-        requestBody.setExternalReferences(externalReferences);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(properties.getRoleId(), roleIdParameterName, methodName);
+            invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
+        }
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  governanceOfficerGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        properties,
+                                        serverName,
+                                        userId,
+                                        governanceOfficerGUID,
+                                        isMergeUpdate);
     }
 
 
     /**
      * Remove the requested governance officer.
      *
-     * @param userId the name of the calling user.
-     * @param governanceOfficerGUID unique identifier (guid) of the governance officer.
-     * @param appointmentId  the unique identifier of the governance officer.
-     * @param governanceDomain  the governance domain for the governance officer.
+     * @param userId the name of the calling user
+     * @param governanceOfficerGUID unique identifier (guid) of the governance officer
+     *
      * @throws InvalidParameterException the appointmentId or governance domain is either null or invalid.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public void   deleteGovernanceOfficer(String              userId,
-                                          String              governanceOfficerGUID,
-                                          String              appointmentId,
-                                          GovernanceDomain    governanceDomain) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
+    public void   deleteGovernanceOfficer(String userId,
+                                          String governanceOfficerGUID) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
         final String   methodName = "deleteGovernanceOfficer";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}/delete";
-
         final String   guidParameterName = "governanceOfficerGUID";
-        final String   appointmentIdParameterName = "appointmentId";
-        final String   governanceDomainParameterName = "governanceDomain";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateGUID(governanceOfficerGUID, guidParameterName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
-        exceptionHandler.validateGovernanceDomain(governanceDomain, governanceDomainParameterName, methodName);
 
-        GovernanceOfficerValidatorRequestBody  requestBody = new GovernanceOfficerValidatorRequestBody();
-        requestBody.setGovernanceDomain(governanceDomain);
-        requestBody.setAppointmentId(appointmentId);
-
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  governanceOfficerGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        governanceOfficerGUID);
     }
 
 
@@ -333,17 +272,16 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public GovernanceOfficerProperties getGovernanceOfficerByGUID(String     userId,
-                                                                  String     governanceOfficerGUID) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
+    public GovernanceOfficerElement getGovernanceOfficerByGUID(String userId,
+                                                               String governanceOfficerGUID) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficerByGUID";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}";
 
         final String   guidParameterName = "governanceOfficerGUID";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceOfficerGUID, guidParameterName, methodName);
 
@@ -353,9 +291,39 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
                                                                                            userId,
                                                                                            governanceOfficerGUID);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+        return restResult.getGovernanceOfficer();
+    }
+
+
+    /**
+     * Retrieve a governance officer description by unique guid.
+     *
+     * @param userId the name of the calling user.
+     * @param governanceOfficerGUID unique identifier (guid) of the governance officer.
+     * @return governance officer object
+     * @throws InvalidParameterException the unique identifier of the governance officer is either null or invalid.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    @Override
+    public GovernanceOfficerHistory getGovernanceOfficerHistoryByGUID(String userId,
+                                                                      String governanceOfficerGUID) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        final String   methodName = "getGovernanceOfficerHistoryByGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}/history";
+
+        final String   guidParameterName = "governanceOfficerGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceOfficerGUID, guidParameterName, methodName);
+
+        GovernanceOfficerHistoryResponse restResult = restClient.callGovernanceOfficerHistoryGetRESTCall(methodName,
+                                                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                                                         serverName,
+                                                                                                         userId,
+                                                                                                         governanceOfficerGUID);
 
         return restResult.getGovernanceOfficer();
     }
@@ -365,39 +333,32 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * Retrieve a governance officer by unique appointment id.
      *
      * @param userId the name of the calling user.
-     * @param appointmentId  the unique appointment identifier of the governance officer.
+     * @param roleId  the unique appointment identifier of the governance officer.
      * @return governance officer object
+     *
      * @throws InvalidParameterException the appointmentId or governance domain is either null or invalid.
-     * @throws AppointmentIdNotUniqueException more than one governance officer entity was retrieved for this appointmentId.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public GovernanceOfficerProperties getGovernanceOfficerByAppointmentId(String     userId,
-                                                                           String     appointmentId) throws InvalidParameterException,
-                                                                                                         AppointmentIdNotUniqueException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException
+    public GovernanceOfficerElement getGovernanceOfficerByRoleId(String userId,
+                                                                 String roleId) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
-        final String   methodName = "getGovernanceOfficerByAppointmentId";
+        final String   methodName = "getGovernanceOfficerByRoleId";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/by-appointment-id/{2}";
 
         final String   appointmentIdParameterName = "appointmentId";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
+        invalidParameterHandler.validateName(roleId, appointmentIdParameterName, methodName);
 
         GovernanceOfficerResponse restResult = restClient.callGovernanceOfficerGetRESTCall(methodName,
                                                                                            serverPlatformURLRoot + urlTemplate,
                                                                                            serverName,
                                                                                            userId,
-                                                                                           appointmentId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowAppointmentIdNotUniqueException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+                                                                                           roleId);
 
         return restResult.getGovernanceOfficer();
     }
@@ -413,9 +374,9 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<GovernanceOfficerProperties>  getGovernanceOfficers(String     userId) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+    public List<GovernanceOfficerElement>  getGovernanceOfficers(String     userId) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficers";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers";
@@ -428,10 +389,6 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
                                                                                                    serverName,
                                                                                                    userId);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
-
         return restResult.getGovernanceOfficers();
     }
 
@@ -439,16 +396,18 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
     /**
      * Return all of the currently appointed governance officers.
      *
-     * @param userId the name of the calling user.
+     * @param userId the name of the calling user
+     *
      * @return list of governance officer objects
+     *
      * @throws InvalidParameterException the userId is either null or invalid.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<GovernanceOfficerProperties>  getActiveGovernanceOfficers(String     userId) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
+    public List<GovernanceOfficerAppointee>  getActiveGovernanceOfficers(String userId) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficers";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/active";
@@ -456,14 +415,10 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        GovernanceOfficerListResponse restResult = restClient.callGovernanceOfficerListGetRESTCall(methodName,
-                                                                                                   serverPlatformURLRoot + urlTemplate,
-                                                                                                   serverName,
-                                                                                                   userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+        GovernanceOfficerAppointeeListResponse restResult = restClient.callGovernanceOfficerAppointeeListGetRESTCall(methodName,
+                                                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                                                     serverName,
+                                                                                                                     userId);
 
         return restResult.getGovernanceOfficers();
     }
@@ -474,40 +429,32 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * there is typically only one governance officer.   However a large organization may have multiple governance
      * officers, each with a different scope.  The governance officer with a null scope is the overall leader.
      *
-     * @param userId the name of the calling user.
-     * @param governanceDomain domain of interest
+     * @param userId the name of the calling user
+     * @param domainIdentifier domain of interest
+     *
      * @return list of governance officer objects
+     *
      * @throws InvalidParameterException the governance domain is either null or invalid.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<GovernanceOfficerProperties>  getGovernanceOfficersByDomain(String             userId,
-                                                                            GovernanceDomain   governanceDomain) throws InvalidParameterException,
-                                                                                                              PropertyServerException,
-                                                                                                              UserNotAuthorizedException
+    public List<GovernanceOfficerAppointee>  getGovernanceOfficersByDomain(String userId,
+                                                                           int domainIdentifier) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficersByDomain";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/by-domain";
-
-        final String   governanceDomainParameterName = "governanceDomain";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/by-domain/{2}";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        exceptionHandler.validateGovernanceDomain(governanceDomain, governanceDomainParameterName, methodName);
 
-        GovernanceDomainRequestBody  requestBody = new GovernanceDomainRequestBody();
-        requestBody.setGovernanceDomain(governanceDomain);
-
-        GovernanceOfficerListResponse restResult = restClient.callGovernanceOfficerListPostRESTCall(methodName,
-                                                                                                    serverPlatformURLRoot + urlTemplate,
-                                                                                                    requestBody,
-                                                                                                    serverName,
-                                                                                                    userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+        GovernanceOfficerAppointeeListResponse restResult = restClient.callGovernanceOfficerAppointeeListGetRESTCall(methodName,
+                                                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                                                     serverName,
+                                                                                                                     userId,
+                                                                                                                     domainIdentifier);
 
         return restResult.getGovernanceOfficers();
     }
@@ -544,19 +491,15 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
 
         AppointmentRequestBody  requestBody = new AppointmentRequestBody();
-        requestBody.setGUID(profileGUID);
+        requestBody.setProfileGUID(profileGUID);
         requestBody.setEffectiveDate(startDate);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  governanceOfficerGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        governanceOfficerGUID);
     }
 
 
@@ -591,18 +534,14 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
         invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
 
         AppointmentRequestBody  requestBody = new AppointmentRequestBody();
-        requestBody.setGUID(profileGUID);
+        requestBody.setProfileGUID(profileGUID);
         requestBody.setEffectiveDate(endDate);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  governanceOfficerGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        governanceOfficerGUID);
     }
 }

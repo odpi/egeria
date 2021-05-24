@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The GovernanceMetricImplementation defines the query and data set that supports the measurements
- * for a GovernanceMetric.  The list of connections to the data set are also provided to enable
+ * for a GovernanceMetricProperties.  The list of connections to the data set are also provided to enable
  * the client to switch to the Asset Consumer OMAS and query the values in the data set.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -267,7 +267,7 @@ public class GovernanceMetricImplementation implements Serializable
 
 
     /**
-     * Test the properties of the DataStrategy to determine if the supplied object is equal to this one.
+     * Test the properties of the GovernanceStrategyProperties to determine if the supplied object is equal to this one.
      *
      * @param objectToCompare object
      * @return boolean evaluation

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceOfficerElement;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private GovernanceOfficerProperties governanceOfficer = null;
+    private GovernanceOfficerElement governanceOfficer = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
      *
      * @return GovernanceOfficerProperties object
      */
-    public GovernanceOfficerProperties getGovernanceOfficer()
+    public GovernanceOfficerElement getGovernanceOfficer()
     {
         return governanceOfficer;
     }
@@ -67,11 +67,11 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
     /**
      * Set up the governanceOfficer result.
      *
-     * @param guid GovernanceOfficerProperties object
+     * @param element GovernanceOfficerProperties object
      */
-    public void setGovernanceOfficer(GovernanceOfficerProperties guid)
+    public void setGovernanceOfficer(GovernanceOfficerElement element)
     {
-        this.governanceOfficer = guid;
+        this.governanceOfficer = element;
     }
 
 

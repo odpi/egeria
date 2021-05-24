@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.accessservices.governanceprogram.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -17,23 +17,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceOfficerListResponse is the response structure used on the OMAS REST API calls that return a
- * list of governance officers as a response.
+ * ZoneListResponse is the response structure used on the OMAS REST API calls that return a list of governance zones.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIResponse
+public class ZoneListResponse extends GovernanceProgramOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<GovernanceOfficerProperties> governanceOfficers = null;
+    private List<GovernanceZoneElement> elementList = null;
 
 
     /**
      * Default constructor
      */
-    public GovernanceOfficerListResponse()
+    public ZoneListResponse()
     {
         super();
     }
@@ -44,47 +43,45 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
      *
      * @param template object to copy
      */
-    public GovernanceOfficerListResponse(GovernanceOfficerListResponse template)
+    public ZoneListResponse(ZoneListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.governanceOfficers = template.getGovernanceOfficers();
+            this.elementList = template.getElementList();
         }
     }
 
 
     /**
-     * Return the list of governance officers.
+     * Return the resulting elements.
      *
-     * @return list of objects or null
+     * @return list of elements
      */
-    public List<GovernanceOfficerProperties> getGovernanceOfficers()
+    public List<GovernanceZoneElement> getElementList()
     {
-        if (governanceOfficers == null)
+        if (elementList == null)
         {
             return null;
         }
-        else if (governanceOfficers.isEmpty())
+        else if (elementList.isEmpty())
         {
             return null;
         }
-        else
-        {
-            return new ArrayList<>(governanceOfficers);
-        }
+
+        return elementList;
     }
 
 
     /**
-     * Set up the list of governance officers.
+     * Set up the resulting elements.
      *
-     * @param governanceOfficers - list of objects or null
+     * @param elements list of results
      */
-    public void setGovernanceOfficers(List<GovernanceOfficerProperties> governanceOfficers)
+    public void setGovernanceZone(List<GovernanceZoneElement> elements)
     {
-        this.governanceOfficers = governanceOfficers;
+        this.elementList = elements;
     }
 
 
@@ -96,8 +93,8 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
     @Override
     public String toString()
     {
-        return "GovernanceOfficerListResponse{" +
-                "governanceOfficers=" + governanceOfficers +
+        return "ZoneListResponse{" +
+                "elementList=" + elementList +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -125,7 +122,7 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceOfficerListResponse))
+        if (!(objectToCompare instanceof ZoneListResponse))
         {
             return false;
         }
@@ -133,8 +130,8 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
         {
             return false;
         }
-        GovernanceOfficerListResponse that = (GovernanceOfficerListResponse) objectToCompare;
-        return Objects.equals(this.getGovernanceOfficers(), that.getGovernanceOfficers());
+        ZoneListResponse that = (ZoneListResponse) objectToCompare;
+        return Objects.equals(elementList, that.elementList);
     }
 
 
@@ -146,6 +143,6 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceOfficers, super.hashCode());
+        return Objects.hash(elementList);
     }
 }

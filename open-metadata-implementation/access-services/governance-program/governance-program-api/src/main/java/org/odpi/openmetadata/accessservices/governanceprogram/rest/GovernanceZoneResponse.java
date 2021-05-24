@@ -26,7 +26,7 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private GovernanceZoneElement governanceZone = null;
+    private GovernanceZoneElement element = null;
 
 
     /**
@@ -49,30 +49,30 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
 
         if (template != null)
         {
-            this.governanceZone = template.getGovernanceZone();
+            this.element = template.getElement();
         }
     }
 
 
     /**
-     * Return the governanceZone result.
+     * Return the element result.
      *
      * @return bean
      */
-    public GovernanceZoneElement getGovernanceZone()
+    public GovernanceZoneElement getElement()
     {
-        return governanceZone;
+        return element;
     }
 
 
     /**
-     * Set up the governanceZone result.
+     * Set up the element result.
      *
-     * @param governanceZone - bean
+     * @param element - bean
      */
-    public void setGovernanceZone(GovernanceZoneElement governanceZone)
+    public void setElement(GovernanceZoneElement element)
     {
-        this.governanceZone = governanceZone;
+        this.element = element;
     }
 
 
@@ -85,7 +85,7 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
     public String toString()
     {
         return "ZoneResponse{" +
-                "governanceZone=" + governanceZone +
+                "element=" + element +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -122,7 +122,7 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
             return false;
         }
         ZoneResponse that = (ZoneResponse) objectToCompare;
-        return Objects.equals(governanceZone, that.governanceZone);
+        return Objects.equals(element, that.element);
     }
 
 
@@ -134,6 +134,6 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceZone);
+        return Objects.hash(element);
     }
 }
