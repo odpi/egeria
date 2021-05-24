@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The GovernanceZoneManagerInterface is used by the governance team to define the zones where the assets
+ * The GovernanceZonesInterface is used by the governance team to define the zones where the assets
  * can be located.
  */
-public interface GovernanceZoneManagerInterface
+public interface GovernanceZonesInterface
 {
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added

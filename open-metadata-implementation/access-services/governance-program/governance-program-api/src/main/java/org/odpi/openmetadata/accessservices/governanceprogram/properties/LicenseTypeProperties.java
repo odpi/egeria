@@ -12,13 +12,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * LicenseType defines a license that the organization recognizes and has governance
+ * LicenseTypeProperties defines a license that the organization recognizes and has governance
  * definitions to support it.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LicenseType extends GovernanceDefinitionProperties
+public class LicenseTypeProperties extends GovernanceDefinitionProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class LicenseType extends GovernanceDefinitionProperties
     /**
      * Default Constructor
      */
-    public LicenseType()
+    public LicenseTypeProperties()
     {
     }
 
@@ -38,7 +38,7 @@ public class LicenseType extends GovernanceDefinitionProperties
      *
      * @param template object to copy
      */
-    public LicenseType(LicenseType  template)
+    public LicenseTypeProperties(LicenseTypeProperties template)
     {
         super(template);
 
@@ -79,7 +79,7 @@ public class LicenseType extends GovernanceDefinitionProperties
     @Override
     public String toString()
     {
-        return "LicenseType{" +
+        return "LicenseTypeProperties{" +
                        "details='" + details + '\'' +
                        ", typeName='" + getTypeName() + '\'' +
                        ", documentIdentifier='" + getDocumentIdentifier() + '\'' +
@@ -120,7 +120,7 @@ public class LicenseType extends GovernanceDefinitionProperties
         {
             return false;
         }
-        LicenseType that = (LicenseType) objectToCompare;
+        LicenseTypeProperties that = (LicenseTypeProperties) objectToCompare;
         return Objects.equals(details, that.details);
     }
 

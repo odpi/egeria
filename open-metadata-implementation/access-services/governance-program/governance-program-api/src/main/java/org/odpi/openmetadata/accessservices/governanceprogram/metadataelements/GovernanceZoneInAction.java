@@ -1,10 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.properties;
+package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,7 +22,7 @@ public class GovernanceZoneInAction extends GovernanceZoneDefinition
 {
     private static final long    serialVersionUID = 1L;
 
-    private int                         zoneMembershipCount = 0;
+    private int zoneMembershipCount = 0;
 
 
     /**
@@ -74,17 +76,51 @@ public class GovernanceZoneInAction extends GovernanceZoneDefinition
     public String toString()
     {
         return "GovernanceZoneInAction{" +
-                "zoneMembershipCount=" + zoneMembershipCount +
-                ", associatedGovernanceDefinitions=" + getAssociatedGovernanceDefinitions() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", criteria='" + getCriteria() + '\'' +
-                ", scope='" + getScope() + '\'' +
-                ", domainIdentifier=" + getDomainIdentifier() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "zoneMembershipCount=" + zoneMembershipCount +
+                       ", parentGovernanceZoneGUID='" + getParentGovernanceZone() + '\'' +
+                       ", nestedGovernanceZoneGUID=" + getNestedGovernanceZones() +
+                       ", associatedGovernanceDefinitions=" + getAssociatedGovernanceDefinitions() +
+                       ", elementHeader=" + getElementHeader() +
+                       ", governanceZoneProperties=" + getGovernanceZoneProperties() +
+                       '}';
+    }
+
+
+    /**
+     * Return comparison result based on the content of the properties.
+     *
+     * @param objectToCompare test object
+     * @return result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        GovernanceZoneInAction that = (GovernanceZoneInAction) objectToCompare;
+        return zoneMembershipCount == that.zoneMembershipCount;
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), zoneMembershipCount);
     }
 }

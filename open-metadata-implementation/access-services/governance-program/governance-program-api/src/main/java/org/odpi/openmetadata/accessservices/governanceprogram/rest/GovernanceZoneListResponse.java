@@ -17,12 +17,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ZoneListResponse is the response structure used on the OMAS REST API calls that return a list of governance zones.
+ * GovernanceZoneListResponse is the response structure used on the OMAS REST API calls that return a list of governance zones.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ZoneListResponse extends GovernanceProgramOMASAPIResponse
+public class GovernanceZoneListResponse extends GovernanceProgramOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
@@ -32,7 +32,7 @@ public class ZoneListResponse extends GovernanceProgramOMASAPIResponse
     /**
      * Default constructor
      */
-    public ZoneListResponse()
+    public GovernanceZoneListResponse()
     {
         super();
     }
@@ -43,7 +43,7 @@ public class ZoneListResponse extends GovernanceProgramOMASAPIResponse
      *
      * @param template object to copy
      */
-    public ZoneListResponse(ZoneListResponse template)
+    public GovernanceZoneListResponse(GovernanceZoneListResponse template)
     {
         super(template);
 
@@ -93,7 +93,7 @@ public class ZoneListResponse extends GovernanceProgramOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ZoneListResponse{" +
+        return "GovernanceZoneListResponse{" +
                 "elementList=" + elementList +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -122,7 +122,7 @@ public class ZoneListResponse extends GovernanceProgramOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof ZoneListResponse))
+        if (!(objectToCompare instanceof GovernanceZoneListResponse))
         {
             return false;
         }
@@ -130,7 +130,7 @@ public class ZoneListResponse extends GovernanceProgramOMASAPIResponse
         {
             return false;
         }
-        ZoneListResponse that = (ZoneListResponse) objectToCompare;
+        GovernanceZoneListResponse that = (GovernanceZoneListResponse) objectToCompare;
         return Objects.equals(elementList, that.elementList);
     }
 

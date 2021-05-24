@@ -1,9 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.properties;
+package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.AssetProperties;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -39,22 +41,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetProperties extends AssetSummary
+public class AssetElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private String              owner                        = null;
-    private OwnerCategory       ownerCategory                = null;
-    private List<String>        zoneMembership               = null;
-    private String              originOrganizationGUID       = null;
-    private String              originBusinessCapabilityGUID = null;
-    private Map<String, String> otherOriginValues            = null;
-
+    private ElementHeader   elementHeader = null;
+    private AssetProperties properties    = null;
+    
 
     /**
      * Default constructor
      */
-    public AssetProperties()
+    public AssetElement()
     {
     }
 
@@ -64,205 +62,81 @@ public class AssetProperties extends AssetSummary
      *
      * @param template object to copy
      */
-    public AssetProperties(AssetProperties template)
+    public AssetElement(AssetElement template)
     {
-        super(template);
-
-        if (template != null)
+       if (template != null)
         {
-            owner                        = template.getOwner();
-            ownerCategory                = template.getOwnerCategory();
-            zoneMembership               = template.getZoneMembership();
-            originOrganizationGUID       = template.getOriginOrganizationGUID();
-            originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
-            otherOriginValues            = template.getOtherOriginValues();
+            this.elementHeader = template.getElementHeader();
+            this.properties = template.getProperties();
         }
     }
 
 
     /**
-     * Returns the name of the owner for this asset.
+     * Return the element header associated with the properties.
      *
-     * @return owner String
+     * @return element header object
      */
-    public String getOwner()
+    @Override
+    public ElementHeader getElementHeader()
     {
-        return owner;
+        return elementHeader;
     }
 
 
     /**
-     * Set up the name of the owner for this asset.
+     * Set up the element header associated with the properties.
      *
-     * @param owner String name
+     * @param elementHeader element header object
      */
-    public void setOwner(String owner)
+    @Override
+    public void setElementHeader(ElementHeader elementHeader)
     {
-        this.owner = owner;
+        this.elementHeader = elementHeader;
     }
 
 
     /**
-     * Return the type of owner stored in the owner property.
+     * Return the description of the asset.
      *
-     * @return OwnerCategory enum
+     * @return list of external references
      */
-    public OwnerCategory getOwnerCategory()
+    public AssetProperties getProperties()
     {
-        return ownerCategory;
+        return properties;
     }
 
 
     /**
-     * Set up the owner type for this asset.
+     * Set up the the description of the asset.
      *
-     * @param ownerCategory OwnerCategory enum
+     * @param properties of external references
      */
-    public void setOwnerCategory(OwnerCategory ownerCategory)
+    public void setProperties(AssetProperties properties)
     {
-        this.ownerCategory = ownerCategory;
+        this.properties = properties;
     }
 
 
     /**
-     * Return the names of the zones that this asset is a member of.
+     * JSON-style toString.
      *
-     * @return list of zone names
-     */
-    public List<String> getZoneMembership()
-    {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(zoneMembership);
-        }
-    }
-
-
-    /**
-     * Set up the names of the zones that this asset is a member of.
-     *
-     * @param zoneMembership list of zone names
-     */
-    public void setZoneMembership(List<String> zoneMembership)
-    {
-        this.zoneMembership = zoneMembership;
-    }
-
-
-    /**
-     * Return the unique identifier for the organization that originated this asset.
-     *
-     * @return string guid
-     */
-    public String getOriginOrganizationGUID()
-    {
-        return originOrganizationGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier for the organization that originated this asset.
-     *
-     * @param originOrganizationGUID string guid
-     */
-    public void setOriginOrganizationGUID(String originOrganizationGUID)
-    {
-        this.originOrganizationGUID = originOrganizationGUID;
-    }
-
-
-    /**
-     * Return the unique identifier of the business capability that originated this asset.
-     *
-     * @return string guid
-     */
-    public String getOriginBusinessCapabilityGUID()
-    {
-        return originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the business capability that originated this asset.
-     *
-     * @param originBusinessCapabilityGUID string guid
-     */
-    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID)
-    {
-        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Return the properties that characterize where this asset is from.
-     *
-     * @return map of name value pairs, all strings
-     */
-    public Map<String, String> getOtherOriginValues()
-    {
-        if (otherOriginValues == null)
-        {
-            return null;
-        }
-        else if (otherOriginValues.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(otherOriginValues);
-        }
-    }
-
-
-    /**
-     * Set up the properties that characterize where this asset is from.
-     *
-     * @param otherOriginValues map of name value pairs, all strings
-     */
-    public void setOtherOriginValues(Map<String, String> otherOriginValues)
-    {
-        this.otherOriginValues = otherOriginValues;
-    }
-
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
+     * @return list of properties and their values.
      */
     @Override
     public String toString()
     {
-        return "AssetProperties{" +
-                       "owner='" + owner + '\'' +
-                       ", ownerCategory=" + ownerCategory +
-                       ", zoneMembership=" + zoneMembership +
-                       ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                       ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                       ", otherOriginValues=" + otherOriginValues +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
+        return "AssetElement{" +
+                       "elementHeader=" + elementHeader +
+                       ", properties=" + properties +
                        '}';
     }
 
 
     /**
-     * Compare the values of the supplied object with those stored in the current object.
+     * Equals method that returns true if containing properties are the same.
      *
-     * @param objectToCompare supplied object
+     * @param objectToCompare object to compare
      * @return boolean result of comparison
      */
     @Override
@@ -276,29 +150,20 @@ public class AssetProperties extends AssetSummary
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        AssetProperties that = (AssetProperties) objectToCompare;
-        return Objects.equals(owner, that.owner) &&
-                ownerCategory == that.ownerCategory &&
-                Objects.equals(zoneMembership, that.zoneMembership) &&
-                Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
-                Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
-                Objects.equals(otherOriginValues, that.otherOriginValues);
+        AssetElement that = (AssetElement) objectToCompare;
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(properties, that.properties);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Hash of properties
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), owner, ownerCategory, zoneMembership, originOrganizationGUID,
-                            originBusinessCapabilityGUID, otherOriginValues);
+        return Objects.hash(super.hashCode(), properties, elementHeader);
     }
 }

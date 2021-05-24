@@ -16,13 +16,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ZoneResponse is the response structure used on the OMAS REST API calls that return the properties
+ * GovernanceZoneResponse is the response structure used on the OMAS REST API calls that return the properties
  * for a governance zone.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ZoneResponse extends GovernanceProgramOMASAPIResponse
+public class GovernanceZoneResponse extends GovernanceProgramOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
@@ -32,7 +32,7 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
     /**
      * Default constructor
      */
-    public ZoneResponse()
+    public GovernanceZoneResponse()
     {
         super();
     }
@@ -43,7 +43,7 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
      *
      * @param template object to copy
      */
-    public ZoneResponse(ZoneResponse template)
+    public GovernanceZoneResponse(GovernanceZoneResponse template)
     {
         super(template);
 
@@ -84,7 +84,7 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ZoneResponse{" +
+        return "GovernanceZoneResponse{" +
                 "element=" + element +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -113,7 +113,7 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof ZoneResponse))
+        if (!(objectToCompare instanceof GovernanceZoneResponse))
         {
             return false;
         }
@@ -121,7 +121,7 @@ public class ZoneResponse extends GovernanceProgramOMASAPIResponse
         {
             return false;
         }
-        ZoneResponse that = (ZoneResponse) objectToCompare;
+        GovernanceZoneResponse that = (GovernanceZoneResponse) objectToCompare;
         return Objects.equals(element, that.element);
     }
 

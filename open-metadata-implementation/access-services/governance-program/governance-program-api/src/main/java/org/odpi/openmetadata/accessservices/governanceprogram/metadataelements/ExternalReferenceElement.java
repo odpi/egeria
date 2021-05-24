@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReference;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceProperties;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -14,31 +14,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ElementHeader provides the base class for many of the definitions that define the data strategy
- * and governance program.  It includes many of the common fields:
- *
- * <ul>
- *     <li>GUID</li>
- *     <li>Type</li>
- *     <li>Document Id</li>
- *     <li>Title</li>
- *     <li>Summary</li>
- * </ul>
+ * ExternalReferenceElement stores information about an link to an external resource that is relevant to this element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceReferenceableHeader extends ElementHeader
+public class ExternalReferenceElement implements MetadataElement, Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ExternalReference> externalReferences   = null;
-    private Map<String, String>     additionalProperties = null;
+    private ElementHeader               elementHeader = null;
+    private ExternalReferenceProperties properties    = null;
 
     /**
      * Default Constructor
      */
-    public GovernanceReferenceableHeader()
+    public ExternalReferenceElement()
     {
     }
 
@@ -48,45 +39,57 @@ public class GovernanceReferenceableHeader extends ElementHeader
      *
      * @param template object being copied
      */
-    public GovernanceReferenceableHeader(GovernanceReferenceableHeader template)
+    public ExternalReferenceElement(ExternalReferenceElement template)
     {
         if (template != null)
         {
-            this.externalReferences = template.getExternalReferences();
+            this.elementHeader = template.getElementHeader();
+            this.properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the list of links to external documentation that are relevant to this governance definition.
+     * Return the element header associated with the properties.
+     *
+     * @return element header object
+     */
+    public ElementHeader getElementHeader()
+    {
+        return elementHeader;
+    }
+
+
+    /**
+     * Set up the element header associated with the properties.
+     *
+     * @param elementHeader element header object
+     */
+    public void setElementHeader(ElementHeader elementHeader)
+    {
+        this.elementHeader = elementHeader;
+    }
+
+
+    /**
+     * Return the link to external documentation that are relevant to this element.
      *
      * @return list of external references
      */
-    public List<ExternalReference> getExternalReferences()
+    public ExternalReferenceProperties getProperties()
     {
-        if (externalReferences == null)
-        {
-            return null;
-        }
-        else if (externalReferences.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return externalReferences;
-        }
+        return properties;
     }
 
 
     /**
-     * Set up the list of links to external documentation that are relevant to this governance definition.
+     * Set up the list of links to external documentation that are relevant to this element.
      *
-     * @param externalReferences list of external references
+     * @param properties of external references
      */
-    public void setExternalReferences(List<ExternalReference> externalReferences)
+    public void setProperties(ExternalReferenceProperties properties)
     {
-        this.externalReferences = externalReferences;
+        this.properties = properties;
     }
 
 
@@ -98,12 +101,10 @@ public class GovernanceReferenceableHeader extends ElementHeader
     @Override
     public String toString()
     {
-        return "GovernanceReferenceableHeader{" +
-                "externalReferences=" + externalReferences +
-                ", additionalProperties=" + additionalProperties +
-                ", GUID='" + getGUID() + '\'' +
-                ", type='" + getType() + '\'' +
-                '}';
+        return "ExternalReferenceElement{" +
+                       "elementHeader=" + elementHeader +
+                       ", properties=" + properties +
+                       '}';
     }
 
 
@@ -124,13 +125,9 @@ public class GovernanceReferenceableHeader extends ElementHeader
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        GovernanceReferenceableHeader that = (GovernanceReferenceableHeader) objectToCompare;
-        return Objects.equals(externalReferences, that.externalReferences) &&
-                       Objects.equals(additionalProperties, that.additionalProperties);
+        ExternalReferenceElement that = (ExternalReferenceElement) objectToCompare;
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(properties, that.properties);
     }
 
 
@@ -142,6 +139,6 @@ public class GovernanceReferenceableHeader extends ElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalReferences, additionalProperties);
+        return Objects.hash(super.hashCode(), properties, elementHeader);
     }
 }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceOfficerElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -15,23 +15,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GUIDResponse is the response structure used on the OMAS REST API calls that return a
- * unique identifier (governanceOfficer) object as a response.
+ * GovernanceRoleResponse is the response structure used on the OMAS REST API calls that returns a
+ * governance role object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
+public class GovernanceRoleResponse extends GovernanceProgramOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private GovernanceOfficerElement governanceOfficer = null;
+    private GovernanceRoleElement element = null;
 
 
     /**
      * Default constructor
      */
-    public GovernanceOfficerResponse()
+    public GovernanceRoleResponse()
     {
         super();
     }
@@ -42,36 +42,36 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
      *
      * @param template object to copy
      */
-    public GovernanceOfficerResponse(GovernanceOfficerResponse template)
+    public GovernanceRoleResponse(GovernanceRoleResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.governanceOfficer = template.getGovernanceOfficer();
+            this.element = template.getElement();
         }
     }
 
 
     /**
-     * Return the governanceOfficer result.
+     * Return the element result.
      *
-     * @return GovernanceOfficerProperties object
+     * @return GovernanceRoleProperties object
      */
-    public GovernanceOfficerElement getGovernanceOfficer()
+    public GovernanceRoleElement getElement()
     {
-        return governanceOfficer;
+        return element;
     }
 
 
     /**
-     * Set up the governanceOfficer result.
+     * Set up the element result.
      *
-     * @param element GovernanceOfficerProperties object
+     * @param element GovernanceRoleProperties object
      */
-    public void setGovernanceOfficer(GovernanceOfficerElement element)
+    public void setElement(GovernanceRoleElement element)
     {
-        this.governanceOfficer = element;
+        this.element = element;
     }
 
 
@@ -83,8 +83,8 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
     @Override
     public String toString()
     {
-        return "GovernanceOfficerResponse{" +
-                "governanceOfficer='" + getGovernanceOfficer() + '\'' +
+        return "GovernanceRoleResponse{" +
+                "element='" + getElement() + '\'' +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -112,7 +112,7 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceOfficerResponse))
+        if (!(objectToCompare instanceof GovernanceRoleResponse))
         {
             return false;
         }
@@ -120,8 +120,8 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
         {
             return false;
         }
-        GovernanceOfficerResponse that = (GovernanceOfficerResponse) objectToCompare;
-        return Objects.equals(governanceOfficer, that.governanceOfficer);
+        GovernanceRoleResponse that = (GovernanceRoleResponse) objectToCompare;
+        return Objects.equals(element, that.element);
     }
 
 
@@ -133,6 +133,6 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), governanceOfficer);
+        return Objects.hash(super.hashCode(), element);
     }
 }

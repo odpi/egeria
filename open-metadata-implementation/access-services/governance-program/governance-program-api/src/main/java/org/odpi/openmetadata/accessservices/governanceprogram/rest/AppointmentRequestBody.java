@@ -22,7 +22,7 @@ public class AppointmentRequestBody extends GovernanceProgramOMASAPIRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private String guid          = null;
+    private String profileGUID   = null;
     private Date   effectiveDate = null;
 
 
@@ -45,7 +45,8 @@ public class AppointmentRequestBody extends GovernanceProgramOMASAPIRequestBody
 
         if (template != null)
         {
-            this.guid = template.getGUID();
+            this.profileGUID = template.getProfileGUID();
+            this.effectiveDate = template.getEffectiveDate();
         }
     }
 
@@ -55,9 +56,9 @@ public class AppointmentRequestBody extends GovernanceProgramOMASAPIRequestBody
      *
      * @return String identifier
      */
-    public String getGUID()
+    public String getProfileGUID()
     {
-        return guid;
+        return profileGUID;
     }
 
 
@@ -66,9 +67,9 @@ public class AppointmentRequestBody extends GovernanceProgramOMASAPIRequestBody
      *
      * @param guid String identifier
      */
-    public void setGUID(String guid)
+    public void setProfileGUID(String guid)
     {
-        this.guid = guid;
+        this.profileGUID = guid;
     }
 
 
@@ -103,7 +104,7 @@ public class AppointmentRequestBody extends GovernanceProgramOMASAPIRequestBody
     public String toString()
     {
         return "AppointmentRequestBody{" +
-                "guid='" + guid + '\'' +
+                "profileGUID='" + profileGUID + '\'' +
                 ", effectiveDate=" + effectiveDate +
                 '}';
     }
@@ -131,7 +132,7 @@ public class AppointmentRequestBody extends GovernanceProgramOMASAPIRequestBody
             return false;
         }
         AppointmentRequestBody that = (AppointmentRequestBody) objectToCompare;
-        return Objects.equals(guid, that.guid) &&
+        return Objects.equals(profileGUID, that.profileGUID) &&
                 Objects.equals(effectiveDate, that.effectiveDate);
     }
 
@@ -144,6 +145,6 @@ public class AppointmentRequestBody extends GovernanceProgramOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, effectiveDate);
+        return Objects.hash(profileGUID, effectiveDate);
     }
 }

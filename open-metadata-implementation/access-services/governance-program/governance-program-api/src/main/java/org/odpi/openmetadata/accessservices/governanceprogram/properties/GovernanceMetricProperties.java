@@ -2,40 +2,42 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceMetric stores information about the way activity associated with a governance definition is to be measured.
+ * GovernanceMetricProperties stores information about the way activity associated with a governance definition is to be measured.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceMetric implements Serializable
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = GovernanceDefinitionMetric.class, name = "GovernanceDefinitionMetric"),
+        })
+
+public class GovernanceMetricProperties extends ReferenceableProperties
 {
     private static final long   serialVersionUID = 1L;
 
-    private String              guid                 = null;
-    private List<String>        classifications      = null;
-    private String              qualifiedName        = null;
+    private int                 domainIdentifier     = 0;
     private String              displayName          = null;
     private String              description          = null;
     private String              measurement          = null;
     private String              target               = null;
-    private Map<String, Object> additionalProperties = null;
 
 
     /**
      * Default constructor
      */
-    public GovernanceMetric()
+    public GovernanceMetricProperties()
     {
         super();
     }
@@ -46,99 +48,44 @@ public class GovernanceMetric implements Serializable
      *
      * @param template element to copy
      */
-    public GovernanceMetric(GovernanceMetric template)
+    public GovernanceMetricProperties(GovernanceMetricProperties template)
     {
+        super (template);
+
         if (template != null)
         {
             /*
              * Copy the values from the supplied template.
              */
-            guid                 = template.getGUID();
-            classifications      = template.getClassifications();
-            qualifiedName        = template.getQualifiedName();
-            displayName          = template.getDisplayName();
-            description          = template.getDescription();
-            measurement          = template.getMeasurement();
-            target               = template.getTarget();
-            additionalProperties = template.getAdditionalProperties();
+            domainIdentifier = template.getDomainIdentifier();
+            displayName      = template.getDisplayName();
+            description      = template.getDescription();
+            measurement      = template.getMeasurement();
+            target           = template.getTarget();
         }
     }
 
 
+
     /**
-     * Return the unique identifier for the governance metric.
+     * Return the identifier of the governance domain that this metric is managed by.
      *
-     * @return String unique id
+     * @return int identifier
      */
-    public String getGUID()
+    public int getDomainIdentifier()
     {
-        return guid;
+        return domainIdentifier;
     }
 
 
     /**
-     * Set up the unique identifier for the governance metric.
+     * Set up the identifier of the governance domain that this metric is managed by.
      *
-     * @param guid String unique identifier
+     * @param domainIdentifier int identifier
      */
-    public void setGUID(String guid)
+    public void setDomainIdentifier(int domainIdentifier)
     {
-        this.guid = guid;
-    }
-
-
-    /**
-     * Return the list of classifications associated with the governance metric.
-     *
-     * @return Classifications  list of classifications
-     */
-    public List<String> getClassifications()
-    {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(classifications);
-        }
-    }
-
-
-    /**
-     * Set up the classifications associated with the governance metric.
-     *
-     * @param classifications list of classifications
-     */
-    public void setClassifications(List<String> classifications)
-    {
-        this.classifications = classifications;
-    }
-
-
-    /**
-     * Set up the fully qualified name.
-     *
-     * @param qualifiedName String name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
-    }
-
-
-    /**
-     * Returns the fully qualified name.
-     *
-     * @return qualifiedName
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
+        this.domainIdentifier = domainIdentifier;
     }
 
 
@@ -218,37 +165,6 @@ public class GovernanceMetric implements Serializable
     }
 
 
-    /**
-     * Set up additional properties.
-     *
-     * @param additionalProperties Additional properties object
-     */
-    public void setAdditionalProperties(Map<String,Object> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return a copy of the additional properties.  Null means no additional properties are available.
-     *
-     * @return AdditionalProperties
-     */
-    public Map<String,Object> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
 
 
     /**
@@ -259,17 +175,17 @@ public class GovernanceMetric implements Serializable
     @Override
     public String toString()
     {
-        return "ExternalReference{" +
-                "guid='" + guid + '\'' +
-                ", classifications=" + classifications +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", measurement='" + measurement + '\'' +
-                ", target='" + target + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", GUID='" + getGUID() +
-                '}';
+        return "GovernanceMetricProperties{" +
+                       "domainIdentifier=" + domainIdentifier +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", measurement='" + measurement + '\'' +
+                       ", target='" + target + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -286,19 +202,20 @@ public class GovernanceMetric implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceMetric))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        GovernanceMetric that = (GovernanceMetric) objectToCompare;
-        return Objects.equals(guid, that.guid) &&
-                Objects.equals(getClassifications(), that.getClassifications()) &&
-                Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
-                Objects.equals(getMeasurement(), that.getMeasurement()) &&
-                Objects.equals(getTarget(), that.getTarget()) &&
-                Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription());
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        GovernanceMetricProperties that = (GovernanceMetricProperties) objectToCompare;
+        return domainIdentifier == that.domainIdentifier &&
+                       Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(measurement, that.measurement) &&
+                       Objects.equals(target, that.target);
     }
 
 
@@ -310,6 +227,6 @@ public class GovernanceMetric implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid);
+        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, measurement, target);
     }
 }

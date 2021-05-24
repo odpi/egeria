@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.properties;
+package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,23 +15,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The GovernanceMetricImplementation defines the query and data set that supports the measurements
  * for a GovernanceMetricProperties.  The list of connections to the data set are also provided to enable
- * the client to switch to the Asset Consumer OMAS and query the values in the data set.
+ * the client to query the values in the data set.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceMetricImplementation implements Serializable
+public class GovernanceMetricImplementation extends GovernanceMetricElement
 {
     private static final long          serialVersionUID = 1L;
 
-    private String       implementationGUID        = null;
-    private String       implementationDescription = null;
-    private String       query                     = null;
-    private String       dataSetGUID               = null;
-    private String       dataSetType               = null;
-    private String       dataSetQualifiedName      = null;
-    private String       dataSetDisplayName        = null;
-    private List<String> dataSetConnectionGUIDs    = null;
+    private String            implementationGUID        = null;
+    private String            implementationDescription = null;
+    private String            query                     = null;
+    private String            dataSetGUID               = null;
+    private String            dataSetType               = null;
+    private String            dataSetQualifiedName      = null;
+    private String            dataSetDisplayName        = null;
+    private List<ElementStub> dataSetConnectionGUIDs    = null;
 
 
     /**
@@ -42,6 +41,7 @@ public class GovernanceMetricImplementation implements Serializable
     {
     }
 
+
     /**
      * Copy/clone constructor
      *
@@ -49,6 +49,8 @@ public class GovernanceMetricImplementation implements Serializable
      */
     public GovernanceMetricImplementation(GovernanceMetricImplementation  template)
     {
+        super(template);
+
         if (template != null)
         {
             this.implementationGUID = template.getImplementationGUID();
@@ -60,6 +62,17 @@ public class GovernanceMetricImplementation implements Serializable
             this.dataSetDisplayName = template.getDataSetDisplayName();
             this.dataSetConnectionGUIDs = template.getDataSetConnectionGUIDs();
         }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public GovernanceMetricImplementation(GovernanceMetricElement  template)
+    {
+        super(template);
     }
 
 
@@ -222,24 +235,24 @@ public class GovernanceMetricImplementation implements Serializable
 
 
     /**
-     * Return the list of connection identifiers associated with the data set.  These GUIDs can be used
-     * with the Asset Consumer OMAS to retrieve the measurement values.
+     * Return the list of connection identifiers associated with the data set.  These identifiers can be used
+     * to retrieve the measurement values.
      *
-     * @return list of connection guids
+     * @return list of connection headers
      */
-    public List<String> getDataSetConnectionGUIDs()
+    public List<ElementStub> getDataSetConnectionGUIDs()
     {
         return dataSetConnectionGUIDs;
     }
 
 
     /**
-     * Set up the ist of connection identifiers associated with the data set.  These GUIDs can be used
-     * with the Asset Consumer OMAS to retrieve the measurement values.
+     * Set up the list of connection identifiers associated with the data set.  These identifiers can be used
+     * to retrieve the measurement values.
      *
-     * @param dataSetConnectionGUIDs list of connection guids
+     * @param dataSetConnectionGUIDs list of connection headers
      */
-    public void setDataSetConnectionGUIDs(List<String> dataSetConnectionGUIDs)
+    public void setDataSetConnectionGUIDs(List<ElementStub> dataSetConnectionGUIDs)
     {
         this.dataSetConnectionGUIDs = dataSetConnectionGUIDs;
     }
@@ -254,20 +267,22 @@ public class GovernanceMetricImplementation implements Serializable
     public String toString()
     {
         return "GovernanceMetricImplementation{" +
-                "implementationGUID='" + implementationGUID + '\'' +
-                ", implementationDescription='" + implementationDescription + '\'' +
-                ", query='" + query + '\'' +
-                ", dataSetGUID='" + dataSetGUID + '\'' +
-                ", dataSetType='" + dataSetType + '\'' +
-                ", dataSetQualifiedName='" + dataSetQualifiedName + '\'' +
-                ", dataSetDisplayName='" + dataSetDisplayName + '\'' +
-                ", dataSetConnectionGUIDs=" + dataSetConnectionGUIDs +
-                '}';
+                       "implementationGUID='" + implementationGUID + '\'' +
+                       ", implementationDescription='" + implementationDescription + '\'' +
+                       ", query='" + query + '\'' +
+                       ", dataSetGUID='" + dataSetGUID + '\'' +
+                       ", dataSetType='" + dataSetType + '\'' +
+                       ", dataSetQualifiedName='" + dataSetQualifiedName + '\'' +
+                       ", dataSetDisplayName='" + dataSetDisplayName + '\'' +
+                       ", dataSetConnectionGUIDs=" + dataSetConnectionGUIDs +
+                       ", elementHeader=" + getElementHeader() +
+                       ", properties=" + getProperties() +
+                       '}';
     }
 
 
     /**
-     * Test the properties of the GovernanceStrategyProperties to determine if the supplied object is equal to this one.
+     * Test the properties of the GovernanceMetricImplementation to determine if the supplied object is equal to this one.
      *
      * @param objectToCompare object
      * @return boolean evaluation
@@ -279,19 +294,23 @@ public class GovernanceMetricImplementation implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceMetricImplementation))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
         GovernanceMetricImplementation that = (GovernanceMetricImplementation) objectToCompare;
-        return Objects.equals(getImplementationGUID(), that.getImplementationGUID()) &&
-                Objects.equals(getImplementationDescription(), that.getImplementationDescription()) &&
-                Objects.equals(getQuery(), that.getQuery()) &&
-                Objects.equals(getDataSetGUID(), that.getDataSetGUID()) &&
-                Objects.equals(getDataSetType(), that.getDataSetType()) &&
-                Objects.equals(getDataSetQualifiedName(), that.getDataSetQualifiedName()) &&
-                Objects.equals(getDataSetDisplayName(), that.getDataSetDisplayName()) &&
-                Objects.equals(getDataSetConnectionGUIDs(), that.getDataSetConnectionGUIDs());
+        return Objects.equals(implementationGUID, that.implementationGUID) &&
+                       Objects.equals(implementationDescription, that.implementationDescription) &&
+                       Objects.equals(query, that.query) &&
+                       Objects.equals(dataSetGUID, that.dataSetGUID) &&
+                       Objects.equals(dataSetType, that.dataSetType) &&
+                       Objects.equals(dataSetQualifiedName, that.dataSetQualifiedName) &&
+                       Objects.equals(dataSetDisplayName, that.dataSetDisplayName) &&
+                       Objects.equals(dataSetConnectionGUIDs, that.dataSetConnectionGUIDs);
     }
 
 
@@ -303,6 +322,7 @@ public class GovernanceMetricImplementation implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getImplementationGUID());
+        return Objects.hash(super.hashCode(), implementationGUID, implementationDescription, query, dataSetGUID, dataSetType, dataSetQualifiedName,
+                            dataSetDisplayName, dataSetConnectionGUIDs);
     }
 }

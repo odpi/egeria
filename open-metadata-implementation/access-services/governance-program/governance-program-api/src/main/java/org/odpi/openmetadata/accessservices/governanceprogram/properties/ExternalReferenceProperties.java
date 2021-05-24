@@ -13,16 +13,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ExternalReference stores information about an link to an external resource that is relevant to this asset.
+ * ExternalReferenceProperties stores information about an link to an external resource that is relevant to this element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalReference implements Serializable
+public class ExternalReferenceProperties extends ReferenceableProperties
 {
     private static final long   serialVersionUID     = 1L;
 
-    private String              externalReferenceId  = null;
     private String              localReferenceId     = null;
     private String              displayName          = null;
     private String              linkDescription      = null;
@@ -30,13 +29,12 @@ public class ExternalReference implements Serializable
     private String              uri                  = null;
     private String              version              = null;
     private String              organization         = null;
-    private Map<String, Object> additionalProperties = null;
 
 
     /**
      * Default constructor
      */
-    public ExternalReference()
+    public ExternalReferenceProperties()
     {
         super();
     }
@@ -47,16 +45,16 @@ public class ExternalReference implements Serializable
      *
      * @param template element to copy
      */
-    public ExternalReference(ExternalReference template)
+    public ExternalReferenceProperties(ExternalReferenceProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             /*
              * Copy the values from the supplied template.
              */
             localReferenceId     = template.getLocalReferenceId();
-            additionalProperties = template.getAdditionalProperties();
-            externalReferenceId  = template.getExternalReferenceId();
             linkDescription      = template.getLinkDescription();
             displayName          = template.getDisplayName();
             uri                  = template.getURI();
@@ -65,26 +63,6 @@ public class ExternalReference implements Serializable
             organization         = template.getOrganization();
         }
     }
-
-
-    /**
-     * Return the fully qualified name.
-     *
-     * @return String externalReferenceId
-     */
-    public String getExternalReferenceId() { return externalReferenceId; }
-
-
-    /**
-     * Set up the fully qualified name.
-     *
-     * @param externalReferenceId String identifier
-     */
-    public void setExternalReferenceId(String externalReferenceId)
-    {
-        this.externalReferenceId = externalReferenceId;
-    }
-
 
 
     /**
@@ -225,39 +203,6 @@ public class ExternalReference implements Serializable
 
 
     /**
-     * Set up additional properties.
-     *
-     * @param additionalProperties Additional properties object
-     */
-    public void setAdditionalProperties(Map<String,Object> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return a copy of the additional properties.  Null means no additional properties are available.
-     *
-     * @return AdditionalProperties
-     */
-    public Map<String,Object> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -265,18 +210,20 @@ public class ExternalReference implements Serializable
     @Override
     public String toString()
     {
-        return "ExternalReference{" +
-                "displayName='" + displayName + '\'' +
-                ", externalReferenceId='" + externalReferenceId + '\'' +
-                ", localReferenceId='" + localReferenceId + '\'' +
-                ", URI='" + uri + '\'' +
-                ", linkDescription='" + linkDescription + '\'' +
-                ", uri='" + uri + '\'' +
-                ", resourceDescription='" + resourceDescription + '\'' +
-                ", version='" + version + '\'' +
-                ", organization='" + organization + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                '}';
+        return "ExternalReferenceProperties{" +
+                       "localReferenceId='" + localReferenceId + '\'' +
+                       ", displayName='" + displayName + '\'' +
+                       ", linkDescription='" + linkDescription + '\'' +
+                       ", resourceDescription='" + resourceDescription + '\'' +
+                       ", uri='" + uri + '\'' +
+                       ", version='" + version + '\'' +
+                       ", organization='" + organization + '\'' +
+                       ", URI='" + getURI() + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -293,20 +240,22 @@ public class ExternalReference implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof ExternalReference))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        ExternalReference that = (ExternalReference) objectToCompare;
-        return  Objects.equals(getLocalReferenceId(), that.getLocalReferenceId()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
-                Objects.equals(getExternalReferenceId(), that.getExternalReferenceId()) &&
-                Objects.equals(getLinkDescription(), that.getLinkDescription()) &&
-                Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(uri, that.uri) &&
-                Objects.equals(getResourceDescription(), that.getResourceDescription()) &&
-                Objects.equals(getVersion(), that.getVersion()) &&
-                Objects.equals(getOrganization(), that.getOrganization());
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        ExternalReferenceProperties that = (ExternalReferenceProperties) objectToCompare;
+        return Objects.equals(localReferenceId, that.localReferenceId) &&
+                       Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(linkDescription, that.linkDescription) &&
+                       Objects.equals(resourceDescription, that.resourceDescription) &&
+                       Objects.equals(uri, that.uri) &&
+                       Objects.equals(version, that.version) &&
+                       Objects.equals(organization, that.organization);
     }
 
 
@@ -318,7 +267,6 @@ public class ExternalReference implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(externalReferenceId, localReferenceId, displayName, linkDescription, resourceDescription, uri, version, organization,
-                            additionalProperties);
+        return Objects.hash(localReferenceId, displayName, linkDescription, resourceDescription, uri, version, organization);
     }
 }

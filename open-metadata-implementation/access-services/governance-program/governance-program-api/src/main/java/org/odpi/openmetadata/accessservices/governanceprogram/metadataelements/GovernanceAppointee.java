@@ -14,26 +14,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceOfficerAppointee describes an individual's appointment as
- * a governance officer.  It includes their personal details along with the
- * start and end date of their appointment.
+ * GovernanceAppointee describes an individual's appointment as
+ * a governance officer or to a specific governance role.  It includes their personal details along with the
+ * start and end date of their appointment.  The elementHeader is from the
+ * PersonRoleAppointment relationship.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceOfficerAppointee implements Serializable
+public class GovernanceAppointee implements Serializable, MetadataElement
 {
     private static final long          serialVersionUID = 1L;
 
-    private PersonalProfile profile   = null;
-    private Date            startDate = null;
-    private Date            endDate   = null;
+    private ElementHeader  elementHeader = null;
+    private ProfileElement profile   = null;
+    private Date           startDate = null;
+    private Date           endDate   = null;
 
 
     /**
      * Default constructor
      */
-    public GovernanceOfficerAppointee()
+    public GovernanceAppointee()
     {
     }
 
@@ -43,14 +45,40 @@ public class GovernanceOfficerAppointee implements Serializable
      *
      * @param template object to copy
      */
-    public GovernanceOfficerAppointee(GovernanceOfficerAppointee  template)
+    public GovernanceAppointee(GovernanceAppointee template)
     {
         if (template != null)
         {
+            this.elementHeader = template.getElementHeader();
             this.profile = template.getProfile();
             this.startDate = template.getStartDate();
             this.endDate = template.getEndDate();
         }
+    }
+
+
+
+    /**
+     * Return the element header associated with the properties.
+     *
+     * @return element header object
+     */
+    @Override
+    public ElementHeader getElementHeader()
+    {
+        return elementHeader;
+    }
+
+
+    /**
+     * Set up the element header associated with the properties.
+     *
+     * @param elementHeader element header object
+     */
+    @Override
+    public void setElementHeader(ElementHeader elementHeader)
+    {
+        this.elementHeader = elementHeader;
     }
 
 
@@ -59,7 +87,7 @@ public class GovernanceOfficerAppointee implements Serializable
      *
      * @return personal profile object
      */
-    public PersonalProfile getProfile()
+    public ProfileElement getProfile()
     {
         if (profile == null)
         {
@@ -77,7 +105,7 @@ public class GovernanceOfficerAppointee implements Serializable
      *
      * @param profile personal profile object
      */
-    public void setProfile(PersonalProfile profile)
+    public void setProfile(ProfileElement profile)
     {
         this.profile = profile;
     }
@@ -90,14 +118,7 @@ public class GovernanceOfficerAppointee implements Serializable
      */
     public Date getStartDate()
     {
-        if (startDate == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(startDate.getTime());
-        }
+        return startDate;
     }
 
 
@@ -119,14 +140,8 @@ public class GovernanceOfficerAppointee implements Serializable
      */
     public Date getEndDate()
     {
-        if (endDate == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(endDate.getTime());
-        }
+        return endDate;
+
     }
 
 
@@ -149,11 +164,12 @@ public class GovernanceOfficerAppointee implements Serializable
     @Override
     public String toString()
     {
-        return "GovernanceOfficerAppointee{" +
-                ", profile=" + profile +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
+        return "GovernanceAppointee{" +
+                       "elementHeader=" + elementHeader +
+                       ", profile=" + profile +
+                       ", startDate=" + startDate +
+                       ", endDate=" + endDate +
+                       '}';
     }
 
 
@@ -174,8 +190,9 @@ public class GovernanceOfficerAppointee implements Serializable
         {
             return false;
         }
-        GovernanceOfficerAppointee that = (GovernanceOfficerAppointee) objectToCompare;
-        return  Objects.equals(getProfile(), that.getProfile()) &&
+        GovernanceAppointee that = (GovernanceAppointee) objectToCompare;
+        return  Objects.equals(getElementHeader(), that.getElementHeader()) &&
+                Objects.equals(getProfile(), that.getProfile()) &&
                 Objects.equals(getStartDate(), that.getStartDate()) &&
                 Objects.equals(getEndDate(), that.getEndDate());
     }
@@ -189,6 +206,6 @@ public class GovernanceOfficerAppointee implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getProfile(), getStartDate(), getEndDate());
+        return Objects.hash(getProfile(), getElementHeader(), getStartDate(), getEndDate());
     }
 }

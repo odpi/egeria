@@ -12,17 +12,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * LicenseType defines a license that the organization recognizes and has governance
- * definitions to support it.
+ * GovernanceDefinitionMetric defines the metric for a governance definition.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceDefinitionMetric extends GovernanceMetric
+public class GovernanceDefinitionMetric extends GovernanceMetricProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String   rationale = null;
+    private String rationale = null;
 
 
     /**
@@ -85,8 +84,6 @@ public class GovernanceDefinitionMetric extends GovernanceMetric
     {
         return "GovernanceDefinitionMetric{" +
                        "rationale='" + rationale + '\'' +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +

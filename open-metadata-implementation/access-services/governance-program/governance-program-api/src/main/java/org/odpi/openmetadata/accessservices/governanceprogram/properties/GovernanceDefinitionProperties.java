@@ -4,7 +4,10 @@ package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,17 +19,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * and governance program.  It includes many of the common fields:
  *
  * <ul>
- *     <li>GUID</li>
- *     <li>Type</li>
  *     <li>Document Id</li>
  *     <li>Title</li>
  *     <li>Summary</li>
  *     <li>Description</li>
  *     <li>Scope</li>
+ *     <li>Domain Identifier</li>
  *     <li>Status</li>
  *     <li>Priority</li>
  *     <li>Implications</li>
  *     <li>Outcomes</li>
+ *     <li>Results</li>
  *     <li>AdditionalProperties</li>
  * </ul>
  */
@@ -38,27 +41,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = GovernanceDriverProperties.class, name = "GovernanceDriverProperties"),
-                @JsonSubTypes.Type(value = GovernancePolicyProperties.class, name = "GovernancePolicyProperties"),
-                @JsonSubTypes.Type(value = GovernanceControlProperties.class, name = "GovernanceControlProperties"),
-                @JsonSubTypes.Type(value = LicenseType.class,       name = "LicenseType"),
-                @JsonSubTypes.Type(value = CertificationType.class, name = "CertificationType")
+                @JsonSubTypes.Type(value = LicenseTypeProperties.class, name = "LicenseTypeProperties"),
+                @JsonSubTypes.Type(value = CertificationTypeProperties.class, name = "CertificationTypeProperties")
         })
-public abstract class GovernanceDefinitionProperties extends ReferenceableProperties
+public class GovernanceDefinitionProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
+
+    private String                           documentIdentifier   = null;
+    private Map<String, String>              additionalProperties = null;
 
     private String                           title                = null;
     private String                           summary              = null;
     private String                           description          = null;
     private String                           scope                = null;
+    private int                              domainIdentifier     = 0;
     private GovernanceDefinitionStatus       status               = null;
     private String                           priority             = null;
     private List<String>                     implications         = null;
     private List<String>                     outcomes             = null;
+    private List<String>                     results              = null;
 
-    private List<GovernanceDefinitionMetric> governanceMetrics    = null;
-    private List<GovernanceZoneDefinition>   governanceZones      = null;
+    private String                           typeName             = null;
+    private Map<String, Object>              extendedProperties   = null;
 
 
     /**
@@ -77,23 +82,140 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
      */
     public GovernanceDefinitionProperties(GovernanceDefinitionProperties template)
     {
-        super(template);
-
         if (template != null)
         {
+            this.documentIdentifier = template.getDocumentIdentifier();
+            this.additionalProperties = template.getAdditionalProperties();
             this.title = template.getTitle();
             this.summary = template.getSummary();
             this.description = template.getDescription();
             this.scope = template.getScope();
+            this.domainIdentifier = template.getDomainIdentifier();
             this.status = template.getStatus();
             this.priority = template.getPriority();
             this.implications = template.getImplications();
             this.outcomes = template.getOutcomes();
-
-            this.governanceMetrics = template.getGovernanceMetrics();
-            this.governanceZones = template.getGovernanceZones();
+            this.results = template.getResults();
+            this.typeName = template.getTypeName();
+            this.extendedProperties = template.getExtendedProperties();
         }
     }
+
+
+    /**
+     * Return the open metadata type name of this object - this is used to create a subtype of
+     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
+     *
+     * @return string type name
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Set up the open metadata type name of this object - this is used to create a subtype of
+     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
+     *
+     * @param typeName string type name
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
+    }
+
+
+    /**
+     * Returns the stored qualified name property for the metadata entity.
+     * If no qualified name is available then the empty string is returned.
+     *
+     * @return documentIdentifier
+     */
+    public String getDocumentIdentifier()
+    {
+        return documentIdentifier;
+    }
+
+
+    /**
+     * Set up the fully qualified name.
+     *
+     * @param documentIdentifier String name
+     */
+    public void setDocumentIdentifier(String documentIdentifier)
+    {
+        this.documentIdentifier = documentIdentifier;
+    }
+
+
+    /**
+     * Return a copy of the additional properties.  Null means no additional properties are available.
+     *
+     * @return AdditionalProperties
+     */
+    public Map<String, String> getAdditionalProperties()
+    {
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(additionalProperties);
+        }
+    }
+
+
+    /**
+     * Set up additional properties.
+     *
+     * @param additionalProperties Additional properties object
+     */
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
+    {
+        this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
+     * Return the properties that are defined for a subtype of referenceable but are not explicitly
+     * supported by the bean.
+     *
+     * @return map of properties
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(extendedProperties);
+        }
+    }
+
+
+    /**
+     * Set up the properties that are defined for a subtype of referenceable but are not explicitly
+     * supported by the bean.
+     *
+     * @param extendedProperties map of properties
+     */
+    public void setExtendedProperties(Map<String, Object> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
+    }
+
 
 
     /**
@@ -188,6 +310,28 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
 
 
     /**
+     * Return the identifier of the governance domain that this definition belongs to (0=all).
+     *
+     * @return int
+     */
+    public int getDomainIdentifier()
+    {
+        return domainIdentifier;
+    }
+
+
+    /**
+     * Set up the identifier of the governance domain that this definition belongs to (0=all).
+     *
+     * @param domainIdentifier int
+     */
+    public void setDomainIdentifier(int domainIdentifier)
+    {
+        this.domainIdentifier = domainIdentifier;
+    }
+
+
+    /**
      * Return the status of this governance definition.  The meaning of the different values are defined in the
      * GovernanceDefinitionStatus enumeration.
      *
@@ -262,7 +406,7 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
 
 
     /**
-     * Return the list of outcomes that resulted from implementing this governance definition.
+     * Return the list of expected outcomes from implementing this governance definition.
      *
      * @return list of outcome descriptions
      */
@@ -284,7 +428,7 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
 
 
     /**
-     * Set up the list of outcomes that resulted from implementing this governance definition.
+     * Set up the list of expected outcomes from implementing this governance definition.
      *
      * @param outcomes list of descriptions of outcomes
      */
@@ -294,59 +438,36 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
     }
 
 
-
     /**
-     * Return the governance metrics that have been defined for this governance definition.
+     * Return the list of actual results from implementing this governance definition.
      *
-     * @return metrics definition with rationale
+     * @return list of result descriptions
      */
-    public List<GovernanceDefinitionMetric> getGovernanceMetrics()
+    public List<String> getResults()
     {
-        return governanceMetrics;
-    }
-
-
-    /**
-     * Set up the governance metrics that have been defined for this governance definition.
-     *
-     * @param governanceMetrics metrics definition with rationale
-     */
-    public void setGovernanceMetrics(List<GovernanceDefinitionMetric> governanceMetrics)
-    {
-        this.governanceMetrics = governanceMetrics;
-    }
-
-
-    /**
-     * Return the list of governance zones associates with this definition.
-     *
-     * @return list of governance zones
-     */
-    public List<GovernanceZoneDefinition> getGovernanceZones()
-    {
-        if (governanceZones == null)
+        if (outcomes == null)
         {
             return null;
         }
-        else if (governanceZones.isEmpty())
+        else if (outcomes.isEmpty())
         {
             return null;
         }
         else
         {
-            return governanceZones;
+            return outcomes;
         }
     }
 
 
     /**
-     * Set up the list of governance zones associates with this definition.
+     * Set up the list of actual results from implementing this governance definition.
      *
-     * @param governanceZones list of governance zones
+     * @param results list of description of results
      */
-    public void setGovernanceZones(List<GovernanceZoneDefinition> governanceZones)
+    public void setResults(List<String> results)
     {
-        this.governanceZones = governanceZones;
+        this.results = results;
     }
 
 
@@ -359,23 +480,22 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
     public String toString()
     {
         return "GovernanceDefinitionProperties{" +
-                "title='" + title + '\'' +
-                ", summary='" + summary + '\'' +
-                ", description='" + description + '\'' +
-                ", scope='" + scope + '\'' +
-                ", status=" + status +
-                ", priority='" + priority + '\'' +
-                ", implications=" + implications +
-                ", outcomes=" + outcomes +
-                ", governanceMetrics=" + governanceMetrics +
-                ", governanceZones=" + governanceZones +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "documentIdentifier='" + documentIdentifier + '\'' +
+                       ", additionalProperties=" + additionalProperties +
+                       ", title='" + title + '\'' +
+                       ", summary='" + summary + '\'' +
+                       ", description='" + description + '\'' +
+                       ", scope='" + scope + '\'' +
+                       ", domainIdentifier=" + domainIdentifier +
+                       ", status=" + status +
+                       ", priority='" + priority + '\'' +
+                       ", implications=" + implications +
+                       ", outcomes=" + outcomes +
+                       ", results=" + results +
+                       ", typeName='" + typeName + '\'' +
+                       ", extendedProperties=" + extendedProperties +
+                       '}';
     }
-
 
 
     /**
@@ -395,12 +515,11 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         GovernanceDefinitionProperties that = (GovernanceDefinitionProperties) objectToCompare;
-        return Objects.equals(title, that.title) &&
+        return domainIdentifier == that.domainIdentifier &&
+                       Objects.equals(documentIdentifier, that.documentIdentifier) &&
+                       Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(title, that.title) &&
                        Objects.equals(summary, that.summary) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(scope, that.scope) &&
@@ -408,8 +527,9 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
                        Objects.equals(priority, that.priority) &&
                        Objects.equals(implications, that.implications) &&
                        Objects.equals(outcomes, that.outcomes) &&
-                       Objects.equals(governanceMetrics, that.governanceMetrics) &&
-                       Objects.equals(governanceZones, that.governanceZones);
+                       Objects.equals(results, that.results) &&
+                       Objects.equals(typeName, that.typeName) &&
+                       Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -421,7 +541,7 @@ public abstract class GovernanceDefinitionProperties extends ReferenceableProper
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), title, summary, description, scope, status, priority, implications, outcomes, governanceMetrics,
-                            governanceZones);
+        return Objects.hash(documentIdentifier, additionalProperties, title, summary, description, scope, domainIdentifier, status, priority,
+                            implications, outcomes, results, typeName, extendedProperties);
     }
 }

@@ -2,11 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.AssetElement;
+
 import java.io.Serializable;
 import java.util.Iterator;
 
 
-public class ZoneMembers implements Iterator<AssetProperties>, Serializable
+/**
+ * An iterator to walk through the list of assets assigned to a zone.
+ */
+public class ZoneMembers implements Iterator<AssetElement>, Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -29,7 +34,7 @@ public class ZoneMembers implements Iterator<AssetProperties>, Serializable
      * @return  next element object that has been cloned.
      */
     @Override
-    public AssetProperties next()
+    public AssetElement next()
     {
         return null;
     }

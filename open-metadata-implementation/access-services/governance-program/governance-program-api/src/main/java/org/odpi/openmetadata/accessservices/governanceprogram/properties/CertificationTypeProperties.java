@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CertificationType extends GovernanceDefinitionProperties
+public class CertificationTypeProperties extends GovernanceDefinitionProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class CertificationType extends GovernanceDefinitionProperties
     /**
      * Default Constructor
      */
-    public CertificationType()
+    public CertificationTypeProperties()
     {
     }
 
@@ -40,7 +40,7 @@ public class CertificationType extends GovernanceDefinitionProperties
      *
      * @param template object to copy
      */
-    public CertificationType(CertificationType  template)
+    public CertificationTypeProperties(CertificationTypeProperties template)
     {
         super(template);
 
@@ -81,7 +81,7 @@ public class CertificationType extends GovernanceDefinitionProperties
     @Override
     public String toString()
     {
-        return "CertificationType{" +
+        return "CertificationTypeProperties{" +
                        "details='" + details + '\'' +
                        ", typeName='" + getTypeName() + '\'' +
                        ", documentIdentifier='" + getDocumentIdentifier() + '\'' +
@@ -122,7 +122,7 @@ public class CertificationType extends GovernanceDefinitionProperties
         {
             return false;
         }
-        CertificationType that = (CertificationType) objectToCompare;
+        CertificationTypeProperties that = (CertificationTypeProperties) objectToCompare;
         return Objects.equals(details, that.details);
     }
 
