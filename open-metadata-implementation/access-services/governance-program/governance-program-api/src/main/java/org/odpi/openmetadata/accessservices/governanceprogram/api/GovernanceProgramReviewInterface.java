@@ -19,7 +19,7 @@ public interface GovernanceProgramReviewInterface
      * Return the list of governance definitions associated with a particular governance domain.
      *
      * @param userId calling user
-     * @param typeName option types name to restrict retrieval to a specific type
+     * @param typeName option type name to restrict retrieval to a specific type
      * @param domainIdentifier identifier of the governance domain - 0 = all domains
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
@@ -43,7 +43,7 @@ public interface GovernanceProgramReviewInterface
      * Return the list of governance definitions associated with a unique docId.  In an ideal world, the should be only one.
      *
      * @param userId calling user
-     * @param typeName option types name to restrict retrieval to a specific type
+     * @param typeName option type name to restrict retrieval to a specific type
      * @param docId unique name of the governance definition
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
@@ -107,7 +107,7 @@ public interface GovernanceProgramReviewInterface
      * Return the list of governance definitions that match the search string - this can be a regular expression.
      *
      * @param userId calling user
-     * @param typeName option types name to restrict retrieval to a specific type
+     * @param typeName option type name to restrict retrieval to a specific type
      * @param searchString value to search for
      * @param startFrom where to start from in the list of definition results
      * @param pageSize max number of results to return in one call

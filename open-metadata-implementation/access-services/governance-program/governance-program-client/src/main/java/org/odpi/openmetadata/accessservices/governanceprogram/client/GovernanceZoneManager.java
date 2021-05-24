@@ -3,31 +3,35 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceZoneManagerInterface;
+import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceZonesInterface;
+import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneDefinition;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneDefinitionResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * GovernanceZoneManager is the client used to manage governance zones.
+ * GovernanceZoneManager is the Java client used to manage governance zones.
  */
-public class GovernanceZoneManager implements GovernanceZoneManagerInterface
+public class GovernanceZoneManager implements GovernanceZonesInterface
 {
     private String                      serverName;               /* Initialized in constructor */
     private String                      serverPlatformURLRoot;    /* Initialized in constructor */
     private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private AuditLog                auditLog                = null;
+    private NullRequestBody         nullRequestBody         = new NullRequestBody();
 
 
     /**
@@ -100,8 +104,7 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
 
         this.serverName            = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
-        this.auditLog              = auditLog;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -132,67 +135,339 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
 
         this.serverName            = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
-        this.auditLog              = auditLog;
+        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+    }
+
+
+    /**
+     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param restClient internal client for rest calls
+     * @param maxPageSize pre-initialized parameter limit
+     *
+     * @throws InvalidParameterException bad input parameters
+     */
+    public GovernanceZoneManager(String                      serverName,
+                                 String                      serverPlatformURLRoot,
+                                 GovernanceProgramRESTClient restClient,
+                                 int                         maxPageSize) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName            = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient            = restClient;
     }
 
 
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
-     * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
+     * to the supportedZones, publishedZones and defaultZones properties of an OMAS to control which assets are processed
      * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
      * to indicate which zone(s) they belong to.
      *
      * @param userId calling user
-     * @param qualifiedName unique name for the zone - used in other configuration
-     * @param displayName short display name for the zone
-     * @param description description of the governance zone
-     * @param criteria the criteria for inclusion in a governance zone
-     * @param scope scope of the organization that this some applies to
-     * @param domainIdentifier the identifier of the governance domain where the zone is managed - 0 means ALL
-     * @param additionalProperties additional properties for a governance zone
+     * @param properties  properties for a governance zone
      *
-     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws InvalidParameterException qualifiedName or userId is null; qualifiedName is not unique
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void  createGovernanceZone(String               userId,
-                                      String               qualifiedName,
-                                      String               displayName,
-                                      String               description,
-                                      String               criteria,
-                                      String               scope,
-                                      int                  domainIdentifier,
-                                      Map<String, String>  additionalProperties) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public String createGovernanceZone(String                   userId,
+                                       GovernanceZoneProperties properties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        final String   methodName = "createGovernanceZone";
+        final String methodName = "createGovernanceZone";
 
-        final String   qualifiedNameParameter = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zone-manager/governance-zones";
+        final String propertiesParameter = "properties";
+        final String qualifiedNameParameter = "qualifiedName";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameter, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
 
-        GovernanceZoneProperties requestBody = new GovernanceZoneProperties();
+        GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
+                                                                serverPlatformURLRoot + urlTemplate,
+                                                                properties,
+                                                                serverName,
+                                                                userId);
 
-        requestBody.setQualifiedName(qualifiedName);
-        requestBody.setDisplayName(displayName);
-        requestBody.setDescription(description);
-        requestBody.setCriteria(criteria);
-        requestBody.setScope(scope);
-        requestBody.setDomainIdentifier(domainIdentifier);
-        requestBody.setAdditionalProperties(additionalProperties);
+        return response.getGUID();
+    }
+
+
+    /**
+     * Update the definition of a zone.
+     *
+     * @param userId calling user
+     * @param zoneGUID unique identifier of zone
+     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
+     * @param properties properties to change
+     *
+     * @throws InvalidParameterException guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void updateGovernanceZone(String                   userId,
+                                     String                   zoneGUID,
+                                     boolean                  isMergeUpdate,
+                                     GovernanceZoneProperties properties) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "updateGovernanceZone";
+
+        final String guidParameter = "zoneGUID";
+        final String qualifiedNameParameter = "qualifiedName";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}?isMergeUpdate={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(zoneGUID, guidParameter, methodName);
+        invalidParameterHandler.validateObject(properties, qualifiedNameParameter, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
+        }
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformURLRoot + urlTemplate,
-                                        requestBody,
+                                        properties,
                                         serverName,
-                                        userId);
+                                        userId,
+                                        zoneGUID,
+                                        isMergeUpdate);
     }
 
+
+    /**
+     * Remove the definition of a zone.
+     *
+     * @param userId calling user
+     * @param zoneGUID unique identifier of zone
+     *
+     * @throws InvalidParameterException guid or userId is null; guid is not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void deleteGovernanceZone(String userId,
+                                     String zoneGUID) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        final String methodName = "deleteGovernanceZone";
+
+        final String guidParameter = "zoneGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/delete}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(zoneGUID, guidParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        zoneGUID);
+    }
+
+
+    /**
+     * Link two related governance zones together as part of a hierarchy.
+     * A zone can only have one parent but many child zones.
+     *
+     * @param userId calling user
+     * @param parentZoneGUID unique identifier of the parent zone
+     * @param childZoneGUID unique identifier of the child zone
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void linkZonesInHierarchy(String userId,
+                                     String parentZoneGUID,
+                                     String childZoneGUID) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String methodName = "linkZonesInHierarchy";
+
+        final String parentZoneGUIDParameterName = "parentZoneGUID";
+        final String childZoneGUIDParameterName = "childZoneGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/nested-zone/{3}/link";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentZoneGUID, parentZoneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(childZoneGUID, childZoneGUIDParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        parentZoneGUID,
+                                        childZoneGUID);
+    }
+
+
+    /**
+     * Remove the link between two zones in the zone hierarchy.
+     *
+     * @param userId calling user
+     * @param parentZoneGUID unique identifier of the parent zone
+     * @param childZoneGUID unique identifier of the child zone
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void unlinkZonesInHierarchy(String userId,
+                                       String parentZoneGUID,
+                                       String childZoneGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String methodName = "unlinkZonesInHierarchy";
+
+        final String parentZoneGUIDParameterName = "parentZoneGUID";
+        final String childZoneGUIDParameterName = "childZoneGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/nested-zone/{3}/unlink";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentZoneGUID, parentZoneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(childZoneGUID, childZoneGUIDParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        parentZoneGUID,
+                                        childZoneGUID);
+    }
+
+
+    /**
+     * Link a governance zone to a governance definition that controls how the assets in the zone should be governed.
+     *
+     * @param userId calling user
+     * @param zoneGUID unique identifier of the zone
+     * @param definitionGUID unique identifier of the governance definition
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void linkZoneToGovernanceDefinition(String userId,
+                                               String zoneGUID,
+                                               String definitionGUID) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String methodName = "linkZoneToGovernanceDefinition";
+
+        final String zoneGUIDParameterName = "zoneGUID";
+        final String definitionGUIDParameterName = "definitionGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/governed-by/{3}/link";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(zoneGUID, zoneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(definitionGUID, definitionGUIDParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        zoneGUID,
+                                        definitionGUID);
+    }
+
+
+    /**
+     * Remove the link between a zone and a governance definition.
+     *
+     * @param userId calling user
+     * @param zoneGUID unique identifier of the zone
+     * @param definitionGUID unique identifier of the governance definition
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void unlinkZoneFromGovernanceDefinition(String userId,
+                                                   String zoneGUID,
+                                                   String definitionGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "unlinkZoneToGovernanceDefinition";
+
+        final String zoneGUIDParameterName = "zoneGUID";
+        final String definitionGUIDParameterName = "definitionGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/governed-by/{3}/unlink";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(zoneGUID, zoneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(definitionGUID, definitionGUIDParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        zoneGUID,
+                                        definitionGUID);
+    }
+
+
+    /**
+     * Return information about a specific governance zone.
+     *
+     * @param userId calling user
+     * @param zoneGUID unique identifier for the zone
+     *
+     * @return properties of the governance zone
+     *
+     * @throws InvalidParameterException zoneGUID or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public GovernanceZoneElement getGovernanceZoneByGUID(String userId,
+                                                         String zoneGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "getGovernanceZoneByGUID";
+
+        final String guidParameter = "zoneGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(zoneGUID, guidParameter, methodName);
+
+        GovernanceZoneResponse restResult = restClient.callGovernanceZoneGetRESTCall(methodName,
+                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     zoneGUID);
+        return restResult.getElement();
+    }
 
 
     /**
@@ -207,26 +482,26 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public GovernanceZoneElement getGovernanceZone(String   userId,
-                                                   String   qualifiedName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public GovernanceZoneElement getGovernanceZoneByName(String userId,
+                                                         String qualifiedName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        final String   methodName = "getGovernanceZone";
+        final String methodName = "getGovernanceZoneByName";
 
-        final String   qualifiedNameParameter = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zone-manager/governance-zones/name/{2}";
+        final String qualifiedNameParameter = "qualifiedName";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
-        ZoneResponse restResult = restClient.callZoneGetRESTCall(methodName,
-                                                                 serverPlatformURLRoot + urlTemplate,
-                                                                 serverName,
-                                                                 userId,
-                                                                 qualifiedName);
+        GovernanceZoneResponse restResult = restClient.callGovernanceZoneGetRESTCall(methodName,
+                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     qualifiedName);
 
-        return restResult.getGovernanceZone();
+        return restResult.getElement();
     }
 
 
@@ -234,8 +509,9 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * Return information about the defined governance zones.
      *
      * @param userId calling user
-     * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maximumResults maximum number of elements to return an this call
+     * @param domainIdentifier identifier for the desired governance domain - 0 for all
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return properties of the governance zone
      *
@@ -244,25 +520,63 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<GovernanceZoneElement> getGovernanceZones(String   userId,
-                                                          int      startingFrom,
-                                                          int      maximumResults) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public List<GovernanceZoneElement> getGovernanceZonesForDomain(String userId,
+                                                                   int    domainIdentifier,
+                                                                   int    startFrom,
+                                                                   int    pageSize) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
-        final String   methodName = "getGovernanceZones";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zone-manager/governance-zones?startingFrom={4}&maximumResults={5}";
+        final String methodName = "getGovernanceZonesForDomain";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/for-domain?domainIdentifier={2}&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        ZoneListResponse restResult = restClient.callZoneListGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
-                                                                         serverName,
-                                                                         userId,
-                                                                         Integer.toString(startingFrom),
-                                                                         Integer.toString(maximumResults));
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        return restResult.getGovernanceZones();
+        GovernanceZoneListResponse restResult = restClient.callGovernanceZoneListGetRESTCall(methodName,
+                                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             domainIdentifier,
+                                                                                             startFrom,
+                                                                                             queryPageSize);
+
+        return restResult.getElementList();
     }
 
+
+    /**
+     * Return information about a specific governance zone and its linked governance definitions.
+     *
+     * @param userId calling user
+     * @param zoneGUID unique identifier for the zone
+     *
+     * @return properties of the governance zone linked to the associated governance definitions
+     *
+     * @throws InvalidParameterException zoneGUID or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public GovernanceZoneDefinition getGovernanceZoneDefinitionByGUID(String userId,
+                                                                      String zoneGUID) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String methodName = "getGovernanceZoneDefinitionByGUID";
+
+        final String guidParameter = "zoneGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/with-definitions";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(zoneGUID, guidParameter, methodName);
+
+        GovernanceZoneDefinitionResponse restResult = restClient.callGovernanceZoneDefinitionGetRESTCall(methodName,
+                                                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                                                         serverName,
+                                                                                                         userId,
+                                                                                                         zoneGUID);
+        return restResult.getProperties();
+    }
 }
