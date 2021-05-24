@@ -220,7 +220,7 @@ public class OpenMetadataArchiveProperties extends OpenMetadataArchiveElementHea
 
 
     /**
-     * Return the name of the originator of this open metadata archive This will be used as the name of the
+     * Return the name of the originator of this open metadata archive. This will be used as the name of the
      * creator for each element in the archive.
      *
      * @return String name
@@ -252,6 +252,7 @@ public class OpenMetadataArchiveProperties extends OpenMetadataArchiveElementHea
     {
         return originatorOrganization;
     }
+
 
     /**
      * Set up the name of the organization that provided this archive.
