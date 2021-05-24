@@ -23,7 +23,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 public class ConnectedAssetClientBase
 {
     protected String   serverName;               /* Initialized in constructor */
-    protected String   serverPlatformRootURL;    /* Initialized in constructor */
+    protected String   serverPlatformURLRoot;    /* Initialized in constructor */
     protected AuditLog auditLog;                 /* Initialized in constructor */
 
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -35,21 +35,21 @@ public class ConnectedAssetClientBase
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param auditLog destination for log messages
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClientBase(String   serverName,
-                                    String   serverPlatformRootURL,
+                                    String   serverPlatformURLRoot,
                                     AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.auditLog = auditLog;
     }
 
@@ -58,24 +58,24 @@ public class ConnectedAssetClientBase
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param maxPageSize maximum page size for this process
      * @param auditLog destination for log messages
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClientBase(String   serverName,
-                                    String   serverPlatformRootURL,
+                                    String   serverPlatformURLRoot,
                                     int      maxPageSize,
                                     AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.auditLog = auditLog;
     }
 
@@ -84,14 +84,14 @@ public class ConnectedAssetClientBase
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClientBase(String serverName,
-                                    String serverPlatformRootURL) throws InvalidParameterException
+                                    String serverPlatformURLRoot) throws InvalidParameterException
     {
-        this(serverName, serverPlatformRootURL, null);
+        this(serverName, serverPlatformURLRoot, null);
     }
 
 
@@ -121,7 +121,7 @@ public class ConnectedAssetClientBase
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}";
 
         AssetResponse restResult = restClient.callAssetGetRESTCall(methodName,
-                                                                   serverPlatformRootURL + urlTemplate,
+                                                                   serverPlatformURLRoot + urlTemplate,
                                                                    serverName,
                                                                    serviceName,
                                                                    userId,
@@ -162,7 +162,7 @@ public class ConnectedAssetClientBase
              * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
              * Open Connector Framework (OCF).
              */
-            return new ConnectedAssetUniverse(serviceName, serverName, serverPlatformRootURL, userId, assetGUID);
+            return new ConnectedAssetUniverse(serviceName, serverName, serverPlatformURLRoot, userId, assetGUID);
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException error)
         {
@@ -220,7 +220,7 @@ public class ConnectedAssetClientBase
             throw new ConnectorCheckedException(OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED.getMessageDefinition(requestedConnection.getQualifiedName(),
                                                                                                               serviceName,
                                                                                                               serverName,
-                                                                                                              serverPlatformRootURL),
+                                                                                                              serverPlatformURLRoot),
                                                 this.getClass().getName(),
                                                 methodName);
         }
@@ -237,7 +237,7 @@ public class ConnectedAssetClientBase
             ConnectedAssetProperties connectedAssetProperties = new ConnectedAssetProperties(serviceName,
                                                                                              serverName,
                                                                                              userId,
-                                                                                             serverPlatformRootURL,
+                                                                                             serverPlatformURLRoot,
                                                                                              newConnector.getConnectorInstanceId(),
                                                                                              newConnector.getConnection(),
                                                                                              assetGUID);
@@ -293,7 +293,7 @@ public class ConnectedAssetClientBase
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/connections/{3}";
 
         ConnectionResponse   restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                               serverPlatformRootURL + urlTemplate,
+                                                                               serverPlatformURLRoot + urlTemplate,
                                                                                serverName,
                                                                                serviceName,
                                                                                userId,
@@ -328,7 +328,7 @@ public class ConnectedAssetClientBase
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/connections/by-name/{3}";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate,
+                                                                             serverPlatformURLRoot + urlTemplate,
                                                                              serverName,
                                                                              serviceName,
                                                                              userId,
@@ -362,7 +362,7 @@ public class ConnectedAssetClientBase
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/connection";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate,
+                                                                             serverPlatformURLRoot + urlTemplate,
                                                                              serverName,
                                                                              serviceName,
                                                                              userId,
@@ -397,7 +397,7 @@ public class ConnectedAssetClientBase
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/by-connection/{3}";
 
         GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
-                                                                 serverPlatformRootURL + urlTemplate,
+                                                                 serverPlatformURLRoot + urlTemplate,
                                                                  serverName,
                                                                  serviceName,
                                                                  userId,

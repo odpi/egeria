@@ -117,12 +117,12 @@ public class AssetConverter<B> extends OCFConverter<B>
 
                     if (orgOriginValue != null)
                     {
-                        originMap.put(OpenMetadataAPIMapper.ORGANIZATION_GUID_PROPERTY_NAME, orgOriginValue);
+                        originMap.put(OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME, orgOriginValue);
                     }
 
                     if (bizOriginValue != null)
                     {
-                        originMap.put(OpenMetadataAPIMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME, bizOriginValue);
+                        originMap.put(OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME, bizOriginValue);
                     }
                 }
 
