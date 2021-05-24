@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Data Manager Open Metadata Access Service (OMAS) Client
+# Security Manager Open Metadata Access Service (OMAS) Client
 
-The Data Manager OMAS supports a REST API for requests and an event-based
+The Security Manager OMAS supports a REST API for requests and an event-based
 interface for asynchronous integration.  This client
 package provides Java clients to make it easier
 for data tools and applications to call these interfaces.
@@ -20,11 +20,11 @@ There are 4 clients:
  * **FilesAndFoldersClient** enables the caller to describe files and the organizing folder structure
    around it.
 
- * **DataManagerEventClient** enables the client to send and receive events from the Data Manager OMAS.
+ * **SecurityManagerEventClient** enables the client to send and receive events from the Security Manager OMAS.
 
 
 ----
-Return to the [data-manager](..) module.
+Return to the [security-manager](..) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

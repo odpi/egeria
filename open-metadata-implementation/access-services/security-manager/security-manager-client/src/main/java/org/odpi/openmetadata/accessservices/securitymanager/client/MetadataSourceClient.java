@@ -232,7 +232,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
 
     /**
      * Create information about the integration daemon that is managing the acquisition of metadata from the
-     * data manager.  Typically this is Egeria's data manager integrator OMIS.
+     * security manager.  Typically this is Egeria's security manager integrator OMIS.
      *
      * @param userId calling user
      * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local

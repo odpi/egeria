@@ -16,7 +16,7 @@ dependencies {
     implementation 'org.springframework:spring-core'
 }
 
-description = 'Data Manager OMAS API'
+description = 'Security Manager OMAS API'
 
 java {
     withJavadocJar()
