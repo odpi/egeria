@@ -82,12 +82,6 @@ public class DataAssetProperties extends AssetProperties
                        "isReferenceAsset=" + isReferenceAsset +
                        ", technicalName='" + getTechnicalName() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerCategory=" + getOwnerCategory() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                       ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                       ", otherOriginValues=" + getOtherOriginValues() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +
                        ", description='" + getDescription() + '\'' +
