@@ -16,10 +16,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
  * </p>
  * <ul>
  *     <li>
- *         Archive properties
+ *         Archive header properties
  *     </li>
  *     <li>
- *         Type store: an ordered list of types
+ *         Type store: an ordered list of type definitions
  *     </li>
  *     <li>
  *         Instance store: a list of entities and relationships
