@@ -260,7 +260,7 @@ public class OpenMetadataTypesArchive2_6
      */
 
     /**
-     * 0010 Add the Memento classification
+     * 0010 Add the EmbeddedProcess and TransientEmbeddedProcess entities
      */
     private void update0215MoreProcessTypes()
     {
