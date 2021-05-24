@@ -1345,23 +1345,23 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             Map<String, String> origins = new HashMap<>();
             String               propertyValue = repositoryHelper.getStringProperty(serviceName,
-                                                                                    OpenMetadataAPIMapper.ORGANIZATION_GUID_PROPERTY_NAME,
+                                                                                    OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME,
                                                                                     originProperties,
                                                                                     methodName);
 
             if (propertyValue != null)
             {
-                origins.put(OpenMetadataAPIMapper.ORGANIZATION_GUID_PROPERTY_NAME, propertyValue);
+                origins.put(OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME, propertyValue);
             }
 
             propertyValue = repositoryHelper.getStringProperty(serviceName,
-                                                               OpenMetadataAPIMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME,
+                                                               OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME,
                                                                originProperties,
                                                                methodName);
 
             if (propertyValue != null)
             {
-                origins.put(OpenMetadataAPIMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME, propertyValue);
+                origins.put(OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME, propertyValue);
             }
 
             Map<String, String> propertyMap = repositoryHelper.getStringMapFromProperty(serviceName,
@@ -3083,6 +3083,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                        null,
                                                                        false,
                                                                        supportedZones,
+                                                                       uniqueParameterName,
                                                                        0,
                                                                        invalidParameterHandler.getMaxPagingSize(),
                                                                        methodName);
@@ -7563,6 +7564,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName type name of entities to return
      * @param specificMatchPropertyNames list of property names to look in (or null to search any string property)
      * @param exactValueMatch should the value be treated as a literal or a RegEx?
+     * @param sequencingPropertyName should the results be sequenced?
      * @param startFrom  index of the list ot start from (0 for start)
      * @param queryPageSize maximum number of values to return
      * @param methodName calling method
@@ -7574,6 +7576,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           String       resultTypeName,
                                                           List<String> specificMatchPropertyNames,
                                                           boolean      exactValueMatch,
+                                                          String       sequencingPropertyName,
                                                           int          startFrom,
                                                           int          queryPageSize,
                                                           String       methodName)
@@ -7598,6 +7601,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   userId,
                                                                   resultTypeGUID,
                                                                   searchValue,
+                                                                  sequencingPropertyName,
                                                                   startFrom,
                                                                   queryPageSize,
                                                                   methodName);
@@ -7612,6 +7616,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   resultTypeGUID,
                                                                   this.getSearchInstanceProperties(searchValue, specificMatchPropertyNames, methodName),
                                                                   MatchCriteria.ANY,
+                                                                  sequencingPropertyName,
                                                                   startFrom,
                                                                   queryPageSize,
                                                                   methodName);
@@ -7626,6 +7631,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                       userId,
                                                       resultTypeGUID,
                                                       resultTypeName,
+                                                      sequencingPropertyName,
                                                       startFrom,
                                                       queryPageSize,
                                                       methodName);
@@ -7710,6 +7716,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          propertyNames,
                                                                          true,
+                                                                         namePropertyName,
                                                                          0,
                                                                          queryPageSize,
                                                                          methodName);
@@ -7718,9 +7725,9 @@ public class OpenMetadataAPIGenericHandler<B>
          * The loop is necessary because some of the entities returned may not be visible to the calling user.
          * Once they are filtered out, more entities need to be retrieved to fill the gaps.
          */
-        String guid = null;
+        String        guid = null;
         List<String>  duplicateEntities = new ArrayList<>();
-        String entityParameterName = "Entity from search of value " + name;
+        String        entityParameterName = "Entity from search of value " + name;
 
         while (iterator.moreToReceive() && ((queryPageSize == 0) || (duplicateEntities.size() < queryPageSize)))
         {
@@ -7858,6 +7865,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          propertyNames,
                                                                          true,
+                                                                         namePropertyName,
                                                                          0,
                                                                          queryPageSize,
                                                                          methodName);
@@ -7866,9 +7874,9 @@ public class OpenMetadataAPIGenericHandler<B>
          * The loop is necessary because some of the entities returned may not be visible to the calling user.
          * Once they are filtered out, more entities need to be retrieved to fill the gaps.
          */
-        B bean = null;
-        List<String>  duplicateEntities = new ArrayList<>();
-        String entityParameterName = "Entity from search of value " + name;
+        B            bean = null;
+        List<String> duplicateEntities = new ArrayList<>();
+        String       entityParameterName = "Entity from search of value " + name;
 
         while (iterator.moreToReceive() && ((queryPageSize == 0) || (duplicateEntities.size() < queryPageSize)))
         {
@@ -7950,8 +7958,8 @@ public class OpenMetadataAPIGenericHandler<B>
                              String       resultTypeName,
                              List<String> specificMatchPropertyNames,
                              String       methodName) throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         List<EntityDetail> results = this.getEntitiesByValue(userId,
                                                              value,
@@ -7960,6 +7968,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              resultTypeName,
                                                              specificMatchPropertyNames,
                                                              true,
+                                                             null,
                                                              null,
                                                              null,
                                                              0,
@@ -7999,6 +8008,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
      * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
      *                        RegEx partial match
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -8015,6 +8025,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    String       resultTypeName,
                                    List<String> specificMatchPropertyNames,
                                    boolean      exactValueMatch,
+                                   String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
                                    String       methodName) throws InvalidParameterException,
@@ -8028,7 +8039,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                     resultTypeName,
                                     specificMatchPropertyNames,
                                     exactValueMatch,
+                                    null,
+                                    null,
+                                    false,
                                     supportedZones,
+                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -8043,6 +8058,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param searchStringParameterName name of parameter providing search string
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
@@ -8057,6 +8073,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              String       searchStringParameterName,
                              String       resultTypeGUID,
                              String       resultTypeName,
+                             String       sequencingPropertyName,
                              int          startFrom,
                              int          pageSize,
                              String       methodName) throws InvalidParameterException,
@@ -8073,6 +8090,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     null,
                                     null,
                                     supportedZones,
+                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -8089,6 +8107,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName unique value of the type that the results should match with
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
@@ -8105,6 +8124,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              String       resultTypeName,
                              String       requiredClassificationName,
                              String       omittedClassificationName,
+                             String       sequencingPropertyName,
                              int          startFrom,
                              int          pageSize,
                              String       methodName) throws InvalidParameterException,
@@ -8121,6 +8141,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     requiredClassificationName,
                                     omittedClassificationName,
                                     supportedZones,
+                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -8136,6 +8157,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service.
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
@@ -8151,6 +8173,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              String       resultTypeGUID,
                              String       resultTypeName,
                              List<String> serviceSupportedZones,
+                             String       sequencingPropertyName,
                              int          startFrom,
                              int          pageSize,
                              String       methodName) throws InvalidParameterException,
@@ -8164,7 +8187,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                     resultTypeName,
                                     null,
                                     false,
+                                    null,
+                                    null,
+                                    false,
                                     serviceSupportedZones,
+                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -8267,6 +8294,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
      *                        RegEx partial match
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -8284,6 +8312,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    List<String> specificMatchPropertyNames,
                                    boolean      exactValueMatch,
                                    List<String> serviceSupportedZones,
+                                   String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
                                    String       methodName) throws InvalidParameterException,
@@ -8300,6 +8329,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     null,
                                     null,
                                     serviceSupportedZones,
+                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -8320,6 +8350,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        RegEx partial match
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -8338,6 +8369,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    boolean      exactValueMatch,
                                    String       requiredClassificationName,
                                    String       omittedClassificationName,
+                                   String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
                                    String       methodName) throws InvalidParameterException,
@@ -8354,6 +8386,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                     requiredClassificationName,
                                     omittedClassificationName,
                                     supportedZones,
+                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -8374,6 +8407,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -8393,6 +8427,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    String       requiredClassificationName,
                                    String       omittedClassificationName,
                                    List<String> serviceSupportedZones,
+                                   String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
                                    String       methodName) throws InvalidParameterException,
@@ -8410,9 +8445,86 @@ public class OpenMetadataAPIGenericHandler<B>
                                     omittedClassificationName,
                                     false,
                                     serviceSupportedZones,
+                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     methodName);
+    }
+
+
+    /**
+     * Return the list of beans of the requested type that match the supplied integer value.
+     *
+     * @param userId the calling user
+     * @param value value to search
+     * @param resultTypeGUID unique identifier of the type that the results should match with
+     * @param resultTypeName unique value of the type that the results should match with
+     * @param propertyName property  to look in - if null or empty list then all string properties are checked.
+     * @param requiredClassificationName  String the name of the classification that must be on the entity.
+     * @param omittedClassificationName   String the name of a classification that must not be on the entity.
+     * @param forLineage the query is to support lineage retrieval
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return
+     * @param methodName calling method
+     *
+     * @return list of beans
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<B> getBeansByIntValue(String       userId,
+                                      int          value,
+                                      String       resultTypeGUID,
+                                      String       resultTypeName,
+                                      String       propertyName,
+                                      String       requiredClassificationName,
+                                      String       omittedClassificationName,
+                                      boolean      forLineage,
+                                      List<String> serviceSupportedZones,
+                                      String       sequencingPropertyName,
+                                      int          startFrom,
+                                      int          pageSize,
+                                      String       methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        List<EntityDetail> entities = getEntitiesByIntValue(userId,
+                                                            value,
+                                                            resultTypeGUID,
+                                                            resultTypeName,
+                                                            propertyName,
+                                                            requiredClassificationName,
+                                                            omittedClassificationName,
+                                                            forLineage,
+                                                            serviceSupportedZones,
+                                                            sequencingPropertyName,
+                                                            startFrom,
+                                                            pageSize,
+                                                            methodName);
+
+        if (entities != null)
+        {
+            List<B> results = new ArrayList<>();
+
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    B bean = converter.getNewBean(beanClass, entity, methodName);
+
+                    results.add(bean);
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return  results;
+            }
+        }
+
+        return null;
     }
 
 
@@ -8431,6 +8543,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param forLineage the query is to support lineage retrieval
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -8451,6 +8564,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    String       omittedClassificationName,
                                    boolean      forLineage,
                                    List<String> serviceSupportedZones,
+                                   String       sequencingPropertyName,
                                    int          startFrom,
                                    int          pageSize,
                                    String       methodName) throws InvalidParameterException,
@@ -8468,6 +8582,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                          omittedClassificationName,
                                                          forLineage,
                                                          serviceSupportedZones,
+                                                         sequencingPropertyName,
                                                          startFrom,
                                                          pageSize,
                                                          methodName);
@@ -8497,6 +8612,8 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+
     /**
      * Return the list of entities of the requested type.
      *
@@ -8517,6 +8634,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 String       resultTypeGUID,
                                                 String       resultTypeName,
                                                 List<String> serviceSupportedZones,
+                                                String       sequencingPropertyName,
                                                 int          startFrom,
                                                 int          pageSize,
                                                 String       methodName) throws InvalidParameterException,
@@ -8533,9 +8651,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          null,
                                                                          false,
-                                                                         startFrom,
+                                                                         sequencingPropertyName,
+                                                                         0,
                                                                          queryPageSize,
                                                                          methodName);
+
 
         /*
          * The loop is necessary because some of the entities returned may not be visible to the calling user.
@@ -8543,6 +8663,7 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         List<EntityDetail>  results = new ArrayList<>();
         String entityParameterName = "Entity of type" + resultTypeName;
+        int skippedValues = 0;
 
         while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
@@ -8586,7 +8707,14 @@ public class OpenMetadataAPIGenericHandler<B>
                         /*
                          * Valid entity to return since no exception occurred and it is not archived.
                          */
-                        results.add(entity);
+                        if (skippedValues < startFrom)
+                        {
+                            skippedValues ++;
+                        }
+                        else
+                        {
+                            results.add(entity);
+                        }
                     }
                 }
                 catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
@@ -8619,6 +8747,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeName unique value of the type that the results should match with
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
@@ -8635,6 +8764,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                            String       resultTypeName,
                                            String       requiredClassificationName,
                                            String       omittedClassificationName,
+                                           String       sequencingPropertyName,
                                            int          startFrom,
                                            int          pageSize,
                                            String       methodName) throws InvalidParameterException,
@@ -8654,6 +8784,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        omittedClassificationName,
                                        false,
                                        supportedZones,
+                                       sequencingPropertyName,
                                        startFrom,
                                        pageSize,
                                        methodName);
@@ -8708,9 +8839,138 @@ public class OpenMetadataAPIGenericHandler<B>
                                        omittedClassificationName,
                                        false,
                                        supportedZones,
+                                       null,
                                        startFrom,
                                        pageSize,
                                        methodName);
+    }
+
+
+    /**
+     * Return the list of entities of the requested type that match the supplied value.
+     *
+     * @param userId the calling user
+     * @param value value to search
+     * @param valueParameterName parameter providing value
+     * @param resultTypeGUID unique identifier of the type that the results should match with
+     * @param resultTypeName unique value of the type that the results should match with
+     * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
+     *                        RegEx partial match
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return
+     * @param methodName calling method
+     *
+     * @return list of beans
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<EntityDetail> getEntitiesByValue(String       userId,
+                                                 String       value,
+                                                 String       valueParameterName,
+                                                 String       resultTypeGUID,
+                                                 String       resultTypeName,
+                                                 List<String> specificMatchPropertyNames,
+                                                 boolean      exactValueMatch,
+                                                 String       requiredClassificationName,
+                                                 String       omittedClassificationName,
+                                                 String       sequencingPropertyName,
+                                                 int          startFrom,
+                                                 int          pageSize,
+                                                 String       methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        return this.getEntitiesByValue(userId,
+                                       value,
+                                       valueParameterName,
+                                       resultTypeGUID,
+                                       resultTypeName,
+                                       specificMatchPropertyNames,
+                                       exactValueMatch,
+                                       requiredClassificationName,
+                                       omittedClassificationName,
+                                       false,
+                                       supportedZones,
+                                       sequencingPropertyName,
+                                       startFrom,
+                                       pageSize,
+                                       methodName);
+    }
+
+
+    /**
+     * Return the list of entities of the requested type that match the supplied value.
+     *
+     * @param userId the calling user
+     * @param value value to search
+     * @param resultTypeGUID unique identifier of the type that the results should match with
+     * @param resultTypeName unique value of the type that the results should match with
+     * @param propertyName  property name to look in.
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return
+     * @param methodName calling method
+     *
+     * @return list of beans
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<EntityDetail> getEntitiesByIntValue(String       userId,
+                                                    int          value,
+                                                    String       resultTypeGUID,
+                                                    String       resultTypeName,
+                                                    String       propertyName,
+                                                    String       requiredClassificationName,
+                                                    String       omittedClassificationName,
+                                                    boolean      forLineage,
+                                                    List<String> serviceSupportedZones,
+                                                    String       sequencingPropertyName,
+                                                    int          startFrom,
+                                                    int          pageSize,
+                                                    String       methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String propertyParameterName = "propertyName";
+
+        String entityParameterName = "Entity from search of value " + value;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyParameterName, methodName);
+
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        RepositoryIteratorForEntities iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
+                                                                                        userId,
+                                                                                        resultTypeGUID,
+                                                                                        repositoryHelper.addIntPropertyToInstance(serviceName, null, propertyName, value, methodName),
+                                                                                        MatchCriteria.ANY,
+                                                                                        sequencingPropertyName,
+                                                                                        0,
+                                                                                        queryPageSize,
+                                                                                        methodName);
+
+        return getEntitiesByValue(userId,
+                                  iterator,
+                                  entityParameterName,
+                                  resultTypeName,
+                                  requiredClassificationName,
+                                  omittedClassificationName,
+                                  forLineage,
+                                  serviceSupportedZones,
+                                  startFrom,
+                                  queryPageSize,
+                                  methodName);
     }
 
 
@@ -8729,6 +8989,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -8749,6 +9010,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  String       omittedClassificationName,
                                                  boolean      forLineage,
                                                  List<String> serviceSupportedZones,
+                                                 String       sequencingPropertyName,
                                                  int          startFrom,
                                                  int          pageSize,
                                                  String       methodName) throws InvalidParameterException,
@@ -8760,22 +9022,75 @@ public class OpenMetadataAPIGenericHandler<B>
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        /*
+         * Notice that the startFrom is 0 - is allows the filtering process to skip over the right number of
+         * elements.
+         */
         RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
                                                                          value,
                                                                          resultTypeGUID,
                                                                          resultTypeName,
                                                                          specificMatchPropertyNames,
                                                                          exactValueMatch,
-                                                                         startFrom,
+                                                                         sequencingPropertyName,
+                                                                         0,
                                                                          queryPageSize,
                                                                          methodName);
 
+        String entityParameterName = "Entity from search of value " + value;
+
+        return getEntitiesByValue(userId,
+                                  iterator,
+                                  entityParameterName,
+                                  resultTypeName,
+                                  requiredClassificationName,
+                                  omittedClassificationName,
+                                  forLineage,
+                                  serviceSupportedZones,
+                                  startFrom,
+                                  queryPageSize,
+                                  methodName);
+    }
+
+
+    /**
+     * Return the list of entities of the requested type that match the supplied value.
+     *
+     * @param userId the calling user
+     * @param iterator mechanism for search
+     * @param entityParameterName parameter description
+     * @param resultTypeName unique value of the type that the results should match with
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param queryPageSize   maximum number of elements to return
+     * @param methodName calling method
+     *
+     * @return list of beans
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<EntityDetail> getEntitiesByValue(String                        userId,
+                                                 RepositoryIteratorForEntities iterator,
+                                                 String                        entityParameterName,
+                                                 String                        resultTypeName,
+                                                 String                        requiredClassificationName,
+                                                 String                        omittedClassificationName,
+                                                 boolean                       forLineage,
+                                                 List<String>                  serviceSupportedZones,
+                                                 int                           startFrom,
+                                                 int                           queryPageSize,
+                                                 String                        methodName) throws PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
         /*
          * The loop is necessary because some of the entities returned may not be visible to the calling user.
          * Once they are filtered out, more entities need to be retrieved to fill the gaps.
          */
-        List<EntityDetail>  results = new ArrayList<>();
-        String entityParameterName = "Entity from search of value " + value;
+        List<EntityDetail> results = new ArrayList<>();
+        int                skippedValues = 0;
 
         while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
@@ -8814,7 +9129,6 @@ public class OpenMetadataAPIGenericHandler<B>
                             beanValid = false;
                         }
                     }
-
 
                     if (omittedClassificationName != null)
                     {
@@ -8862,7 +9176,17 @@ public class OpenMetadataAPIGenericHandler<B>
 
                 if (beanValid)
                 {
-                    results.add(entity);
+                    /*
+                     * Ignore entities until it reaches the start point
+                     */
+                    if (skippedValues < startFrom)
+                    {
+                        skippedValues ++;
+                    }
+                    else
+                    {
+                        results.add(entity);
+                    }
                 }
             }
         }
@@ -8893,6 +9217,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not.
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -8913,6 +9238,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                               String       omittedClassificationName,
                                               boolean      forLineage,
                                               List<String> serviceSupportedZones,
+                                              String       sequencingPropertyName,
                                               int          startFrom,
                                               int          pageSize,
                                               String       methodName) throws InvalidParameterException,
@@ -8930,6 +9256,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               omittedClassificationName,
                                                               forLineage,
                                                               serviceSupportedZones,
+                                                              sequencingPropertyName,
                                                               startFrom,
                                                               pageSize,
                                                               methodName);
@@ -8993,6 +9320,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              null,
                                                              false,
                                                              supportedZones,
+                                                             null,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
                                                              methodName);
@@ -9070,6 +9398,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param searchStringParameterName name of parameter providing search string
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param methodName calling method
@@ -9084,6 +9413,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       String       searchStringParameterName,
                                       String       resultTypeGUID,
                                       String       resultTypeName,
+                                      String       sequencingPropertyName,
                                       int          startFrom,
                                       int          pageSize,
                                       String       methodName) throws InvalidParameterException,
@@ -9101,6 +9431,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           null,
                                           false,
                                           supportedZones,
+                                          sequencingPropertyName,
                                           startFrom,
                                           pageSize,
                                           methodName);
@@ -9119,6 +9450,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
      *                        RegEx partial match
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -9136,6 +9468,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                             List<String> specificMatchPropertyNames,
                                             boolean      exactValueMatch,
                                             List<String> serviceSupportedZones,
+                                            String       sequencingPropertyName,
                                             int          startFrom,
                                             int          pageSize,
                                             String       methodName) throws InvalidParameterException,
@@ -9153,6 +9486,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           null,
                                           false,
                                           serviceSupportedZones,
+                                          sequencingPropertyName,
                                           startFrom,
                                           pageSize,
                                           methodName);
@@ -9170,6 +9504,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param specificMatchPropertyNames name of properties to visit
      * @param exactValueMatch does the value need to match exactly?
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName should the results be sequenced?
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -9187,6 +9522,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                      List<String> specificMatchPropertyNames,
                                      boolean      exactValueMatch,
                                      List<String> serviceSupportedZones,
+                                     String       sequencingPropertyName,
                                      int          startFrom,
                                      int          pageSize,
                                      String       methodName) throws InvalidParameterException,
@@ -9204,7 +9540,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          specificMatchPropertyNames,
                                                                          exactValueMatch,
-                                                                         startFrom,
+                                                                         sequencingPropertyName,
+                                                                         0,
                                                                          queryPageSize,
                                                                          methodName);
 
@@ -9213,7 +9550,8 @@ public class OpenMetadataAPIGenericHandler<B>
          * Once they are filtered out, more entities need to be retrieved to fill the gaps.
          */
         List<B>  results = new ArrayList<>();
-        String entityParameterName = "Entity from createdBy search of " + searchString;
+        String   entityParameterName = "Entity from createdBy search of " + searchString;
+        int      skippedValues = 0;
 
         while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
@@ -9265,7 +9603,14 @@ public class OpenMetadataAPIGenericHandler<B>
                             B bean = converter.getNewBean(beanClass, entity, methodName);
                             if (bean != null)
                             {
-                                results.add(bean);
+                                if (skippedValues < startFrom)
+                                {
+                                    skippedValues ++;
+                                }
+                                else
+                                {
+                                    results.add(bean);
+                                }
                             }
                         }
                     }
@@ -9296,6 +9641,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -9308,13 +9654,14 @@ public class OpenMetadataAPIGenericHandler<B>
     public List<B> getBeansByType(String       userId,
                                   String       resultTypeGUID,
                                   String       resultTypeName,
+                                  String       sequencingPropertyName,
                                   int          startFrom,
                                   int          pageSize,
                                   String       methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
-        return getBeansByType(userId, resultTypeGUID, resultTypeName, supportedZones, startFrom, pageSize, methodName);
+        return getBeansByType(userId, resultTypeGUID, resultTypeName, supportedZones, sequencingPropertyName, startFrom, pageSize, methodName);
     }
 
 
@@ -9325,6 +9672,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -9338,6 +9686,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   String       resultTypeGUID,
                                   String       resultTypeName,
                                   List<String> serviceSupportedZones,
+                                  String       sequencingPropertyName,
                                   int          startFrom,
                                   int          pageSize,
                                   String       methodName) throws InvalidParameterException,
@@ -9348,6 +9697,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              resultTypeGUID,
                                                              resultTypeName,
                                                              serviceSupportedZones,
+                                                             sequencingPropertyName,
                                                              startFrom,
                                                              pageSize,
                                                              methodName);
@@ -9384,6 +9734,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
+     * @param sequencingPropertyName should the results be sequenced?
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -9396,14 +9747,16 @@ public class OpenMetadataAPIGenericHandler<B>
     public List<String> getBeanGUIDsByType(String       userId,
                                            String       resultTypeGUID,
                                            String       resultTypeName,
+                                           String       sequencingPropertyName,
                                            int          startFrom,
                                            int          pageSize,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
-        return this.getBeanGUIDsByType(userId, resultTypeGUID, resultTypeName, supportedZones, startFrom, pageSize, methodName);
+        return this.getBeanGUIDsByType(userId, resultTypeGUID, resultTypeName, supportedZones, sequencingPropertyName, startFrom, pageSize, methodName);
     }
+
 
     /**
      * Return the list of beans of the requested type.
@@ -9412,6 +9765,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName should the results be sequenced?
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method
@@ -9425,6 +9779,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                            String       resultTypeGUID,
                                            String       resultTypeName,
                                            List<String> serviceSupportedZones,
+                                           String       sequencingPropertyName,
                                            int          startFrom,
                                            int          pageSize,
                                            String       methodName) throws InvalidParameterException,
@@ -9441,7 +9796,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          null,
                                                                          false,
-                                                                         startFrom,
+                                                                         sequencingPropertyName,
+                                                                         0,
                                                                          queryPageSize,
                                                                          methodName);
 
@@ -9449,8 +9805,9 @@ public class OpenMetadataAPIGenericHandler<B>
          * The loop is necessary because some of the entities returned may not be visible to the calling user.
          * Once they are filtered out, more entities need to be retrieved to fill the gaps.
          */
-        List<String>  results = new ArrayList<>();
-        String entityParameterName = "Entity of type" + resultTypeName;
+        List<String> results = new ArrayList<>();
+        String       entityParameterName = "Entity of type" + resultTypeName;
+        int          skippedValues = 0;
 
         while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
@@ -9472,7 +9829,14 @@ public class OpenMetadataAPIGenericHandler<B>
                     /*
                      * Valid entity to return since no exception occurred.
                      */
-                    results.add(entity.getGUID());
+                    if (skippedValues < startFrom)
+                    {
+                        skippedValues ++;
+                    }
+                    else
+                    {
+                        results.add(entity.getGUID());
+                    }
                 }
                 catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
                 {

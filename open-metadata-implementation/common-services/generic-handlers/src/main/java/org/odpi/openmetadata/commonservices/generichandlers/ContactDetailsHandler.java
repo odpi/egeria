@@ -1,0 +1,215 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.commonservices.generichandlers;
+
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import java.util.List;
+
+
+/**
+ * ContactDetailHandler manages the ContactDetails entity.  The ContactDetails entity describes a contact method for an actor profile.
+ */
+public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
+{
+    /**
+     * Construct the handler information needed to interact with the repository services
+     *
+     * @param converter specific converter for this bean class
+     * @param beanClass name of bean class that is represented by the generic class B
+     * @param serviceName      name of this service
+     * @param serverName       name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler     manages calls to the repository services
+     * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param localServerUserId userId for this server
+     * @param securityVerifier open metadata security services verifier
+     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
+     * @param defaultZones list of zones that the access service should set in all new Asset instances.
+     * @param publishZones list of zones that the access service sets up in published Asset instances.
+     * @param auditLog destination for audit log events.
+     */
+    public ContactDetailsHandler(OpenMetadataAPIGenericConverter<B> converter,
+                                 Class<B>                           beanClass,
+                                 String                             serviceName,
+                                 String                             serverName,
+                                 InvalidParameterHandler            invalidParameterHandler,
+                                 RepositoryHandler                  repositoryHandler,
+                                 OMRSRepositoryHelper               repositoryHelper,
+                                 String                             localServerUserId,
+                                 OpenMetadataServerSecurityVerifier securityVerifier,
+                                 List<String>                       supportedZones,
+                                 List<String>                       defaultZones,
+                                 List<String>                       publishZones,
+                                 AuditLog                           auditLog)
+    {
+        super(converter,
+              beanClass,
+              serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper,
+              localServerUserId,
+              securityVerifier,
+              supportedZones,
+              defaultZones,
+              publishZones,
+              auditLog);
+    }
+
+
+    /**
+     * Return the ContactDetails attached to a supplied actor profile.
+     *
+     * @param userId     calling user
+     * @param profileGUID identifier for the entity that the contact details are attached to
+     * @param profileGUIDParameterName name of parameter supplying the GUID
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param methodName calling method
+     * @return list of objects or null if none found
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B>  getContactDetails(String userId,
+                                      String profileGUID,
+                                      String profileGUIDParameterName,
+                                      int    startingFrom,
+                                      int    pageSize,
+                                      String methodName) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        profileGUID,
+                                        profileGUIDParameterName,
+                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                        OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        methodName);
+    }
+
+
+    /**
+     * Create a new contact method for a profile.
+     *
+     * @param userId      userId of user making request.
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param profileGUID   unique identifier for the connected entity (Referenceable).
+     * @param profileGUIDParameterName parameter supplying the profileGUID
+     * @param contactMethodType  ordinal for contact type
+     * @param contactMethodService   name of the service to call
+     * @param contactMethodValue   identity value to use for this profile through this contact method
+     * @param methodName calling method
+     * @return unique identifier of the contact method
+     *
+     * @throws InvalidParameterException  the endpoint bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String createContactMethod(String userId,
+                                      String externalSourceGUID,
+                                      String externalSourceName,
+                                      String profileGUID,
+                                      String profileGUIDParameterName,
+                                      int    contactMethodType,
+                                      String contactMethodService,
+                                      String contactMethodValue,
+                                      String methodName) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        ContactDetailsBuilder builder = new ContactDetailsBuilder(contactMethodType,
+                                                                  contactMethodService,
+                                                                  contactMethodValue,
+                                                                  repositoryHelper,
+                                                                  serviceName,
+                                                                  serverName);
+
+        if (profileGUID != null)
+        {
+            builder.setAnchors(userId, profileGUID, methodName);
+        }
+
+        String contactMethodGUID = this.createBeanInRepository(userId,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                                               null,
+                                                               null,
+                                                               builder,
+                                                               methodName);
+
+        if ((contactMethodGUID != null) && (profileGUID != null))
+        {
+            final String contactMethodGUIDParameterName = "contactMethodGUID";
+
+            this.linkElementToElement(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      profileGUID,
+                                      profileGUIDParameterName,
+                                      OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                      contactMethodGUID,
+                                      contactMethodGUIDParameterName,
+                                      OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                      OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
+                                      null,
+                                      methodName);
+        }
+
+        return contactMethodGUID;
+    }
+
+
+    /**
+     * Remove the requested contact method.
+     *
+     * @param userId       calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param contactMethodGUID   unique identifier for the connected entity (Referenceable).
+     * @param contactMethodGUIDParameterName parameter supplying the contactMethodGUID
+     * @param methodName   calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void removeContactDetail(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String contactMethodGUID,
+                                    String contactMethodGUIDParameterName,
+                                    String methodName) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        this.deleteBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    contactMethodGUID,
+                                    contactMethodGUIDParameterName,
+                                    OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_GUID,
+                                    OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                    null,
+                                    null,
+                                    methodName);
+    }
+}

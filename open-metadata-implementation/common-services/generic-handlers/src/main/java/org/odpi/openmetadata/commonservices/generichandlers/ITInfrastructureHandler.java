@@ -204,8 +204,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param virtualContainerGUID unique identifier of the host
-     * @param virtualContainerGUIDParameterName parameter supplying the virtualContainerGUID
+     * @param hostGUID unique identifier of the host
+     * @param hostGUIDParameterName parameter supplying the virtualContainerGUID
      * @param virtualContainerGUID unique identifier of the virtual container deployed on the host
      * @param virtualContainerGUIDParameterName parameter supplying the virtualContainerGUID
      * @param methodName calling method
@@ -678,8 +678,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param assetGUID unique identifier of the software server capability
-     * @param assetGUIDParameterName parameter supplying the assetGUID
+     * @param softwareServerCapabilityGUID unique identifier of the software server capability
+     * @param softwareServerCapabilityGUIDParameterName parameter supplying the assetGUID
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter supplying the assetGUID
      * @param methodName calling method

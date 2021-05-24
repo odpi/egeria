@@ -126,41 +126,29 @@ public class GlossaryBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
-        }
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
-        if (language != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.LANGUAGE_PROPERTY_NAME,
                                                                       language,
                                                                       methodName);
-        }
 
-        if (usage != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
                                                                       usage,
                                                                       methodName);
-        }
 
         return properties;
     }

@@ -9,47 +9,41 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.Map;
 
 /**
- * GovernanceZoneBuilder creates the parts for an entity that represents a governance zone definition.
+ * GovernanceDomainBuilder creates the parts for an entity that represents a GovernanceDomainDescription.
  */
-public class GovernanceZoneBuilder extends ReferenceableBuilder
+public class GovernanceDomainBuilder extends ReferenceableBuilder
 {
-    private String       displayName;
-    private String       description;
-    private String       criteria;
-    private String       scope;
-    private int          domainIdentifier;
+    private String displayName      = null;
+    private String description      = null;
+    private int    domainIdentifier = 0;
 
 
     /**
      * Create constructor
      *
-     * @param qualifiedName unique name for the zone - used in other configuration
-     * @param displayName short display name for the zone
-     * @param description description of the governance zone
-     * @param criteria the criteria for inclusion in a governance zone
-     * @param scope scope of the organization that this zone applies to
-     * @param domainIdentifier the identifier of the governance domain where the zone is managed
-     * @param additionalProperties additional properties for a governance zone
-     * @param typeGUID unique identifier of the type for the zone
-     * @param typeName unique name for the type for the zone
-     * @param extendedProperties  properties for a governance zone subtype
+     * @param qualifiedName unique name for the governance domain
+     * @param displayName short display name for the governance domain
+     * @param description description of the governance domain
+     * @param domainIdentifier the unique identifier used to represent the domain in governance definitions
+     * @param additionalProperties additional properties for a governance domain
+     * @param typeGUID unique identifier of this element's type
+     * @param typeName unique name of this element's type
+     * @param extendedProperties  properties for a governance domain subtype
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    GovernanceZoneBuilder(String               qualifiedName,
-                          String               displayName,
-                          String               description,
-                          String               criteria,
-                          String               scope,
-                          int                  domainIdentifier,
-                          Map<String, String>  additionalProperties,
-                          String               typeGUID,
-                          String               typeName,
-                          Map<String, Object>  extendedProperties,
-                          OMRSRepositoryHelper repositoryHelper,
-                          String               serviceName,
-                          String               serverName)
+    GovernanceDomainBuilder(String               qualifiedName,
+                            String               displayName,
+                            String               description,
+                            int                  domainIdentifier,
+                            Map<String, String>  additionalProperties,
+                            String               typeGUID,
+                            String               typeName,
+                            Map<String, Object>  extendedProperties,
+                            OMRSRepositoryHelper repositoryHelper,
+                            String               serviceName,
+                            String               serverName)
     {
         super(qualifiedName,
               additionalProperties,
@@ -62,9 +56,27 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
 
         this.displayName = displayName;
         this.description = description;
-        this.criteria = criteria;
-        this.scope = scope;
         this.domainIdentifier = domainIdentifier;
+    }
+
+
+  
+    /**
+     * Relationship constructor
+     *
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    GovernanceDomainBuilder(OMRSRepositoryHelper repositoryHelper,
+                            String               serviceName,
+                            String               serverName)
+    {
+        super(OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_GUID,
+              OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+              repositoryHelper,
+              serviceName,
+              serverName);
     }
 
 
@@ -86,21 +98,10 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
                                                                   displayName,
                                                                   methodName);
 
-
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                   description,
-                                                                  methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.CRITERIA_PROPERTY_NAME,
-                                                                  criteria,
-                                                                  methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
-                                                                  scope,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,

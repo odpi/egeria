@@ -77,6 +77,30 @@ public class SoftwareServerCapabilityBuilder extends ReferenceableBuilder
 
 
     /**
+     * Create constructor
+     *
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    public SoftwareServerCapabilityBuilder(OMRSRepositoryHelper repositoryHelper,
+                                           String               serviceName,
+                                           String               serverName)
+    {
+        super(repositoryHelper,
+              serviceName,
+              serverName);
+
+        this.displayName = null;
+        this.description = null;
+        this.type = null;
+        this.version = null;
+        this.patchLevel = null;
+        this.source = null;
+    }
+
+
+    /**
      * Set up the classification that defines the type of the software server capability where there are
      * no associated properties.
      *

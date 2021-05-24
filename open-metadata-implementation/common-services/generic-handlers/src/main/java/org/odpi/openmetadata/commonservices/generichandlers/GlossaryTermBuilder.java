@@ -128,59 +128,41 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
-        }
 
-        if (summary != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
-        if (examples != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.EXAMPLES_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
-        if (abbreviation != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
-        if (usage != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
         return properties;
     }
@@ -230,23 +212,17 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = null;
 
-        if (scope != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
                                                                       OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
         return properties;
     }
@@ -267,14 +243,11 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = null;
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
         try
         {

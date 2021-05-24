@@ -9,47 +9,47 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.Map;
 
 /**
- * GovernanceZoneBuilder creates the parts for an entity that represents a governance zone definition.
+ * SubjectAreaBuilder creates the parts for an entity that represents a subject area definition.
  */
-public class GovernanceZoneBuilder extends ReferenceableBuilder
+public class SubjectAreaBuilder extends ReferenceableBuilder
 {
-    private String       displayName;
-    private String       description;
-    private String       criteria;
-    private String       scope;
-    private int          domainIdentifier;
+    private String displayName;
+    private String description;
+    private String usage;
+    private String scope;
+    private int    domainIdentifier;
 
 
     /**
      * Create constructor
      *
-     * @param qualifiedName unique name for the zone - used in other configuration
-     * @param displayName short display name for the zone
-     * @param description description of the governance zone
-     * @param criteria the criteria for inclusion in a governance zone
-     * @param scope scope of the organization that this zone applies to
-     * @param domainIdentifier the identifier of the governance domain where the zone is managed
-     * @param additionalProperties additional properties for a governance zone
-     * @param typeGUID unique identifier of the type for the zone
-     * @param typeName unique name for the type for the zone
-     * @param extendedProperties  properties for a governance zone subtype
+     * @param qualifiedName unique name for the subject area - used in other configuration
+     * @param displayName short display name for the subject area
+     * @param description description of the subject area
+     * @param usage the usage for inclusion in a subject area
+     * @param scope scope of the organization that this definition applies to
+     * @param domainIdentifier the identifier of the governance domain where the subject area is managed
+     * @param additionalProperties additional properties for a subject area
+     * @param typeGUID unique identifier of the type for the subject area
+     * @param typeName unique name for the type for the subject area
+     * @param extendedProperties  properties for a subject area subtype
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    GovernanceZoneBuilder(String               qualifiedName,
-                          String               displayName,
-                          String               description,
-                          String               criteria,
-                          String               scope,
-                          int                  domainIdentifier,
-                          Map<String, String>  additionalProperties,
-                          String               typeGUID,
-                          String               typeName,
-                          Map<String, Object>  extendedProperties,
-                          OMRSRepositoryHelper repositoryHelper,
-                          String               serviceName,
-                          String               serverName)
+    SubjectAreaBuilder(String               qualifiedName,
+                       String               displayName,
+                       String               description,
+                       String               usage,
+                       String               scope,
+                       int                  domainIdentifier,
+                       Map<String, String>  additionalProperties,
+                       String               typeGUID,
+                       String               typeName,
+                       Map<String, Object>  extendedProperties,
+                       OMRSRepositoryHelper repositoryHelper,
+                       String               serviceName,
+                       String               serverName)
     {
         super(qualifiedName,
               additionalProperties,
@@ -62,7 +62,7 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
 
         this.displayName = displayName;
         this.description = description;
-        this.criteria = criteria;
+        this.usage = usage;
         this.scope = scope;
         this.domainIdentifier = domainIdentifier;
     }
@@ -94,8 +94,8 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CRITERIA_PROPERTY_NAME,
-                                                                  criteria,
+                                                                  OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                  usage,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

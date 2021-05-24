@@ -136,7 +136,7 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Add or replace and existing Rating for this user.
+     * Add or replace an existing Rating for this user.
      *
      * @param userId      userId of user making request.
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
