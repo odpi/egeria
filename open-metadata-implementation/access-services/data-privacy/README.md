@@ -5,12 +5,12 @@
 
 # Data Privacy Open Metadata Access Service (OMAS)
 
-The Data Privacy OMAS provides APIs and events for tools that support a data
+The Data Privacy OMAS provides APIs and events for tools that supports the operational side of a data
 privacy program.  This includes:
 
-* Reviewing the regulations and governance requirements defined in the governance
-program.
-* Maintaining the definition of personal data.
+* Reviewing the regulations and governance requirements defined in the [governance
+program](../governance-program) that related to privacy.
+* Maintaining the definitions for personal data.
 * Retrieving information about the location and protection of
 personal data.
 * Retrieving information about the digital services in order to assess their
