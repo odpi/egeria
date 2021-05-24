@@ -326,11 +326,11 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public void  removeFixedLocationClassification(String userId,
-                                                          String locationGUID,
-                                                          String locationGUIDParameterName,
-                                                          String methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+                                                   String locationGUID,
+                                                   String locationGUIDParameterName,
+                                                   String methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameterName, methodName);

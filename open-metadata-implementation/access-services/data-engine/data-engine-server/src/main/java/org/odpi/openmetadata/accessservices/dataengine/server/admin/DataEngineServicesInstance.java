@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataengine.model.Endpoint;
 import org.odpi.openmetadata.accessservices.dataengine.model.FileFolder;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
@@ -15,11 +16,13 @@ import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.CollectionCoverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DataFileConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseColumnConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseSchemaConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DatabaseTableConverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.EndpointConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.FileFolderConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.PortConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
@@ -27,6 +30,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaA
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaTypeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
@@ -38,6 +42,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.PortHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
@@ -64,7 +69,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEngineRelationalDataHandler dataEngineRelationalDataHandler;
     private final Connection inTopicConnection;
     private final DataEngineDataFileHandler dataEngineDataFileHandler;
-    private final DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler;
+    private final DataEngineCommonHandler dataEngineCommonHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -88,92 +93,106 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
         this.inTopicConnection = inTopicConnection;
 
-        if (repositoryHandler != null) {
-
-            final AssetHandler<Process> assetHandler = new AssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName),
-                    Process.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
-                    securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-
-            final OpenMetadataAPIGenericHandler<Collection> collectionOpenMetadataAPIGenericHandler =
-                    new OpenMetadataAPIGenericHandler<>(new CollectionCoverter<>(repositoryHelper, serviceName, serverName), Collection.class,
-                    serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
-                    securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-
-            final SchemaTypeHandler<SchemaType> schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,
-                    serverName), SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-
-            final SchemaAttributeHandler<Attribute, SchemaType> schemaAttributeHandler =
-                    new SchemaAttributeHandler<>(new SchemaAttributeConverter<>(repositoryHelper, serviceName, serverName),
-                            Attribute.class, new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
-                            SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                            localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-
-            final RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType> relationalDataHandler =
-                    new RelationalDataHandler<>(new DatabaseConverter<>(repositoryHelper, serviceName, serverName),
-                            Database.class,
-                            new DatabaseSchemaConverter<>(repositoryHelper, serviceName, serverName),
-                            DatabaseSchema.class,
-                            new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
-                            RelationalTable.class,
-                            new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
-                            RelationalTable.class,
-                            new DatabaseColumnConverter<>(repositoryHelper, serviceName, serverName),
-                            RelationalColumn.class,
-                            new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
-                            SchemaType.class,
-                            serviceName,
-                            serverName,
-                            invalidParameterHandler,
-                            repositoryHandler,
-                            repositoryHelper,
-                            localServerUserId,
-                            securityVerifier,
-                            supportedZones,
-                            defaultZones,
-                            publishZones,
-                            auditLog);
-
-            final PortHandler<Port> portHandler = new PortHandler<>(new PortConverter<>(repositoryHelper, serviceName, serverName), Port.class,
-                    serviceName, serverName, invalidParameterHandler, repositoryHandler,repositoryHelper, localServerUserId, securityVerifier,
-                    supportedZones, defaultZones, publishZones, auditLog);
-
-            dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper);
-
-            DataEngineCommonHandler dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
-                    repositoryHandler, repositoryHelper, dataEngineRegistrationHandler);
-            processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    assetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
-            dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
-
-            dataEngineCollectionHandler = new DataEngineCollectionHandler(serviceName, serverName, invalidParameterHandler,
-                    repositoryHelper, collectionOpenMetadataAPIGenericHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
-
-            dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    dataEngineCommonHandler, portHandler, dataEngineRegistrationHandler);
-            dataEngineRelationalDataHandler = new DataEngineRelationalDataHandler(serviceName, serverName, invalidParameterHandler,
-                    repositoryHandler, repositoryHelper, relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
-
-
-            final AssetHandler<FileFolder> folderHandler = new AssetHandler<>(new FileFolderConverter<>(repositoryHelper, serviceName, serverName),
-                    FileFolder.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-            dataEngineFolderHierarchyHandler = new DataEngineFolderHierarchyHandler(invalidParameterHandler,
-                    repositoryHandler, dataEngineCommonHandler, folderHandler);
-            final AssetHandler<DataFile> fileHandler = new AssetHandler<>(new DataFileConverter<>(repositoryHelper, serviceName, serverName),
-                    DataFile.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-            dataEngineDataFileHandler = new DataEngineDataFileHandler(invalidParameterHandler, repositoryHelper,
-                    dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler, dataEngineFolderHierarchyHandler);
-
-        } else {
+        if (repositoryHandler == null) {
             final String methodName = "new ServiceInstance";
 
             throw new NewInstanceException(DataEngineErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName), this.getClass().getName(),
                     methodName);
         }
+
+        final AssetHandler<Process> assetHandler = new AssetHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName),
+                Process.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
+                securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+        final OpenMetadataAPIGenericHandler<Collection> collectionOpenMetadataAPIGenericHandler =
+                new OpenMetadataAPIGenericHandler<>(new CollectionCoverter<>(repositoryHelper, serviceName, serverName), Collection.class,
+                serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
+                securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+        final SchemaTypeHandler<SchemaType> schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,
+                serverName), SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+        final SchemaAttributeHandler<Attribute, SchemaType> schemaAttributeHandler =
+                new SchemaAttributeHandler<>(new SchemaAttributeConverter<>(repositoryHelper, serviceName, serverName),
+                        Attribute.class, new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
+                        SchemaType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                        localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+        final RelationalDataHandler<Database, DatabaseSchema, RelationalTable, RelationalTable, RelationalColumn, SchemaType> relationalDataHandler =
+                new RelationalDataHandler<>(new DatabaseConverter<>(repositoryHelper, serviceName, serverName),
+                        Database.class,
+                        new DatabaseSchemaConverter<>(repositoryHelper, serviceName, serverName),
+                        DatabaseSchema.class,
+                        new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
+                        RelationalTable.class,
+                        new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
+                        RelationalTable.class,
+                        new DatabaseColumnConverter<>(repositoryHelper, serviceName, serverName),
+                        RelationalColumn.class,
+                        new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
+                        SchemaType.class,
+                        serviceName,
+                        serverName,
+                        invalidParameterHandler,
+                        repositoryHandler,
+                        repositoryHelper,
+                        localServerUserId,
+                        securityVerifier,
+                        supportedZones,
+                        defaultZones,
+                        publishZones,
+                        auditLog);
+
+        final PortHandler<Port> portHandler = new PortHandler<>(new PortConverter<>(repositoryHelper, serviceName, serverName), Port.class,
+                serviceName, serverName, invalidParameterHandler, repositoryHandler,repositoryHelper, localServerUserId, securityVerifier,
+                supportedZones, defaultZones, publishZones, auditLog);
+
+        dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper);
+
+        dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
+                    repositoryHandler, repositoryHelper, dataEngineRegistrationHandler);
+
+        final ReferenceableHandler<org.odpi.openmetadata.accessservices.dataengine.model.Connection> connectionHandler =
+                new ReferenceableHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+                        org.odpi.openmetadata.accessservices.dataengine.model.Connection.class, serviceName, serverName,
+                        invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier,
+                        supportedZones, defaultZones, publishZones, auditLog);
+        final ReferenceableHandler<Endpoint> endpointHandler =
+                new ReferenceableHandler<>(new EndpointConverter<>(repositoryHelper, serviceName, serverName),
+                        Endpoint.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                        localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+        final DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler =
+                new DataEngineConnectionAndEndpointHandler(invalidParameterHandler, repositoryHelper, serviceName, serverName,
+                        dataEngineCommonHandler, connectionHandler, endpointHandler);
+
+        processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                assetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+        dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+
+        dataEngineCollectionHandler = new DataEngineCollectionHandler(serviceName, serverName, invalidParameterHandler,
+                repositoryHelper, collectionOpenMetadataAPIGenericHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+
+        dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                dataEngineCommonHandler, portHandler, dataEngineRegistrationHandler);
+        dataEngineRelationalDataHandler = new DataEngineRelationalDataHandler(serviceName, serverName, invalidParameterHandler,
+                repositoryHandler, repositoryHelper, relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler,
+                dataEngineConnectionAndEndpointHandler);
+
+
+        final AssetHandler<FileFolder> folderHandler = new AssetHandler<>(new FileFolderConverter<>(repositoryHelper, serviceName, serverName),
+                FileFolder.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+        final DataEngineFolderHierarchyHandler dataEngineFolderHierarchyHandler = new DataEngineFolderHierarchyHandler(invalidParameterHandler,
+                repositoryHandler, dataEngineCommonHandler, folderHandler);
+        final AssetHandler<DataFile> fileHandler = new AssetHandler<>(new DataFileConverter<>(repositoryHelper, serviceName, serverName),
+                DataFile.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+        dataEngineDataFileHandler = new DataEngineDataFileHandler(invalidParameterHandler, repositoryHelper,
+                dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler, dataEngineFolderHierarchyHandler,
+                dataEngineConnectionAndEndpointHandler);
     }
 
     /**
@@ -239,5 +258,12 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      */
     public DataEngineDataFileHandler getDataEngineDataFileHandler() {
         return dataEngineDataFileHandler;
+    }
+
+    /**
+     * Returns the common handler
+     */
+    public DataEngineCommonHandler getDataEngineCommonHandler() {
+        return dataEngineCommonHandler;
     }
 }

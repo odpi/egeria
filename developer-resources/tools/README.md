@@ -23,7 +23,7 @@ are familiar with your working environment.
 * [Spring and Spring Boot](../Spring.md) - for building REST APIs
 * [Swagger](Swagger.md) - REST API Documentation
 
-The **Egeria Dojo** describes how these tools are used when working with Egeria.
+The **[Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)** describes how these tools are used when working with Egeria.
 
 ----
 * Return to [Developer Resources](..)

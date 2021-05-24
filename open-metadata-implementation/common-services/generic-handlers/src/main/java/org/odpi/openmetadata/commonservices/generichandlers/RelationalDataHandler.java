@@ -495,12 +495,15 @@ public class RelationalDataHandler<DATABASE,
 
 
                 databaseHandler.setClassificationInRepository(userId,
+                                                              databaseManagerGUID,
+                                                              databaseManagerName,
                                                               databaseGUID,
                                                               databaseGUIDParameterName,
                                                               OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
                                                               classificationProperties,
+                                                              false,
                                                               methodName);
             }
 
@@ -723,12 +726,15 @@ public class RelationalDataHandler<DATABASE,
 
 
             databaseHandler.setClassificationInRepository(userId,
+                                                          databaseManagerGUID,
+                                                          databaseManagerName,
                                                           databaseGUID,
                                                           elementGUIDParameterName,
                                                           OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
                                                           OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
                                                           OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
                                                           classificationProperties,
+                                                          false,
                                                           methodName);
         }
 
@@ -2784,12 +2790,15 @@ public class RelationalDataHandler<DATABASE,
         }
 
         databaseViewHandler.setClassificationInRepository(userId,
+                                                          databaseManagerGUID,
+                                                          databaseManagerName,
                                                           databaseViewGUID,
                                                           elementGUIDParameterName,
                                                           expectedTypeName,
                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                           properties,
+                                                          false,
                                                           methodName);
     }
 

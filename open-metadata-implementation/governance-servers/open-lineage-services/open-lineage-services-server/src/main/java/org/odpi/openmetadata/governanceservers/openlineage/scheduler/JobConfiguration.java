@@ -63,7 +63,7 @@ public class JobConfiguration {
         log.debug(SCHEDULER_STARTING, Thread.currentThread().getName());
         try {
             scheduler = new StdSchedulerFactory().getScheduler();
-            scheduler.start();
+            scheduler.startDelayed(10); // delaying the start for 10 seconds so we get cleaner server startup sequence
         } catch (SchedulerException e) {
             log.error(SCHEDULER_RUNNING_ERROR, methodName);
         }

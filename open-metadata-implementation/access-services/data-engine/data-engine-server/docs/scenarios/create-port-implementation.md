@@ -5,34 +5,68 @@
 
 Create a PortImplementation, with associated SchemaType, PortSchema and ProcessPort relationships. 
 
+More examples can be found in the
+[sample collection](../../../docs/samples/collections/DE_endpoints.postman_collection.json)
+
 ```
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/port-implementations
 
 {
-    "processQualifiedName": "processQualifiedName",
+    "processQualifiedName": "(process)=CopyColumsFlow::(process)=CopyColumns",
     "portImplementation": {
-        "portType": "OUTPUT_PORT",
-        "displayName": "port display name",
-        "qualifiedName": "portImplementationQualifiedName",
+        "displayName": "NamesFileInputPort",
+        "qualifiedName": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputPort",
+        "updateSemantic": "REPLACE",
+        "type": "INPUT_PORT",
         "schema": {
-            "qualifiedName": "schemaTypeQualifiedName",
-            "displayName": "schema display",
-            "author": "author",
-            "usage": "usage",
-            "encodingStandard": "encoding",
-            "versionNumber": "12",
+            "displayName": "NamesFileInputSchema",
+            "qualifiedName": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema",
+            "author": "Platform User",
             "columns": [
                 {
-                    "qualifiedName": "columnQualoifiedName",
-                    "displayName": "name",
-                    "cardinality": "none",
-                    "position": "1",
-                    "type": "STRING"
+                    "qualifiedName": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Last",
+                    "displayName": "Last",
+                    "minCardinality": 0,
+                    "maxCardinality": 0,
+                    "allowsDuplicateValues": false,
+                    "orderedValues": false,
+                    "position": 0,
+                    "dataType": "VARCHAR"
+                },
+                {
+                    "qualifiedName": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=First",
+                    "displayName": "First",
+                    "minCardinality": 0,
+                    "maxCardinality": 0,
+                    "allowsDuplicateValues": false,
+                    "orderedValues": false,
+                    "position": 1,
+                    "dataType": "VARCHAR"
+                },
+                {
+                    "qualifiedName": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Id",
+                    "displayName": "Id",
+                    "minCardinality": 0,
+                    "maxCardinality": 0,
+                    "allowsDuplicateValues": false,
+                    "orderedValues": false,
+                    "position": 2,
+                    "dataType": "INTEGER"
+                },
+                {
+                    "qualifiedName": "(process)=CopyColumsFlow::(process)=CopyColumns::(port)=NamesFileInputSchema::(column)=Location",
+                    "displayName": "Location",
+                    "minCardinality": 0,
+                    "maxCardinality": 0,
+                    "allowsDuplicateValues": false,
+                    "orderedValues": false,
+                    "position": 3,
+                    "dataType": "INTEGER"
                 }
             ]
         }
     },
-    "externalSourceName": "dataEngine"
+    "externalSourceName": "(organization)=Company::(project)=ExternalDataPlatform"
 }
 ```
 
