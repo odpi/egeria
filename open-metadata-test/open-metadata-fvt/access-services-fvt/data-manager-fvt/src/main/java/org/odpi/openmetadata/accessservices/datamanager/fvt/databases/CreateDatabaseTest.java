@@ -358,9 +358,6 @@ public class CreateDatabaseTest
 
             List<String> zones = new ArrayList<>();
             zones.add(databaseSchemaZone);
-            properties.setZoneMembership(zones);
-            properties.setOwner(databaseSchemaOwner);
-            properties.setOwnerCategory(OwnerCategory.USER_ID);
 
             String databaseSchemaGUID = client.createDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseGUID, properties);
 
@@ -389,26 +386,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
-            if (retrievedSchema.getZoneMembership() == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null database schema Zone Membership from Retrieve)");
-            }
-            if (retrievedSchema.getZoneMembership().size() != 1)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Database schema Zone Membership size is " + retrievedSchema.getZoneMembership().size() + " from Retrieve)");
-            }
-            if (! databaseSchemaZone.equals(retrievedSchema.getZoneMembership().get(0)))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad database schema Zone Membership from Retrieve)");
-            }
-            if (! databaseSchemaOwner.equals(retrievedSchema.getOwner()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad database owner from Retrieve)");
-            }
-            if (OwnerCategory.USER_ID != retrievedSchema.getOwnerCategory())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad database owner type from Retrieve)");
-            }
+
 
             List<DatabaseSchemaElement> databaseSchemaList = client.getDatabaseSchemasByName(userId, databaseSchemaName, 0, maxPageSize);
 
@@ -441,14 +419,6 @@ public class CreateDatabaseTest
             if (! databaseSchemaDescription.equals(retrievedSchema.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
-            }
-            if (! databaseSchemaZone.equals(retrievedSchema.getZoneMembership().get(0)))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad zone membership from RetrieveByName)");
-            }
-            if (! databaseSchemaOwner.equals(retrievedSchema.getOwner()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad database owner from RetrieveByName)");
             }
 
             return databaseSchemaGUID;
