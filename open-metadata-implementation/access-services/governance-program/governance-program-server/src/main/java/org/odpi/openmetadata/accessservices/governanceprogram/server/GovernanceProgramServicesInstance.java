@@ -3,14 +3,11 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.converters.GovernanceZoneConverter;
+import org.odpi.openmetadata.accessservices.governanceprogram.converters.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.GovernanceProgramErrorCode;
-import org.odpi.openmetadata.accessservices.governanceprogram.handlers.ExternalReferencesHandler;
-import org.odpi.openmetadata.accessservices.governanceprogram.handlers.GovernanceOfficerHandler;
-import org.odpi.openmetadata.accessservices.governanceprogram.handlers.PersonalProfileHandler;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceZoneHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -25,10 +22,12 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS;
 
-    private GovernanceZoneHandler<GovernanceZoneElement> governanceZoneHandler;
-    private GovernanceOfficerHandler                     governanceOfficerHandler;
-    private ExternalReferencesHandler                    externalReferencesHandler;
-    private PersonalProfileHandler                       personalProfileHandler;
+    private ElementStubConverter<ElementStub>                        elementStubConverter;
+    private GovernanceZoneHandler<GovernanceZoneElement>             governanceZoneHandler;
+    private PersonRoleHandler<GovernanceRoleElement>                 governanceRoleHandler;
+    private ExternalReferenceHandler<ExternalReferenceElement>       externalReferenceHandler;
+    private GovernanceDefinitionHandler<GovernanceDefinitionElement> governanceDefinitionHandler;
+    private SubjectAreaHandler<SubjectAreaElement>                   subjectAreaHandler;
 
 
     /**
@@ -56,6 +55,8 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
 
         if (repositoryHandler != null)
         {
+            this.elementStubConverter = new ElementStubConverter<>(repositoryHelper, serviceName, serverName);
+
             this.governanceZoneHandler = new GovernanceZoneHandler<>(new GovernanceZoneConverter<>(repositoryHelper, serviceName, serverName),
                                                                      GovernanceZoneElement.class,
                                                                      serviceName,
@@ -70,25 +71,61 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
                                                                      publishZones,
                                                                      auditLog);
 
-            this.externalReferencesHandler = new ExternalReferencesHandler(serviceName,
+            this.externalReferenceHandler = new ExternalReferenceHandler<>(new ExternalReferenceConverter<>(repositoryHelper, serviceName, serverName),
+                                                                           ExternalReferenceElement.class,
+                                                                           serviceName,
                                                                            serverName,
                                                                            invalidParameterHandler,
+                                                                           repositoryHandler,
                                                                            repositoryHelper,
-                                                                           repositoryHandler);
+                                                                           localServerUserId,
+                                                                           securityVerifier,
+                                                                           supportedZones,
+                                                                           defaultZones,
+                                                                           publishZones,
+                                                                           auditLog);
 
-            this.personalProfileHandler = new PersonalProfileHandler(serviceName,
-                                                                           serverName,
-                                                                           invalidParameterHandler,
-                                                                           repositoryHelper,
-                                                                           repositoryHandler);
+            this.governanceRoleHandler = new PersonRoleHandler<>(new GovernanceRoleConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 GovernanceRoleElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
 
-            this.governanceOfficerHandler = new GovernanceOfficerHandler(serviceName,
-                                                                         serverName,
-                                                                         invalidParameterHandler,
-                                                                         repositoryHelper,
-                                                                         repositoryHandler,
-                                                                         personalProfileHandler,
-                                                                         externalReferencesHandler);
+            this.governanceDefinitionHandler = new GovernanceDefinitionHandler<>(new GovernanceDefinitionConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 GovernanceDefinitionElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
+
+            this.subjectAreaHandler = new SubjectAreaHandler<>(new SubjectAreaConverter<>(repositoryHelper, serviceName, serverName),
+                                                               SubjectAreaElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
         }
         else
         {
@@ -101,13 +138,24 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
 
 
     /**
-     * Return the governance officer handler
+     * Return the element stub converter
+     *
+     * @return converter
+     */
+    ElementStubConverter<ElementStub> getElementStubConverter()
+    {
+        return elementStubConverter;
+    }
+
+
+    /**
+     * Return the governance role handler
      *
      * @return handler
      */
-    GovernanceOfficerHandler getGovernanceOfficerHandler()
+    PersonRoleHandler<GovernanceRoleElement> getGovernanceRoleHandler()
     {
-        return governanceOfficerHandler;
+        return governanceRoleHandler;
     }
 
 
@@ -116,20 +164,9 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      *
      * @return handler
      */
-    ExternalReferencesHandler getExternalReferencesHandler()
+    ExternalReferenceHandler<ExternalReferenceElement> getExternalReferencesHandler()
     {
-        return externalReferencesHandler;
-    }
-
-
-    /**
-     * Return the persona profile handler.
-     *
-     * @return handler
-     */
-    PersonalProfileHandler getPersonalProfileHandler()
-    {
-        return personalProfileHandler;
+        return externalReferenceHandler;
     }
 
 
@@ -143,4 +180,25 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
         return governanceZoneHandler;
     }
 
+
+    /**
+     * Return the handler for governance definition requests.
+     *
+     * @return handler object
+     */
+    GovernanceDefinitionHandler<GovernanceDefinitionElement> getGovernanceDefinitionHandler()
+    {
+        return governanceDefinitionHandler;
+    }
+
+
+    /**
+     * Return the handler for governance definition requests.
+     *
+     * @return handler object
+     */
+    SubjectAreaHandler<SubjectAreaElement> getSubjectAreaHandler()
+    {
+        return subjectAreaHandler;
+    }
 }

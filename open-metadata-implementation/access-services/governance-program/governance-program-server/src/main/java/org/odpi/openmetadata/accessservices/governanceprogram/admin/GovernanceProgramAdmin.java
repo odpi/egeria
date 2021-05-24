@@ -49,7 +49,7 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
                            AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
-        final String               actionDescription = "initialize";
+        final String actionDescription = "initialize";
 
         auditLog.logMessage(actionDescription, GovernanceProgramAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 

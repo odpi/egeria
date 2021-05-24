@@ -3,20 +3,21 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.converters;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
-
 /**
- * GovernanceZoneConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from GovernanceZoneElement.
+ * SubjectAreaConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a bean that inherits from SubjectAreaElement.
  */
-public class GovernanceZoneConverter<B> extends GovernanceProgramOMASConverter<B>
+public class SubjectAreaConverter<B> extends GovernanceProgramOMASConverter<B>
 {
     /**
      * Constructor
@@ -25,9 +26,9 @@ public class GovernanceZoneConverter<B> extends GovernanceProgramOMASConverter<B
      * @param serviceName name of this component
      * @param serverName local server name
      */
-    public GovernanceZoneConverter(OMRSRepositoryHelper repositoryHelper,
-                                   String               serviceName,
-                                   String               serverName)
+    public SubjectAreaConverter(OMRSRepositoryHelper repositoryHelper,
+                                String               serviceName,
+                                String               serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -55,36 +56,36 @@ public class GovernanceZoneConverter<B> extends GovernanceProgramOMASConverter<B
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof GovernanceZoneElement)
+            if (returnBean instanceof SubjectAreaElement)
             {
-                GovernanceZoneElement bean = (GovernanceZoneElement) returnBean;
+                SubjectAreaElement bean = (SubjectAreaElement) returnBean;
 
                 if (entity != null)
                 {
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
-                    GovernanceZoneProperties governanceZoneProperties = new GovernanceZoneProperties();
+                    SubjectAreaProperties subjectAreaProperties = new SubjectAreaProperties();
 
                     /*
                      * The initial set of values come from the entity.
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    governanceZoneProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    governanceZoneProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    governanceZoneProperties.setDisplayName(this.removeDisplayName(instanceProperties));
-                    governanceZoneProperties.setDescription(this.removeDescription(instanceProperties));
-                    governanceZoneProperties.setCriteria(this.removeCriteria(instanceProperties));
-                    governanceZoneProperties.setScope(this.removeScope(instanceProperties));
-                    governanceZoneProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
+                    subjectAreaProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    subjectAreaProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    subjectAreaProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    subjectAreaProperties.setDescription(this.removeDescription(instanceProperties));
+                    subjectAreaProperties.setUsage(this.removeUsage(instanceProperties));
+                    subjectAreaProperties.setScope(this.removeScope(instanceProperties));
+                    subjectAreaProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    governanceZoneProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    governanceZoneProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    subjectAreaProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    subjectAreaProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setGovernanceZoneProperties(governanceZoneProperties);
+                    bean.setProperties(subjectAreaProperties);
                 }
                 else
                 {
