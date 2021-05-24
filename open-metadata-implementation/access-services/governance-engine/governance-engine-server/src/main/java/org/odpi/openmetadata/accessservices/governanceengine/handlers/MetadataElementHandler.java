@@ -252,6 +252,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
                               OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                               startFrom,
                               pageSize,
                               methodName);

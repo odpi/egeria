@@ -5,7 +5,8 @@
 
 # Governance Engine Open Metadata Access Service (OMAS)
 
-The **Governance Engine OMAS** provides the metadata services for running
+The **Governance Engine OMAS** supports the implementation of a [governance program](../governance-program)
+by providing the metadata services for running
 **[governance engines](docs/concepts/governance-engine.md)**.
 
 A governance engine is a collection of related 
@@ -36,6 +37,10 @@ The Governance Engine OMAS has the following capabilities:
 * Notification of new [governance actions](docs/concepts/governance-action.md) to the 
   Engine Host OMAG Servers that then invoke the appropriate governance services to action them.
 * Supporting the metadata requirements for many of the [engine services](../../engine-services).
+* Linking the governance actions, governance action processes and governance services
+  to the governance definitions supported by the [Governance Program OMAS](../governance-program).
+* Providing APIs to query the status of the governance capabilities implemented through the governance
+  engines.
 
 
 
