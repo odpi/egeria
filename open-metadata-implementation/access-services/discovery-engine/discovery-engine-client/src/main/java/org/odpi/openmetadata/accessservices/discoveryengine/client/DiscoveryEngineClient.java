@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.client.rest.ODFRESTClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public class DiscoveryEngineClient extends ConnectedAssetClientBase
 {
-    private ODFRESTClient                          restClient;               /* Initialized in constructor */
+    private ODFRESTClient restClient;               /* Initialized in constructor */
 
     private static final String  serviceURLName = "discovery-engine";
 
@@ -31,18 +32,18 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
     /**
      * Create a client-side object for calling a discovery engine within a discovery server.
      *
-     * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
+     * @param serverPlatformURLRoot the root url of the platform where the discovery engine is running.
      * @param serverName the name of the discovery server where the discovery engine is running
      * @param restClient pre-built client
      * @param auditLog logging destination
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     public DiscoveryEngineClient(String        serverName,
-                                 String        serverPlatformRootURL,
+                                 String        serverPlatformURLRoot,
                                  ODFRESTClient restClient,
                                  AuditLog      auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
         this.restClient = restClient;
     }
@@ -52,18 +53,18 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
      *
      * @throws InvalidParameterException null URL or server name
      */
     public DiscoveryEngineClient(String   serverName,
-                                 String   serverPlatformRootURL,
+                                 String   serverPlatformURLRoot,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
-        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, auditLog);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -71,15 +72,15 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException null URL or server name
      */
     public DiscoveryEngineClient(String serverName,
-                                 String serverPlatformRootURL) throws InvalidParameterException
+                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformURLRoot);
 
-        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -88,21 +89,21 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
      * @throws InvalidParameterException null URL or server name
      */
     public DiscoveryEngineClient(String     serverName,
-                                 String     serverPlatformRootURL,
+                                 String     serverPlatformURLRoot,
                                  String     userId,
                                  String     password,
                                  AuditLog   auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
-        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, userId, password, auditLog);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -111,19 +112,41 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException null URL or server name
      */
     public DiscoveryEngineClient(String     serverName,
-                                 String     serverPlatformRootURL,
+                                 String     serverPlatformURLRoot,
                                  String     userId,
                                  String     password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformURLRoot);
 
-        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+    /**
+     * Create a new client that is to be used within an OMAG Server.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param restClient pre-initialized REST client
+     * @param maxPageSize pre-initialized parameter limit
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem with the information about the remote OMAS
+     */
+    public DiscoveryEngineClient(String       serverName,
+                                String        serverPlatformURLRoot,
+                                ODFRESTClient restClient,
+                                int           maxPageSize,
+                                AuditLog      auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
+
+        this.restClient = restClient;
     }
 
 
@@ -151,7 +174,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          serverPlatformURLRoot + urlTemplate,
                                                                           serverName,
                                                                           userId,
                                                                           startFrom,
@@ -190,7 +213,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateSearchString(searchParameter, searchParameterName, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          serverPlatformURLRoot + urlTemplate,
                                                                           searchParameter,
                                                                           serverName,
                                                                           userId,
@@ -422,7 +445,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateName(discoveryService, discoveryServiceParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         message,
                                         serverName,
                                         userId,
@@ -491,7 +514,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         requestBody.setAdditionalProperties(additionalProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -527,7 +550,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(updatedReport.getElementHeader().getGUID(), reportGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         updatedReport,
                                         serverName,
                                         userId,
@@ -617,7 +640,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(discoveryReportGUID, reportGUIDParameterName, methodName);
 
         DiscoveryAnalysisReportResponse restResult = restClient.callDiscoveryAnalysisReportGetRESTCall(methodName,
-                                                                                                       serverPlatformRootURL + urlTemplate,
+                                                                                                       serverPlatformURLRoot + urlTemplate,
                                                                                                        serverName,
                                                                                                        userId,
                                                                                                        discoveryReportGUID);
@@ -645,7 +668,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateUserId(userId, methodName);
 
         NameListResponse restResult = restClient.callNameListGetRESTCall(methodName,
-                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverPlatformURLRoot + urlTemplate,
                                                                          serverName,
                                                                          userId);
 
@@ -672,7 +695,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateUserId(userId, methodName);
 
         StringMapResponse restResult = restClient.callStringMapGetRESTCall(methodName,
-                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          serverPlatformURLRoot + urlTemplate,
                                                                            serverName,
                                                                            userId);
 
@@ -716,7 +739,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         requestBody.setAnnotationStatus(status);
 
         AnnotationListResponse restResult = restClient.callAnnotationListPostRESTCall(methodName,
-                                                                                      serverPlatformRootURL + urlTemplate,
+                                                                                      serverPlatformURLRoot + urlTemplate,
                                                                                       requestBody,
                                                                                       serverName,
                                                                                       userId,
@@ -786,7 +809,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         AnnotationListResponse restResult = restClient.callAnnotationListGetRESTCall(methodName,
-                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                     serverPlatformURLRoot + urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      discoveryReportGUID,
@@ -827,7 +850,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         AnnotationListResponse restResult = restClient.callAnnotationListGetRESTCall(methodName,
-                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                     serverPlatformURLRoot + urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      annotationGUID,
@@ -864,7 +887,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
         AnnotationResponse restResult = restClient.callAnnotationGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate,
+                                                                             serverPlatformURLRoot + urlTemplate,
                                                                              serverName,
                                                                              userId,
                                                                              annotationGUID);
@@ -900,7 +923,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   annotation,
                                                                   serverName,
                                                                   userId,
@@ -937,7 +960,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   annotation,
                                                                   serverName,
                                                                   userId,
@@ -978,7 +1001,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(elementHeader.getGUID(), annotationGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         annotation,
                                         serverName,
                                         userId,
@@ -1008,7 +1031,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -1044,7 +1067,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         DataFieldListResponse restResult = restClient.callDataFieldListGetRESTCall(methodName,
-                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                     serverPlatformURLRoot + urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      discoveryReportGUID,
@@ -1081,7 +1104,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         DataFieldListResponse restResult = restClient.callDataFieldListGetRESTCall(methodName,
-                                                                                   serverPlatformRootURL + urlTemplate,
+                                                                                   serverPlatformURLRoot + urlTemplate,
                                                                                    serverName,
                                                                                    userId,
                                                                                    discoveryReportGUID,
@@ -1121,7 +1144,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         DataFieldListResponse restResult = restClient.callDataFieldListGetRESTCall(methodName,
-                                                                                   serverPlatformRootURL + urlTemplate,
+                                                                                   serverPlatformURLRoot + urlTemplate,
                                                                                    serverName,
                                                                                    userId,
                                                                                    parentDataFieldGUID,
@@ -1154,7 +1177,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(dataFieldGUID, dataFieldGUIDParameterName, methodName);
 
         DataFieldResponse restResult = restClient.callDataFieldGetRESTCall(methodName,
-                                                                                   serverPlatformRootURL + urlTemplate,
+                                                                                   serverPlatformURLRoot + urlTemplate,
                                                                                    serverName,
                                                                                    userId,
                                                                                    dataFieldGUID);
@@ -1191,7 +1214,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateObject(dataField, dataFieldParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   dataField,
                                                                   serverName,
                                                                   userId,
@@ -1228,7 +1251,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateObject(dataField, dataFieldParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   dataField,
                                                                   serverName,
                                                                   userId,
@@ -1265,7 +1288,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   annotation,
                                                                   serverName,
                                                                   userId,
@@ -1307,7 +1330,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(elementHeader.getGUID(), annotationGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         dataField,
                                         serverName,
                                         userId,
@@ -1337,7 +1360,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(dataFieldGUID, dataFieldGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
