@@ -153,12 +153,6 @@ public class DataFolderRequestBody extends FileFolderProperties
                 ", encodingProperties=" + getEncodingProperties() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                ", otherOriginValues=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", vendorProperties=" + getVendorProperties() +

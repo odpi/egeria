@@ -264,10 +264,6 @@ public class DataStoreProperties extends AssetProperties
                        ", encodingProperties='" + encodingProperties + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerCategory=" + getOwnerCategory() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", origin=" + getOtherOriginValues() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +
