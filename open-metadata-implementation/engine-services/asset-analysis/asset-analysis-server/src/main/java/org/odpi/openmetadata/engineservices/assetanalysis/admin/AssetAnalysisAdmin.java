@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.engineservices.assetanalysis.admin;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
-import org.odpi.openmetadata.accessservices.discoveryengine.client.ODFRESTClient;
+import org.odpi.openmetadata.accessservices.discoveryengine.client.rest.ODFRESTClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
