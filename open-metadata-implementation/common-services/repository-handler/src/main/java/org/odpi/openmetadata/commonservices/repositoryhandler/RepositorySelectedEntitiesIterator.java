@@ -30,6 +30,7 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param properties properties used in the search
      * @param matchCriteria all or any
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName  name of calling method
@@ -39,11 +40,12 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                               String             entityTypeGUID,
                                               InstanceProperties properties,
                                               MatchCriteria      matchCriteria,
+                                              String             sequencingPropertyName,
                                               int                startingFrom,
                                               int                pageSize,
                                               String             methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, null, startingFrom, pageSize, methodName);
+        super(repositoryHandler, userId, entityTypeGUID, null, sequencingPropertyName, startingFrom, pageSize, methodName);
 
         this.properties           = properties;
         this.matchCriteria        = matchCriteria;
@@ -58,6 +60,7 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param userId  user making the request
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param searchCriteria value used in the search
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName  name of calling method
@@ -66,11 +69,12 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                               String             userId,
                                               String             entityTypeGUID,
                                               String             searchCriteria,
+                                              String             sequencingPropertyName,
                                               int                startingFrom,
                                               int                pageSize,
                                               String             methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, null, startingFrom, pageSize, methodName);
+        super(repositoryHandler, userId, entityTypeGUID, null, sequencingPropertyName, startingFrom, pageSize, methodName);
 
         this.searchCriteria       = searchCriteria;
         this.properties           = null;
@@ -96,6 +100,7 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                 entitiesCache = repositoryHandler.getEntitiesByValue(userId,
                                                                      searchCriteria,
                                                                      entityTypeGUID,
+                                                                     sequencingPropertyName,
                                                                      startingFrom,
                                                                      pageSize,
                                                                      methodName);
@@ -105,6 +110,7 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                 entitiesCache = repositoryHandler.getEntitiesByName(userId,
                                                                     properties,
                                                                     entityTypeGUID,
+                                                                    sequencingPropertyName,
                                                                     startingFrom,
                                                                     pageSize,
                                                                     methodName);
@@ -114,6 +120,7 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                 entitiesCache = repositoryHandler.getEntitiesByAllProperties(userId,
                                                                              properties,
                                                                              entityTypeGUID,
+                                                                             sequencingPropertyName,
                                                                              startingFrom,
                                                                              pageSize,
                                                                              methodName);
@@ -123,6 +130,7 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                 entitiesCache = repositoryHandler.getEntitiesWithoutPropertyValues(userId,
                                                                                    properties,
                                                                                    entityTypeGUID,
+                                                                                   sequencingPropertyName,
                                                                                    startingFrom,
                                                                                    pageSize,
                                                                                    methodName);

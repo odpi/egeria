@@ -67,7 +67,7 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
                                           int                   requesterPageSize,
                                           String                methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, null, startingFrom, requesterPageSize, methodName);
+        super(repositoryHandler, userId, entityTypeGUID, null, sequencingProperty, startingFrom, requesterPageSize, methodName);
 
         this.entitySubtypeGUIDs    = entitySubtypeGUIDs;
         this.searchProperties      = searchProperties;

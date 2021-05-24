@@ -22,6 +22,7 @@ public abstract class RepositoryIteratorForEntities
     protected int                startingFrom;
     protected int                pageSize;
     protected String             methodName;
+    protected String             sequencingPropertyName;
     protected List<EntityDetail> entitiesCache = null;
 
 
@@ -32,6 +33,7 @@ public abstract class RepositoryIteratorForEntities
      * @param userId  user making the request
      * @param entityTypeGUID  identifier for the type of entity to retrieve
      * @param entityTypeName  name for the type of entity to retrieve
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName  name of calling method
@@ -40,17 +42,19 @@ public abstract class RepositoryIteratorForEntities
                                          String             userId,
                                          String             entityTypeGUID,
                                          String             entityTypeName,
+                                         String             sequencingPropertyName,
                                          int                startingFrom,
                                          int                pageSize,
                                          String             methodName)
     {
-        this.repositoryHandler    = repositoryHandler;
-        this.userId               = userId;
-        this.entityTypeGUID       = entityTypeGUID;
-        this.entityTypeName       = entityTypeName;
-        this.startingFrom         = startingFrom;
-        this.pageSize             = pageSize;
-        this.methodName           = methodName;
+        this.repositoryHandler      = repositoryHandler;
+        this.userId                 = userId;
+        this.entityTypeGUID         = entityTypeGUID;
+        this.entityTypeName         = entityTypeName;
+        this.sequencingPropertyName = sequencingPropertyName;
+        this.startingFrom           = startingFrom;
+        this.pageSize               = pageSize;
+        this.methodName             = methodName;
     }
 
 
