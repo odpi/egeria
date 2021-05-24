@@ -1582,7 +1582,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                                              Map<String, String> mapValues,
                                                              String              methodName)
     {
-        if (mapValues != null)
+        if ((mapValues != null ) && (! mapValues.isEmpty()))
         {
             log.debug("Adding property " + propertyName + " for " + methodName);
 
