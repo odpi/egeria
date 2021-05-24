@@ -1,12 +1,11 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,40 +13,43 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * CommunityElement contains the properties and header for a community.
+ * The PersonalProfileElement describes an individual who has (or will be) appointed to one of the
+ * governance roles defined in the governance program.  Information about the personal profile is stored
+ * as an Person entity.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommunityElement implements MetadataElement, Serializable
+public class PersonalProfileElement implements Serializable, MetadataElement
 {
-    private static final long     serialVersionUID = 1L;
+    private static final long          serialVersionUID = 1L;
 
-    private ElementHeader       elementHeader = null;
-    private CommunityProperties properties    = null;
+    private ElementHeader             elementHeader     = null;
+    private PersonalProfileProperties profileProperties = null;
+
 
 
     /**
-     * Default constructor
+     * Default Constructor
      */
-    public CommunityElement()
+    public PersonalProfileElement()
     {
-        super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone Constructor - the resulting object.
      *
-     * @param template object to copy
+     * @param template object being copied
      */
-    public CommunityElement(CommunityElement template)
+    public PersonalProfileElement(PersonalProfileElement template)
     {
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            properties = template.getProperties();
+            profileProperties = template.getProfileProperties();
         }
     }
 
@@ -57,7 +59,6 @@ public class CommunityElement implements MetadataElement, Serializable
      *
      * @return element header object
      */
-    @Override
     public ElementHeader getElementHeader()
     {
         return elementHeader;
@@ -69,7 +70,6 @@ public class CommunityElement implements MetadataElement, Serializable
      *
      * @param elementHeader element header object
      */
-    @Override
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;
@@ -77,24 +77,24 @@ public class CommunityElement implements MetadataElement, Serializable
 
 
     /**
-     * Return the properties of the community.
+     * Return the properties of the profile.
      *
-     * @return properties
+     * @return  properties
      */
-    public CommunityProperties getProperties()
+    public PersonalProfileProperties getProfileProperties()
     {
-        return properties;
+        return profileProperties;
     }
 
 
     /**
-     * Set up the community properties.
+     * Set up the profile properties.
      *
-     * @param properties  properties
+     * @param profileProperties  properties
      */
-    public void setProperties(CommunityProperties properties)
+    public void setProfileProperties(PersonalProfileProperties profileProperties)
     {
-        this.properties = properties;
+        this.profileProperties = profileProperties;
     }
 
 
@@ -106,10 +106,10 @@ public class CommunityElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "CommunityElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
-                '}';
+        return "PersonalProfileElement{" +
+                       "elementHeader=" + elementHeader +
+                       ", profileProperties=" + profileProperties +
+                       '}';
     }
 
 
@@ -130,9 +130,9 @@ public class CommunityElement implements MetadataElement, Serializable
         {
             return false;
         }
-        CommunityElement that = (CommunityElement) objectToCompare;
+        PersonalProfileElement that = (PersonalProfileElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties);
+                       Objects.equals(profileProperties, that.profileProperties);
     }
 
 
@@ -144,6 +144,6 @@ public class CommunityElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(elementHeader, profileProperties);
     }
 }

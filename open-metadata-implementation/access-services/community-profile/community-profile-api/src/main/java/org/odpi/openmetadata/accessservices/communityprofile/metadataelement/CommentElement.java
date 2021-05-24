@@ -17,6 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * CommentElement contains the properties and header for a comment retrieved from the metadata repository.
+ * It is used for personal messages.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,8 +28,8 @@ public class CommentElement implements MetadataElement, Serializable
 
     private ElementHeader     elementHeader = null;
     private CommentProperties properties    = null;
-    private List<String>      answeredBy    = null;
-    private List<String>      answers       = null;
+    private List<ElementStub> answeredBy    = null;
+    private List<ElementStub> answers       = null;
 
     /**
      * Default constructor
@@ -103,22 +104,22 @@ public class CommentElement implements MetadataElement, Serializable
 
 
     /**
-     * Return the list of unique identifiers (guids) for comments that answer a question posed in this comment.
+     * Return the list of comments that answer a question posed in this comment.
      *
-     * @return list of guids
+     * @return list of related comments
      */
-    public List<String> getAnsweredBy()
+    public List<ElementStub> getAnsweredBy()
     {
         return answeredBy;
     }
 
 
     /**
-     * Set up the list of unique identifiers (guids) for comments that answer a question posed in this comment.
+     * Set up the list of comments that answer a question posed in this comment.
      *
-     * @param answeredBy list of guids
+     * @param answeredBy list of related comments
      */
-    public void setAnsweredBy(List<String> answeredBy)
+    public void setAnsweredBy(List<ElementStub> answeredBy)
     {
         this.answeredBy = answeredBy;
     }
@@ -127,20 +128,20 @@ public class CommentElement implements MetadataElement, Serializable
     /**
      * Return the list of unique identifiers (guids) for comments that contain a question that this comment answers.
      *
-     * @return list of guids
+     * @return list of related comments
      */
-    public List<String> getAnswers()
+    public List<ElementStub> getAnswers()
     {
         return answers;
     }
 
 
     /**
-     * Set up the list of unique identifiers (guids) for comments that contain a question that this comment answers.
+     * Set up the list of comments that contain a question that this comment answers.
      *
-     * @param answers list of guids
+     * @param answers list of related comments
      */
-    public void setAnswers(List<String> answers)
+    public void setAnswers(List<ElementStub> answers)
     {
         this.answers = answers;
     }
@@ -182,7 +183,9 @@ public class CommentElement implements MetadataElement, Serializable
         }
         CommentElement that = (CommentElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties);
+                       Objects.equals(properties, that.properties) &&
+                       Objects.equals(answeredBy, that.answeredBy) &&
+                       Objects.equals(answers, that.answers);
     }
 
 
@@ -194,6 +197,6 @@ public class CommentElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), elementHeader, properties, answeredBy, answers);
     }
 }

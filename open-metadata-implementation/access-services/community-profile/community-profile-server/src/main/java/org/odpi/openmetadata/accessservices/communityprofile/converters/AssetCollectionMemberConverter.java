@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.AssetCollectionMemberMapper;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.AssetCollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -80,32 +79,12 @@ public class AssetCollectionMemberConverter<B> extends CommunityProfileOMASConve
                     assetProperties.setName(this.removeName(instanceProperties));
                     assetProperties.setDescription(this.removeDescription(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    assetProperties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    assetProperties.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    assetProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
-
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
                     assetProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     assetProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                    assetProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                    assetProperties.setOwner(this.getOwner(instanceProperties));
-                    assetProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
                 }
                 else
                 {
@@ -117,6 +96,7 @@ public class AssetCollectionMemberConverter<B> extends CommunityProfileOMASConve
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
                     bean.setMembershipRationale(this.removeMembershipRationale(instanceProperties));
+                    bean.setDateAddedToCollection(relationship.getCreateTime());
                 }
 
                 bean.setProperties(assetProperties);
@@ -130,24 +110,5 @@ public class AssetCollectionMemberConverter<B> extends CommunityProfileOMASConve
         }
 
         return null;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
-     *
-     * @param beanClass name of the class to create
-     * @param entity entity containing the properties
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    @Override
-    public B getNewBean(Class<B>     beanClass,
-                        EntityDetail entity,
-                        String       methodName) throws PropertyServerException
-    {
-        return getNewBean(beanClass, entity, null, methodName);
     }
 }

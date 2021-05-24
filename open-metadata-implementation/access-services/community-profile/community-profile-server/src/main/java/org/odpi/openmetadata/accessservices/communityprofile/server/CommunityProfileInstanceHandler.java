@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
@@ -69,9 +68,9 @@ class CommunityProfileInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    PersonalProfileHandler getPersonalProfileHandler(String userId,
-                                                     String serverName,
-                                                     String serviceOperationName) throws InvalidParameterException,
+    ActorProfileHandler<PersonalProfileUniverse> getPersonalProfileHandler(String userId,
+                                                                           String serverName,
+                                                                           String serviceOperationName) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {

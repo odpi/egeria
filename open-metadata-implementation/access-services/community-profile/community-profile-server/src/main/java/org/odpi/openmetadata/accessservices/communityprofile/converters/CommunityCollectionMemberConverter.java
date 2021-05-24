@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.CommunityCollectionMemberMapper;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CommunityCollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -91,6 +90,7 @@ public class CommunityCollectionMemberConverter<B> extends CommunityProfileOMASC
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
                     bean.setMembershipRationale(this.removeMembershipRationale(instanceProperties));
+                    bean.setDateAddedToCollection(relationship.getCreateTime());
                 }
 
                 bean.setProperties(communityProperties);
@@ -104,24 +104,5 @@ public class CommunityCollectionMemberConverter<B> extends CommunityProfileOMASC
         }
 
         return null;
-    }
-
-
-    /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
-     *
-     * @param beanClass name of the class to create
-     * @param entity entity containing the properties
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    @Override
-    public B getNewBean(Class<B>     beanClass,
-                        EntityDetail entity,
-                        String       methodName) throws PropertyServerException
-    {
-        return getNewBean(beanClass, entity, null, methodName);
     }
 }

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,23 +15,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CommunityElement contains the properties and header for a community.
+ * PersonalRoleElement contains the properties and header for a person role assigned to a profile retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommunityElement implements MetadataElement, Serializable
+public class PersonRoleElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader       elementHeader = null;
-    private CommunityProperties properties    = null;
+    private ElementHeader        elementHeader = null;
+    private PersonRoleProperties properties    = null;
 
 
     /**
      * Default constructor
      */
-    public CommunityElement()
+    public PersonRoleElement()
     {
         super();
     }
@@ -42,7 +42,7 @@ public class CommunityElement implements MetadataElement, Serializable
      *
      * @param template object to copy
      */
-    public CommunityElement(CommunityElement template)
+    public PersonRoleElement(PersonRoleElement template)
     {
         if (template != null)
         {
@@ -67,32 +67,32 @@ public class CommunityElement implements MetadataElement, Serializable
     /**
      * Set up the element header associated with the properties.
      *
-     * @param elementHeader element header object
+     * @param header element header object
      */
     @Override
-    public void setElementHeader(ElementHeader elementHeader)
+    public void setElementHeader(ElementHeader header)
     {
-        this.elementHeader = elementHeader;
+        this.elementHeader = header;
     }
 
 
     /**
-     * Return the properties of the community.
+     * Return the properties of the role.
      *
      * @return properties
      */
-    public CommunityProperties getProperties()
+    public PersonRoleProperties getProperties()
     {
         return properties;
     }
 
 
     /**
-     * Set up the community properties.
+     * Set up the role properties.
      *
      * @param properties  properties
      */
-    public void setProperties(CommunityProperties properties)
+    public void setProperties(PersonRoleProperties properties)
     {
         this.properties = properties;
     }
@@ -106,7 +106,7 @@ public class CommunityElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "CommunityElement{" +
+        return "PersonalRoleElement{" +
                 "elementHeader=" + elementHeader +
                 ", properties=" + properties +
                 '}';
@@ -130,7 +130,7 @@ public class CommunityElement implements MetadataElement, Serializable
         {
             return false;
         }
-        CommunityElement that = (CommunityElement) objectToCompare;
+        PersonRoleElement that = (PersonRoleElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(properties, that.properties);
     }

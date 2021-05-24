@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.MetadataSourceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -62,7 +61,7 @@ public class MetadataSourceConverter<B> extends CommunityProfileOMASConverter<B>
 
                 if (entity != null)
                 {
-                    bean.setPosition(this.getMetadataElementHeader(beanClass, entity, methodName));
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
 
                     /*
                      * The initial set of values come from the entity.
@@ -82,10 +81,8 @@ public class MetadataSourceConverter<B> extends CommunityProfileOMASConverter<B>
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    metadataSourceProperties.setTypeName(bean.getPosition().getType().getTypeName());
+                    metadataSourceProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     metadataSourceProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME, entity);
 
                     bean.setProperties(metadataSourceProperties);
                 }

@@ -40,8 +40,8 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -64,7 +64,7 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
             if (returnBean instanceof CollectionElement)
             {
                 CollectionElement    bean              = (CollectionElement) returnBean;
-                CollectionProperties commentProperties = new CollectionProperties();
+                CollectionProperties collectionProperties = new CollectionProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
@@ -77,26 +77,26 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
                 {
                     instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    commentProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    commentProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    commentProperties.setName(this.removeName(instanceProperties));
-                    commentProperties.setDescription(this.removeDescription(instanceProperties));
-                    commentProperties.setCollectionOrdering(this.removeCollectionOrderFromProperties(instanceProperties));
-                    commentProperties.setOrderPropertyName(this.removeOrderPropertyName(instanceProperties));
+                    collectionProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    collectionProperties.setName(this.removeName(instanceProperties));
+                    collectionProperties.setDescription(this.removeDescription(instanceProperties));
+                    collectionProperties.setCollectionOrdering(this.removeCollectionOrderFromProperties(instanceProperties));
+                    collectionProperties.setOrderPropertyName(this.removeOrderPropertyName(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    commentProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    commentProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    collectionProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    collectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
                 }
                 else
                 {
                     handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
 
-                bean.setProperties(commentProperties);
+                bean.setProperties(collectionProperties);
             }
 
             return returnBean;
@@ -111,14 +111,14 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
 
 
     /**
-     * Retrieve and delete the OwnerType enum property from the instance properties of an entity
+     * Retrieve and delete the CollectionOrder enum property from the instance properties of an entity
      *
      * @param properties  entity properties
      * @return CollectionOrder  enum value
      */
     private CollectionOrder removeCollectionOrderFromProperties(InstanceProperties   properties)
     {
-        CollectionOrder commentType = this.getCollectionOrderFromProperties(properties);
+        CollectionOrder collectionOrder = this.getCollectionOrderFromProperties(properties);
 
         if (properties != null)
         {
@@ -132,7 +132,7 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
             properties.setInstanceProperties(instancePropertiesMap);
         }
 
-        return commentType;
+        return collectionOrder;
     }
 
 

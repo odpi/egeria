@@ -11,13 +11,14 @@ public class ToDoProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private Date                creationTime         = null;
-    private int                 priority             = 0;
-    private Date                dueTime              = null;
-    private Date                completionTime       = null;
-    private ToDoStatus          status               = null;
-    private Map<String, Object> extendedProperties   = null;
-    private Map<String, String> additionalProperties = null;
+    private String     name           = null;
+    private String     description    = null;
+    private Date       creationTime   = null;
+    private int        priority       = 0;
+    private Date       dueTime        = null;
+    private Date       completionTime = null;
+    private ToDoStatus status         = null;
+
 
 
     /**
@@ -40,14 +41,58 @@ public class ToDoProperties extends ReferenceableProperties
 
         if (template != null)
         {
+            this.name = template.getName();
+            this.description = template.getDescription();
             creationTime = template.getCreationTime();
             priority = template.getPriority();
             dueTime = template.getDueTime();
             completionTime = template.getCompletionTime();
             status = template.getStatus();
-            extendedProperties = template.getExtendedProperties();
-            additionalProperties = template.getAdditionalProperties();
         }
+    }
+
+
+    /**
+     * Return the name of the asset.
+     *
+     * @return string name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the asset.
+     *
+     * @param name string name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Return the description of the asset.
+     *
+     * @return text
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Set up the description of the asset.
+     *
+     * @param description text
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
 
@@ -162,72 +207,6 @@ public class ToDoProperties extends ReferenceableProperties
 
 
     /**
-     * Return any properties associated with the subclass of this element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setExtendedProperties(Map<String, Object> additionalProperties)
-    {
-        this.extendedProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return any additional properties associated with the element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -236,13 +215,15 @@ public class ToDoProperties extends ReferenceableProperties
     public String toString()
     {
         return "ToDoProperties{" +
-                       "creationTime=" + creationTime +
+                       "name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", creationTime=" + creationTime +
                        ", priority=" + priority +
                        ", dueTime=" + dueTime +
                        ", completionTime=" + completionTime +
                        ", status=" + status +
-                       ", extendedProperties=" + extendedProperties +
-                       ", additionalProperties=" + additionalProperties +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", additionalProperties=" + getAdditionalProperties() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
@@ -271,14 +252,14 @@ public class ToDoProperties extends ReferenceableProperties
         {
             return false;
         }
-        ToDoProperties toDoProperties = (ToDoProperties) objectToCompare;
-        return getPriority() == toDoProperties.getPriority() &&
-                Objects.equals(getCreationTime(), toDoProperties.getCreationTime()) &&
-                Objects.equals(getDueTime(), toDoProperties.getDueTime()) &&
-                Objects.equals(getCompletionTime(), toDoProperties.getCompletionTime()) &&
-                getStatus() == toDoProperties.getStatus() &&
-                Objects.equals(getExtendedProperties(), toDoProperties.getExtendedProperties()) &&
-                Objects.equals(getAdditionalProperties(), toDoProperties.getAdditionalProperties());
+        ToDoProperties that = (ToDoProperties) objectToCompare;
+        return priority == that.priority &&
+                       Objects.equals(name, that.name) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(creationTime, that.creationTime) &&
+                       Objects.equals(dueTime, that.dueTime) &&
+                       Objects.equals(completionTime, that.completionTime) &&
+                       status == that.status;
     }
 
 
@@ -290,7 +271,7 @@ public class ToDoProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getCreationTime(), getPriority(), getDueTime(), getCompletionTime(),
+        return Objects.hash(super.hashCode(), getName(), getDescription(), getCreationTime(), getPriority(), getDueTime(), getCompletionTime(),
                             getStatus(), getExtendedProperties(), getAdditionalProperties());
     }
 }

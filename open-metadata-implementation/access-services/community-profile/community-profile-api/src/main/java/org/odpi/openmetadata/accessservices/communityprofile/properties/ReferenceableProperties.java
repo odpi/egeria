@@ -24,15 +24,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = ActorProfileProperties.class, name = "ActorProfileProperties"),
                 @JsonSubTypes.Type(value = CommunityProperties.class, name = "CommunityProperties"),
                 @JsonSubTypes.Type(value = CollectionProperties.class, name = "CollectionProperties"),
                 @JsonSubTypes.Type(value = ContactMethodProperties.class, name = "ContactMethodProperties"),
                 @JsonSubTypes.Type(value = ContributionRecord.class, name = "ContributionRecord"),
                 @JsonSubTypes.Type(value = MetadataSourceProperties.class, name = "MetadataSourceProperties"),
-                @JsonSubTypes.Type(value = ITProfileProperties.class, name = "ITProfileProperties"),
-                @JsonSubTypes.Type(value = PersonalProfileProperties.class, name = "PersonalProfileProperties"),
-                @JsonSubTypes.Type(value = TeamProfileProperties.class, name = "TeamProfileProperties"),
-                @JsonSubTypes.Type(value = MetadataSourceProperties.class, name = "MetadataSourceProperties"),
+                @JsonSubTypes.Type(value = NoteLogEntryProperties.class, name = "NoteLogEntryProperties"),
+                @JsonSubTypes.Type(value = NoteLogHeaderProperties.class, name = "NoteLogHeaderProperties"),
                 @JsonSubTypes.Type(value = ResourceProperties.class, name = "ResourceProperties"),
                 @JsonSubTypes.Type(value = UserIdentityProperties.class, name = "UserIdentityProperties"),
         })

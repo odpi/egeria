@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.server;
 import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.communityprofile.converters.*;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.ContributionRecordHandler;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
-import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicClientProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
@@ -30,9 +27,9 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
     private SoftwareServerCapabilityHandler<MetadataSourceElement> metadataSourceHandler;
     private UserIdentityHandler<UserIdentityElement>               userIdentityHandler;
+    private ActorProfileHandler<PersonalProfileUniverse>           personalProfileHandler;
+    private ContributionRecordHandler<ContributionRecordElement>   contributionRecordHandler;
 
-    private PersonalProfileHandler                 personalProfileHandler;
-    private ContributionRecordHandler              contributionRecordHandler;
     private CommentHandler<CommentElement>         commentHandler;
     private InformalTagHandler<InformalTagElement> informalTagHandler;
     private LikeHandler<LikeElement>               likeHandler;
@@ -98,12 +95,19 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                                                publishZones,
                                                                                auditLog);
 
-            this.personalProfileHandler = new PersonalProfileHandler(serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHelper,
-                                                                     repositoryHandler,
-                                                                     errorHandler);
+            this.personalProfileHandler = new ActorProfileHandler<>(new PersonalProfileConverter<>(repositoryHelper, serviceName,serverName),
+                                                                    PersonalProfileUniverse.class,
+                                                                    serviceName,
+                                                                    serverName,
+                                                                    invalidParameterHandler,
+                                                                    repositoryHandler,
+                                                                    repositoryHelper,
+                                                                    localServerUserId,
+                                                                    securityVerifier,
+                                                                    supportedZones,
+                                                                    defaultZones,
+                                                                    publishZones,
+                                                                    auditLog);
 
             this.userIdentityHandler = new UserIdentityHandler<>(new UserIdentityConverter<>(repositoryHelper, serviceName, serverName),
                                                                  UserIdentityElement.class,
@@ -119,12 +123,20 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                                  publishZones,
                                                                  auditLog);
 
-            this.contributionRecordHandler = new ContributionRecordHandler(serviceName,
-                                                                           serverName,
-                                                                           invalidParameterHandler,
-                                                                           repositoryHelper,
-                                                                           repositoryHandler,
-                                                                           karmaPointPlateau);
+            this.contributionRecordHandler = new ContributionRecordHandler<>(new ContributionRecordConverter<>(repositoryHelper, serviceName, serverName, karmaPointPlateau),
+                                                                             ContributionRecordElement.class,
+                                                                             serviceName,
+                                                                             serverName,
+                                                                             invalidParameterHandler,
+                                                                             repositoryHandler,
+                                                                             repositoryHelper,
+                                                                             localServerUserId,
+                                                                             securityVerifier,
+                                                                             supportedZones,
+                                                                             defaultZones,
+                                                                             publishZones,
+                                                                             karmaPointPlateau,
+                                                                             auditLog);
 
             this.commentHandler = new CommentHandler<>(new CommentConverter<>(repositoryHelper, serviceName, serverName),
                                                        CommentElement.class,
@@ -212,7 +224,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public PersonalProfileHandler getPersonalProfileHandler() throws PropertyServerException
+    public ActorProfileHandler<PersonalProfileUniverse> getPersonalProfileHandler() throws PropertyServerException
     {
         final String methodName = "getPersonalProfileHandler";
 
@@ -253,6 +265,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
         return contributionRecordHandler;
     }
 
+
     /**
      * Return the handler for managing comment objects.
      *
@@ -267,7 +280,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
         return commentHandler;
     }
-
 
 
     /**

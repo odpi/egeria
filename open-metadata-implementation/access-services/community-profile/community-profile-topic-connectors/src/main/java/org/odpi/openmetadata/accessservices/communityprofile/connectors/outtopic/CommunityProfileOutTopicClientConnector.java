@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopi
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.CommunityProfileEventInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.api.CommunityProfileEventListener;
-import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileEvent;
+import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileOutboundEvent;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListenerConnectorBase;
@@ -66,7 +66,7 @@ public class CommunityProfileOutTopicClientConnector extends OpenMetadataTopicLi
         {
             try
             {
-                CommunityProfileEvent eventObject = super.getEventBean(event, CommunityProfileEvent.class);
+                CommunityProfileOutboundEvent eventObject = super.getEventBean(event, CommunityProfileOutboundEvent.class);
 
                 for (CommunityProfileEventListener listener : internalEventListeners)
                 {

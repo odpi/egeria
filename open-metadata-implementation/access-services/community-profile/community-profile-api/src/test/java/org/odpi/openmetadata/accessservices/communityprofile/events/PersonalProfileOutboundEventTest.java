@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementHeader;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
@@ -22,14 +22,14 @@ import static org.testng.Assert.assertTrue;
 public class PersonalProfileOutboundEventTest
 {
     private static CommunityProfileOutboundEventType eventType           = CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT;
-    private static PersonalProfileElement            testPP              = new PersonalProfileElement();
+    private static PersonalProfileUniverse           testPP              = new PersonalProfileUniverse();
     private static String                            testPPGUID          = "TestPersonalProfileGUID";
     private static String                            testPPQualifiedName = "TestPersonalProfileQName";
     private static String                            testFullName        = "TestFullName";
     private static String                            testJobTitle        = "TestJobTitle";
     private static String                            testUserId          = "TestUserId";
 
-    private PersonalProfileElement bean = new PersonalProfileElement();
+    private PersonalProfileUniverse bean = new PersonalProfileUniverse();
 
 
     /**
@@ -45,7 +45,7 @@ public class PersonalProfileOutboundEventTest
         ElementHeader header = new ElementHeader();
         header.setGUID(testPPGUID);
         testPP.setElementHeader(header);
-        testPP.setPersonalProfileProperties(properties);
+        testPP.setProfileProperties(properties);
 
         List<UserIdentityElement> users = new ArrayList<>();
 

@@ -124,7 +124,7 @@ public class RatingConverter<B> extends CommunityProfileOMASConverter<B>
 
 
     /**
-     * Retrieve and delete the OwnerType enum property from the instance properties of an entity
+     * Retrieve and delete the StarRating enum property from the instance properties of an entity
      *
      * @param properties  entity properties
      * @return StarRating  enum value

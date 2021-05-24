@@ -22,7 +22,7 @@ public class CommunityMembershipElement extends PersonalRoleElement
     private static final long    serialVersionUID = 1L;
 
     private CommunityMembershipType membershipType = null;
-    private String                  communityGUID  = null;
+    private ElementStub             community      = null;
 
 
     /**
@@ -46,7 +46,7 @@ public class CommunityMembershipElement extends PersonalRoleElement
         if (template != null)
         {
             membershipType = template.getMembershipType();
-            communityGUID = template.getCommunityGUID();
+            community = template.getCommunity();
         }
     }
 
@@ -76,22 +76,22 @@ public class CommunityMembershipElement extends PersonalRoleElement
     /**
      * Return the unique identifier (guid) for the community.
      *
-     * @return string guid
+     * @return link to community description
      */
-    public String getCommunityGUID()
+    public ElementStub getCommunity()
     {
-        return communityGUID;
+        return community;
     }
 
 
     /**
      * Set up the unique identifier (guid) for the community.
      *
-     * @param communityGUID string guid
+     * @param community link to community description
      */
-    public void setCommunityGUID(String communityGUID)
+    public void setCommunity(ElementStub community)
     {
-        this.communityGUID = communityGUID;
+        this.community = community;
     }
 
 
@@ -105,7 +105,7 @@ public class CommunityMembershipElement extends PersonalRoleElement
     {
         return "CommunityMembershipElement{" +
                        "membershipType=" + membershipType +
-                       ", communityGUID='" + communityGUID + '\'' +
+                       ", community='" + community + '\'' +
                        ", elementHeader=" + getElementHeader() +
                        ", properties=" + getProperties() +
                        '}';
@@ -129,9 +129,13 @@ public class CommunityMembershipElement extends PersonalRoleElement
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         CommunityMembershipElement that = (CommunityMembershipElement) objectToCompare;
-        return getMembershipType() == that.getMembershipType() &&
-                Objects.equals(getCommunityGUID(), that.getCommunityGUID());
+        return membershipType == that.membershipType &&
+                       Objects.equals(community, that.community);
     }
 
 
@@ -143,6 +147,6 @@ public class CommunityMembershipElement extends PersonalRoleElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMembershipType(), getCommunityGUID());
+        return Objects.hash(super.hashCode(), getMembershipType(), getCommunity());
     }
 }

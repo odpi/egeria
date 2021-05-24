@@ -193,7 +193,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a PersonalProfileElement in a response  object.
+     * Issue a GET REST call that returns a PersonalProfileUniverse in a response  object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.

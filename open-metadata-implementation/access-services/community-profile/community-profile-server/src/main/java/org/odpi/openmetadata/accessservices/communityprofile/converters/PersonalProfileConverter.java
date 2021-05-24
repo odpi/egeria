@@ -3,22 +3,15 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalProfileMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.util.List;
 
@@ -27,15 +20,6 @@ import java.util.List;
  */
 public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(PersonalProfileConverter.class);
-
-    private String serverName;
-
-    private List<UserIdentityElement>  associatedUserIds;
-    private List<ContactMethodElement> contactDetails;
-    private ContributionRecordElement  contributionRecord;
-
-
     /**
      * Constructor
      *
@@ -53,12 +37,11 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
-     * relationships between them.  The relationships may be omitted if they do not have any properties.
+     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the content of the bean
-     * @param supplementaryEntities entities connected to the primary entity by the relationships
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     *                      content of the bean
      * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
@@ -66,12 +49,9 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
      */
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
-                               List<EntityDetail> supplementaryEntities,
                                List<Relationship> relationships,
                                String             methodName) throws PropertyServerException
     {
-        final String thisMethodName = "getNewComplexBean(with supplementary entities)";
-
         try
         {
             /*
@@ -79,9 +59,9 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof PersonalProfileElement)
+            if (returnBean instanceof PersonalProfileUniverse)
             {
-                PersonalProfileElement    bean              = (PersonalProfileElement) returnBean;
+                PersonalProfileUniverse   bean              = (PersonalProfileUniverse) returnBean;
                 PersonalProfileProperties profileProperties = new PersonalProfileProperties();
 
                 if (primaryEntity != null)
@@ -94,6 +74,10 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                     InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
 
                     profileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    profileProperties.setKnownName(this.removeName(instanceProperties));
+                    profileProperties.setDescription(this.removeDescription(instanceProperties));
+                    profileProperties.setFullName(this.removeFullName(instanceProperties));
+                    profileProperties.setJobTitle(this.removeJobTitle(instanceProperties));
                     profileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
                     /*
@@ -103,7 +87,12 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                     profileProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     profileProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setPersonalProfileProperties(profileProperties);
+                    bean.setProfileProperties(profileProperties);
+
+                    if (relationships != null)
+                    {
+
+                    }
                 }
                 else
                 {
@@ -119,51 +108,5 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
         }
 
         return null;
-    }
-
-
-    /**
-     * Return the bean constructed from the repository content.
-     *
-     * @return bean
-     */
-    public PersonalProfileElement getBean()
-    {
-        final String methodName = "getBean";
-
-        PersonalProfileElement bean = new PersonalProfileElement();
-        PersonalProfileProperties properties = new PersonalProfileProperties();
-
-        super.updateBean(bean);
-
-        if (entity != null)
-        {
-            InstanceProperties instanceProperties = entity.getProperties();
-
-            if (instanceProperties != null)
-            {
-                /*
-                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
-                 * community properties.
-                 */
-                properties.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                properties.setKnownName(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
-                properties.setDescription(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
-                properties.setFullName(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.FULL_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                properties.setJobTitle(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.JOB_TITLE_PROPERTY_NAME, instanceProperties, methodName));
-                properties.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, PersonalProfileMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                properties.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-
-            }
-        }
-
-        bean.setPersonalProfileProperties(properties);
-        bean.setUserIdentities(associatedUserIds);
-        bean.setContactMethods(contactDetails);
-        bean.setContributionRecord(contributionRecord);
-
-        log.debug("Bean: " + properties.toString());
-
-        return bean;
     }
 }

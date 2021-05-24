@@ -82,7 +82,14 @@ public enum CommunityProfileAuditCode implements AuditLogMessageSet
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to send an outbound event for instance with unique identifier of {0} and type name {1} due to exception {2}.  The error message from the exception was {3}",
             "The system detected an exception whilst attempting to send an event to the out topic.  No event is sent.",
-            "Investigate and correct the source of the error.  Once fixed, events will be sent.")
+            "Investigate and correct the source of the error.  Once fixed, events will be sent."),
+
+    OUT_TOPIC_EVENT("OMAS-COMMUNITY-PROFILE-0011",
+                    OMRSAuditLogRecordSeverity.EVENT,
+                    "The Community Profile Open Metadata Access Service (OMAS) has sent event: {0}",
+                            "The access service sends out notifications about changes to relevant elements.  " +
+                            "This message is to create a record of the events that are being published.",
+                            "This event indicates that one of the elements has changed."),
     ;
 
     private AuditLogMessageDefinition messageDefinition;

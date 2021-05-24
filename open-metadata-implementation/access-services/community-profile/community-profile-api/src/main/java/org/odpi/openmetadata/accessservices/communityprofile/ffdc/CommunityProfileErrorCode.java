@@ -59,6 +59,15 @@ public enum CommunityProfileErrorCode implements ExceptionMessageSet
             "Unable to publish the {0} event due to exception {1}.  The error message from the exception was {2}, the event contents was {3}",
             "The system detected an exception whilst parsing an event into a JSON String prior to publishing it.",
             "Investigate and correct the source of the error.  Once fixed, events will be published."),
+    NULL_LISTENER(500, "OMAS-COMMUNITY-PROFILE-500-006",
+                  "A null topic listener has been passed by user {0} on method {1}",
+                  "There is a coding error in the caller to the Community Profile OMAS.",
+                  "Correct the caller logic and retry the request."),
+    UNABLE_TO_SEND_EVENT(500, "OMAS-COMMUNITY-PROFILE-500-007",
+                         "An unexpected exception occurred when sending an event through connector {0} to the Community Profile OMAS out topic.  The failing " +
+                                 "event was {1}, the exception was {2} with message {2}",
+                         "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
+                         "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
     ;
 
 

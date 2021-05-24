@@ -3,9 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.OwnerType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -14,14 +12,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
- * DataManagerOMASConverter provides the generic methods for the Data Manager beans converters.  Generic classes
+ * CommunityProfileOMASConverter provides the generic methods for the Community Profile beans converters.  Generic classes
  * have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
- * and initializing a Data Manager bean.
+ * and initializing a Community Profile bean.
  */
 public abstract class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {
@@ -117,6 +114,34 @@ public abstract class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGe
             super.handleMissingMetadataInstance(beanClass.getName(),
                                                 TypeDefCategory.ENTITY_DEF,
                                                 methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract an element stub from an entity proxy.
+     *
+     * @param entityProxy entity proxy from a relationship
+     * @return equivalent ElementStub
+     */
+    private ElementStub getElementStub(Class<B>    beanClass,
+                                       EntityProxy entityProxy,
+                                       String      methodName) throws PropertyServerException
+    {
+        if (entityProxy != null)
+        {
+            ElementHeader elementHeader = this.getMetadataElementHeader(beanClass, entityProxy, null, methodName);
+
+            if (elementHeader != null)
+            {
+                ElementStub elementStub = new ElementStub(elementHeader);
+
+                elementStub.setUniqueName(super.getQualifiedName(entityProxy.getUniqueProperties()));
+
+                return elementStub;
+            }
         }
 
         return null;
@@ -316,76 +341,5 @@ public abstract class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGe
         }
 
         return ElementOriginCategory.UNKNOWN;
-    }
-
-
-
-    /**
-     * Retrieve and delete the OwnerType enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    OwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
-    {
-        OwnerType ownerCategory = this.getOwnerTypeFromProperties(properties);
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
-            }
-
-            properties.setInstanceProperties(instancePropertiesMap);
-        }
-
-        return ownerCategory;
-    }
-
-
-    /**
-     * Retrieve the OwnerType enum property from the instance properties of a classification
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    OwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
-    {
-        OwnerType ownerCategory = OwnerType.OTHER;
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
-
-                if (instancePropertyValue instanceof EnumPropertyValue)
-                {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
-                    {
-                        case 0:
-                            ownerCategory = OwnerType.USER_ID;
-                            break;
-
-                        case 1:
-                            ownerCategory = OwnerType.PROFILE_ID;
-                            break;
-
-                        case 99:
-                            ownerCategory = OwnerType.OTHER;
-                            break;
-                    }
-                }
-            }
-        }
-
-        return ownerCategory;
     }
 }

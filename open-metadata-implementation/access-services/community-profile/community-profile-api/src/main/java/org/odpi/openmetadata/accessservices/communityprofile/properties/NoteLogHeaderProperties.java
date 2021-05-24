@@ -5,38 +5,30 @@ package org.odpi.openmetadata.accessservices.communityprofile.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NoteLogHeader covers the properties that are common between a CommunityForum and a PersonalNoteLog.
+ * NoteLogHeaderProperties covers the properties that are common between a community forum and a persona note log.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = CommunityForum.class, name = "CommunityForum"),
-        @JsonSubTypes.Type(value = PersonalNoteLog.class, name = "PersonalNoteLog")
-})
-public abstract class NoteLogHeader extends ReferenceableProperties
+public class NoteLogHeaderProperties extends ReferenceableProperties
 {
     private static final long serialVersionUID = 1L;
 
-    private boolean isPublic = false;
+    private String  name        = null;
+    private String  description = null;
+    private boolean isPublic    = false;
 
 
     /**
      * Default constructor
      */
-    public NoteLogHeader()
+    public NoteLogHeaderProperties()
     {
         super();
     }
@@ -47,14 +39,60 @@ public abstract class NoteLogHeader extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public NoteLogHeader(NoteLogHeader template)
+    public NoteLogHeaderProperties(NoteLogHeaderProperties template)
     {
         super(template);
 
         if (template != null)
         {
+            this.name = template.getName();
+            this.description = template.getDescription();
             isPublic = template.getIsPublic();
         }
+    }
+
+
+    /**
+     * Return the name of the note log.
+     *
+     * @return string name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the note log.
+     *
+     * @param name string name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Return the description of the note log.
+     *
+     * @return text
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Set up the description of the note log.
+     *
+     * @param description text
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
 
@@ -89,8 +127,10 @@ public abstract class NoteLogHeader extends ReferenceableProperties
     @Override
     public String toString()
     {
-        return "NoteLogHeader{" +
-                       "isPublic=" + isPublic +
+        return "NoteLogHeaderProperties{" +
+                       "name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", isPublic=" + isPublic +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +
@@ -121,8 +161,10 @@ public abstract class NoteLogHeader extends ReferenceableProperties
         {
             return false;
         }
-        NoteLogHeader that = (NoteLogHeader) objectToCompare;
-        return isPublic == that.isPublic;
+        NoteLogHeaderProperties that = (NoteLogHeaderProperties) objectToCompare;
+        return isPublic == that.isPublic &&
+                       Objects.equals(name, that.name) &&
+                       Objects.equals(description, that.description);
     }
 
 
@@ -134,6 +176,6 @@ public abstract class NoteLogHeader extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getIsPublic());
+        return Objects.hash(super.hashCode(), getName(), getDescription(), getIsPublic());
     }
 }

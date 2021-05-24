@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileOutboundEvent;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
-import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileEvent;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -25,7 +25,7 @@ public class CommunityProfileOutTopicServerConnector extends OpenMetadataTopicSe
      * @throws InvalidParameterException the event is null
      * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */
-    public void sendEvent(CommunityProfileEvent event) throws InvalidParameterException, ConnectorCheckedException
+    public void sendEvent(CommunityProfileOutboundEvent event) throws InvalidParameterException, ConnectorCheckedException
     {
         final String methodName = "sendEvent";
         ObjectMapper objectMapper = new ObjectMapper();

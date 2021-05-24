@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.NoteLogEntryElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.NoteLogEntryProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -12,29 +12,28 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * ContributionRecordConverter generates a ContributionRecordProperties bean from a ContributionRecord entity.
+ * NoteLogEntryConverter generates a NoteLogEntryForumContribution from an NoteEntry entity.
  */
-public class ContributionRecordConverter<B> extends CommunityProfileOMASConverter<B>
+public class NoteLogEntryConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private int karmaPointPlateau;
     /**
      * Constructor
      *
      * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
      * @param serverName local server name
-     * @param karmaPointPlateau how many karma points to a plateau
      */
-    public ContributionRecordConverter(OMRSRepositoryHelper repositoryHelper,
-                                       String               serviceName,
-                                       String               serverName,
-                                       int                  karmaPointPlateau)
+    public NoteLogEntryConverter(OMRSRepositoryHelper repositoryHelper,
+                                 String               serviceName,
+                                 String               serverName)
     {
         super(repositoryHelper, serviceName, serverName);
-
-        this.karmaPointPlateau = karmaPointPlateau;
     }
+
 
     /**
      * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
@@ -58,10 +57,10 @@ public class ContributionRecordConverter<B> extends CommunityProfileOMASConverte
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof ContributionRecordElement)
+            if (returnBean instanceof NoteLogEntryElement)
             {
-                ContributionRecordElement    bean               = (ContributionRecordElement) returnBean;
-                ContributionRecord           contributionRecord = new ContributionRecord();
+                NoteLogEntryElement    bean               = (NoteLogEntryElement) returnBean;
+                NoteLogEntryProperties logEntryProperties = new NoteLogEntryProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
@@ -74,24 +73,44 @@ public class ContributionRecordConverter<B> extends CommunityProfileOMASConverte
                 {
                     instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    contributionRecord.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    contributionRecord.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    contributionRecord.setKarmaPoints(this.removeKarmaPoints(instanceProperties));
-                    contributionRecord.setKarmaPointPlateau(karmaPointPlateau);
+                    logEntryProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    logEntryProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    logEntryProperties.setTitle(this.removeTitle(instanceProperties));
+                    logEntryProperties.setText(this.removeText(instanceProperties));
+
+                    List<String> contributors = new ArrayList<>();
+
+                    contributors.add(entity.getCreatedBy());
+
+                    if ((entity.getUpdatedBy() != null) && (! entity.getUpdatedBy().equals(entity.getCreatedBy())))
+                    {
+                        contributors.add(entity.getUpdatedBy());
+                    }
+
+                    if (entity.getMaintainedBy() != null)
+                    {
+                        for (String maintainer : entity.getMaintainedBy())
+                        {
+                            if ((maintainer != null) && (! maintainer.equals(entity.getCreatedBy())))
+                            {
+                                contributors.add(maintainer);
+                            }
+                        }
+                    }
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    contributionRecord.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    contributionRecord.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    logEntryProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    logEntryProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
                 }
                 else
                 {
                     handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
 
-                bean.setProperties(contributionRecord);
+                bean.setProperties(logEntryProperties);
             }
 
             return returnBean;

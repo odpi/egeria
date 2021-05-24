@@ -1,12 +1,11 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ExternalReferenceProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,40 +13,39 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * CommunityElement contains the properties and header for a community.
+ * ExternalReferenceElement stores information about an link to an external resource that is relevant to this element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommunityElement implements MetadataElement, Serializable
+public class ExternalReferenceElement implements MetadataElement, Serializable
 {
-    private static final long     serialVersionUID = 1L;
+    private static final long    serialVersionUID = 1L;
 
-    private ElementHeader       elementHeader = null;
-    private CommunityProperties properties    = null;
-
+    private ElementHeader               elementHeader = null;
+    private ExternalReferenceProperties properties    = null;
 
     /**
-     * Default constructor
+     * Default Constructor
      */
-    public CommunityElement()
+    public ExternalReferenceElement()
     {
-        super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone Constructor - the resulting object.
      *
-     * @param template object to copy
+     * @param template object being copied
      */
-    public CommunityElement(CommunityElement template)
+    public ExternalReferenceElement(ExternalReferenceElement template)
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties = template.getProperties();
+            this.elementHeader = template.getElementHeader();
+            this.properties = template.getProperties();
         }
     }
 
@@ -57,7 +55,6 @@ public class CommunityElement implements MetadataElement, Serializable
      *
      * @return element header object
      */
-    @Override
     public ElementHeader getElementHeader()
     {
         return elementHeader;
@@ -69,7 +66,6 @@ public class CommunityElement implements MetadataElement, Serializable
      *
      * @param elementHeader element header object
      */
-    @Override
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;
@@ -77,47 +73,47 @@ public class CommunityElement implements MetadataElement, Serializable
 
 
     /**
-     * Return the properties of the community.
+     * Return the link to external documentation that are relevant to this element.
      *
-     * @return properties
+     * @return list of external references
      */
-    public CommunityProperties getProperties()
+    public ExternalReferenceProperties getProperties()
     {
         return properties;
     }
 
 
     /**
-     * Set up the community properties.
+     * Set up the list of links to external documentation that are relevant to this element.
      *
-     * @param properties  properties
+     * @param properties of external references
      */
-    public void setProperties(CommunityProperties properties)
+    public void setProperties(ExternalReferenceProperties properties)
     {
         this.properties = properties;
     }
 
 
     /**
-     * JSON-style toString
+     * JSON-style toString.
      *
-     * @return return string containing the property names and values
+     * @return list of properties and their values.
      */
     @Override
     public String toString()
     {
-        return "CommunityElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
-                '}';
+        return "ExternalReferenceElement{" +
+                       "elementHeader=" + elementHeader +
+                       ", properties=" + properties +
+                       '}';
     }
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * Equals method that returns true if containing properties are the same.
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * @param objectToCompare object to compare
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -130,20 +126,20 @@ public class CommunityElement implements MetadataElement, Serializable
         {
             return false;
         }
-        CommunityElement that = (CommunityElement) objectToCompare;
+        ExternalReferenceElement that = (ExternalReferenceElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties);
+                       Objects.equals(properties, that.properties);
     }
 
 
     /**
-     * Return hash code for this object
+     * Hash of properties
      *
-     * @return int hash code
+     * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), properties, elementHeader);
     }
 }

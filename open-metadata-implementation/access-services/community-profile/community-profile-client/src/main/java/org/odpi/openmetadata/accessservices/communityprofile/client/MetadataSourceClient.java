@@ -20,7 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 /**
  * MetadataSourceClient is the client for setting up the SoftwareServerCapabilities that represent metadata sources
- * that supply information relating to people and organizations.  It is used by the OrganizationProfileProperties Integrator OMIS
+ * that supply information relating to people and organizations.  It is used by the Organization Integrator OMIS
  * to create the metadata source.  It can also be used to properly classify the metadata source entity to clarify
  * whether it is a:
  * <ul>

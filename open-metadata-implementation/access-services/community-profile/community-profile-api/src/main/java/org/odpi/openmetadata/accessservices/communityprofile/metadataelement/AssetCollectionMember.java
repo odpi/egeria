@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.OwnerType;
 
 import java.util.*;
 

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -206,8 +206,8 @@ public interface PersonalProfileManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    PersonalProfileElement getPersonalProfileByGUID(String userId,
-                                                    String profileGUID) throws InvalidParameterException,
+    PersonalProfileUniverse getPersonalProfileByGUID(String userId,
+                                                     String profileGUID) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException;
 
@@ -223,8 +223,8 @@ public interface PersonalProfileManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    PersonalProfileElement getPersonalProfileForUser(String userId,
-                                                     String profileUserId) throws InvalidParameterException,
+    PersonalProfileUniverse getPersonalProfileForUser(String userId,
+                                                      String profileUserId) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException;
 
@@ -241,8 +241,8 @@ public interface PersonalProfileManagementInterface
      * @throws PropertyServerException the server is not available, or there is a problem retrieving the profile.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    PersonalProfileElement getPersonalProfileByQualifiedName(String userId,
-                                                             String qualifiedName) throws InvalidParameterException,
+    PersonalProfileUniverse getPersonalProfileByQualifiedName(String userId,
+                                                              String qualifiedName) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException;
 
@@ -260,8 +260,8 @@ public interface PersonalProfileManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<PersonalProfileElement> getPersonalProfilesByName(String userId,
-                                                           String name) throws InvalidParameterException,
+    List<PersonalProfileUniverse> getPersonalProfilesByName(String userId,
+                                                            String name) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException;
 }

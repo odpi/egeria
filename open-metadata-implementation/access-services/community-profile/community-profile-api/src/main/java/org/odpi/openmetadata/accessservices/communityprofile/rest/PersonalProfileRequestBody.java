@@ -24,6 +24,7 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
 
     private String profileUserId         = null;
     private String originatingSystemGUID = null;
+    private String originatingSystemName = null;
 
 
     /**
@@ -47,6 +48,7 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
         {
             this.profileUserId = template.getProfileUserId();
             this.originatingSystemGUID = template.getOriginatingSystemGUID();
+            this.originatingSystemName = template.getOriginatingSystemName();
         }
     }
 
@@ -107,6 +109,28 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
 
 
     /**
+     * Return the unique name for the originating system.
+     *
+     * @return string
+     */
+    public String getOriginatingSystemName()
+    {
+        return originatingSystemName;
+    }
+
+
+    /**
+     * Set up the unique name for the originating system
+     *
+     * @param originatingSystemName string
+     */
+    public void setOriginatingSystemName(String originatingSystemName)
+    {
+        this.originatingSystemName = originatingSystemName;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -116,7 +140,8 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
     {
         return "PersonalProfileRequestBody{" +
                 "profileUserId='" + profileUserId + '\'' +
-                "originatingSystemGUID='" + originatingSystemGUID + '\'' +
+                ", originatingSystemGUID='" + originatingSystemGUID + '\'' +
+                ", originatingSystemName='" + originatingSystemName + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", fullName='" + getFullName() + '\'' +
                 ", knownName='" + getKnownName() + '\'' +
@@ -151,7 +176,8 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
         }
         PersonalProfileRequestBody that = (PersonalProfileRequestBody) objectToCompare;
         return Objects.equals(getProfileUserId(), that.getProfileUserId()) &&
-                       Objects.equals(getOriginatingSystemGUID(), that.getOriginatingSystemGUID());
+                       Objects.equals(getOriginatingSystemGUID(), that.getOriginatingSystemGUID()) &&
+                       Objects.equals(getOriginatingSystemName(), that.getOriginatingSystemName());
     }
 
 
@@ -163,6 +189,6 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getProfileUserId(), getOriginatingSystemGUID());
+        return Objects.hash(super.hashCode(), getProfileUserId(), getOriginatingSystemGUID(), getOriginatingSystemName());
     }
 }

@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -29,9 +28,9 @@ public interface MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    PersonalProfileElement getMyProfile(String userId) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException;
+    PersonalProfileUniverse getMyProfile(String userId) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException;
 
 
     /**

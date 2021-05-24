@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 
 import java.util.Objects;
 
@@ -14,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TeamMembershipElement contains the properties and header for a role that shows a person is a leader of a member of
+ * TeamMembershipElement contains the properties and header for a role that shows a person is a leader or a member of
  * a team as retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -24,9 +23,9 @@ public class TeamMembershipElement extends PersonalRoleElement
 {
     private static final long     serialVersionUID = 1L;
 
-    private String  position       = null;
-    private boolean leadershipRole = false;
-    private String  teamGUID = null;
+    private String      position       = null;
+    private boolean     leadershipRole = false;
+    private ElementStub team           = null;
 
 
     /**
@@ -51,7 +50,7 @@ public class TeamMembershipElement extends PersonalRoleElement
         {
             position = template.getPosition();
             leadershipRole = template.getLeadershipRole();
-            teamGUID = template.getTeamGUID();
+            team = template.getTeam();
 
         }
     }
@@ -104,22 +103,22 @@ public class TeamMembershipElement extends PersonalRoleElement
     /**
      * Return the unique identifier (guid) of the team.
      *
-     * @return string guid
+     * @return description of team profile
      */
-    public String getTeamGUID()
+    public ElementStub getTeam()
     {
-        return teamGUID;
+        return team;
     }
 
 
     /**
      * Set up the unique identifier (guid) of the team.
      *
-     * @param teamGUID string guid
+     * @param team string guid
      */
-    public void setTeamGUID(String teamGUID)
+    public void setTeam(ElementStub team)
     {
-        this.teamGUID = teamGUID;
+        this.team = team;
     }
 
 
@@ -135,7 +134,7 @@ public class TeamMembershipElement extends PersonalRoleElement
         return "TeamMembershipElement{" +
                        "position='" + position + '\'' +
                        ", leadershipRole=" + leadershipRole +
-                       ", teamGUID='" + teamGUID + '\'' +
+                       ", team='" + team + '\'' +
                        ", elementHeader=" + getElementHeader() +
                        ", properties=" + getProperties() +
                        '}';
@@ -159,9 +158,14 @@ public class TeamMembershipElement extends PersonalRoleElement
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         TeamMembershipElement that = (TeamMembershipElement) objectToCompare;
-        return Objects.equals(position, that.position) &&
-                Objects.equals(leadershipRole, that.leadershipRole);
+        return leadershipRole == that.leadershipRole &&
+                       Objects.equals(position, that.position) &&
+                       Objects.equals(team, that.team);
     }
 
 
@@ -173,6 +177,6 @@ public class TeamMembershipElement extends PersonalRoleElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), position, leadershipRole);
+        return Objects.hash(super.hashCode(), position, leadershipRole, team);
     }
 }

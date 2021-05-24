@@ -28,8 +28,8 @@ public class TeamProfileElement implements MetadataElement, Serializable
 
     private ElementHeader         elementHeader = null;
     private TeamProfileProperties properties    = null;
-    private String                superTeam     = null;
-    private List<String>          subTeams      = null;
+    private ElementStub           superTeam     = null;
+    private List<ElementStub>     subTeams      = null;
 
     /**
      * Default constructor
@@ -105,9 +105,9 @@ public class TeamProfileElement implements MetadataElement, Serializable
     /**
      * Return the unique identifier (guid) of the team that this team reports to - null means top level team.
      *
-     * @return guid
+     * @return description of linked profile
      */
-    public String getSuperTeam()
+    public ElementStub getSuperTeam()
     {
         return superTeam;
     }
@@ -116,9 +116,9 @@ public class TeamProfileElement implements MetadataElement, Serializable
     /**
      * Set up the unique identifier (guid) of the team that this team reports to - null means top level team.
      *
-     * @param superTeam guid
+     * @param superTeam description of linked profile
      */
-    public void setSuperTeam(String superTeam)
+    public void setSuperTeam(ElementStub superTeam)
     {
         this.superTeam = superTeam;
     }
@@ -127,9 +127,9 @@ public class TeamProfileElement implements MetadataElement, Serializable
     /**
      * Return the list of unique identifiers (guids) for the teams that report to this team.
      *
-     * @return list of guids
+     * @return list of descriptions of linked profiles
      */
-    public List<String> getSubTeams()
+    public List<ElementStub> getSubTeams()
     {
         if (subTeams == null)
         {
@@ -149,9 +149,9 @@ public class TeamProfileElement implements MetadataElement, Serializable
     /**
      * Set up the list of unique identifiers (guids) for the teams that report to this team.
      *
-     * @param subTeams list of guids
+     * @param subTeams list of descriptions of linked profiles
      */
-    public void setSubTeams(List<String> subTeams)
+    public void setSubTeams(List<ElementStub> subTeams)
     {
         this.subTeams = subTeams;
     }
@@ -193,7 +193,9 @@ public class TeamProfileElement implements MetadataElement, Serializable
         }
         TeamProfileElement that = (TeamProfileElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties);
+                       Objects.equals(properties, that.properties) &&
+                       Objects.equals(superTeam, that.superTeam) &&
+                       Objects.equals(subTeams, that.subTeams);
     }
 
 
@@ -205,6 +207,6 @@ public class TeamProfileElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(elementHeader, properties, superTeam, subTeams);
     }
 }

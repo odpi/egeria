@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommunityForumContribution extends NoteEntryHeader
+public class CommunityForumContribution extends NoteLogEntryProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -49,7 +49,7 @@ public class CommunityForumContribution extends NoteEntryHeader
     public String toString()
     {
         return "CommunityForumContribution{" +
-                       "user='" + getUser() + '\'' +
+                       "user='" + getContributors() + '\'' +
                        ", title='" + getTitle() + '\'' +
                        ", text='" + getText() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.metadataelement;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.NoteLogHeaderProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,23 +15,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CommunityElement contains the properties and header for a community.
+ * NoteLogHeaderElement contains the properties and header for the root of a note log such as a personal note log or a community forum.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommunityElement implements MetadataElement, Serializable
+public class NoteLogHeaderElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader       elementHeader = null;
-    private CommunityProperties properties    = null;
+    private ElementHeader           elementHeader = null;
+    private NoteLogHeaderProperties properties    = null;
 
 
     /**
      * Default constructor
      */
-    public CommunityElement()
+    public NoteLogHeaderElement()
     {
         super();
     }
@@ -42,7 +42,7 @@ public class CommunityElement implements MetadataElement, Serializable
      *
      * @param template object to copy
      */
-    public CommunityElement(CommunityElement template)
+    public NoteLogHeaderElement(NoteLogHeaderElement template)
     {
         if (template != null)
         {
@@ -77,22 +77,22 @@ public class CommunityElement implements MetadataElement, Serializable
 
 
     /**
-     * Return the properties of the community.
+     * Return the properties of the note log.
      *
      * @return properties
      */
-    public CommunityProperties getProperties()
+    public NoteLogHeaderProperties getProperties()
     {
         return properties;
     }
 
 
     /**
-     * Set up the community properties.
+     * Set up the note log properties.
      *
      * @param properties  properties
      */
-    public void setProperties(CommunityProperties properties)
+    public void setProperties(NoteLogHeaderProperties properties)
     {
         this.properties = properties;
     }
@@ -106,7 +106,7 @@ public class CommunityElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "CommunityElement{" +
+        return "NoteLogHeaderElement{" +
                 "elementHeader=" + elementHeader +
                 ", properties=" + properties +
                 '}';
@@ -130,7 +130,7 @@ public class CommunityElement implements MetadataElement, Serializable
         {
             return false;
         }
-        CommunityElement that = (CommunityElement) objectToCompare;
+        NoteLogHeaderElement that = (NoteLogHeaderElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(properties, that.properties);
     }

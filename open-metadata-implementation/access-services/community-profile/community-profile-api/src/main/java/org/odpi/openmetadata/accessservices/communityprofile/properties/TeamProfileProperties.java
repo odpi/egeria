@@ -11,19 +11,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The PersonalProfileProperties describes an individual.  Information about the
- * personal profile is stored as an Person entity in the metadata repository.
+ * The TeamProfileProperties describes an team of people.  Information about the
+ * team is stored as a Team entity in the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-              include = JsonTypeInfo.As.PROPERTY,
-              property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = OrganizationProfileProperties.class, name = "OrganizationProfileProperties")
-        })
 public class TeamProfileProperties extends ActorProfileProperties
 {
     private static final long    serialVersionUID = 1L;

@@ -24,7 +24,7 @@ public class InformalTagElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader          elementHeader = null;
+    private ElementHeader         elementHeader = null;
     private InformalTagProperties properties    = null;
 
 

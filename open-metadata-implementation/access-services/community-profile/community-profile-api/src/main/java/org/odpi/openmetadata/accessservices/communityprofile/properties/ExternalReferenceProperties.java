@@ -31,6 +31,7 @@ public class ExternalReferenceProperties implements Serializable
     private String              resourceURL          = null;
     private String              resourceVersion      = null;
     private String              owningOrganization   = null;
+    private String              typeName             = null;
     private Map<String, Object> extendedProperties   = null;
     private Map<String, String> additionalProperties = null;
 
@@ -61,6 +62,7 @@ public class ExternalReferenceProperties implements Serializable
             resourceDescription  = template.getResourceDescription();
             resourceVersion      = template.getResourceVersion();
             owningOrganization   = template.getOwningOrganization();
+            typeName             = template.getTypeName();
             extendedProperties   = template.getExtendedProperties();
             additionalProperties = template.getAdditionalProperties();
         }
@@ -225,6 +227,28 @@ public class ExternalReferenceProperties implements Serializable
 
 
     /**
+     * Return the type name of the external reference = null for default.
+     *
+     * @return string name
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Set up the type name of the external reference = null for default.
+     *
+     * @param typeName string name
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
+    }
+
+
+    /**
      * Return any properties associated with the subclass of this element.
      *
      * @return map of property names to property values
@@ -299,17 +323,18 @@ public class ExternalReferenceProperties implements Serializable
     public String toString()
     {
         return "ExternalReferenceProperties{" +
-                "resourceId='" + resourceId + '\'' +
-                ", linkId='" + linkId + '\'' +
-                ", resourceDisplayName='" + resourceDisplayName + '\'' +
-                ", linkDescription='" + linkDescription + '\'' +
-                ", resourceDescription='" + resourceDescription + '\'' +
-                ", resourceURL='" + resourceURL + '\'' +
-                ", resourceVersion='" + resourceVersion + '\'' +
-                ", organization='" + owningOrganization + '\'' +
-                ", extendedProperties=" + extendedProperties +
-                ", additionalProperties=" + additionalProperties +
-                '}';
+                       "linkId='" + linkId + '\'' +
+                       ", linkDescription='" + linkDescription + '\'' +
+                       ", resourceId='" + resourceId + '\'' +
+                       ", resourceDisplayName='" + resourceDisplayName + '\'' +
+                       ", resourceDescription='" + resourceDescription + '\'' +
+                       ", resourceURL='" + resourceURL + '\'' +
+                       ", resourceVersion='" + resourceVersion + '\'' +
+                       ", owningOrganization='" + owningOrganization + '\'' +
+                       ", typeName='" + typeName + '\'' +
+                       ", extendedProperties=" + extendedProperties +
+                       ", additionalProperties=" + additionalProperties +
+                       '}';
     }
 
 
@@ -343,6 +368,7 @@ public class ExternalReferenceProperties implements Serializable
                 Objects.equals(getResourceURL(), that.getResourceURL()) &&
                 Objects.equals(getResourceVersion(), that.getResourceVersion()) &&
                 Objects.equals(getOwningOrganization(), that.getOwningOrganization()) &&
+                Objects.equals(getTypeName(), that.getTypeName()) &&
                 Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
     }
@@ -358,7 +384,7 @@ public class ExternalReferenceProperties implements Serializable
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getResourceId(), getLinkId(), getResourceDisplayName(),
-                            getLinkDescription(), getResourceDescription(), resourceURL, getResourceVersion(), getOwningOrganization(),
-                            getExtendedProperties(), getAdditionalProperties());
+                            getLinkDescription(), getResourceDescription(), getResourceURL(), getResourceVersion(), getOwningOrganization(),
+                            getTypeName(), getExtendedProperties(), getAdditionalProperties());
     }
 }

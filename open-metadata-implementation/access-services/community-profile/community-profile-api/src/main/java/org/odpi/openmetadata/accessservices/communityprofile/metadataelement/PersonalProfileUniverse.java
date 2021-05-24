@@ -16,28 +16,27 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PersonalProfileElement contains the properties and header for a personal profile
- * retrieved from the metadata repository.
+ * PersonalProfileUniverse contains the properties and header for a personal profile
+ * retrieved from the metadata repository along with details of the contribution record, user ids, contact methods, peers and
+ * roles that the profile is linked to.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonalProfileElement implements MetadataElement, Serializable
+public class PersonalProfileUniverse extends PersonalProfileElement
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader              elementHeader             = null;
-    private PersonalProfileProperties  personalProfileProperties = null;
     private ContributionRecordElement  contributionRecord        = null;
     private List<UserIdentityElement>  userIdentities            = null;
     private List<ContactMethodElement> contactMethods            = null;
-    private List<String>               peers                     = null;
-    private List<String>               roles                     = null;
+    private List<ElementStub>          peers                     = null;
+    private List<ElementStub>          roles                     = null;
 
     /**
      * Default constructor
      */
-    public PersonalProfileElement()
+    public PersonalProfileUniverse()
     {
         super();
     }
@@ -48,62 +47,29 @@ public class PersonalProfileElement implements MetadataElement, Serializable
      *
      * @param template object to copy
      */
-    public PersonalProfileElement(PersonalProfileElement template)
+    public PersonalProfileUniverse(PersonalProfileUniverse template)
     {
+        super (template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            personalProfileProperties = template.getPersonalProfileProperties();
             contributionRecord = template.getContributionRecord();
             userIdentities = template.getUserIdentities();
             contactMethods = template.getContactMethods();
+            peers = template.getPeers();
+            roles = template.getRoles();
         }
     }
 
 
     /**
-     * Return the element header associated with the properties.
+     * Copy/clone constructor
      *
-     * @return element header object
+     * @param template object to copy
      */
-    @Override
-    public ElementHeader getElementHeader()
+    public PersonalProfileUniverse(PersonalProfileElement template)
     {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
-    }
-
-
-    /**
-     * Return the properties of the profile.
-     *
-     * @return  properties
-     */
-    public PersonalProfileProperties getPersonalProfileProperties()
-    {
-        return personalProfileProperties;
-    }
-
-
-    /**
-     * Set up the personal profile properties.
-     *
-     * @param personalProfileProperties  properties
-     */
-    public void setPersonalProfileProperties(PersonalProfileProperties personalProfileProperties)
-    {
-        this.personalProfileProperties = personalProfileProperties;
+        super (template);
     }
 
 
@@ -195,9 +161,9 @@ public class PersonalProfileElement implements MetadataElement, Serializable
     /**
      * Return the list of profile identifiers (GUIDs) for peers.
      *
-     * @return list of guids
+     * @return list of stubs for linked elements
      */
-    public List<String> getPeers()
+    public List<ElementStub> getPeers()
     {
         return peers;
     }
@@ -206,9 +172,9 @@ public class PersonalProfileElement implements MetadataElement, Serializable
     /**
      * Set up the list of profile identifiers (GUIDs) for peers.
      *
-     * @param peers list of guids
+     * @param peers list of stubs for linked elements
      */
-    public void setPeers(List<String> peers)
+    public void setPeers(List<ElementStub> peers)
     {
         this.peers = peers;
     }
@@ -217,9 +183,9 @@ public class PersonalProfileElement implements MetadataElement, Serializable
     /**
      * Return the list of identifiers for this profile's roles.
      *
-     * @return list of guids
+     * @return list of stubs for linked elements
      */
-    public List<String> getRoles()
+    public List<ElementStub> getRoles()
     {
         return roles;
     }
@@ -228,9 +194,9 @@ public class PersonalProfileElement implements MetadataElement, Serializable
     /**
      * Set up the list of identifiers for this profile's roles.
      *
-     * @param roles list of guids
+     * @param roles list of stubs for linked elements
      */
-    public void setRoles(List<String> roles)
+    public void setRoles(List<ElementStub> roles)
     {
         this.roles = roles;
     }
@@ -244,9 +210,9 @@ public class PersonalProfileElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "PersonalProfileElement{" +
-                       "elementHeader=" + elementHeader +
-                       ", personalProfileProperties=" + personalProfileProperties +
+        return "PersonalProfileUniverse{" +
+                       "elementHeader=" + getElementHeader() +
+                       ", personalProfileProperties=" + getProfileProperties() +
                        ", contributionRecord=" + contributionRecord +
                        ", userIdentities=" + userIdentities +
                        ", contactMethods=" + contactMethods +
@@ -271,12 +237,16 @@ public class PersonalProfileElement implements MetadataElement, Serializable
         {
             return false;
         }
-        PersonalProfileElement that = (PersonalProfileElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(personalProfileProperties, that.personalProfileProperties) &&
-                       Objects.equals(contributionRecord, that.contributionRecord) &&
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        PersonalProfileUniverse that = (PersonalProfileUniverse) objectToCompare;
+        return Objects.equals(contributionRecord, that.contributionRecord) &&
                        Objects.equals(userIdentities, that.userIdentities) &&
-                       Objects.equals(contactMethods, that.contactMethods);
+                       Objects.equals(contactMethods, that.contactMethods) &&
+                       Objects.equals(peers, that.peers) &&
+                       Objects.equals(roles, that.roles);
     }
 
 
@@ -288,6 +258,6 @@ public class PersonalProfileElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, personalProfileProperties, contributionRecord, userIdentities, contactMethods);
+        return Objects.hash(super.hashCode(), contributionRecord, userIdentities, contactMethods, peers, roles);
     }
 }

@@ -3,13 +3,11 @@
 package org.odpi.openmetadata.accessservices.communityprofile.admin;
 
 import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicServerConnector;
+import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.intopic.CommunityProfileInTopicProcessor;
 import org.odpi.openmetadata.accessservices.communityprofile.omrstopic.CommunityProfileOMRSTopicProcessor;
-import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicProcessor;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
-import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicServerProvider;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -150,7 +148,7 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
                 Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
                                                                                      AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                                                                     GovernanceEngineOutTopicServerProvider.class.getName(),
+                                                                                     CommunityProfileOutTopicServerProvider.class.getName(),
                                                                                      auditLog);
                 CommunityProfileOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
                                                                                                           CommunityProfileOutTopicServerConnector.class,
@@ -194,7 +192,7 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
     @Override
     public void shutdown()
     {
-        final String              actionDescription = "shutdown";
+        final String actionDescription = "shutdown";
 
         if (inTopicProcessor != null)
         {

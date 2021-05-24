@@ -381,6 +381,7 @@ public class UserIdentityRESTServices
                                                                        searchStringParameterName,
                                                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                        startFrom,
                                                                        pageSize,
                                                                        methodName);

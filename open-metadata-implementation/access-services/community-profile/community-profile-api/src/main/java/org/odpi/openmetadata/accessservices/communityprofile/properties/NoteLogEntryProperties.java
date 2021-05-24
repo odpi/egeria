@@ -5,38 +5,31 @@ package org.odpi.openmetadata.accessservices.communityprofile.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NoteEntryHeader covers the entries in a community forum and personal notes since they are based on a note log.
+ * NoteLogEntryProperties covers the entries in a community forum and personal notes since they are based on a note log.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = CommunityForumContribution.class, name = "CommunityForumContribution"),
-        @JsonSubTypes.Type(value = PersonalNote.class, name = "PersonalNote")
-})
-public abstract class NoteEntryHeader extends ReferenceableProperties
+public class NoteLogEntryProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String user  = null;
-    private String title = null;
-    private String text  = null;
+    private List<String> contributors = null;
+    private String       title        = null;
+    private String       text         = null;
 
 
     /**
      * Default constructor
      */
-    public NoteEntryHeader()
+    public NoteLogEntryProperties()
     {
         super();
     }
@@ -47,36 +40,46 @@ public abstract class NoteEntryHeader extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public NoteEntryHeader(NoteEntryHeader template)
+    public NoteLogEntryProperties(NoteLogEntryProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            user = template.getUser();
+            contributors = template.getContributors();
             title = template.getTitle();
             text = template.getText();
         }
     }
 
     /**
-     * Return the user id of the person who created the tag.  Null means the user id is not known.
+     * Return the list of user ids of the people who created the note log entry.
      *
-     * @return String tagging user
+     * @return  authoring users
      */
-    public String getUser() {
-        return user;
+    public List<String> getContributors()
+    {
+        if (contributors == null)
+        {
+            return null;
+        }
+        else if (contributors.isEmpty())
+        {
+            return null;
+        }
+
+        return contributors;
     }
 
 
     /**
      * Set up the user id of the person who created the tag.  Null means the user id is not known.
      *
-     * @param user String identifier of the creator of the tag.
+     * @param contributors  authoring users
      */
-    public void setUser(String user)
+    public void setContributors(List<String> contributors)
     {
-        this.user = user;
+        this.contributors = contributors;
     }
 
 
@@ -132,8 +135,8 @@ public abstract class NoteEntryHeader extends ReferenceableProperties
     @Override
     public String toString()
     {
-        return "NoteEntryHeader{" +
-                       "user='" + user + '\'' +
+        return "NoteLogEntryProperties{" +
+                       "user='" + contributors + '\'' +
                        ", title='" + title + '\'' +
                        ", text='" + text + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -166,8 +169,8 @@ public abstract class NoteEntryHeader extends ReferenceableProperties
         {
             return false;
         }
-        NoteEntryHeader that = (NoteEntryHeader) objectToCompare;
-        return Objects.equals(getUser(), that.getUser()) &&
+        NoteLogEntryProperties that = (NoteLogEntryProperties) objectToCompare;
+        return Objects.equals(getContributors(), that.getContributors()) &&
                 Objects.equals(getTitle(), that.getTitle()) &&
                 Objects.equals(getText(), that.getText());
     }
@@ -181,6 +184,6 @@ public abstract class NoteEntryHeader extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getUser(), getTitle(), getText());
+        return Objects.hash(super.hashCode(), getContributors(), getTitle(), getText());
     }
 }

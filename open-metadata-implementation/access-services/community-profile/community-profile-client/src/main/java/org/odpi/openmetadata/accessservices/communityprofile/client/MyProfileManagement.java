@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 import org.odpi.openmetadata.accessservices.communityprofile.api.MyPersonalProfileInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.AssetCollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
@@ -167,9 +167,9 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public PersonalProfileElement getMyProfile(String userId) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public PersonalProfileUniverse getMyProfile(String userId) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
         final String   methodName = "getMyProfile";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/my-profile";
@@ -293,7 +293,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         PersonalProfileValidatorRequestBody requestBody = new PersonalProfileValidatorRequestBody();
-        requestBody.setQualifiedName(qualifiedName);
 
         restClient.callVoidPostRESTCall(methodName,
                                          serverPlatformURLRoot + urlTemplate,

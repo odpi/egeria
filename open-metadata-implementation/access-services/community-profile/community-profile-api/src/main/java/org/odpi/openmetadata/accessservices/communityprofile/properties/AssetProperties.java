@@ -24,10 +24,6 @@ public class AssetProperties extends ReferenceableProperties
 
     private String       name                 = null;
     private String       description          = null;
-    private String       owner                = null;
-    private OwnerType    ownerType            = null;
-    private List<String> zoneMembership       = null;
-    private String       lastChange           = null;
     private Date         dateAssetCreated     = null;
     private Date         dateAssetLastUpdated = null;
 
@@ -54,14 +50,10 @@ public class AssetProperties extends ReferenceableProperties
         {
             this.name = template.getName();
             this.description = template.getDescription();
-            this.owner = template.getOwner();
-            this.ownerType = template.getOwnerType();
-            this.zoneMembership = template.getZoneMembership();
             this.dateAssetCreated = template.getDateAssetCreated();
             this.dateAssetLastUpdated = template.getDateAssetLastUpdated();
         }
     }
-
 
 
     /**
@@ -105,86 +97,6 @@ public class AssetProperties extends ReferenceableProperties
     public void setDescription(String description)
     {
         this.description = description;
-    }
-
-
-
-    /**
-     * Return the owner for this asset.  This is the user id of the person or engine that is responsible for
-     * managing this asset.
-     *
-     * @return string id
-     */
-    public String getOwner()
-    {
-        return owner;
-    }
-
-
-    /**
-     * Set up the owner for this asset.  This is the user id of the person or engine that is responsible for
-     * managing this asset.
-     *
-     * @param owner string id
-     */
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
-    }
-
-
-    /**
-     * Return the type of owner identifier used in the owner field (default is userId).
-     *
-     * @return OwnerType enum
-     */
-    public OwnerType getOwnerType()
-    {
-        return ownerType;
-    }
-
-
-    /**
-     * Set up the type of owner identifier used in the owner field (default is userId).
-     *
-     * @param ownerType OwnerType enum
-     */
-    public void setOwnerType(OwnerType ownerType)
-    {
-        this.ownerType = ownerType;
-    }
-
-
-    /**
-     * Return the names of the zones that this asset is a member of.
-     *
-     * @return list of zone names
-     */
-    public List<String> getZoneMembership()
-    {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return zoneMembership;
-        }
-    }
-
-
-    /**
-     * Set up the names of the zones that this asset is a member of.
-     *
-     * @param zoneMembership list of zone names
-     */
-    public void setZoneMembership(List<String> zoneMembership)
-    {
-        this.zoneMembership = zoneMembership;
     }
 
 
@@ -258,10 +170,6 @@ public class AssetProperties extends ReferenceableProperties
         return "AssetProperties{" +
                        "name='" + name + '\'' +
                        ", description='" + description + '\'' +
-                       ", owner='" + owner + '\'' +
-                       ", ownerType=" + ownerType +
-                       ", zoneMembership=" + zoneMembership +
-                       ", lastChange='" + lastChange + '\'' +
                        ", dateAssetCreated=" + dateAssetCreated +
                        ", dateAssetLastUpdated=" + dateAssetLastUpdated +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -295,15 +203,10 @@ public class AssetProperties extends ReferenceableProperties
             return false;
         }
         AssetProperties that = (AssetProperties) objectToCompare;
-        return Objects.equals(getOwner(), that.getOwner()) &&
-                       Objects.equals(getName(), that.getName()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getOwnerType(), that.getOwnerType()) &&
-                       Objects.equals(getZoneMembership(), that.getZoneMembership()) &&
-                       Objects.equals(getDateAssetCreated(), that.getDateAssetCreated()) &&
-                       Objects.equals(getDateAssetLastUpdated(), that.getDateAssetLastUpdated()) &&
-                       Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
-                       Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+        return Objects.equals(name, that.name) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(dateAssetCreated, that.dateAssetCreated) &&
+                       Objects.equals(dateAssetLastUpdated, that.dateAssetLastUpdated);
     }
 
 
@@ -315,7 +218,7 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getOwner(), getOwnerType(), getZoneMembership(), getName(), getDescription(), getDateAssetCreated(),
+        return Objects.hash(super.hashCode(), getName(), getDescription(), getDateAssetCreated(),
                             getDateAssetLastUpdated(), getExtendedProperties(), getAdditionalProperties());
     }
 }
