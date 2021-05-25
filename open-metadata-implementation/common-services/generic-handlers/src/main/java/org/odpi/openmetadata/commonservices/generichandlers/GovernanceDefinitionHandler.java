@@ -326,6 +326,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param definitionChildTypeName type name of the sub-definition
      * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
+     * @param rationale why are these definitions linked
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -381,6 +382,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param definitionChildTypeName type name of the sub-definition
      * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
+     * @param description why are these definitions linked
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -540,7 +542,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               typeGUID,
                               typeName,
-                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -622,7 +624,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                    typeGUID,
                                    typeName,
                                    supportedZones,
-                                   OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                   null,
                                    startFrom,
                                    pageSize,
                                    methodName);
@@ -665,7 +667,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                              typeGUID,
                                                              typeName,
                                                              supportedZones,
-                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                             null,
                                                              startFrom,
                                                              pageSize,
                                                              methodName);
@@ -751,7 +753,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

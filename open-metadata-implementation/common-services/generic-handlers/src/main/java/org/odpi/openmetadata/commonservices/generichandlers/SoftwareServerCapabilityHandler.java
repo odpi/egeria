@@ -318,7 +318,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                        typeGUID,
                                        typeName,
                                        supportedZones,
-                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                       null,
                                        startingFrom,
                                        maxPageSize,
                                        methodName);
@@ -354,7 +354,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                    typeGUID,
                                    typeName,
                                    supportedZones,
-                                   OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                   null,
                                    startingFrom,
                                    maxPageSize,
                                    methodName);

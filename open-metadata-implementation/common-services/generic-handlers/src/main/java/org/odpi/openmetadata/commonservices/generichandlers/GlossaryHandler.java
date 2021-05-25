@@ -480,7 +480,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -528,7 +528,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

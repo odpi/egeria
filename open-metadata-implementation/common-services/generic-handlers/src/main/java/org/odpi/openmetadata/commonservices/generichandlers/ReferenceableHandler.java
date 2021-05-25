@@ -346,7 +346,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           null,
                                           false,
                                           serviceSupportedZones,
-                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                          null,
                                           startFrom,
                                           pageSize,
                                           methodName);
@@ -453,7 +453,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     false,
                                     serviceSupportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -512,7 +512,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       null,
                                                                       false,
                                                                       supportedZones,
-                                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                      null,
                                                                       0,
                                                                       0,
                                                                       methodName);
@@ -637,7 +637,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         false,
                                         serviceSupportedZones,
-                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                        null,
                                         startFrom,
                                         pageSize,
                                         methodName);
@@ -744,7 +744,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     false,
                                     serviceSupportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -1431,7 +1431,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param beanGUID unique identifier of the referenceable
+     * @param beanGUIDParameter parameter supplying beanGUID
      * @param memberGUID unique identifier of the glossary term
+     * @param memberGUIDParameter parameter supplying memberGUID
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid

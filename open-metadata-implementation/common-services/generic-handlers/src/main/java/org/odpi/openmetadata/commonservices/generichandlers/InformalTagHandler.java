@@ -460,7 +460,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.TAG_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -503,7 +503,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       propertyNames,
                                       true,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.TAG_NAME_PROPERTY_NAME,
+                                      null,
                                       startFrom,
                                       pageSize,
                                       methodName);
@@ -545,7 +545,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.TAG_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -584,7 +584,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       null,
                                       false,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.TAG_NAME_PROPERTY_NAME,
+                                      null,
                                       startFrom,
                                       pageSize,
                                       methodName);

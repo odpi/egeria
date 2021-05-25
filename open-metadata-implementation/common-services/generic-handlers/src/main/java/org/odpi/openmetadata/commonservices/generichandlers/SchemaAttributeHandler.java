@@ -979,7 +979,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                               omittedClassificationName,
                                                                               false,
                                                                               serviceSupportedZones,
-                                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                              null,
                                                                               startFrom,
                                                                               pageSize,
                                                                               methodName);
@@ -1029,7 +1029,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                        resultTypeName,
                                                                        requiredClassificationName,
                                                                        omittedClassificationName,
-                                                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                       null,
                                                                        startFrom,
                                                                        pageSize,
                                                                        methodName);

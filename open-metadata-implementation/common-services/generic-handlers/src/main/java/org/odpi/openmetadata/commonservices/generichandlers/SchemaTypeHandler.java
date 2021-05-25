@@ -499,7 +499,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                         null,
                                                         null,
-                                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                        null,
                                                         startFrom,
                                                         pageSize,
                                                         methodName);
@@ -549,7 +549,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               null,
                                                               false,
                                                               supportedZones,
-                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                              null,
                                                               startFrom,
                                                               pageSize,
                                                               methodName);

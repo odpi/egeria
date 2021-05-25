@@ -87,6 +87,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param scope scope of the organization that this some applies to
      * @param domainIdentifier the identifier of the governance domain where the zone is managed
      * @param additionalProperties additional properties for a governance zone
+     * @param suppliedTypeName type name of the zone definition (null for GovernanceZone)
      * @param extendedProperties  properties for a governance zone subtype
      * @param methodName calling method
      *
@@ -160,6 +161,8 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param zoneGUID unique identifier for the zone to change
+     * @param zoneGUIDParameterName parameter supplying the zoneGUID
      * @param qualifiedName unique name for the zone - used in other configuration
      * @param displayName short display name for the zone
      * @param description description of the governance zone
@@ -167,10 +170,10 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param scope scope of the organization that this some applies to
      * @param domainIdentifier the identifier of the governance domain where the zone is managed
      * @param additionalProperties additional properties for a governance zone
+     * @param suppliedTypeName type name of the zone definition (null for GovernanceZone)
      * @param extendedProperties  properties for a governance zone subtype
+     * @param isMergeUpdate should supplied properties be merged with or replace existing properties
      * @param methodName calling method
-     *
-     * @return unique identifier of the new zone
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
@@ -361,7 +364,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    OpenMetadataAPIMapper.ZONE_TYPE_GUID,
                                    OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                    supportedZones,
-                                   OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                   null,
                                    startFrom,
                                    pageSize,
                                    methodName);
@@ -400,7 +403,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                              OpenMetadataAPIMapper.ZONE_TYPE_GUID,
                                                              OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                                              supportedZones,
-                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                             null,
                                                              startFrom,
                                                              pageSize,
                                                              methodName);

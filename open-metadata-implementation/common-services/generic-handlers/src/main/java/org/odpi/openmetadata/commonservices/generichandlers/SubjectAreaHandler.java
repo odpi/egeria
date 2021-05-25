@@ -35,9 +35,9 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param localServerUserId userId for this server
      * @param securityVerifier open metadata security services verifier
-     * @param supportedZones list of zones that the access service is allowed to serve B instances from.
-     * @param defaultZones list of zones that the access service should set in all new B instances.
-     * @param publishZones list of zones that the access service sets up in published B instances.
+     * @param supportedZones list of subjectAreas that the access service is allowed to serve B instances from.
+     * @param defaultZones list of subjectAreas that the access service should set in all new B instances.
+     * @param publishZones list of subjectAreas that the access service sets up in published B instances.
      * @param auditLog destination for audit log events.
      */
     public SubjectAreaHandler(OpenMetadataAPIGenericConverter<B> converter,
@@ -73,29 +73,30 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
     /**
      * Create a definition of a subject area.  The qualified name of these subject areas can be added
      * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
-     * to indicate which zone(s) they belong to.
+     * and how they are set up.  In addition the qualified names of subjectAreas can be added to Asset definitions
+     * to indicate which subjectArea(s) they belong to.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param qualifiedName unique name for the zone - used in other configuration
-     * @param displayName short display name for the zone
+     * @param qualifiedName unique name for the subjectArea - used in other configuration
+     * @param displayName short display name for the subjectArea
      * @param description description of the subject area
      * @param usage the usage for inclusion in a subject area
      * @param scope scope of the organization that this some applies to
-     * @param domainIdentifier the identifier of the governance domain where the zone is managed
+     * @param domainIdentifier the identifier of the governance domain where the subjectArea is managed
      * @param additionalProperties additional properties for a subject area
+     * @param suppliedTypeName name of sub type - or null for SubjectAreaDefinition
      * @param extendedProperties  properties for a subject area subtype
      * @param methodName calling method
      *
-     * @return unique identifier of the new zone
+     * @return unique identifier of the new subjectArea
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String createSubjectArea(String                 userId,
+    public String createSubjectArea(String              userId,
                                     String              externalSourceGUID,
                                     String              externalSourceName,
                                     String              qualifiedName,
@@ -153,23 +154,25 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
     /**
      * Create a definition of a subject area.  The qualified name of these subject areas can be added
      * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
-     * to indicate which zone(s) they belong to.
+     * and how they are set up.  In addition the qualified names of subjectAreas can be added to Asset definitions
+     * to indicate which subjectArea(s) they belong to.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param qualifiedName unique name for the zone - used in other configuration
-     * @param displayName short display name for the zone
+     * @param subjectAreaGUID unique identifier of subject area
+     * @param subjectAreaGUIDParameterName parameter name for subjectAreaGUID
+     * @param qualifiedName unique name for the subjectArea - used in other configuration
+     * @param displayName short display name for the subjectArea
      * @param description description of the subject area
      * @param criteria the criteria for inclusion in a subject area
      * @param scope scope of the organization that this some applies to
-     * @param domainIdentifier the identifier of the governance domain where the zone is managed
+     * @param domainIdentifier the identifier of the governance domain where the subjectArea is managed
      * @param additionalProperties additional properties for a subject area
+     * @param suppliedTypeName subtype name
      * @param extendedProperties  properties for a subject area subtype
+     * @param isMergeUpdate should the supplied properties be merged with the existing one or replace them
      * @param methodName calling method
-     *
-     * @return unique identifier of the new zone
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
@@ -178,8 +181,8 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void updateSubjectArea(String              userId,
                                   String              externalSourceGUID,
                                   String              externalSourceName,
-                                  String              zoneGUID,
-                                  String              zoneGUIDParameterName,
+                                  String              subjectAreaGUID,
+                                  String              subjectAreaGUIDParameterName,
                                   String              qualifiedName,
                                   String              displayName,
                                   String              description,
@@ -224,8 +227,8 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
-                                    zoneGUID,
-                                    zoneGUIDParameterName,
+                                    subjectAreaGUID,
+                                    subjectAreaGUIDParameterName,
                                     OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                     OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                     builder.getInstanceProperties(methodName),
@@ -238,7 +241,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Return information about a specific subject area.
      *
      * @param userId calling user
-     * @param qualifiedName unique name for the zone
+     * @param qualifiedName unique name for the subjectArea
      * @param qualifiedNameParameter name of parameter supplying the qualifiedName
      * @param methodName calling method
      *
@@ -269,26 +272,26 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Return information about a specific subject area's parent.
      *
      * @param userId calling user
-     * @param zoneGUID unique identifier for the zone
-     * @param zoneGUIDParameter name of parameter supplying the zoneGUID
+     * @param subjectAreaGUID unique identifier for the subjectArea
+     * @param subjectAreaGUIDParameter name of parameter supplying the subjectAreaGUID
      * @param methodName calling method
      *
      * @return unique identifier of the parent subject area
      *
-     * @throws InvalidParameterException zoneGUID or userId is null
+     * @throws InvalidParameterException subjectAreaGUID or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     public String getSubjectAreaParentGUID(String userId,
-                                           String zoneGUID,
-                                           String zoneGUIDParameter,
+                                           String subjectAreaGUID,
+                                           String subjectAreaGUIDParameter,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
         EntityDetail entity = this.getAttachedEntity(userId,
-                                                     zoneGUID,
-                                                     zoneGUIDParameter,
+                                                     subjectAreaGUID,
+                                                     subjectAreaGUIDParameter,
                                                      OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
@@ -307,29 +310,29 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Return information about a specific subject area's child (nested) zones.
+     * Return information about a specific subject area's child (nested) subjectAreas.
      *
      * @param userId calling user
-     * @param zoneGUID unique identifier for the zone
-     * @param zoneGUIDParameter name of parameter supplying the zoneGUID
+     * @param subjectAreaGUID unique identifier for the subjectArea
+     * @param subjectAreaGUIDParameter name of parameter supplying the subjectAreaGUID
      * @param methodName calling method
      *
      * @return list of unique identifier of the parent subject area
      *
-     * @throws InvalidParameterException zoneGUID or userId is null
+     * @throws InvalidParameterException subjectAreaGUID or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     public List<String> getSubjectAreaChildrenGUIDs(String userId,
-                                                    String zoneGUID,
-                                                    String zoneGUIDParameter,
+                                                    String subjectAreaGUID,
+                                                    String subjectAreaGUIDParameter,
                                                     String methodName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
         List<EntityDetail> entities = this.getAttachedEntities(userId,
-                                                               zoneGUID,
-                                                               zoneGUIDParameter,
+                                                               subjectAreaGUID,
+                                                               subjectAreaGUIDParameter,
                                                                OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                                                OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                                                OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
@@ -385,7 +388,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                    OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                    supportedZones,
-                                   OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                   null,
                                    startFrom,
                                    pageSize,
                                    methodName);
@@ -424,7 +427,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                                              supportedZones,
-                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                             null,
                                                              startFrom,
                                                              pageSize,
                                                              methodName);

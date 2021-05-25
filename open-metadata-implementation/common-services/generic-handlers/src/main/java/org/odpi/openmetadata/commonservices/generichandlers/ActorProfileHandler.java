@@ -531,7 +531,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_GUID,
                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -579,7 +579,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

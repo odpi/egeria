@@ -1189,7 +1189,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -1235,7 +1235,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

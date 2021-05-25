@@ -404,7 +404,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
                                    supportedZones,
-                                   OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                   null,
                                    startingFrom,
                                    maximumResults,
                                    methodName);

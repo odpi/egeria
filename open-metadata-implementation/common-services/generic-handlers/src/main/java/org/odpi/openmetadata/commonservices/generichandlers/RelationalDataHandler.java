@@ -1110,7 +1110,7 @@ public class RelationalDataHandler<DATABASE,
         return databaseHandler.getBeansByType(userId,
                                               OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
                                               OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                              null,
                                               startFrom,
                                               pageSize,
                                               methodName);
@@ -3671,9 +3671,11 @@ public class RelationalDataHandler<DATABASE,
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
+     * @param externalSchemaTypeGUID unique identifier of an external schema identifier
      * @param dataType data type name - for stored values
      * @param defaultValue string containing default value - for stored values
      * @param fixedValue string containing fixed value - for literals
+     * @param validValuesSetGUID unique identifier for a valid values set to support
      * @param formula String formula - for derived values
      * @param isDeprecated is this table deprecated?
      * @param elementPosition the position of this column in its parent table.

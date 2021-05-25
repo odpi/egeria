@@ -546,6 +546,10 @@ public class OpenMetadataAPIMapper
     public static final String COLLECTION_MEMBERSHIP_TYPE_NAME           = "CollectionMembership";
     /* End1 = Collection; End 2 = Referenceable */
 
+    public static final String REFERENCEABLE_TO_COLLECTION_TYPE_GUID     = COLLECTION_MEMBERSHIP_TYPE_GUID;
+    public static final String REFERENCEABLE_TO_COLLECTION_TYPE_NAME     = COLLECTION_MEMBERSHIP_TYPE_NAME;
+    /* End1 = Collection; End 2 = Referenceable */
+
     public static final String MEMBERSHIP_RATIONALE_PROPERTY_NAME        = "membershipRationale";
 
     public static final String SET_TYPE_GUID                             = "3947f08d-7412-4022-81fc-344a20dfbb26";

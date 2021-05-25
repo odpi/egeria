@@ -284,7 +284,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_GUID,
                               OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
-                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -332,7 +332,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

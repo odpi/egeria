@@ -3083,7 +3083,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                        null,
                                                                        false,
                                                                        supportedZones,
-                                                                       uniqueParameterName,
+                                                                       null,
                                                                        0,
                                                                        invalidParameterHandler.getMaxPagingSize(),
                                                                        methodName);
@@ -7716,7 +7716,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          propertyNames,
                                                                          true,
-                                                                         namePropertyName,
+                                                                         null,
                                                                          0,
                                                                          queryPageSize,
                                                                          methodName);
@@ -7865,7 +7865,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                          resultTypeName,
                                                                          propertyNames,
                                                                          true,
-                                                                         namePropertyName,
+                                                                         null,
                                                                          0,
                                                                          queryPageSize,
                                                                          methodName);
@@ -8621,6 +8621,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param methodName calling method

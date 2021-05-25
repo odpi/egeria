@@ -582,7 +582,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.PORT_TYPE_GUID,
                               OpenMetadataAPIMapper.PORT_TYPE_NAME,
-                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -769,7 +769,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

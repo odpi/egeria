@@ -225,6 +225,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param startDate the official start date of the appointment - null means effective immediately
      * @param methodName calling method
      *
+     * @return unique identifier of the appointment relationship
+     *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
@@ -644,7 +646,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
                               OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
-                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -692,7 +694,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -739,7 +741,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -786,7 +788,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -826,7 +828,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                        supportedZones,
-                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                       null,
                                        startFrom,
                                        pageSize,
                                        methodName);
@@ -841,7 +843,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                        null,
                                        false,
                                        supportedZones,
-                                       OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                       null,
                                        startFrom,
                                        pageSize,
                                        methodName);

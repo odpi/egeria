@@ -528,7 +528,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                    OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                                    propertyNames,
                                                                                    true,
-                                                                                   OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
+                                                                                   null,
                                                                                    0,
                                                                                    queryPageSize,
                                                                                    methodName);

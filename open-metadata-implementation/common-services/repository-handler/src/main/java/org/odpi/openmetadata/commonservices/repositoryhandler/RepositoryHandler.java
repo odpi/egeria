@@ -3378,7 +3378,7 @@ public class RepositoryHandler
     {
         final String localMethodName = "getEntitiesByName";
 
-        SequencingOrder sequencingOrder = null;
+        SequencingOrder sequencingOrder = SequencingOrder.GUID;
 
         if (sequencingPropertyName != null)
         {
@@ -3439,7 +3439,7 @@ public class RepositoryHandler
     {
         final String localMethodName = "getEntitiesByAllProperties";
 
-        SequencingOrder sequencingOrder = null;
+        SequencingOrder sequencingOrder = SequencingOrder.GUID;
 
         if (sequencingPropertyName != null)
         {
@@ -3498,7 +3498,7 @@ public class RepositoryHandler
     {
         final String localMethodName = "getEntitiesWithoutPropertyValues";
 
-        SequencingOrder sequencingOrder = null;
+        SequencingOrder sequencingOrder = SequencingOrder.GUID;
 
         if (sequencingPropertyName != null)
         {
@@ -3558,7 +3558,8 @@ public class RepositoryHandler
                                                                                 PropertyServerException
     {
         final String localMethodName = "getEntitiesByValue";
-        SequencingOrder sequencingOrder = null;
+
+        SequencingOrder sequencingOrder = SequencingOrder.GUID;
 
         if (sequencingPropertyName != null)
         {
@@ -4097,7 +4098,7 @@ public class RepositoryHandler
                                                                                             null,
                                                                                             null,
                                                                                             null,
-                                                                                            null,
+                                                                                            SequencingOrder.GUID,
                                                                                             pageSize);
 
             if ((relationships == null) || (relationships.isEmpty()))
@@ -4271,7 +4272,7 @@ public class RepositoryHandler
                                                    null,
                                                    null,
                                                    null,
-                                                   null,
+                                                   SequencingOrder.GUID,
                                                    100,
                                                    methodName);
     }
@@ -4542,7 +4543,7 @@ public class RepositoryHandler
                                                                                             null,
                                                                                             null,
                                                                                             null,
-                                                                                            null,
+                                                                                            SequencingOrder.GUID,
                                                                                             maximumResults);
 
             if ((relationships == null) || (relationships.isEmpty()))

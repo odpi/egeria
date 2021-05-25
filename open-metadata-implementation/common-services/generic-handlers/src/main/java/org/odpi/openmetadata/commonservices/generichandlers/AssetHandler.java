@@ -1339,6 +1339,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public void updateAssetOwner(String    userId,
                                  String    assetGUID,
                                  String    assetGUIDParameterName,
@@ -1432,7 +1433,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                 specificMatchPropertyNames,
                                                                 true,
                                                                 supportedZones,
-                                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                null,
                                                                 0,
                                                                 invalidParameterHandler.getMaxPagingSize(),
                                                                 methodName);
@@ -1571,7 +1572,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                              assetTypeGUID,
                                                              assetTypeName,
                                                              supportedZones,
-                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                             null,
                                                              startFrom,
                                                              pageSize,
                                                              methodName);
@@ -2334,7 +2335,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         specificMatchPropertyNames,
                                         true,
                                         serviceSupportedZones,
-                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                        null,
                                         startFrom,
                                         pageSize,
                                         methodName);
@@ -2442,7 +2443,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     serviceSupportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -2507,7 +2508,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -2563,7 +2564,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                   specificMatchPropertyNames,
                                                                   true,
                                                                   supportedZones,
-                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  null,
                                                                   startNextQueryFrom,
                                                                   maxPageSize,
                                                                   methodName);
@@ -2795,7 +2796,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         false,
                                         supportedZones,
-                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                        null,
                                         startFrom,
                                         pageSize,
                                         methodName);
@@ -2889,7 +2890,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                               searchStringParameter,
                               resultTypeGUID,
                               resultTypeName,
-                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);

@@ -538,6 +538,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * the Anchors classifications are set up in these elements.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software server capability that owns this collection
+     * @param externalSourceName unique name of the software server capability that owns this collection
      * @param collectionGUID unique identifier of the metadata element to remove
      * @param collectionGUIDParameterName parameter supplying the collectionGUID
      * @param methodName calling method
@@ -599,7 +601,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.COLLECTION_TYPE_GUID,
                               OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
-                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -647,7 +649,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     supportedZones,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
