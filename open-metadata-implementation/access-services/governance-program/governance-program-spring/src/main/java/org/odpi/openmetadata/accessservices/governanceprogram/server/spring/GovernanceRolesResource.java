@@ -6,14 +6,10 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceProgramRESTServices;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceRolesRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.springframework.web.bind.annotation.*;
 
 /**
