@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
-=======
->>>>>>> f247620464 (Update issue templates)
 ---
 name: Release
 about: Template for Tracking a new release
