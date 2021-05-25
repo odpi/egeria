@@ -1,10 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: Enhancement
+about: Suggest an enhancement
 title: ''
-labels: ''
+labels: 'enhancement'
 assignees: ''
 
 ---

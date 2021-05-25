@@ -1,10 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Bug
+about: Report a bug with Egeria
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
@@ -14,10 +14,6 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
@@ -25,16 +21,17 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Server (please complete the following information):**
+ - OS: [e.g. Ubuntu]
+ - Version [e.g. 20.10]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Browser/Client**
+ - Device: [e.g. Macbook Pro 2016]
+ - OS: [e.g. Windows 10 2021.04]
+ - Browser [e.g. chrome]
+ - Version [e.g. 86.0.0.1]
 
 **Additional context**
-Add any other context about the problem here.
+Add any other context about the problem here. Include as much as you
+can about the topology of your environment, connectors in use, cohort
+setup etc.
