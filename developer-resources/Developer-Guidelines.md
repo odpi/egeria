@@ -162,6 +162,14 @@ code is committed into git.
 
 * For java unit tests use /src/test/java folder of the module (standard maven location), and postfix java file names with "Test".
 
+### Working with Date and Time
+
+In Egeria, date / time instants are always represented as Unix Epoch time with millisecond precision (milliseconds elapsed since January 1, 1970).
+
+- The Egeria OMRS layer handles date / time as either `java.lang.Long` or as `java.util.Date` objects. It does not store localised versions of the date / time.
+- In other Egeria APIs that might be developed, it is **strongly recommended** to store dates and times as a Long or Date. 
+- In addition, it is possible to expose localised date representations if required.
+
 ## Testing
 
 Egeria is an integration technology which means that it uses
