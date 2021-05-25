@@ -559,23 +559,36 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     @Override
     public String toString()
     {
-        return "InstanceAuditHeader{" +
-                       "type=" + type +
-                       ", instanceProvenanceType=" + instanceProvenanceType +
-                       ", metadataCollectionId='" + metadataCollectionId + '\'' +
-                       ", metadataCollectionName='" + metadataCollectionName + '\'' +
-                       ", replicatedBy='" + replicatedBy + '\'' +
-                       ", instanceLicense='" + instanceLicense + '\'' +
-                       ", createdBy='" + createdBy + '\'' +
-                       ", updatedBy='" + updatedBy + '\'' +
-                       ", maintainedBy='" + maintainedBy + '\'' +
-                       ", createTime=" + createTime +
-                       ", updateTime=" + updateTime +
-                       ", version=" + version +
-                       ", statusOnDelete=" + statusOnDelete +
-                       ", status=" + getStatus() +
-                       ", mappingProperties=" + getMappingProperties() +
-                       '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("InstanceAuditHeader{");
+        toStringBuilder(sb);
+        sb.append("}");
+        return sb.toString();
+    }
+
+
+    /**
+     * Extensible toString method.
+     *
+     * @param sb buffer through which to build up the string
+     */
+    protected void toStringBuilder(StringBuilder sb)
+    {
+        sb.append("type=").append(type);
+        sb.append(", instanceProvenanceType=").append(instanceProvenanceType);
+        sb.append(", metadataCollectionId='").append(metadataCollectionId).append('\'');
+        sb.append(", metadataCollectionName='").append(metadataCollectionName).append('\'');
+        sb.append(", replicatedBy='").append(replicatedBy).append('\'');
+        sb.append(", instanceLicense='").append(instanceLicense).append('\'');
+        sb.append(", createdBy='").append(createdBy).append('\'');
+        sb.append(", updatedBy='").append(updatedBy).append('\'');
+        sb.append(", maintainedBy='").append(maintainedBy).append('\'');
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
+        sb.append(", version=").append(version);
+        sb.append(", statusOnDelete=").append(statusOnDelete);
+        sb.append(", status=").append(getStatus());
+        sb.append(", mappingProperties=").append(getMappingProperties());
     }
 
 

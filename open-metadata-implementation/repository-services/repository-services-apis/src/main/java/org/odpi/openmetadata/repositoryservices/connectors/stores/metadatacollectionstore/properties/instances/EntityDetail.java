@@ -92,24 +92,25 @@ public class EntityDetail extends EntitySummary
     @Override
     public String toString()
     {
-        return "EntityDetail{" +
-                "type=" + getType() +
-                ", entityProperties=" + entityProperties +
-                ", classifications=" + getClassifications() +
-                ", instanceURL='" + getInstanceURL() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", instanceProvenanceType=" + getInstanceProvenanceType() +
-                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
-                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
-                ", instanceLicense='" + getInstanceLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", version=" + getVersion() +
-                ", statusOnDelete=" + getStatusOnDelete() +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("EntityDetail{");
+        toStringBuilder(sb);
+        sb.append("}");
+        return sb.toString();
+    }
+
+
+    /**
+     * Extensible toString method.
+     *
+     * @param sb buffer through which to build up the string
+     */
+    @Override
+    protected void toStringBuilder(StringBuilder sb)
+    {
+        sb.append("entityProperties=").append(entityProperties);
+        sb.append(", ");
+        super.toStringBuilder(sb);
     }
 
 

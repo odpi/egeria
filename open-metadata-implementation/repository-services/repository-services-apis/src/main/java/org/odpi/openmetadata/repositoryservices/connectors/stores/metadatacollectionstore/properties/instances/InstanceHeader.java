@@ -139,23 +139,27 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     @Override
     public String toString()
     {
-        return "InstanceHeader{" +
-                "guid='" + guid + '\'' +
-                ", reIdentifiedFromGUID='" + reIdentifiedFromGUID + '\'' +
-                ", instanceURL='" + instanceURL + '\'' +
-                ", type=" + getType() +
-                ", instanceProvenanceType=" + getInstanceProvenanceType() +
-                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
-                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
-                ", instanceLicense='" + getInstanceLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", version=" + getVersion() +
-                ", statusOnDelete=" + getStatusOnDelete() +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("InstanceHeader{");
+        toStringBuilder(sb);
+        sb.append("}");
+        return sb.toString();
+    }
+
+
+    /**
+     * Extensible toString method.
+     *
+     * @param sb buffer through which to build up the string
+     */
+    @Override
+    protected void toStringBuilder(StringBuilder sb)
+    {
+        sb.append("guid='").append(guid).append('\'');
+        sb.append(", reIdentifiedFromGUID='").append(reIdentifiedFromGUID).append('\'');
+        sb.append(", instanceURL='").append(instanceURL).append('\'');
+        sb.append(", ");
+        super.toStringBuilder(sb);
     }
 
 

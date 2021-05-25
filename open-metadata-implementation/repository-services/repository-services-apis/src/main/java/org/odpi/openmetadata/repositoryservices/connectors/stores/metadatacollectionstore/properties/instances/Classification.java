@@ -220,24 +220,28 @@ public class Classification extends InstanceAuditHeader
     @Override
     public String toString()
     {
-        return "Classification{" +
-                "classificationName='" + classificationName + '\'' +
-                ", classificationProperties=" + classificationProperties +
-                ", classificationOrigin=" + classificationOrigin +
-                ", classificationOriginGUID='" + classificationOriginGUID + '\'' +
-                ", type=" + getType() +
-                ", instanceProvenanceType=" + getInstanceProvenanceType() +
-                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
-                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
-                ", instanceLicense='" + getInstanceLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", version=" + getVersion() +
-                ", statusOnDelete=" + getStatusOnDelete() +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Classification{");
+        toStringBuilder(sb);
+        sb.append("}");
+        return sb.toString();
+    }
+
+
+    /**
+     * Extensible toString method.
+     *
+     * @param sb buffer through which to build up the string
+     */
+    @Override
+    protected void toStringBuilder(StringBuilder sb)
+    {
+        sb.append("classificationName='").append(classificationName).append('\'');
+        sb.append(", classificationProperties=").append(classificationProperties);
+        sb.append(", classificationOrigin=").append(classificationOrigin);
+        sb.append(", classificationOriginGUID='").append(classificationOriginGUID).append('\'');
+        sb.append(", ");
+        super.toStringBuilder(sb);
     }
 
 

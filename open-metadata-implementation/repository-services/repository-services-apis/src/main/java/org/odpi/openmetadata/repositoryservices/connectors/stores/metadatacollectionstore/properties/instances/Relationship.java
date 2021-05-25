@@ -221,25 +221,27 @@ public class Relationship extends InstanceHeader
     @Override
     public String toString()
     {
-        return "Relationship{" +
-                "type=" + getType() +
-                ", relationshipProperties=" + relationshipProperties +
-                ", entityOneProxy=" + entityOneProxy +
-                ", entityTwoProxy=" + entityTwoProxy +
-                ", instanceURL='" + getInstanceURL() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", instanceProvenanceType=" + getInstanceProvenanceType() +
-                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
-                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
-                ", instanceLicense='" + getInstanceLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", version=" + getVersion() +
-                ", statusOnDelete=" + getStatusOnDelete() +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Relationship{");
+        toStringBuilder(sb);
+        sb.append("}");
+        return sb.toString();
+    }
+
+
+    /**
+     * Extensible toString method.
+     *
+     * @param sb buffer through which to build up the string
+     */
+    @Override
+    protected void toStringBuilder(StringBuilder sb)
+    {
+        sb.append(", relationshipProperties=").append(relationshipProperties);
+        sb.append(", entityOneProxy=").append(entityOneProxy);
+        sb.append(", entityTwoProxy=").append(entityTwoProxy);
+        sb.append(", ");
+        super.toStringBuilder(sb);
     }
 
 

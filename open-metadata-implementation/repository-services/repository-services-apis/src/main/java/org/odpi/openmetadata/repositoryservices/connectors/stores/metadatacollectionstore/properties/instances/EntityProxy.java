@@ -103,24 +103,25 @@ public class EntityProxy extends EntitySummary
     @Override
     public String toString()
     {
-        return "EntityProxy{" +
-                "type=" + getType() +
-                ", uniqueProperties=" + uniqueProperties +
-                ", classifications=" + getClassifications() +
-                ", instanceURL='" + getInstanceURL() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", instanceProvenanceType=" + getInstanceProvenanceType() +
-                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
-                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
-                ", instanceLicense='" + getInstanceLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", version=" + getVersion() +
-                ", statusOnDelete=" + getStatusOnDelete() +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("EntityProxy{");
+        toStringBuilder(sb);
+        sb.append("}");
+        return sb.toString();
+    }
+
+
+    /**
+     * Extensible toString method.
+     *
+     * @param sb buffer through which to build up the string
+     */
+    @Override
+    protected void toStringBuilder(StringBuilder sb)
+    {
+        sb.append("uniqueProperties=").append(uniqueProperties);
+        sb.append(", ");
+        super.toStringBuilder(sb);
     }
 
 
