@@ -7,6 +7,7 @@
         "nodeType": "subProcess",
         "displayName": "p2",
         "guid": "p2",
+        "qualifiedName" : "q1",
         "attributes": {}
       },
       {
@@ -15,6 +16,7 @@
         "nodeType": "subProcess",
         "displayName": "p0",
         "guid": "p0",
+        "qualifiedName" : "q2",
         "attributes": {}
       },
       {
@@ -23,6 +25,7 @@
         "nodeType": "subProcess",
         "displayName": "p30",
         "guid": "p30",
+        "qualifiedName" : "q3",
         "attributes": {}
       },
       {
@@ -31,6 +34,7 @@
         "nodeType": "glossaryTerm",
         "displayName": "gt10",
         "guid": "gt10",
+        "qualifiedName" : "q01",
         "attributes": {}
       }
     ],

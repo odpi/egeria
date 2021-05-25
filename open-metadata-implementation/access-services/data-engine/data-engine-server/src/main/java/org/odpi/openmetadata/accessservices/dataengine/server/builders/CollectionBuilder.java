@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CollectionMapper.NAME_PROPERTY_NAME;
 
 public class CollectionBuilder extends ReferenceableBuilder {
 
@@ -34,7 +34,7 @@ public class CollectionBuilder extends ReferenceableBuilder {
         if (collectionName != null) {
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    NAME_PROPERTY_NAME, collectionName, methodName);
+                    OpenMetadataAPIMapper.NAME_PROPERTY_NAME, collectionName, methodName);
         }
         return properties;
     }

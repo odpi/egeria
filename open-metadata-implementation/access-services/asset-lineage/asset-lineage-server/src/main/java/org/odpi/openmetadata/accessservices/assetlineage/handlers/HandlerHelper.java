@@ -204,19 +204,19 @@ public class HandlerHelper {
      * @param searchProperties       searchProperties used in the filtering
      * @param findEntitiesParameters filtering used to reduce the scope of the search
      *
-     * @return a list with entities matching the supplied parameters;
+     * @return Optional container for collection of EntityDetails (if any) matching the supplied parameters.
      *
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
      */
-    public List<EntityDetail> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
+    public Optional<List<EntityDetail>> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
                                                  FindEntitiesParameters findEntitiesParameters)
             throws UserNotAuthorizedException, PropertyServerException {
         final String methodName = "findEntitiesByType";
         String typeDefGUID = getTypeByName(userId, entityTypeName);
-        return repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
+        return Optional.ofNullable(repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
-                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName);
+                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName));
     }
 
     /**

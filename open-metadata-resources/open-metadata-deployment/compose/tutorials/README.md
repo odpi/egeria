@@ -5,31 +5,29 @@
 
 This image is intended to support on-site labs, tutorials. 
 
-Rather than having to install Egeria, prereqs & tools separately, these scripts make it easy
-to get a stack running quickly
+Rather than having to install Egeria, prerequisites and tools separately, these scripts make it easy
+to get a stack running quickly.
 
-This has much reduced function than Egeria's kubernetes support via Helm which is a better
-option for real-world coding & deployment. The same configuration we have here for the lab is 
-also available for k8s. 
+This has much reduced function than Egeria's [kubernetes support](../../charts) via Helm which is a better
+option for real-world coding and deployment. 
+It is therefore recommended you consider switching to kubernetes as it offers us more flexibility.
+See [https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab](https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab).
 
-It is recommended you consider switching to k8s as it offers us more flexibility.
+## Contents
 
-See https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab
-
-Components included are:
- * Multiple egeria images -- this uses the latest docker egeria image, as published to dockerhub
-   and as used by our helm charts
-   - Core egeria server - core:9443 internally, localhost:19443 externally
-   - Datalake server    - datalake:9443 internally, localhost:19444 externally 
-   - Development server - dev:9443 internally, localhost:19445 externally
-   - Factory server     - factory:9443 internally, localhost:19446 externally
-   - Egeria ui          - ui:8443 internally (https), localhost:18443 externally (https)
-   - Static content     - staticui:80 internally (https), localhost:10080 externally (https)
-   - nginx              - nginx:443 internally (https), localhost:10443 externally (https)
-   - presentation       - presentation:8091 internally (https), localhost:18091 externally (https) 
-* kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
- * zookeeper - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image
- * notebook - notebook:8888 internally, localhost:18888 externally (lab version, base image) - see https://jupyter-docker-stacks.readthedocs.io/en/latest/
+Components included in the docker compose scripts are:
+ * Multiple egeria images -- this uses the latest docker egeria image, as published to [Docker Hub](https://hub.docker.com/search?q=egeria&type=image)
+   - Core [OMAG server platform](../../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md) - core:9443 internally, localhost:19443 externally
+   - Data Lake OMAG server platform   - datalake:9443 internally, localhost:19444 externally 
+   - Development OMAG server platform - dev:9443 internally, localhost:19445 externally
+   - Factory OMAG server platform    - factory:9443 internally, localhost:19446 externally
+   - [UI Platform](../../../../open-metadata-implementation/user-interfaces)   - ui:8443 internally (https), localhost:18443 externally (https)
+   - UI Static content     - staticui:80 internally (https), localhost:10080 externally (https)
+   - React UI's [Presentation server](../../../../open-metadata-implementation/admin-services/docs/concepts/presentation-server.md)       - presentation:8091 internally (https), localhost:18091 externally (https) 
+ * [nginx](https://nginx.org/en/)  - nginx:443 internally (https), localhost:10443 externally (https)
+ * [Apache Kafka](../../../../developer-resources/tools/Apache-Kafka.md) - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
+ * [Apache Zookeeper](../../../../developer-resources/tools/Apache-Kafka.md) - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image
+ * Jupyter notebooks - notebook:8888 internally, localhost:18888 externally (lab version, base image) - see https://jupyter-docker-stacks.readthedocs.io/en/latest/
 
 ## Usage
 

@@ -112,6 +112,12 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     CategoryAnchor categoryAnchor = new CategoryAnchor();
                     categoryAnchor.getEnd1().setNodeGuid(glossaryGuid);
                     categoryAnchor.getEnd2().setNodeGuid(createdCategoryGuid);
+                    // we expect that the created category has a from time of now or the supplied value.
+                    // set the relationship from value to the same
+                    categoryAnchor.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
+                    if (instanceProperties.getEffectiveToTime() != null) {
+                        categoryAnchor.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
+                    }
                     CategoryAnchorMapper anchorMapper = mappersFactory.get(CategoryAnchorMapper.class);
                     org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship = anchorMapper.map(categoryAnchor);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
@@ -122,6 +128,12 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                     CategoryHierarchyLink categoryHierarchyLink = new CategoryHierarchyLink();
                     categoryHierarchyLink.getEnd1().setNodeGuid(parentCategoryGuid);
                     categoryHierarchyLink.getEnd2().setNodeGuid(createdCategoryGuid);
+                    // we expect that the created category has a from time of now or the supplied value.
+                    // set the relationship from value to the same
+                    categoryHierarchyLink.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
+                    if (instanceProperties.getEffectiveToTime() != null) {
+                        categoryHierarchyLink.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
+                    }
                     CategoryHierarchyLinkMapper hierarchyMapper = mappersFactory.get(CategoryHierarchyLinkMapper.class);
                     org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship relationship = hierarchyMapper.map(categoryHierarchyLink);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
@@ -305,8 +317,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentCategory, suppliedCategory);
 
-                Date categoryFromTime = suppliedCategory.getEffectiveFromTime();
-                Date categoryToTime = suppliedCategory.getEffectiveToTime();
+                Long categoryFromTime = suppliedCategory.getEffectiveFromTime();
+                Long categoryToTime = suppliedCategory.getEffectiveToTime();
                 currentCategory.setEffectiveFromTime(categoryFromTime);
                 currentCategory.setEffectiveToTime(categoryToTime);
 

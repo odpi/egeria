@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private static final String PROCESSING_RELATIONSHIP_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning relationship {} ";
     private static final String PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning entity {} ";
 
-    private final AssetLineagePublisher publisher;
+    private final AssetLineagePublisher
+            publisher;
     private final AuditLog auditLog;
     private final Converter converter;
     private final Set<String> lineageClassificationTypes;
@@ -59,19 +61,20 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
-     *
-     * @param repositoryHelper  helper object for building and querying TypeDefs and metadata instances
+     *  @param repositoryHelper  helper object for building and querying TypeDefs and metadata instances
      * @param outTopicConnector The connector used for the Asset Lineage OMAS Out Topic
      * @param serverName        name of this server instance
      * @param serverUserName    name of the user of the server instance
+     * @param accessServiceOptions
      */
     public AssetLineageOMRSTopicListener(OMRSRepositoryHelper repositoryHelper,
                                          OpenMetadataTopicConnector outTopicConnector,
                                          String serverName, String serverUserName,
                                          Set<String> lineageClassificationTypes,
-                                         AuditLog auditLog)
+                                         AuditLog auditLog,
+                                         Map<String, Object> accessServiceOptions)
             throws OCFCheckedExceptionBase {
-        this.publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName);
+        this.publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName, accessServiceOptions);
         this.lineageClassificationTypes = lineageClassificationTypes;
         this.auditLog = auditLog;
         this.serverName = serverName;

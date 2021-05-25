@@ -40,6 +40,7 @@
   }, {
     "displayName" : "Sales",
     "identifier" : "SALES",
+    "type" : "query",
     "sourceId" : [ "M1.SALES" ],
     "item" : [ {
       "displayName" : "Sales Country Code",
