@@ -825,7 +825,7 @@ public class LocationRESTServices
                                                                     parameterName,
                                                                     OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
                                                                     OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                    null,
                                                                     startFrom,
                                                                     pageSize,
                                                                     methodName);
@@ -892,7 +892,7 @@ public class LocationRESTServices
                                                                           true,
                                                                           null,
                                                                           null,
-                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          null,
                                                                           startFrom,
                                                                           pageSize,
                                                                           methodName);

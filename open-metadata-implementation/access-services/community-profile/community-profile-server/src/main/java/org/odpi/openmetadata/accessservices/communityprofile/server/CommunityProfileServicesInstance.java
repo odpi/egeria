@@ -256,7 +256,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public ContributionRecordHandler getContributionRecordHandler() throws PropertyServerException
+    public ContributionRecordHandler<ContributionRecordElement> getContributionRecordHandler() throws PropertyServerException
     {
         final String methodName = "getContributionRecordHandler";
 

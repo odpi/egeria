@@ -70,7 +70,7 @@ public class DiscoveryEngineRESTServices
             response.setGUIDs(handler.getBeanGUIDsByType(userId,
                                                          OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                         null,
                                                          startFrom,
                                                          pageSize,
                                                          methodName));
@@ -234,7 +234,7 @@ public class DiscoveryEngineRESTServices
                                                     searchStringParameterName,
                                                     OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                    null,
                                                     startFrom,
                                                     pageSize,
                                                     methodName));
