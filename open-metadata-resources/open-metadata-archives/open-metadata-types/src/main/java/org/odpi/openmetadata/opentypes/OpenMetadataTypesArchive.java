@@ -155,7 +155,105 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        update0130Projects();
+        update0360Contexts();
         update04xxGovernanceDefinitions();
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * A variety of changes to improve consistency and flexibility of the governance definitions
+     */
+    private void update0130Projects()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateCampaignClassification());
+    }
+
+
+
+    /**
+     * This change means that the campaign classification connects to a referenceable.  It should have connected to a project -but
+     * a mistake connected it to a Collection.  This change allows it to be connected to a Project without braking backward compatibility.
+     *
+     * @return patched type
+     */
+    private TypeDefPatch updateCampaignClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Campaign";
+        final String typeLinkName = "Referenceable";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefLink> validEntityDefs = new ArrayList<>();
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(typeLinkName)));
+
+        typeDefPatch.setValidEntityDefs(validEntityDefs);
+
+        return typeDefPatch;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Enable contexts to be more than just a Glossary term
+     */
+    private void update0360Contexts()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateUsedInContextRelationship());
+    }
+
+
+
+    /**
+     * This changes End 2
+     *
+     * @return patched type
+     */
+    private TypeDefPatch updateUsedInContextRelationship()
+    {
+        final String typeName = "UsedInContext";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "usedInContexts";
+        final String                     end2AttributeDescription     = "Elements describing the contexts where this term is used.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
     }
 
 
