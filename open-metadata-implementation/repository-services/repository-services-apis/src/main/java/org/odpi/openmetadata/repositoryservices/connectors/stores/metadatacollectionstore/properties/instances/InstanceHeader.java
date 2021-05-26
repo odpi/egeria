@@ -137,27 +137,30 @@ public abstract class InstanceHeader extends InstanceAuditHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "InstanceHeader{" +
-                "guid='" + guid + '\'' +
-                ", reIdentifiedFromGUID='" + reIdentifiedFromGUID + '\'' +
-                ", instanceURL='" + instanceURL + '\'' +
+                "headerVersion=" + getHeaderVersion() +
                 ", type=" + getType() +
                 ", instanceProvenanceType=" + getInstanceProvenanceType() +
                 ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
                 ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", replicatedBy='" + getReplicatedBy() + '\'' +
                 ", instanceLicense='" + getInstanceLicense() + '\'' +
                 ", status=" + getStatus() +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", maintainedBy=" + getMaintainedBy() +
                 ", createTime=" + getCreateTime() +
                 ", updateTime=" + getUpdateTime() +
                 ", version=" + getVersion() +
                 ", statusOnDelete=" + getStatusOnDelete() +
+                ", mappingProperties=" + getMappingProperties() +
+                ", guid='" + guid + '\'' +
+                ", instanceURL='" + instanceURL + '\'' +
+                ", reIdentifiedFromGUID='" + reIdentifiedFromGUID + '\'' +
+                ", GUID='" + getGUID() + '\'' +
                 '}';
     }
-
 
     /**
      * Validate that an object is equal depending on their stored values.

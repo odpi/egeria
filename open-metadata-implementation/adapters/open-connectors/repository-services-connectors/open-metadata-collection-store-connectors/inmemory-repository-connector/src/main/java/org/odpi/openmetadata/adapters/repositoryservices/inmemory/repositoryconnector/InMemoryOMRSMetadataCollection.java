@@ -1697,9 +1697,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
     /**
      * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
-     * on queries.  All relationships to the entity are also soft-deleted and will no longer be usable.
+     * on queries.  All homed relationships to the entity are also soft-deleted and will no longer be usable, while any
+     * reference copy relationships to the entity will be purged (and will no longer be accessible in this repository).
      * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
-     * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
+     * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use; however,
+     * this will not restore any of the relationships that were soft-deleted as part of the original deleteEntity() call.
      *
      * @param userId unique identifier for requesting user.
      * @param typeDefGUID unique identifier of the type of the entity to delete.
@@ -1771,10 +1773,17 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                         InstanceType type = relationship.getType();
                         if (type != null)
                         {
-                            this.deleteRelationship(userId,
-                                                    type.getTypeDefGUID(),
-                                                    type.getTypeDefName(),
-                                                    relationship.getGUID());
+                            if (metadataCollectionId.equals(relationship.getMetadataCollectionId()))
+                            {
+                                this.deleteRelationship(userId,
+                                        type.getTypeDefGUID(),
+                                        type.getTypeDefName(),
+                                        relationship.getGUID());
+                            }
+                            else
+                            {
+                                repositoryStore.removeRelationshipFromStore(relationship);
+                            }
                         }
                     }
                 }
@@ -1810,7 +1819,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
-     * Permanently removes a deleted entity from the metadata collection.  This request can not be undone.
+     * Permanently removes a deleted entity from the metadata collection. All relationships to the entity -- both homed
+     * and reference copies -- will also be purged to maintain referential integrity within the repository. This request
+     * can not be undone.
      *
      * @param userId unique identifier for requesting user.
      * @param typeDefGUID unique identifier of the type of the entity to purge.
