@@ -654,7 +654,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         {
             builder.setAssetZones(userId, zoneMembership, methodName);
         }
-        else
+        else if (defaultZones != null)
         {
             builder.setAssetZones(userId, defaultZones, methodName);
         }

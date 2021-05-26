@@ -379,9 +379,7 @@ public class AssetBuilder extends ReferenceableBuilder
                          Map<String, String>   otherOriginValues,
                          String                methodName) throws InvalidParameterException
     {
-        if ((organization != null) || (organizationPropertyName != null) ||
-                    (businessCapability != null) || (businessCapabilityPropertyName != null) ||
-                    ((otherOriginValues != null) && (! otherOriginValues.isEmpty())))
+        if ((organization != null) || (businessCapability != null) || ((otherOriginValues != null) && (! otherOriginValues.isEmpty())))
         {
             try
             {
