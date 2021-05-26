@@ -20,8 +20,8 @@ There is a [tutorial for IntelliJ](../../open-metadata-resources/open-metadata-t
 [Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo).
 
 Lombok Plugin
- 
-IntelliJ development environment supports Lombok by default with the current versions (or as an addition plugin with previous versions). You can get more instructions on this [page](https://projectlombok.org/setup/intellij).
+
+Egeria makes use of Project Lombok. If using JetBrains IntelliJ IDEA ensure the IDEA has the required plugin configured. See https://projectlombok.org/setup/intellij for more information.
 
 ----
 * Return to [Developer Tools](.)

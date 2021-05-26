@@ -162,10 +162,6 @@ code is committed into git.
 
 * For java unit tests use /src/test/java folder of the module (standard maven location), and postfix java file names with "Test".
 
-## Project Lombok
-
-Since recently in Egeria we started using [**Project Lombok**](https://projectlombok.org/) and already adopted the framework for some of the code modules.
-
 ### Working with Date and Time
 
 In Egeria, date / time instants are always represented as Unix Epoch time with millisecond precision (milliseconds elapsed since January 1, 1970).
