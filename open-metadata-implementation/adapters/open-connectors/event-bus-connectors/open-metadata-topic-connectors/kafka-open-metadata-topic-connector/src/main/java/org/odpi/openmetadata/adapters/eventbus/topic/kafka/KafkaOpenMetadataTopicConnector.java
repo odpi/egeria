@@ -335,14 +335,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         final String           actionDescription = "disconnect";
 
 
-        consumer.safeCloseConsumer();
-        producer.safeCloseProducer();
 
         /*
         * Ensure Kafka client threads have stopped
         * before returning.
          */
         try {
+            consumer.safeCloseConsumer();
             consumerThread.join();
         }
         catch ( InterruptedException e )
@@ -363,6 +362,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
 
         try {
+            producer.safeCloseProducer();
             producerThread.join();
         } catch (InterruptedException e) {
             //expected and don't care
