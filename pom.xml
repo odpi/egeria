@@ -3257,7 +3257,7 @@
         </pluginManagement>
 
         <!-- Should be default, but needed to keep IntelliJ happy -->
-        <sourceDirectory>${project.build.directory}/delombok</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>
             <resource>
@@ -3272,26 +3272,6 @@
 
         <!-- Default compiler options - enable additional lint checks -->
         <plugins>
-            <plugin>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>delombok</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>delombok</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirectory>src/main/java</sourceDirectory>
-                            <outputDirectory>${project.build.directory}/delombok</outputDirectory>
-                            <addOutputDirectory>false</addOutputDirectory>
-                            <encoding>UTF-8</encoding>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -3561,26 +3541,6 @@
                         <goals>
                             <goal>run</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>delombok-removal</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <configuration>
-                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                            <filesets>
-                                <fileset>
-                                    <directory>${project.build.sourceDirectory}</directory> <!-- assuming your root package is something like com.mycompany -->
-                                </fileset>
-                            </filesets>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -3931,6 +3891,7 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
+                                    <!--suppress MavenModelInspection -->
                                     <passphrase>${env.GPG_PASSPHRASE}</passphrase>
                                     <gpgArguments>
                                         <arg>--batch</arg>
