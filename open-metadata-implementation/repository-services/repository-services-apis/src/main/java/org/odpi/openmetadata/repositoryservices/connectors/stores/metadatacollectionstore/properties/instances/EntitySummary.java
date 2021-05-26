@@ -105,29 +105,30 @@ public class EntitySummary extends InstanceHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("EntitySummary{");
-        toStringBuilder(sb);
-        sb.append("}");
-        return sb.toString();
+    public String toString() {
+        return "EntitySummary{" +
+                "classifications=" + classifications +
+                ", headerVersion=" + getHeaderVersion() +
+                ", type=" + getType() +
+                ", instanceProvenanceType=" + getInstanceProvenanceType() +
+                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", replicatedBy='" + getReplicatedBy() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
+                ", status=" + getStatus() +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", maintainedBy=" + getMaintainedBy() +
+                ", createTime=" + getCreateTime() +
+                ", updateTime=" + getUpdateTime() +
+                ", version=" + getVersion() +
+                ", statusOnDelete=" + getStatusOnDelete() +
+                ", mappingProperties=" + getMappingProperties() +
+                ", instanceURL='" + getInstanceURL() + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                ", reIdentifiedFromGUID='" + getReIdentifiedFromGUID() + '\'' +
+                '}';
     }
-
-
-    /**
-     * Extensible toString method.
-     *
-     * @param sb buffer through which to build up the string
-     */
-    @Override
-    protected void toStringBuilder(StringBuilder sb)
-    {
-        sb.append("classifications=").append(classifications);
-        sb.append(", ");
-        super.toStringBuilder(sb);
-    }
-
 
     /**
      * Validate that an object is equal depending on their stored values.

@@ -101,29 +101,31 @@ public class EntityProxy extends EntitySummary
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("EntityProxy{");
-        toStringBuilder(sb);
-        sb.append("}");
-        return sb.toString();
+    public String toString() {
+        return "EntityProxy{" +
+                "uniqueProperties=" + uniqueProperties +
+                ", classifications=" + getClassifications() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", type=" + getType() +
+                ", instanceProvenanceType=" + getInstanceProvenanceType() +
+                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", replicatedBy='" + getReplicatedBy() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
+                ", status=" + getStatus() +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", maintainedBy=" + getMaintainedBy() +
+                ", createTime=" + getCreateTime() +
+                ", updateTime=" + getUpdateTime() +
+                ", version=" + getVersion() +
+                ", statusOnDelete=" + getStatusOnDelete() +
+                ", mappingProperties=" + getMappingProperties() +
+                ", instanceURL='" + getInstanceURL() + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                ", reIdentifiedFromGUID='" + getReIdentifiedFromGUID() + '\'' +
+                '}';
     }
-
-
-    /**
-     * Extensible toString method.
-     *
-     * @param sb buffer through which to build up the string
-     */
-    @Override
-    protected void toStringBuilder(StringBuilder sb)
-    {
-        sb.append("uniqueProperties=").append(uniqueProperties);
-        sb.append(", ");
-        super.toStringBuilder(sb);
-    }
-
 
     /**
      * Validate that an object is equal depending on their stored values.

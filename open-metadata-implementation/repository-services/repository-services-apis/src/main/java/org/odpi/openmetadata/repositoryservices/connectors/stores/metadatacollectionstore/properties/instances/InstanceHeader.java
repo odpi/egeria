@@ -137,31 +137,30 @@ public abstract class InstanceHeader extends InstanceAuditHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("InstanceHeader{");
-        toStringBuilder(sb);
-        sb.append("}");
-        return sb.toString();
+    public String toString() {
+        return "InstanceHeader{" +
+                "headerVersion=" + getHeaderVersion() +
+                ", type=" + getType() +
+                ", instanceProvenanceType=" + getInstanceProvenanceType() +
+                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", replicatedBy='" + getReplicatedBy() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
+                ", status=" + getStatus() +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", maintainedBy=" + getMaintainedBy() +
+                ", createTime=" + getCreateTime() +
+                ", updateTime=" + getUpdateTime() +
+                ", version=" + getVersion() +
+                ", statusOnDelete=" + getStatusOnDelete() +
+                ", mappingProperties=" + getMappingProperties() +
+                ", guid='" + guid + '\'' +
+                ", instanceURL='" + instanceURL + '\'' +
+                ", reIdentifiedFromGUID='" + reIdentifiedFromGUID + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                '}';
     }
-
-
-    /**
-     * Extensible toString method.
-     *
-     * @param sb buffer through which to build up the string
-     */
-    @Override
-    protected void toStringBuilder(StringBuilder sb)
-    {
-        sb.append("guid='").append(guid).append('\'');
-        sb.append(", reIdentifiedFromGUID='").append(reIdentifiedFromGUID).append('\'');
-        sb.append(", instanceURL='").append(instanceURL).append('\'');
-        sb.append(", ");
-        super.toStringBuilder(sb);
-    }
-
 
     /**
      * Validate that an object is equal depending on their stored values.

@@ -219,31 +219,33 @@ public class Relationship extends InstanceHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Relationship{");
-        toStringBuilder(sb);
-        sb.append("}");
-        return sb.toString();
+    public String toString() {
+        return "Relationship{" +
+                "headerVersion=" + getHeaderVersion() +
+                ", type=" + getType() +
+                ", instanceProvenanceType=" + getInstanceProvenanceType() +
+                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", replicatedBy='" + getReplicatedBy() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
+                ", status=" + getStatus() +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", maintainedBy=" + getMaintainedBy() +
+                ", createTime=" + getCreateTime() +
+                ", updateTime=" + getUpdateTime() +
+                ", version=" + getVersion() +
+                ", statusOnDelete=" + getStatusOnDelete() +
+                ", mappingProperties=" + getMappingProperties() +
+                ", instanceURL='" + getInstanceURL() + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                ", reIdentifiedFromGUID='" + getReIdentifiedFromGUID() + '\'' +
+                ", relationshipProperties=" + relationshipProperties +
+                ", entityOneProxy=" + entityOneProxy +
+                ", entityTwoProxy=" + entityTwoProxy +
+                ", properties=" + getProperties() +
+                '}';
     }
-
-
-    /**
-     * Extensible toString method.
-     *
-     * @param sb buffer through which to build up the string
-     */
-    @Override
-    protected void toStringBuilder(StringBuilder sb)
-    {
-        sb.append(", relationshipProperties=").append(relationshipProperties);
-        sb.append(", entityOneProxy=").append(entityOneProxy);
-        sb.append(", entityTwoProxy=").append(entityTwoProxy);
-        sb.append(", ");
-        super.toStringBuilder(sb);
-    }
-
 
     /**
      * Validate that an object is equal depending on their stored values.

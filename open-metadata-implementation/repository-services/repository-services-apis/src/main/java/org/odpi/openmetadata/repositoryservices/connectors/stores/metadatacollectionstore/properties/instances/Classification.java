@@ -218,32 +218,32 @@ public class Classification extends InstanceAuditHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Classification{");
-        toStringBuilder(sb);
-        sb.append("}");
-        return sb.toString();
+    public String toString() {
+        return "Classification{" +
+                "classificationName='" + classificationName + '\'' +
+                ", classificationProperties=" + classificationProperties +
+                ", classificationOrigin=" + classificationOrigin +
+                ", classificationOriginGUID='" + classificationOriginGUID + '\'' +
+                ", name='" + getName() + '\'' +
+                ", properties=" + getProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", type=" + getType() +
+                ", instanceProvenanceType=" + getInstanceProvenanceType() +
+                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", replicatedBy='" + getReplicatedBy() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
+                ", status=" + getStatus() +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", maintainedBy=" + getMaintainedBy() +
+                ", createTime=" + getCreateTime() +
+                ", updateTime=" + getUpdateTime() +
+                ", version=" + getVersion() +
+                ", statusOnDelete=" + getStatusOnDelete() +
+                ", mappingProperties=" + getMappingProperties() +
+                '}';
     }
-
-
-    /**
-     * Extensible toString method.
-     *
-     * @param sb buffer through which to build up the string
-     */
-    @Override
-    protected void toStringBuilder(StringBuilder sb)
-    {
-        sb.append("classificationName='").append(classificationName).append('\'');
-        sb.append(", classificationProperties=").append(classificationProperties);
-        sb.append(", classificationOrigin=").append(classificationOrigin);
-        sb.append(", classificationOriginGUID='").append(classificationOriginGUID).append('\'');
-        sb.append(", ");
-        super.toStringBuilder(sb);
-    }
-
 
     /**
      * Validate that an object is equal depending on their stored values.
