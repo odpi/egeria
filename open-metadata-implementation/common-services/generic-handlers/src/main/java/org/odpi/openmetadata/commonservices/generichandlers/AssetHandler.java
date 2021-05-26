@@ -1402,12 +1402,69 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Remove any data sets connected to the asset by the DataContentFroDataSet relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier for asset
+     * @param assetTypeName type of asset
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeLinkedDataSet(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String assetGUID,
+                                    String assetTypeName,
+                                    String methodName) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       userId,
+                                                                                       assetGUID,
+                                                                                       assetTypeName,
+                                                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                                                       0,
+                                                                                       0,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "relationship.getEntityTwoProxy().getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataAPIMapper.DATA_SET_TYPE_GUID,
+                                            OpenMetadataAPIMapper.DATA_SET_TYPE_NAME,
+                                            null,
+                                            null,
+                                            methodName);
+            }
+        }
+    }
+
+
+    /**
      * Returns the asset corresponding to the supplied connection name.
      *
      * @param userId           userId of user making request.
      * @param connectionName   this may be the qualifiedName or displayName of the connection.
      * @param connectionNameParameter name of parameter supplying
      * @param methodName       calling method
+     *
      * @return unique identifier of asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.

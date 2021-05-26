@@ -5790,10 +5790,13 @@ public class OpenMetadataAPIGenericHandler<B>
 
             if ((potentialAnchoredEntity != null) && (potentialAnchoredEntity.getType() != null))
             {
+                String entityGUID = potentialAnchoredEntity.getGUID();
+                String entityTypeName = potentialAnchoredEntity.getType().getTypeDefName();
+
                 EntityDetail entity = repositoryHandler.getEntityByGUID(localServerUserId,
-                                                                        potentialAnchoredEntity.getGUID(),
+                                                                        entityGUID,
                                                                         guidParameterName,
-                                                                        potentialAnchoredEntity.getType().getTypeDefName(),
+                                                                        entityTypeName,
                                                                         methodName);
 
                 String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
@@ -5801,28 +5804,39 @@ public class OpenMetadataAPIGenericHandler<B>
                 if ((anchorGUID != null) && (anchorGUID.equals(anchorEntity.getGUID())))
                 {
                     /*
-                     * The entity is anchored to the anchor entity so it needs deleting.  This is done
+                     * The element is part of the same set of elements for the anchorGUID.
+                     * If the element is still connected to the anchor then it should remain
+                     * because it is a parent object.   If it now has no anchor then it can be
+                     * deleted because it is a child object.
                      */
-                    String       externalSourceGUID = null;
-                    String       externalSourceName = null;
+                    String derivedAnchorGUID = this.deriveAnchorGUID(entityGUID, entityTypeName, methodName);
 
-                    if (entity.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT)
+                    if (derivedAnchorGUID == null)
                     {
-                        externalSourceGUID = entity.getMetadataCollectionId();
-                        externalSourceName = entity.getMetadataCollectionName();
-                    }
+                        /*
+                         * The entity is anchored to the anchor entity so it needs deleting.  This is done
+                         */
+                        String externalSourceGUID = null;
+                        String externalSourceName = null;
 
-                    this.deleteBeanInRepository(localServerUserId,
-                                                externalSourceGUID,
-                                                externalSourceName,
-                                                entity.getGUID(),
-                                                guidParameterName,
-                                                potentialAnchoredEntity.getType().getTypeDefGUID(),
-                                                potentialAnchoredEntity.getType().getTypeDefName(),
-                                                null,
-                                                null,
-                                                anchorEntity,
-                                                methodName);
+                        if (entity.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT)
+                        {
+                            externalSourceGUID = entity.getMetadataCollectionId();
+                            externalSourceName = entity.getMetadataCollectionName();
+                        }
+
+                        this.deleteBeanInRepository(localServerUserId,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
+                                                    entity.getGUID(),
+                                                    guidParameterName,
+                                                    potentialAnchoredEntity.getType().getTypeDefGUID(),
+                                                    potentialAnchoredEntity.getType().getTypeDefName(),
+                                                    null,
+                                                    null,
+                                                    anchorEntity,
+                                                    methodName);
+                    }
                 }
             }
         }
@@ -5908,25 +5922,54 @@ public class OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
 
+        EntityDetail  entity = repositoryHandler.getEntityByGUID(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 methodName);
+
         EntityDetail anchorEntity = this.validateAnchorEntity(userId,
                                                               entityGUID,
-                                                              entityGUIDParameterName,
                                                               entityTypeName,
+                                                              entity,
+                                                              entityGUIDParameterName,
                                                               false,
                                                               serviceSupportedZones,
                                                               methodName);
 
-        this.deleteBeanInRepository(userId,
-                                    externalSourceGUID,
-                                    externalSourceName,
-                                    entityGUID,
-                                    entityGUIDParameterName,
-                                    entityTypeGUID,
-                                    entityTypeName,
-                                    validatingPropertyName,
-                                    validatingPropertyValue,
-                                    anchorEntity,
-                                    methodName);
+        /*
+         * The call above has validated that the entity to delete exists.
+         * The anchorEntity is only set up if the deleted entity has an anchor entity.
+         * This means it is not an anchor entity itself or without an anchor.
+         */
+        if (anchorEntity != null)
+        {
+            this.deleteBeanInRepository(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        entityGUID,
+                                        entityGUIDParameterName,
+                                        entityTypeGUID,
+                                        entityTypeName,
+                                        validatingPropertyName,
+                                        validatingPropertyValue,
+                                        anchorEntity,
+                                        methodName);
+        }
+        else
+        {
+            this.deleteBeanInRepository(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        entityGUID,
+                                        entityGUIDParameterName,
+                                        entityTypeGUID,
+                                        entityTypeName,
+                                        validatingPropertyName,
+                                        validatingPropertyValue,
+                                        entity,
+                                        methodName);
+        }
     }
 
 
