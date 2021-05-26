@@ -219,29 +219,33 @@ public class Relationship extends InstanceHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Relationship{" +
-                "type=" + getType() +
-                ", relationshipProperties=" + relationshipProperties +
-                ", entityOneProxy=" + entityOneProxy +
-                ", entityTwoProxy=" + entityTwoProxy +
-                ", instanceURL='" + getInstanceURL() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
+                "headerVersion=" + getHeaderVersion() +
+                ", type=" + getType() +
                 ", instanceProvenanceType=" + getInstanceProvenanceType() +
                 ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
                 ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", replicatedBy='" + getReplicatedBy() + '\'' +
                 ", instanceLicense='" + getInstanceLicense() + '\'' +
                 ", status=" + getStatus() +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", maintainedBy=" + getMaintainedBy() +
                 ", createTime=" + getCreateTime() +
                 ", updateTime=" + getUpdateTime() +
                 ", version=" + getVersion() +
                 ", statusOnDelete=" + getStatusOnDelete() +
+                ", mappingProperties=" + getMappingProperties() +
+                ", instanceURL='" + getInstanceURL() + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                ", reIdentifiedFromGUID='" + getReIdentifiedFromGUID() + '\'' +
+                ", relationshipProperties=" + relationshipProperties +
+                ", entityOneProxy=" + entityOneProxy +
+                ", entityTwoProxy=" + entityTwoProxy +
+                ", properties=" + getProperties() +
                 '}';
     }
-
 
     /**
      * Validate that an object is equal depending on their stored values.
