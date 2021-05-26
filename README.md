@@ -43,27 +43,29 @@ The governance of the project is described in more detail in the
 
 The Egeria team run three types of calls and all are welcome
 
-* **Developers call** - one hour - 
-  Discussion on code development - not minuted -
+* **Developers call** 
+   * one hour 
+   * Tuesday mornings (UK time) 
+   * Discussion on code development 
+   * not minuted 
+   * if you would like to join this call, please ask on Slack channel #egeria-discussion   
   
-  10 am (UK); 11 am (Amsterdam/CET); 12pm (Bucharest)
+* **Community call** 
+   * one hour
+   * every Wednesday
+   * Demos, meet-ups and other activities going on in the Egeria community
+   * For the current schedule, please refer to *Egeria Community Call (every Wednesday)* in the
+   [Egeria Calendar](https://lists.lfaidata.foundation/g/egeria-technical-discuss/calendar)    
+   * Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
+   * [Egeria community meeting minutes](https://wiki.lfaidata.foundation/display/EG/Community+Meetings)
   
-  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
-  
-* **Community call** - one hour - 
-  Demos, meet-ups and other activities going on in the Egeria community
-  
-  8am (EST); 1pm (UK/GMT); 2pm (Amsterdam/CET); 3pm (Bucharest)
-  
-  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
- 
-  Meeting Agenda and Minutes are here [https://wiki.lfaidata.foundation/display/EG/Community+Meetings](https://wiki.lfaidata.foundation/display/EG/Community+Meetings)
-  
-* **Technical Steering Committee (TSC)** - one hour -
-  Discussion on the management of the community
-  
-  Activities and call schedule
-  are here [https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home](https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home)
+* **Technical Steering Committee (TSC)** 
+  * one hour
+  * every second Wednesday
+  * Discussion on the management of the community
+  * For the current schedule, please refer to *Egeria TSC Meetings* in the
+  [Egeria Calendar](https://lists.lfaidata.foundation/g/egeria-technical-discuss/calendar)    
+  * [Egeria TSC home page](https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home)
 
 
 ## Monthly maintainers face-to-face meetings
