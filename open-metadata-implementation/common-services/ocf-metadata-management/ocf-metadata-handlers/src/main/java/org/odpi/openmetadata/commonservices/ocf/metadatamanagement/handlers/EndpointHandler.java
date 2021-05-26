@@ -344,6 +344,7 @@ public class EndpointHandler extends RootHandler
         List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
                                                                                    builder.getNetworkAddressInstanceProperties(methodName),
                                                                                    EndpointMapper.ENDPOINT_TYPE_GUID,
+                                                                                   EndpointMapper.NETWORK_ADDRESS_PROPERTY_NAME,
                                                                                    startFrom,
                                                                                    queryPageSize,
                                                                                    methodName);

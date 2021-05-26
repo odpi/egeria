@@ -67,6 +67,10 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "The system is unable to modify the requested instance because it does not have ownership rights to the instance.",
             "Route the request through a process that is set up to use the correct external source identifiers.  " +
                     "To understand more about this behavior, lookup Metadata Provenance in Egeria's Glossary."),
+    UNRECOGNIZED_PROPERTY(400, "OMAG-REPOSITORY-HANDLER-400-009",
+            "The property named {0} with value of {1} supplied on method {2} is not found in entity {3}",
+            "The system does no process the request because there is a possibility that the caller is requesting changes to the wrong object.",
+                           "Correct the value of the property passed on the request and retry."),
     USER_NOT_AUTHORIZED(403, "OMAG-REPOSITORY-HANDLER-403-001",
             "User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}",
             "The system is unable to process the request because the user should not be making this request.",

@@ -23,6 +23,7 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
      * @param userId  user making the request
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param entityTypeName  type name for the relationship to follow
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName  name of calling method
@@ -31,11 +32,12 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
                                       String            userId,
                                       String            entityTypeGUID,
                                       String            entityTypeName,
+                                      String            sequencingPropertyName,
                                       int               startingFrom,
                                       int               pageSize,
                                       String            methodName)
     {
-        super(repositoryHandler, userId, entityTypeGUID, entityTypeName, startingFrom, pageSize, methodName);
+        super(repositoryHandler, userId, entityTypeGUID, entityTypeName,sequencingPropertyName, startingFrom, pageSize, methodName);
     }
 
 

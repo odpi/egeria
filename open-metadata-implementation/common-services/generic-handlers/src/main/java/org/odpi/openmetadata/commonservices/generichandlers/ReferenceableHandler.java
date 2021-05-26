@@ -335,17 +335,21 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
 
-        return this.getBeanGUIDsByValue(userId,
-                                        name,
-                                        nameParameterName,
-                                        resultTypeGUID,
-                                        resultTypeName,
-                                        specificMatchPropertyNames,
-                                        true,
-                                        serviceSupportedZones,
-                                        startFrom,
-                                        pageSize,
-                                        methodName);
+        return this.getEntityGUIDsByValue(userId,
+                                          name,
+                                          nameParameterName,
+                                          resultTypeGUID,
+                                          resultTypeName,
+                                          specificMatchPropertyNames,
+                                          true,
+                                          null,
+                                          null,
+                                          false,
+                                          serviceSupportedZones,
+                                          null,
+                                          startFrom,
+                                          pageSize,
+                                          methodName);
     }
 
 
@@ -423,8 +427,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
-        String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
-        String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
+        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
 
         if (typeGUID != null)
         {
@@ -445,10 +449,90 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     resultTypeName,
                                     specificMatchPropertyNames,
                                     true,
+                                    null,
+                                    null,
+                                    false,
                                     serviceSupportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
+    }
+
+
+    /**
+     * Return the entity for a qualified name - if multiple entities have this name, an exception
+     * is thrown.
+     *
+     * @param userId calling user
+     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
+     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
+     * @param name name to search for
+     * @param nameParameterName property that provided the name
+     * @param methodName calling method
+     *
+     * @return list of B beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail getEntityByUniqueQualifiedName(String       userId,
+                                                       String       typeGUID,
+                                                       String       typeName,
+                                                       String       name,
+                                                       String       nameParameterName,
+                                                       String       methodName) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        String resultTypeGUID = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
+        String resultTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (typeGUID != null)
+        {
+            resultTypeGUID = typeGUID;
+        }
+        if (typeName != null)
+        {
+            resultTypeName = typeName;
+        }
+
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+
+        List<EntityDetail> matchingEntities = this.getEntitiesByValue(userId,
+                                                                      name,
+                                                                      nameParameterName,
+                                                                      resultTypeGUID,
+                                                                      resultTypeName,
+                                                                      specificMatchPropertyNames,
+                                                                      true,
+                                                                      null,
+                                                                      null,
+                                                                      false,
+                                                                      supportedZones,
+                                                                      null,
+                                                                      0,
+                                                                      0,
+                                                                      methodName);
+
+        if (matchingEntities == null)
+        {
+            return null;
+        }
+        else if (matchingEntities.size() == 1)
+        {
+            return matchingEntities.get(0);
+        }
+
+        errorHandler.handleAmbiguousEntityName(name,
+                                               nameParameterName,
+                                               resultTypeName,
+                                               matchingEntities,
+                                               methodName);
+        /* not reachable */
+        return null;
     }
 
 
@@ -542,14 +626,18 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
 
-        return this.getBeanGUIDsByValue(userId,
+        return this.getEntityGUIDsByValue(userId,
                                         name,
                                         nameParameterName,
                                         resultTypeGUID,
                                         resultTypeName,
                                         specificMatchPropertyNames,
                                         false,
+                                        null,
+                                        null,
+                                        false,
                                         serviceSupportedZones,
+                                        null,
                                         startFrom,
                                         pageSize,
                                         methodName);
@@ -652,11 +740,96 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     resultTypeName,
                                     specificMatchPropertyNames,
                                     false,
+                                    null,
+                                    null,
+                                    false,
                                     serviceSupportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
     }
+
+
+    /**
+     * Add or replace the ownership for a referenceable.
+     *
+     * @param userId calling user
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param owner name of the owner
+     * @param ownerTypeName type of element that owner comes from
+     * @param ownerPropertyName name of property used to identify owner
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addOwner(String userId,
+                         String beanGUID,
+                         String beanGUIDParameterName,
+                         String beanGUIDTypeName,
+                         String owner,
+                         String ownerTypeName,
+                         String ownerPropertyName,
+                         String methodName) throws InvalidParameterException,
+                                                   UserNotAuthorizedException,
+                                                   PropertyServerException
+    {
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                serverName);
+
+        this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                           builder.getOwnershipProperties(owner, ownerTypeName, ownerPropertyName, methodName),
+                                           false,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the ownership classification from a referenceable.
+     *
+     * @param userId calling user
+     * @param beanGUID unique identifier of entity to update
+     * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeOwner(String userId,
+                             String beanGUID,
+                             String beanGUIDParameterName,
+                             String beanGUIDTypeName,
+                             String methodName) throws InvalidParameterException,
+                                                       UserNotAuthorizedException,
+                                                       PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                null,
+                                                null,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                methodName);
+    }
+
 
 
     /**
@@ -691,12 +864,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 serverName);
 
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
                                            OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
                                            builder.getSecurityTagProperties(securityLabels, securityProperties, methodName),
+                                           false,
                                            methodName);
     }
 
@@ -734,6 +910,85 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
 
+    /**
+     * Classify a referenceable as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     *
+     * @param userId calling user
+     * @param beanGUID unique identifier of entity to update
+     * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param description description of why this is significant
+     * @param scope scope of its business significance
+     * @param businessCapabilityGUID unique identifier of the business capability that rates this as significant
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setBusinessSignificant(String userId,
+                                       String beanGUID,
+                                       String beanGUIDParameterName,
+                                       String beanGUIDTypeName,
+                                       String description,
+                                       String scope,
+                                       String businessCapabilityGUID,
+                                       String methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                serverName);
+
+        this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
+                                           builder.getBusinessSignificanceProperties(description, scope, businessCapabilityGUID, methodName),
+                                           false,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the "BusinessSignificant" designation from the element.
+     *
+     * @param userId calling user
+     * @param beanGUID unique identifier of entity to update
+     * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param methodName calling method
+    *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearBusinessSignificant(String userId,
+                                         String beanGUID,
+                                         String beanGUIDParameterName,
+                                         String beanGUIDTypeName,
+                                         String methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                null,
+                                                null,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
+                                                methodName);
+    }
+
 
     /**
      * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
@@ -769,12 +1024,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 serverName);
 
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
                                            OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME,
                                            builder.getTemplateProperties(name, description, additionalProperties, methodName),
+                                           false,
                                            methodName);
     }
 
@@ -959,7 +1217,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source - null for local
-     * @param beanGUID unique identifier of the asset that is being described
+     * @param beanGUID unique identifier of the element that is being described
      * @param beanGUIDParameter parameter supply the beanGUID
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param glossaryTermGUIDParameter parameter supplying the list of GlossaryTermGUID
@@ -1067,40 +1325,191 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param beanGUID unique identifier of the referenceable
+     * @param beanGUID unique identifier of the element that is being described
+     * @param beanGUIDParameter parameter supply the beanGUID
      * @param glossaryTermGUID unique identifier of the glossary term
+     * @param glossaryTermGUIDParameter parameter supplying the list of GlossaryTermGUID
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeSemanticAssignment(String    userId,
-                                          String    externalSourceGUID,
-                                          String    externalSourceName,
-                                          String    beanGUID,
-                                          String    glossaryTermGUID,
-                                          String    methodName) throws InvalidParameterException,
+    public void  removeSemanticAssignment(String userId,
+                                          String externalSourceGUID,
+                                          String externalSourceName,
+                                          String beanGUID,
+                                          String beanGUIDParameter,
+                                          String glossaryTermGUID,
+                                          String glossaryTermGUIDParameter,
+                                          String methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      beanGUID,
+                                      beanGUIDParameter,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      glossaryTermGUID,
+                                      glossaryTermGUIDParameter,
+                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                      supportedZones,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                      methodName);
+    }
+
+
+    /**
+     * Create a relationship between a referenceable and a resource it uses.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
+     * @param beanGUID unique identifier of the startign element
+     * @param beanGUIDParameter parameter supplying the beanGUID
+     * @param memberGUID unique identifier of the element to link
+     * @param memberGUIDParameter parameter supplying the memberGUID
+     * @param resourceUse description of the way that the resource list is used
+     * @param watchResource should changes in the members result in notifications
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the guid properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void  saveResourceListMember(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  beanGUID,
+                                        String  beanGUIDParameter,
+                                        String  memberGUID,
+                                        String  memberGUIDParameter,
+                                        String  resourceUse,
+                                        boolean watchResource,
+                                        String  methodName)  throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.RESOURCE_USE_PROPERTY_NAME,
+                                                                                     resourceUse,
+                                                                                     methodName);
+
+        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.WATCH_RESOURCE_PROPERTY_NAME,
+                                                                  watchResource,
+                                                                  methodName);
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  beanGUID,
+                                  beanGUIDParameter,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  memberGUID,
+                                  memberGUIDParameter,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                  properties,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove the relationship between a referenceable and a resource it uses.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param beanGUID unique identifier of the referenceable
+     * @param beanGUIDParameter parameter supplying beanGUID
+     * @param memberGUID unique identifier of the glossary term
+     * @param memberGUIDParameter parameter supplying memberGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeResourceListMember(String userId,
+                                          String externalSourceGUID,
+                                          String externalSourceName,
+                                          String beanGUID,
+                                          String beanGUIDParameter,
+                                          String memberGUID,
+                                          String memberGUIDParameter,
+                                          String methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
         if (beanGUID != null)
         {
-            /*
-             * The repository helper will validate the types of GUIDs etc
-             */
-            repositoryHandler.removeRelationshipBetweenEntities(userId,
-                                                                externalSourceGUID,
-                                                                externalSourceName,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                                                beanGUID,
-                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                glossaryTermGUID,
-                                                                methodName);
+            this.unlinkElementFromElement(userId,
+                                          false,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          beanGUID,
+                                          beanGUIDParameter,
+                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                          memberGUID,
+                                          memberGUIDParameter,
+                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                          supportedZones,
+                                          OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
+                                          OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                          methodName);
         }
     }
 
+
+
+
+    /**
+     * Return the list of elements associated with a definition.
+     *
+     * @param userId calling user
+     * @param collectionGUID unique identifier of the collection to query
+     * @param collectionGUIDParameterName name of the parameter supplying collectionGUID
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of metadata elements describing the definitions associated with the requested definition
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>   getCollectionMembers(String userId,
+                                          String collectionGUID,
+                                          String collectionGUIDParameterName,
+                                          int    startFrom,
+                                          int    pageSize,
+                                          String methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        return this.getAttachedElements(userId,
+                                        collectionGUID,
+                                        collectionGUIDParameterName,
+                                        OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        startFrom,
+                                        pageSize,
+                                        methodName);
+    }
 
 
     /**

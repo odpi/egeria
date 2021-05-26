@@ -31,18 +31,18 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public MetadataSourceClient(String   serverName,
-                                String   serverPlatformRootURL,
+                                String   serverPlatformURLRoot,
                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -50,16 +50,16 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public MetadataSourceClient(String serverName,
-                                String serverPlatformRootURL) throws InvalidParameterException
+                                String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformURLRoot);
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -68,7 +68,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
@@ -77,14 +77,14 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      * REST API calls.
      */
     public MetadataSourceClient(String   serverName,
-                                String   serverPlatformRootURL,
+                                String   serverPlatformURLRoot,
                                 String   userId,
                                 String   password,
                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, userId, password, auditLog);
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -93,20 +93,20 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public MetadataSourceClient(String serverName,
-                                String serverPlatformRootURL,
+                                String serverPlatformURLRoot,
                                 String userId,
                                 String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformURLRoot);
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -171,7 +171,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
 
-        final String urlTemplate = serverPlatformRootURL + urlTemplatePrefix + "/filesystems";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/filesystems";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -218,7 +218,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
 
-        final String urlTemplate = serverPlatformRootURL + urlTemplatePrefix + "/file-managers";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/file-managers";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -261,7 +261,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
         invalidParameterHandler.validateObject(databaseManagerProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(databaseManagerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + urlTemplatePrefix + "/database-managers";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/database-managers";
 
         DatabaseManagerRequestBody requestBody = new DatabaseManagerRequestBody(databaseManagerProperties);
 
@@ -302,7 +302,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + urlTemplatePrefix + "/by-name/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/by-name/{2}";
 
         GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
                                                                   urlTemplate,

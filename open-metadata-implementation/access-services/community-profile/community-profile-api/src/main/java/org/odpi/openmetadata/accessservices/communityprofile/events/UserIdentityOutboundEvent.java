@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ public class UserIdentityOutboundEvent extends CommunityProfileOutboundEvent
 {
     private static final long    serialVersionUID = 1L;
 
-    private UserIdentity userIdentity = null;
+    private UserIdentityElement userIdentity = null;
 
     /**
      * Default constructor
@@ -55,7 +55,7 @@ public class UserIdentityOutboundEvent extends CommunityProfileOutboundEvent
      *
      * @return UserIdentity bean
      */
-    public UserIdentity getUserIdentity()
+    public UserIdentityElement getUserIdentity()
     {
         return userIdentity;
     }
@@ -66,7 +66,7 @@ public class UserIdentityOutboundEvent extends CommunityProfileOutboundEvent
      *
      * @param userIdentity UserIdentify bean
      */
-    public void setUserIdentity(UserIdentity userIdentity)
+    public void setUserIdentity(UserIdentityElement userIdentity)
     {
         this.userIdentity = userIdentity;
     }

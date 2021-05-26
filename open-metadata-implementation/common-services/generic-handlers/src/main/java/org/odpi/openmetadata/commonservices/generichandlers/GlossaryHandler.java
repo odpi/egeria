@@ -25,7 +25,7 @@ import java.util.Map;
 public class GlossaryHandler<B> extends ReferenceableHandler<B>
 {
     /**
-     * Construct the asset handler with information needed to work with B objects.
+     * Construct the handler with information needed to work with B objects.
      *
      * @param converter specific converter for this bean class
      * @param beanClass name of bean class that is represented by the generic class B
@@ -121,18 +121,18 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                                    methodName,
                                                                    repositoryHelper);
 
-        GlossaryBuilder glossaryBuilder = new GlossaryBuilder(qualifiedName,
-                                                              displayName,
-                                                              description,
-                                                              language,
-                                                              usage,
-                                                              additionalProperties,
-                                                              typeGUID,
-                                                              typeName,
-                                                              extendedProperties,
-                                                              repositoryHelper,
-                                                              serviceName,
-                                                              serverName);
+        GlossaryBuilder builder = new GlossaryBuilder(qualifiedName,
+                                                      displayName,
+                                                      description,
+                                                      language,
+                                                      usage,
+                                                      additionalProperties,
+                                                      typeGUID,
+                                                      typeName,
+                                                      extendedProperties,
+                                                      repositoryHelper,
+                                                      serviceName,
+                                                      serverName);
 
         return this.createBeanInRepository(userId,
                                            null,
@@ -141,7 +141,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            typeName,
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                           glossaryBuilder,
+                                           builder,
                                            methodName);
     }
 
@@ -182,12 +182,12 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        GlossaryBuilder glossaryBuilder = new GlossaryBuilder(qualifiedName,
-                                                              displayName,
-                                                              description,
-                                                              repositoryHelper,
-                                                              serviceName,
-                                                              serverName);
+        GlossaryBuilder builder = new GlossaryBuilder(qualifiedName,
+                                                      displayName,
+                                                      description,
+                                                      repositoryHelper,
+                                                      serviceName,
+                                                      serverName);
 
         return this.createBeanFromTemplate(userId,
                                            null,
@@ -198,13 +198,13 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                           glossaryBuilder,
+                                           builder,
                                            methodName);
     }
 
 
     /**
-     * Create the anchor object that all elements in a glossary (terms and categories) are linked to.
+     * Update the anchor object that all elements in a glossary (terms and categories) are linked to.
      *
      * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary to update
@@ -215,7 +215,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
      * @param language the language used in the glossary definitions
      * @param usage intended usage of the glossary
      * @param additionalProperties additional properties for a governance glossary
-     * @param typeName type of glossary
+     * @param suppliedTypeName type of glossary
      * @param extendedProperties  properties for a governance glossary subtype
      * @param methodName calling method
      *
@@ -232,7 +232,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                  String              language,
                                  String              usage,
                                  Map<String, String> additionalProperties,
-                                 String              typeName,
+                                 String              suppliedTypeName,
                                  Map<String, Object> extendedProperties,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
@@ -244,24 +244,31 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
+        String typeName = OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
 
-        GlossaryBuilder glossaryBuilder = new GlossaryBuilder(qualifiedName,
-                                                              displayName,
-                                                              description,
-                                                              language,
-                                                              usage,
-                                                              additionalProperties,
-                                                              typeGUID,
-                                                              typeName,
-                                                              extendedProperties,
-                                                              repositoryHelper,
-                                                              serviceName,
-                                                              serverName);
+        GlossaryBuilder builder = new GlossaryBuilder(qualifiedName,
+                                                      displayName,
+                                                      description,
+                                                      language,
+                                                      usage,
+                                                      additionalProperties,
+                                                      typeGUID,
+                                                      typeName,
+                                                      extendedProperties,
+                                                      repositoryHelper,
+                                                      serviceName,
+                                                      serverName);
 
         this.updateBeanInRepository(userId,
                                     null,
@@ -270,7 +277,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     glossaryGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    glossaryBuilder.getInstanceProperties(methodName),
+                                    builder.getInstanceProperties(methodName),
                                     false,
                                     methodName);
     }
@@ -473,6 +480,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,
                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -517,6 +525,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     specificMatchPropertyNames,
                                     true,
                                     null,
+                                    null,
+                                    false,
+                                    supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,

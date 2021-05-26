@@ -9,7 +9,9 @@ The Project Management OMAS provides APIs and events for tools and applications
 that support project leaders - particularly those who are leading governance projects.
 
 The interface support the setting up, management and completion of projects
-along with the teams that are working on them.
+along with the teams that are working on them.  It is aimed at linking the projects and tasks
+associated with the rollout and management of capability used to
+govern the organization's digital landscape and the people who use it.
 
 The module structure for the Project Management OMAS is as follows:
 

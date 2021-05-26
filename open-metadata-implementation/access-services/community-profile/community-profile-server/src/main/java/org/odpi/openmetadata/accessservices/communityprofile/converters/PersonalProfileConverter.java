@@ -3,89 +3,110 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalProfileMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.util.List;
 
 /**
- * PersonalProfileConverter generates a PersonalProfile bean from a PersonalProfile entity.
+ * PersonalProfileConverter generates a PersonalProfileProperties bean from a PersonalProfileProperties entity.
  */
-public class PersonalProfileConverter extends CommonHeaderConverter
+public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(PersonalProfileConverter.class);
-
-    private List<UserIdentity>   associatedUserIds;
-    private List<ContactMethod>  contactDetails;
-
     /**
-     * Constructor captures the initial content
+     * Constructor
      *
-     * @param personEntity properties to convert
-     * @param associatedUserIds userIds to be linked to the profile
-     * @param contactDetails contact methods for the profile
-     * @param repositoryHelper helper object to parse entities
+     * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public PersonalProfileConverter(EntityDetail         personEntity,
-                                    List<UserIdentity>   associatedUserIds,
-                                    List<ContactMethod>  contactDetails,
-                                    OMRSRepositoryHelper repositoryHelper,
-                                    String               serviceName)
+    public PersonalProfileConverter(OMRSRepositoryHelper repositoryHelper,
+                                    String               serviceName,
+                                    String               serverName)
     {
-        super(personEntity, repositoryHelper, serviceName);
-
-        this.associatedUserIds = associatedUserIds;
-        this.contactDetails = contactDetails;
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public PersonalProfile getBean()
+    public B getNewComplexBean(Class<B>           beanClass,
+                               EntityDetail       primaryEntity,
+                               List<Relationship> relationships,
+                               String             methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        PersonalProfile  bean = new PersonalProfile();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof PersonalProfileUniverse)
             {
-                /*
-                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
-                 * community properties.
-                 */
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setName(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setFullName(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.FULL_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setJobTitle(repositoryHelper.removeStringProperty(serviceName, PersonalProfileMapper.JOB_TITLE_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, PersonalProfileMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-                bean.setClassifications(super.getClassificationsFromEntity());
+                PersonalProfileUniverse   bean              = (PersonalProfileUniverse) returnBean;
+                PersonalProfileProperties profileProperties = new PersonalProfileProperties();
+
+                if (primaryEntity != null)
+                {
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, methodName));
+
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
+
+                    profileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    profileProperties.setKnownName(this.removeName(instanceProperties));
+                    profileProperties.setDescription(this.removeDescription(instanceProperties));
+                    profileProperties.setFullName(this.removeFullName(instanceProperties));
+                    profileProperties.setJobTitle(this.removeJobTitle(instanceProperties));
+                    profileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    profileProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    profileProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    bean.setProfileProperties(profileProperties);
+
+                    if (relationships != null)
+                    {
+
+                    }
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
             }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
-        bean.setAssociatedUserIds(associatedUserIds);
-        bean.setContactDetails(contactDetails);
-
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
+        return null;
     }
 }

@@ -3,67 +3,104 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.ContributionRecordMapper;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContributionRecordElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
- * PersonalProfileConverter generates a PersonalProfile bean from a PersonalProfile entity.
+ * ContributionRecordConverter generates a ContributionRecordProperties bean from a ContributionRecord entity.
  */
-public class ContributionRecordConverter extends CommonHeaderConverter
+public class ContributionRecordConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(ContributionRecordConverter.class);
-
-
+    private int karmaPointPlateau;
     /**
-     * Constructor captures the initial content
+     * Constructor
      *
-     * @param contributionEntity properties to convert
-     * @param repositoryHelper helper object to parse entities
+     * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
+     * @param karmaPointPlateau how many karma points to a plateau
      */
-    public ContributionRecordConverter(EntityDetail         contributionEntity,
-                                       OMRSRepositoryHelper repositoryHelper,
-                                       String               serviceName)
+    public ContributionRecordConverter(OMRSRepositoryHelper repositoryHelper,
+                                       String               serviceName,
+                                       String               serverName,
+                                       int                  karmaPointPlateau)
     {
-        super(contributionEntity, repositoryHelper, serviceName);
+        super(repositoryHelper, serviceName, serverName);
+
+        this.karmaPointPlateau = karmaPointPlateau;
     }
 
-
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public ContributionRecord getBean()
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        ContributionRecord  bean = new ContributionRecord();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof ContributionRecordElement)
             {
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, ContributionRecordMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setKarmaPoints(repositoryHelper.removeIntProperty(serviceName, ContributionRecordMapper.KARMA_POINTS_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, ContributionRecordMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-                bean.setClassifications(super.getClassificationsFromEntity());
+                ContributionRecordElement    bean               = (ContributionRecordElement) returnBean;
+                ContributionRecord           contributionRecord = new ContributionRecord();
+
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                InstanceProperties instanceProperties;
+
+                /*
+                 * The initial set of values come from the entity.
+                 */
+                if (entity != null)
+                {
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    contributionRecord.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    contributionRecord.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    contributionRecord.setKarmaPoints(this.removeKarmaPoints(instanceProperties));
+                    contributionRecord.setKarmaPointPlateau(karmaPointPlateau);
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    contributionRecord.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    contributionRecord.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
+
+                bean.setProperties(contributionRecord);
             }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
+        return null;
     }
 }
