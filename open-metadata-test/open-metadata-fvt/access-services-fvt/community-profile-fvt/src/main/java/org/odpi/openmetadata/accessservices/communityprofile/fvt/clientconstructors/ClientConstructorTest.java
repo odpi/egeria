@@ -1,0 +1,182 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.accessservices.communityprofile.fvt.clientconstructors;
+
+import org.odpi.openmetadata.accessservices.communityprofile.client.MetadataSourceClient;
+import org.odpi.openmetadata.accessservices.communityprofile.client.MyProfileManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.PersonalProfileManagement;
+
+import org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
+import org.odpi.openmetadata.fvt.utilities.FVTResults;
+import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
+
+
+/**
+ * ClientConstructorTest provides the methods to verify that all of the clients can be constructed with
+ * or without security
+ */
+public class ClientConstructorTest
+{
+    private final static String testCaseName   = "ClientConstructorTest";
+
+    private final static String serverUserId   = "TestNPA";
+    private final static String serverPassword = "TestNPAPassword";
+    private final static int    maxPageSize    = 100;
+
+    /**
+     * Run all of the defined tests and capture the results.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @return  results of running test
+     */
+    public static FVTResults performFVT(String   serverName,
+                                        String   serverPlatformRootURL)
+    {
+        FVTResults results = new FVTResults(testCaseName);
+
+        results.incrementNumberOfTests();
+        try
+        {
+            ClientConstructorTest.runIt(serverPlatformRootURL, serverName, results.getAuditLogDestination());
+            results.incrementNumberOfSuccesses();
+        }
+        catch (Exception error)
+        {
+            results.addCapturedError(error);
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Run all of the tests in this class.
+     *
+     * @param serverPlatformRootURL root url of the server
+     * @param serverName name of the server
+     * @param auditLogDestination logging destination
+     * @throws InvalidParameterException one of the tests failed
+     */
+    private static void runIt(String                 serverPlatformRootURL,
+                              String                 serverName,
+                              FVTAuditLogDestination auditLogDestination) throws InvalidParameterException
+    {
+        ClientConstructorTest thisTest = new ClientConstructorTest();
+
+        AuditLog auditLog = new AuditLog(auditLogDestination,
+                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceName(),
+                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceDescription(),
+                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceWiki());
+
+        thisTest.testMetadataSourceClient(serverName, serverPlatformRootURL, auditLog);
+        thisTest.testUserIdentityManagement(serverName, serverPlatformRootURL, auditLog);
+        thisTest.testMyProfileManagement(serverName, serverPlatformRootURL, auditLog);
+        thisTest.testPersonalProfileManagement(serverName, serverPlatformRootURL, auditLog);
+    }
+
+
+
+    /**
+     * Create a client using each of its constructors.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    private void testMetadataSourceClient(String   serverName,
+                                          String   serverPlatformRootURL,
+                                          AuditLog auditLog) throws InvalidParameterException
+    {
+        new MetadataSourceClient(serverName, serverPlatformRootURL, auditLog);
+        new MetadataSourceClient(serverName, serverPlatformRootURL);
+        new MetadataSourceClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
+        new MetadataSourceClient(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+
+        CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
+
+        new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
+    }
+
+
+    /**
+     * Create a client using each of its constructors.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    private void testUserIdentityManagement(String   serverName,
+                                            String   serverPlatformRootURL,
+                                            AuditLog auditLog) throws InvalidParameterException
+    {
+        new UserIdentityManagement(serverName, serverPlatformRootURL, auditLog);
+        new UserIdentityManagement(serverName, serverPlatformRootURL);
+        new UserIdentityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
+        new UserIdentityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+
+        CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
+
+        new UserIdentityManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
+    }
+
+
+
+
+    /**
+     * Create a client using each of its constructors.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    private void testMyProfileManagement(String   serverName,
+                                         String   serverPlatformRootURL,
+                                         AuditLog auditLog) throws InvalidParameterException
+    {
+        new MyProfileManagement(serverName, serverPlatformRootURL, auditLog);
+        new MyProfileManagement(serverName, serverPlatformRootURL);
+        new MyProfileManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
+        new MyProfileManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+
+        CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
+
+        new MyProfileManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
+    }
+
+
+    /**
+     * Create a client using each of its constructors.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    private void testPersonalProfileManagement(String   serverName,
+                                               String   serverPlatformRootURL,
+                                               AuditLog auditLog) throws InvalidParameterException
+    {
+        new PersonalProfileManagement(serverName, serverPlatformRootURL, auditLog);
+        new PersonalProfileManagement(serverName, serverPlatformRootURL);
+        new PersonalProfileManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword,  auditLog);
+        new PersonalProfileManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+
+        CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
+
+        new PersonalProfileManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
+    }
+}

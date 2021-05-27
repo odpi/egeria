@@ -475,6 +475,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                               searchStringParameterName,
                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                               OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -521,6 +522,11 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     false,
+                                    null,
+                                    null,
+                                    false,
+                                    supportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

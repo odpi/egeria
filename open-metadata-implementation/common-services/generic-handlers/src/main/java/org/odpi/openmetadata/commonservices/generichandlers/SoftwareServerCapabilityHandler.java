@@ -243,6 +243,53 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Create specialized Software Server Capabilities entities.  Most software service capabilities
+     * either specialize Software Server Capability or have a special classification.  Metadata server
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param softwareServerCapabilityGUID unique identifier for the software server capability that is to be classified
+     * @param softwareServerCapabilityGUIDParameterName parameter supplying softwareServerCapabilityGUID
+     * @param classificationName name of classification if any
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addSoftwareServerCapabilityClassification(String userId,
+                                                          String externalSourceGUID,
+                                                          String externalSourceName,
+                                                          String softwareServerCapabilityGUID,
+                                                          String softwareServerCapabilityGUIDParameterName,
+                                                          String classificationName,
+                                                          String methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String classificationParameterName  = "classificationName";
+
+        String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName, null, serviceName, methodName, repositoryHelper);
+
+        invalidParameterHandler.validateGUID(classificationName, classificationParameterName, methodName);
+
+        this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           softwareServerCapabilityGUID,
+                                           softwareServerCapabilityGUIDParameterName,
+                                           OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                           classificationTypeGUID,
+                                           classificationName,
+                                           null,
+                                           false,
+                                           methodName);
+
+    }
+
+
+    /**
      * Retrieve a list of unique identifiers for defined software server capabilities.
      *
      * @param userId calling user
@@ -267,7 +314,14 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return this.getBeanGUIDsByType(userId, typeGUID, typeName, supportedZones, startingFrom, maxPageSize, methodName);
+        return this.getBeanGUIDsByType(userId,
+                                       typeGUID,
+                                       typeName,
+                                       supportedZones,
+                                       null,
+                                       startingFrom,
+                                       maxPageSize,
+                                       methodName);
     }
 
 
@@ -296,7 +350,14 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        return this.getBeansByType(userId, typeGUID, typeName, supportedZones, startingFrom, maxPageSize, methodName);
+        return this.getBeansByType(userId,
+                                   typeGUID,
+                                   typeName,
+                                   supportedZones,
+                                   null,
+                                   startingFrom,
+                                   maxPageSize,
+                                   methodName);
     }
 
 

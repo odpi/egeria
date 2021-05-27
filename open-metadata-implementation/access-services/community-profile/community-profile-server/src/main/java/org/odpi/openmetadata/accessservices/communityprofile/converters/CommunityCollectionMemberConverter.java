@@ -2,102 +2,107 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.CommunityCollectionMemberMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityCollectionMember;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.WatchStatus;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CommunityCollectionMember;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
- * CommunityCollectionMemberConverter generates an CommunityCollectionMember bean from an Community entity
- * and a ResourceList relationship to it.
+ * CommunityCollectionMemberConverter generates an CommunityCollectionMember bean from an CommunityProperties entity
+ * and a CollectionMembership relationship to it.
  */
-public class CommunityCollectionMemberConverter extends CommonHeaderConverter
+public class CommunityCollectionMemberConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(CommunityCollectionMemberConverter.class);
-
     /**
-     * Constructor captures the initial content with relationship
+     * Constructor
      *
-     * @param entity properties to convert
-     * @param relationship properties to convert
-     * @param repositoryHelper helper object to parse entity/relationship
+     * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public CommunityCollectionMemberConverter(EntityDetail         entity,
-                                              Relationship         relationship,
-                                              OMRSRepositoryHelper repositoryHelper,
-                                              String               serviceName)
+    public CommunityCollectionMemberConverter(OMRSRepositoryHelper repositoryHelper,
+                                              String               serviceName,
+                                              String               serverName)
     {
-        super(entity, relationship, repositoryHelper, serviceName);
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public CommunityCollectionMember getBean()
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        CommunityCollectionMember  bean = new CommunityCollectionMember();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof CommunityCollectionMember)
             {
+                CommunityCollectionMember bean                = (CommunityCollectionMember) returnBean;
+                CommunityProperties       communityProperties = new CommunityProperties();
+
+                InstanceProperties instanceProperties;
+
                 /*
-                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
-                 * resource properties.
+                 * The initial set of values come from the entity.
                  */
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, CommunityCollectionMemberMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setName(repositoryHelper.removeStringProperty(serviceName, CommunityCollectionMemberMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName, CommunityCollectionMemberMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setMission(repositoryHelper.removeStringProperty(serviceName, CommunityCollectionMemberMapper.MISSION_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, CommunityCollectionMemberMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-            }
-        }
-
-        if (relationship != null)
-        {
-            bean.setDateAddedToCollection(relationship.getCreateTime());
-            InstanceProperties instanceProperties = relationship.getProperties();
-
-            if (instanceProperties != null)
-            {
-                bean.setMembershipRationale(repositoryHelper.getStringProperty(serviceName, CommunityCollectionMemberMapper.MEMBERSHIP_RATIONALE_PROPERTY_NAME, instanceProperties, methodName));
-
-                if (instanceProperties.getPropertyValue(CommunityCollectionMemberMapper.WATCH_STATUS_PROPERTY_NAME) != null)
+                if (entity != null)
                 {
-                    if (repositoryHelper.getBooleanProperty(serviceName, CommunityCollectionMemberMapper.WATCH_STATUS_PROPERTY_NAME, instanceProperties, methodName))
-                    {
-                        bean.setWatchStatus(WatchStatus.WATCHED);
-                    }
-                    else
-                    {
-                        bean.setWatchStatus(WatchStatus.NOT_WATCHED);
-                    }
+                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    communityProperties.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
+                    communityProperties.setName(repositoryHelper.removeStringProperty(serviceName, OpenMetadataAPIMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
+                    communityProperties.setDescription(repositoryHelper.removeStringProperty(serviceName, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
+                    communityProperties.setMission(repositoryHelper.removeStringProperty(serviceName, OpenMetadataAPIMapper.MISSION_PROPERTY_NAME, instanceProperties, methodName));
+                    communityProperties.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
+                    communityProperties.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
                 }
                 else
                 {
-                    bean.setWatchStatus(WatchStatus.USE_DEFAULT);
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
+
+                if (relationship != null)
+                {
+                    instanceProperties = new InstanceProperties(relationship.getProperties());
+
+                    bean.setMembershipRationale(this.removeMembershipRationale(instanceProperties));
+                    bean.setDateAddedToCollection(relationship.getCreateTime());
+                }
+
+                bean.setProperties(communityProperties);
             }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
+        return null;
     }
 }

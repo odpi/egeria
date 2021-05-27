@@ -3,67 +3,107 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.ContactMethodMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ContactMethodConverter generates a ContactMethod bean from a ContactMethod entity.
+ * ContactMethodConverter generates a ContactMethodProperties bean from a ContactMethodProperties entity.
  */
-public class ContactMethodConverter extends CommonHeaderConverter
+public class ContactMethodConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(ContactMethod.class);
+    private static final Logger log = LoggerFactory.getLogger(ContactMethodProperties.class);
 
     /**
-     * Constructor captures the initial content
+     * Constructor
      *
-     * @param entity properties to convert
      * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public ContactMethodConverter(EntityDetail         entity,
-                                  OMRSRepositoryHelper repositoryHelper,
-                                  String               serviceName)
+    public ContactMethodConverter(OMRSRepositoryHelper repositoryHelper,
+                                  String               serviceName,
+                                  String               serverName)
     {
-        super(entity, repositoryHelper, serviceName);
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public ContactMethod getBean()
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        ContactMethod  bean = new ContactMethod();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof ContactMethodElement)
             {
-                bean.setType(this.getContactMethodTypeFromProperties(instanceProperties));
-                bean.setService(repositoryHelper.getStringProperty(serviceName, ContactMethodMapper.SERVICE_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setValue(repositoryHelper.getStringProperty(serviceName, ContactMethodMapper.VALUE_PROPERTY_NAME, instanceProperties, methodName));
+                ContactMethodElement    bean                    = (ContactMethodElement) returnBean;
+                ContactMethodProperties contactMethodProperties = new ContactMethodProperties();
+
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                InstanceProperties instanceProperties;
+
+                /*
+                 * The initial set of values come from the entity.
+                 */
+                if (entity != null)
+                {
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    contactMethodProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    contactMethodProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    contactMethodProperties.setType(this.getContactMethodTypeFromProperties(instanceProperties));
+                    contactMethodProperties.setService(this.removeContactMethodService(instanceProperties));
+                    contactMethodProperties.setValue(this.removeContactMethodValue(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    contactMethodProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    contactMethodProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
+
+                bean.setProperties(contactMethodProperties);
             }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
+        return null;
     }
 
 
@@ -75,46 +115,41 @@ public class ContactMethodConverter extends CommonHeaderConverter
      */
     private ContactMethodType getContactMethodTypeFromProperties(InstanceProperties   properties)
     {
-        ContactMethodType   contactMethodType = ContactMethodType.OTHER;
+        final String methodName = "getContactMethodTypeFromProperties";
+
+        ContactMethodType contactMethodType = ContactMethodType.OTHER;
 
         if (properties != null)
         {
-            InstancePropertyValue instancePropertyValue = properties.getPropertyValue(ContactMethodMapper.TYPE_PROPERTY_NAME);
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
 
-            if (instancePropertyValue instanceof EnumPropertyValue)
+            switch (ordinal)
             {
-                EnumPropertyValue enumPropertyValue = (EnumPropertyValue)instancePropertyValue;
+                case 0:
+                    contactMethodType = ContactMethodType.EMAIL;
+                    break;
 
-                switch (enumPropertyValue.getOrdinal())
-                {
-                    case 0:
-                        contactMethodType = ContactMethodType.EMAIL;
-                        break;
+                case 1:
+                    contactMethodType = ContactMethodType.PHONE;
+                    break;
 
-                    case 1:
-                        contactMethodType = ContactMethodType.PHONE;
-                        break;
+                case 2:
+                    contactMethodType = ContactMethodType.CHAT;
+                    break;
 
-                    case 2:
-                        contactMethodType = ContactMethodType.CHAT;
-                        break;
+                case 3:
+                    contactMethodType = ContactMethodType.PROFILE;
+                    break;
 
-                    case 3:
-                        contactMethodType = ContactMethodType.PROFILE;
-                        break;
+                case 4:
+                    contactMethodType = ContactMethodType.ACCOUNT;
+                    break;
 
-                    case 4:
-                        contactMethodType = ContactMethodType.ACCOUNT;
-                        break;
-
-                    case 99:
-                        contactMethodType = ContactMethodType.OTHER;
-                        break;
-                }
+                case 99:
+                    contactMethodType = ContactMethodType.OTHER;
+                    break;
             }
         }
-
-        log.debug("ContactMethodType: " + contactMethodType.getName());
 
         return contactMethodType;
     }

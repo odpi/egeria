@@ -979,6 +979,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                               omittedClassificationName,
                                                                               false,
                                                                               serviceSupportedZones,
+                                                                              null,
                                                                               startFrom,
                                                                               pageSize,
                                                                               methodName);
@@ -1028,6 +1029,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                        resultTypeName,
                                                                        requiredClassificationName,
                                                                        omittedClassificationName,
+                                                                       null,
                                                                        startFrom,
                                                                        pageSize,
                                                                        methodName);

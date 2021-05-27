@@ -32,9 +32,13 @@
         <module>asset-consumer-fvt</module>
         <module>asset-manager-fvt</module>
         <module>asset-owner-fvt</module>
+        <module>community-profile-fvt</module>
         <module>data-engine-fvt</module>
         <module>data-manager-fvt</module>
         <module>digital-architecture-fvt</module>
+        <module>discovery-engine-fvt</module>
+        <module>governance-engine-fvt</module>
+        <module>governance-program-fvt</module>
         <module>subject-area-fvt</module>
     </modules>
 
