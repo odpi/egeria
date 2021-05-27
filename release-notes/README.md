@@ -24,6 +24,22 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest Egeria release:
 
+* [Release 2.10](release-notes-2-10.md) - June 2021
+  * Changes to metadata types
+  * Updates to Governance Program OMAS API
+  * Bug Fixes
+  * Dependency updates
+  * Important notes included on known issues
+  
+## Older Releases
+
+* [Release 2.9](release-notes-2-9.md) - May 2021
+  * Updates to open metadata types
+  * Changes to building Egeria on Windows
+  * Bug Fixes
+  * Dependency updates
+  * Important notes included on known issues
+
 * [Release 2.8](release-notes-2-8.md) - April 2021
   * New support for event and property filtering for the open metadata server security connector
   * Changes to metadata types
@@ -33,8 +49,6 @@ Below are the release notes for the latest Egeria release:
   * Bug Fixes
   * Dependency updates
   * Important notes included on known issues
-  
-## Older Releases
 
 * [Release 2.7](release-notes-2-7.md) - March 2021
   * Bug Fixes
