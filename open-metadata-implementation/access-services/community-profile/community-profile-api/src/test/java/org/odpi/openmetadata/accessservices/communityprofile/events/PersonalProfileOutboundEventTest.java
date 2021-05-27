@@ -3,8 +3,11 @@
 package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementHeader;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -18,12 +21,15 @@ import static org.testng.Assert.assertTrue;
  */
 public class PersonalProfileOutboundEventTest
 {
-    private static CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT;
-    private static String testFullName = "TestFullName";
-    private static String testJobTitle = "TestJobTitle";
-    private static String testUserId = "TestUserId";
+    private static CommunityProfileOutboundEventType eventType           = CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT;
+    private static PersonalProfileUniverse           testPP              = new PersonalProfileUniverse();
+    private static String                            testPPGUID          = "TestPersonalProfileGUID";
+    private static String                            testPPQualifiedName = "TestPersonalProfileQName";
+    private static String                            testFullName        = "TestFullName";
+    private static String                            testJobTitle        = "TestJobTitle";
+    private static String                            testUserId          = "TestUserId";
 
-    private PersonalProfile bean = new PersonalProfile();
+    private PersonalProfileUniverse bean = new PersonalProfileUniverse();
 
 
     /**
@@ -31,15 +37,26 @@ public class PersonalProfileOutboundEventTest
      */
     public PersonalProfileOutboundEventTest()
     {
-        List<UserIdentity>  users = new ArrayList<>();
+        PersonalProfileProperties properties = new PersonalProfileProperties();
+        properties.setQualifiedName(testPPQualifiedName);
+        properties.setFullName(testFullName);
+        properties.setJobTitle(testJobTitle);
 
-        UserIdentity userBean = new UserIdentity();
-        userBean.setUserId(testUserId);
+        ElementHeader header = new ElementHeader();
+        header.setGUID(testPPGUID);
+        testPP.setElementHeader(header);
+        testPP.setProfileProperties(properties);
+
+        List<UserIdentityElement> users = new ArrayList<>();
+
+        UserIdentityElement    userBean   = new UserIdentityElement();
+        UserIdentityProperties identityProperties = new UserIdentityProperties();
+
+        identityProperties.setQualifiedName(testUserId);
+        userBean.setProperties(identityProperties);
         users.add(userBean);
 
-        bean.setFullName(testFullName);
-        bean.setJobTitle(testJobTitle);
-        bean.setAssociatedUserIds(users);
+        testPP.setUserIdentities(users);
     }
 
 

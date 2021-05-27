@@ -2,14 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
+import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicClientProvider;
+import org.odpi.openmetadata.accessservices.communityprofile.converters.*;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.ContributionRecordHandler;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.UserIdentityHandler;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -22,34 +25,55 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
-    private PersonalProfileHandler    personalProfileHandler;
-    private UserIdentityHandler       userIdentityHandler;
-    private ContributionRecordHandler contributionRecordHandler;
+    private SoftwareServerCapabilityHandler<MetadataSourceElement> metadataSourceHandler;
+    private UserIdentityHandler<UserIdentityElement>               userIdentityHandler;
+    private ActorProfileHandler<PersonalProfileUniverse>           personalProfileHandler;
+    private ContributionRecordHandler<ContributionRecordElement>   contributionRecordHandler;
+
+    private CommentHandler<CommentElement>         commentHandler;
+    private InformalTagHandler<InformalTagElement> informalTagHandler;
+    private LikeHandler<LikeElement>               likeHandler;
+    private RatingHandler<RatingElement>           ratingHandler;
+
 
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that the community profile is allowed to serve Assets from.
+     * @param defaultZones list of zones that GovernanceEngine should set in all new Assets.
+     * @param publishedZones list of zones that governance engine can use to make a governance service visible.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize max number of results to return on single request.
      * @param karmaPointPlateau number of karma points to reach a plateau
+     * @param outTopicEventBusConnection inner event bus connection to use to build topic connection to send to client if they which
+     *                                   to listen on the out topic.
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
     public CommunityProfileServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                             List<String>            supportedZones,
+                                            List<String>            defaultZones,
+                                            List<String>            publishedZones,
                                             AuditLog                auditLog,
                                             String                  localServerUserId,
                                             int                     maxPageSize,
-                                            int                     karmaPointPlateau) throws NewInstanceException
+                                            int                     karmaPointPlateau,
+                                            Connection              outTopicEventBusConnection) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
+              supportedZones,
+              defaultZones,
+              publishedZones,
               auditLog,
               localServerUserId,
-              maxPageSize);
+              maxPageSize,
+              null,
+              null,
+              CommunityProfileOutTopicClientProvider.class.getName(),
+              outTopicEventBusConnection);
 
         final String methodName = "new ServiceInstance";
 
@@ -57,25 +81,118 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
         if (repositoryHandler != null)
         {
-            this.personalProfileHandler = new PersonalProfileHandler(serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHelper,
-                                                                     repositoryHandler,
-                                                                     errorHandler);
+            this.metadataSourceHandler = new SoftwareServerCapabilityHandler<>(new MetadataSourceConverter<>(repositoryHelper, serviceName,serverName),
+                                                                               MetadataSourceElement.class,
+                                                                               serviceName,
+                                                                               serverName,
+                                                                               invalidParameterHandler,
+                                                                               repositoryHandler,
+                                                                               repositoryHelper,
+                                                                               localServerUserId,
+                                                                               securityVerifier,
+                                                                               supportedZones,
+                                                                               defaultZones,
+                                                                               publishZones,
+                                                                               auditLog);
 
-            this.userIdentityHandler = new UserIdentityHandler(serviceName,
+            this.personalProfileHandler = new ActorProfileHandler<>(new PersonalProfileConverter<>(repositoryHelper, serviceName,serverName),
+                                                                    PersonalProfileUniverse.class,
+                                                                    serviceName,
+                                                                    serverName,
+                                                                    invalidParameterHandler,
+                                                                    repositoryHandler,
+                                                                    repositoryHelper,
+                                                                    localServerUserId,
+                                                                    securityVerifier,
+                                                                    supportedZones,
+                                                                    defaultZones,
+                                                                    publishZones,
+                                                                    auditLog);
+
+            this.userIdentityHandler = new UserIdentityHandler<>(new UserIdentityConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 UserIdentityElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
+
+            this.contributionRecordHandler = new ContributionRecordHandler<>(new ContributionRecordConverter<>(repositoryHelper, serviceName, serverName, karmaPointPlateau),
+                                                                             ContributionRecordElement.class,
+                                                                             serviceName,
+                                                                             serverName,
+                                                                             invalidParameterHandler,
+                                                                             repositoryHandler,
+                                                                             repositoryHelper,
+                                                                             localServerUserId,
+                                                                             securityVerifier,
+                                                                             supportedZones,
+                                                                             defaultZones,
+                                                                             publishZones,
+                                                                             karmaPointPlateau,
+                                                                             auditLog);
+
+            this.commentHandler = new CommentHandler<>(new CommentConverter<>(repositoryHelper, serviceName, serverName),
+                                                       CommentElement.class,
+                                                       serviceName,
+                                                       serverName,
+                                                       invalidParameterHandler,
+                                                       repositoryHandler,
+                                                       repositoryHelper,
+                                                       localServerUserId,
+                                                       securityVerifier,
+                                                       supportedZones,
+                                                       defaultZones,
+                                                       publishZones,
+                                                       auditLog);
+
+            this.informalTagHandler = new InformalTagHandler<>(new InformalTagConverter<>(repositoryHelper, serviceName, serverName),
+                                                               InformalTagElement.class,
+                                                               serviceName,
+                                                               serverName,
                                                                invalidParameterHandler,
-                                                               repositoryHelper,
                                                                repositoryHandler,
-                                                               errorHandler);
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
 
-            this.contributionRecordHandler = new ContributionRecordHandler(serviceName,
-                                                                           serverName,
-                                                                           invalidParameterHandler,
-                                                                           repositoryHelper,
-                                                                           repositoryHandler,
-                                                                           karmaPointPlateau);
+            this.likeHandler = new LikeHandler<>(new LikeConverter<>(repositoryHelper, serviceName, serverName),
+                                                 LikeElement.class,
+                                                 serviceName,
+                                                 serverName,
+                                                 invalidParameterHandler,
+                                                 repositoryHandler,
+                                                 repositoryHelper,
+                                                 localServerUserId,
+                                                 securityVerifier,
+                                                 supportedZones,
+                                                 defaultZones,
+                                                 publishZones,
+                                                 auditLog);
+
+            this.ratingHandler = new RatingHandler<>(new RatingConverter<>(repositoryHelper, serviceName, serverName),
+                                                     RatingElement.class,
+                                                     serviceName,
+                                                     serverName,
+                                                     invalidParameterHandler,
+                                                     repositoryHandler,
+                                                     repositoryHelper,
+                                                     localServerUserId,
+                                                     securityVerifier,
+                                                     supportedZones,
+                                                     defaultZones,
+                                                     publishZones,
+                                                     auditLog);
         }
         else
         {
@@ -88,12 +205,31 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
 
     /**
+     * Return the handler for metadata source requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public SoftwareServerCapabilityHandler<MetadataSourceElement> getMetadataSourceHandler() throws PropertyServerException
+    {
+        final String methodName = "getMetadataSourceHandler";
+
+        validateActiveRepository(methodName);return metadataSourceHandler;
+    }
+
+
+    /**
      * Return the handler for personal profile requests.
      *
      * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public PersonalProfileHandler getPersonalProfileHandler()
+    public ActorProfileHandler<PersonalProfileUniverse> getPersonalProfileHandler() throws PropertyServerException
     {
+        final String methodName = "getPersonalProfileHandler";
+
+        validateActiveRepository(methodName);
+
         return personalProfileHandler;
     }
 
@@ -102,9 +238,14 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
      * Return the handler for user identity requests.
      *
      * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public UserIdentityHandler getUserIdentityHandler()
+    public UserIdentityHandler<UserIdentityElement> getUserIdentityHandler() throws PropertyServerException
     {
+        final String methodName = "getUserIdentityHandler";
+
+        validateActiveRepository(methodName);
+
         return userIdentityHandler;
     }
 
@@ -113,9 +254,78 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
      * Return the handler for personal contribution record requests.
      *
      * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public ContributionRecordHandler getContributionRecordHandler()
+    public ContributionRecordHandler<ContributionRecordElement> getContributionRecordHandler() throws PropertyServerException
     {
+        final String methodName = "getContributionRecordHandler";
+
+        validateActiveRepository(methodName);
+
         return contributionRecordHandler;
+    }
+
+
+    /**
+     * Return the handler for managing comment objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    CommentHandler<CommentElement> getCommentHandler() throws PropertyServerException
+    {
+        final String methodName = "getCommentHandler";
+
+        validateActiveRepository(methodName);
+
+        return commentHandler;
+    }
+
+
+    /**
+     * Return the handler for managing informal tag objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    InformalTagHandler<InformalTagElement> getInformalTagHandler() throws PropertyServerException
+    {
+        final String methodName = "getInformalTagHandler";
+
+        validateActiveRepository(methodName);
+
+        return informalTagHandler;
+    }
+
+
+    /**
+     * Return the handler for managing like objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    LikeHandler<LikeElement> getLikeHandler() throws PropertyServerException
+    {
+        final String methodName = "getLikeHandler";
+
+        validateActiveRepository(methodName);
+
+        return likeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing rating objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    RatingHandler<RatingElement> getRatingHandler() throws PropertyServerException
+    {
+        final String methodName = "getRatingHandler";
+
+        validateActiveRepository(methodName);
+
+        return ratingHandler;
     }
 }

@@ -3,110 +3,134 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonRoleMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRole;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonRoleElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.util.List;
 
 /**
- * PersonRoleConverter generates a PersonRole bean from an PersonRole entity and the relationships connected to it.
+ * PersonRoleConverter generates a PersonRoleProperties bean from an PersonRoleProperties entity and the relationships connected to it.
  */
-public class PersonRoleConverter extends CommonHeaderConverter
+public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(PersonRoleConverter.class);
-
-    private List<Relationship> personRoleRelationships;
-
     /**
-     * Constructor captures the initial content with relationships
+     * Constructor
      *
-     * @param entity properties to convert
-     * @param relationships properties to convert
-     * @param repositoryHelper helper object to parse entity/relationship
+     * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public PersonRoleConverter(EntityDetail         entity,
-                               List<Relationship>   relationships,
-                               OMRSRepositoryHelper repositoryHelper,
-                               String               serviceName)
+    public PersonRoleConverter(OMRSRepositoryHelper repositoryHelper,
+                               String               serviceName,
+                               String               serverName)
     {
-        super(entity, repositoryHelper, serviceName);
-        this.personRoleRelationships = relationships;
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public PersonRole getBean()
+    public B getNewComplexBean(Class<B>           beanClass,
+                               EntityDetail       primaryEntity,
+                               List<Relationship> relationships,
+                               String             methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        PersonRole  bean = new PersonRole();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof PersonRoleElement)
             {
-                /*
-                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
-                 * role properties.
-                 */
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, PersonRoleMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setName(repositoryHelper.removeStringProperty(serviceName, PersonRoleMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName, PersonRoleMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setScope(repositoryHelper.removeStringProperty(serviceName, PersonRoleMapper.SCOPE_PROPERTY_NAME, instanceProperties, methodName));
+                PersonRoleElement    bean           = (PersonRoleElement) returnBean;
+                PersonRoleProperties roleProperties = new PersonRoleProperties();
 
-                if (instanceProperties.getPropertyValue(PersonRoleMapper.HEAD_COUNT_PROPERTY_NAME) != null)
+                if (primaryEntity != null)
                 {
-                    bean.setHeadCountLimitSet(true);
-                    bean.setHeadCount(repositoryHelper.removeIntProperty(serviceName, PersonRoleMapper.HEAD_COUNT_PROPERTY_NAME, instanceProperties, methodName));
-                }
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, methodName));
 
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, PersonRoleMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-                bean.setClassifications(super.getClassificationsFromEntity());
-            }
-        }
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
 
-        if (personRoleRelationships != null)
-        {
-            int  appointeeCount = 0;
+                    roleProperties.setRoleId(this.removeQualifiedName(instanceProperties));
+                    roleProperties.setTitle(this.removeTitle(instanceProperties));
+                    roleProperties.setDescription(this.removeDescription(instanceProperties));
+                    roleProperties.setScope(this.removeScope(instanceProperties));
+                    roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME) != null);
+                    roleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
 
-            for (Relationship relationship : personRoleRelationships)
-            {
-                if (relationship != null)
-                {
-                    InstanceType instanceType = relationship.getType();
+                    roleProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
-                    if (instanceType != null)
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    roleProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    roleProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    if (relationships != null)
                     {
-                        if (PersonRoleMapper.PERSON_ROLE_APPOINTMENT_TYPE_NAME.equals(instanceType.getTypeDefName()))
+                        int  appointeeCount = 0;
+
+                        for (Relationship relationship : relationships)
                         {
-                            appointeeCount ++;
+                            if (relationship != null)
+                            {
+                                InstanceType instanceType = relationship.getType();
+
+                                if (instanceType != null)
+                                {
+                                    if (repositoryHelper.isTypeOf(serviceName,
+                                                                  instanceType.getTypeDefName(),
+                                                                  OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME))
+                                    {
+                                        appointeeCount ++;
+                                    }
+                                }
+                            }
                         }
+
+                        roleProperties.setAppointmentCount(appointeeCount);
                     }
+
+                    bean.setProperties(roleProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
             }
 
-            bean.setAppointmentCount(appointeeCount);
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
+        return null;
     }
 }

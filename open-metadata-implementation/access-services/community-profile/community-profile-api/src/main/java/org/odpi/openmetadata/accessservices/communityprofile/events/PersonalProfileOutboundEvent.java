@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
 
 import java.util.Objects;
 
@@ -29,7 +29,7 @@ public class PersonalProfileOutboundEvent extends CommunityProfileOutboundEvent
 {
     private static final long    serialVersionUID = 1L;
 
-    private PersonalProfile personalProfile = null;
+    private PersonalProfileUniverse personalProfile = null;
 
 
     /**
@@ -60,9 +60,9 @@ public class PersonalProfileOutboundEvent extends CommunityProfileOutboundEvent
     /**
      * Return the personal profile for the individual.
      *
-     * @return PersonalProfile bean
+     * @return PersonalProfileUniverse bean
      */
-    public PersonalProfile getPersonalProfile()
+    public PersonalProfileUniverse getPersonalProfile()
     {
         return personalProfile;
     }
@@ -71,9 +71,9 @@ public class PersonalProfileOutboundEvent extends CommunityProfileOutboundEvent
     /**
      * Set up the personal profile for the individual.
      *
-     * @param personalProfile PersonalProfile bean
+     * @param personalProfile PersonalProfileUniverse bean
      */
-    public void setPersonalProfile(PersonalProfile personalProfile)
+    public void setPersonalProfile(PersonalProfileUniverse personalProfile)
     {
         this.personalProfile = personalProfile;
     }

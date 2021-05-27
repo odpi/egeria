@@ -557,27 +557,27 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "InstanceAuditHeader{" +
-                       "type=" + type +
-                       ", instanceProvenanceType=" + instanceProvenanceType +
-                       ", metadataCollectionId='" + metadataCollectionId + '\'' +
-                       ", metadataCollectionName='" + metadataCollectionName + '\'' +
-                       ", replicatedBy='" + replicatedBy + '\'' +
-                       ", instanceLicense='" + instanceLicense + '\'' +
-                       ", createdBy='" + createdBy + '\'' +
-                       ", updatedBy='" + updatedBy + '\'' +
-                       ", maintainedBy='" + maintainedBy + '\'' +
-                       ", createTime=" + createTime +
-                       ", updateTime=" + updateTime +
-                       ", version=" + version +
-                       ", statusOnDelete=" + statusOnDelete +
-                       ", status=" + getStatus() +
-                       ", mappingProperties=" + getMappingProperties() +
-                       '}';
+                "headerVersion=" + headerVersion +
+                ", type=" + type +
+                ", instanceProvenanceType=" + instanceProvenanceType +
+                ", metadataCollectionId='" + metadataCollectionId + '\'' +
+                ", metadataCollectionName='" + metadataCollectionName + '\'' +
+                ", replicatedBy='" + replicatedBy + '\'' +
+                ", instanceLicense='" + instanceLicense + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", maintainedBy=" + maintainedBy +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", version=" + version +
+                ", currentStatus=" + currentStatus +
+                ", statusOnDelete=" + statusOnDelete +
+                ", mappingProperties=" + mappingProperties +
+                ", status=" + getStatus() +
+                '}';
     }
-
 
     /**
      * Validate if the supplied object equals this object.

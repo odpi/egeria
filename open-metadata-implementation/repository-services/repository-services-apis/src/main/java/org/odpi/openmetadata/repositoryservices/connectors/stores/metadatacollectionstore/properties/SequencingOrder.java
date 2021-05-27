@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         ANY: return the results in any order.  This is default.
  *     </li>
  *     <li>
- *         GUID: return in GUID sequence.  This is used when the caller just needs a consistent order in the
+ *         GUID: return in ascending GUID sequence.  This is used when the caller just needs a consistent order in the
  *         order that results are returned.
  *     </li>
  *     <li>
@@ -53,7 +53,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum SequencingOrder implements Serializable
 {
     ANY                  (0, "Any Order",                       "Any order."),
-    GUID                 (1, "GUID",                            "Order by GUID."),
+    GUID                 (1, "GUID",                            "Order by ascending GUID."),
     CREATION_DATE_RECENT (2, "Creation Date (Recent First)",    "Order by creation date, most recently created first."),
     CREATION_DATE_OLDEST (3, "Creation Date (Oldest First)",    "Order by creation date, oldest first."),
     LAST_UPDATE_RECENT   (4, "Last Update Date (Recent First)", "Order by last update date, most recently updated first."),

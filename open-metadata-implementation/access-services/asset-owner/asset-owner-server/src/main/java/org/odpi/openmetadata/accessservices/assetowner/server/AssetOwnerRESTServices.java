@@ -1350,7 +1350,9 @@ public class AssetOwnerRESTServices
                                                   String          glossaryTermGUID,
                                                   NullRequestBody requestBody)
     {
-        final String   methodName = "removeSemanticAssignment";
+        final String methodName = "removeSemanticAssignment";
+        final String assetGUIDParameterName = "assetGUID";
+        final String glossaryTermGUIDParameterName = "glossaryTermGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1366,7 +1368,9 @@ public class AssetOwnerRESTServices
                                              null,
                                              null,
                                              assetGUID,
+                                             assetGUIDParameterName,
                                              glossaryTermGUID,
+                                             glossaryTermGUIDParameterName,
                                              methodName);
 
         }
@@ -1404,7 +1408,9 @@ public class AssetOwnerRESTServices
                                                   String          assetElementGUID,
                                                   NullRequestBody requestBody)
     {
-        final String   methodName = "removeSemanticAssignment";
+        final String methodName = "removeSemanticAssignment";
+        final String assetElementGUIDParameterName = "assetElementGUID";
+        final String glossaryTermGUIDParameterName = "glossaryTermGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1420,7 +1426,9 @@ public class AssetOwnerRESTServices
                                              null,
                                              null,
                                              assetElementGUID,
+                                             assetElementGUIDParameterName,
                                              glossaryTermGUID,
+                                             glossaryTermGUIDParameterName,
                                              methodName);
 
         }
@@ -1698,8 +1706,8 @@ public class AssetOwnerRESTServices
                                           String           assetGUID,
                                           OwnerRequestBody requestBody)
     {
-        final String   assetGUIDParameterName = "assetGUID";
-        final String   methodName = "updateAssetOwner";
+        final String assetGUIDParameterName = "assetGUID";
+        final String methodName = "updateAssetOwner";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 

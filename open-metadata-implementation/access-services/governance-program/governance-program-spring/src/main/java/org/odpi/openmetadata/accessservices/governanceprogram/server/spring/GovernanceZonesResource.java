@@ -5,19 +5,22 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneDefinitionResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceZoneRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * The GovernanceLeadershipResource provides a Spring based server-side REST API
- * that supports the GovernanceLeadershipInterface.   It delegates each request to the
+ * The GovernanceZonesResource provides a Spring based server-side REST API
+ * that supports the GovernanceZonesInterface.   It delegates each request to the
  * GovernanceZoneRESTServices.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-program/users/{userId}/governance-zone-manager")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-program/users/{userId}")
 
 @Tag(name="Governance Program OMAS", description="The Governance Program OMAS provides APIs and events for tools and applications focused on defining a data strategy, planning support for a regulation and/or developing a governance program for the data landscape." +
         "\n", externalDocs=@ExternalDocumentation(description="Governance Program Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/governance-program/"))
@@ -44,42 +47,200 @@ public class GovernanceZonesResource
      * @param userId calling user
      * @param requestBody other properties for a governance zone
      *
-     * @return void or
+     * @return unique identifier of the new zone or
      * InvalidParameterException full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/governance-zones")
 
-    public VoidResponse  createGovernanceZone(@PathVariable String                   serverName,
-                                              @PathVariable String                   userId,
-                                              @RequestBody  GovernanceZoneProperties requestBody)
+    public GUIDResponse createGovernanceZone(@PathVariable String                   serverName,
+                                             @PathVariable String                   userId,
+                                             @RequestBody  GovernanceZoneProperties requestBody)
     {
         return restAPI.createGovernanceZone(serverName, userId, requestBody);
     }
 
 
     /**
-     * Return information about all of the governance zones.
+     * Update the definition of a zone.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maximumResults maximum number of elements to return an this call
+     * @param zoneGUID unique identifier of zone
+     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
+     * @param requestBody properties to change
+     *
+     * @return void or
+     *  InvalidParameterException guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/governance-zones/{zoneGUID}")
+
+    public VoidResponse updateGovernanceZone(@PathVariable String                   serverName,
+                                             @PathVariable String                   userId,
+                                             @PathVariable String                   zoneGUID,
+                                             @RequestParam boolean                  isMergeUpdate,
+                                             @RequestBody  GovernanceZoneProperties requestBody)
+    {
+        return restAPI.updateGovernanceZone(serverName, userId, zoneGUID, isMergeUpdate, requestBody);
+    }
+
+
+    /**
+     * Remove the definition of a zone.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param zoneGUID unique identifier of zone
+     * @param requestBody null requestBody
+     *
+     * @return void or
+     *  InvalidParameterException guid or userId is null; guid is not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/governance-zones/{zoneGUID}/delete")
+
+    public VoidResponse deleteGovernanceZone(@PathVariable String serverName,
+                                             @PathVariable String userId,
+                                             @PathVariable String zoneGUID,
+                                             @RequestBody(required = false)
+                                                           NullRequestBody requestBody)
+    {
+        return restAPI.deleteGovernanceZone(serverName, userId, zoneGUID, requestBody);
+    }
+
+
+    /**
+     * Link two related governance zones together as part of a hierarchy.
+     * A zone can only have one parent but many child zones.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param parentZoneGUID unique identifier of the parent zone
+     * @param childZoneGUID unique identifier of the child zone
+     * @param requestBody null requestBody
+     *
+     * @return void or
+     *  InvalidParameterException one of the guids is null or not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/governance-zones/{parentZoneGUID}/nested-zone/{childZoneGUID}/link")
+
+    public VoidResponse linkZonesInHierarchy(@PathVariable String          serverName,
+                                             @PathVariable String          userId,
+                                             @PathVariable String          parentZoneGUID,
+                                             @PathVariable String          childZoneGUID,
+                                             @RequestBody(required = false)
+                                                           NullRequestBody requestBody)
+    {
+        return restAPI.linkZonesInHierarchy(serverName, userId, parentZoneGUID, childZoneGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the link between two zones in the zone hierarchy.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param parentZoneGUID unique identifier of the parent zone
+     * @param childZoneGUID unique identifier of the child zone
+     * @param requestBody null requestBody
+     *
+     * @return void or
+     *  InvalidParameterException one of the guids is null or not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/governance-zones/{parentZoneGUID}/nested-zone/{childZoneGUID}/unlink")
+
+    public VoidResponse unlinkZonesInHierarchy(@PathVariable String          serverName,
+                                               @PathVariable String          userId,
+                                               @PathVariable String          parentZoneGUID,
+                                               @PathVariable String          childZoneGUID,
+                                               @RequestBody(required = false)
+                                                             NullRequestBody requestBody)
+    {
+        return restAPI.unlinkZonesInHierarchy(serverName, userId, parentZoneGUID, childZoneGUID, requestBody);
+    }
+
+
+    /**
+     * Link a governance zone to a governance definition that controls how the assets in the zone should be governed.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param zoneGUID unique identifier of the zone
+     * @param definitionGUID unique identifier of the governance definition
+     * @param requestBody null requestBody
+     *
+     * @return void or
+     *  InvalidParameterException one of the guids is null or not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/governance-zones/{zoneGUID}/governed-by/{definitionGUID}/link")
+
+    public VoidResponse linkZoneToGovernanceDefinition(@PathVariable String          serverName,
+                                                       @PathVariable String          userId,
+                                                       @PathVariable String          zoneGUID,
+                                                       @PathVariable String          definitionGUID,
+                                                       @RequestBody(required = false)
+                                                                     NullRequestBody requestBody)
+    {
+        return restAPI.linkZoneToGovernanceDefinition(serverName, userId, zoneGUID, definitionGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the link between a zone and a governance definition.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param zoneGUID unique identifier of the zone
+     * @param definitionGUID unique identifier of the governance definition
+     * @param requestBody null requestBody
+     *
+     * @return void or
+     *  InvalidParameterException one of the guids is null or not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/governance-zones/{zoneGUID}/governed-by/{definitionGUID}/unlink")
+
+    public VoidResponse unlinkZoneFromGovernanceDefinition(@PathVariable String          serverName,
+                                                           @PathVariable String          userId,
+                                                           @PathVariable String          zoneGUID,
+                                                           @PathVariable String          definitionGUID,
+                                                           @RequestBody(required = false)
+                                                                         NullRequestBody requestBody)
+    {
+        return restAPI.unlinkZoneFromGovernanceDefinition(serverName, userId, zoneGUID, definitionGUID, requestBody);
+    }
+
+
+    /**
+     * Return information about a specific governance zone.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param zoneGUID unique identifier for the zone
      *
      * @return properties of the governance zone or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
+     *  InvalidParameterException zoneGUID or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
      */
-    @GetMapping(path = "/governance-zones")
+    @GetMapping(path = "/governance-zones/{zoneGUID}")
 
-    public ZoneListResponse getGovernanceZones(@PathVariable String   serverName,
-                                               @PathVariable String   userId,
-                                               @RequestParam int      startingFrom,
-                                               @RequestParam int      maximumResults)
+    public GovernanceZoneResponse getGovernanceZoneByGUID(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String zoneGUID)
     {
-        return restAPI.getGovernanceZones(serverName, userId, startingFrom, maximumResults);
+        return restAPI.getGovernanceZoneByGUID(serverName, userId, zoneGUID);
     }
 
 
@@ -91,16 +252,64 @@ public class GovernanceZonesResource
      * @param qualifiedName unique name for the zone
      *
      * @return properties of the governance zone or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
      */
     @GetMapping(path = "/governance-zones/name/{qualifiedName}")
 
-    public ZoneResponse getGovernanceZone(@PathVariable String   serverName,
-                                          @PathVariable String   userId,
-                                          @PathVariable String   qualifiedName)
+    public GovernanceZoneResponse getGovernanceZoneByName(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String qualifiedName)
     {
-        return restAPI.getGovernanceZone(serverName, userId, qualifiedName);
+        return restAPI.getGovernanceZoneByName(serverName, userId, qualifiedName);
+    }
+
+
+    /**
+     * Return information about the defined governance zones.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param domainIdentifier identifier for the desired governance domain
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the governance zone or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @GetMapping(path = "/governance-zones/for-domain")
+
+    public GovernanceZoneListResponse getGovernanceZonesForDomain(@PathVariable String serverName,
+                                                                  @PathVariable String userId,
+                                                                  @RequestParam int    domainIdentifier,
+                                                                  @RequestParam int    startFrom,
+                                                                  @RequestParam int    pageSize)
+    {
+        return restAPI.getGovernanceZonesForDomain(serverName, userId, domainIdentifier, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about a specific governance zone and its linked governance definitions.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param zoneGUID unique identifier for the zone
+     *
+     * @return properties of the governance zone linked to the associated governance definitions or
+     *  InvalidParameterException zoneGUID or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @GetMapping(path = "/governance-zones/{zoneGUID}/with-definitions")
+
+    public GovernanceZoneDefinitionResponse getGovernanceZoneDefinitionByGUID(@PathVariable String serverName,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String zoneGUID)
+    {
+        return restAPI.getGovernanceZoneDefinitionByGUID(serverName, userId, zoneGUID);
     }
 }
