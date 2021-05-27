@@ -59,14 +59,14 @@ image:
     name: egeria
   presentation:
     name: egeria-react-ui
-    tag: latest
+    tag: 2.10.0
   configure:
     name: egeria-configure
   jupyter:
     name: jupyter
   uistatic:
     name: egeria-ui
-    tag: latest
+    tag: 2.8.0
   nginx:
     name: nginx
     namespace:

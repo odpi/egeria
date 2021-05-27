@@ -16,5 +16,5 @@ maintainers:
     email: nigel.l.jones+git@gmail.com
 dependencies:
   - name: kafka
-    version: 12.5.0
+    version: 12.18.3
     repository: https://charts.bitnami.com/bitnami
