@@ -2781,10 +2781,14 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                     if (relationship != null) {
                         InstanceType type = relationship.getType();
                         if (type != null) {
-                            this.deleteRelationship(userId,
-                                    type.getTypeDefGUID(),
-                                    type.getTypeDefName(),
-                                    relationship.getGUID());
+                            if (metadataCollectionId.equals(relationship.getMetadataCollectionId())) {
+                                this.deleteRelationship(userId,
+                                        type.getTypeDefGUID(),
+                                        type.getTypeDefName(),
+                                        relationship.getGUID());
+                            } else {
+                                graphStore.removeRelationshipFromStore(relationship.getGUID());
+                            }
                         }
                     }
                 }

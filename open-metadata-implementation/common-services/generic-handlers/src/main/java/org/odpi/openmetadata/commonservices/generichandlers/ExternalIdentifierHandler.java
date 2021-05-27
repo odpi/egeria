@@ -528,6 +528,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                    OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                                    propertyNames,
                                                                                    true,
+                                                                                   null,
                                                                                    0,
                                                                                    queryPageSize,
                                                                                    methodName);
@@ -1277,6 +1278,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                                      scopeTypeName,
                                                                                                      OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_GUID,
                                                                                                      OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
+                                                                                                     null,
                                                                                                      0,
                                                                                                      0,
                                                                                                      methodName);
@@ -1296,6 +1298,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                                           OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
                                                                                                           OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
                                                                                                           OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
+                                                                                                          null,
                                                                                                           0,
                                                                                                           0,
                                                                                                           methodName);
@@ -1385,6 +1388,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                          null,
                                                                          false,
                                                                          supportedZones,
+                                                                         null,
                                                                          0,
                                                                          invalidParameterHandler.getMaxPagingSize(),
                                                                          methodName);

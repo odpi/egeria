@@ -15,9 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ElementHeader provides the common identifier and type information for all properties objects
- * that link off of the asset and have a guid associated with them.  This typically means it is
- * represented by an entity in the metadata repository.
+ * ElementHeader provides the common identifier and type information for all properties objects from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,9 +24,6 @@ public class ElementHeader implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    /*
-     * Common header for first class elements from a metadata repository
-     */
     private String        guid = null;
     private ElementType   type = null;
     private ElementOrigin origin = null;

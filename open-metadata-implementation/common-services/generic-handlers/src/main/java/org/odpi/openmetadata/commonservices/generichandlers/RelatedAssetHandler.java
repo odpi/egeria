@@ -24,7 +24,7 @@ import java.util.List;
 public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
     /**
-     * Construct the asset handler with information needed to work with B objects.
+     * Construct the handler with information needed to work with B objects.
      *
      * @param converter specific converter for this bean class
      * @param beanClass name of bean class that is represented by the generic class B

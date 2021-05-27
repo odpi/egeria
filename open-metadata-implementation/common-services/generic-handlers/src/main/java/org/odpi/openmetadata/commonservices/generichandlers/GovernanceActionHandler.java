@@ -320,9 +320,10 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param anchorGUID identifier of the first governance action of the process (null for standalone governance actions and the first governance
      *                   action in a governance action process).
      * @param governanceActionTypeGUID unique identifier of the governance action type that initiated this governance action as part of
-     *                                 a governance action process (or null if this is standalone governance action.
+     *                                 a governance action process (or null if this is standalone governance action
+     * @param requestSourceName where did the request come from
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
-     * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine)
      * @param methodName calling method
      *
      * @return unique identifier of the governance action
@@ -1706,6 +1707,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              userId,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                              0,
                                                                              invalidParameterHandler.getMaxPagingSize(),
                                                                              methodName);
@@ -1764,6 +1766,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              userId,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                              0,
                                                                              invalidParameterHandler.getMaxPagingSize(),
                                                                              methodName);
@@ -1844,6 +1847,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                                              properties,
                                                                                              MatchCriteria.ANY,
+                                                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                                              0,
                                                                                              invalidParameterHandler.getMaxPagingSize(),
                                                                                              methodName);
