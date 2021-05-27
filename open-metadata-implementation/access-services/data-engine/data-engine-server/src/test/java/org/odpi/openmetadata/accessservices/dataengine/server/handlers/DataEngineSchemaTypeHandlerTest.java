@@ -30,6 +30,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -81,6 +82,7 @@ class DataEngineSchemaTypeHandlerTest {
     private static final String ATTRIBUTE_GUID = "attributeGuid";
     private static final String SOURCE_GUID = "sourceGuid";
     private static final String SOURCE_QUALIFIED_NAME = "sourceQualifiedName";
+    private static final String SOURCE_TYPE = "sourceType";
     private static final String TARGET_GUID = "targetGuid";
     private static final String TARGET_QUALIFIED_NAME = "targetQualifiedName";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
@@ -278,7 +280,7 @@ class DataEngineSchemaTypeHandlerTest {
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, REFERENCEABLE_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
     @Test
@@ -296,7 +298,7 @@ class DataEngineSchemaTypeHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(dataEngineCommonHandler).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, REFERENCEABLE_TYPE_NAME,
+                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
@@ -353,11 +355,14 @@ class DataEngineSchemaTypeHandlerTest {
         assertTrue(thrown.getMessage().contains("OMRS-METADATA-COLLECTION-501-001"));
     }
 
-    private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
-                                                                                                         PropertyServerException,
-                                                                                                         InvalidParameterException {
+    private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+
+        InstanceType type = mock(InstanceType.class);
+        when(type.getTypeDefName()).thenReturn(SOURCE_TYPE);
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(guid);
+        when(entityDetail.getType()).thenReturn(type);
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
         when(dataEngineCommonHandler.findEntity(USER, qualifiedName, entityTypeName)).thenReturn(optionalOfMockedEntity);
 
