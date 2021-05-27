@@ -51,7 +51,7 @@ Details of these and other changes are in the sections that follow.
   new attributes to specify the type and property names of the identifier used to identify these people.
   This is consistent with the new **Ownership** classification.
   
-  See new type descriptions in model [0440](../open-metadata-publication/website/open-metadata-types/0440-Organizational-Controls.md).
+  See new type descriptions in model [0482](../open-metadata-publication/website/open-metadata-types/0482-Certifications.md).
 
 * Update to **License** relationship.
 
@@ -59,7 +59,7 @@ Details of these and other changes are in the sections that follow.
   new attributes to specify the type and property names of the identifier used to identify these people.
   This is consistent with the new **Ownership** classification.
   
-  See new type descriptions in model [0440](../open-metadata-publication/website/open-metadata-types/0440-Organizational-Controls.md).
+  See new type descriptions in model [0481](../open-metadata-publication/website/open-metadata-types/0481-Licenses.md).
 
 * Governance role updates.
 
