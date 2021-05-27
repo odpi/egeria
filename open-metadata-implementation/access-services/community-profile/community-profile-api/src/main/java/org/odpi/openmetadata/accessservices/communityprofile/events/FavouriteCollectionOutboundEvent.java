@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
 
 import java.util.Objects;
 
@@ -45,7 +45,7 @@ public class FavouriteCollectionOutboundEvent extends PersonalProfileOutboundEve
      * @param memberTypeName type of collection member
      */
     public FavouriteCollectionOutboundEvent(CommunityProfileOutboundEventType  type,
-                                            PersonalProfile                    bean,
+                                            PersonalProfileUniverse bean,
                                             String                             userId,
                                             String                             memberGUID,
                                             String                             memberTypeName)

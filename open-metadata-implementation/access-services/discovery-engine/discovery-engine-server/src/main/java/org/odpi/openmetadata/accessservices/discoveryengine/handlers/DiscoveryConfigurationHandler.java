@@ -268,6 +268,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         return discoveryEngineHandler.getBeansByType(userId,
                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                      startingFrom,
                                                      maximumResults,
                                                      methodName);

@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -27,9 +28,9 @@ public interface MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    PersonalProfile getMyProfile(String userId) throws InvalidParameterException,
-                                                       PropertyServerException,
-                                                       UserNotAuthorizedException;
+    PersonalProfileUniverse getMyProfile(String userId) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException;
 
 
     /**
@@ -40,12 +41,10 @@ public interface MyPersonalProfileInterface
      * @return int count of karma points
      *
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     long getMyKarmaPoints(String userId) throws InvalidParameterException,
-                                                NoProfileForUserException,
                                                 PropertyServerException,
                                                 UserNotAuthorizedException;
 
@@ -58,14 +57,12 @@ public interface MyPersonalProfileInterface
      * @return list of contact methods
      *
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<ContactMethod> getMyContactDetails(String userId) throws InvalidParameterException,
-                                                                  NoProfileForUserException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException;
+    List<ContactMethodElement> getMyContactDetails(String userId) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException;
 
 
     /**
@@ -106,7 +103,6 @@ public interface MyPersonalProfileInterface
      * @return unique identifier (guid) for the new contact method.
      *
      * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -114,7 +110,6 @@ public interface MyPersonalProfileInterface
                               ContactMethodType   type,
                               String              service,
                               String              value) throws InvalidParameterException,
-                                                              NoProfileForUserException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException;
 
@@ -127,14 +122,12 @@ public interface MyPersonalProfileInterface
      * @param type type of contact method. This is used to confirm that the GUID is the right one.
      *
      * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void deleteMyContactMethod(String            userId,
                                String            contactMethodGUID,
                                ContactMethodType type) throws InvalidParameterException,
-                                                              NoProfileForUserException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException;
 
@@ -146,13 +139,11 @@ public interface MyPersonalProfileInterface
      * @param qualifiedName personnel/serial/unique employee number of the individual.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void      deleteMyProfile(String              userId,
                               String              qualifiedName) throws InvalidParameterException,
-                                                                        NoProfileForUserException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException;
 }

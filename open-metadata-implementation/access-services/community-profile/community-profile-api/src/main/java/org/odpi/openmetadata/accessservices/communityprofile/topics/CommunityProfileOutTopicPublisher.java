@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.topics;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.communityprofile.events.*;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -96,8 +96,8 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewUserIdentityEvent(UserIdentity  bean) throws InvalidParameterException,
-                                                                    ConnectorCheckedException
+    public void sendNewUserIdentityEvent(UserIdentityElement bean) throws InvalidParameterException,
+                                                                          ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewUserIdentityEvent";
@@ -120,8 +120,8 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewExternalUserIdentityEvent(UserIdentity  bean) throws InvalidParameterException,
-                                                                            ConnectorCheckedException
+    public void sendNewExternalUserIdentityEvent(UserIdentityElement  bean) throws InvalidParameterException,
+                                                                                   ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewExternalUserIdentityEvent";
@@ -144,8 +144,8 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendUpdatedUserIdentityEvent(UserIdentity  bean) throws InvalidParameterException,
-                                                                        ConnectorCheckedException
+    public void sendUpdatedUserIdentityEvent(UserIdentityElement  bean) throws InvalidParameterException,
+                                                                               ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendUpdatedUserIdentityEvent";
@@ -168,8 +168,8 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendDeletedUserIdentityEvent(UserIdentity  bean) throws InvalidParameterException,
-                                                                        ConnectorCheckedException
+    public void sendDeletedUserIdentityEvent(UserIdentityElement  bean) throws InvalidParameterException,
+                                                                               ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendDeletedUserIdentityEvent";
@@ -192,8 +192,8 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewPersonalProfileEvent(PersonalProfile bean) throws InvalidParameterException,
-                                                                         ConnectorCheckedException
+    public void sendNewPersonalProfileEvent(PersonalProfileUniverse bean) throws InvalidParameterException,
+                                                                                 ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewPersonalProfileEvent";
@@ -216,8 +216,8 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewExternalPersonalProfileEvent(PersonalProfile bean) throws InvalidParameterException,
-                                                                                 ConnectorCheckedException
+    public void sendNewExternalPersonalProfileEvent(PersonalProfileUniverse bean) throws InvalidParameterException,
+                                                                                         ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewExternalPersonalProfileEvent";
@@ -240,8 +240,8 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendUpdatedPersonalProfileEvent(PersonalProfile bean) throws InvalidParameterException,
-                                                                             ConnectorCheckedException
+    public void sendUpdatedPersonalProfileEvent(PersonalProfileUniverse bean) throws InvalidParameterException,
+                                                                                     ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendUpdatedPersonalProfileEvent";
@@ -264,8 +264,8 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendDeletedPersonalProfileEvent(PersonalProfile bean) throws InvalidParameterException,
-                                                                             ConnectorCheckedException
+    public void sendDeletedPersonalProfileEvent(PersonalProfileUniverse bean) throws InvalidParameterException,
+                                                                                     ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendDeletedPersonalProfileEvent";
@@ -291,11 +291,11 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendKarmaPointPlateauEvent(PersonalProfile bean,
-                                           String          userId,
-                                           int             plateau,
-                                           int             totalPoints) throws InvalidParameterException,
-                                                                               ConnectorCheckedException
+    public void sendKarmaPointPlateauEvent(PersonalProfileUniverse bean,
+                                           String                 userId,
+                                           int                    plateau,
+                                           int                    totalPoints) throws InvalidParameterException,
+                                                                                      ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendKarmaPointPlateauEvent";
@@ -324,11 +324,11 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewAssetInCollectionEvent(PersonalProfile bean,
-                                              String          userId,
-                                              String          memberGUID,
-                                              String          memberTypeName) throws InvalidParameterException,
-                                                                                     ConnectorCheckedException
+    public void sendNewAssetInCollectionEvent(PersonalProfileUniverse bean,
+                                              String                 userId,
+                                              String                 memberGUID,
+                                              String                 memberTypeName) throws InvalidParameterException,
+                                                                                            ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewAssetInCollectionEvent";
@@ -355,11 +355,11 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendAssetRemovedFromCollectionEvent(PersonalProfile bean,
-                                                    String          userId,
-                                                    String          memberGUID,
-                                                    String          memberTypeName) throws InvalidParameterException,
-                                                                                           ConnectorCheckedException
+    public void sendAssetRemovedFromCollectionEvent(PersonalProfileUniverse bean,
+                                                    String                 userId,
+                                                    String                 memberGUID,
+                                                    String                 memberTypeName) throws InvalidParameterException,
+                                                                                                  ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendAssetRemovedFromCollectionEvent";
@@ -386,11 +386,11 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewProjectInCollectionEvent(PersonalProfile bean,
-                                                String          userId,
-                                                String          memberGUID,
-                                                String          memberTypeName) throws InvalidParameterException,
-                                                                                       ConnectorCheckedException
+    public void sendNewProjectInCollectionEvent(PersonalProfileUniverse bean,
+                                                String                 userId,
+                                                String                 memberGUID,
+                                                String                 memberTypeName) throws InvalidParameterException,
+                                                                                              ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewProjectInCollectionEvent";
@@ -418,11 +418,11 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendProjectRemovedFromCollectionEvent(PersonalProfile bean,
-                                                      String          userId,
-                                                      String          memberGUID,
-                                                      String          memberTypeName) throws InvalidParameterException,
-                                                                                             ConnectorCheckedException
+    public void sendProjectRemovedFromCollectionEvent(PersonalProfileUniverse bean,
+                                                      String                 userId,
+                                                      String                 memberGUID,
+                                                      String                 memberTypeName) throws InvalidParameterException,
+                                                                                                    ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendProjectRemovedFromCollectionEvent";
@@ -449,11 +449,11 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewCommunityInCollectionEvent(PersonalProfile bean,
-                                                  String          userId,
-                                                  String          memberGUID,
-                                                  String          memberTypeName) throws InvalidParameterException,
-                                                                                         ConnectorCheckedException
+    public void sendNewCommunityInCollectionEvent(PersonalProfileUniverse bean,
+                                                  String                 userId,
+                                                  String                 memberGUID,
+                                                  String                 memberTypeName) throws InvalidParameterException,
+                                                                                                ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewCommunityInCollectionEvent";
@@ -481,11 +481,11 @@ public abstract class CommunityProfileOutTopicPublisher
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendCommunityRemovedFromCollectionEvent(PersonalProfile bean,
-                                                        String          userId,
-                                                        String          memberGUID,
-                                                        String          memberTypeName) throws InvalidParameterException,
-                                                                                               ConnectorCheckedException
+    public void sendCommunityRemovedFromCollectionEvent(PersonalProfileUniverse bean,
+                                                        String                 userId,
+                                                        String                 memberGUID,
+                                                        String                 memberTypeName) throws InvalidParameterException,
+                                                                                                      ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendCommunityRemovedFromCollectionEvent";

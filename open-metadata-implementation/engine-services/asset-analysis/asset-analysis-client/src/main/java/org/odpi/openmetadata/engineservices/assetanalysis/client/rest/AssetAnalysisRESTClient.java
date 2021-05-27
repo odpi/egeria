@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.engineservices.assetanalysis.client.rest;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.client.ODFRESTClient;
+import org.odpi.openmetadata.accessservices.discoveryengine.client.rest.ODFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 

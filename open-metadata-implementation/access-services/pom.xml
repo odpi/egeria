@@ -49,6 +49,7 @@
         <module>information-view</module>
         <module>it-infrastructure</module>
         <module>project-management</module>
+        <module>security-manager</module>
         <module>security-officer</module>
         <module>software-developer</module>
         <module>stewardship-action</module>

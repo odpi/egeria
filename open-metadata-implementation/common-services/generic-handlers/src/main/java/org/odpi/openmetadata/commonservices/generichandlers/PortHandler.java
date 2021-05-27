@@ -582,6 +582,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.PORT_TYPE_GUID,
                               OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -765,6 +766,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     specificMatchPropertyNames,
                                     true,
                                     null,
+                                    null,
+                                    false,
+                                    supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,

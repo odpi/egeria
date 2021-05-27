@@ -3,14 +3,16 @@
 package org.odpi.openmetadata.accessservices.communityprofile.omrstopic;
 
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.ContributionRecordHandler;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.UserIdentityHandler;
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalProfileMapper;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContributionRecordElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicProcessor;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ContributionRecordHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -42,9 +44,9 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 
     private int                              karmaPointIncrement;
 
-    private PersonalProfileHandler           personalProfileHandler;
-    private ContributionRecordHandler        contributionRecordHandler;
-    private UserIdentityHandler              userIdentityHandler;
+    private UserIdentityHandler<UserIdentityElement>             userIdentityHandler;
+    private ActorProfileHandler<PersonalProfileUniverse>         personalProfileHandler;
+    private ContributionRecordHandler<ContributionRecordElement> contributionRecordHandler;
 
     private String                           serverUserId;
 
@@ -60,6 +62,7 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
      * @param auditLog  logging destination
      * @param repositoryHelper repository helper
      * @param instance  server instance
+     * @throws PropertyServerException initialization logic error
      */
     public CommunityProfileOMRSTopicProcessor(OpenMetadataTopicConnector        communityProfileOutTopic,
                                               int                               karmaPointIncrement,
@@ -67,7 +70,7 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                               String                            serverUserId,
                                               AuditLog                          auditLog,
                                               OMRSRepositoryHelper              repositoryHelper,
-                                              CommunityProfileServicesInstance  instance)
+                                              CommunityProfileServicesInstance  instance) throws PropertyServerException
     {
         super(serviceName, auditLog);
 
@@ -95,6 +98,7 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
     private void awardKarmaPoints(InstanceHeader    contribution)
     {
         final String methodName = "awardKarmaPoints";
+        final String userParameterName = "contribution.getUpdatedBy";
 
         if (karmaPointIncrement > 0)
         {
@@ -109,38 +113,47 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 
                 try
                 {
-                    PersonalProfile personalProfile = personalProfileHandler.getPersonalProfile(serverUserId,
-                                                                                                contributingUserId,
+                    List<PersonalProfileUniverse> personalProfiles = personalProfileHandler.getActorProfileByName(serverUserId,
+                                                                                                                  contributingUserId,
+                                                                                                                  userParameterName,
+                                                                                                                  0,
+                                                                                                                  0,
+                                                                                                                  methodName);
+
+                    if (personalProfiles != null)
+                    {
+                        /*
+                         * There should be only one.
+                         */
+                        if (personalProfiles.size() == 1)
+                        {
+                            final String profileGUIDParameterName = "personalProfiles.get(0).getElementHeader().getGUID()";
+
+                            ContributionRecordElement contributionRecord = personalProfiles.get(0).getContributionRecord();
+
+                            int currentPlateau = contributionRecord.getProperties().getKarmaPointPlateau();
+
+                            contributionRecord = contributionRecordHandler.incrementKarmaPoints(serverUserId,
+                                                                                                personalProfiles.get(0).getElementHeader().getGUID(),
+                                                                                                profileGUIDParameterName,
+                                                                                                personalProfiles.get(0).getProfileProperties().getQualifiedName(),
+                                                                                                karmaPointIncrement,
                                                                                                 methodName);
 
-                    if (personalProfile != null)
-                    {
-                        ContributionRecord contributionRecord = contributionRecordHandler.getContributionRecord(serverUserId,
-                                                                                                                personalProfile.getGUID(),
-                                                                                                                personalProfile.getQualifiedName(),
-                                                                                                                methodName);
+                            log.debug("Karma points updated: " + contributingUserId);
 
-                        int currentPlateau = contributionRecord.getKarmaPointPlateau();
+                            if (contributionRecord.getProperties().getKarmaPointPlateau() > currentPlateau)
+                            {
+                                auditLog.logMessage(methodName,
+                                                    CommunityProfileAuditCode.KARMA_PLATEAU_AWARD.getMessageDefinition(contributingUserId,
+                                                                                                                       Integer.toString(contributionRecord.getProperties().getKarmaPointPlateau()),
+                                                                                                                       Integer.toString(contributionRecord.getProperties().getKarmaPoints())));
 
-                        contributionRecord = contributionRecordHandler.incrementKarmaPoints(serverUserId,
-                                                                                            personalProfile.getGUID(),
-                                                                                            personalProfile.getQualifiedName(),
-                                                                                            karmaPointIncrement,
-                                                                                            methodName);
-
-                        log.debug("Karma points updated: " + contributingUserId);
-
-                        if (contributionRecord.getKarmaPointPlateau() > currentPlateau)
-                        {
-                            auditLog.logMessage(methodName,
-                                                CommunityProfileAuditCode.KARMA_PLATEAU_AWARD.getMessageDefinition(contributingUserId,
-                                                                                                                   Integer.toString(contributionRecord.getKarmaPointPlateau()),
-                                                                                                                   Integer.toString(contributionRecord.getKarmaPoints())));
-
-                            publisher.sendKarmaPointPlateauEvent(personalProfile,
-                                                                 contributingUserId,
-                                                                 contributionRecord.getKarmaPointPlateau(),
-                                                                 contributionRecord.getKarmaPoints());
+                                publisher.sendKarmaPointPlateauEvent(personalProfiles.get(0),
+                                                                     contributingUserId,
+                                                                     contributionRecord.getProperties().getKarmaPointPlateau(),
+                                                                     contributionRecord.getProperties().getKarmaPoints());
+                            }
                         }
                     }
                 }
@@ -182,7 +195,8 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                       String       originatorOrganizationName,
                                       EntityDetail entity)
     {
-        String methodName = "processNewEntityEvent";
+        final String methodName = "processNewEntityEvent";
+        final String guidParameterName = "newEntityEvent.getGUID";
 
         log.debug("Processing new Entity event from: " + sourceName);
 
@@ -198,18 +212,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 
         if (instanceTypeName != null)
         {
-
             try
             {
-                if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PERSON_TYPE_NAME))
                 {
-                    publisher.sendNewPersonalProfileEvent(personalProfileHandler.getPersonalProfile(serverUserId,
-                                                                                                    entity,
-                                                                                                    methodName));
+                    publisher.sendNewPersonalProfileEvent(personalProfileHandler.getActorProfileByGUID(serverUserId,
+                                                                                                       entity.getGUID(),
+                                                                                                       guidParameterName,
+                                                                                                       methodName));
                 }
-                else if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME))
                 {
-                    publisher.sendNewUserIdentityEvent(userIdentityHandler.getUserIdentity(entity));
+                    publisher.sendNewUserIdentityEvent(userIdentityHandler.getUserIdentityByGUID(serverUserId,
+                                                                                                 entity.getGUID(),
+                                                                                                 guidParameterName,
+                                                                                                 methodName));
                 }
             }
             catch (Exception error)

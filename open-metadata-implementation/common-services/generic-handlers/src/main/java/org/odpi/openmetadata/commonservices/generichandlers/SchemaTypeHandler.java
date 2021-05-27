@@ -24,7 +24,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     private OpenMetadataAPIGenericConverter<B> schemaTypeConverter;
 
     /**
-     * Construct the asset handler with information needed to work with B objects.
+     * Construct the handler with information needed to work with B objects.
      *
      * @param converter specific converter for this bean class
      * @param beanClass name of bean class that is represented by the generic class B
@@ -226,8 +226,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param externalSourceName     unique name of software server capability representing the caller
      * @param existingSchemaTypeGUID unique identifier of the existing schemaType entity
      * @param existingSchemaTypeGUIDParameterName name of parameter for existingSchemaTypeGUID
-     * @param builder             new schemaType values
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param builder                new schemaType values
+     * @param isMergeUpdate          should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param methodName             calling method
      *
      * @throws InvalidParameterException  the schemaType bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -498,6 +499,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                         null,
                                                         null,
+                                                        null,
                                                         startFrom,
                                                         pageSize,
                                                         methodName);
@@ -544,6 +546,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               specificMatchPropertyNames,
                                                               true,
                                                               null,
+                                                              null,
+                                                              false,
+                                                              supportedZones,
                                                               null,
                                                               startFrom,
                                                               pageSize,

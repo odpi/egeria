@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerAppointee;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceAppointee;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 import java.util.Arrays;
@@ -19,7 +19,7 @@ public class GovernanceAppointeeNotUniqueException extends GovernanceProgramChec
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<GovernanceOfficerAppointee> duplicatePosts;
+    private List<GovernanceAppointee> duplicatePosts;
 
 
     /**
@@ -33,7 +33,7 @@ public class GovernanceAppointeeNotUniqueException extends GovernanceProgramChec
     public GovernanceAppointeeNotUniqueException(ExceptionMessageDefinition       messageDefinition,
                                                  String                           className,
                                                  String                           actionDescription,
-                                                 List<GovernanceOfficerAppointee> duplicatePosts)
+                                                 List<GovernanceAppointee> duplicatePosts)
     {
         super(messageDefinition, className, actionDescription);
         this.duplicatePosts = duplicatePosts;
@@ -53,7 +53,7 @@ public class GovernanceAppointeeNotUniqueException extends GovernanceProgramChec
     public GovernanceAppointeeNotUniqueException(ExceptionMessageDefinition       messageDefinition,
                                                  String                           className,
                                                  String                           actionDescription,
-                                                 List<GovernanceOfficerAppointee> duplicatePosts,
+                                                 List<GovernanceAppointee> duplicatePosts,
                                                  Map<String, Object>              relatedProperties)
     {
         super(messageDefinition, className, actionDescription, relatedProperties);
@@ -75,7 +75,7 @@ public class GovernanceAppointeeNotUniqueException extends GovernanceProgramChec
                                                  String                           className,
                                                  String                           actionDescription,
                                                  Throwable                        caughtError,
-                                                 List<GovernanceOfficerAppointee> duplicatePosts)
+                                                 List<GovernanceAppointee> duplicatePosts)
     {
         super(messageDefinition, className, actionDescription, caughtError);
         this.duplicatePosts = duplicatePosts;
@@ -97,7 +97,7 @@ public class GovernanceAppointeeNotUniqueException extends GovernanceProgramChec
                                                  String                           className,
                                                  String                           actionDescription,
                                                  Throwable                        caughtError,
-                                                 List<GovernanceOfficerAppointee> duplicatePosts,
+                                                 List<GovernanceAppointee> duplicatePosts,
                                                  Map<String, Object>              relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -132,7 +132,7 @@ public class GovernanceAppointeeNotUniqueException extends GovernanceProgramChec
                                                  String                           systemAction,
                                                  String                           userAction,
                                                  String                           caughtErrorClassName,
-                                                 List<GovernanceOfficerAppointee> duplicatePosts,
+                                                 List<GovernanceAppointee> duplicatePosts,
                                                  Map<String, Object>              relatedProperties)
     {
         super(httpCode,
@@ -168,7 +168,7 @@ public class GovernanceAppointeeNotUniqueException extends GovernanceProgramChec
                                                  String                              errorMessage,
                                                  String                              systemAction,
                                                  String                              userAction,
-                                                 List<GovernanceOfficerAppointee>    duplicatePosts)
+                                                 List<GovernanceAppointee>    duplicatePosts)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
 
@@ -196,7 +196,7 @@ public class GovernanceAppointeeNotUniqueException extends GovernanceProgramChec
                                                  String                              systemAction,
                                                  String                              userAction,
                                                  Throwable                           caughtError,
-                                                 List<GovernanceOfficerAppointee>    duplicatePosts)
+                                                 List<GovernanceAppointee>    duplicatePosts)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
@@ -209,7 +209,7 @@ public class GovernanceAppointeeNotUniqueException extends GovernanceProgramChec
      *
      * @return list of profiles
      */
-    public List<GovernanceOfficerAppointee> getDuplicatePosts()
+    public List<GovernanceAppointee> getDuplicatePosts()
     {
         return duplicatePosts;
     }

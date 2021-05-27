@@ -33,7 +33,7 @@ dependencies {
 
 }
 
-description = 'Data Manager OMAS FVT'
+description = 'Digital Architecture OMAS FVT'
 
 java {
     withJavadocJar()

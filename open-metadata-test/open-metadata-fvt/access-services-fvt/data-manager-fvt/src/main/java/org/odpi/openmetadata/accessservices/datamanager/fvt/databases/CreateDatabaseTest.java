@@ -10,11 +10,11 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,8 +45,6 @@ public class CreateDatabaseTest
     private final static String databaseSchemaName        = "TestDatabaseSchema";
     private final static String databaseSchemaDisplayName = "DatabaseSchema displayName";
     private final static String databaseSchemaDescription = "DatabaseSchema description";
-    private final static String databaseSchemaZone        = "DatabaseSchema Zone";
-    private final static String databaseSchemaOwner       = "DatabaseSchema Owner";
 
     private final static String databaseTableName        = "TestDatabaseTable";
     private final static String databaseTableDisplayName = "DatabaseTable displayName";
@@ -111,11 +109,94 @@ public class CreateDatabaseTest
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceWiki());
 
         DatabaseManagerClient client = thisTest.getDatabaseManagerClient(serverName, serverPlatformRootURL, auditLog);
+
         String databaseManagerGUID = thisTest.getDatabaseManager(serverName, serverPlatformRootURL, userId, auditLog);
         String databaseGUID = thisTest.getDatabase(client, databaseManagerGUID, userId);
         String databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseManagerGUID, databaseGUID, userId);
-        String databaseTableGUID = thisTest.getDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
-        String databaseColumnGUID = thisTest.getDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
+        String databaseTableGUID = thisTest.createDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
+        String databaseColumnGUID = thisTest.createDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
+
+
+        /*
+         * Check that all elements are deleted when the database is deleted.
+         */
+        String activityName = "cascadedDelete";
+        try
+        {
+            client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseName);
+
+            thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
+            thisTest.checkDatabaseTableGone(client, databaseTableGUID, null, activityName, userId);
+            thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+
+
+        /*
+         * Recreate database
+         */
+        activityName= "deleteOneByOne";
+
+        databaseGUID = thisTest.getDatabase(client, databaseManagerGUID, userId);
+        databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseManagerGUID, databaseGUID, userId);
+        databaseTableGUID = thisTest.createDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
+        databaseColumnGUID = thisTest.createDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
+
+
+        /*
+         * Check that elements can be deleted one by one
+         */
+
+        try
+        {
+            activityName = "deleteOneByOne - prevalidate";
+            thisTest.checkDatabaseColumnOK(client, databaseColumnGUID, databaseTableGUID, activityName, userId);
+            thisTest.checkDatabaseTableOK(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
+            thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
+
+            client.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databaseColumnName);
+
+            activityName = "deleteOneByOne - column gone";
+            thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, databaseTableGUID, activityName, userId);
+            thisTest.checkDatabaseTableOK(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
+            thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
+
+            client.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseTableName);
+
+            activityName = "deleteOneByOne - table gone";
+            thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
+            thisTest.checkDatabaseTableGone(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
+            thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
+
+            client.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseSchemaName);
+
+            activityName = "deleteOneByOne - schema gone";
+            thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
+            thisTest.checkDatabaseTableGone(client, databaseTableGUID, null, activityName, userId);
+            thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
+
+            client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseName);
+
+            activityName = "deleteOneByOne - database gone";
+            thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
+            thisTest.checkDatabaseTableGone(client, databaseTableGUID, null, activityName, userId);
+            thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
+            thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
+
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+
     }
 
 
@@ -140,7 +221,7 @@ public class CreateDatabaseTest
 
             return new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -201,7 +282,7 @@ public class CreateDatabaseTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -209,43 +290,74 @@ public class CreateDatabaseTest
 
 
     /**
-     * Create a database and return its GUID.
+     * Check a database is gone.
      *
      * @param client interface to Data Manager OMAS
-     * @param databaseManagerGUID unique id of the database manager
+     * @param databaseGUID unique id of the database to test
+     * @param activityName name of calling activity
      * @param userId calling user
-     * @return GUID of database
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private String getDatabase(DatabaseManagerClient client,
-                               String                databaseManagerGUID,
-                               String                userId) throws FVTUnexpectedCondition
+    private void checkDatabaseGone(DatabaseManagerClient client,
+                                   String                databaseGUID,
+                                   String                activityName,
+                                   String                userId) throws FVTUnexpectedCondition
     {
-        final String activityName = "getDatabase";
-
         try
         {
-            DatabaseProperties properties = new DatabaseProperties();
+            DatabaseElement retrievedElement = client.getDatabaseByGUID(userId, databaseGUID);
 
-            properties.setQualifiedName(databaseName);
-            properties.setDisplayName(databaseDisplayName);
-            properties.setDescription(databaseDescription);
-            properties.setDatabaseType(databaseType);
-            properties.setDatabaseVersion(databaseVersion);
-
-            String databaseGUID = client.createDatabase(userId, databaseManagerGUID, databaseManagerName, properties);
-
-            if (databaseGUID == null)
+            if (retrievedElement != null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Database returned from Retrieve)");
             }
 
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Retrieve returned)");
+        }
+        catch (InvalidParameterException expectedException)
+        {
+            // all ok
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+
+    /**
+     * Check database is ok.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseGUID unique id of the database
+     * @param activityName name of calling activity
+     * @param userId calling user
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void checkDatabaseOK(DatabaseManagerClient client,
+                                 String                databaseGUID,
+                                 String                activityName,
+                                 String                userId) throws FVTUnexpectedCondition
+    {
+        try
+        {
             DatabaseElement retrievedElement = client.getDatabaseByGUID(userId, databaseGUID);
+
+            if (retrievedElement == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseElement from Retrieve)");
+            }
+
             DatabaseProperties retrievedDatabase = retrievedElement.getDatabaseProperties();
 
             if (retrievedDatabase == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no Database from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseProperties from Retrieve)");
             }
 
             if (! databaseName.equals(retrievedDatabase.getQualifiedName()))
@@ -283,7 +395,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName,
                                                  activityName + "(Database list for RetrieveByName contains" + databaseList.size() +
-                                                 " elements)");
+                                                         " elements)");
             }
 
             retrievedElement = databaseList.get(0);
@@ -316,6 +428,53 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no Database for RetrieveByName)");
             }
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Create a database and return its GUID.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseManagerGUID unique id of the database manager
+     * @param userId calling user
+     * @return GUID of database
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String getDatabase(DatabaseManagerClient client,
+                               String                databaseManagerGUID,
+                               String                userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "getDatabase";
+
+        try
+        {
+            DatabaseProperties properties = new DatabaseProperties();
+
+            properties.setQualifiedName(databaseName);
+            properties.setDisplayName(databaseDisplayName);
+            properties.setDescription(databaseDescription);
+            properties.setDatabaseType(databaseType);
+            properties.setDatabaseVersion(databaseVersion);
+
+            String databaseGUID = client.createDatabase(userId, databaseManagerGUID, databaseManagerName, properties);
+
+            if (databaseGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
+            }
+            else
+            {
+                checkDatabaseOK(client, databaseGUID, activityName, userId);
+            }
 
             return databaseGUID;
         }
@@ -323,58 +482,109 @@ public class CreateDatabaseTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
     }
 
 
-
     /**
-     * Create a database schema and return its GUID.
+     * Check a database column is gone.
      *
      * @param client interface to Data Manager OMAS
-     * @param databaseManagerGUID unique id of the database manager
-     * @param databaseGUID unique id of the database
+     * @param databaseSchemaGUID unique id of the database schema to test
+     * @param databaseGUID unique id of the database to test
+     * @param activityName name of calling activity
      * @param userId calling user
-     * @return GUID of database
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private String getDatabaseSchema(DatabaseManagerClient client,
-                                     String                databaseManagerGUID,
-                                     String                databaseGUID,
-                                     String                userId) throws FVTUnexpectedCondition
+    private void checkDatabaseSchemaGone(DatabaseManagerClient client,
+                                         String                databaseSchemaGUID,
+                                         String                databaseGUID,
+                                         String                activityName,
+                                         String                userId) throws FVTUnexpectedCondition
     {
-        final String activityName = "getDatabaseSchema";
-
         try
         {
-            DatabaseSchemaProperties properties = new DatabaseSchemaProperties();
+            DatabaseSchemaElement retrievedElement = client.getDatabaseSchemaByGUID(userId, databaseSchemaGUID);
 
-            properties.setQualifiedName(databaseSchemaName);
-            properties.setDisplayName(databaseSchemaDisplayName);
-            properties.setDescription(databaseSchemaDescription);
-
-            List<String> zones = new ArrayList<>();
-            zones.add(databaseSchemaZone);
-            properties.setZoneMembership(zones);
-            properties.setOwner(databaseSchemaOwner);
-            properties.setOwnerCategory(OwnerCategory.USER_ID);
-
-            String databaseSchemaGUID = client.createDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseGUID, properties);
-
-            if (databaseSchemaGUID == null)
+            if (retrievedElement != null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for schemaCreate)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseSchema returned from Retrieve)");
             }
 
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(getDatabaseSchemaByGUID returned");
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (InvalidParameterException expectedError)
+        {
+            // all ok
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+
+        if (databaseGUID != null)
+        {
+            try
+            {
+                /*
+                 * Only one schema created so nothing should be tied to the database.
+                 */
+                List<DatabaseSchemaElement> databaseSchemaList = client.getSchemasForDatabase(userId, databaseGUID, 0, maxPageSize);
+
+                if (databaseSchemaList != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseSchema returned for getSchemasForDatabase)");
+                }
+            }
+            catch(FVTUnexpectedCondition testCaseError)
+            {
+                throw testCaseError;
+            }
+            catch(Exception unexpectedError)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+            }
+        }
+    }
+
+
+    /**
+     * Check a database schema is correctly stored.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseSchemaGUID unique id of the database schema
+     * @param databaseGUID unique id of the database
+     * @param activityName name of calling activity
+     * @param userId calling user
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void   checkDatabaseSchemaOK(DatabaseManagerClient client,
+                                         String                databaseSchemaGUID,
+                                         String                databaseGUID,
+                                         String                activityName,
+                                         String                userId) throws FVTUnexpectedCondition
+    {
+        try
+        {
             DatabaseSchemaElement    retrievedElement  = client.getDatabaseSchemaByGUID(userId, databaseSchemaGUID);
+
+            if (retrievedElement == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseSchemaElement from Retrieve)");
+            }
+
             DatabaseSchemaProperties retrievedSchema = retrievedElement.getDatabaseSchemaProperties();
 
             if (retrievedSchema == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseSchema from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseSchemaProperties from Retrieve)");
             }
 
             if (! databaseSchemaName.equals(retrievedSchema.getQualifiedName()))
@@ -389,26 +599,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
-            if (retrievedSchema.getZoneMembership() == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null database schema Zone Membership from Retrieve)");
-            }
-            if (retrievedSchema.getZoneMembership().size() != 1)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Database schema Zone Membership size is " + retrievedSchema.getZoneMembership().size() + " from Retrieve)");
-            }
-            if (! databaseSchemaZone.equals(retrievedSchema.getZoneMembership().get(0)))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad database schema Zone Membership from Retrieve)");
-            }
-            if (! databaseSchemaOwner.equals(retrievedSchema.getOwner()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad database owner from Retrieve)");
-            }
-            if (OwnerCategory.USER_ID != retrievedSchema.getOwnerCategory())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad database owner type from Retrieve)");
-            }
+
 
             List<DatabaseSchemaElement> databaseSchemaList = client.getDatabaseSchemasByName(userId, databaseSchemaName, 0, maxPageSize);
 
@@ -442,13 +633,69 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
-            if (! databaseSchemaZone.equals(retrievedSchema.getZoneMembership().get(0)))
+
+            databaseSchemaList = client.getSchemasForDatabase(userId, databaseGUID, 0, maxPageSize);
+
+            if (databaseSchemaList == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad zone membership from RetrieveByName)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseSchema for getSchemasForDatabase)");
             }
-            if (! databaseSchemaOwner.equals(retrievedSchema.getOwner()))
+            else if (databaseSchemaList.isEmpty())
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad database owner from RetrieveByName)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseSchema list for getSchemasForDatabase)");
+            }
+            else if (databaseSchemaList.size() != 1)
+            {
+                throw new FVTUnexpectedCondition(testCaseName,
+                                                 activityName + "(DatabaseSchema list for getSchemasForDatabase contains" + databaseSchemaList.size() +
+                                                         " elements)");
+            }
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Create a database schema and return its GUID.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseManagerGUID unique id of the database manager
+     * @param databaseGUID unique id of the database
+     * @param userId calling user
+     * @return GUID of database
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String getDatabaseSchema(DatabaseManagerClient client,
+                                     String                databaseManagerGUID,
+                                     String                databaseGUID,
+                                     String                userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "getDatabaseSchema";
+
+        try
+        {
+            DatabaseSchemaProperties properties = new DatabaseSchemaProperties();
+
+            properties.setQualifiedName(databaseSchemaName);
+            properties.setDisplayName(databaseSchemaDisplayName);
+            properties.setDescription(databaseSchemaDescription);
+
+            String databaseSchemaGUID = client.createDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseGUID, properties);
+
+            if (databaseSchemaGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for schemaCreate)");
+            }
+            else
+            {
+                checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
             }
 
             return databaseSchemaGUID;
@@ -457,7 +704,7 @@ public class CreateDatabaseTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -465,44 +712,104 @@ public class CreateDatabaseTest
 
 
     /**
-     * Create a database table and return its GUID.
+     * Check a database table is gone.
      *
      * @param client interface to Data Manager OMAS
-     * @param databaseManagerGUID unique id of the database manager
-     * @param databaseSchemaGUID unique id of the databaseSchema
+     * @param databaseTableGUID unique id of the database table to test
+     * @param databaseSchemaGUID unique id of the database schema to test
+     * @param activityName name of calling activity
      * @param userId calling user
-     * @return GUID of database
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private String getDatabaseTable(DatabaseManagerClient client,
-                                    String                databaseManagerGUID,
-                                    String                databaseSchemaGUID,
-                                    String                userId) throws FVTUnexpectedCondition
+    private void checkDatabaseTableGone(DatabaseManagerClient client,
+                                        String                databaseTableGUID,
+                                        String                databaseSchemaGUID,
+                                        String                activityName,
+                                        String                userId) throws FVTUnexpectedCondition
     {
-        final String activityName = "getDatabaseTable";
+        try
+        {
+            DatabaseTableElement retrievedElement = client.getDatabaseTableByGUID(userId, databaseTableGUID);
+
+            if (retrievedElement != null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseTable returned from Retrieve)");
+            }
+
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(getDatabaseTableByGUID returned");
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (InvalidParameterException expectedError)
+        {
+            // all ok
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+
+        if (databaseSchemaGUID != null)
+        {
+            try
+            {
+                /*
+                 * Only one table created so nothing should be tied to the schema.
+                 */
+                List<DatabaseTableElement> databaseTableList = client.getTablesForDatabaseSchema(userId, databaseSchemaGUID, 0, maxPageSize);
+
+                if (databaseTableList != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseTable returned for getTablesForDatabaseSchema)");
+                }
+            }
+            catch(FVTUnexpectedCondition testCaseError)
+            {
+                throw testCaseError;
+            }
+            catch(Exception unexpectedError)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+            }
+        }
+    }
+
+
+
+
+    /**
+     * Check a database table is stored OK.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseTableGUID unique id of the databaseSchema
+     * @param databaseSchemaGUID unique id of the databaseSchema
+     * @param activityName name of calling activity
+     * @param userId calling user
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void checkDatabaseTableOK(DatabaseManagerClient client,
+                                      String                databaseTableGUID,
+                                      String                databaseSchemaGUID,
+                                      String                activityName,
+                                      String                userId) throws FVTUnexpectedCondition
+    {
 
         try
         {
-            DatabaseTableProperties properties = new DatabaseTableProperties();
+            DatabaseTableElement    retrievedElement = client.getDatabaseTableByGUID(userId, databaseTableGUID);
 
-            properties.setQualifiedName(databaseTableName);
-            properties.setDisplayName(databaseTableDisplayName);
-            properties.setDescription(databaseTableDescription);
-
-
-            String databaseTableGUID = client.createDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, properties);
-
-            if (databaseTableGUID == null)
+            if (retrievedElement == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for tableCreate)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTableElement from Retrieve)");
             }
 
-            DatabaseTableElement    retrievedElement = client.getDatabaseTableByGUID(userId, databaseTableGUID);
             DatabaseTableProperties retrievedTable  = retrievedElement.getDatabaseTableProperties();
 
             if (retrievedTable == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTable from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTableProperties from Retrieve)");
             }
 
             if (! databaseTableName.equals(retrievedTable.getQualifiedName()))
@@ -551,11 +858,69 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
 
-            List<DatabaseColumnElement> databaseColumnList = client.getColumnsForDatabaseTable(userId, databaseTableGUID, 0, maxPageSize);
+            databaseTableList = client.getTablesForDatabaseSchema(userId, databaseSchemaGUID, 0, maxPageSize);
 
-            if (databaseColumnList != null)
+            if (databaseTableList == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumn for getColumnsForDatabaseTable)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTable for getTablesForDatabaseSchema)");
+            }
+            else if (databaseTableList.isEmpty())
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseTable list for getTablesForDatabaseSchema)");
+            }
+            else if (databaseTableList.size() != 1)
+            {
+                throw new FVTUnexpectedCondition(testCaseName,
+                                                 activityName + "(DatabaseColumn list for getTablesForDatabaseSchema contains" + databaseTableList.size() +
+                                                         " elements)");
+            }
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Create a database table and return its GUID.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseManagerGUID unique id of the database manager
+     * @param databaseSchemaGUID unique id of the databaseSchema
+     * @param userId calling user
+     * @return GUID of database
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String createDatabaseTable(DatabaseManagerClient client,
+                                       String                databaseManagerGUID,
+                                       String                databaseSchemaGUID,
+                                       String                userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "createDatabaseTable";
+
+        try
+        {
+            DatabaseTableProperties properties = new DatabaseTableProperties();
+
+            properties.setQualifiedName(databaseTableName);
+            properties.setDisplayName(databaseTableDisplayName);
+            properties.setDescription(databaseTableDescription);
+
+
+            String databaseTableGUID = client.createDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, properties);
+
+            if (databaseTableGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for tableCreate)");
+            }
+            else
+            {
+                checkDatabaseTableOK(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
             }
 
             return databaseTableGUID;
@@ -564,9 +929,75 @@ public class CreateDatabaseTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Check a database column is gone.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseColumnGUID unique id of the database column to test
+     * @param databaseTableGUID unique id of the database table to test
+     * @param activityName name of calling activity
+     * @param userId calling user
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void checkDatabaseColumnGone(DatabaseManagerClient client,
+                                         String                databaseColumnGUID,
+                                         String                databaseTableGUID,
+                                         String                activityName,
+                                         String                userId) throws FVTUnexpectedCondition
+    {
+        try
+        {
+            DatabaseColumnElement retrievedElement = client.getDatabaseColumnByGUID(userId, databaseColumnGUID);
+
+            if (retrievedElement != null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseColumn returned from Retrieve)");
+            }
+
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(getDatabaseColumnByGUID returned");
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (InvalidParameterException expectedError)
+        {
+            // all ok
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+
+        if (databaseTableGUID != null)
+        {
+            try
+            {
+                /*
+                 * Only one column created so nothing should be tied to the table.
+                 */
+                List<DatabaseColumnElement> databaseColumnList = client.getColumnsForDatabaseTable(userId, databaseTableGUID, 0, maxPageSize);
+
+                if (databaseColumnList != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseColumn returned for getColumnsForDatabaseTable)");
+                }
+            }
+            catch(FVTUnexpectedCondition testCaseError)
+            {
+                throw testCaseError;
+            }
+            catch(Exception unexpectedError)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+            }
         }
     }
 
@@ -575,41 +1006,32 @@ public class CreateDatabaseTest
      * Create a database column and return its GUID.
      *
      * @param client interface to Data Manager OMAS
-     * @param databaseManagerGUID unique id of the database manager
-     * @param databaseTableGUID unique id of the database table to connect the column to
+     * @param databaseColumnGUID unique id of the database column to test
+     * @param databaseTableGUID unique id of the database table to test
+     * @param activityName name of calling activity
      * @param userId calling user
-     * @return GUID of database
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private String getDatabaseColumn(DatabaseManagerClient client,
-                                     String                databaseManagerGUID,
-                                     String                databaseTableGUID,
-                                     String                userId) throws FVTUnexpectedCondition
+    private void checkDatabaseColumnOK(DatabaseManagerClient client,
+                                       String                databaseColumnGUID,
+                                       String                databaseTableGUID,
+                                       String                activityName,
+                                       String                userId) throws FVTUnexpectedCondition
     {
-        final String activityName = "getDatabaseColumn";
-
         try
         {
-            DatabaseColumnProperties  properties = new DatabaseColumnProperties();
-
-            properties.setQualifiedName(databaseColumnName);
-            properties.setDisplayName(databaseColumnDisplayName);
-            properties.setDescription(databaseColumnDescription);
-            properties.setDataType(databaseColumnType);
-
-            String databaseColumnGUID = client.createDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, properties);
-
-            if (databaseColumnGUID == null)
+            DatabaseColumnElement  retrievedElement = client.getDatabaseColumnByGUID(userId, databaseColumnGUID);
+            
+            if (retrievedElement == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for columnCreate)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumnElement from Retrieve)");
             }
-
-            DatabaseColumnElement    retrievedElement = client.getDatabaseColumnByGUID(userId, databaseColumnGUID);
+            
             DatabaseColumnProperties retrievedColumn  = retrievedElement.getDatabaseColumnProperties();
 
             if (retrievedColumn == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumn from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumnProperties from Retrieve)");
             }
 
             if (! databaseColumnName.equals(retrievedColumn.getQualifiedName()))
@@ -690,6 +1112,54 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from getColumnsForDatabaseTable)");
             }
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+    
+    /**
+     * Create a database column and return its GUID.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseManagerGUID unique id of the database manager
+     * @param databaseTableGUID unique id of the database table to connect the column to
+     * @param userId calling user
+     * @return GUID of database
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String createDatabaseColumn(DatabaseManagerClient client,
+                                        String                databaseManagerGUID,
+                                        String                databaseTableGUID,
+                                        String                userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "createDatabaseColumn";
+
+        try
+        {
+            DatabaseColumnProperties  properties = new DatabaseColumnProperties();
+
+            properties.setQualifiedName(databaseColumnName);
+            properties.setDisplayName(databaseColumnDisplayName);
+            properties.setDescription(databaseColumnDescription);
+            properties.setDataType(databaseColumnType);
+
+            String databaseColumnGUID = client.createDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, properties);
+
+            if (databaseColumnGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for columnCreate)");
+            }
+            else
+            {
+                checkDatabaseColumnOK(client, databaseColumnGUID, databaseTableGUID, activityName, userId);
+            }
 
             return databaseColumnGUID;
         }
@@ -697,7 +1167,7 @@ public class CreateDatabaseTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
