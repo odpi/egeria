@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_GUID;
@@ -176,6 +177,24 @@ public class DataEngineSchemaTypeHandler {
     }
 
     /**
+     * Find out if the Referenceable object is already stored in the repository. It uses the fully qualified name to retrieve the entity
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualifiedName name of the process to be searched
+     *
+     * @return optional with entity details if found, empty optional if not found
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public Optional<EntityDetail> findReferenceableEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
+            PropertyServerException,
+            InvalidParameterException {
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, REFERENCEABLE_TYPE_NAME);
+    }
+
+    /**
      * Create LineageMapping relationship between two schema attributes
      *
      * @param userId                             the name of the calling user
@@ -197,22 +216,23 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateName(sourceSchemaAttributeQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateName(targetSchemaAttributeQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        Optional<EntityDetail> sourceSchemaAttributeEntity = findSchemaAttributeEntity(userId, sourceSchemaAttributeQualifiedName);
-        Optional<EntityDetail> targetSchemaAttributeEntity = findSchemaAttributeEntity(userId, targetSchemaAttributeQualifiedName);
+        Optional<EntityDetail> sourceReferenceableEntity = findReferenceableEntity(userId, sourceSchemaAttributeQualifiedName);
+        Optional<EntityDetail> targetReferenceableEntity = findReferenceableEntity(userId, targetSchemaAttributeQualifiedName);
 
-        if (!sourceSchemaAttributeEntity.isPresent()) {
+        if (!sourceReferenceableEntity.isPresent()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
                     sourceSchemaAttributeQualifiedName);
             return;
         }
-        if (!targetSchemaAttributeEntity.isPresent()) {
+        if (!targetReferenceableEntity.isPresent()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
                     targetSchemaAttributeQualifiedName);
             return;
         }
 
-        dataEngineCommonHandler.upsertExternalRelationship(userId, sourceSchemaAttributeEntity.get().getGUID(),
-                targetSchemaAttributeEntity.get().getGUID(), LINEAGE_MAPPING_TYPE_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME, externalSourceName, null);
+        dataEngineCommonHandler.upsertExternalRelationship(userId, sourceReferenceableEntity.get().getGUID(),
+                targetReferenceableEntity.get().getGUID(), LINEAGE_MAPPING_TYPE_NAME, sourceReferenceableEntity.get().getType().getTypeDefName(),
+                externalSourceName, null);
     }
 
     /**
