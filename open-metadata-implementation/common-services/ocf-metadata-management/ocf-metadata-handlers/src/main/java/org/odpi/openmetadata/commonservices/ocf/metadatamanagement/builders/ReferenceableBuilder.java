@@ -28,7 +28,7 @@ public class ReferenceableBuilder extends RootBuilder
     protected Map<String, String> additionalProperties = null;
     protected Map<String, Object> extendedProperties   = null;
 
-    protected LatestChange latestChange         = null;
+    protected LatestChange latestChange = null;
     private   SecurityTags securityTags = null;
 
 
@@ -252,6 +252,7 @@ public class ReferenceableBuilder extends RootBuilder
         this.typeId = typeId;
         this.typeName = typeName;
         this.extendedProperties = extendedProperties;
+        this.additionalProperties = additionalProperties;
     }
 
 

@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Community;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class CommunityOutboundEventTest
     private static String                            testMission  = "TestMission";
     private static String                            testUserId   = "TestUserId";
 
-    private Community bean = new Community();
+    private CommunityProperties bean = new CommunityProperties();
 
 
     /**
@@ -30,10 +31,12 @@ public class CommunityOutboundEventTest
      */
     public CommunityOutboundEventTest()
     {
-        List<UserIdentity>  users = new ArrayList<>();
+        List<UserIdentityElement> users = new ArrayList<>();
 
-        UserIdentity userBean = new UserIdentity();
-        userBean.setUserId(testUserId);
+        UserIdentityElement userBean = new UserIdentityElement();
+        UserIdentityProperties properties = new UserIdentityProperties();
+        properties.setQualifiedName(testUserId);
+        userBean.setProperties(properties);
         users.add(userBean);
 
         bean.setMission(testMission);

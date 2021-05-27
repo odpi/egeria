@@ -24,7 +24,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
+                @JsonSubTypes.Type(value = ExecutionPointProperties.class, name = "ExecutionPointProperties"),
+                @JsonSubTypes.Type(value = ExternalReferenceProperties.class, name = "ExternalReferenceProperties"),
+                @JsonSubTypes.Type(value = GovernanceDefinitionMetric.class, name = "GovernanceDefinitionMetric"),
+                @JsonSubTypes.Type(value = GovernanceDomainProperties.class, name = "GovernanceDomainProperties"),
+                @JsonSubTypes.Type(value = GovernanceDomainSetProperties.class, name = "GovernanceDomainSetProperties"),
+                @JsonSubTypes.Type(value = GovernanceLevelIdentifierProperties.class, name = "GovernanceLevelIdentifierProperties"),
+                @JsonSubTypes.Type(value = GovernanceLevelIdentifierSetProperties.class, name = "GovernanceLevelIdentifierSetProperties"),
+                @JsonSubTypes.Type(value = GovernanceMetricProperties.class, name = "GovernanceMetricProperties"),
                 @JsonSubTypes.Type(value = GovernanceZoneProperties.class, name = "GovernanceZoneProperties")
         })
 public abstract class ReferenceableProperties implements Serializable
