@@ -57,7 +57,7 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.N
 public class AssetCatalogHandlerTest {
 
     private static final String RELATIONSHIP_GUID = "212123-abc";
-    private static final String ASSET_TYPE = "Process";
+    private static final String ASSET_TYPE = "Asset";
     private static final String CLASSIFICATION_NAME = "Confidentiality";
     private static final Integer FROM = 0;
     private static final Integer PAGE_SIZE = 10;
@@ -68,6 +68,8 @@ public class AssetCatalogHandlerTest {
     private static final String RELATIONSHIP_TYPE_GUID = "adadad-bcba-123";
     private final String USER = "test-user";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
+    private static final String PROCESS_TYPE = "Process";
+    private static final String PROCESS_GUID = "ProcessGUID";
     @Mock
     private RepositoryHandler repositoryHandler;
 
@@ -669,11 +671,16 @@ public class AssetCatalogHandlerTest {
 
     private List<EntityDetail> mockEntities() {
         List<EntityDetail> entityDetails = new ArrayList<>();
+
         EntityDetail entityDetail = new EntityDetail();
         entityDetail.setGUID(FIRST_GUID);
-
         entityDetail.setType(mockInstanceType(ASSET_TYPE, ASSET_TYPE_GUID));
         entityDetails.add(entityDetail);
+
+        EntityDetail processEntityDetail = new EntityDetail();
+        processEntityDetail.setType(mockInstanceType(ASSET_TYPE, ASSET_TYPE_GUID));
+        entityDetails.add(processEntityDetail);
+
         return entityDetails;
     }
 
