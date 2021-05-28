@@ -74,19 +74,16 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
              "The Apache Kafka connector listening on topic {0} received an unexpected exception {1} distributing an event to components within the server.  The event was {2} and the message in the exception was {3}",
              "An incoming event could not be processed by one or more components in the server.",
              "Use the information in the event and the exception message, along with other messages to determine the source of the error."),
-
     KAFKA_PRODUCER_START("OCF-KAFKA-TOPIC-CONNECTOR-0010",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Apache Kafka producer for topic {0} is starting up with {1} buffered messages",
              "The local server has started the Apache Kafka connector.",
              "No action is required.  This is part of the normal operation of the server."),
-
     KAFKA_PRODUCER_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0011",
              OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Apache Kafka producer for topic {0} is shutting down after sending {2} messages and with {1} unsent messages",
              "The local server has requested shut down of the Apache Kafka connector.",
              "No action is required.  This is part of the normal operation of the server."),
-
     EVENT_SEND_IN_ERROR_LOOP("OCF-KAFKA-TOPIC-CONNECTOR-0012",
              OMRSAuditLogRecordSeverity.ERROR,
              "Unable to send event on topic {0}.  {1} events successfully sent; {2} events buffered. Latest error message is {3}",
@@ -95,19 +92,16 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                                      "If no events have been send, then it may be a configuration error, either in this " +
                                      "server or in the event bus itself. Once the error is corrected, " +
                                      "the server will send the buffered events.  "),
-
     MISSING_PROPERTY( "OCF-KAFKA-TOPIC-CONNECTOR-0013 ",
              OMRSAuditLogRecordSeverity.ERROR,
              "Property {0} is missing from the Kafka Event Bus configuration",
              "The system is unable to connect to the event bus.",
              "Add the missing property to the event bus properties in the server configuration."),
-
     SERVICE_FAILED_INITIALIZING( "OCF-KAFKA-TOPIC-CONNECTOR-0014 ",
               OMRSAuditLogRecordSeverity.ERROR,
              "Connecting to bootstrap Apache Kafka Broker {0}",
              "The local server has failed to started up the Apache Kafka connector, Kafka Broker is unavailable",
              "Ensure Kafka is running and restart the local Egeria Server"),
-
     KAFKA_CONNECTION_RETRY( "OCF-KAFKA-TOPIC-CONNECTOR-0015",
               OMRSAuditLogRecordSeverity.STARTUP,
              "The local server is attempting to connect to Kafka, attempt {0}",
@@ -134,8 +128,13 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                     "indicate the cause of this error.  Work to clear the underlying error.  " +
                     "Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka."),
 
-    ;
+    KAFKA_PRODUCER_SEND_ERROR( "OCF-KAFKA-TOPIC-CONNECTOR-0019" ,
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            " Egeria has encountered an unrecoverable error while attempting to send messages to the following topic {0}",
+            "Ensure that the kakfa service is available",
+            "Ensure that the kafka service is available"),
 
+    ;
     private final AuditLogMessageDefinition messageDefinition;
 
 

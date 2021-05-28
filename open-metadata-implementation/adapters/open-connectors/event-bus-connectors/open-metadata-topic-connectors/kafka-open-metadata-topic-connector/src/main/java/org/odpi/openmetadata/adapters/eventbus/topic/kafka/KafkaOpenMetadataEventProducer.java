@@ -75,9 +75,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         final String           actionDescription = "new producer";
 
         auditLog.logMessage(actionDescription,
-                            KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_PRODUCER_PROPERTIES.getMessageDefinition(
-                                    Integer.toString(producerProperties.size()), topicName),
-                           producerProperties.toString());
+                            KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_PRODUCER_PROPERTIES.getMessageDefinition(Integer.toString(producerProperties.size()), topicName),producerProperties.toString());
     }
 
 
@@ -165,9 +163,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                 log.debug("Send Events Throwable catch block closed producer");
                 log.error("Exception in sendEvent " + error.toString());
 
-                throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                      topicName,
-                                                                                                                                      error.getMessage()),
+                throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(error.getClass().getName(), topicName, error.getMessage()),
                                                     this.getClass().getName(),
                                                     methodName,
                                                     error);
@@ -183,7 +179,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     @Override
     public void run()
     {
-        final String           actionDescription = listenerThreadName + ":run";
+        final String actionDescription = listenerThreadName + ":run";
 
         auditLog.logMessage(actionDescription,
                             KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_START.getMessageDefinition(topicName,
@@ -220,16 +216,17 @@ public class KafkaOpenMetadataEventProducer implements Runnable
             {
                 log.info("Woken up from sleep " + error.getMessage());
             }
-            catch (Throwable   error)
+            catch (Exception   error)
             {
-                log.error("Bad exception from sending events " + error.getMessage());
 
                 if( isExceptionRetryable(error) ) {
                     this.recoverAfterError();
                 }
                 else {
-
                     /* This is an unrecoverable error so clean up and shutdown*/
+                    auditLog.logException(actionDescription,
+                            KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_SEND_ERROR.getMessageDefinition(topicName),
+                            error);
                     break;
                 }
             }
