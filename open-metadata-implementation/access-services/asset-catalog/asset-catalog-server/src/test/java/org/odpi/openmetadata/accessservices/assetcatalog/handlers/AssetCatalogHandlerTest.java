@@ -69,7 +69,7 @@ public class AssetCatalogHandlerTest {
     private final String USER = "test-user";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
     private static final String PROCESS_TYPE = "Process";
-    private static final String PROCESS_GUID = "ProcessGUID";
+    private static final String PROCESS_TYPE_GUID = "ProcessGUID";
     @Mock
     private RepositoryHandler repositoryHandler;
 
@@ -562,6 +562,7 @@ public class AssetCatalogHandlerTest {
                 PAGE_SIZE)).thenReturn(mockEntities());
 
         List<AssetElements> assetElements = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
+        assertEquals(1, assetElements.size());
         assertEquals(FIRST_GUID, assetElements.get(0).getGuid());
         assertEquals(ASSET_TYPE, assetElements.get(0).getType().getName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -678,7 +679,7 @@ public class AssetCatalogHandlerTest {
         entityDetails.add(entityDetail);
 
         EntityDetail processEntityDetail = new EntityDetail();
-        processEntityDetail.setType(mockInstanceType(ASSET_TYPE, ASSET_TYPE_GUID));
+        processEntityDetail.setType(mockInstanceType(PROCESS_TYPE, PROCESS_TYPE_GUID));
         entityDetails.add(processEntityDetail);
 
         return entityDetails;
