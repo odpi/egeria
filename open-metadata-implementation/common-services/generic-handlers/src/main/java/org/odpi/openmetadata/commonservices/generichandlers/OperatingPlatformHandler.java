@@ -152,7 +152,10 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @param qualifiedName unique name for the operating platform - used in other configuration
      * @param name short display name for the operating platform
      * @param description description of the governance operating platform
+     * @param operatingSystem name of the operating system running on the platform
+     * @param byteOrdering byte ordering used by the hardware
      * @param additionalProperties additional properties for a governance operatingPlatform
+     * @param suppliedTypeName name of sub type or null
      * @param extendedProperties  properties for a governance operatingPlatform subtype
      * @param methodName calling method
      *
@@ -401,6 +404,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
                                    OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
                                    supportedZones,
+                                   null,
                                    startingFrom,
                                    maximumResults,
                                    methodName);

@@ -14,13 +14,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * CollectionOrder specifies the sequencing to use in a specific collection.
  * <ul>
- *     <li>TYPE_NAME - Order the collection by type.</li>
  *     <li>QUALIFIED_NAME - Order the collection by the qualified name of the members in the collection.</li>
  *     <li>NAME - Order the collection by the name of the members in the collection.</li>
  *     <li>OWNER - Order the collection by the owner of the members in the collection.</li>
  *     <li>DATE_ADDED - Order the collection by the date that the members were added to the collection.</li>
  *     <li>DATE_UPDATED - Order the collection by the date that the members were updated in the collection.</li>
  *     <li>DATE_CREATED - Order the collection by the date that the members were created in the collection.</li>
+ *     <li>OTHER - Order the collection by another value.</li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -28,15 +28,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CollectionOrder implements Serializable
 {
-    TYPE_NAME      (0,  "Type Name",      "Order the collection by the type names of the members in the collection."),
-    QUALIFIED_NAME (1,  "Qualified Name", "Order the collection by the qualified names of the members in the collection."),
-    NAME           (2,  "Name",           "Order the collection by the names of the members in the collection."),
-    OWNER          (3,  "Owner",          "Order the collection by the owners of the members in the collection (assets only)."),
-    DATE_ADDED     (4,  "Date Added",     "Order the collection by the date that the members were added to the collection."),
-    DATE_UPDATED   (5,  "Date Updated",   "Order the collection by the date that the members were updated in the collection."),
-    DATE_CREATED   (6,  "Date Created",   "Order the collection by the date that the members were created in the collection.");
+    NAME           (0,  0,  "Name",           "Order the collection by the names of the members in the collection."),
+    OWNER          (1,  1,  "Owner",          "Order the collection by the owners of the members in the collection (assets only)."),
+    DATE_ADDED     (2,  2,  "Date Added",     "Order the collection by the date that the members were added to the collection."),
+    DATE_UPDATED   (3,  3,  "Date Updated",   "Order the collection by the date that the members were updated in the collection."),
+    DATE_CREATED   (4,  4,  "Date Created",   "Order the collection by the date that the members were created in the collection."),
+    OTHER          (99, 99, "Other",          "Order the collection by another value.");
 
     private static final long serialVersionUID = 1L;
+
+    public static final String ENUM_TYPE_GUID  = "1d412439-4272-4a7e-a940-1065f889fc56";
+    public static final String ENUM_TYPE_NAME  = "OrderBy";
+
+    private int    openTypeOrdinal;
 
     private int            ordinal;
     private String         name;
@@ -47,14 +51,19 @@ public enum CollectionOrder implements Serializable
      * Default constructor for the enumeration.
      *
      * @param ordinal numerical representation of the enumeration
+     * @param openTypeOrdinal code number from the equivalent Enum Type
      * @param name default string name of the enumeration
      * @param description default string description of the enumeration
      */
-    CollectionOrder(int  ordinal, String name, String description)
+    CollectionOrder(int    ordinal,
+                    int    openTypeOrdinal,
+                    String name,
+                    String description)
     {
-        this.ordinal = ordinal;
-        this.name = name;
-        this.description = description;
+        this.ordinal         = ordinal;
+        this.openTypeOrdinal = openTypeOrdinal;
+        this.name            = name;
+        this.description     = description;
     }
 
 
@@ -80,6 +89,33 @@ public enum CollectionOrder implements Serializable
      * @return String description
      */
     public String getDescription() { return description; }
+
+
+    /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
 
 
     /**

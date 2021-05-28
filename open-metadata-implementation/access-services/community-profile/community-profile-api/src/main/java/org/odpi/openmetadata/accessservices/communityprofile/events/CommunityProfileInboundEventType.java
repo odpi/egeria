@@ -46,13 +46,13 @@ public enum CommunityProfileInboundEventType implements Serializable
                                                "Add a new project to a personal collection."),
     REMOVE_PROJECT_FROM_COLLECTION_EVENT      (23,  "Project Removed from Collection",
                                                "Remove a project from a personal collections."),
-    ADD_COMMUNITY_TO_COLLECTION_EVENT         (24,  "New Community In Collection",
+    ADD_COMMUNITY_TO_COLLECTION_EVENT         (24,  "New CommunityProperties In Collection",
                                                "A new community has been added to a personal collections"),
-    REMOVE_COMMUNITY_FROM_COLLECTION_EVENT    (25,  "Community Removed From Collection",
+    REMOVE_COMMUNITY_FROM_COLLECTION_EVENT    (25,  "CommunityProperties Removed From Collection",
                                                "An community has been removed from one of the personal collection."),
-    RESOURCE_IN_COLLECTION_EVENT              (30,  "New Resource In Collection",
+    RESOURCE_IN_COLLECTION_EVENT              (30,  "New ResourceProperties In Collection",
                                                "A new community has been added to a sharable collection."),
-    RESOURCE_REMOVED_FROM_COLLECTION_EVENT    (31,  "Resource Removed From Collection",
+    RESOURCE_REMOVED_FROM_COLLECTION_EVENT    (31,  "ResourceProperties Removed From Collection",
                                                "An resource has been removed from a shareable collection.");
 
     private static final long     serialVersionUID = 1L;

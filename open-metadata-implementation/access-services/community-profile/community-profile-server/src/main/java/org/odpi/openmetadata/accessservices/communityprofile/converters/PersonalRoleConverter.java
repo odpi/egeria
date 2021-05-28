@@ -3,72 +3,98 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalRoleMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalRole;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalRoleElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalRoleProperties;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * PersonalRoleConverter generates a PersonalRole from an PersonRole entity
  */
-public class PersonalRoleConverter extends CommonHeaderConverter
+public class PersonalRoleConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(PersonalRoleConverter.class);
-
     /**
-     * Constructor captures the initial content
+     * Constructor
      *
-     * @param entity properties to convert
      * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public PersonalRoleConverter(EntityDetail         entity,
-                                 OMRSRepositoryHelper repositoryHelper,
-                                 String               serviceName)
+    public PersonalRoleConverter(OMRSRepositoryHelper repositoryHelper,
+                                 String               serviceName,
+                                 String               serverName)
     {
-        super(entity, repositoryHelper, serviceName);
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the entity supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public PersonalRole getBean()
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        PersonalRole  bean = new PersonalRole();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof PersonalRoleElement)
             {
-                /*
-                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
-                 * role properties.
-                 */
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, PersonalRoleMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setName(repositoryHelper.removeStringProperty(serviceName, PersonalRoleMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName, PersonalRoleMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setScope(repositoryHelper.removeStringProperty(serviceName, PersonalRoleMapper.SCOPE_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, PersonalRoleMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-                bean.setClassifications(super.getClassificationsFromEntity());
+                PersonalRoleElement    bean              = (PersonalRoleElement) returnBean;
+                PersonalRoleProperties profileProperties = new PersonalRoleProperties();
+
+                if (entity != null)
+                {
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    profileProperties.setRoleId(this.removeQualifiedName(instanceProperties));
+                    profileProperties.setTitle(this.removeTitle(instanceProperties));
+                    profileProperties.setDescription(this.removeDescription(instanceProperties));
+                    profileProperties.setScope(this.removeScope(instanceProperties));
+                    profileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    profileProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    profileProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    bean.setProperties(profileProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
             }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
+        return null;
     }
 }

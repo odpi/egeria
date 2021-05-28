@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Community;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ public class CommunityOutboundEvent extends CommunityProfileOutboundEvent
 {
     private static final long    serialVersionUID = 1L;
 
-    private Community community = null;
+    private CommunityProperties community = null;
 
 
     /**
@@ -54,9 +54,9 @@ public class CommunityOutboundEvent extends CommunityProfileOutboundEvent
     /**
      * Return the community details.
      *
-     * @return Community bean
+     * @return CommunityProperties bean
      */
-    public Community getCommunity()
+    public CommunityProperties getCommunity()
     {
         return community;
     }
@@ -65,9 +65,9 @@ public class CommunityOutboundEvent extends CommunityProfileOutboundEvent
     /**
      * Set up the community details.
      *
-     * @param community Community bean
+     * @param community CommunityProperties bean
      */
-    public void setCommunity(Community community)
+    public void setCommunity(CommunityProperties community)
     {
         this.community = community;
     }

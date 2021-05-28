@@ -26,7 +26,7 @@ import java.util.Map;
 public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
 {
     /**
-     * Construct the asset handler with information needed to work with B objects.
+     * Construct the handler with information needed to work with B objects.
      *
      * @param converter specific converter for this bean class
      * @param beanClass name of bean class that is represented by the generic class B
@@ -168,9 +168,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create a new metadata element to represent a glossary category using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new category.
-     * This includes its link to the glossary.
+     * Create a category from a template.
      *
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
@@ -223,7 +221,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create the anchor object that all elements in a glossary (terms and categories) are linked to.
+     * Update the category.
      *
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier for the category to update
@@ -436,6 +434,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                              null,
                               startFrom,
                               pageSize,
                               methodName);
@@ -522,6 +521,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     specificMatchPropertyNames,
                                     true,
                                     null,
+                                    null,
+                                    false,
+                                    supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,

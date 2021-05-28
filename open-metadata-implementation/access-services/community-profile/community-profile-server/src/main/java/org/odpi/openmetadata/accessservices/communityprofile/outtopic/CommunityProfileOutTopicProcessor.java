@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.outtopic;
 
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.events.*;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.topics.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -72,8 +72,8 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewUserIdentityEvent(UserIdentity bean) throws InvalidParameterException,
-                                                                   ConnectorCheckedException
+    public void sendNewUserIdentityEvent(UserIdentityElement bean) throws InvalidParameterException,
+                                                                          ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewUserIdentityEvent";
@@ -82,7 +82,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.NEW_USER_IDENTITY_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendNewUserIdentityEvent(bean);
     }
@@ -95,8 +95,8 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewExternalUserIdentityEvent(UserIdentity  bean) throws InvalidParameterException,
-                                                                            ConnectorCheckedException
+    public void sendNewExternalUserIdentityEvent(UserIdentityElement  bean) throws InvalidParameterException, 
+                                                                                   ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewExternalUserIdentityEvent";
@@ -105,7 +105,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.NEW_REF_USER_IDENTITY_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendNewExternalUserIdentityEvent(bean);
     }
@@ -118,8 +118,8 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendUpdatedUserIdentityEvent(UserIdentity  bean) throws InvalidParameterException,
-                                                                        ConnectorCheckedException
+    public void sendUpdatedUserIdentityEvent(UserIdentityElement  bean) throws InvalidParameterException, 
+                                                                               ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendUpdatedUserIdentityEvent";
@@ -128,7 +128,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.UPDATED_USER_IDENTITY_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendUpdatedUserIdentityEvent(bean);
     }
@@ -141,8 +141,8 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendDeletedUserIdentityEvent(UserIdentity  bean) throws InvalidParameterException,
-                                                                        ConnectorCheckedException
+    public void sendDeletedUserIdentityEvent(UserIdentityElement  bean) throws InvalidParameterException, 
+                                                                               ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendDeletedUserIdentityEvent";
@@ -151,7 +151,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.DELETED_USER_IDENTITY_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendDeletedUserIdentityEvent(bean);
     }
@@ -164,8 +164,8 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewPersonalProfileEvent(PersonalProfile bean) throws InvalidParameterException,
-                                                                         ConnectorCheckedException
+    public void sendNewPersonalProfileEvent(PersonalProfileUniverse bean) throws InvalidParameterException,
+                                                                                 ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewPersonalProfileEvent";
@@ -174,7 +174,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendNewPersonalProfileEvent(bean);
     }
@@ -187,8 +187,8 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewExternalPersonalProfileEvent(PersonalProfile bean) throws InvalidParameterException,
-                                                                                 ConnectorCheckedException
+    public void sendNewExternalPersonalProfileEvent(PersonalProfileUniverse bean) throws InvalidParameterException,
+                                                                                         ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendNewExternalPersonalProfileEvent";
@@ -197,7 +197,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.NEW_REF_PERSONAL_PROFILE_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendNewExternalPersonalProfileEvent(bean);
     }
@@ -210,8 +210,8 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendUpdatedPersonalProfileEvent(PersonalProfile bean) throws InvalidParameterException,
-                                                                             ConnectorCheckedException
+    public void sendUpdatedPersonalProfileEvent(PersonalProfileUniverse bean) throws InvalidParameterException,
+                                                                                     ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendUpdatedPersonalProfileEvent";
@@ -220,7 +220,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.UPDATED_PERSONAL_PROFILE_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendUpdatedPersonalProfileEvent(bean);
     }
@@ -233,8 +233,8 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendDeletedPersonalProfileEvent(PersonalProfile bean) throws InvalidParameterException,
-                                                                             ConnectorCheckedException
+    public void sendDeletedPersonalProfileEvent(PersonalProfileUniverse bean) throws InvalidParameterException,
+                                                                                     ConnectorCheckedException
     {
         final String  parameterName = "bean";
         final String  methodName = "sendDeletedPersonalProfileEvent";
@@ -243,7 +243,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.DELETED_PERSONAL_PROFILE_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendDeletedPersonalProfileEvent(bean);
     }
@@ -259,7 +259,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendKarmaPointPlateauEvent(PersonalProfile bean,
+    public void sendKarmaPointPlateauEvent(PersonalProfileUniverse bean,
                                            String          userId,
                                            int             plateau,
                                            int             totalPoints) throws InvalidParameterException,
@@ -272,7 +272,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendKarmaPointPlateauEvent(bean, userId, plateau, totalPoints);
     }
@@ -288,7 +288,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewAssetInCollectionEvent(PersonalProfile bean,
+    public void sendNewAssetInCollectionEvent(PersonalProfileUniverse bean,
                                               String          userId,
                                               String          memberGUID,
                                               String          memberTypeName) throws InvalidParameterException,
@@ -301,7 +301,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.NEW_ASSET_IN_COLLECTION_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendNewAssetInCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
@@ -317,7 +317,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendAssetRemovedFromCollectionEvent(PersonalProfile bean,
+    public void sendAssetRemovedFromCollectionEvent(PersonalProfileUniverse bean,
                                                     String          userId,
                                                     String          memberGUID,
                                                     String          memberTypeName) throws InvalidParameterException,
@@ -330,7 +330,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.ASSET_REMOVED_FROM_COLLECTION_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendAssetRemovedFromCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
@@ -346,7 +346,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewProjectInCollectionEvent(PersonalProfile bean,
+    public void sendNewProjectInCollectionEvent(PersonalProfileUniverse bean,
                                                 String          userId,
                                                 String          memberGUID,
                                                 String          memberTypeName) throws InvalidParameterException,
@@ -359,7 +359,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.NEW_PROJECT_IN_COLLECTION_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendNewProjectInCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
@@ -376,7 +376,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendProjectRemovedFromCollectionEvent(PersonalProfile bean,
+    public void sendProjectRemovedFromCollectionEvent(PersonalProfileUniverse bean,
                                                       String          userId,
                                                       String          memberGUID,
                                                       String          memberTypeName) throws InvalidParameterException,
@@ -389,7 +389,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.PROJECT_REMOVED_FROM_COLLECTION_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendProjectRemovedFromCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
@@ -405,7 +405,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendNewCommunityInCollectionEvent(PersonalProfile bean,
+    public void sendNewCommunityInCollectionEvent(PersonalProfileUniverse bean,
                                                   String          userId,
                                                   String          memberGUID,
                                                   String          memberTypeName) throws InvalidParameterException,
@@ -418,7 +418,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.NEW_COMMUNITY_IN_COLLECTION_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendNewCommunityInCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
@@ -435,7 +435,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
      * @throws InvalidParameterException no event provided
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      */
-    public void sendCommunityRemovedFromCollectionEvent(PersonalProfile bean,
+    public void sendCommunityRemovedFromCollectionEvent(PersonalProfileUniverse bean,
                                                         String          userId,
                                                         String          memberGUID,
                                                         String          memberTypeName) throws InvalidParameterException,
@@ -448,7 +448,7 @@ public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicP
 
         logOutboundEvent(methodName,
                          CommunityProfileOutboundEventType.COMMUNITY_REMOVED_FROM_COLLECTION_EVENT.getEventTypeName(),
-                         bean.getGUID());
+                         bean.getElementHeader().getGUID());
 
         super.sendCommunityRemovedFromCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
