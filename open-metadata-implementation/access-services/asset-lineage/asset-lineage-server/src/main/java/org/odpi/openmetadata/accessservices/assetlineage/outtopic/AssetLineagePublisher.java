@@ -45,7 +45,6 @@ import java.util.stream.Collectors;
 import static org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType.LINEAGE_SYNC_EVENT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_CATEGORY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 
 /**
  * AssetLineagePublisher is the connector responsible for publishing lineage context information about
@@ -376,14 +375,10 @@ public class AssetLineagePublisher {
                                                                                                                                  JsonProcessingException {
         publishLineageRelationshipEvent(lineageRelationship, eventType);
 
-        if(lineageRelationship.getSourceEntity().getTypeDefName().equals(TABULAR_COLUMN)) {
-            publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
-                    lineageRelationship.getSourceEntity().getGuid())));
-        }
-        if(lineageRelationship.getTargetEntity().getTypeDefName().equals(TABULAR_COLUMN)) {
-            publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
-                    lineageRelationship.getTargetEntity().getGuid())));
-        }
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
+                lineageRelationship.getSourceEntity())));
+        publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName,
+                lineageRelationship.getTargetEntity())));
     }
 
     /**
