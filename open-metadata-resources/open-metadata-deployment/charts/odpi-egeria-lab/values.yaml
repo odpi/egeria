@@ -44,7 +44,7 @@ imageDefaults:
   registry: docker.io
   namespace: odpi
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
