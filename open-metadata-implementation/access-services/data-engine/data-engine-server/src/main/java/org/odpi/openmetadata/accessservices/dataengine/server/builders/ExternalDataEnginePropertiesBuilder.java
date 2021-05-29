@@ -82,7 +82,7 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
 
         if (version != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    OpenMetadataAPIMapper.VERSION_PROPERTY_NAME, version, methodName);
+                    OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME_DEP, version, methodName);
         }
 
         if (patchLevel != null) {

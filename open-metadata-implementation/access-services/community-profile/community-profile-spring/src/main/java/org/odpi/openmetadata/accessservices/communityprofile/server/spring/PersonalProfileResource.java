@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonalProfil
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonalProfileValidatorRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.server.PersonalProfileRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -150,24 +151,24 @@ public class PersonalProfileResource
 
 
     /**
-     * Retrieve a personal profile by personnel/serial/unique employee number of the individual.
+     * Return a list of candidate personal profiles for an individual.  It matches on full name and known name.
+     * The name may include wild card parameters.
      *
      * @param serverName name of server instance to call
-     * @param userId the name of the calling user.
-     * @param employeeNumber personnel/serial/unique employee number of the individual.
-     * @return personal profile object or
-     * InvalidParameterException the employee number is null or
-     * EmployeeNumberNotUniqueException more than one personal profile was found or
+     * @param userId the name of the calling user
+     * @param requestBody name of individual
+     * @return list of personal profile objects or
+     * InvalidParameterException the name is null or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @GetMapping(path = "/personal-profiles/by-employee-number/{employeeNumber}")
+    @PostMapping(path = "/personal-profiles/by-qualified-name")
 
-    public PersonalProfileResponse getPersonalProfileByEmployeeNumber(@PathVariable String         serverName,
-                                                                      @PathVariable String         userId,
-                                                                      @PathVariable String         employeeNumber)
+    public PersonalProfileResponse getPersonalProfileByQualifiedName(@PathVariable String          serverName,
+                                                                     @PathVariable String          userId,
+                                                                     @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getPersonalProfileByQualifiedName(serverName, userId, employeeNumber);
+        return restAPI.getPersonalProfileByQualifiedName(serverName, userId, requestBody);
     }
 
 
@@ -176,23 +177,23 @@ public class PersonalProfileResource
      * The name may include wild card parameters.
      *
      * @param serverName name of server instance to call
-     * @param userId the name of the calling user.
-     * @param name name of individual.
+     * @param userId the name of the calling user
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param requestBody name of individual
      * @return list of personal profile objects or
      * InvalidParameterException the name is null or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @GetMapping(path = "/personal-profiles/by-name/{name}")
+    @PostMapping(path = "/personal-profiles/by-name")
 
-    public PersonalProfileListResponse getPersonalProfilesByName(@PathVariable String        serverName,
-                                                                 @PathVariable String        userId,
-                                                                 @PathVariable String        name,
-                                                                 @RequestParam int           startFrom,
-                                                                 @RequestParam int           pageSize)
+    public PersonalProfileListResponse getPersonalProfilesByName(@PathVariable String          serverName,
+                                                                 @PathVariable String          userId,
+                                                                 @RequestParam int             startFrom,
+                                                                 @RequestParam int             pageSize,
+                                                                 @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getPersonalProfilesByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getPersonalProfilesByName(serverName, userId, startFrom, pageSize, requestBody);
     }
 }

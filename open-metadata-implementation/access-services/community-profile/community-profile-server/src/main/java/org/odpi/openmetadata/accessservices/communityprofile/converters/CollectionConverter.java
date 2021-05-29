@@ -3,168 +3,191 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.CollectionMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Classification;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Collection;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CollectionElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
 
-import java.util.List;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
 import java.util.Map;
 
-/**
- * CollectionConverter generates a PersonalRole from an PersonRole entity
- */
-public class CollectionConverter extends CommonHeaderConverter
-{
-    private static final Logger log = LoggerFactory.getLogger(CollectionConverter.class);
 
+/**
+ * CollectionConverter generates a CollectionElement from an Collection entity
+ */
+public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
+{
     /**
-     * Constructor captures the initial content
+     * Constructor
      *
-     * @param entity properties to convert
-     * @param relationship properties to convert
      * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public CollectionConverter(EntityDetail         entity,
-                               Relationship         relationship,
-                               OMRSRepositoryHelper repositoryHelper,
-                               String               serviceName)
+    public CollectionConverter(OMRSRepositoryHelper repositoryHelper,
+                               String               serviceName,
+                               String               serverName)
     {
-        super(entity, relationship, repositoryHelper, serviceName);
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public Collection getBean()
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        Collection  bean = new Collection();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof CollectionElement)
             {
+                CollectionElement    bean              = (CollectionElement) returnBean;
+                CollectionProperties collectionProperties = new CollectionProperties();
+
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                InstanceProperties instanceProperties;
+
                 /*
-                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
-                 * role properties.
+                 * The initial set of values come from the entity.
                  */
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setName(repositoryHelper.removeStringProperty(serviceName, CollectionMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName, CollectionMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, CollectionMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-            }
-
-            List<Classification>  classifications = super.getClassificationsFromEntity();
-
-            if (classifications != null)
-            {
-                bean.setClassifications(classifications);
-
-                for (Classification  classification : classifications)
+                if (entity != null)
                 {
-                    if (classification != null)
-                    {
-                        if (CollectionMapper.FOLDER_TYPE_NAME.equals(classification.getName()))
-                        {
-                            Map<String, Object>   classificationProperties = classification.getProperties();
+                    instanceProperties = new InstanceProperties(entity.getProperties());
 
-                            if (classificationProperties != null)
-                            {
-                                String  orderBy           = null;
-                                String  orderPropertyName = null;
+                    collectionProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    collectionProperties.setName(this.removeName(instanceProperties));
+                    collectionProperties.setDescription(this.removeDescription(instanceProperties));
+                    collectionProperties.setCollectionOrdering(this.removeCollectionOrderFromProperties(instanceProperties));
+                    collectionProperties.setOrderPropertyName(this.removeOrderPropertyName(instanceProperties));
 
-                                for (String propertyName : classificationProperties.keySet())
-                                {
-                                    if (CollectionMapper.COLLECTION_ORDERING_ENUM_PROPERTY_NAME.equals(propertyName))
-                                    {
-                                        orderBy = classificationProperties.get(propertyName).toString();
-                                    }
-                                    else if (CollectionMapper.COLLECTION_ORDERING_OTHER_PROPERTY_NAME.equals(propertyName))
-                                    {
-                                        orderPropertyName = classificationProperties.get(propertyName).toString();
-                                    }
-                                }
-
-                                this.setUpOrderByProperty(orderBy, orderPropertyName, bean);
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
-    }
-
-
-    /**
-     * The order of the collection is stored as a classification on the collection entity.
-     * Convert the orderBy and OrderPropertyName properties from the classification to a single
-     * CollectionOrder Enum for the collection bean.
-     *
-     * @param orderBy orderBy classification property
-     * @param orderByPropertyName orderPropertyName classification property
-     * @param bean been to update
-     */
-    private void setUpOrderByProperty(String        orderBy,
-                                      String        orderByPropertyName,
-                                      Collection    bean)
-    {
-        if (orderBy != null)
-        {
-            if (CollectionMapper.ORDER_BY_NAME_VALUE.equals(orderBy))
-            {
-                bean.setCollectionOrdering(CollectionOrder.NAME);
-            }
-            else if (CollectionMapper.ORDER_BY_OWNER_VALUE.equals(orderBy))
-            {
-                bean.setCollectionOrdering(CollectionOrder.OWNER);
-            }
-            else if (CollectionMapper.ORDER_BY_DATE_ADDED_VALUE.equals(orderBy))
-            {
-                bean.setCollectionOrdering(CollectionOrder.DATE_ADDED);
-            }
-            else if (CollectionMapper.ORDER_BY_DATE_UPDATED_VALUE.equals(orderBy))
-            {
-                bean.setCollectionOrdering(CollectionOrder.DATE_UPDATED);
-            }
-            else if (CollectionMapper.ORDER_BY_DATE_CREATED_VALUE.equals(orderBy))
-            {
-                bean.setCollectionOrdering(CollectionOrder.DATE_CREATED);
-            }
-            else if (CollectionMapper.ORDER_BY_OTHER_VALUE.equals(orderBy))
-            {
-                if (CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME.equals(orderByPropertyName))
-                {
-                    bean.setCollectionOrdering(CollectionOrder.QUALIFIED_NAME);
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    collectionProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    collectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
                 }
                 else
                 {
-                    bean.setCollectionOrdering(CollectionOrder.TYPE_NAME);
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
+
+                bean.setProperties(collectionProperties);
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve and delete the CollectionOrder enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return CollectionOrder  enum value
+     */
+    private CollectionOrder removeCollectionOrderFromProperties(InstanceProperties   properties)
+    {
+        CollectionOrder collectionOrder = this.getCollectionOrderFromProperties(properties);
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            if (instancePropertiesMap != null)
+            {
+                instancePropertiesMap.remove(OpenMetadataAPIMapper.ORDER_BY_PROPERTY_NAME);
+            }
+
+            properties.setInstanceProperties(instancePropertiesMap);
+        }
+
+        return collectionOrder;
+    }
+
+
+    /**
+     * Retrieve the CollectionOrder enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return CollectionOrder  enum value
+     */
+    private CollectionOrder getCollectionOrderFromProperties(InstanceProperties   properties)
+    {
+        CollectionOrder collectionOrder = CollectionOrder.NAME;
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            if (instancePropertiesMap != null)
+            {
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.ORDER_PROPERTY_NAME_PROPERTY_NAME);
+
+                if (instancePropertyValue instanceof EnumPropertyValue)
+                {
+                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+
+                    switch (enumPropertyValue.getOrdinal())
+                    {
+                        case 0:
+                            collectionOrder = CollectionOrder.NAME;
+                            break;
+
+                        case 1:
+                            collectionOrder = CollectionOrder.OWNER;
+                            break;
+
+                        case 2:
+                            collectionOrder = CollectionOrder.DATE_ADDED;
+                            break;
+
+                        case 3:
+                            collectionOrder = CollectionOrder.DATE_UPDATED;
+                            break;
+
+                        case 4:
+                            collectionOrder = CollectionOrder.DATE_CREATED;
+                            break;
+
+                        case 99:
+                            collectionOrder = CollectionOrder.OTHER;
+                            break;
+                    }
                 }
             }
         }
 
-        log.debug("OrderBy: " + bean.getCollectionOrdering());
+        return collectionOrder;
     }
 }

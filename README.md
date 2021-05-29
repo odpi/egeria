@@ -16,7 +16,7 @@
 Egeria provides the Apache 2.0 licensed [open metadata and governance](open-metadata-publication/website/README.md)
 type system, frameworks, APIs, event payloads and interchange protocols to enable tools,
 engines and platforms to exchange metadata in order to get the best
-value from data whilst ensuring it is properly governed.
+value from data, whilst ensuring it is properly governed.
 
 ## Digging deeper
 
@@ -27,44 +27,45 @@ delivered in each release and our future plans.
 
 ## Egeria governance
 
-This project aims to operate in a transparent, accessible way for the benefit
-of the Egeria community.
-All participation in this project is open and not
-bound to any corporate affiliation.
+This project aims to operate in a transparent, accessible way for the benefit of the Egeria community.
+All participation in this project is open and not bound to any corporate affiliation.
 
-To understand how to join and contribute see the 
+To understand how to join and contribute, see the 
 [Community Guide](./Community-Guide.md).
 
-All participants are bound the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
+All participants are bound to the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 The governance of the project is described in more detail in the
 [Egeria Operations Guide](./Egeria-Operations.md).
 
 ## Call schedule
 
-The Egeria team run three types of calls and all are welcome
+The Egeria team runs three types of calls and all are welcome.
 
-* **Developers call** - one hour - 
-  Discussion on code development - not minuted -
-  
-  10 am (UK); 11 am (Amsterdam/CET); 12pm (Bucharest)
-  
-  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
-  
-* **Community call** - one hour - 
-  Demos, meet-ups and other activities going on in the Egeria community
-  
-  8am (EST); 1pm (UK/GMT); 2pm (Amsterdam/CET); 3pm (Bucharest)
-  
-  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
- 
-  Meeting Agenda and Minutes are here [https://wiki.lfaidata.foundation/display/EG/Community+Meetings](https://wiki.lfaidata.foundation/display/EG/Community+Meetings)
-  
-* **Technical Steering Committee (TSC)** - one hour -
-  Discussion on the management of the community
-  
-  Activities and call schedule
-  are here [https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home](https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home)
+Calls are scheduled for one hour on Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111).
 
+[Egeria Calendar](https://lists.lfaidata.foundation/g/egeria-technical-discuss/calendar) holds the latest timings and information for these calls.
+
+* **Community call** 
+   * Every Wednesday.
+   * Demos, meet-ups and other activities going on in the Egeria community.
+   * *Egeria Community Call (every Wednesday)* in the
+   [Egeria Calendar](https://lists.lfaidata.foundation/g/egeria-technical-discuss/calendar).    
+   * Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111).
+   * [Egeria community meeting minutes](https://wiki.lfaidata.foundation/display/EG/Community+Meetings).
+  
+* **Technical Steering Committee (TSC)** 
+  * Every second Wednesday.
+  * Discussion on the management of the community.
+  * *Egeria TSC Meetings* in the
+  [Egeria Calendar](https://lists.lfaidata.foundation/g/egeria-technical-discuss/calendar).    
+  * [Egeria TSC home page](https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home).
+
+* **Developers call** 
+   * Every Thursday. 
+   * Discussion on code development. 
+   * Not minuted. 
+   * *Egeria Developers Community Call (recorded)* in the
+     [Egeria Calendar](https://lists.lfaidata.foundation/g/egeria-technical-discuss/calendar).    
 
 ## Monthly maintainers face-to-face meetings
 
@@ -72,7 +73,7 @@ The Egeria team run three types of calls and all are welcome
 
 The Egeria face-to-face meetings are currently suspended
 to protect the health and welfare of the Egeria community.
-The TSC will arrange virtual maintainers meetings as needed.  Details are on the
+The TSC will arrange virtual maintainers meetings as needed. Details are on the
 TSC Wiki detailed above.
 
 Minutes of past maintainers meetings can be found on the

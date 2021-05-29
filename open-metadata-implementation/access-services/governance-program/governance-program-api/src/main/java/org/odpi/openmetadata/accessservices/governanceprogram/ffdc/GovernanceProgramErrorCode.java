@@ -44,20 +44,20 @@ public enum GovernanceProgramErrorCode implements ExceptionMessageSet
             "Review the start up messages for the server where the Governance Program OMAS is running.  " +
                     "Correct any errors discovered and restart the server."),
 
-    GOVERNANCE_OFFICER_NOT_FOUND_BY_APPOINTMENT_ID(404, "OMAS-GOVERNANCE-PROGRAM-404-011",
-            "The governance program OMAS is not able to retrieve a governance officer record with an appointment id of {0}",
-            "The governance officer record  with the requested id is not stored in the property server.",
-            "Check that the appointment id is correct and the property server(s) supporting the governance program is/are running."),
+    GOVERNANCE_OFFICER_NOT_FOUND_BY_ROLE_ID(404, "OMAS-GOVERNANCE-PROGRAM-404-011",
+                                            "The governance program OMAS is not able to retrieve a governance officer record with an appointment id of {0}",
+                                            "The governance officer record  with the requested id is not stored in the property server.",
+                                            "Check that the appointment id is correct and the property server(s) supporting the governance program is/are running."),
 
     GOVERNANCE_OFFICER_NOT_FOUND_BY_NAME(404, "OMAS-GOVERNANCE-PROGRAM-404-012",
             "The governance program OMAS is not able to retrieve a governance officer record with an employee number of {0}",
             "The governance officer record with the requested name is not stored in the property server.",
             "Check that the name is correct and the property server(s) supporting the governance program is/are running."),
 
-    DUPLICATE_GOVERNANCE_OFFICER_FOR_APPOINTMENT_ID(404, "OMAS-GOVERNANCE-PROGRAM-404-013",
-            "The governance program OMAS has retrieved multiple governance officer records with an appointment id of {0}",
-            "Multiple governance officer records are linked to a governance appointment in the property server.",
-             "Details of the duplicate records are stored in the exception.  Use them to locate and correct some or all of the records so the employee number is a unique field."),
+    DUPLICATE_GOVERNANCE_OFFICER_FOR_ROLE_ID(404, "OMAS-GOVERNANCE-PROGRAM-404-013",
+                                             "The governance program OMAS has retrieved multiple governance officer records with an appointment id of {0}",
+                                             "Multiple governance officer records are linked to a governance appointment in the property server.",
+                                             "Details of the duplicate records are stored in the exception.  Use them to locate and correct some or all of the records so the employee number is a unique field."),
 
     GOVERNANCE_OFFICER_NOT_DELETED(404, "OMAS-GOVERNANCE-PROGRAM-404-014",
             "The governance program OMAS is not able to delete a governance officer record with an guid of {0} since the supplied appointmentId of {1} and " +

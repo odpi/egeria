@@ -30,8 +30,8 @@ public class OpenMetadataArchiveTypeStore extends OpenMetadataArchiveElementHead
     private static final long    serialVersionUID = 1L;
 
     private List<AttributeTypeDef> attributeTypeDefs = null;
-    private List<TypeDefPatch>     typeDefPatches    = null;
     private List<TypeDef>          newTypeDefs       = null;
+    private List<TypeDefPatch>     typeDefPatches    = null;
 
 
     /**

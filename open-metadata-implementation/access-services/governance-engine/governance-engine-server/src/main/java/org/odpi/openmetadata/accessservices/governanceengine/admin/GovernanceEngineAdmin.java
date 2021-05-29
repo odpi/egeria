@@ -124,7 +124,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
             }
 
             /*
-             * Initialization is complete.  The service is now waiting for REST API calls (typically from the Governance Server) and events
+             * Initialization is complete.  The service is now waiting for REST API calls (typically from the Engine Host) and events
              * from OMRS to indicate that there are metadata changes.
              */
             auditLog.logMessage(actionDescription, GovernanceEngineAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));

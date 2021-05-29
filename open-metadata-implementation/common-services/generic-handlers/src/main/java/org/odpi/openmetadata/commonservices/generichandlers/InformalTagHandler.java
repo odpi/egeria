@@ -456,7 +456,11 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                     propertyNames,
                                     true,
+                                    null,
+                                    null,
+                                    false,
                                     supportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -499,6 +503,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       propertyNames,
                                       true,
                                       supportedZones,
+                                      null,
                                       startFrom,
                                       pageSize,
                                       methodName);
@@ -536,7 +541,11 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                     null,
                                     false,
+                                    null,
+                                    null,
+                                    false,
                                     supportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -575,6 +584,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       null,
                                       false,
                                       supportedZones,
+                                      null,
                                       startFrom,
                                       pageSize,
                                       methodName);

@@ -18,12 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = PersonalDetailsRequestBody.class, name = "PersonalDetailsRequestBody"),
+                @JsonSubTypes.Type(value = AppointmentRequestBody.class, name = "AppointmentRequestBody"),
                 @JsonSubTypes.Type(value = PersonalProfileValidatorRequestBody.class, name = "PersonalProfileValidatorRequestBody"),
-                @JsonSubTypes.Type(value = GovernanceOfficerDetailsRequestBody.class, name = "GovernanceOfficerDetailsRequestBody"),
-                @JsonSubTypes.Type(value = GovernanceOfficerValidatorRequestBody.class, name = "GovernanceOfficerValidatorRequestBody"),
-                @JsonSubTypes.Type(value = GovernanceDomainRequestBody.class, name = "GovernanceDomainRequestBody"),
-                @JsonSubTypes.Type(value = GUIDRequestBody.class, name = "GUIDRequestBody")
         })
 public abstract class GovernanceProgramOMASAPIRequestBody implements java.io.Serializable
 {
