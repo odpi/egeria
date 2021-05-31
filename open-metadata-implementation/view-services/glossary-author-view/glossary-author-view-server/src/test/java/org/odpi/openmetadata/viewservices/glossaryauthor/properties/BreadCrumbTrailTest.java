@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.properties;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class BreadCrumbTrailTest {
