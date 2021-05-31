@@ -11,7 +11,7 @@ pluginManagement {
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
         id 'com.github.johnrengelman.shadow' version '6.1.0'
         id 'org.siouan.frontend-jdk11' version '4.0.1'
-        id 'com.github.hesch.execfork' version '0.1.14'
+        id 'com.github.psxpaul.execfork' version '0.1.15'
 
 
         // For reference we use these, but they are internal so no version spec needed
@@ -151,6 +151,7 @@ include(':open-metadata-implementation:access-services:community-profile:communi
 include(':open-metadata-implementation:access-services:community-profile:community-profile-client')
 include(':open-metadata-implementation:access-services:community-profile:community-profile-server')
 include(':open-metadata-implementation:access-services:community-profile:community-profile-spring')
+include(':open-metadata-implementation:access-services:community-profile:community-profile-topic-connectors')
 include(':open-metadata-implementation:access-services:community-profile')
 include(':open-metadata-implementation:access-services:data-manager:data-manager-api')
 include(':open-metadata-implementation:access-services:data-manager:data-manager-topic-connectors')
@@ -217,6 +218,12 @@ include(':open-metadata-implementation:access-services:project-management:projec
 include(':open-metadata-implementation:access-services:project-management:project-management-server')
 include(':open-metadata-implementation:access-services:project-management:project-management-spring')
 include(':open-metadata-implementation:access-services:project-management')
+include(':open-metadata-implementation:access-services:security-manager:security-manager-api')
+include(':open-metadata-implementation:access-services:security-manager:security-manager-client')
+include(':open-metadata-implementation:access-services:security-manager:security-manager-topic-connectors')
+include(':open-metadata-implementation:access-services:security-manager:security-manager-server')
+include(':open-metadata-implementation:access-services:security-manager:security-manager-spring')
+include(':open-metadata-implementation:access-services:security-manager')
 include(':open-metadata-implementation:access-services:security-officer:security-officer-api')
 include(':open-metadata-implementation:access-services:security-officer:security-officer-client')
 include(':open-metadata-implementation:access-services:security-officer:security-officer-topic-connectors')
@@ -523,6 +530,7 @@ project(':open-metadata-implementation:access-services:community-profile:communi
 project(':open-metadata-implementation:access-services:community-profile:community-profile-client').projectDir = file('open-metadata-implementation/access-services/community-profile/community-profile-client')
 project(':open-metadata-implementation:access-services:community-profile:community-profile-server').projectDir = file('open-metadata-implementation/access-services/community-profile/community-profile-server')
 project(':open-metadata-implementation:access-services:community-profile:community-profile-spring').projectDir = file('open-metadata-implementation/access-services/community-profile/community-profile-spring')
+project(':open-metadata-implementation:access-services:community-profile:community-profile-topic-connectors').projectDir = file('open-metadata-implementation/access-services/community-profile/community-profile-topic-connectors')
 project(':open-metadata-implementation:access-services:community-profile').projectDir = file('open-metadata-implementation/access-services/community-profile')
 project(':open-metadata-implementation:access-services:data-manager:data-manager-api').projectDir = file('open-metadata-implementation/access-services/data-manager/data-manager-api')
 project(':open-metadata-implementation:access-services:data-manager:data-manager-topic-connectors').projectDir = file('open-metadata-implementation/access-services/data-manager/data-manager-topic-connectors')
@@ -589,6 +597,12 @@ project(':open-metadata-implementation:access-services:project-management:projec
 project(':open-metadata-implementation:access-services:project-management:project-management-server').projectDir = file('open-metadata-implementation/access-services/project-management/project-management-server')
 project(':open-metadata-implementation:access-services:project-management:project-management-spring').projectDir = file('open-metadata-implementation/access-services/project-management/project-management-spring')
 project(':open-metadata-implementation:access-services:project-management').projectDir = file('open-metadata-implementation/access-services/project-management')
+project(':open-metadata-implementation:access-services:security-manager:security-manager-api').projectDir = file('open-metadata-implementation/access-services/security-manager/security-manager-api')
+project(':open-metadata-implementation:access-services:security-manager:security-manager-client').projectDir = file('open-metadata-implementation/access-services/security-manager/security-manager-client')
+project(':open-metadata-implementation:access-services:security-manager:security-manager-topic-connectors').projectDir = file('open-metadata-implementation/access-services/security-manager/security-manager-topic-connectors')
+project(':open-metadata-implementation:access-services:security-manager:security-manager-server').projectDir = file('open-metadata-implementation/access-services/security-manager/security-manager-server')
+project(':open-metadata-implementation:access-services:security-manager:security-manager-spring').projectDir = file('open-metadata-implementation/access-services/security-manager/security-manager-spring')
+project(':open-metadata-implementation:access-services:security-manager').projectDir = file('open-metadata-implementation/access-services/security-manager')
 project(':open-metadata-implementation:access-services:security-officer:security-officer-api').projectDir = file('open-metadata-implementation/access-services/security-officer/security-officer-api')
 project(':open-metadata-implementation:access-services:security-officer:security-officer-client').projectDir = file('open-metadata-implementation/access-services/security-officer/security-officer-client')
 project(':open-metadata-implementation:access-services:security-officer:security-officer-topic-connectors').projectDir = file('open-metadata-implementation/access-services/security-officer/security-officer-topic-connectors')

@@ -403,7 +403,11 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                     propertyNames,
                                     true,
+                                    null,
+                                    null,
+                                    false,
                                     serviceSupportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -444,6 +448,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     false,
                                     serviceSupportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

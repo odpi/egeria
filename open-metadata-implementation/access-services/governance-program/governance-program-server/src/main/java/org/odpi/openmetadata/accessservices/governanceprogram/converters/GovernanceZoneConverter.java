@@ -13,8 +13,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * AssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from AssetProperties.
+ * GovernanceZoneConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a bean that inherits from GovernanceZoneElement.
  */
 public class GovernanceZoneConverter<B> extends GovernanceProgramOMASConverter<B>
 {

@@ -120,7 +120,18 @@ public class RepositoryErrorHandler
             Map<String, InstancePropertyValue> instancePropertyValueMap = retrievedProperties.getInstanceProperties();
             InstancePropertyValue retrievedPropertyValue = instancePropertyValueMap.get(validatingPropertyName);
 
-            if (! validatingProperty.equals(retrievedPropertyValue.valueAsString()))
+            if (retrievedPropertyValue == null)
+            {
+                throw new InvalidParameterException(
+                        RepositoryHandlerErrorCode.UNRECOGNIZED_PROPERTY.getMessageDefinition(validatingPropertyName,
+                                                                                               validatingProperty,
+                                                                                               methodName,
+                                                                                               instanceGUID),
+                        this.getClass().getName(),
+                        methodName,
+                        validatingPropertyName);
+            }
+            else if (! validatingProperty.equals(retrievedPropertyValue.valueAsString()))
             {
                 throw new InvalidParameterException(
                         RepositoryHandlerErrorCode.INVALID_PROPERTY_VALUE.getMessageDefinition(validatingPropertyName,

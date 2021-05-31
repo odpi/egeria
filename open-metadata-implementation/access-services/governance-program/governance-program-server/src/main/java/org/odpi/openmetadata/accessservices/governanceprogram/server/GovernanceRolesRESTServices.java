@@ -1,0 +1,883 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.governanceprogram.server;
+
+
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+
+
+/**
+ * The GovernanceRolesRESTServices provides the server-side implementation of the GovernanceRolesInterface
+ * from the Open Metadata Access Service (OMAS).  This interface provides the ability to governance roles and
+ * link/unlink them to individuals.
+ */
+public class GovernanceRolesRESTServices
+{
+    static private GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
+
+    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceRolesRESTServices.class),
+                                                                                  instanceHandler.getServiceName());
+
+    private    RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+
+    /**
+     * Default constructor
+     */
+    public GovernanceRolesRESTServices()
+    {
+    }
+
+
+    /**
+     * Create the governance role.
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user.
+     * @param requestBody  properties of the governance role.
+     * @return Unique identifier (guid) of the governance role or
+     * InvalidParameterException the governance domain or appointment id is null or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public GUIDResponse createGovernanceRole(String                   serverName,
+                                             String                   userId,
+                                             GovernanceRoleProperties requestBody)
+
+    {
+        final String        methodName = "createGovernanceRole";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                response.setGUID(handler.createPersonRole(userId,
+                                                          null,
+                                                          null,
+                                                          requestBody.getRoleId(),
+                                                          requestBody.getTitle(),
+                                                          requestBody.getDescription(),
+                                                          requestBody.getScope(),
+                                                          requestBody.getHeadCount(),
+                                                          requestBody.getAdditionalProperties(),
+                                                          requestBody.getTypeName(),
+                                                          requestBody.getExtendedProperties(),
+                                                          methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update selected fields for the governance role.
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user
+     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
+     * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @param requestBody  properties of the governance role
+     * @return void response or
+     * UnrecognizedGUIDException the unique identifier of the governance role is either null or invalid or
+     * InvalidParameterException the title is null or the governanceDomain/appointmentId does not match the
+     *                           the existing values associated with the governanceRoleGUID or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public VoidResponse updateGovernanceRole(String                   serverName,
+                                             String                   userId,
+                                             String                   governanceRoleGUID,
+                                             boolean                  isMergeUpdate,
+                                             GovernanceRoleProperties requestBody)
+    {
+        final String methodName = "updateGovernanceRole";
+        final String governanceRoleGUIDParameterName = "governanceRoleGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+
+        try
+        {
+            if (requestBody != null)
+            {
+                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.updatePersonRole(userId,
+                                         null,
+                                         null,
+                                         governanceRoleGUID,
+                                         governanceRoleGUIDParameterName,
+                                         requestBody.getRoleId(),
+                                         requestBody.getTitle(),
+                                         requestBody.getDescription(),
+                                         requestBody.getScope(),
+                                         requestBody.getHeadCount(),
+                                         requestBody.getAdditionalProperties(),
+                                         requestBody.getTypeName(),
+                                         requestBody.getExtendedProperties(),
+                                         isMergeUpdate,
+                                         methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Link a governance role to a governance control that defines a governance responsibility that a person fulfils.
+     *
+     * @param serverName name of server instance to call
+     * @param userId calling user
+     * @param governanceRoleGUID unique identifier of the governance role
+     * @param responsibilityGUID unique identifier of the governance responsibility control
+     * @param requestBody  null request body
+     *
+     * @return void or
+     *  InvalidParameterException one of the guids is null or not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public VoidResponse linkRoleToResponsibility(String          serverName,
+                                                 String          userId,
+                                                 String          governanceRoleGUID,
+                                                 String          responsibilityGUID,
+                                                 NullRequestBody requestBody)
+    {
+        final String   methodName = "linkRoleToResponsibility";
+        final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
+        final String   responsibilityGUIDParameterName = "responsibilityGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+
+        try
+        {
+            if (requestBody != null)
+            {
+                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.linkElementToElement(userId,
+                                             null,
+                                             null,
+                                             governanceRoleGUID,
+                                             governanceRoleGUIDParameterName,
+                                             OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                             responsibilityGUID,
+                                             responsibilityGUIDParameterName,
+                                             OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                             OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                             OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                             null,
+                                             methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the link between a governance role and a governance responsibility.
+     *
+     * @param serverName name of server instance to call
+     * @param userId calling user
+     * @param governanceRoleGUID unique identifier of the governance role
+     * @param responsibilityGUID unique identifier of the governance responsibility control
+     * @param requestBody  null request body
+     *
+     * @return void or
+     *  InvalidParameterException one of the guids is null or not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public VoidResponse unlinkRoleFromResponsibility(String          serverName,
+                                                     String          userId,
+                                                     String          governanceRoleGUID,
+                                                     String          responsibilityGUID,
+                                                     NullRequestBody requestBody)
+    {
+        final String   methodName = "unlinkRoleToResponsibility";
+        final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
+        final String   responsibilityGUIDParameterName = "responsibilityGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+
+        try
+        {
+            if (requestBody != null)
+            {
+                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 governanceRoleGUID,
+                                                 governanceRoleGUIDParameterName,
+                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 responsibilityGUID,
+                                                 responsibilityGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Link a governance role to the description of a resource that the role is responsible for.
+     *
+     * @param serverName name of server instance to call
+     * @param userId calling user
+     * @param governanceRoleGUID unique identifier of the governance role
+     * @param resourceGUID unique identifier of the resource description
+     * @param requestBody  null request body
+     *
+     * @return void or
+     *  InvalidParameterException one of the guids is null or not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public VoidResponse linkRoleToResource(String          serverName,
+                                           String          userId,
+                                           String          governanceRoleGUID,
+                                           String          resourceGUID,
+                                           NullRequestBody requestBody)
+    {
+        final String   methodName = "linkRoleToResource";
+        final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
+        final String   resourceGUIDParameterName = "resourceGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+
+        try
+        {
+            if (requestBody != null)
+            {
+                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.linkElementToElement(userId,
+                                             null,
+                                             null,
+                                             resourceGUID,
+                                             resourceGUIDParameterName,
+                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                             governanceRoleGUID,
+                                             governanceRoleGUIDParameterName,
+                                             OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                             OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
+                                             OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                             null,
+                                             methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the link between a governance role and a resource.
+     *
+     * @param serverName name of server instance to call
+     * @param userId calling user
+     * @param governanceRoleGUID unique identifier of the governance role
+     * @param resourceGUID unique identifier of the resource description
+     * @param requestBody  null request body
+     *
+     * @return void or
+     *  InvalidParameterException one of the guids is null or not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    public VoidResponse unlinkRoleFromResource(String          serverName,
+                                               String          userId,
+                                               String          governanceRoleGUID,
+                                               String          resourceGUID,
+                                               NullRequestBody requestBody)
+    {
+        final String   methodName = "unlinkRoleToResource";
+        final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
+        final String   resourceGUIDParameterName = "resourceGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+
+        try
+        {
+            if (requestBody != null)
+            {
+                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 resourceGUID,
+                                                 resourceGUIDParameterName,
+                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                 governanceRoleGUID,
+                                                 governanceRoleGUIDParameterName,
+                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the requested governance role.
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user.
+     * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @param requestBody  null request body
+     * @return void response or
+     * UnrecognizedGUIDException the unique identifier of the governance role is either null or invalid or
+     * InvalidParameterException the appointmentId or governance domain is either null or invalid or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse   deleteGovernanceRole(String          serverName,
+                                               String          userId,
+                                               String          governanceRoleGUID,
+                                               NullRequestBody requestBody)
+    {
+        final String methodName = "deleteGovernanceRole";
+        final String governanceRoleGUIDParameterName = "governanceRoleGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            handler.removePersonRole(userId,
+                                     governanceRoleGUID,
+                                     governanceRoleGUIDParameterName,
+                                     methodName);
+
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve a governance role description by unique guid.
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user.
+     * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @return governance role object or
+     * UnrecognizedGUIDException the unique identifier of the governance role is either null or invalid or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public GovernanceRoleResponse getGovernanceRoleByGUID(String     serverName,
+                                                          String     userId,
+                                                          String     governanceRoleGUID)
+    {
+        final String methodName = "getGovernanceRoleByGUID";
+        final String governanceRoleGUIDParameterName = "governanceRoleGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceRoleResponse response = new GovernanceRoleResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setElement(handler.getBeanFromRepository(userId,
+                                                              governanceRoleGUID,
+                                                              governanceRoleGUIDParameterName,
+                                                              OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                                              methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve a governance role description by unique guid along with the history of who has been appointed
+     * to the role.
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user.
+     * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @return governance role object or
+     * UnrecognizedGUIDException the unique identifier of the governance role is either null or invalid or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public GovernanceRoleHistoryResponse getGovernanceRoleHistoryByGUID(String     serverName,
+                                                                        String     userId,
+                                                                        String     governanceRoleGUID)
+    {
+        final String methodName = "getGovernanceRoleHistoryByGUID";
+        final String governanceRoleGUIDParameterName = "governanceRoleGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceRoleHistoryResponse response = new GovernanceRoleHistoryResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            // todo
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the properties of a governance role using its unique name.  The results are returned as a list
+     * since it is possible that two roles have the same identifier due to the distributed nature of the
+     * open metadata ecosystem.  By returning all of the search results here it is possible to manage the
+     * duplicates through this interface.
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user.
+     * @param roleId  the unique identifier of the governance role.
+     * @return governance role object or
+     * InvalidParameterException the governanceRoleGUID or governance domain is either null or invalid or
+     * AppointmentIdNotUniqueException more than one governance role entity was retrieved for this governanceRoleGUID
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public GovernanceRoleListResponse getGovernanceRoleByRoleId(String     serverName,
+                                                                String     userId,
+                                                                String     roleId)
+    {
+        final String methodName = "getGovernanceRoleByRoleId";
+        final String governanceRoleGUIDParameterName = "governanceRoleGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceRoleListResponse response = new GovernanceRoleListResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setElements(handler.getPersonRolesByName(userId,
+                                                              roleId,
+                                                              governanceRoleGUIDParameterName,
+                                                              0,
+                                                              0,
+                                                              methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return all of the defined governance roles.
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user.
+     * @param domainIdentifier domain of interest - 0 means all domains
+     * @param startFrom where to start from in the list of definitions
+     * @param pageSize max number of results to return in one call
+     * @return list of governance role objects or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public GovernanceRoleListResponse getGovernanceRolesByDomainId(String serverName,
+                                                                   String userId,
+                                                                   int    domainIdentifier,
+                                                                   int    startFrom,
+                                                                   int    pageSize)
+    {
+        final String methodName = "getGovernanceRolesByDomainId";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceRoleListResponse response = new GovernanceRoleListResponse();
+        AuditLog                   auditLog = null;
+
+        try
+        {
+            PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setElements(handler.getPersonRolesForDomainId(userId,
+                                                                   domainIdentifier,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   methodName));
+
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve all of the governance roles for a particular title.  The title can include regEx wildcards.
+     *
+     * @param serverName name of server instance to call
+     * @param userId calling user
+     * @param title short description of the role
+     * @param startFrom where to start from in the list of definitions
+     * @param pageSize max number of results to return in one call
+     * @return list of governance role objects or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public GovernanceRoleListResponse getGovernanceRolesByTitle(String serverName,
+                                                                String userId,
+                                                                String title,
+                                                                int    startFrom,
+                                                                int    pageSize)
+    {
+        final String methodName = "getGovernanceRolesByTitle";
+        final String titleParameterName = "title";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceRoleListResponse response = new GovernanceRoleListResponse();
+        AuditLog                   auditLog = null;
+
+        try
+        {
+            PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setElements(handler.getPersonRolesForTitle(userId,
+                                                                title,
+                                                                titleParameterName,
+                                                                startFrom,
+                                                                pageSize,
+                                                                methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return all of the governance roles and their incumbents (if any).
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user.
+     * @param domainIdentifier identifier of domain - 0 means all
+     * @param startFrom where to start from in the list of definitions
+     * @param pageSize max number of results to return in one call
+     * @return list of governance role objects or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public GovernanceRoleAppointeeListResponse getCurrentGovernanceRoleAppointments(String serverName,
+                                                                                    String userId,
+                                                                                    int    domainIdentifier,
+                                                                                    int    startFrom,
+                                                                                    int    pageSize)
+    {
+        final String        methodName = "getActiveGovernanceRoles";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceRoleAppointeeListResponse response = new GovernanceRoleAppointeeListResponse();
+        AuditLog                            auditLog = null;
+
+        try
+        {
+            PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            // todo
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Link a person to a governance role.  Only one person may be appointed at any one time.
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user.
+     * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @param requestBody unique identifier for the profile
+     * @return unique identifier (guid) of the appointment relationship or
+     * UnrecognizedGUIDException the unique identifier of the governance role or profile is either null or invalid or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public GUIDResponse appointGovernanceRole(String                  serverName,
+                                              String                  userId,
+                                              String                  governanceRoleGUID,
+                                              AppointmentRequestBody  requestBody)
+    {
+        final String methodName = "appointGovernanceRole";
+        final String governanceRoleGUIDParameterName = "governanceRoleGUID";
+        final String profileGUIDParameterName = "profileGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+
+                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                String appointmentGUID = handler.appointPersonToRole(userId,
+                                                                     null,
+                                                                     null,
+                                                                     governanceRoleGUID,
+                                                                     governanceRoleGUIDParameterName,
+                                                                     requestBody.getProfileGUID(),
+                                                                     profileGUIDParameterName,
+                                                                     true,
+                                                                     requestBody.getEffectiveDate(),
+                                                                     methodName);
+
+                response.setGUID(appointmentGUID);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Unlink a person from a governance role appointment.
+     *
+     * @param serverName name of server instance to call
+     * @param userId the name of the calling user.
+     * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @param requestBody unique identifier for the profile.
+     * @param appointmentGUID unique identifier (guid) of the appointment relationship
+     * @return void response or
+     * UnrecognizedGUIDException the unique identifier of the governance role or profile is either null or invalid or
+     * InvalidParameterException the profile is not linked to this governance role or
+     * PropertyServerException the server is not available or
+     * UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public VoidResponse relieveGovernanceRole(String                  serverName,
+                                              String                  userId,
+                                              String                  governanceRoleGUID,
+                                              String                  appointmentGUID,
+                                              AppointmentRequestBody  requestBody)
+    {
+        final String methodName = "relieveGovernanceRole";
+        final String governanceRoleGUIDParameterName = "governanceRoleGUID";
+        final String profileGUIDParameterName = "profileGUID";
+        final String appointmentGUIDParameterName = "appointmentGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String              profileGUID = null;
+            Date                endDate     = null;
+
+            if (requestBody != null)
+            {
+                PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.relievePersonFromRole(userId,
+                                              null,
+                                              null,
+                                              governanceRoleGUID,
+                                              governanceRoleGUIDParameterName,
+                                              profileGUID,
+                                              profileGUIDParameterName,
+                                              appointmentGUID,
+                                              appointmentGUIDParameterName,
+                                              endDate,
+                                              methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+}

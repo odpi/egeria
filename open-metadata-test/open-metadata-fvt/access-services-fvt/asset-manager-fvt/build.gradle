@@ -5,11 +5,11 @@
 
 plugins {
     // Include plug-in for starting a new process
-    id 'com.github.hesch.execfork'
+    id 'com.github.psxpaul.execfork'
     id 'java'
 }
 
-apply plugin: "com.github.hesch.execfork"
+apply plugin: "com.github.psxpaul.execfork"
 apply plugin: 'groovy'
 
 dependencies {
@@ -27,7 +27,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation("org.junit.jupiter:junit-jupiter-params")
-    compile localGroovy()
+    testImplementation localGroovy()
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     testImplementation 'org.apache.commons:commons-lang3'
 
@@ -55,7 +55,7 @@ sourceSets.test.groovy.srcDirs = ["src/test/java", "src/test/script"]
 // Initially we launch as an app -- though there may be a better way of running this in the existing jvm
 task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metadata-assemblies:unzip'], type: com.github.psxpaul.task.ExecFork) {
     // Start some external service
-    executable = "java"
+    executable = System.properties.'java.home' + '/bin/java'
     workingDir = "${buildDir}"
     args = [ "-Dserver.port=10444",
              "-Dloader.path=${distdir}/server/lib",
