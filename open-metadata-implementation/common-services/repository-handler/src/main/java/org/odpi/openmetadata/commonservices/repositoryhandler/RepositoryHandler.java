@@ -94,7 +94,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -140,7 +140,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -401,7 +401,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -636,7 +636,7 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
@@ -720,7 +720,7 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
@@ -1334,7 +1334,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1386,7 +1386,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1461,7 +1461,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1514,7 +1514,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1570,7 +1570,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1628,7 +1628,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1697,7 +1697,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1764,7 +1764,7 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
@@ -1861,9 +1861,9 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
-                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+                errorHandler.handleRepositoryError(error, methodName, localMethodName + "(" + classificationTypeName + ")");
             }
         }
         else /* should be a classify */
@@ -2077,7 +2077,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2090,7 +2090,7 @@ public class RepositoryHandler
         {
             this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2169,7 +2169,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2236,7 +2236,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2288,7 +2288,7 @@ public class RepositoryHandler
         {
             this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2332,7 +2332,7 @@ public class RepositoryHandler
                 this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2374,7 +2374,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2407,7 +2407,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2461,7 +2461,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2530,7 +2530,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2564,9 +2564,55 @@ public class RepositoryHandler
                                                              String                 methodName) throws UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
+        return this.getEntitiesForRelationshipType(userId,
+                                                   startingEntityGUID,
+                                                   startingEntityTypeName,
+                                                   relationshipTypeGUID,
+                                                   relationshipTypeName,
+                                                   null,
+                                                   startingFrom,
+                                                   pageSize,
+                                                   methodName);
+    }
+
+
+    /**
+     * Return the list of entities at the other end of the requested relationship type.
+     *
+     * @param userId  user making the request
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param methodName  name of calling method
+     * @return retrieved entities or null
+     * @throws PropertyServerException problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<EntityDetail> getEntitiesForRelationshipType(String                 userId,
+                                                             String                 startingEntityGUID,
+                                                             String                 startingEntityTypeName,
+                                                             String                 relationshipTypeGUID,
+                                                             String                 relationshipTypeName,
+                                                             String                 sequencingPropertyName,
+                                                             int                    startingFrom,
+                                                             int                    pageSize,
+                                                             String                 methodName) throws UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
         final String localMethodName = "getEntitiesForRelationshipType";
 
         List<EntityDetail> results = new ArrayList<>();
+
+        SequencingOrder sequencingOrder = null;
+
+        if (sequencingPropertyName != null)
+        {
+            sequencingOrder = SequencingOrder.PROPERTY_ASCENDING;
+        }
 
         try
         {
@@ -2576,8 +2622,8 @@ public class RepositoryHandler
                                                                                             startingFrom,
                                                                                             null,
                                                                                             null,
-                                                                                            null,
-                                                                                            null,
+                                                                                            sequencingPropertyName,
+                                                                                            sequencingOrder,
                                                                                             pageSize);
 
             if (relationships != null)
@@ -2602,7 +2648,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2616,6 +2662,7 @@ public class RepositoryHandler
             return results;
         }
     }
+
 
     /**
      * Return the list of entities by the requested classification type.
@@ -2751,7 +2798,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2803,6 +2850,7 @@ public class RepositoryHandler
                                                                                            startingEntityTypeName,
                                                                                            relationshipTypeGUID,
                                                                                            relationshipTypeName,
+                                                                                           null,
                                                                                            0,
                                                                                            maxPageSize,
                                                                                            methodName);
@@ -2839,7 +2887,8 @@ public class RepositoryHandler
      * @param relationshipTypeName  type name for the relationship to follow
      * @param attachedEntityTypeGUID  identifier for the relationship to follow
      * @param attachedEntityTypeName  type name for the relationship to follow
-     * @param startingFrom initial position in the stored list.
+     * @param sequencingPropertyName name of property used to sequence the results - needed for paging
+     * @param startingFrom initial position in the stored list
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName  name of calling method
      * @return retrieved entities or null
@@ -2854,6 +2903,7 @@ public class RepositoryHandler
                                                           String  relationshipTypeName,
                                                           String  attachedEntityTypeGUID,
                                                           String  attachedEntityTypeName,
+                                                          String  sequencingPropertyName,
                                                           int     startingFrom,
                                                           int     pageSize,
                                                           String  methodName) throws InvalidParameterException,
@@ -2870,6 +2920,7 @@ public class RepositoryHandler
                                                                                            startingEntityTypeName,
                                                                                            relationshipTypeGUID,
                                                                                            relationshipTypeName,
+                                                                                           sequencingPropertyName,
                                                                                            startingFrom,
                                                                                            pageSize,
                                                                                            methodName);
@@ -3058,7 +3109,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3137,7 +3188,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3192,7 +3243,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3244,7 +3295,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3291,7 +3342,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3301,13 +3352,15 @@ public class RepositoryHandler
 
 
     /**
-     * Return the requested entity by name.
+     * Return the requested entity by name.  The sequencing property name ensure that all elements are returned
+     * in the same order to ensure none are lost in the paging process.
      *
      * @param userId calling userId
-     * @param nameProperties list of name properties to search on.
+     * @param nameProperties list of name properties to search on
      * @param entityTypeGUID unique identifier of the entity's type
-     * @param startingFrom initial position in the stored list.
-     * @param pageSize maximum number of definitions to return on this call.
+     * @param sequencingPropertyName property name used to sequence the results
+     * @param startingFrom initial position in the stored list
+     * @param pageSize maximum number of definitions to return on this call
      * @param methodName calling method
      *
      * @return list of returned entities
@@ -3317,12 +3370,20 @@ public class RepositoryHandler
     public List<EntityDetail>  getEntitiesByName(String                 userId,
                                                  InstanceProperties     nameProperties,
                                                  String                 entityTypeGUID,
+                                                 String                 sequencingPropertyName,
                                                  int                    startingFrom,
                                                  int                    pageSize,
                                                  String                 methodName) throws UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
         final String localMethodName = "getEntitiesByName";
+
+        SequencingOrder sequencingOrder = SequencingOrder.GUID;
+
+        if (sequencingPropertyName != null)
+        {
+            sequencingOrder = SequencingOrder.PROPERTY_ASCENDING;
+        }
 
         try
         {
@@ -3334,15 +3395,15 @@ public class RepositoryHandler
                                                              null,
                                                              null,
                                                              null,
-                                                             null,
-                                                             null,
+                                                             sequencingPropertyName,
+                                                             sequencingOrder,
                                                              pageSize);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3358,6 +3419,7 @@ public class RepositoryHandler
      * @param userId calling userId
      * @param properties list of name properties to search on.
      * @param entityTypeGUID unique identifier of the entity's type
+     * @param sequencingPropertyName property name used to sequence the results
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName calling method
@@ -3366,15 +3428,23 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail>  getEntitiesByAllProperties(String                 userId,
-                                                          InstanceProperties     properties,
-                                                          String                 entityTypeGUID,
-                                                          int                    startingFrom,
-                                                          int                    pageSize,
-                                                          String                 methodName) throws UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public List<EntityDetail>  getEntitiesByAllProperties(String             userId,
+                                                          InstanceProperties properties,
+                                                          String             entityTypeGUID,
+                                                          String             sequencingPropertyName,
+                                                          int                startingFrom,
+                                                          int                pageSize,
+                                                          String             methodName) throws UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         final String localMethodName = "getEntitiesByAllProperties";
+
+        SequencingOrder sequencingOrder = SequencingOrder.GUID;
+
+        if (sequencingPropertyName != null)
+        {
+            sequencingOrder = SequencingOrder.PROPERTY_ASCENDING;
+        }
 
         try
         {
@@ -3386,21 +3456,22 @@ public class RepositoryHandler
                                                              null,
                                                              null,
                                                              null,
-                                                             null,
-                                                             null,
+                                                             sequencingPropertyName,
+                                                             sequencingOrder,
                                                              pageSize);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
     }
+
 
     /**
      * Return the entities that match all supplied properties.
@@ -3416,15 +3487,23 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail>  getEntitiesWithoutPropertyValues(String                 userId,
-                                                                InstanceProperties     properties,
-                                                                String                 entityTypeGUID,
-                                                                int                    startingFrom,
-                                                                int                    pageSize,
-                                                                String                 methodName) throws UserNotAuthorizedException,
+    public List<EntityDetail>  getEntitiesWithoutPropertyValues(String             userId,
+                                                                InstanceProperties properties,
+                                                                String             entityTypeGUID,
+                                                                String             sequencingPropertyName,
+                                                                int                startingFrom,
+                                                                int                pageSize,
+                                                                String             methodName) throws UserNotAuthorizedException,
                                                                                                           PropertyServerException
     {
         final String localMethodName = "getEntitiesWithoutPropertyValues";
+
+        SequencingOrder sequencingOrder = SequencingOrder.GUID;
+
+        if (sequencingPropertyName != null)
+        {
+            sequencingOrder = SequencingOrder.PROPERTY_ASCENDING;
+        }
 
         try
         {
@@ -3436,15 +3515,15 @@ public class RepositoryHandler
                                                              null,
                                                              null,
                                                              null,
-                                                             null,
-                                                             null,
+                                                             sequencingPropertyName,
+                                                             sequencingOrder,
                                                              pageSize);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3454,13 +3533,15 @@ public class RepositoryHandler
 
 
     /**
-     * Return the entities that match all supplied properties.
+     * Return the entities that match all supplied properties.  The sequencing order is important if the
+     * caller is paging to ensure that all of the results are returned.
      *
      * @param userId calling userId
-     * @param propertyValue string value to search on - may be a RegEx.
+     * @param propertyValue string value to search on - may be a RegEx
      * @param entityTypeGUID unique identifier of the entity's type
-     * @param startingFrom initial position in the stored list.
-     * @param pageSize maximum number of definitions to return on this call.
+     * @param startingFrom initial position in the stored list
+     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param pageSize maximum number of definitions to return on this call
      * @param methodName calling method
      *
      * @return list of returned entities
@@ -3470,12 +3551,20 @@ public class RepositoryHandler
     public List<EntityDetail>  getEntitiesByValue(String     userId,
                                                   String     propertyValue,
                                                   String     entityTypeGUID,
+                                                  String     sequencingPropertyName,
                                                   int        startingFrom,
                                                   int        pageSize,
                                                   String     methodName) throws UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
         final String localMethodName = "getEntitiesByValue";
+
+        SequencingOrder sequencingOrder = SequencingOrder.GUID;
+
+        if (sequencingPropertyName != null)
+        {
+            sequencingOrder = SequencingOrder.PROPERTY_ASCENDING;
+        }
 
         try
         {
@@ -3486,15 +3575,15 @@ public class RepositoryHandler
                                                                   null,
                                                                   null,
                                                                   null,
-                                                                  null,
-                                                                  null,
+                                                                  sequencingPropertyName,
+                                                                  sequencingOrder,
                                                                   pageSize);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3554,7 +3643,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3620,7 +3709,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3707,7 +3796,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3776,7 +3865,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3842,7 +3931,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3914,7 +4003,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3961,7 +4050,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4009,7 +4098,7 @@ public class RepositoryHandler
                                                                                             null,
                                                                                             null,
                                                                                             null,
-                                                                                            null,
+                                                                                            SequencingOrder.GUID,
                                                                                             pageSize);
 
             if ((relationships == null) || (relationships.isEmpty()))
@@ -4047,7 +4136,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4141,7 +4230,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4183,7 +4272,7 @@ public class RepositoryHandler
                                                    null,
                                                    null,
                                                    null,
-                                                   null,
+                                                   SequencingOrder.GUID,
                                                    100,
                                                    methodName);
     }
@@ -4244,7 +4333,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4454,7 +4543,7 @@ public class RepositoryHandler
                                                                                             null,
                                                                                             null,
                                                                                             null,
-                                                                                            null,
+                                                                                            SequencingOrder.GUID,
                                                                                             maximumResults);
 
             if ((relationships == null) || (relationships.isEmpty()))
@@ -4468,7 +4557,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4555,7 +4644,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4620,7 +4709,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4719,7 +4808,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4784,7 +4873,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4944,7 +5033,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4997,7 +5086,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5063,7 +5152,7 @@ public class RepositoryHandler
                                    relationship.getGUID(),
                                    methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5102,7 +5191,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5135,7 +5224,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5186,7 +5275,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5351,7 +5440,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5389,7 +5478,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5437,7 +5526,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5472,7 +5561,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5528,7 +5617,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5759,7 +5848,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }

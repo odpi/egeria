@@ -2,20 +2,25 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonalProfileListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonalProfileRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonalProfileResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonalProfileValidatorRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.slf4j.Logger;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -28,7 +33,9 @@ public class PersonalProfileRESTServices
 {
     static private CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
 
-    private static final Logger log = LoggerFactory.getLogger(PersonalProfileRESTServices.class);
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(PersonalProfileRESTServices.class),
+                                                                      instanceHandler.getServiceName());
+
 
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
@@ -56,54 +63,96 @@ public class PersonalProfileRESTServices
                                               String                     userId,
                                               PersonalProfileRequestBody requestBody)
     {
-        final String        methodName = "createPersonalProfile";
+        final String methodName = "createPersonalProfile";
+        final String profileGUIDParameterName = "profileGUID";
+        final String userParameterName = "requestBody.getProfileUserId";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
         {
-            String              profileUserId = null;
-            String              qualifiedName = null;
-            String              fullName = null;
-            String              knownName = null;
-            String              jobTitle = null;
-            String              jobRoleDescription = null;
-            Map<String, String> additionalProperties = null;
-
             if (requestBody != null)
             {
-                profileUserId = requestBody.getProfileUserId();
-                qualifiedName = requestBody.getQualifiedName();
-                fullName = requestBody.getFullName();
-                knownName = requestBody.getKnownName();
-                jobTitle = requestBody.getJobTitle();
-                jobRoleDescription = requestBody.getJobRoleDescription();
-                additionalProperties = requestBody.getAdditionalProperties();
+                ActorProfileHandler<PersonalProfileUniverse> profileHandler      = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
+                UserIdentityHandler<UserIdentityElement>     userIdentityHandler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                /*
+                 * Validate that the userId is unique
+                 */
+                EntityDetail userIdentity = userIdentityHandler.getEntityByUniqueQualifiedName(userId,
+                                                                                               OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
+                                                                                               OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                                                               requestBody.getProfileUserId(),
+                                                                                               userParameterName,
+                                                                                               methodName);
+
+
+
+
+
+                Map<String, Object> extendedProperties = new HashMap<>();
+
+                extendedProperties.put(OpenMetadataAPIMapper.FULL_NAME_PROPERTY_NAME, requestBody.getFullName());
+                extendedProperties.put(OpenMetadataAPIMapper.JOB_TITLE_PROPERTY_NAME, requestBody.getJobTitle());
+                String profileGUID = profileHandler.createActorProfile(userId,
+                                                                   requestBody.getOriginatingSystemGUID(),
+                                                                   requestBody.getOriginatingSystemName(),
+                                                                   requestBody.getQualifiedName(),
+                                                                   requestBody.getKnownName(),
+                                                                   requestBody.getJobRoleDescription(),
+                                                                   requestBody.getAdditionalProperties(),
+                                                                   OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                                   extendedProperties,
+                                                                   methodName);
+
+                if (userIdentity == null)
+                {
+                    userIdentityHandler.createUserIdentity(userId,
+                                                           requestBody.getOriginatingSystemGUID(),
+                                                           requestBody.getOriginatingSystemName(),
+                                                           profileGUID,
+                                                           profileGUIDParameterName,
+                                                           requestBody.getProfileUserId(),
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           methodName);
+                }
+                else
+                {
+                    userIdentityHandler.linkElementToElement(userId,
+                                                             requestBody.getOriginatingSystemGUID(),
+                                                             requestBody.getOriginatingSystemName(),
+                                                             profileGUID,
+                                                             profileGUIDParameterName,
+                                                             OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                             userIdentity.getGUID(),
+                                                             userParameterName,
+                                                             OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                             OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                                             OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                                             null,
+                                                             methodName);
+                }
+
+                response.setGUID(profileGUID);
             }
-
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUID(handler.createPersonalProfile(userId,
-                                                           profileUserId,
-                                                           qualifiedName,
-                                                           fullName,
-                                                           knownName,
-                                                           jobTitle,
-                                                           jobRoleDescription,
-                                                           additionalProperties,
-                                                           methodName));
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -126,55 +175,51 @@ public class PersonalProfileRESTServices
                                               String                     profileGUID,
                                               PersonalProfileRequestBody requestBody)
     {
-        final String        methodName = "updatePersonalProfile";
+        final String methodName = "updatePersonalProfile";
+        final String profileGUIDParameterName = "profileGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog      = null;
 
         try
         {
-            String              qualifiedName = null;
-            String              fullName = null;
-            String              knownName = null;
-            String              jobTitle = null;
-            String              jobRoleDescription = null;
-            Map<String, Object> extendedProperties = null;
-            Map<String, String> additionalProperties = null;
-
             if (requestBody != null)
             {
-                qualifiedName = requestBody.getQualifiedName();
-                fullName = requestBody.getFullName();
-                knownName = requestBody.getKnownName();
-                jobTitle = requestBody.getJobTitle();
-                jobRoleDescription = requestBody.getJobRoleDescription();
-                extendedProperties = requestBody.getProfileProperties();
-                additionalProperties = requestBody.getAdditionalProperties();
+                Map<String, Object> extendedProperties = new HashMap<>();
+
+                extendedProperties.put(OpenMetadataAPIMapper.FULL_NAME_PROPERTY_NAME, requestBody.getFullName());
+                extendedProperties.put(OpenMetadataAPIMapper.JOB_TITLE_PROPERTY_NAME, requestBody.getJobTitle());
+
+                ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.updateActorProfile(userId,
+                                           requestBody.getOriginatingSystemGUID(),
+                                           requestBody.getOriginatingSystemName(),
+                                           profileGUID,
+                                           profileGUIDParameterName,
+                                           requestBody.getQualifiedName(),
+                                           requestBody.getKnownName(),
+                                           requestBody.getJobRoleDescription(),
+                                           requestBody.getAdditionalProperties(),
+                                           OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                           extendedProperties,
+                                           false,
+                                           methodName);
             }
-
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.updatePersonalProfile(userId,
-                                          profileGUID,
-                                          qualifiedName,
-                                          fullName,
-                                          knownName,
-                                          jobTitle,
-                                          jobRoleDescription,
-                                          extendedProperties,
-                                          additionalProperties,
-                                          methodName);
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -197,37 +242,39 @@ public class PersonalProfileRESTServices
                                                 String                              profileGUID,
                                                 PersonalProfileValidatorRequestBody requestBody)
     {
-        final String        methodName = "deletePersonalProfile";
+        final String methodName = "deletePersonalProfile";
+        final String profileGUIDParameterName = "profileGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
 
         try
         {
-            String              employeeNumber = null;
-
             if (requestBody != null)
             {
-                employeeNumber = requestBody.getQualifiedName();
+                ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.removeActorProfile(userId,
+                                           requestBody.getOriginatingSystemGUID(),
+                                           requestBody.getOriginatingSystemName(),
+                                           profileGUID,
+                                           profileGUIDParameterName,
+                                           methodName);
             }
-
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.deletePersonalProfile(userId,
-                                          profileGUID,
-                                          employeeNumber,
-                                          methodName);
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -248,27 +295,27 @@ public class PersonalProfileRESTServices
                                                              String userId,
                                                              String profileUserId)
     {
-        final String   methodName = "getPersonalProfileForUser";
+        final String methodName = "getPersonalProfileForUser";
+        final String userParameterName = "profileUserId";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         PersonalProfileResponse response = new PersonalProfileResponse();
         AuditLog                auditLog = null;
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(serverName, userId, methodName);
+            ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfile(handler.getPersonalProfile(userId, profileUserId, methodName));
+            response.setPersonalProfile(handler.getPersonalProfileForUser(userId, profileUserId, userParameterName, methodName));
         }
         catch (Exception error)
         {
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -288,27 +335,27 @@ public class PersonalProfileRESTServices
                                                             String        userId,
                                                             String        profileGUID)
     {
-        final String        methodName = "getPersonalProfileByGUID";
+        final String methodName = "getPersonalProfileByGUID";
+        final String profileGUIDParameterName = "profileGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         PersonalProfileResponse response = new PersonalProfileResponse();
         AuditLog                auditLog = null;
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
+            ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfile(handler.getPersonalProfileByGUID(userId, profileGUID, methodName));
+            response.setPersonalProfile(handler.getPersonalProfileByGUID(userId, profileGUID, profileGUIDParameterName, methodName));
         }
         catch (Exception error)
         {
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -318,38 +365,43 @@ public class PersonalProfileRESTServices
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
-     * @param employeeNumber personnel/serial/unique employee number of the individual.
+     * @param requestBody name information
+     *
      * @return personal profile object or
      * InvalidParameterException the employee number or full name is null or
      * EmployeeNumberNotUniqueException more than one personal profile was found or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonalProfileResponse getPersonalProfileByQualifiedName(String         serverName,
-                                                                     String         userId,
-                                                                     String         employeeNumber)
+    public PersonalProfileResponse getPersonalProfileByQualifiedName(String          serverName,
+                                                                     String          userId,
+                                                                     NameRequestBody requestBody)
     {
-        final String        methodName = "getPersonalProfileByQualifiedName";
+        final String methodName = "getPersonalProfilesByName";
+        final String nameParameterName = "getPersonalProfilesByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         PersonalProfileResponse response = new PersonalProfileResponse();
         AuditLog                auditLog = null;
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
+            ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfile(handler.getPersonalProfileByQualifiedName(userId, employeeNumber, methodName));
+
+            response.setPersonalProfile(handler.getPersonalProfileByUniqueName(userId,
+                                                                               requestBody.getName(),
+                                                                               nameParameterName,
+                                                                               methodName));
         }
         catch (Exception error)
         {
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -360,42 +412,42 @@ public class PersonalProfileRESTServices
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
-     * @param name name of individual.
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param requestBody name information
      *
      * @return list of personal profile objects or
      * InvalidParameterException the name is null or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonalProfileListResponse getPersonalProfilesByName(String        serverName,
-                                                                 String        userId,
-                                                                 String        name,
-                                                                 int           startFrom,
-                                                                 int           pageSize)
+    public PersonalProfileListResponse getPersonalProfilesByName(String          serverName,
+                                                                 String          userId,
+                                                                 int             startFrom,
+                                                                 int             pageSize,
+                                                                 NameRequestBody requestBody)
     {
-        final String        methodName = "getPersonalProfilesByName";
+        final String methodName = "getPersonalProfilesByName";
+        final String nameParameterName = "getPersonalProfilesByName";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         PersonalProfileListResponse response = new PersonalProfileListResponse();
         AuditLog                    auditLog = null;
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
+            ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfiles(handler.getPersonalProfilesByName(userId, name, startFrom, pageSize, methodName));
+            response.setPersonalProfiles(handler.getPersonalProfilesByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName));
         }
         catch (Exception error)
         {
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }

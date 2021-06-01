@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -170,7 +171,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-
         String typeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
 
         if (assetProperties.getTypeName() != null)
@@ -184,29 +184,17 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                    methodName,
                                                                    repositoryHelper);
 
-        int ownerCategory = OwnerCategory.USER_ID.getOpenTypeOrdinal();
-
-        if (assetProperties.getOwnerCategory() != null)
-        {
-            ownerCategory = assetProperties.getOwnerCategory().getOpenTypeOrdinal();
-        }
-
         String assetGUID = assetHandler.createAssetInRepository(userId,
                                                                 this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                                 this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                                 assetProperties.getQualifiedName(),
                                                                 assetProperties.getTechnicalName(),
                                                                 assetProperties.getTechnicalDescription(),
-                                                                assetProperties.getZoneMembership(),
-                                                                assetProperties.getOwner(),
-                                                                ownerCategory,
-                                                                assetProperties.getOriginOrganizationGUID(),
-                                                                assetProperties.getOriginBusinessCapabilityGUID(),
-                                                                assetProperties.getOtherOriginValues(),
                                                                 assetProperties.getAdditionalProperties(),
                                                                 typeGUID,
                                                                 typeName,
                                                                 assetProperties.getExtendedProperties(),
+                                                                InstanceStatus.ACTIVE,
                                                                 methodName);
 
         if (assetGUID != null)
@@ -330,42 +318,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                         correlationProperties,
                                         methodName);
-
-        int ownerTypeOrdinal = 0;
-
-        if (assetProperties.getOwnerCategory() != null)
-        {
-            ownerTypeOrdinal = assetProperties.getOwnerCategory().getOpenTypeOrdinal();
-        }
-
-        if ((assetProperties.getOwner() != null) || (! isMergeUpdate))
-        {
-            assetHandler.updateAssetOwner(userId, assetGUID, assetGUIDParameterName, assetProperties.getOwner(), ownerTypeOrdinal, methodName);
-        }
-
-        if ((assetProperties.getZoneMembership() != null) || (! isMergeUpdate))
-        {
-            assetHandler.updateAssetZones(userId, assetGUID, assetGUIDParameterName, assetProperties.getZoneMembership(), methodName);
-        }
-
-        if ((assetProperties.getOriginOrganizationGUID() != null) ||
-                    (assetProperties.getOriginBusinessCapabilityGUID() != null) ||
-                    (assetProperties.getOtherOriginValues() != null) ||
-                    (! isMergeUpdate))
-        {
-            final String organizationGUIDParameterName = "originOrganizationGUID";
-            final String businessCapabilityGUIDParameterName = "originBusinessCapabilityGUID";
-
-            assetHandler.addAssetOrigin(userId,
-                                        assetGUID,
-                                        assetGUIDParameterName,
-                                        assetProperties.getOriginOrganizationGUID(),
-                                        organizationGUIDParameterName,
-                                        assetProperties.getOriginBusinessCapabilityGUID(),
-                                        businessCapabilityGUIDParameterName,
-                                        assetProperties.getOtherOriginValues(),
-                                        methodName);
-        }
 
         assetHandler.updateAsset(userId,
                                  this.getExternalSourceGUID(correlationProperties),

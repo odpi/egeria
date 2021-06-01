@@ -77,16 +77,16 @@ public class SecurityOfficerOMRSTopicListener extends OMRSTopicListenerBase {
 
             switch (instanceEventType) {
                 case CLASSIFIED_ENTITY_EVENT:
-                    processClassifiedEntityEvent(instanceEvent);
+                    // processClassifiedEntityEvent(instanceEvent);
                     break;
                 case RECLASSIFIED_ENTITY_EVENT:
-                    this.processReclassifiedEntityEvent(instanceEvent);
+                    // this.processReclassifiedEntityEvent(instanceEvent);
                     break;
                 case DELETED_ENTITY_EVENT:
-                    processDeletePurgedEntityEvent(instanceEvent);
+                    // processDeletePurgedEntityEvent(instanceEvent);
                     break;
                 case DECLASSIFIED_ENTITY_EVENT:
-                    this.processDeclassifiedEntityEvent(instanceEvent);
+                    // this.processDeclassifiedEntityEvent(instanceEvent);
                     break;
                 default:
                     log.debug("Unknown instance event error code, ignoring event");

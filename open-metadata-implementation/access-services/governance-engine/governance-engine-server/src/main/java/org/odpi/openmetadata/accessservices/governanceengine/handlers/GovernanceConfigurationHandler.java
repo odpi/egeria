@@ -283,6 +283,7 @@ public class GovernanceConfigurationHandler
         return governanceEngineHandler.getBeansByType(userId,
                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_GUID,
                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                      null,
                                                       startingFrom,
                                                       maximumResults,
                                                       methodName);

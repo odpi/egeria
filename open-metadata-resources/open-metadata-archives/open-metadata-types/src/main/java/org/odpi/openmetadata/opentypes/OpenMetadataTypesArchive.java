@@ -37,7 +37,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "2.10";
+    private static final String                  archiveVersion     = "2.11";
     private static final String                  originatorName     = "Egeria";
     private static final String                  originatorLicense  = "Apache 2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
@@ -145,7 +145,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        OpenMetadataTypesArchive2_9 previousTypes = new OpenMetadataTypesArchive2_9(archiveBuilder);
+        OpenMetadataTypesArchive2_10 previousTypes = new OpenMetadataTypesArchive2_10(archiveBuilder);
 
         /*
          * Pull the types from previous releases.
@@ -155,7 +155,83 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        update0010BaseModel();
+    }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Mark deprecated field in Asset
+     */
+    private void update0010BaseModel()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateAsset());
+    }
+
+    /**
+     * Deprecate the ownership properties - use Ownership classification instead
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateAsset()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Asset";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "owner";
+        final String attribute1Description     = "Deprecated Attribute. Person, team or engine responsible for this type of action. Use Ownership classification";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "ownerType";
+        final String attribute2Description     = "Deprecated Attribute. Type of element representing the owner. Use Ownership classification";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "zoneMembership";
+        final String attribute3Description     = "Deprecated Attribute. The list of zones that this asset belongs to. Use AssetZoneMembership classification";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "latestChange";
+        final String attribute4Description     = "Deprecated Attribute. Description of the last change to the asset's metadata. Use LatestChange classification";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("AssetOwnerType",
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute3Name,
+                                                                attribute3Description,
+                                                                attribute3DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
     }
 }
 

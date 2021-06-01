@@ -19,6 +19,10 @@ https://www.jetbrains.com/idea/download/index.html
 There is a [tutorial for IntelliJ](../../open-metadata-resources/open-metadata-tutorials/intellij-tutorial) as part of the
 [Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo).
 
+Lombok Plugin
+
+Egeria makes use of Project Lombok. If using JetBrains IntelliJ IDEA ensure the IDEA has the required plugin configured. See https://projectlombok.org/setup/intellij for more information.
+
 ----
 * Return to [Developer Tools](.)
 
