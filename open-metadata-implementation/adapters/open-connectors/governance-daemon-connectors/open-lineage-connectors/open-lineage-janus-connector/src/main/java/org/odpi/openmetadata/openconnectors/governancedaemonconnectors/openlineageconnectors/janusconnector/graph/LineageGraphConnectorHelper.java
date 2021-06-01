@@ -41,6 +41,7 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.AVRO_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.COLLECTION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CSV_FILE;
@@ -58,6 +59,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.JSON_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.KEYSTORE_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LOG_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.MEDIA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
@@ -69,7 +71,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.SCHEMA_TYPE_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_SCHEMA_TYPE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.COLLECTION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TRANSFORMATION_PROJECT_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.DESTINATION_CONDENSATION;
@@ -135,14 +136,28 @@ public class LineageGraphConnectorHelper {
      */
 
     public Optional<LineageVerticesAndEdges> ultimateSource(String guid, boolean includeProcesses) {
+
+        Graph sourceGraph = queryUltimateSourceGraph(guid, LINEAGE_MAPPING);
+        List<Vertex> sourcesList = querySourceList(guid, LINEAGE_MAPPING);
+        if(sourceGraph.vertices().hasNext()){
+            return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList),
+                    SOURCE_CONDENSATION, includeProcesses));
+        }
+
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
         if (!edgeLabelOptional.isPresent()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
-        Graph sourceGraph = null;
-        List<Vertex> sourcesList = null;
+        sourceGraph = queryUltimateSourceGraph(guid, edgeLabel);
+        sourcesList = querySourceList(guid, edgeLabel);
 
+        return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList),
+                SOURCE_CONDENSATION, includeProcesses));
+    }
+
+    private Graph queryUltimateSourceGraph(String guid, String edgeLabel){
+        Graph sourceGraph = null;
         try {
             sourceGraph = (Graph)
                     g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -150,13 +165,7 @@ public class LineageGraphConnectorHelper {
                             repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV().simplePath()).
                             cap("subGraph").next();
 
-            sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                    until(inE(edgeLabel).count().is(0)).
-                    repeat(inE(edgeLabel).outV().simplePath()).
-                    dedup().toList();
-
             commitTransaction();
-
         } catch (Exception e) {
             if (supportingTransactions) {
                 g.tx().rollback();
@@ -164,8 +173,26 @@ public class LineageGraphConnectorHelper {
             log.error("Exception while querying ultimate source horizontal lineage of guid " + guid + ". Executed rollback.");
             log.error("Message: " + e.getMessage());
         }
+        return sourceGraph;
+    }
 
-        return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList), SOURCE_CONDENSATION, includeProcesses));
+    private List<Vertex> querySourceList(String guid, String edgeLabel){
+        List<Vertex> sourceList = null;
+        try {
+            sourceList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                    until(inE(edgeLabel).count().is(0)).
+                    repeat(inE(edgeLabel).outV().simplePath()).
+                    dedup().toList();
+
+            commitTransaction();
+        } catch (Exception e) {
+            if (supportingTransactions) {
+                g.tx().rollback();
+            }
+            log.error("Exception while querying ultimate source horizontal lineage of guid " + guid + ". Executed rollback.");
+            log.error("Message: " + e.getMessage());
+        }
+        return sourceList;
     }
 
     /**
@@ -177,14 +204,27 @@ public class LineageGraphConnectorHelper {
      * @return a subgraph in an Open Lineage specific format.
      */
     public Optional<LineageVerticesAndEdges> ultimateDestination(String guid, boolean includeProcesses) {
+        Graph destinationGraph = queryUltimateDestinationGraph(guid, LINEAGE_MAPPING);
+        List<Vertex> destinationsList = queryDestinationList(guid, LINEAGE_MAPPING);
+        if(destinationGraph.vertices().hasNext()){
+            return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList),
+                    DESTINATION_CONDENSATION, includeProcesses));
+        }
+
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
         if (!edgeLabelOptional.isPresent()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
-        Graph destinationGraph = null;
-        List<Vertex> destinationsList = null;
+        destinationGraph = queryUltimateDestinationGraph(guid, edgeLabel);
+        destinationsList = queryDestinationList(guid, edgeLabel);
 
+        return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList),
+                DESTINATION_CONDENSATION, includeProcesses));
+    }
+
+    private Graph queryUltimateDestinationGraph(String guid, String edgeLabel){
+        Graph destinationGraph = null;
         try {
             destinationGraph = (Graph)
                     g.V().has(PROPERTY_KEY_ENTITY_GUID, guid)
@@ -192,13 +232,7 @@ public class LineageGraphConnectorHelper {
                             .repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
                             .cap("subGraph").next();
 
-            destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                    until(outE(edgeLabel).count().is(0)).
-                    repeat(outE(edgeLabel).inV().simplePath()).
-                    dedup().toList();
-
             commitTransaction();
-
         } catch (Exception e) {
             if (supportingTransactions) {
                 g.tx().rollback();
@@ -206,9 +240,26 @@ public class LineageGraphConnectorHelper {
             log.error("Exception while querying ultimate destination horizontal lineage of guid " + guid + ". Executed rollback.");
             log.error("Message: " + e.getMessage());
         }
+        return destinationGraph;
+    }
 
-        return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList), DESTINATION_CONDENSATION,
-                includeProcesses));
+    private List<Vertex> queryDestinationList(String guid, String edgeLabel){
+        List<Vertex> destinationList = null;
+        try {
+            destinationList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                    until(outE(edgeLabel).count().is(0)).
+                    repeat(outE(edgeLabel).inV().simplePath()).
+                    dedup().toList();
+
+            commitTransaction();
+        } catch (Exception e) {
+            if (supportingTransactions) {
+                g.tx().rollback();
+            }
+            log.error("Exception while querying ultimate destination horizontal lineage of guid " + guid + ". Executed rollback.");
+            log.error("Message: " + e.getMessage());
+        }
+        return destinationList;
     }
 
     /**
@@ -220,13 +271,23 @@ public class LineageGraphConnectorHelper {
      * @return a subgraph in an Open Lineage specific format.
      */
     public Optional<LineageVerticesAndEdges> endToEnd(String guid, boolean includeProcesses) {
+        Graph endToEndGraph = queryEndToEndGraph(guid, LINEAGE_MAPPING);
+        if(endToEndGraph.vertices().hasNext()){
+            return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
+        }
+
         Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
         if (!edgeLabelOptional.isPresent()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
-        Graph endToEndGraph = null;
+        endToEndGraph = queryEndToEndGraph(guid, edgeLabel);
 
+        return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
+    }
+
+    private Graph queryEndToEndGraph(String guid, String edgeLabel) {
+        Graph endToEndGraph = null;
         try {
             endToEndGraph = (Graph)
                     g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -238,7 +299,6 @@ public class LineageGraphConnectorHelper {
                             ).cap("subGraph").next();
 
             commitTransaction();
-
         } catch (Exception e) {
             if (supportingTransactions) {
                 g.tx().rollback();
@@ -246,8 +306,7 @@ public class LineageGraphConnectorHelper {
             log.error("Exception while querying end to end horizontal lineage of guid " + guid + ". Executed rollback.");
             log.error("Message: " + e.getMessage());
         }
-
-        return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
+        return endToEndGraph;
     }
 
     /**
