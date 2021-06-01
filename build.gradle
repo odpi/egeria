@@ -80,7 +80,7 @@ allprojects {
         jacksonVersion = '2.12.2'
         nettyVersion = '4.1.63.Final'
         luceneVersion = '8.8.2'
-        gremlinVersion = '3.4.10'
+        gremlinVersion = '3.5.0'
         groovyVersion = '3.0.7'
         janusVersion = '0.5.3'
         springsecurityVersion = '5.4.6'
