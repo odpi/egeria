@@ -492,10 +492,10 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
-        final String   methodName = "getGovernanceRoleHistoryByGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/history";
+        final String methodName = "getGovernanceRoleHistoryByGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/history";
 
-        final String   guidParameterName = "governanceRoleGUID";
+        final String guidParameterName = "governanceRoleGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceRoleGUID, guidParameterName, methodName);
@@ -658,8 +658,8 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
                                                                               int    domainIdentifier,
                                                                               int    startFrom,
                                                                               int    pageSize) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
     {
         final String   methodName = "getCurrentGovernanceRoleAppointments";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/by-domain/{2}/current-appointments?startFrom={3}&pageSize={4}";
