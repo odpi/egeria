@@ -66,27 +66,27 @@ public class ContactMethodConverter<B> extends CommunityProfileOMASConverter<B>
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
-                InstanceProperties instanceProperties;
+                InstanceProperties entityProperties;
 
                 /*
                  * The initial set of values come from the entity.
                  */
                 if (entity != null)
                 {
-                    instanceProperties = new InstanceProperties(entity.getProperties());
+                    entityProperties = new InstanceProperties(entity.getProperties());
 
-                    contactMethodProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    contactMethodProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    contactMethodProperties.setType(this.getContactMethodTypeFromProperties(instanceProperties));
-                    contactMethodProperties.setService(this.removeContactMethodService(instanceProperties));
-                    contactMethodProperties.setValue(this.removeContactMethodValue(instanceProperties));
+                    contactMethodProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
+                    contactMethodProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
+                    contactMethodProperties.setType(this.getContactMethodTypeFromProperties(entityProperties));
+                    contactMethodProperties.setService(this.removeContactMethodService(entityProperties));
+                    contactMethodProperties.setValue(this.removeContactMethodValue(entityProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
                     contactMethodProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    contactMethodProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    contactMethodProperties.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
                 }
                 else
                 {
@@ -104,53 +104,5 @@ public class ContactMethodConverter<B> extends CommunityProfileOMASConverter<B>
         }
 
         return null;
-    }
-
-
-    /**
-     * Retrieve the ContactMethodType enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return ContactMethodType  enum value
-     */
-    private ContactMethodType getContactMethodTypeFromProperties(InstanceProperties   properties)
-    {
-        final String methodName = "getContactMethodTypeFromProperties";
-
-        ContactMethodType contactMethodType = ContactMethodType.OTHER;
-
-        if (properties != null)
-        {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
-
-            switch (ordinal)
-            {
-                case 0:
-                    contactMethodType = ContactMethodType.EMAIL;
-                    break;
-
-                case 1:
-                    contactMethodType = ContactMethodType.PHONE;
-                    break;
-
-                case 2:
-                    contactMethodType = ContactMethodType.CHAT;
-                    break;
-
-                case 3:
-                    contactMethodType = ContactMethodType.PROFILE;
-                    break;
-
-                case 4:
-                    contactMethodType = ContactMethodType.ACCOUNT;
-                    break;
-
-                case 99:
-                    contactMethodType = ContactMethodType.OTHER;
-                    break;
-            }
-        }
-
-        return contactMethodType;
     }
 }

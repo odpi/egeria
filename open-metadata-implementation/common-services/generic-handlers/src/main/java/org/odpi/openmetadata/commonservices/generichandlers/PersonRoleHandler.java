@@ -4,12 +4,15 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -296,21 +299,91 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      profileGUID,
-                                      profileGUIDParameterName,
-                                      OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                      roleGUID,
-                                      roleGUIDParameterName,
-                                      OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
-                                      methodName);
+        invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(roleGUID, roleGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(appointmentGUID, appointmentGUIDParameterName, methodName);
+
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            appointmentGUID,
+                                                                            appointmentGUIDParameterName,
+                                                                            OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                            methodName);
+
+        if ((relationship != null) && (relationship.getEntityOneProxy() != null) && (relationship.getEntityTwoProxy() != null))
+        {
+            if (! roleGUID.equals(relationship.getEntityTwoProxy().getGUID()))
+            {
+                String relationshipTypeName = "<Unknown>";
+                String proxyTypeName = "<Unknown>";
+
+                if (relationship.getType() != null)
+                {
+                    relationshipTypeName = relationship.getType().getTypeDefName();
+                }
+                if (relationship.getEntityTwoProxy().getType() != null)
+                {
+                    proxyTypeName = relationship.getEntityTwoProxy().getType().getTypeDefName();
+                }
+
+                throw new InvalidParameterException(GenericHandlersErrorCode.WRONG_END_GUID.getMessageDefinition(roleGUIDParameterName,
+                                                                                                                 roleGUID,
+                                                                                                                 proxyTypeName,
+                                                                                                                 relationship.getEntityTwoProxy().getGUID(),
+                                                                                                                 Integer.toString(2),
+                                                                                                                 relationshipTypeName,
+                                                                                                                 appointmentGUIDParameterName,
+                                                                                                                 appointmentGUID),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    roleGUIDParameterName);
+            }
+
+            if (! profileGUID.equals(relationship.getEntityOneProxy().getGUID()))
+            {
+                String relationshipTypeName = "<Unknown>";
+                String proxyTypeName = "<Unknown>";
+
+                if (relationship.getType() != null)
+                {
+                    relationshipTypeName = relationship.getType().getTypeDefName();
+                }
+                if (relationship.getEntityOneProxy().getType() != null)
+                {
+                    proxyTypeName = relationship.getEntityOneProxy().getType().getTypeDefName();
+                }
+
+                throw new InvalidParameterException(GenericHandlersErrorCode.WRONG_END_GUID.getMessageDefinition(profileGUIDParameterName,
+                                                                                                                 profileGUID,
+                                                                                                                 proxyTypeName,
+                                                                                                                 relationship.getEntityOneProxy().getGUID(),
+                                                                                                                 Integer.toString(1),
+                                                                                                                 relationshipTypeName,
+                                                                                                                 appointmentGUIDParameterName,
+                                                                                                                 appointmentGUID),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    roleGUIDParameterName);
+            }
+
+            InstanceProperties properties = new InstanceProperties(relationship.getProperties());
+
+            if (endDate == null)
+            {
+                properties.setEffectiveToTime(new Date());
+            }
+            else
+            {
+                properties.setEffectiveToTime(endDate);
+            }
+
+            repositoryHandler.updateRelationshipProperties(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           relationship,
+                                                           properties,
+                                                           methodName);
+
+        }
     }
 
 
@@ -511,7 +584,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param roleGUID unique identifier of the role to update
      * @param roleGUIDParameterName parameter passing the roleGUID
      * @param qualifiedName unique name for the role - used in other configuration
+     * @param qualifiedNameParameterName  parameter providing qualified name
      * @param name short display name for the role
+     * @param nameParameterName  parameter providing name
      * @param description description of the role
      * @param scope the scope of the role
      * @param headCount number of individuals that can be appointed to this role
@@ -532,7 +607,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                  String              roleGUID,
                                  String              roleGUIDParameterName,
                                  String              qualifiedName,
+                                 String              qualifiedNameParameterName,
                                  String              name,
+                                 String              nameParameterName,
                                  String              description,
                                  String              scope,
                                  int                 headCount,
@@ -544,11 +621,14 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        final String qualifiedNameParameterName = "qualifiedName";
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(roleGUID, roleGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+            invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,

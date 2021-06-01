@@ -37,14 +37,16 @@ public interface ToDoManagementInterface
 
 
     /**
+     * Update the properties associated with a To Do.
      *
-     * @param userId
-     * @param toDoGUID
-     * @param isMergeUpdate
-     * @param toDoProperties
-     * @throws InvalidParameterException
-     * @throws PropertyServerException
-     * @throws UserNotAuthorizedException
+     * @param userId calling user
+     * @param toDoGUID unique identifier of the to do
+     * @param isMergeUpdate should the toDoProperties overlay the existing stored properties or replace them
+     * @param toDoProperties properties to change
+     *
+     * @throws InvalidParameterException a parameter is invalid
+     * @throws PropertyServerException the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     void updateToDo(String         userId,
                     String         toDoGUID,
@@ -53,18 +55,54 @@ public interface ToDoManagementInterface
                                                           PropertyServerException,
                                                           UserNotAuthorizedException;
 
-
+    /**
+     * Delete an existing to do.
+     *
+     * @param userId calling user
+     * @param toDoGUID unique identifier of the to do
+     *
+     * @throws InvalidParameterException a parameter is invalid
+     * @throws PropertyServerException the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
     void deleteToDo(String userId,
                     String toDoGUID) throws InvalidParameterException,
                                             PropertyServerException,
                                             UserNotAuthorizedException;
 
 
+    /**
+     * Retrieve a to do by unique identifier.
+     *
+     * @param userId calling user
+     * @param toDoGUID unique identifier of the to do
+     *
+     * @return to do bean
+     *
+     * @throws InvalidParameterException a parameter is invalid
+     * @throws PropertyServerException the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
     ToDoElement getToDo(String userId,
                         String toDoGUID) throws InvalidParameterException,
                                                 PropertyServerException,
                                                 UserNotAuthorizedException;
 
+
+    /**
+     * Retrieve the to dos that are chained off of an element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element to start with
+     * @param startFrom initial position of the results to return
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of to do beans
+     *
+     * @throws InvalidParameterException a parameter is invalid
+     * @throws PropertyServerException the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
     List<ToDoElement> getActionsForElement(String userId,
                                            String elementGUID,
                                            int    startFrom,
@@ -72,6 +110,21 @@ public interface ToDoManagementInterface
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException;
 
+
+    /**
+     * Retrieve the to dos for a particular person role.
+     *
+     * @param userId calling user
+     * @param roleGUID unique identifier of the role
+     * @param startFrom initial position of the results to return
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of to do beans
+     *
+     * @throws InvalidParameterException a parameter is invalid
+     * @throws PropertyServerException the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
     List<ToDoElement> getAssignedActions(String userId,
                                          String roleGUID,
                                          int    startFrom,
