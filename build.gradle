@@ -83,10 +83,10 @@ allprojects {
         gremlinVersion = '3.4.10'
         groovyVersion = '3.0.7'
         janusVersion = '0.5.3'
-        springsecurityVersion = '5.4.6'
         springwebVersion = '5.3.7'
         springdataVersion = '2.5.1'
         springbootVersion = '2.5.0'
+        springsecurityVersion = '5.5.0'
         junitjupiterVersion = '5.7.1'
         mockitoVersion = '3.9.0'
     }
