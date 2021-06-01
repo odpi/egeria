@@ -174,7 +174,7 @@
         <spring-data.version>2.5.0</spring-data.version>
         <springdoc.version>1.5.8</springdoc.version>
         <springdoc-plugin.version>1.3</springdoc-plugin.version>
-        <commons-io.version>2.8.0</commons-io.version>
+        <commons-io.version>2.9.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>3.17.0</jena.version>
         <commons-lang.version>3.12.0</commons-lang.version>
