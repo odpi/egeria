@@ -56,23 +56,16 @@ public class AccessServiceOutboundEventTypeTest
     /**
      * Validated the values of the enum.
      */
-    @Test public void testAllErrorCodeValues()
+    @Test public void testAllValues()
     {
         testSingleErrorCodeValues(CommunityProfileOutboundEventType.UNKNOWN_COMMUNITY_PROFILE_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.NEW_USER_IDENTITY_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.UPDATED_USER_IDENTITY_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.NEW_REF_USER_IDENTITY_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.DELETED_USER_IDENTITY_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.NEW_REF_PERSONAL_PROFILE_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.UPDATED_PERSONAL_PROFILE_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.DELETED_PERSONAL_PROFILE_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.NEW_ASSET_IN_COLLECTION_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.ASSET_REMOVED_FROM_COLLECTION_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.NEW_PROJECT_IN_COLLECTION_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.PROJECT_REMOVED_FROM_COLLECTION_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.NEW_COMMUNITY_IN_COLLECTION_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.COMMUNITY_REMOVED_FROM_COLLECTION_EVENT);
+        testSingleErrorCodeValues(CommunityProfileOutboundEventType.NEW_ELEMENT_EVENT);
+        testSingleErrorCodeValues(CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT);
+        testSingleErrorCodeValues(CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT);
+        testSingleErrorCodeValues(CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT);
+        testSingleErrorCodeValues(CommunityProfileOutboundEventType.RECLASSIFIED_ELEMENT_EVENT);
+        testSingleErrorCodeValues(CommunityProfileOutboundEventType.DECLASSIFIED_ELEMENT_EVENT);
+        testSingleErrorCodeValues(CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT);
     }
 
 
@@ -88,7 +81,7 @@ public class AccessServiceOutboundEventTypeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(CommunityProfileOutboundEventType.NEW_REF_PERSONAL_PROFILE_EVENT);
+            jsonString = objectMapper.writeValueAsString(CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT);
         }
         catch (Exception  exc)
         {
@@ -97,7 +90,7 @@ public class AccessServiceOutboundEventTypeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, CommunityProfileOutboundEventType.class) == CommunityProfileOutboundEventType.NEW_REF_PERSONAL_PROFILE_EVENT);
+            assertTrue(objectMapper.readValue(jsonString, CommunityProfileOutboundEventType.class) == CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT);
         }
         catch (Exception  exc)
         {
@@ -112,7 +105,7 @@ public class AccessServiceOutboundEventTypeTest
     @Test public void testToString()
     {
         assertTrue(
-                CommunityProfileOutboundEventType.DELETED_PERSONAL_PROFILE_EVENT.toString().contains("CommunityProfileOutboundEventType"));
+                CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT.toString().contains("CommunityProfileOutboundEventType"));
     }
 
 
@@ -122,9 +115,9 @@ public class AccessServiceOutboundEventTypeTest
     @Test public void testEquals()
     {
         assertTrue(
-                CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT.equals(CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT));
+                CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT.equals(CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT));
         assertFalse(
-                CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT.equals(CommunityProfileOutboundEventType.DELETED_PERSONAL_PROFILE_EVENT));
+                CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT.equals(CommunityProfileOutboundEventType.DECLASSIFIED_ELEMENT_EVENT));
     }
 
 
@@ -134,8 +127,8 @@ public class AccessServiceOutboundEventTypeTest
     @Test public void testHashcode()
     {
         assertTrue(
-                CommunityProfileOutboundEventType.UPDATED_PERSONAL_PROFILE_EVENT.hashCode() == CommunityProfileOutboundEventType.UPDATED_PERSONAL_PROFILE_EVENT.hashCode());
+                CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT.hashCode() == CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT.hashCode());
         assertFalse(
-                CommunityProfileOutboundEventType.UPDATED_PERSONAL_PROFILE_EVENT.hashCode() == CommunityProfileOutboundEventType.UNKNOWN_COMMUNITY_PROFILE_EVENT.hashCode());
+                CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT.hashCode() == CommunityProfileOutboundEventType.UNKNOWN_COMMUNITY_PROFILE_EVENT.hashCode());
     }
 }

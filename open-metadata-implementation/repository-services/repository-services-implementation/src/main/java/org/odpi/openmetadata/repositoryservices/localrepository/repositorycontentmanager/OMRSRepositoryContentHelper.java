@@ -169,7 +169,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param sourceName  source of the request (used for logging)
      * @param anchorEntityGUID unique identifier of the anchor entity
      * @param relationship relationship to another entity
-     * @return proxy to the other entity.
+     * @return name of proxy to the other entity.
      */
     @Override
     public  String  getOtherEndName(String                 sourceName,
@@ -195,6 +195,43 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                 else
                 {
                     return endOneName;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the entity proxy for the related entity.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param anchorEntityGUID unique identifier of the anchor entity
+     * @param relationship relationship to another entity
+     * @return proxy to the other entity.
+     */
+    @Override
+    public  EntityProxy  getOtherEnd(String                 sourceName,
+                                     String                 anchorEntityGUID,
+                                     Relationship           relationship)
+    {
+        if (relationship != null)
+        {
+            RelationshipDef relationshipTypeDef = (RelationshipDef)this.getTypeDefByName(sourceName,
+                                                                                         relationship.getType().getTypeDefName());
+
+            EntityProxy entityProxy = relationship.getEntityOneProxy();
+
+            if (entityProxy != null)
+            {
+                if (anchorEntityGUID.equals(entityProxy.getGUID()))
+                {
+                    return relationship.getEntityTwoProxy();
+                }
+                else
+                {
+                    return entityProxy;
                 }
             }
         }

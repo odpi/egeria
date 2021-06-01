@@ -79,6 +79,14 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                              "additional governance action types to this first one to describe the execution flow. " +
                              "Then retry the request once the definition is corrected."),
 
+    WRONG_END_GUID(400, "OMAG-GENERIC-HANDLERS-400-008",
+                              "The {0} {1} does not match the {2} guid {3} at end {4} in the {5} relationship identified as {6} {7}",
+                              "The request can not be processed because one of the unique identifiers supplied on the call does not match the " +
+                                      "values stored in the open metadata repositories.",
+                              "The most likely cause of the error is that the parameters passed on the call are incorrect.  " +
+                                      "Correct the parameters and retry the request.  If the values are correct then save this error message along with " +
+                                      "details of the stored metadata instances and contact the Egeria community."),
+
     ONLY_CREATOR_CAN_DELETE(403, "OMAG-GENERIC-HANDLERS-403-001",
             "The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it " +
                                     "was not created by the requesting user {5}",
@@ -185,6 +193,25 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                         "The system is unable to process the request because the handler has a null anchor GUID.",
                         "This typically means the caller has either been returned an entity with a null GUID or there is an error" +
                                 "in the templated create logic.  Use the stack trace to determine the source of the error"),
+
+    BAD_ENTITY(500, "OMAG-GENERIC-HANDLERS-500-011",
+                     "An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}",
+                     "The system is unable to format all or part of the response because the repositories have returned an invalid entity.",
+                     "Use knowledge of the request and the contents of the repositories to track down and correct the invalid entity.  " +
+                             "There is probably an error in the implementation of the repository that originated the entity."),
+
+    BAD_ENTITY_PROXY(500, "OMAG-GENERIC-HANDLERS-500-012",
+                     "A relationship {0} has been retrieved by method {1} from service {2} that has an invalid entity proxy at end {3}: {4}",
+                     "The system is unable to format all or part of the response because the repositories have returned a relationship with an " +
+                             "invalid entity proxy that links it to an entity.",
+                     "Use knowledge of the request and the contents of the repositories to track down and correct the relationship with the " +
+                             "invalid entity proxy.  There is probably an error in the implementation of the repository that originated the relationship."),
+
+    BAD_RELATIONSHIP(500, "OMAG-GENERIC-HANDLERS-500-013",
+                     "A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}",
+                     "The system is unable to format all or part of the response because the repositories have returned an invalid relationship.",
+                     "Use knowledge of the request and the contents of the repositories to track down and correct the invalid relationship.  " +
+                             "There is probably an error in the implementation of the repository that originated the relationship."),
 
     ;
 

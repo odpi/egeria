@@ -24,7 +24,7 @@ import java.util.Map;
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Data Manager bean.
  */
-public abstract class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
+public class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {
     /**
      * Constructor
@@ -33,9 +33,9 @@ public abstract class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIG
      * @param serviceName name of this component
      * @param serverName name of this server
      */
-    GovernanceProgramOMASConverter(OMRSRepositoryHelper   repositoryHelper,
-                                   String                 serviceName,
-                                   String                 serverName)
+    public GovernanceProgramOMASConverter(OMRSRepositoryHelper   repositoryHelper,
+                                          String                 serviceName,
+                                          String                 serverName)
     {
         super (repositoryHelper, serviceName, serverName);
     }
@@ -51,9 +51,9 @@ public abstract class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIG
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    ElementHeader getMetadataElementHeader(Class<B>       beanClass,
-                                           InstanceHeader header,
-                                           String         methodName) throws PropertyServerException
+    public ElementHeader getMetadataElementHeader(Class<B>       beanClass,
+                                                  InstanceHeader header,
+                                                  String         methodName) throws PropertyServerException
     {
         if (header != null)
         {
