@@ -108,7 +108,7 @@ allprojects {
             implementation("com.google.code.findbugs:jsr305:3.0.2")
             implementation("com.google.guava:guava:30.1.1-jre")
             implementation("com.h2database:h2:1.4.200")
-            implementation("com.mikesamuel:json-sanitizer:1.2.2")
+            implementation("com.mikesamuel:json-sanitizer:1.2.3")
             implementation("com.sleepycat:je:18.3.12")
             implementation("commons-codec:commons-codec:1.15")
             implementation("commons-io:commons-io:2.8.0")
