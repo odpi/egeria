@@ -341,7 +341,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         * before returning.
          */
         try {
-            consumer.safeCloseConsumer();
+            if (consumer != null) {
+                consumer.safeCloseConsumer();
+            }
             consumerThread.join();
         }
         catch ( InterruptedException e )
@@ -362,7 +364,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
 
         try {
-            producer.safeCloseProducer();
+            if (producer != null) {
+                producer.safeCloseProducer();
+            }
             producerThread.join();
         } catch (InterruptedException e) {
             //expected and don't care
