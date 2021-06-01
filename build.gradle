@@ -197,6 +197,7 @@ allprojects {
             implementation("org.springframework.ldap:ldap-core:${springldapVersion}")
             implementation("javax.servlet:javax.servlet-api:4.0.1")
 	    implementation("commons-configuration:commons-configuration:1.10")
+	    implementation("org.apache.configuration:commons-configuration2:2.7")
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
             runtimeOnly("joda-time:joda-time:2.10.10")

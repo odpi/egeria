@@ -220,6 +220,7 @@
         <httpcore.version>4.4.14</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
+        <commons-configuration2.version>2.7</commons-configuration2.version>
         <lettuce.version>6.1.2.RELEASE</lettuce.version>
         <lombok.version>1.18.20</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
@@ -484,6 +485,13 @@
                 <groupId>commons-configuration</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons-configuration.version}</version>
+                <scope>compile</scope>
+	</dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-configuration2</artifactId>
+                <version>${commons-configuration2.version}</version>
                 <scope>compile</scope>
             </dependency>
 
