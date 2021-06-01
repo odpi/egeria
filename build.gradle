@@ -90,6 +90,7 @@ allprojects {
         springsecurityVersion = '5.5.0'
         mockitoVersion = '3.10.0'
         junitjupiterVersion = '5.7.2'
+        tomcatVersion = '9.0.46'
     }
 
     dependencies {
@@ -149,7 +150,8 @@ allprojects {
             implementation("org.apache.tinkerpop:tinkergraph-gremlin:${gremlinVersion}")
             implementation("org.apache.tinkerpop:gremlin-driver:${gremlinVersion}")
             implementation("org.apache.tinkerpop:gremlin-core:${gremlinVersion}")
-            implementation("org.apache.tomcat.embed:tomcat-embed-core:10.0.6") //TODO May need to exclude tomcat-annotations-api
+            implementation("org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}") //TODO May need to exclude tomcat-annotations-api
+            implementation("org.apache.tomcat:tomcat-coyote:${tomcatVersion}") //TODO May need to exclude tomcat-annotations-api
             implementation("org.codehaus.groovy:groovy:${groovyVersion}")
             implementation("org.codehaus.groovy:groovy-cli-picocli:${groovyVersion}")
             implementation("org.codehaus.groovy:groovy-console:${groovyVersion}")
@@ -213,6 +215,7 @@ allprojects {
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.4")
             runtimeOnly("org.janusgraph:janusgraph-es:${janusVersion}")
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.2")
+	    runtimeOnly("javax.servlet:javax.servlet-api:4.0.1");
             testImplementation("junit:junit:4.13.2")
             testImplementation("org.glassfish:javax.json:1.1.4")
             testImplementation("org.junit.jupiter:junit-jupiter-api:${junitjupiterVersion}")
