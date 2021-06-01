@@ -165,7 +165,7 @@ allprojects {
             implementation("org.reflections:reflections:0.9.12")
             implementation("org.slf4j:jcl-over-slf4j:1.7.30")
             implementation("org.slf4j:slf4j-api:1.7.30")
-            implementation("org.springdoc:springdoc-openapi-ui:1.5.8")
+            implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
             implementation("org.springframework.boot:spring-boot-autoconfigure:${springbootVersion}")
             implementation("org.springframework.boot:spring-boot:${springbootVersion}")
             implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springbootVersion}")
