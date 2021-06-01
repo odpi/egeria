@@ -195,7 +195,7 @@
         <lucene.version>8.4.1</lucene.version>
         <lucene-analyzers-common.version>8.6.0</lucene-analyzers-common.version>
         <guava.version>30.1.1-jre</guava.version>
-        <tink.version>1.5.0</tink.version>
+        <tink.version>1.6.0</tink.version>
         <jsonld.version>0.13.3</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.15</commons-codec.version>
