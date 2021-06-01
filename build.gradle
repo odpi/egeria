@@ -155,7 +155,7 @@ allprojects {
             implementation("org.codehaus.groovy:groovy-templates:${groovyVersion}")
             implementation("org.codehaus.groovy:groovysh:${groovyVersion}")
             implementation("org.codehaus.plexus:plexus-utils:3.3.0")
-            implementation("org.elasticsearch:elasticsearch:7.12.1")
+            implementation("org.elasticsearch:elasticsearch:7.13.0")
             implementation("org.hdrhistogram:HdrHistogram:2.1.12")
             implementation("org.janusgraph:janusgraph-core:${janusVersion}")
             implementation("org.janusgraph:janusgraph-inmemory:${janusVersion}")
