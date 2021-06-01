@@ -244,7 +244,7 @@
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.6</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <frontend.plugin.version>1.11.3</frontend.plugin.version>
+        <frontend.plugin.version>1.12.0</frontend.plugin.version>
         <exec.plugin.version>3.0.0</exec.plugin.version>
         <resources.plugin.version>3.2.0</resources.plugin.version>
         <rat-plugin.version>0.13</rat-plugin.version>
