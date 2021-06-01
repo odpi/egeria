@@ -86,7 +86,7 @@ allprojects {
         springsecurityVersion = '5.4.6'
         springbootVersion = '2.4.5'
         springwebVersion = '5.3.6'
-        springdataVersion = '2.5.0'
+        springdataVersion = '2.5.1'
         junitjupiterVersion = '5.7.1'
         mockitoVersion = '3.9.0'
     }
