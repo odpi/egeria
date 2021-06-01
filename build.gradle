@@ -88,7 +88,7 @@ allprojects {
         springwebVersion = '5.3.6'
         springdataVersion = '2.5.0'
         junitjupiterVersion = '5.7.1'
-        mockitoVersion = '3.9.0'
+        mockitoVersion = '3.10.0'
     }
 
     dependencies {
