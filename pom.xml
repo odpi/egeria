@@ -169,7 +169,7 @@
         <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
         <tomcat.version>9.0.45</tomcat.version>
         <spring.version>5.3.6</spring.version>
-        <spring-security.version>5.4.6</spring-security.version>
+        <spring-security.version>5.5.0</spring-security.version>
         <spring.version>5.3.6</spring.version>
         <spring-data.version>2.5.0</spring-data.version>
         <springdoc.version>1.5.8</springdoc.version>
