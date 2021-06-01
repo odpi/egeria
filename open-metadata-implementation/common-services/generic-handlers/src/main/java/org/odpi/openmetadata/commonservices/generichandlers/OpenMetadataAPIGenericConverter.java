@@ -464,6 +464,92 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+    /**
+     * Throw an exception to indicate that a retrieved entity has missing information.
+     *
+     * @param beanClassName class name of bean
+     * @param entity the entity with the bad header
+     * @param methodName calling method
+     * @throws PropertyServerException an invalid instance has been returned from the metadata repositories
+     */
+    protected void handleBadEntity(String          beanClassName,
+                                   EntityDetail    entity,
+                                   String          methodName) throws PropertyServerException
+    {
+        if (entity == null)
+        {
+            handleMissingMetadataInstance(beanClassName, TypeDefCategory.ENTITY_DEF, methodName);
+        }
+        else
+        {
+            throw new PropertyServerException(GenericHandlersErrorCode.BAD_ENTITY.getMessageDefinition(methodName,
+                                                                                                       serviceName,
+                                                                                                       entity.toString()),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
+     * Throw an exception to indicate that a retrieved entity proxy is missing critical information.
+     *
+     * @param relationship the relationship with a bad entity proxy
+     * @param end number of the end where the proxy is stored
+     * @param entityProxy the entity proxy with the bad values
+     * @param methodName calling method
+     * @throws PropertyServerException an invalid instance has been returned from the metadata repositories
+     */
+    protected void handleBadEntityProxy(Relationship relationship,
+                                        int          end,
+                                        EntityProxy  entityProxy,
+                                        String       methodName) throws PropertyServerException
+    {
+        String entityProxyString = "<null>";
+
+        if (entityProxy != null)
+        {
+            entityProxyString = entityProxy.toString();
+        }
+
+        throw new PropertyServerException(GenericHandlersErrorCode.BAD_ENTITY_PROXY.getMessageDefinition(relationship.getGUID(),
+                                                                                                         methodName,
+                                                                                                         serviceName,
+                                                                                                         Integer.toString(end),
+                                                                                                         entityProxyString),
+                                          this.getClass().getName(),
+                                          methodName);
+    }
+
+
+    /**
+     * Throw an exception to indicate that a critical instance (typically the main entity) has not been passed
+     * to the converter.
+     *
+     * @param beanClassName class name of bean
+     * @param relationship the relationship with the bad header
+     * @param methodName calling method
+     * @throws PropertyServerException an invalid instance has been returned from the metadata repositories
+     */
+    protected void handleBadRelationship(String       beanClassName,
+                                         Relationship relationship,
+                                         String       methodName) throws PropertyServerException
+    {
+        if (relationship == null)
+        {
+            handleMissingMetadataInstance(beanClassName, TypeDefCategory.RELATIONSHIP_DEF, methodName);
+        }
+        else
+        {
+            throw new PropertyServerException(GenericHandlersErrorCode.BAD_RELATIONSHIP.getMessageDefinition(methodName,
+                                                                                                             serviceName,
+                                                                                                             relationship.toString()),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
     /* ======================================================
      * The methods that follow are used by the subclasses to extract specific properties from the instance properties.
      * They are used vor all properties except enums which need a specific method in the OMAS converters.

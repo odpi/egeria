@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.admin;
 import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
-import org.odpi.openmetadata.accessservices.communityprofile.intopic.CommunityProfileInTopicProcessor;
-import org.odpi.openmetadata.accessservices.communityprofile.omrstopic.CommunityProfileOMRSTopicProcessor;
+import org.odpi.openmetadata.accessservices.communityprofile.omrstopic.CommunityProfileOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -25,10 +25,11 @@ import java.util.List;
 
 public class CommunityProfileAdmin extends AccessServiceAdmin
 {
-    private AuditLog                           auditLog            = null;
-    private CommunityProfileServicesInstance   instance            = null;
-    private String                             serverName          = null;
-    private CommunityProfileInTopicProcessor   inTopicProcessor    = null;
+    private AuditLog                          auditLog       = null;
+    private CommunityProfileServicesInstance  instance       = null;
+    private String                            serverName     = null;
+    private CommunityProfileOutTopicPublisher eventPublisher = null;
+
 
 
     /**
@@ -101,48 +102,13 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                                                  accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
-            OpenMetadataTopicConnector outTopicConnector = null;
-
+            /*
+             * Only set up the listening and event publishing if requested in the config.
+             */
             if (accessServiceConfig.getAccessServiceOutTopic() != null)
             {
-                outTopicConnector = super.getOutTopicEventBusConnector(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                       AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                                                       auditLog);
-            }
+                Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
 
-            OMRSTopicListener omrsTopicProcessor = new CommunityProfileOMRSTopicProcessor(outTopicConnector,
-                                                                                          super.extractKarmaPointIncrement(accessServiceConfig.getAccessServiceOptions(),
-                                                                                                                           accessServiceConfig.getAccessServiceName(),
-                                                                                                                           auditLog),
-                                                                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                                                                          serverUserName,
-                                                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER),
-                                                                                          repositoryConnector.getRepositoryHelper(),
-                                                                                          instance);
-
-            super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
-                                              serverName,
-                                              omrsTopicConnector,
-                                              omrsTopicProcessor,
-                                              auditLog);
-
-
-
-            if (accessServiceConfig.getAccessServiceInTopic() != null)
-            {
-                inTopicProcessor = new CommunityProfileInTopicProcessor(super.getInTopicEventBusConnector(accessServiceConfig.getAccessServiceInTopic(),
-                                                                                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                                                                                          auditLog),
-                                                                        instance);
-            }
-
-            /*
-             * This piece is setting up the server-side mechanism for the out topic.
-             */
-            Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
-
-            if (outTopicEventBusConnection != null)
-            {
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
@@ -151,15 +117,25 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                                                                      CommunityProfileOutTopicServerProvider.class.getName(),
                                                                                      auditLog);
                 CommunityProfileOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
-                                                                                                          CommunityProfileOutTopicServerConnector.class,
-                                                                                                          outTopicAuditLog,
-                                                                                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                                                                                          actionDescription);
+                                                                                                     CommunityProfileOutTopicServerConnector.class,
+                                                                                                     outTopicAuditLog,
+                                                                                                     AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                                                                                     actionDescription);
+                eventPublisher = new CommunityProfileOutTopicPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
 
-                this.registerWithEnterpriseTopic(AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                this.registerWithEnterpriseTopic(AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
                                                  serverName,
                                                  omrsTopicConnector,
-                                                 omrsTopicProcessor,
+                                                 new CommunityProfileOMRSTopicListener(super.extractKarmaPointIncrement(accessServiceConfig.getAccessServiceOptions(),
+                                                                                                                        accessServiceConfig.getAccessServiceName(),
+                                                                                                                        auditLog),
+                                                                                       eventPublisher,
+                                                                                       serverUserName,
+                                                                                       outTopicAuditLog,
+                                                                                       repositoryConnector.getRepositoryHelper(),
+                                                                                       AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                                                                       serverName,
+                                                                                       instance),
                                                  auditLog);
             }
 
@@ -193,11 +169,6 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
     public void shutdown()
     {
         final String actionDescription = "shutdown";
-
-        if (inTopicProcessor != null)
-        {
-            inTopicProcessor.shutdown();
-        }
 
         if (instance != null)
         {

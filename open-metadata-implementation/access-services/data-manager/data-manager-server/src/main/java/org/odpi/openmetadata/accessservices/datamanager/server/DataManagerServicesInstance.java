@@ -25,6 +25,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_MANAGER_OMAS;
 
+    private OpenMetadataAPIGenericHandler<ElementStub>                       genericHandler;
     private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> dataManagerIntegratorHandler;
     private RelationalDataHandler<DatabaseElement,
                                   DatabaseSchemaElement,
@@ -83,6 +84,19 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 
         }
 
+        this.genericHandler = new OpenMetadataAPIGenericHandler<>(new DataManagerOMASConverter<>(repositoryHelper, serviceName,serverName),
+                                                                  ElementStub.class,
+                                                                  serviceName,
+                                                                  serverName,
+                                                                  invalidParameterHandler,
+                                                                  repositoryHandler,
+                                                                  repositoryHelper,
+                                                                  localServerUserId,
+                                                                  securityVerifier,
+                                                                  supportedZones,
+                                                                  defaultZones,
+                                                                  publishZones,
+                                                                  auditLog);
 
         this.dataManagerIntegratorHandler = new SoftwareServerCapabilityHandler<>(new DatabaseManagerConverter<>(repositoryHelper, serviceName,serverName),
                                                                                   SoftwareServerCapabilityElement.class,
@@ -143,8 +157,22 @@ public class DataManagerServicesInstance extends OMASServiceInstance
     }
 
 
+
     /**
-     * Return the handler for managing database  objects.
+     * Return the handler for managing generic objects.
+     *
+     * @return  handler object
+     */
+    public OpenMetadataAPIGenericHandler<ElementStub> getGenericHandler()
+    {
+        final String methodName = "getGenericHandler";
+
+        return genericHandler;
+    }
+
+
+    /**
+     * Return the handler for managing database objects.
      *
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully

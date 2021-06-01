@@ -57,7 +57,9 @@ public class ElementStubConverter<B> extends GovernanceProgramOMASConverter<B>
 
             if (returnBean instanceof ElementStub)
             {
-                return (B)super.getElementStub(beanClass, entityProxy, methodName);
+                returnBean = (B)super.getElementStub(beanClass, entityProxy, methodName);
+
+                return returnBean;
             }
 
             return null;
