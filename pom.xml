@@ -163,7 +163,7 @@
         <kafka.version>2.8.0</kafka.version>
         <janus.version>0.5.3</janus.version>
         <gremlin.version>3.4.10</gremlin.version>
-        <netty.version>4.1.63.Final</netty.version>
+        <netty.version>4.1.65.Final</netty.version>
 
         <spring-boot.version>2.4.5</spring-boot.version>
         <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
