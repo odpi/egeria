@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableF
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.server.AnalyticsModelingRestServices;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -180,7 +181,7 @@ public class AnalyticsModelingOMASResource {
 	 * @return errors or list of created assets.
 	 */
     @Operation(summary = "Delete assets that represent analytics artifact.")
-	@PutMapping(path = "/sync")
+	@DeleteMapping(path = "/sync")
 	public AnalyticsModelingOMASAPIResponse deleteArtifact(
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
