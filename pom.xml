@@ -165,7 +165,7 @@
         <gremlin.version>3.4.10</gremlin.version>
         <netty.version>4.1.63.Final</netty.version>
 
-        <spring-boot.version>2.4.5</spring-boot.version>
+        <spring-boot.version>2.5.0</spring-boot.version>
         <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
         <tomcat.version>9.0.45</tomcat.version>
         <spring.version>5.3.6</spring.version>
