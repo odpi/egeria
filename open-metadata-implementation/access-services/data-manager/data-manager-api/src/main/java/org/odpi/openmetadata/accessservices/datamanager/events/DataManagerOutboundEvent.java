@@ -1,9 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.events;
+package org.odpi.openmetadata.accessservices.datamanager.events;
 
-import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementStub;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ElementStub;
 
 import java.util.Objects;
 
@@ -11,44 +13,37 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CommunityProfileOutboundEvent describes the structure of the events emitted by the Community Profile OMAS.
+ * DataManagerOutboundEvent describes the structure of the events emitted by the Data Manager OMAS.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
+public class DataManagerOutboundEvent extends DataManagerEventHeader
 {
     private static final long    serialVersionUID = 1L;
 
     /*
      * Always set up
      */
-    private CommunityProfileOutboundEventType eventType          = null;
-    private ElementStub                       principleElement   = null;
+    private DataManagerOutboundEventType eventType          = null;
+    private ElementStub                  principleElement   = null;
 
     /*
      * For classification events
      */
-    private String                            classificationName = null;
+    private String                       classificationName = null;
 
     /*
      * for relationship events
      */
-    private ElementStub                       endOneElement      = null;
-    private ElementStub                       endTwoElement      = null;
-
-    /*
-     * For karma point plateau events
-     */
-    private String                            userId             = null;
-    private long                              pointsTotal        = 0;
-    private long                              plateau            = 0;
+    private ElementStub                  endOneElement      = null;
+    private ElementStub                  endTwoElement      = null;
 
 
     /**
      * Default constructor
      */
-    public CommunityProfileOutboundEvent()
+    public DataManagerOutboundEvent()
     {
         super();
     }
@@ -59,7 +54,7 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
      *
      * @param template object to copy
      */
-    public CommunityProfileOutboundEvent(CommunityProfileOutboundEvent template)
+    public DataManagerOutboundEvent(DataManagerOutboundEvent template)
     {
         super(template);
 
@@ -72,10 +67,6 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
 
             endOneElement = template.getEndOneElement();
             endTwoElement = template.getEndTwoElement();
-
-            userId = template.getUserId();
-            pointsTotal = template.getPointsTotal();
-            plateau = template.getPlateau();
         }
     }
 
@@ -85,7 +76,7 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
      *
      * @return event type enum
      */
-    public CommunityProfileOutboundEventType getEventType()
+    public DataManagerOutboundEventType getEventType()
     {
         return eventType;
     }
@@ -96,7 +87,7 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
      *
      * @param eventType - event type enum
      */
-    public void setEventType(CommunityProfileOutboundEventType eventType)
+    public void setEventType(DataManagerOutboundEventType eventType)
     {
         this.eventType = eventType;
     }
@@ -175,72 +166,6 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
 
 
     /**
-     * Return user identity of associated user.
-     *
-     * @return user id
-     */
-    public String getUserId()
-    {
-        return userId;
-    }
-
-
-    /**
-     * Set up the user id of the associated user.
-     *
-     * @param userId user id
-     */
-    public void setUserId(String userId)
-    {
-        this.userId = userId;
-    }
-
-
-    /**
-     * Return the total number of karma points that an individual has achieved.
-     *
-     * @return long
-     */
-    public long getPointsTotal()
-    {
-        return pointsTotal;
-    }
-
-
-    /**
-     * Set up the total number of karma points that an individual has achieved.
-     *
-     * @param pointsTotal long
-     */
-    public void setPointsTotal(long pointsTotal)
-    {
-        this.pointsTotal = pointsTotal;
-    }
-
-
-    /**
-     * Return the current karma point plateau for this individual.
-     *
-     * @return long
-     */
-    public long getPlateau()
-    {
-        return plateau;
-    }
-
-
-    /**
-     * Set up the current karma point plateau for this individual.
-     *
-     * @param plateau long
-     */
-    public void setPlateau(long plateau)
-    {
-        this.plateau = plateau;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -248,10 +173,14 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
     @Override
     public String toString()
     {
-        return "CommunityProfileOutboundEvent{" +
-                "eventType=" + eventType +
-                ", eventVersionId=" + getEventVersionId() +
-                '}';
+        return "DataManagerOutboundEvent{" +
+                       "eventType=" + eventType +
+                       ", principleElement=" + principleElement +
+                       ", classificationName='" + classificationName + '\'' +
+                       ", endOneElement=" + endOneElement +
+                       ", endTwoElement=" + endTwoElement +
+                       ", eventVersionId=" + getEventVersionId() +
+                       '}';
     }
 
 
@@ -268,7 +197,7 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof CommunityProfileOutboundEvent))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -276,8 +205,12 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
         {
             return false;
         }
-        CommunityProfileOutboundEvent that = (CommunityProfileOutboundEvent) objectToCompare;
-        return getEventType() == that.getEventType();
+        DataManagerOutboundEvent that = (DataManagerOutboundEvent) objectToCompare;
+        return eventType == that.eventType &&
+                       Objects.equals(principleElement, that.principleElement) &&
+                       Objects.equals(classificationName, that.classificationName) &&
+                       Objects.equals(endOneElement, that.endOneElement) &&
+                       Objects.equals(endTwoElement, that.endTwoElement);
     }
 
 
@@ -289,6 +222,6 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getEventType());
+        return Objects.hash(super.hashCode(), eventType, principleElement, classificationName, endOneElement, endTwoElement);
     }
 }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventInterface;
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
-import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutTopicEvent;
+import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListenerConnectorBase;
@@ -66,7 +66,7 @@ public class DataManagerOutTopicClientConnector extends OpenMetadataTopicListene
         {
             try
             {
-                DataManagerOutTopicEvent eventObject = super.getEventBean(event, DataManagerOutTopicEvent.class);
+                DataManagerOutboundEvent eventObject = super.getEventBean(event, DataManagerOutboundEvent.class);
 
                 for (DataManagerEventListener listener : internalEventListeners)
                 {

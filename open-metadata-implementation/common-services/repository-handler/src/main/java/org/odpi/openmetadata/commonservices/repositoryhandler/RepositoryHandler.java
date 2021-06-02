@@ -94,7 +94,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -140,7 +140,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -401,7 +401,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -636,7 +636,7 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
@@ -720,7 +720,7 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
@@ -1334,7 +1334,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1386,7 +1386,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1461,7 +1461,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1514,7 +1514,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1570,7 +1570,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1628,7 +1628,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1697,7 +1697,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1764,7 +1764,7 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
@@ -1861,9 +1861,9 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
-                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+                errorHandler.handleRepositoryError(error, methodName, localMethodName + "(" + classificationTypeName + ")");
             }
         }
         else /* should be a classify */
@@ -2077,7 +2077,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2090,7 +2090,7 @@ public class RepositoryHandler
         {
             this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2169,7 +2169,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2236,7 +2236,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2288,7 +2288,7 @@ public class RepositoryHandler
         {
             this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2332,7 +2332,7 @@ public class RepositoryHandler
                 this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2374,7 +2374,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2407,7 +2407,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2461,7 +2461,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2530,7 +2530,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2648,7 +2648,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2798,7 +2798,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3109,7 +3109,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3188,7 +3188,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3243,7 +3243,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3295,7 +3295,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3342,7 +3342,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3403,7 +3403,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3464,7 +3464,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3523,7 +3523,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3583,7 +3583,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3643,7 +3643,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3709,7 +3709,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3796,7 +3796,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3865,7 +3865,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3931,7 +3931,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4003,7 +4003,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4050,7 +4050,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4136,7 +4136,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4230,7 +4230,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4333,7 +4333,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4557,7 +4557,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4644,7 +4644,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4709,7 +4709,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4808,7 +4808,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4873,7 +4873,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5033,7 +5033,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5086,7 +5086,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5152,7 +5152,7 @@ public class RepositoryHandler
                                    relationship.getGUID(),
                                    methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5191,7 +5191,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5224,7 +5224,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5275,7 +5275,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5440,7 +5440,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5478,7 +5478,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5526,7 +5526,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5561,7 +5561,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5617,7 +5617,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5848,7 +5848,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }

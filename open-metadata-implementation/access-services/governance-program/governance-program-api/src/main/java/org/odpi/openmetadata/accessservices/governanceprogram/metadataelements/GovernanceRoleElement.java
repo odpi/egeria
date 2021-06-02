@@ -52,6 +52,7 @@ public class GovernanceRoleElement  implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            role = template.getRole();
         }
     }
 
