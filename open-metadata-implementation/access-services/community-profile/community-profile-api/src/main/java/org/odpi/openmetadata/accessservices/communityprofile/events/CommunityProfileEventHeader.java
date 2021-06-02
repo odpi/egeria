@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-                      @JsonSubTypes.Type(value = CommunityProfileInboundEvent.class, name = "CommunityProfileInboundEvent"),
                       @JsonSubTypes.Type(value = CommunityProfileOutboundEvent.class, name = "CommunityProfileOutboundEvent")
 })
 public abstract class CommunityProfileEventHeader implements Serializable

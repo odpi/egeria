@@ -21,51 +21,34 @@ public enum CommunityProfileOutboundEventType implements Serializable
 {
     UNKNOWN_COMMUNITY_PROFILE_EVENT           (0,   "Unknown Event",
                                                "An event that is not recognized by the local server."),
-    NEW_USER_IDENTITY_EVENT                   (1,   "New User Identity",
-                                               "A new user identity has been added through open metadata."),
-    NEW_REF_USER_IDENTITY_EVENT               (2,   "New Reference User Identity",
-                                               "A user identity managed by an external system has been added through open metadata."),
-    UPDATED_USER_IDENTITY_EVENT               (3,   "Updated User Identity",
-                                               "A user identity has been updated."),
-    DELETED_USER_IDENTITY_EVENT               (4,   "Deleted User Identity",
+    NEW_ELEMENT_EVENT                         (1,   "New Element",
+                                               "A new element has been added through open metadata."),
+    UPDATED_ELEMENT_EVENT                     (2,   "Updated Element",
+                                               "An element has been updated."),
+    DELETED_ELEMENT_EVENT                     (3,   "Deleted Element",
                                                "An existing user identity has been deleted."),
-    NEW_PERSONAL_PROFILE_EVENT                (10,   "New Personal Profile",
-                                               "A new personal profile has been added through open metadata."),
-    NEW_REF_PERSONAL_PROFILE_EVENT            (11,   "New Reference Personal Profile",
-                                               "A personal profile managed by an external system has been added through open metadata."),
-    UPDATED_PERSONAL_PROFILE_EVENT            (12,   "Updated Personal Profile",
-                                               "A personal profile has been updated."),
-    DELETED_PERSONAL_PROFILE_EVENT            (13,   "Deleted Personal Profile",
-                                               "An existing personal profile has been deleted."),
-    KARMA_POINT_PLATEAU_EVENT                 (15,  "Karma Point Plateau",
-                                               "An individual has passed a karma point plateau."),
-    NEW_ASSET_IN_COLLECTION_EVENT             (20,  "New Asset In Collection",
-                                               "A new asset has been added to one of the personal collections."),
-    ASSET_REMOVED_FROM_COLLECTION_EVENT       (21,  "Asset Removed From Collection",
-                                               "An asset has been removed from one of the personal collections."),
-    NEW_PROJECT_IN_COLLECTION_EVENT           (22,  "New Project In Collection",
-                                               "A new project has been added to one of the personal collections."),
-    PROJECT_REMOVED_FROM_COLLECTION_EVENT     (23,  "Project Removed From Collection",
-                                               "A project has been removed from one of the personal collections."),
-    NEW_COMMUNITY_IN_COLLECTION_EVENT         (24,  "New Community In Collection",
-                                               "A new community has been added to one of the personal collections."),
-    COMMUNITY_REMOVED_FROM_COLLECTION_EVENT   (25,  "Community Removed From Collection",
-                                               "A community has been removed from one of the personal collections.");
+    CLASSIFIED_ELEMENT_EVENT                  (4,   "Classified Element",
+                                               "A new classification has been added to an element through open metadata."),
+    RECLASSIFIED_ELEMENT_EVENT                (5,   "Reclassified Element",
+                                               "A classification attached to an element has been updated."),
+    DECLASSIFIED_ELEMENT_EVENT                (6,   "Declassified element",
+                                               "An existing classification has been removed from an element."),
+    KARMA_POINT_PLATEAU_EVENT                 (10,  "Karma Point Plateau",
+                                               "An individual has passed a karma point plateau.");
 
-    private static final long     serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private  int      eventTypeCode;
-    private  String   eventTypeName;
-    private  String   eventTypeDescription;
+    private int    eventTypeCode;
+    private String eventTypeName;
+    private String eventTypeDescription;
 
 
     /**
      * Default Constructor - sets up the specific values for this instance of the enum.
      *
-     * @param eventTypeCode - int identifier used for indexing based on the enum.
-     * @param eventTypeName - string name used for messages that include the enum.
-     * @param eventTypeDescription - default description for the enum value - used when natural resource
-     *                                     bundle is not available.
+     * @param eventTypeCode int identifier used for indexing based on the enum.
+     * @param eventTypeName string name used for messages that include the enum.
+     * @param eventTypeDescription default description for the enum value - used when natural language resource bundle is not available.
      */
     CommunityProfileOutboundEventType(int eventTypeCode, String eventTypeName, String eventTypeDescription)
     {

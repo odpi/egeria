@@ -22,8 +22,8 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
 {
     private static final long    serialVersionUID = 1L;
 
-    private String qualifiedName = null;
-
+    private String originatingSystemGUID = null;
+    private String originatingSystemName = null;
 
     /**
      * Default constructor
@@ -45,30 +45,53 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
 
         if (template != null)
         {
-            this.qualifiedName = template.getQualifiedName();
+            this.originatingSystemGUID = template.getOriginatingSystemGUID();
+            this.originatingSystemName = template.getOriginatingSystemName();
         }
     }
 
 
     /**
-     * Return the the unique employee number for this governance officer.
+     * Return the unique identifier for the originating system.
      *
-     * @return String identifier
+     * @return string
      */
-    public String getQualifiedName()
+    public String getOriginatingSystemGUID()
     {
-        return qualifiedName;
+        return originatingSystemGUID;
     }
 
 
     /**
-     * Set up the unique employee number for this governance officer.
+     * Set up the unique identifier for the originating system
      *
-     * @param qualifiedName String identifier
+     * @param originatingSystemGUID string
      */
-    public void setQualifiedName(String qualifiedName)
+    public void setOriginatingSystemGUID(String originatingSystemGUID)
     {
-        this.qualifiedName = qualifiedName;
+        this.originatingSystemGUID = originatingSystemGUID;
+    }
+
+
+    /**
+     * Return the unique name for the originating system.
+     *
+     * @return string
+     */
+    public String getOriginatingSystemName()
+    {
+        return originatingSystemName;
+    }
+
+
+    /**
+     * Set up the unique name for the originating system
+     *
+     * @param originatingSystemName string
+     */
+    public void setOriginatingSystemName(String originatingSystemName)
+    {
+        this.originatingSystemName = originatingSystemName;
     }
 
 
@@ -81,8 +104,9 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
     public String toString()
     {
         return "PersonalProfileValidatorRequestBody{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                '}';
+                       "originatingSystemGUID='" + originatingSystemGUID + '\'' +
+                       ", originatingSystemName='" + originatingSystemName + '\'' +
+                       '}';
     }
 
 
@@ -99,12 +123,13 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
         {
             return true;
         }
-        if (!(objectToCompare instanceof PersonalProfileValidatorRequestBody))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         PersonalProfileValidatorRequestBody that = (PersonalProfileValidatorRequestBody) objectToCompare;
-        return  Objects.equals(getQualifiedName(), that.getQualifiedName());
+        return Objects.equals(originatingSystemGUID, that.originatingSystemGUID) &&
+                       Objects.equals(originatingSystemName, that.originatingSystemName);
     }
 
 
@@ -116,6 +141,6 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName);
+        return Objects.hash(originatingSystemGUID, originatingSystemName);
     }
 }

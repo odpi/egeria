@@ -3,14 +3,15 @@
 package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.MyPersonalProfileInterface;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetCollectionMember;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
+import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.AssetCollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.CountResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -24,31 +25,79 @@ import java.util.Map;
 public class MyProfileManagement implements MyPersonalProfileInterface
 {
     private String                     serverName;               /* Initialized in constructor */
-    private String                     omasServerURL;            /* Initialized in constructor */
+    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
     private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
-
+    
     private InvalidParameterHandler              invalidParameterHandler = new InvalidParameterHandler();
-    private CommunityProfileRESTExceptionHandler exceptionHandler        = new CommunityProfileRESTExceptionHandler();
 
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public MyProfileManagement(String     serverName,
-                               String     omasServerURL) throws InvalidParameterException
+    public MyProfileManagement(String serverName,
+                               String serverPlatformURLRoot) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new CommunityProfileRESTClient(serverName, omasServerURL);
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public MyProfileManagement(String   serverName,
+                               String   serverPlatformURLRoot,
+                               AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, auditLog);
+    }
+
+    
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     *
+     * @throws InvalidParameterException bad input parameters
+     */
+    public MyProfileManagement(String serverName,
+                               String serverPlatformURLRoot,
+                               String userId,
+                               String password) throws  InvalidParameterException
+    {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -57,24 +106,52 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public MyProfileManagement(String     serverName,
-                               String     omasServerURL,
-                               String     userId,
-                               String     password) throws  InvalidParameterException
+    public MyProfileManagement(String   serverName,
+                               String   serverPlatformURLRoot,
+                               String   userId,
+                               String   password,
+                               AuditLog auditLog) throws  InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new CommunityProfileRESTClient(serverName, omasServerURL, userId, password);
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param restClient pre-initialized REST client
+     * @param maxPageSize pre-initialized parameter limit
+     * @throws InvalidParameterException there is a problem with the information about the remote OMAS
+     */
+    public MyProfileManagement(String                     serverName,
+                               String                     serverPlatformURLRoot,
+                               CommunityProfileRESTClient restClient,
+                               int                        maxPageSize) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = restClient;
     }
 
 
@@ -90,18 +167,17 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public PersonalProfile getMyProfile(String userId) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
+    public PersonalProfileUniverse getMyProfile(String userId) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
         final String   methodName = "getMyProfile";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/my-profile";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
         PersonalProfileResponse restResult = restClient.callPersonalProfileGetRESTCall(methodName,
-                                                                                       omasServerURL + urlTemplate,
+                                                                                       serverPlatformURLRoot + urlTemplate,
                                                                                        userId);
 
         return restResult.getPersonalProfile();
@@ -116,27 +192,23 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @return int
      *
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
     public long getMyKarmaPoints(String userId) throws InvalidParameterException,
-                                                       NoProfileForUserException,
                                                        PropertyServerException,
                                                        UserNotAuthorizedException
     {
         final String   methodName = "getMyKarmaPoints";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/my-profile/karma-points";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
         CountResponse restResult = restClient.callCountGetRESTCall(methodName,
-                                                                   omasServerURL + urlTemplate,
+                                                                   serverPlatformURLRoot + urlTemplate,
                                                                    userId);
-
-        exceptionHandler.detectAndThrowNoProfileForUserException(methodName, restResult);
 
         return restResult.getCount();
     }
@@ -174,7 +246,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
         final String   qualifiedNameParameterName = "qualifiedName";
         final String   knownNameParameterName = "knownName";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         invalidParameterHandler.validateName(knownName, knownNameParameterName, methodName);
@@ -189,7 +261,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
 
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        omasServerURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId);
@@ -202,14 +274,12 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @param userId the name of the calling user.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
     public void      deleteMyProfile(String              userId,
                                      String              qualifiedName) throws InvalidParameterException,
-                                                                               NoProfileForUserException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
@@ -218,15 +288,14 @@ public class MyProfileManagement implements MyPersonalProfileInterface
 
         final String   qualifiedNameParameterName = "qualifiedName";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         PersonalProfileValidatorRequestBody requestBody = new PersonalProfileValidatorRequestBody();
-        requestBody.setQualifiedName(qualifiedName);
 
-        restClient. callVoidPostRESTCall(methodName,
-                                         omasServerURL + urlTemplate,
+        restClient.callVoidPostRESTCall(methodName,
+                                         serverPlatformURLRoot + urlTemplate,
                                          requestBody,
                                          serverName,
                                          userId);
@@ -242,15 +311,13 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @return list of contact methods
      *
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public List<ContactMethod> getMyContactDetails(String UserId) throws InvalidParameterException,
-                                                                         NoProfileForUserException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public List<ContactMethodElement> getMyContactDetails(String UserId) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         return null;
     }
@@ -267,7 +334,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @return unique identifier (guid) for the new contact method.
      *
      * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -276,7 +342,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
                                      ContactMethodType   type,
                                      String              service,
                                      String              value) throws InvalidParameterException,
-                                                                       NoProfileForUserException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {
@@ -292,7 +357,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @param type type of contact method. This is used to confirm that the GUID is the right one.
      *
      * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -300,7 +364,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
     public void deleteMyContactMethod(String            userId,
                                       String            contactMethodGUID,
                                       ContactMethodType type) throws InvalidParameterException,
-                                                                     NoProfileForUserException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
@@ -317,16 +380,14 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @return list of asset details
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<AssetCollectionMember> getMyAssets(String    userId,
                                                    int       startFrom,
                                                    int       pageSize) throws InvalidParameterException,
-                                                              NoProfileForUserException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         return null;
     }
@@ -339,13 +400,11 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @param assetGUID  unique identifier of the asset.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void  addToMyAssets(String   userId,
                                String   assetGUID) throws InvalidParameterException,
-                                                          NoProfileForUserException,
                                                           PropertyServerException,
                                                           UserNotAuthorizedException
     {
@@ -360,13 +419,11 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @param assetGUID  unique identifier of the asset.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void  removeFromMyAssets(String   userId,
                                     String   assetGUID) throws InvalidParameterException,
-                                                               NoProfileForUserException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {

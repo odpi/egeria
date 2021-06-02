@@ -73,7 +73,7 @@ The result looks something like this:
             "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/glossary-view/"
         },
         {
-            "serviceName": "Security Officer",
+            "serviceName": "Security Manager",
             "serviceURLMarker": "security-officer",
             "serviceDescription": "Set up rules to protect data",
             "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/security-officer/"

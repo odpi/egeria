@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.admin;
 
-import org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic.DataManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic.DataManagerOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic.DataManagerOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerAuditCode;
@@ -14,12 +13,10 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 
@@ -31,10 +28,9 @@ import java.util.List;
  */
 public class DataManagerAdmin extends AccessServiceAdmin
 {
-    private AuditLog                      auditLog         = null;
+    private AuditLog                     auditLog         = null;
     private DataManagerServicesInstance  instance         = null;
-    private OpenMetadataTopicConnector    inTopicConnector = null;
-    private String                        serverName       = null;
+    private String                       serverName       = null;
     private DataManagerOutTopicPublisher eventPublisher   = null;
 
 
@@ -94,7 +90,6 @@ public class DataManagerAdmin extends AccessServiceAdmin
                                                                accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
-
             /*
              * Only set up the listening and event publishing if requested in the config.
              */
@@ -114,29 +109,20 @@ public class DataManagerAdmin extends AccessServiceAdmin
                                                                                                       outTopicAuditLog,
                                                                                                       AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName(),
                                                                                                       actionDescription);
-                eventPublisher = new DataManagerOutTopicPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
+                this.eventPublisher = new DataManagerOutTopicPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
 
                 this.registerWithEnterpriseTopic(AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName(),
                                                  serverName,
                                                  omrsTopicConnector,
-                                                 new DataManagerOMRSTopicListener(AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName(),
-                                                                                   eventPublisher,
-                                                                                   supportedZones,
-                                                                                   repositoryConnector.getRepositoryHelper(),
-                                                                                   outTopicAuditLog),
+                                                 new DataManagerOMRSTopicListener(supportedZones,
+                                                                                  eventPublisher,
+                                                                                  serverUserName,
+                                                                                  outTopicAuditLog,
+                                                                                  repositoryConnector.getRepositoryHelper(),
+                                                                                  AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                  serverName,
+                                                                                  instance),
                                                  auditLog);
-            }
-
-
-            /*
-             * Only set up the listening and event publishing if requested in the config.
-             */
-            if (accessServiceConfig.getAccessServiceInTopic() != null)
-            {
-                // todo
-                inTopicConnector = super.getInTopicEventBusConnector(accessServiceConfig.getAccessServiceInTopic(),
-                                                                     AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName(),
-                                                                     auditLog);
             }
 
             auditLog.logMessage(actionDescription,
@@ -169,20 +155,6 @@ public class DataManagerAdmin extends AccessServiceAdmin
     public void shutdown()
     {
         final String actionDescription = "shutdown";
-
-        try
-        {
-            if (inTopicConnector != null)
-            {
-                inTopicConnector.disconnect();
-            }
-        }
-        catch (ConnectorCheckedException error)
-        {
-            auditLog.logException(actionDescription,
-                                  DataManagerAuditCode.SERVICE_INSTANCE_TERMINATION_FAILURE.getMessageDefinition(serverName),
-                                  error);
-        }
 
         if (this.eventPublisher != null)
         {

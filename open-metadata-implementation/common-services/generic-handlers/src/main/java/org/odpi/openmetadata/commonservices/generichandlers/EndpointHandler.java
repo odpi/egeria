@@ -342,6 +342,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                                                       null,
                                                                       false,
                                                                       supportedZones,
+                                                                      null,
                                                                       0,
                                                                       invalidParameterHandler.getMaxPagingSize(),
                                                                       methodName);
@@ -506,7 +507,11 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                     propertyNames,
                                     true,
+                                    null,
+                                    null,
+                                    false,
                                     serviceSupportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

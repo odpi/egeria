@@ -4,14 +4,14 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.PersonalProfileManagementInterface;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
+import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -27,32 +27,54 @@ import java.util.Map;
  */
 public class PersonalProfileManagement implements PersonalProfileManagementInterface
 {
-    private String                     serverName;       /* Initialized in constructor */
-    private String                     omasServerURL;    /* Initialized in constructor */
-    private CommunityProfileRESTClient restClient;       /* Initialized in constructor */
+    private String                     serverName;               /* Initialized in constructor */
+    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler              invalidParameterHandler = new InvalidParameterHandler();
-    private CommunityProfileRESTExceptionHandler exceptionHandler        = new CommunityProfileRESTExceptionHandler();
 
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public PersonalProfileManagement(String     serverName,
-                                     String     omasServerURL) throws InvalidParameterException
+    public PersonalProfileManagement(String serverName,
+                                     String serverPlatformURLRoot) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new CommunityProfileRESTClient(serverName, omasServerURL);
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public PersonalProfileManagement(String   serverName,
+                                     String   serverPlatformURLRoot,
+                                     AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -61,24 +83,78 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public PersonalProfileManagement(String     serverName,
-                                     String     omasServerURL,
-                                     String     userId,
-                                     String     password) throws InvalidParameterException
+    public PersonalProfileManagement(String serverName,
+                                     String serverPlatformURLRoot,
+                                     String userId,
+                                     String password) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new CommunityProfileRESTClient(serverName, omasServerURL, userId, password);
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException bad input parameters
+     */
+    public PersonalProfileManagement(String   serverName,
+                                     String   serverPlatformURLRoot,
+                                     String   userId,
+                                     String   password,
+                                     AuditLog auditLog) throws  InvalidParameterException
+    {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param restClient pre-initialized REST client
+     * @param maxPageSize pre-initialized parameter limit
+     * @throws InvalidParameterException there is a problem with the information about the remote OMAS
+     */
+    public PersonalProfileManagement(String                     serverName,
+                                     String                     serverPlatformURLRoot,
+                                     CommunityProfileRESTClient restClient,
+                                     int                        maxPageSize) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = restClient;
     }
 
 
@@ -87,6 +163,8 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * have a profile in open metadata.
      *
      * @param userId the name of the calling user.
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
      * @param profileUserId userId of the individual whose profile this is.
      * @param qualifiedName personnel/serial/unique employee number of the individual.
      * @param fullName full name of the person.
@@ -103,6 +181,8 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      */
     @Override
     public String createPersonalProfile(String              userId,
+                                        String              externalSourceGUID,
+                                        String              externalSourceName,
                                         String              profileUserId,
                                         String              qualifiedName,
                                         String              fullName,
@@ -120,13 +200,15 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         final String   qualifiedParameterName = "qualifiedName";
         final String   knownNameParameterName = "knownName";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(profileUserId, profileUserIdParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedParameterName, methodName);
         invalidParameterHandler.validateName(knownName, knownNameParameterName, methodName);
 
         PersonalProfileRequestBody requestBody = new PersonalProfileRequestBody();
+        requestBody.setOriginatingSystemGUID(externalSourceGUID);
+        requestBody.setOriginatingSystemName(externalSourceName);
         requestBody.setProfileUserId(profileUserId);
         requestBody.setQualifiedName(qualifiedName);
         requestBody.setFullName(fullName);
@@ -136,7 +218,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         requestBody.setAdditionalProperties(additionalProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -149,6 +231,8 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * Update properties for the personal properties.  Null values result in empty fields in the profile.
      *
      * @param userId the name of the calling user.
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
      * @param profileGUID unique identifier for the profile.
      * @param qualifiedName personnel/serial/unique employee number of the individual. Used to verify the profileGUID.
      * @param fullName full name of the person.
@@ -159,12 +243,13 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @param additionalProperties  additional properties about the individual.
      *
      * @throws InvalidParameterException the known name is null or the qualifiedName does not match the profileGUID.
-     * @throws NoProfileForUserException unable to locate the profile for this userId.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
     public void   updatePersonalProfile(String              userId,
+                                        String              externalSourceGUID,
+                                        String              externalSourceName,
                                         String              profileGUID,
                                         String              qualifiedName,
                                         String              fullName,
@@ -173,7 +258,6 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
                                         String              jobRoleDescription,
                                         Map<String, Object> profileProperties,
                                         Map<String, String> additionalProperties) throws InvalidParameterException,
-                                                                                         NoProfileForUserException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
@@ -184,13 +268,15 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         final String   qualifiedNameParameterName = "qualifiedName";
         final String   knownNameParameterName = "knownName";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         invalidParameterHandler.validateName(knownName, knownNameParameterName, methodName);
 
         PersonalProfileRequestBody requestBody = new PersonalProfileRequestBody();
+        requestBody.setOriginatingSystemGUID(externalSourceGUID);
+        requestBody.setOriginatingSystemName(externalSourceName);
         requestBody.setQualifiedName(qualifiedName);
         requestBody.setFullName(fullName);
         requestBody.setKnownName(knownName);
@@ -199,9 +285,8 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         requestBody.setProfileProperties(profileProperties);
         requestBody.setAdditionalProperties(additionalProperties);
 
-
         restClient.callVoidPostRESTCall(methodName,
-                                        omasServerURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -214,6 +299,8 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * Delete the personal profile.
      *
      * @param userId the name of the calling user.
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
      * @param profileGUID unique identifier for the profile.
      * @param qualifiedName personnel/serial/unique employee number of the individual.
      * @throws InvalidParameterException the qualifiedName or guid is null.
@@ -221,12 +308,13 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public void   deletePersonalProfile(String              userId,
-                                        String              profileGUID,
-                                        String              qualifiedName) throws InvalidParameterException,
-                                                                                  NoProfileForUserException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    public void deletePersonalProfile(String userId,
+                                      String externalSourceGUID,
+                                      String externalSourceName,
+                                      String profileGUID,
+                                      String qualifiedName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         final String   methodName = "deletePersonalProfile";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/personal-profiles/{2}/delete";
@@ -234,23 +322,21 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         final String   guidParameterName = "profileGUID";
         final String   employeeNumberParameterName = "employeeNumber";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, employeeNumberParameterName, methodName);
 
         PersonalProfileValidatorRequestBody requestBody = new PersonalProfileValidatorRequestBody();
-        requestBody.setQualifiedName(qualifiedName);
+        requestBody.setOriginatingSystemGUID(externalSourceGUID);
+        requestBody.setOriginatingSystemName(externalSourceName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  profileGUID);
-
-        exceptionHandler.detectAndThrowNoProfileForUserException(methodName, restResult);
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        profileGUID);
     }
 
 
@@ -263,14 +349,12 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @return int count of karma points
      *
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
     public long getKarmaPoints(String userId,
                                String profileUserId) throws InvalidParameterException,
-                                                            NoProfileForUserException,
                                                             PropertyServerException,
                                                             UserNotAuthorizedException
     {
@@ -287,14 +371,12 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @return list of contact methods
      *
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public List<ContactMethod> getContactDetails(String userId,
-                                                 String profileUserId) throws InvalidParameterException,
-                                                                              NoProfileForUserException,
+    public List<ContactMethodProperties> getContactMethods(String userId,
+                                                           String profileUserId) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
@@ -306,6 +388,8 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * Add a new contact method to the requesting user's profile.
      *
      * @param userId the name of the calling user.
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
      * @param profileUserId userId of the profile to update.
      * @param type type of contact method.
      * @param service service for the contact method.
@@ -314,17 +398,17 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @return unique identifier (guid) for the new contact method.
      *
      * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
     public String addContactMethod(String            userId,
+                                   String            externalSourceGUID,
+                                   String            externalSourceName,
                                    String            profileUserId,
                                    ContactMethodType type,
                                    String            service,
                                    String            value) throws InvalidParameterException,
-                                                                   NoProfileForUserException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
@@ -336,20 +420,22 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * Remove an obsolete contact method from the requesting user's profile.
      *
      * @param userId the name of the calling user.
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
      * @param profileUserId userId of the profile to update.
      * @param contactMethodGUID unique identifier (guid) for the obsolete contact method.
      * @param type type of contact method. This is used to confirm that the GUID is the right one.
      *
      * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   deleteContactMethod(String            userId,
+                                      String            externalSourceGUID,
+                                      String            externalSourceName,
                                       String            profileUserId,
                                       String            contactMethodGUID,
                                       ContactMethodType type) throws InvalidParameterException,
-                                                                     NoProfileForUserException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
@@ -368,8 +454,8 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public PersonalProfile getPersonalProfileByGUID(String        userId,
-                                                    String        profileGUID) throws InvalidParameterException,
+    public PersonalProfileUniverse getPersonalProfileByGUID(String userId,
+                                                            String profileGUID) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
@@ -378,17 +464,15 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
 
         final String   guidParameterName = "profileGUID";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
 
         PersonalProfileResponse restResult = restClient.callPersonalProfileGetRESTCall(methodName,
-                                                                                       omasServerURL + urlTemplate,
+                                                                                       serverPlatformURLRoot + urlTemplate,
                                                                                        serverName,
                                                                                        userId,
                                                                                        profileGUID);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
         return restResult.getPersonalProfile();
     }
@@ -407,28 +491,25 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public PersonalProfile getPersonalProfileForUser(String        userId,
-                                                     String        profileUserId) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException
+    public PersonalProfileUniverse getPersonalProfileForUser(String        userId,
+                                                             String        profileUserId) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
     {
         final String   methodName = "getPersonalProfileForUser";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/personal-profiles/by-user/{2}";
 
         final String  profileUserIdParameterName = "profileUserId";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(profileUserId, profileUserIdParameterName, methodName);
 
         PersonalProfileResponse restResult = restClient.callPersonalProfileGetRESTCall(methodName,
-                                                                                       omasServerURL + urlTemplate,
+                                                                                       serverPlatformURLRoot + urlTemplate,
                                                                                        serverName,
                                                                                        userId,
                                                                                        profileUserId);
-
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
         return restResult.getPersonalProfile();
     }
@@ -447,22 +528,22 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public PersonalProfile getPersonalProfileByQualifiedName(String         userId,
-                                                             String         qualifiedName) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
+    public PersonalProfileUniverse getPersonalProfileByQualifiedName(String userId,
+                                                                     String qualifiedName) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
     {
         final String   methodName = "getPersonalProfileByQualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/personal-profiles/by-qualified-name/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/personal-profiles/by-qualified-name";
 
         final String   qualifiedNameParameterName = "qualifiedName";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         PersonalProfileResponse restResult = restClient.callPersonalProfileGetRESTCall(methodName,
-                                                                                       omasServerURL + urlTemplate,
+                                                                                       serverPlatformURLRoot + urlTemplate,
                                                                                        serverName,
                                                                                        userId,
                                                                                        qualifiedName);
@@ -485,29 +566,25 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<PersonalProfile> getPersonalProfilesByName(String        userId,
-                                                           String        name) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+    public List<PersonalProfileUniverse> getPersonalProfilesByName(String        userId,
+                                                                   String        name) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         final String   methodName = "getPersonalProfilesByName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/personal-profiles/by-name/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/personal-profiles/by-name";
 
         final String   nameParameterName = "name";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
         PersonalProfileListResponse restResult = restClient.callPersonalProfileListGetRESTCall(methodName,
-                                                                                               omasServerURL + urlTemplate,
+                                                                                               serverPlatformURLRoot + urlTemplate,
                                                                                                serverName,
                                                                                                userId,
                                                                                                name);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getPersonalProfiles();
     }
