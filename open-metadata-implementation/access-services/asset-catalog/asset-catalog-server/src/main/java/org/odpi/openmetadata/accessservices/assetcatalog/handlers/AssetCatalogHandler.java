@@ -121,6 +121,10 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
+        if (repositoryHandler.isEntityKnown(userId, assetGUID, assetTypeName, methodName, GUID_PARAMETER) == null) {
+            return null;
+        }
+
         EntityDetail entityByGUID = commonHandler.getEntityByGUID(userId, assetGUID, assetTypeName);
         return assetConverter.getAssetDescription(entityByGUID);
     }
