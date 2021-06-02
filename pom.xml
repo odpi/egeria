@@ -242,7 +242,7 @@
         <maven-antrun.version>3.0.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-        <jacoco-plugin.version>0.8.6</jacoco-plugin.version>
+        <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <frontend.plugin.version>1.11.3</frontend.plugin.version>
         <exec.plugin.version>3.0.0</exec.plugin.version>
