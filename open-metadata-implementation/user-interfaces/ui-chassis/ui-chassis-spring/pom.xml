@@ -412,53 +412,6 @@
                     </execution>
                 </executions>
 	    </plugin>
-	    <!-- Local override due to slf4j dependency mismatch with spring-starter-jpa. See #5291 for details -->
-            <!-- Validates maven & java versions -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>display-info</id>
-                        <goals>
-                            <goal>display-info</goal>
-                        </goals>
-                        <phase>validate</phase>
-                    </execution>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <version>[3.5.0,)</version>
-                                    <message>** MAVEN VERSION ERROR ** Maven 3.5.0 or above is required. See
-                                        https://maven.apache.org/install.html
-                                    </message>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <level>ERROR</level>
-                                    <version>[1.8,)</version>
-                                    <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
-                                    </message>
-                                </requireJavaVersion>
-                                <banDuplicatePomDependencyVersions/>
-                                <requireSameVersions/>
-				<reactorModuleConvergence/>
-				<!-- remove this entire plugin section if upper bounds can be addressed in future -->
-				<requireUpperBoundDeps>
-					<excludes>
-						<exclude>org.slf4j:slf4j-api</exclude>
-					</excludes>
-				</requireUpperBoundDeps>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 </project>

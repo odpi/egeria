@@ -164,9 +164,9 @@
         <janus.version>0.5.3</janus.version>
         <netty.version>4.1.65.Final</netty.version>
         <spring-boot.version>2.5.0</spring-boot.version>
-        <tomcat.version>10.0.6</tomcat.version>
+        <tomcat.version>9.0.46</tomcat.version>
         <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
-        <gremlin.version>3.5.0</gremlin.version>
+        <gremlin.version>3.4.11</gremlin.version>
         <spring-security.version>5.5.0</spring-security.version>
         <spring.version>5.3.7</spring.version>
         <spring-data.version>2.5.1</spring-data.version>
@@ -470,6 +470,20 @@
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>gremlin-driver</artifactId>
+                <scope>compile</scope>
+                <version>${gremlin.version}</version>
+	    </dependency>
+
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-shaded</artifactId>
+                <scope>compile</scope>
+                <version>${gremlin.version}</version>
+	    </dependency>
+
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-groovy</artifactId>
                 <scope>compile</scope>
                 <version>${gremlin.version}</version>
             </dependency>
@@ -3384,7 +3398,12 @@
                                 <banDuplicatePomDependencyVersions/>
                                 <requireSameVersions/>
                                 <reactorModuleConvergence/>
-                                <requireUpperBoundDeps/>
+				<requireUpperBoundDeps>
+				    <excludes>
+				        <!-- Required as the ui chassis pulls in dependencies using older, but later versioned beta code -->
+                                        <exclude>org.slf4j:slf4j-api</exclude>
+                                    </excludes>
+			        </requireUpperBoundDeps>
                             </rules>
                         </configuration>
                     </execution>

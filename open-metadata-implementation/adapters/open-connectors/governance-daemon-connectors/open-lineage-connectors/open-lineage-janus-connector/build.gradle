@@ -29,6 +29,7 @@ dependencies {
     testRuntimeOnly 'org.janusgraph:janusgraph-inmemory'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.apache.commons:commons-collections4'
+    implementation 'commons-configuration:commons-configuration'
     implementation 'org.apache.commons:commons-configuration2'
 
 }

@@ -80,7 +80,7 @@ allprojects {
         jacksonVersion = '2.12.2'
         nettyVersion = '4.1.65.Final'
         luceneVersion = '8.8.2'
-        gremlinVersion = '3.5.0'
+        gremlinVersion = '3.4.11'
         groovyVersion = '3.0.7'
         janusVersion = '0.5.3'
         springwebVersion = '5.3.7'
@@ -150,6 +150,8 @@ allprojects {
             implementation("org.apache.tinkerpop:tinkergraph-gremlin:${gremlinVersion}")
             implementation("org.apache.tinkerpop:gremlin-driver:${gremlinVersion}")
             implementation("org.apache.tinkerpop:gremlin-core:${gremlinVersion}")
+            implementation("org.apache.tinkerpop:gremlin-groovy:${gremlinVersion}")
+            implementation("org.apache.tinkerpop:gremlin-shaded:${gremlinVersion}")
             implementation("org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}") //TODO May need to exclude tomcat-annotations-api
             implementation("org.apache.tomcat:tomcat-coyote:${tomcatVersion}") //TODO May need to exclude tomcat-annotations-api
             implementation("org.codehaus.groovy:groovy:${groovyVersion}")
@@ -199,7 +201,7 @@ allprojects {
             implementation("org.springframework.ldap:ldap-core:${springldapVersion}")
             implementation("javax.servlet:javax.servlet-api:4.0.1")
 	    implementation("commons-configuration:commons-configuration:1.10")
-	    implementation("org.apache.configuration:commons-configuration2:2.7")
+	    implementation("org.apache.commons:commons-configuration2:2.7")
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
             runtimeOnly("joda-time:joda-time:2.10.10")
