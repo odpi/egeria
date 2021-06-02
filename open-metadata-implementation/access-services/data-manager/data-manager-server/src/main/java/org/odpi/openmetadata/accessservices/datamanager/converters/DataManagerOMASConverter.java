@@ -15,7 +15,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -24,7 +23,7 @@ import java.util.Map;
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Data Manager bean.
  */
-public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
+public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {
     /**
      * Constructor
@@ -79,6 +78,51 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
 
 
     /**
+     * Extract the properties from the entity or relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param header header from the entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementHeader getMetadataElementHeader(Class<B>       beanClass,
+                                                  InstanceHeader header,
+                                                  String         methodName) throws PropertyServerException
+    {
+        if (header != null)
+        {
+            ElementHeader elementHeader = new ElementHeader();
+
+            elementHeader.setGUID(header.getGUID());
+            elementHeader.setType(this.getElementType(header));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementHeader.setOrigin(elementOrigin);
+
+            return elementHeader;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Extract the properties from the entity.
      *
      * @param beanClass name of the class to create
@@ -125,6 +169,112 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
 
 
     /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entityProxy entityProxy from the relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>    beanClass,
+                                      EntityProxy entityProxy,
+                                      String      methodName) throws PropertyServerException
+    {
+        if (entityProxy != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entityProxy.getUniqueProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>     beanClass,
+                                      EntityDetail entity,
+                                      String       methodName) throws PropertyServerException
+    {
+        if (entity != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entity, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entity.getProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>     beanClass,
+                                      Relationship relationship,
+                                      String       methodName) throws PropertyServerException
+    {
+        if (relationship != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the classifications from the entity.
      *
      * @param entity entity containing the classifications
@@ -135,6 +285,28 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
         if (entity != null)
         {
             return this.getEntityClassifications(entity.getClassifications());
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract the requested classification from the entity.
+     *
+     * @param entity entity containing the classifications
+     * @return list of bean classifications
+     */
+    public Classification getEntityClassification(String       classificationName,
+                                                  EntityDetail entity)
+    {
+        if (entity != null)
+        {
+            List<Classification> classifications = entity.getClassifications();
+
+            if (classifications != null)
+            {
+                return this.getEntityClassification(classificationName, classifications);
+            }
         }
 
         return null;
@@ -191,6 +363,35 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
                 if (classification != null)
                 {
                     if (classification.getClassificationName().equals(classificationName))
+                    {
+                        return classification;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve a specific named classification.
+     *
+     * @param classificationName name of classification
+     * @param classifications list of classifications retrieved from the repositories
+     * @return null or the requested classification
+     */
+    private Classification getEntityClassification(String               classificationName,
+                                                   List<Classification> classifications)
+    {
+        if ((classificationName != null) && (classifications != null))
+        {
+            for (Classification classification : classifications)
+            {
+                if (classification != null)
+                {
+                    if (classification.getName().equals(classificationName))
                     {
                         return classification;
                     }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.converters.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.GovernanceProgramErrorCode;
+import org.odpi.openmetadata.accessservices.governanceprogram.handlers.AppointmentHandler;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
@@ -25,9 +26,12 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     private ElementStubConverter<ElementStub>                        elementStubConverter;
     private GovernanceZoneHandler<GovernanceZoneElement>             governanceZoneHandler;
     private PersonRoleHandler<GovernanceRoleElement>                 governanceRoleHandler;
+    private ActorProfileHandler<ProfileElement>                      profileHandler;
     private ExternalReferenceHandler<ExternalReferenceElement>       externalReferenceHandler;
     private GovernanceDefinitionHandler<GovernanceDefinitionElement> governanceDefinitionHandler;
     private SubjectAreaHandler<SubjectAreaElement>                   subjectAreaHandler;
+
+    private AppointmentHandler                                       appointmentHandler;
 
 
     /**
@@ -126,6 +130,27 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
                                                                defaultZones,
                                                                publishZones,
                                                                auditLog);
+
+            this.profileHandler = new ActorProfileHandler<>(new ProfileConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ProfileElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
+
+            this.appointmentHandler = new AppointmentHandler(governanceRoleHandler,
+                                                             profileHandler,
+                                                             repositoryHelper,
+                                                             serviceName,
+                                                             serverName,
+                                                             auditLog);
         }
         else
         {
@@ -156,6 +181,17 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     PersonRoleHandler<GovernanceRoleElement> getGovernanceRoleHandler()
     {
         return governanceRoleHandler;
+    }
+
+
+    /**
+     * Return the appointment handler
+     *
+     * @return handler
+     */
+    AppointmentHandler getAppointmentHandler()
+    {
+        return appointmentHandler;
     }
 
 
@@ -200,5 +236,16 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     SubjectAreaHandler<SubjectAreaElement> getSubjectAreaHandler()
     {
         return subjectAreaHandler;
+    }
+
+
+    /**
+     * Return the handler for profile requests.
+     *
+     * @return handler object
+     */
+    ActorProfileHandler<ProfileElement> getProfileHandler()
+    {
+        return profileHandler;
     }
 }

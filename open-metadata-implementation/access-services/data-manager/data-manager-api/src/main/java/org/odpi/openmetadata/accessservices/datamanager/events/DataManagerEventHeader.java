@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.events;
+package org.odpi.openmetadata.accessservices.datamanager.events;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CommunityProfileEventHeader provides a common base for all events from the access service.
+ * DataManagerEventHeader provides a common base for all events from the access service.
  * It implements Serializable and a version Id.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -22,9 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-                      @JsonSubTypes.Type(value = CommunityProfileOutboundEvent.class, name = "CommunityProfileOutboundEvent")
+                      @JsonSubTypes.Type(value = DataManagerOutboundEvent.class, name = "DataManagerOutboundEvent")
 })
-public abstract class CommunityProfileEventHeader implements Serializable
+public abstract class DataManagerEventHeader implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public abstract class CommunityProfileEventHeader implements Serializable
     /**
      * Default Constructor sets the properties to nulls
      */
-    CommunityProfileEventHeader()
+    DataManagerEventHeader()
     {
         /*
          * Nothing to do.
@@ -48,7 +48,7 @@ public abstract class CommunityProfileEventHeader implements Serializable
      *
      * @param template object to copy
      */
-    CommunityProfileEventHeader(CommunityProfileEventHeader template)
+    DataManagerEventHeader(DataManagerEventHeader template)
     {
         if (template != null)
         {
@@ -87,7 +87,7 @@ public abstract class CommunityProfileEventHeader implements Serializable
     @Override
     public String toString()
     {
-        return "CommunityProfileEventHeader{" +
+        return "DataManagerEventHeader{" +
                 "eventVersionId=" + eventVersionId +
                 '}';
     }
@@ -106,11 +106,11 @@ public abstract class CommunityProfileEventHeader implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof CommunityProfileEventHeader))
+        if (!(objectToCompare instanceof DataManagerEventHeader))
         {
             return false;
         }
-        CommunityProfileEventHeader that = (CommunityProfileEventHeader) objectToCompare;
+        DataManagerEventHeader that = (DataManagerEventHeader) objectToCompare;
         return getEventVersionId() == that.getEventVersionId();
     }
 
