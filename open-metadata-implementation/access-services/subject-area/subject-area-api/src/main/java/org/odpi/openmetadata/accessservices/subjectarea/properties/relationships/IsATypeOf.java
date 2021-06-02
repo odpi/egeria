@@ -50,7 +50,7 @@ public class IsATypeOf extends Relationship {
     private String source;
 
     public IsATypeOf() {
-        super("IsaTypeOf", RELATIONSHIP_END_1, RELATIONSHIP_END_2);
+        super("IsATypeOf", RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**

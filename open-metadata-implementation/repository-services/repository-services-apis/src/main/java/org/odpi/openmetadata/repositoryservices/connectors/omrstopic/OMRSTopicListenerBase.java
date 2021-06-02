@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * OMRSTopicListenerBase provides a base class for a topic listener so it only needs to
@@ -2097,6 +2098,44 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                                           InstanceGraph instances)
     {
         log.debug("Processing instance batch event from: " + sourceName);
+
+        if (instances != null)
+        {
+            List<EntityDetail> entities      = instances.getEntities();
+            List<Relationship> relationships = instances.getRelationships();
+
+            if (entities != null)
+            {
+                for (EntityDetail entity : entities)
+                {
+                    if (entity != null)
+                    {
+                        this.processNewEntityEvent(sourceName,
+                                                   originatorMetadataCollectionId,
+                                                   originatorServerName,
+                                                   originatorServerType,
+                                                   originatorOrganizationName,
+                                                   entity);
+                    }
+                }
+            }
+
+            if (relationships != null)
+            {
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        this.processNewRelationshipEvent(sourceName,
+                                                         originatorMetadataCollectionId,
+                                                         originatorServerName,
+                                                         originatorServerType,
+                                                         originatorOrganizationName,
+                                                         relationship);
+                    }
+                }
+            }
+        }
     }
 
 

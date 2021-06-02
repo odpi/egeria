@@ -1,13 +1,14 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.converters;
+package org.odpi.openmetadata.accessservices.governanceprogram.converters;
 
-
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.ProfileElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.ActorProfileProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.ContactMethodProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.ContactMethodType;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.UserIdentityProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -17,14 +18,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * PersonalProfileConverter generates a PersonalProfileProperties bean from a PersonalProfileProperties entity.
  */
-public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B>
+public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
 {
     /**
      * Constructor
@@ -33,9 +33,9 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
      * @param serviceName name of this component
      * @param serverName local server name
      */
-    public PersonalProfileConverter(OMRSRepositoryHelper repositoryHelper,
-                                    String               serviceName,
-                                    String               serverName)
+    public ProfileConverter(OMRSRepositoryHelper repositoryHelper,
+                            String               serviceName,
+                            String               serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -67,10 +67,10 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof PersonalProfileUniverse)
+            if (returnBean instanceof ProfileElement)
             {
-                PersonalProfileUniverse   bean              = (PersonalProfileUniverse) returnBean;
-                PersonalProfileProperties profileProperties = new PersonalProfileProperties();
+                ProfileElement   bean                    = (ProfileElement) returnBean;
+                ActorProfileProperties profileProperties = new ActorProfileProperties();
 
                 if (primaryEntity != null)
                 {
@@ -84,8 +84,6 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                     profileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     profileProperties.setKnownName(this.removeName(instanceProperties));
                     profileProperties.setDescription(this.removeDescription(instanceProperties));
-                    profileProperties.setFullName(this.removeFullName(instanceProperties));
-                    profileProperties.setJobTitle(this.removeJobTitle(instanceProperties));
                     profileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
                     /*
@@ -110,7 +108,7 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
 
                                 if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME))
                                 {
-                                    UserIdentityElement    userBean = new UserIdentityElement();
+                                    UserIdentityElement    userBean       = new UserIdentityElement();
                                     UserIdentityProperties userProperties = new UserIdentityProperties();
 
                                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
@@ -126,23 +124,6 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                                     userBean.setProperties(userProperties);
 
                                     userIdentities.add(userBean);
-                                }
-                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME))
-                                {
-                                    ContributionRecordElement contributionBean   = new ContributionRecordElement();
-                                    ContributionRecord        contributionRecord = new ContributionRecord();
-
-                                    contributionBean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
-
-                                    InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
-
-                                    contributionRecord.setQualifiedName(this.removeQualifiedName(entityProperties));
-                                    contributionRecord.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
-                                    contributionRecord.setKarmaPoints(this.removeKarmaPoints(entityProperties));
-                                    contributionRecord.setKarmaPointPlateau(karmaPointPlateau);
-
-                                    contributionRecord.setTypeName(bean.getElementHeader().getType().getTypeName());
-                                    contributionRecord.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME))
                                 {
@@ -183,51 +164,6 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                             bean.setContactMethods(contactMethods);
                         }
                     }
-
-                    if (relationships != null)
-                    {
-                        List<ElementStub> peers = new ArrayList<>();
-                        List<ElementStub> roles = new ArrayList<>();
-
-                        for (Relationship relationship : relationships)
-                        {
-                            if ((relationship != null) && (relationship.getType() != null))
-                            {
-                                String relationshipTypeName = relationship.getType().getTypeDefName();
-
-                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_NAME))
-                                {
-                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
-
-                                    ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
-
-                                    peers.add(elementStub);
-                                }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME))
-                                {
-                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
-
-                                    ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
-
-                                    roles.add(elementStub);
-                                }
-                            }
-                            else
-                            {
-                                handleBadRelationship(beanClass.getName(), relationship, methodName);
-                            }
-                        }
-
-                        if (! peers.isEmpty())
-                        {
-                            bean.setPeers(peers);
-                        }
-
-                        if (! roles.isEmpty())
-                        {
-                            bean.setRoles(roles);
-                        }
-                    }
                 }
                 else
                 {
@@ -243,5 +179,53 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
         }
 
         return null;
+    }
+
+
+    /**
+     * Retrieve the ContactMethodType enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return ContactMethodType  enum value
+     */
+    private ContactMethodType getContactMethodTypeFromProperties(InstanceProperties   properties)
+    {
+        final String methodName = "getContactMethodTypeFromProperties";
+
+        ContactMethodType contactMethodType = ContactMethodType.OTHER;
+
+        if (properties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
+
+            switch (ordinal)
+            {
+                case 0:
+                    contactMethodType = ContactMethodType.EMAIL;
+                    break;
+
+                case 1:
+                    contactMethodType = ContactMethodType.PHONE;
+                    break;
+
+                case 2:
+                    contactMethodType = ContactMethodType.CHAT;
+                    break;
+
+                case 3:
+                    contactMethodType = ContactMethodType.PROFILE;
+                    break;
+
+                case 4:
+                    contactMethodType = ContactMethodType.ACCOUNT;
+                    break;
+
+                case 99:
+                    contactMethodType = ContactMethodType.OTHER;
+                    break;
+            }
+        }
+
+        return contactMethodType;
     }
 }

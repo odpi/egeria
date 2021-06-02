@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 
+import org.odpi.openmetadata.accessservices.governanceprogram.handlers.AppointmentHandler;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
@@ -17,8 +18,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The GovernanceRolesRESTServices provides the server-side implementation of the GovernanceRolesInterface
@@ -32,7 +33,7 @@ public class GovernanceRolesRESTServices
     private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceRolesRESTServices.class),
                                                                                   instanceHandler.getServiceName());
 
-    private    RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -69,6 +70,25 @@ public class GovernanceRolesRESTServices
         {
             if (requestBody != null)
             {
+                String typeName = OpenMetadataAPIMapper.GOVERNANCE_ROLE_TYPE_NAME;
+
+                if (requestBody.getTypeName() != null)
+                {
+                    typeName = requestBody.getTypeName();
+                }
+
+                Map<String, Object> extendedProperties = requestBody.getExtendedProperties();
+
+                if (requestBody.getDomainIdentifier() != 0)
+                {
+                    if (extendedProperties == null)
+                    {
+                        extendedProperties = new HashMap<>();
+                    }
+
+                    extendedProperties.put(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, requestBody.getDomainIdentifier());
+                }
+
                 PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -81,8 +101,8 @@ public class GovernanceRolesRESTServices
                                                           requestBody.getScope(),
                                                           requestBody.getHeadCount(),
                                                           requestBody.getAdditionalProperties(),
-                                                          requestBody.getTypeName(),
-                                                          requestBody.getExtendedProperties(),
+                                                          typeName,
+                                                          extendedProperties,
                                                           methodName));
             }
             else
@@ -123,6 +143,8 @@ public class GovernanceRolesRESTServices
     {
         final String methodName = "updateGovernanceRole";
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
+        final String roleIdParameterName = "roleId";
+        final String titleParameterName = "title";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -134,6 +156,18 @@ public class GovernanceRolesRESTServices
         {
             if (requestBody != null)
             {
+                Map<String, Object> extendedProperties = requestBody.getExtendedProperties();
+
+                if (requestBody.getDomainIdentifier() != 0)
+                {
+                    if (extendedProperties == null)
+                    {
+                        extendedProperties = new HashMap<>();
+                    }
+
+                    extendedProperties.put(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME, requestBody.getDomainIdentifier());
+                }
+
                 PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -143,13 +177,15 @@ public class GovernanceRolesRESTServices
                                          governanceRoleGUID,
                                          governanceRoleGUIDParameterName,
                                          requestBody.getRoleId(),
+                                         roleIdParameterName,
                                          requestBody.getTitle(),
+                                         titleParameterName,
                                          requestBody.getDescription(),
                                          requestBody.getScope(),
                                          requestBody.getHeadCount(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getTypeName(),
-                                         requestBody.getExtendedProperties(),
+                                         extendedProperties,
                                          isMergeUpdate,
                                          methodName);
             }
@@ -493,9 +529,9 @@ public class GovernanceRolesRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceRoleResponse getGovernanceRoleByGUID(String     serverName,
-                                                          String     userId,
-                                                          String     governanceRoleGUID)
+    public GovernanceRoleResponse getGovernanceRoleByGUID(String serverName,
+                                                          String userId,
+                                                          String governanceRoleGUID)
     {
         final String methodName = "getGovernanceRoleByGUID";
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
@@ -543,16 +579,21 @@ public class GovernanceRolesRESTServices
                                                                         String     governanceRoleGUID)
     {
         final String methodName = "getGovernanceRoleHistoryByGUID";
-        final String governanceRoleGUIDParameterName = "governanceRoleGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GovernanceRoleHistoryResponse response = new GovernanceRoleHistoryResponse();
-        AuditLog               auditLog = null;
+        AuditLog                      auditLog = null;
 
         try
         {
-            // todo
+            AppointmentHandler handler = instanceHandler.getAppointmentHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setElement(handler.getGovernanceRoleHistoryByGUID(userId,
+                                                                       governanceRoleGUID,
+                                                                       methodName));
         }
         catch (Exception error)
         {
@@ -737,11 +778,15 @@ public class GovernanceRolesRESTServices
 
         try
         {
-            PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
+            AppointmentHandler handler = instanceHandler.getAppointmentHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            // todo
+            response.setElements(handler.getCurrentGovernanceRoleAppointments(userId,
+                                                                              domainIdentifier,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              methodName));
         }
         catch (Exception error)
         {
@@ -790,10 +835,10 @@ public class GovernanceRolesRESTServices
                 String appointmentGUID = handler.appointPersonToRole(userId,
                                                                      null,
                                                                      null,
-                                                                     governanceRoleGUID,
-                                                                     governanceRoleGUIDParameterName,
                                                                      requestBody.getProfileGUID(),
                                                                      profileGUIDParameterName,
+                                                                     governanceRoleGUID,
+                                                                     governanceRoleGUIDParameterName,
                                                                      true,
                                                                      requestBody.getEffectiveDate(),
                                                                      methodName);
@@ -847,9 +892,6 @@ public class GovernanceRolesRESTServices
 
         try
         {
-            String              profileGUID = null;
-            Date                endDate     = null;
-
             if (requestBody != null)
             {
                 PersonRoleHandler<GovernanceRoleElement> handler = instanceHandler.getGovernanceRoleHandler(userId, serverName, methodName);
@@ -858,13 +900,13 @@ public class GovernanceRolesRESTServices
                 handler.relievePersonFromRole(userId,
                                               null,
                                               null,
+                                              requestBody.getProfileGUID(),
+                                              profileGUIDParameterName,
                                               governanceRoleGUID,
                                               governanceRoleGUIDParameterName,
-                                              profileGUID,
-                                              profileGUIDParameterName,
                                               appointmentGUID,
                                               appointmentGUIDParameterName,
-                                              endDate,
+                                              requestBody.getEffectiveDate(),
                                               methodName);
             }
             else

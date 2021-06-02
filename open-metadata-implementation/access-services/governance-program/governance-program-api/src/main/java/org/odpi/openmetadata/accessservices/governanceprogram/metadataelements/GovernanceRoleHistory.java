@@ -117,11 +117,11 @@ public class GovernanceRoleHistory extends GovernanceRoleAppointee
     public String toString()
     {
         return "GovernanceRoleHistory{" +
-                       "predecessors=" + predecessors +
+                       "currentAppointees=" + getCurrentAppointees() +
+                       ", predecessors=" + predecessors +
                        ", successors=" + successors +
                        ", elementHeader=" + getElementHeader() +
                        ", role=" + getRole() +
-                       ", appointee=" + getAppointee() +
                        '}';
     }
 
