@@ -90,7 +90,7 @@ allprojects {
         springsecurityVersion = '5.5.0'
         mockitoVersion = '3.10.0'
         junitjupiterVersion = '5.7.2'
-        tomcatVersion = '9.0.46'
+        tomcatVersion = '10.0.6'
     }
 
     dependencies {
