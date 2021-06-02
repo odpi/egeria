@@ -97,6 +97,19 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return the entity proxy for the related entity.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param anchorEntityGUID unique identifier of the anchor entity
+     * @param relationship relationship to another entity
+     * @return proxy to the other entity.
+     */
+    EntityProxy  getOtherEnd(String                 sourceName,
+                             String                 anchorEntityGUID,
+                             Relationship           relationship);
+
+
+    /**
      * Return the AttributeTypeDef identified by the name supplied by the caller.  This is used in the connectors when
      * validating the actual types of the repository with the known open metadata types looking specifically
      * for types of the same name but with different content.

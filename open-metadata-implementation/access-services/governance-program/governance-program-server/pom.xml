@@ -80,6 +80,12 @@
             <artifactId>generic-handlers</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-handler</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>
