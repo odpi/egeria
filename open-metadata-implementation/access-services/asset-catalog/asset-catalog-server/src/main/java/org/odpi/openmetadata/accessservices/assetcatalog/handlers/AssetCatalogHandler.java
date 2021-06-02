@@ -392,8 +392,9 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
         List<EntityDetail> result;
+        List<String> typesFilter = Collections.emptyList();
         if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypes())) {
-            List<String> typesFilter = commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes());
+            typesFilter = commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes());
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, typesFilter);
         } else {
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, defaultSearchTypes);
@@ -410,6 +411,11 @@ public class AssetCatalogHandler {
                         supportedZones,
                         serverUserName,
                         methodName);
+                // filter out the entities that are retrieved with the enterprise search.
+                // metadataCollection.findEntitiesByProperty includes in the search the subtypes of the provided type
+                if (!typesFilter.contains(entityDetail.getType().getTypeDefGUID())) {
+                    continue;
+                }
                 AssetElements assetElements = assetConverter.buildAssetElements(entityDetail);
                 list.add(assetElements);
             } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
