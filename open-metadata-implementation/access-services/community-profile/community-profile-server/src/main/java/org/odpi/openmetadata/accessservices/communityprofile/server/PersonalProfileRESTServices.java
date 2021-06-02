@@ -308,7 +308,7 @@ public class PersonalProfileRESTServices
             ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfile(handler.getActorProfileForUser(userId, profileUserId, userParameterName, methodName));
+            response.setPersonalProfile(handler.getPersonalProfileForUser(userId, profileUserId, userParameterName, methodName));
         }
         catch (Exception error)
         {
@@ -348,7 +348,7 @@ public class PersonalProfileRESTServices
             ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfile(handler.getActorProfileByGUID(userId, profileGUID, profileGUIDParameterName, methodName));
+            response.setPersonalProfile(handler.getPersonalProfileByGUID(userId, profileGUID, profileGUIDParameterName, methodName));
         }
         catch (Exception error)
         {
@@ -391,13 +391,10 @@ public class PersonalProfileRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setPersonalProfile(handler.getBeanByUniqueName(userId,
-                                                                    requestBody.getName(),
-                                                                    nameParameterName,
-                                                                    requestBody.getNamePropertyName(),
-                                                                    OpenMetadataAPIMapper.PERSON_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                                    methodName));
+            response.setPersonalProfile(handler.getPersonalProfileByUniqueName(userId,
+                                                                               requestBody.getName(),
+                                                                               nameParameterName,
+                                                                               methodName));
         }
         catch (Exception error)
         {
@@ -443,7 +440,7 @@ public class PersonalProfileRESTServices
             ActorProfileHandler<PersonalProfileUniverse> handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setPersonalProfiles(handler.getActorProfileByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName));
+            response.setPersonalProfiles(handler.getPersonalProfilesByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName));
         }
         catch (Exception error)
         {

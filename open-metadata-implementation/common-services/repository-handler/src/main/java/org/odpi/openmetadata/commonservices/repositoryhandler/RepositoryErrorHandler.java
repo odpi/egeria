@@ -311,6 +311,107 @@ public class RepositoryErrorHandler
 
 
     /**
+     * Throw an exception to indicate that a retrieved entity has missing information.
+     *
+     * @param expectedTypeName type name of instance
+     * @param methodName calling method
+     */
+    public void logNullInstance(String  expectedTypeName,
+                                String  methodName)
+    {
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.NULL_INSTANCE.getMessageDefinition(expectedTypeName, methodName, serviceName));
+        }
+    }
+
+
+    /**
+     * Throw an exception to indicate that a retrieved entity has missing information.
+     *
+     * @param expectedTypeName type name of instance
+     * @param entity the entity with the bad header
+     * @param methodName calling method
+     */
+    public void logBadEntity(String          expectedTypeName,
+                             EntityDetail    entity,
+                             String          methodName)
+    {
+        if (entity == null)
+        {
+            logNullInstance(expectedTypeName, methodName);
+        }
+        else if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.BAD_ENTITY.getMessageDefinition(expectedTypeName, methodName, serviceName, ((InstanceHeader)entity).toString()),
+                                entity.toString());
+        }
+    }
+
+
+    /**
+     * Throw an exception to indicate that a retrieved entity proxy is missing critical information.
+     *
+     * @param relationship the relationship with a bad entity proxy - not null
+     * @param end number of the end where the proxy is stored
+     * @param entityProxy the entity proxy with the bad values
+     * @param methodName calling method
+     */
+    public void handleBadEntityProxy(Relationship relationship,
+                                     int          end,
+                                     EntityProxy  entityProxy,
+                                     String       methodName)
+    {
+        if (auditLog != null)
+        {
+            String entityProxyString = "<null>";
+
+            if (entityProxy != null)
+            {
+                entityProxyString = entityProxy.toString();
+            }
+
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.BAD_ENTITY_PROXY.getMessageDefinition(relationship.getGUID(),
+                                                                                                 methodName,
+                                                                                                 serviceName,
+                                                                                                 Integer.toString(end),
+                                                                                                 entityProxyString));
+        }
+    }
+
+
+    /**
+     * Throw an exception to indicate that a critical instance (typically the main entity) has not been passed
+     * to the converter.
+     *
+     * @param expectedTypeName type name of instance
+     * @param relationship the relationship with the bad header
+     * @param methodName calling method
+     */
+    public void logBadRelationship(String       expectedTypeName,
+                                   Relationship relationship,
+                                   String       methodName)
+    {
+        if (relationship == null)
+        {
+            logNullInstance(expectedTypeName, methodName);
+        }
+        else if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.BAD_RELATIONSHIP.getMessageDefinition(expectedTypeName,
+                                                                                                 methodName,
+                                                                                                 serviceName,
+                                                                                                 ((InstanceHeader)relationship).toString()),
+                                relationship.toString());
+        }
+    }
+
+
+    /**
      * Throw an exception if the supplied guid returned an entity of the wrong type
      *
      * @param guid  unique identifier of entity
@@ -338,6 +439,8 @@ public class RepositoryErrorHandler
                                             defaultGUIDParameterName);
 
     }
+
+
 
 
     /**
