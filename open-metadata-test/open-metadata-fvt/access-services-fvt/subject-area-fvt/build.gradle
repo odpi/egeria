@@ -24,7 +24,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation localGroovy()
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.2")
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     testImplementation 'org.apache.commons:commons-lang3'
     testImplementation project(':open-metadata-test:open-metadata-fvt:fvt-utilities')
