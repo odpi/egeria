@@ -181,25 +181,26 @@ class AdminServicesRESTClient
     }
 
 
+
     /**
-     * Issue a GET REST call that returns a NameListResponse object.
+     * Issue a GET REST call that returns a DedicatedTopicListResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return NameListResponse
+     * @return DedicatedTopicListResponse
      * @throws OMAGInvalidParameterException one of the parameters is invalid.
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    NameListResponse callNameListGetRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object... params) throws OMAGInvalidParameterException,
-                                                                      OMAGNotAuthorizedException,
-                                                                      OMAGConfigurationErrorException
+    DedicatedTopicListResponse callDedicatedTopicListGetRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object... params) throws OMAGInvalidParameterException,
+                                                                                          OMAGNotAuthorizedException,
+                                                                                          OMAGConfigurationErrorException
     {
-        NameListResponse restResult = this.callGetRESTCall(methodName, NameListResponse.class, urlTemplate, params);
+        DedicatedTopicListResponse restResult = this.callGetRESTCall(methodName, DedicatedTopicListResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowAdminExceptions(restResult);
 

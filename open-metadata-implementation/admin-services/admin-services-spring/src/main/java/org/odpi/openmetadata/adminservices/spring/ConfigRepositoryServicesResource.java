@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicS
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.adminservices.rest.CohortConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.ConnectionListResponse;
+import org.odpi.openmetadata.adminservices.rest.DedicatedTopicListResponse;
 import org.odpi.openmetadata.adminservices.rest.LocalRepositoryConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -541,9 +542,9 @@ public class ConfigRepositoryServicesResource
      * OMAGConfigurationErrorException the cohort is not set up.
      */
     @GetMapping(path = "/cohorts/{cohortName}/dedicated-topic-names")
-    public NameListResponse getDedicatedCohortTopicNames(@PathVariable  String userId,
-                                                         @PathVariable  String serverName,
-                                                         @PathVariable  String cohortName)
+    public DedicatedTopicListResponse getDedicatedCohortTopicNames(@PathVariable  String userId,
+                                                                   @PathVariable  String serverName,
+                                                                   @PathVariable  String cohortName)
     {
         return adminAPI.getDedicatedCohortTopicNames(userId, serverName, cohortName);
     }

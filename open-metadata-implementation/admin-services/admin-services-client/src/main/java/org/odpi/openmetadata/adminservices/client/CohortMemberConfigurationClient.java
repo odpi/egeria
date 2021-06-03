@@ -9,6 +9,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.LocalReposit
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.properties.DedicatedTopicList;
+import org.odpi.openmetadata.adminservices.rest.DedicatedTopicListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
@@ -216,9 +218,9 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public List<String> getDedicatedCohortTopicNames(String cohortName) throws OMAGNotAuthorizedException,
-                                                                               OMAGInvalidParameterException,
-                                                                               OMAGConfigurationErrorException
+    public DedicatedTopicList getDedicatedCohortTopicNames(String cohortName) throws OMAGNotAuthorizedException,
+                                                                                     OMAGInvalidParameterException,
+                                                                                     OMAGConfigurationErrorException
     {
         final String methodName    = "getDedicatedCohortTopicNames";
         final String parameterName = "cohortName";
@@ -233,13 +235,13 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
             throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
 
-        NameListResponse response = restClient.callNameListGetRESTCall(methodName,
-                                                                       serverPlatformRootURL + urlTemplate,
-                                                                       adminUserId,
-                                                                       serverName,
-                                                                       cohortName);
+        DedicatedTopicListResponse response = restClient.callDedicatedTopicListGetRESTCall(methodName,
+                                                                                           serverPlatformRootURL + urlTemplate,
+                                                                                           adminUserId,
+                                                                                           serverName,
+                                                                                           cohortName);
 
-        return response.getNames();
+        return response.getDedicatedTopicList();
     }
 
 
