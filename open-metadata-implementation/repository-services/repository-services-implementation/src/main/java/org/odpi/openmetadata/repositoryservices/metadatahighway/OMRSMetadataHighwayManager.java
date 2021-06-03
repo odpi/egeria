@@ -189,10 +189,38 @@ public class OMRSMetadataHighwayManager
                     = getCohortRegistryStore(cohortConfig.getCohortName(),
                                              cohortConfig.getCohortRegistryConnection());
 
-            OMRSTopicConnector cohortTopicConnector
-                    = getTopicConnector(cohortConfig.getCohortName(),
-                                        cohortConfig.getCohortOMRSTopicConnection(),
-                                        cohortConfig.getCohortOMRSTopicProtocolVersion());
+            OMRSTopicConnector cohortSingleTopicConnector = null;
+            OMRSTopicConnector cohortRegistrationTopicConnector = null;
+            OMRSTopicConnector cohortTypesTopicConnector = null;
+            OMRSTopicConnector cohortInstancesTopicConnector = null;
+
+            if (cohortConfig.getCohortOMRSTopicConnection() != null)
+            {
+                cohortSingleTopicConnector = getTopicConnector(cohortConfig.getCohortName() + " (single)",
+                                                               cohortConfig.getCohortOMRSTopicConnection(),
+                                                               cohortConfig.getCohortOMRSTopicProtocolVersion());
+            }
+
+            if (cohortConfig.getCohortOMRSRegistrationTopicConnection() != null)
+            {
+                cohortRegistrationTopicConnector = getTopicConnector(cohortConfig.getCohortName() + " (registration)",
+                                                                     cohortConfig.getCohortOMRSRegistrationTopicConnection(),
+                                                                     cohortConfig.getCohortOMRSTopicProtocolVersion());
+            }
+
+            if (cohortConfig.getCohortOMRSTypesTopicConnection() != null)
+            {
+                cohortTypesTopicConnector = getTopicConnector(cohortConfig.getCohortName() + " (types)",
+                                                              cohortConfig.getCohortOMRSTypesTopicConnection(),
+                                                              cohortConfig.getCohortOMRSTopicProtocolVersion());
+            }
+
+            if (cohortConfig.getCohortOMRSInstancesTopicConnection() != null)
+            {
+                cohortInstancesTopicConnector = getTopicConnector(cohortConfig.getCohortName() + " (instances)",
+                                                                  cohortConfig.getCohortOMRSInstancesTopicConnection(),
+                                                                  cohortConfig.getCohortOMRSTopicProtocolVersion());
+            }
 
             OMRSRepositoryEventExchangeRule inboundEventExchangeRule
                     = new OMRSRepositoryEventExchangeRule(cohortConfig.getEventsToProcessRule(),
@@ -210,7 +238,13 @@ public class OMRSMetadataHighwayManager
                                      enterpriseAccessTopicConnector,
                                      cohortRegistryStore,
                                      cohortConfig.getCohortOMRSTopicConnection(),
-                                     cohortTopicConnector,
+                                     cohortSingleTopicConnector,
+                                     cohortConfig.getCohortOMRSRegistrationTopicConnection(),
+                                     cohortRegistrationTopicConnector,
+                                     cohortConfig.getCohortOMRSTypesTopicConnection(),
+                                     cohortTypesTopicConnector,
+                                     cohortConfig.getCohortOMRSInstancesTopicConnection(),
+                                     cohortInstancesTopicConnector,
                                      inboundEventExchangeRule);
 
             /*
