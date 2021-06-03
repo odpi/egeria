@@ -74,7 +74,7 @@ public class GovernanceLeadershipSample
      * @param serverURLRoot server location to connect to.
      * @param clientUserId user id to use to access metadata.
      */
-    private GovernanceLeadershipSample(String  serverName, String serverURLRoot, String clientUserId)
+    public GovernanceLeadershipSample(String  serverName, String serverURLRoot, String clientUserId)
     {
         this.serverName = serverName;
         this.serverURLRoot = serverURLRoot;
@@ -158,7 +158,7 @@ public class GovernanceLeadershipSample
 
 
     /**
-     * Extract and print out a governance office
+     * Extract and print out a governance officer
      *
      * @param client the client to call.
      * @param clientUserId the user id to use on the call.
@@ -168,41 +168,115 @@ public class GovernanceLeadershipSample
      * @throws UserNotAuthorizedException the user id is not authorized to access the personal profile.
      */
     private void  printGovernanceRole(GovernanceRoleManager client,
-                                         String                          clientUserId,
-                                         String                          guid) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+                                      String                clientUserId,
+                                      String                guid) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
     {
         GovernanceRoleHistory    governanceRoleElement = client.getGovernanceRoleHistoryByGUID(clientUserId, guid);
-        GovernanceRoleProperties governanceRole        = governanceRoleElement.getRole();
 
-        System.out.println("----------------------------");
-        System.out.println("Governance Role: " + guid);
-        System.out.println("  Domain: " + governanceRole.getDomainIdentifier());
-        System.out.println("  Appointment Id: " + governanceRole.getRoleId());
-        System.out.println("  Appointment Scope: " + governanceRole.getScope());
-        System.out.println("  Title: " + governanceRole.getTitle());
+        printGovernanceRoleHistory(governanceRoleElement);
+    }
 
-        GovernanceAppointee appointee = governanceRoleElement.getAppointee();
 
-        if (appointee != null)
-        {
-            System.out.println("  Appointee: " + appointee.getProfile().getProfileProperties().getKnownName());
-            System.out.println("  Start Date: " + appointee.getStartDate());
-            System.out.println("  End Date: " + appointee.getEndDate());
-        }
-        else
-        {
-            System.out.println("  Appointee: <None> ");
-        }
+    /**
+     * Extract and print out a governance officer and everyone who has been appointed to that role
+     *
+     * @param governanceRoleElement details to print out
+     */
+    private void  printGovernanceRoleHistory(GovernanceRoleHistory governanceRoleElement)
+    {
+        printGovernanceRole(governanceRoleElement);
+
+        System.out.println("  -- Current Appointees-----");
+
+        printGovernanceAppointees(governanceRoleElement.getCurrentAppointees());
+
+        System.out.println("  -- Predecessors ----------");
+
+        printGovernanceAppointees(governanceRoleElement.getPredecessors());
+
+        System.out.println("  -- Planned Successors-----");
+
+        printGovernanceAppointees(governanceRoleElement.getSuccessors());
+
         System.out.println("----------------------------");
     }
 
 
 
-    private void run() throws InvalidParameterException,
-                              PropertyServerException,
-                              UserNotAuthorizedException
+    /**
+     * Extract and print out a governance officer and everyone who has been appointed to that role
+     *
+     * @param governanceRoleElement details to print out
+     */
+    private void  printGovernanceRoleAppointee(GovernanceRoleAppointee governanceRoleElement)
+    {
+        printGovernanceRole(governanceRoleElement);
+
+        printGovernanceAppointees(governanceRoleElement.getCurrentAppointees());
+    }
+
+
+    /**
+     * Extract and print out a governance officer
+     *
+     * @param governanceRoleElement details to print out
+     */
+    private void  printGovernanceRole(GovernanceRoleElement governanceRoleElement)
+    {
+        GovernanceRoleProperties governanceRole = governanceRoleElement.getRole();
+
+        System.out.println("----------------------------");
+        System.out.println("Governance Role: " + governanceRoleElement.getElementHeader().getGUID());
+        if (governanceRole != null)
+        {
+            System.out.println("  Domain: " + governanceRole.getDomainIdentifier());
+            System.out.println("  Appointment Id: " + governanceRole.getRoleId());
+            System.out.println("  Appointment Scope: " + governanceRole.getScope());
+            System.out.println("  Title: " + governanceRole.getTitle());
+        }
+        else
+        {
+            System.out.println("  <no properties>");
+        }
+    }
+
+
+    /**
+     * Extract and print out a governance officer
+     *
+     * @param appointees retrieved appointees
+     */
+    private void printGovernanceAppointees(List<GovernanceAppointee> appointees)
+    {
+        if (appointees == null)
+        {
+            System.out.println("  Appointee: <None> ");
+        }
+        else
+        {
+            for (GovernanceAppointee appointee : appointees)
+            {
+                if (appointee != null)
+                {
+                    System.out.println("  Appointee: " + appointee.getProfile().getProfileProperties().getKnownName());
+                    System.out.println("     Start Date: " + appointee.getStartDate());
+                    System.out.println("     End Date: " + appointee.getEndDate());
+                }
+                else
+                {
+                    System.out.println("  Appointee: <Null> ");
+                }
+            }
+        }
+        System.out.println("----------------------------");
+    }
+
+
+    public void run() throws InvalidParameterException,
+                             PropertyServerException,
+                             UserNotAuthorizedException
     {
         PersonalProfileManagement ppmClient = new PersonalProfileManagement(serverName, serverURLRoot);
         GovernanceRoleManager     gplClient = new GovernanceRoleManager(serverName, serverURLRoot);
@@ -344,11 +418,11 @@ public class GovernanceLeadershipSample
 
         List<GovernanceRoleAppointee> governanceRoleAppointees = gplClient.getCurrentGovernanceRoleAppointments(clientUserId, 0, 0, 0);
 
-        System.out.println(governanceRoles.size() + " active governance officers");
+        System.out.println(governanceRoleAppointees.size() + " active governance officers\n");
 
         for (GovernanceRoleAppointee governanceRole : governanceRoleAppointees)
         {
-            System.out.println(governanceRole.getAppointee().getProfile().getProfileProperties().getKnownName() + " is the " + governanceRole.getRole().getRoleId());
+            printGovernanceRoleAppointee(governanceRole);
         }
 
         governanceRoleAppointees = gplClient.getCurrentGovernanceRoleAppointments(clientUserId, GovernanceDomain.PRIVACY.getOrdinal(), 0, 0);
@@ -357,9 +431,7 @@ public class GovernanceLeadershipSample
 
         for (GovernanceRoleAppointee governanceRole : governanceRoleAppointees)
         {
-            System.out.println(governanceRole.getAppointee().getProfile().getProfileProperties().getKnownName() +
-                                       " is the privacy officer from " + governanceRole.getAppointee().getStartDate()
-                                       + " to " + governanceRole.getAppointee().getEndDate());
+            printGovernanceRoleAppointee(governanceRole);
         }
 
         /*
@@ -381,7 +453,7 @@ public class GovernanceLeadershipSample
 
         for (GovernanceRoleAppointee governanceRole : governanceRoleAppointees)
         {
-            System.out.println(governanceRole.getAppointee().getProfile().getProfileProperties().getKnownName() + " is the " + governanceRole.getRole().getTitle());
+            printGovernanceRoleAppointee(governanceRole);
         }
 
         /*
@@ -583,7 +655,7 @@ public class GovernanceLeadershipSample
 
         for (GovernanceRoleAppointee governanceRole : governanceRoleAppointees)
         {
-            System.out.println(governanceRole.getAppointee().getProfile().getProfileProperties().getKnownName() + " is the " + governanceRole.getRole().getTitle());
+            printGovernanceRoleAppointee(governanceRole);
         }
 
         System.out.println("Deleting all profiles and governance officers");

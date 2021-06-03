@@ -17,7 +17,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class ContributionRecordConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private int karmaPointPlateau;
     /**
      * Constructor
      *
@@ -31,10 +30,10 @@ public class ContributionRecordConverter<B> extends CommunityProfileOMASConverte
                                        String               serverName,
                                        int                  karmaPointPlateau)
     {
-        super(repositoryHelper, serviceName, serverName);
-
-        this.karmaPointPlateau = karmaPointPlateau;
+        super(repositoryHelper, serviceName, serverName, karmaPointPlateau);
     }
+
+
 
     /**
      * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
@@ -65,18 +64,18 @@ public class ContributionRecordConverter<B> extends CommunityProfileOMASConverte
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
-                InstanceProperties instanceProperties;
+                InstanceProperties entityProperties;
 
                 /*
                  * The initial set of values come from the entity.
                  */
                 if (entity != null)
                 {
-                    instanceProperties = new InstanceProperties(entity.getProperties());
+                    entityProperties = new InstanceProperties(entity.getProperties());
 
-                    contributionRecord.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    contributionRecord.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    contributionRecord.setKarmaPoints(this.removeKarmaPoints(instanceProperties));
+                    contributionRecord.setQualifiedName(this.removeQualifiedName(entityProperties));
+                    contributionRecord.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
+                    contributionRecord.setKarmaPoints(this.removeKarmaPoints(entityProperties));
                     contributionRecord.setKarmaPointPlateau(karmaPointPlateau);
 
                     /*
@@ -84,7 +83,7 @@ public class ContributionRecordConverter<B> extends CommunityProfileOMASConverte
                      * assumed to be defined in a subtype.
                      */
                     contributionRecord.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    contributionRecord.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    contributionRecord.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
                 }
                 else
                 {

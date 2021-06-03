@@ -57,7 +57,7 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.N
 public class AssetCatalogHandlerTest {
 
     private static final String RELATIONSHIP_GUID = "212123-abc";
-    private static final String ASSET_TYPE = "Process";
+    private static final String ASSET_TYPE = "Asset";
     private static final String CLASSIFICATION_NAME = "Confidentiality";
     private static final Integer FROM = 0;
     private static final Integer PAGE_SIZE = 10;
@@ -68,6 +68,8 @@ public class AssetCatalogHandlerTest {
     private static final String RELATIONSHIP_TYPE_GUID = "adadad-bcba-123";
     private final String USER = "test-user";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
+    private static final String PROCESS_TYPE = "Process";
+    private static final String PROCESS_TYPE_GUID = "ProcessGUID";
     @Mock
     private RepositoryHandler repositoryHandler;
 
@@ -560,6 +562,7 @@ public class AssetCatalogHandlerTest {
                 PAGE_SIZE)).thenReturn(mockEntities());
 
         List<AssetElements> assetElements = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
+        assertEquals(1, assetElements.size());
         assertEquals(FIRST_GUID, assetElements.get(0).getGuid());
         assertEquals(ASSET_TYPE, assetElements.get(0).getType().getName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -669,11 +672,16 @@ public class AssetCatalogHandlerTest {
 
     private List<EntityDetail> mockEntities() {
         List<EntityDetail> entityDetails = new ArrayList<>();
+
         EntityDetail entityDetail = new EntityDetail();
         entityDetail.setGUID(FIRST_GUID);
-
         entityDetail.setType(mockInstanceType(ASSET_TYPE, ASSET_TYPE_GUID));
         entityDetails.add(entityDetail);
+
+        EntityDetail processEntityDetail = new EntityDetail();
+        processEntityDetail.setType(mockInstanceType(PROCESS_TYPE, PROCESS_TYPE_GUID));
+        entityDetails.add(processEntityDetail);
+
         return entityDetails;
     }
 

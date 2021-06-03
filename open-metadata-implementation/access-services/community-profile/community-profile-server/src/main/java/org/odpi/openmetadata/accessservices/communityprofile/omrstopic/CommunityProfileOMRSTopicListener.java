@@ -2,21 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.omrstopic;
 
+import org.odpi.openmetadata.accessservices.communityprofile.converters.CommunityProfileOMASConverter;
+import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileOutboundEventType;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContributionRecordElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicProcessor;
+import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ContributionRecordHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
-import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -27,66 +23,56 @@ import java.util.List;
 
 
 /**
- * CommunityProfileOMRSTopicProcessor examines each OMRS Topic event to (1) determine if karma points should
+ * CommunityProfileOMRSTopicListener examines each OMRS Topic event to (1) determine if karma points should
  * be awarded to an individual who has contributed to open metadata (2) determine if the event relates to
  * metadata instances that should result in a Community Profile OMAS event on its Out Topic.
  *
  * If karma points need to be awarded, it calls the ContributionRecordHandler to update the person's
- * contribution record.  If an event needs to be sent, it calls the CommunityProfileOutTopicProcessor.
+ * contribution record.  If an event needs to be sent, it calls the CommunityProfileOutTopicPublisher.
  */
-public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
+public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 {
-    private static final Logger log = LoggerFactory.getLogger(CommunityProfileOMRSTopicProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(CommunityProfileOMRSTopicListener.class);
 
-    private CommunityProfileOutTopicProcessor publisher;
-
-    private OMRSRepositoryHelper             repositoryHelper;
-
-    private int                              karmaPointIncrement;
-
-    private UserIdentityHandler<UserIdentityElement>             userIdentityHandler;
-    private ActorProfileHandler<PersonalProfileUniverse>         personalProfileHandler;
-    private ContributionRecordHandler<ContributionRecordElement> contributionRecordHandler;
-
-    private String                           serverUserId;
+    private CommunityProfileOutTopicPublisher          publisher;
+    private OMRSRepositoryHelper                       repositoryHelper;
+    private int                                        karmaPointIncrement;
+    private String                                     serverUserId;
+    private CommunityProfileOMASConverter<ElementStub> converter;
+    private CommunityProfileServicesInstance           instance;
 
 
     /**
      * The constructor is given the connection to the out topic for Community Profile OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param communityProfileOutTopic  connector to the out topic
      * @param karmaPointIncrement increment for each personal contribution
-     * @param serviceName  name of this component
+     * @param publisher object that can set events to listening destinations
      * @param serverUserId userId for requests originated by this server
      * @param auditLog  logging destination
      * @param repositoryHelper repository helper
-     * @param instance  server instance
-     * @throws PropertyServerException initialization logic error
+     * @param serviceName  name of this component
+     * @param serverName  name of this server instance
+     * @param instance handlers for this server instance
      */
-    public CommunityProfileOMRSTopicProcessor(OpenMetadataTopicConnector        communityProfileOutTopic,
-                                              int                               karmaPointIncrement,
-                                              String                            serviceName,
-                                              String                            serverUserId,
-                                              AuditLog                          auditLog,
-                                              OMRSRepositoryHelper              repositoryHelper,
-                                              CommunityProfileServicesInstance  instance) throws PropertyServerException
+    public CommunityProfileOMRSTopicListener(int                               karmaPointIncrement,
+                                             CommunityProfileOutTopicPublisher publisher,
+                                             String                            serverUserId,
+                                             AuditLog                          auditLog,
+                                             OMRSRepositoryHelper              repositoryHelper,
+                                             String                            serviceName,
+                                             String                            serverName,
+                                             CommunityProfileServicesInstance  instance)
     {
         super(serviceName, auditLog);
 
         this.repositoryHelper = repositoryHelper;
-
-        publisher = new CommunityProfileOutTopicProcessor(communityProfileOutTopic,
-                                                          instance.getInvalidParameterHandler(),
-                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC));
-
-        this.karmaPointIncrement        = karmaPointIncrement;
-
-        this.personalProfileHandler     = instance.getPersonalProfileHandler();
-        this.contributionRecordHandler  = instance.getContributionRecordHandler();
-        this.userIdentityHandler        = instance.getUserIdentityHandler();
-
+        this.publisher = publisher;
+        this.karmaPointIncrement = karmaPointIncrement;
         this.serverUserId = serverUserId;
+
+        this.converter = new CommunityProfileOMASConverter<>(repositoryHelper, serviceName, serverName);
+        this.instance = instance;
     }
 
 
@@ -95,7 +81,7 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
      *
      * @param contribution open metadata element that has changed
      */
-    private void awardKarmaPoints(InstanceHeader    contribution)
+    private void awardKarmaPoints(InstanceHeader contribution)
     {
         final String methodName = "awardKarmaPoints";
         final String userParameterName = "contribution.getUpdatedBy";
@@ -113,12 +99,12 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 
                 try
                 {
-                    List<PersonalProfileUniverse> personalProfiles = personalProfileHandler.getActorProfileByName(serverUserId,
-                                                                                                                  contributingUserId,
-                                                                                                                  userParameterName,
-                                                                                                                  0,
-                                                                                                                  0,
-                                                                                                                  methodName);
+                    List<PersonalProfileUniverse> personalProfiles = instance.getPersonalProfileHandler().getPersonalProfilesByName(serverUserId,
+                                                                                                                                    contributingUserId,
+                                                                                                                                    userParameterName,
+                                                                                                                                    0,
+                                                                                                                                    0,
+                                                                                                                                    methodName);
 
                     if (personalProfiles != null)
                     {
@@ -133,12 +119,12 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 
                             int currentPlateau = contributionRecord.getProperties().getKarmaPointPlateau();
 
-                            contributionRecord = contributionRecordHandler.incrementKarmaPoints(serverUserId,
-                                                                                                personalProfiles.get(0).getElementHeader().getGUID(),
-                                                                                                profileGUIDParameterName,
-                                                                                                personalProfiles.get(0).getProfileProperties().getQualifiedName(),
-                                                                                                karmaPointIncrement,
-                                                                                                methodName);
+                            contributionRecord = instance.getContributionRecordHandler().incrementKarmaPoints(serverUserId,
+                                                                                                              personalProfiles.get(0).getElementHeader().getGUID(),
+                                                                                                              profileGUIDParameterName,
+                                                                                                              personalProfiles.get(0).getProfileProperties().getQualifiedName(),
+                                                                                                              karmaPointIncrement,
+                                                                                                              methodName);
 
                             log.debug("Karma points updated: " + contributingUserId);
 
@@ -149,7 +135,10 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                                                                                        Integer.toString(contributionRecord.getProperties().getKarmaPointPlateau()),
                                                                                                                        Integer.toString(contributionRecord.getProperties().getKarmaPoints())));
 
-                                publisher.sendKarmaPointPlateauEvent(personalProfiles.get(0),
+                                ElementStub elementStub = new ElementStub(personalProfiles.get(0).getElementHeader());
+
+                                elementStub.setUniqueName(personalProfiles.get(0).getProfileProperties().getQualifiedName());
+                                publisher.sendKarmaPointPlateauEvent(elementStub,
                                                                      contributingUserId,
                                                                      contributionRecord.getProperties().getKarmaPointPlateau(),
                                                                      contributionRecord.getProperties().getKarmaPoints());
@@ -170,9 +159,139 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
     }
 
 
+
+    /**
+     * An entity has been changed.
+     *
+     * @param eventType                      type of change to the entity
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param entity                         details of the new entity
+     * @param classificationName             potential classification change
+     * @param methodName                     calling method
+     */
+    private void processEntityEvent(CommunityProfileOutboundEventType eventType,
+                                    String                            sourceName,
+                                    String                            originatorMetadataCollectionId,
+                                    String                            originatorServerName,
+                                    String                            originatorServerType,
+                                    String                            originatorOrganizationName,
+                                    EntityDetail                      entity,
+                                    String                            classificationName,
+                                    String                            methodName)
+    {
+        this.awardKarmaPoints(entity);
+
+        String instanceTypeName = this.getInstanceTypeName(sourceName,
+                                                           originatorMetadataCollectionId,
+                                                           originatorServerName,
+                                                           originatorServerType,
+                                                           originatorOrganizationName,
+                                                           entity,
+                                                           methodName);
+
+        if (instanceTypeName != null)
+        {
+            try
+            {
+                ElementStub elementStub = converter.getElementStub(ElementStub.class, entity, methodName);
+
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.COMMUNITY_TYPE_NAME)))
+                {
+
+                    publisher.sentEntityEvent(eventType, entity.getGUID(), instanceTypeName, classificationName, elementStub);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      CommunityProfileAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(entity.getGUID(),
+                                                                                                              instanceTypeName,
+                                                                                                              error.getClass().getName(),
+                                                                                                              error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * A relationship has changed.
+     *
+     * @param eventType                      type of change to the relationship
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param relationship                   details of the changed relationship
+     * @param methodName                     calling method
+     */
+    private void processRelationshipEvent(CommunityProfileOutboundEventType eventType,
+                                          String                            sourceName,
+                                          String                            originatorMetadataCollectionId,
+                                          String                            originatorServerName,
+                                          String                            originatorServerType,
+                                          String                            originatorOrganizationName,
+                                          Relationship                      relationship,
+                                          String                            methodName)
+    {
+        this.awardKarmaPoints(relationship);
+
+        String instanceTypeName = this.getInstanceTypeName(sourceName,
+                                                           originatorMetadataCollectionId,
+                                                           originatorServerName,
+                                                           originatorServerType,
+                                                           originatorOrganizationName,
+                                                           relationship,
+                                                           methodName);
+
+        if (instanceTypeName != null)
+        {
+            try
+            {
+                ElementStub relationshipElementStub = converter.getElementStub(ElementStub.class, relationship, methodName);
+                ElementStub endOneElementStub = converter.getElementStub(ElementStub.class, relationship.getEntityOneProxy(), methodName);
+                ElementStub endTwoElementStub = converter.getElementStub(ElementStub.class, relationship.getEntityTwoProxy(), methodName);
+
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.TEAM_LEADER_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.TEAM_MEMBER_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.COMMUNITY_MEMBERSHIP_TYPE_NAME)))
+                {
+                    publisher.sentRelationshipEvent(eventType, relationship.getGUID(), instanceTypeName, relationshipElementStub, endOneElementStub, endTwoElementStub);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      CommunityProfileAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(relationship.getGUID(),
+                                                                                                              instanceTypeName,
+                                                                                                              error.getClass().getName(),
+                                                                                                              error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
     /*
      * Instance events
      */
+
 
 
     /**
@@ -196,51 +315,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                       EntityDetail entity)
     {
         final String methodName = "processNewEntityEvent";
-        final String guidParameterName = "newEntityEvent.getGUID";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.NEW_ELEMENT_EVENT;
 
         log.debug("Processing new Entity event from: " + sourceName);
 
-        this.awardKarmaPoints(entity);
-
-        String instanceTypeName = this.getInstanceTypeName(sourceName,
-                                                           originatorMetadataCollectionId,
-                                                           originatorServerName,
-                                                           originatorServerType,
-                                                           originatorOrganizationName,
-                                                           entity,
-                                                           methodName);
-
-        if (instanceTypeName != null)
-        {
-            try
-            {
-                if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PERSON_TYPE_NAME))
-                {
-                    publisher.sendNewPersonalProfileEvent(personalProfileHandler.getActorProfileByGUID(serverUserId,
-                                                                                                       entity.getGUID(),
-                                                                                                       guidParameterName,
-                                                                                                       methodName));
-                }
-                else if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME))
-                {
-                    publisher.sendNewUserIdentityEvent(userIdentityHandler.getUserIdentityByGUID(serverUserId,
-                                                                                                 entity.getGUID(),
-                                                                                                 guidParameterName,
-                                                                                                 methodName));
-                }
-            }
-            catch (Exception error)
-            {
-                auditLog.logException(methodName,
-                                      CommunityProfileAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(entity.getGUID(),
-                                                                                                              instanceTypeName,
-                                                                                                              error.getClass().getName(),
-                                                                                                              error.getMessage()),
-                                      error);
-            }
-        }
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                methodName);
     }
-
 
     /**
      * An existing entity has been updated.
@@ -264,36 +353,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                           EntityDetail oldEntity,
                                           EntityDetail newEntity)
     {
+        final String methodName = "processUpdatedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+
         log.debug("Processing updated Entity event from: " + sourceName);
 
-        this.awardKarmaPoints(newEntity);
-
-    }
-
-
-    /**
-     * An update to an entity has been undone.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param entity                         details of the version of the entity that has been restored.
-     */
-    @Override
-    public void processUndoneEntityEvent(String       sourceName,
-                                         String       originatorMetadataCollectionId,
-                                         String       originatorServerName,
-                                         String       originatorServerType,
-                                         String       originatorOrganizationName,
-                                         EntityDetail entity)
-    {
-        log.debug("Processing undone Entity event from: " + sourceName);
-
-        this.awardKarmaPoints(entity);
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                newEntity,
+                                null,
+                                methodName);
     }
 
 
@@ -319,9 +393,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                              EntityDetail   entity,
                                              Classification classification)
     {
+        final String methodName = "processClassifiedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT;
+
         log.debug("Processing classified Entity event from: " + sourceName);
 
-        this.awardKarmaPoints(entity);
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                classification.getName(),
+                                methodName);
     }
 
 
@@ -347,9 +433,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                EntityDetail   entity,
                                                Classification originalClassification)
     {
+        final String methodName = "processDeclassifiedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DECLASSIFIED_ELEMENT_EVENT;
+
         log.debug("Processing declassified Entity event from: " + sourceName);
 
-        this.awardKarmaPoints(entity);
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                originalClassification.getName(),
+                                methodName);
     }
 
 
@@ -377,9 +475,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                Classification originalClassification,
                                                Classification classification)
     {
+        final String methodName = "processReclassifiedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.RECLASSIFIED_ELEMENT_EVENT;
+
         log.debug("Processing reclassified Entity event from: " + sourceName);
 
-        this.awardKarmaPoints(entity);
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                originalClassification.getName(),
+                                methodName);
     }
 
 
@@ -410,40 +520,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                           String       originatorOrganizationName,
                                           EntityDetail entity)
     {
+        final String methodName = "processDeletedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT;
+
         log.debug("Processing deleted Entity event from: " + sourceName);
 
-        this.awardKarmaPoints(entity);
-    }
-
-
-    /**
-     * A deleted entity has been permanently removed from the repository.  This request can not be undone.
-     * <p>
-     * Details of the TypeDef are included with the entity's unique id (guid) to ensure the right entity is purged in
-     * the remote repositories.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param typeDefGUID                    unique identifier for this entity's TypeDef
-     * @param typeDefName                    name of this entity's TypeDef
-     * @param instanceGUID                   unique identifier for the entity
-     */
-    @Override
-    public void processPurgedEntityEvent(String sourceName,
-                                         String originatorMetadataCollectionId,
-                                         String originatorServerName,
-                                         String originatorServerType,
-                                         String originatorOrganizationName,
-                                         String typeDefGUID,
-                                         String typeDefName,
-                                         String instanceGUID)
-    {
-        log.debug("Processing purged Entity event from: " + sourceName);
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                methodName);
     }
 
 
@@ -471,35 +562,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                String       originatorOrganizationName,
                                                EntityDetail entity)
     {
+        final String methodName = "processDeletePurgedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT;
+
         log.debug("Processing delete-purge entity event from: " + sourceName);
 
-        this.awardKarmaPoints(entity);
-    }
-
-
-    /**
-     * A deleted entity has been restored to the state it was before it was deleted.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param entity                         details of the version of the entity that has been restored.
-     */
-    @Override
-    public void processRestoredEntityEvent(String       sourceName,
-                                           String       originatorMetadataCollectionId,
-                                           String       originatorServerName,
-                                           String       originatorServerType,
-                                           String       originatorOrganizationName,
-                                           EntityDetail entity)
-    {
-        log.debug("Processing restored Entity event from: " + sourceName);
-
-        this.awardKarmaPoints(entity);
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                methodName);
     }
 
 
@@ -527,9 +604,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                String       originalEntityGUID,
                                                EntityDetail entity)
     {
+        final String methodName = "processReIdentifiedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+
         log.debug("Processing re-identified Entity event from: " + sourceName);
 
-        this.awardKarmaPoints(entity);
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                methodName);
     }
 
 
@@ -557,9 +646,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                           TypeDefSummary originalTypeDefSummary,
                                           EntityDetail   entity)
     {
+        final String methodName = "processReTypedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+
         log.debug("Processing re-typed Entity event from: " + sourceName);
 
-        this.awardKarmaPoints(entity);
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                methodName);
     }
 
 
@@ -587,9 +688,21 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                           String       originalHomeMetadataCollectionId,
                                           EntityDetail entity)
     {
+        final String methodName = "processReHomedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+
         log.debug("Processing re-homed Entity event from: " + sourceName);
 
-        this.awardKarmaPoints(entity);
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                methodName);
     }
 
 
@@ -614,9 +727,20 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                             String       originatorOrganizationName,
                                             Relationship relationship)
     {
+        final String methodName = "processNewRelationshipEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.NEW_ELEMENT_EVENT;
+
         log.debug("Processing new relationship event from: " + sourceName);
 
-        this.awardKarmaPoints(relationship);
+        this.processRelationshipEvent(eventType,
+                                      sourceName,
+                                      originatorMetadataCollectionId,
+                                      originatorServerName,
+                                      originatorServerType,
+                                      originatorOrganizationName,
+                                      relationship,
+                                      methodName);
     }
 
 
@@ -642,35 +766,20 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                 Relationship oldRelationship,
                                                 Relationship newRelationship)
     {
+        final String methodName = "processUpdatedRelationshipEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+
         log.debug("Processing updated relationship event from: " + sourceName);
 
-        this.awardKarmaPoints(newRelationship);
-    }
-
-
-    /**
-     * An update to a relationship has been undone.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param relationship                   details of the version of the relationship that has been restored.
-     */
-    @Override
-    public void processUndoneRelationshipEvent(String       sourceName,
-                                               String       originatorMetadataCollectionId,
-                                               String       originatorServerName,
-                                               String       originatorServerType,
-                                               String       originatorOrganizationName,
-                                               Relationship relationship)
-    {
-        log.debug("Processing undone relationship event from: " + sourceName);
-
-        this.awardKarmaPoints(relationship);
+        this.processRelationshipEvent(eventType,
+                                      sourceName,
+                                      originatorMetadataCollectionId,
+                                      originatorServerName,
+                                      originatorServerType,
+                                      originatorOrganizationName,
+                                      newRelationship,
+                                      methodName);
     }
 
 
@@ -698,40 +807,20 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                 String       originatorOrganizationName,
                                                 Relationship relationship)
     {
+        final String methodName = "processDeletedRelationshipEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT;
+
         log.debug("Processing deleted relationship event from: " + sourceName);
 
-        this.awardKarmaPoints(relationship);
-    }
-
-
-    /**
-     * A deleted relationship has been permanently removed from the repository.  This request can not be undone.
-     * <p>
-     * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
-     * relationship is purged in the remote repositories.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param typeDefGUID                    unique identifier for this relationship's TypeDef.
-     * @param typeDefName                    name of this relationship's TypeDef.
-     * @param instanceGUID                   unique identifier for the relationship.
-     */
-    @Override
-    public void processPurgedRelationshipEvent(String sourceName,
-                                               String originatorMetadataCollectionId,
-                                               String originatorServerName,
-                                               String originatorServerType,
-                                               String originatorOrganizationName,
-                                               String typeDefGUID,
-                                               String typeDefName,
-                                               String instanceGUID)
-    {
-        log.debug("Processing purged relationship event from: " + sourceName);
+        this.processRelationshipEvent(eventType,
+                                      sourceName,
+                                      originatorMetadataCollectionId,
+                                      originatorServerName,
+                                      originatorServerType,
+                                      originatorOrganizationName,
+                                      relationship,
+                                      methodName);
     }
 
 
@@ -755,35 +844,20 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                      String       originatorOrganizationName,
                                                      Relationship relationship)
     {
+        final String methodName = "processUpdatedRelationshipEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT;
+
         log.debug("Processing delete-purge relationship event from: " + sourceName);
 
-        this.awardKarmaPoints(relationship);
-    }
-
-
-    /**
-     * A deleted relationship has been restored to the state it was before it was deleted.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param relationship                   details of the version of the relationship that has been restored.
-     */
-    @Override
-    public void processRestoredRelationshipEvent(String       sourceName,
-                                                 String       originatorMetadataCollectionId,
-                                                 String       originatorServerName,
-                                                 String       originatorServerType,
-                                                 String       originatorOrganizationName,
-                                                 Relationship relationship)
-    {
-        log.debug("Processing restored relationship event from: " + sourceName);
-
-        this.awardKarmaPoints(relationship);
+        this.processRelationshipEvent(eventType,
+                                      sourceName,
+                                      originatorMetadataCollectionId,
+                                      originatorServerName,
+                                      originatorServerType,
+                                      originatorOrganizationName,
+                                      relationship,
+                                      methodName);
     }
 
 
@@ -811,9 +885,20 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                      String       originalRelationshipGUID,
                                                      Relationship relationship)
     {
+        final String methodName = "processReIdentifiedRelationshipEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+
         log.debug("Processing re-identified relationship event from: " + sourceName);
 
-        this.awardKarmaPoints(relationship);
+        this.processRelationshipEvent(eventType,
+                                      sourceName,
+                                      originatorMetadataCollectionId,
+                                      originatorServerName,
+                                      originatorServerType,
+                                      originatorOrganizationName,
+                                      relationship,
+                                      methodName);
     }
 
 
@@ -841,9 +926,20 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                 TypeDefSummary originalTypeDefSummary,
                                                 Relationship   relationship)
     {
+        final String methodName = "processReTypedRelationshipEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+
         log.debug("Processing re-typed relationship event from: " + sourceName);
 
-        this.awardKarmaPoints(relationship);
+        this.processRelationshipEvent(eventType,
+                                      sourceName,
+                                      originatorMetadataCollectionId,
+                                      originatorServerName,
+                                      originatorServerType,
+                                      originatorOrganizationName,
+                                      relationship,
+                                      methodName);
     }
 
 
@@ -871,71 +967,19 @@ public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
                                                 String       originalHomeMetadataCollection,
                                                 Relationship relationship)
     {
+        final String methodName = "processReHomedRelationshipEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+
         log.debug("Processing re-homed relationship event from: " + sourceName);
 
-        this.awardKarmaPoints(relationship);
-    }
-
-
-    /**
-     * An open metadata repository is passing information about a collection of entities and relationships
-     * with the other repositories in the cohort.
-     *
-     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
-     *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName name of the server that the event came from.
-     * @param originatorServerType type of server that the event came from.
-     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
-     * @param instances multiple entities and relationships for sharing.
-     */
-    @Override
-    public void processInstanceBatchEvent(String         sourceName,
-                                          String         originatorMetadataCollectionId,
-                                          String         originatorServerName,
-                                          String         originatorServerType,
-                                          String         originatorOrganizationName,
-                                          InstanceGraph  instances)
-    {
-        log.debug("Processing instance batch event from: " + sourceName);
-
-        if (instances != null)
-        {
-            List<EntityDetail>  entities = instances.getEntities();
-            List<Relationship>  relationships = instances.getRelationships();
-
-            if (entities != null)
-            {
-                for (EntityDetail entity : entities)
-                {
-                    if (entity != null)
-                    {
-                        this.processNewEntityEvent(sourceName,
-                                                   originatorMetadataCollectionId,
-                                                   originatorServerName,
-                                                   originatorServerType,
-                                                   originatorOrganizationName,
-                                                   entity);
-                    }
-                }
-            }
-
-            if (relationships != null)
-            {
-                for (Relationship relationship : relationships)
-                {
-                    if (relationship != null)
-                    {
-                        this.processNewRelationshipEvent(sourceName,
-                                                         originatorMetadataCollectionId,
-                                                         originatorServerName,
-                                                         originatorServerType,
-                                                         originatorOrganizationName,
-                                                         relationship);
-                    }
-                }
-            }
-        }
+        this.processRelationshipEvent(eventType,
+                                      sourceName,
+                                      originatorMetadataCollectionId,
+                                      originatorServerName,
+                                      originatorServerType,
+                                      originatorOrganizationName,
+                                      relationship,
+                                      methodName);
     }
 }

@@ -22,7 +22,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>2.10-SNAPSHOT</version>
+    <version>2.11-SNAPSHOT</version>
 
     <url>https://egeria.odpi.org</url>
 
@@ -149,12 +149,12 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.jupiter.version>5.7.1</junit.jupiter.version>
-        <junit.platform.version>1.7.1</junit.platform.version>
+        <junit.platform.version>1.7.2</junit.platform.version>
+        <junit.jupiter.version>5.7.2</junit.jupiter.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
         <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
-        <mockito.version>3.9.0</mockito.version>
+        <mockito.version>3.10.0</mockito.version>
         <testng.version>7.4.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -162,19 +162,18 @@
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.8.0</kafka.version>
         <janus.version>0.5.3</janus.version>
-        <gremlin.version>3.4.10</gremlin.version>
-        <netty.version>4.1.63.Final</netty.version>
-
-        <spring-boot.version>2.4.5</spring-boot.version>
-        <spring.ldap.core>2.3.3.RELEASE</spring.ldap.core>
-        <tomcat.version>9.0.45</tomcat.version>
-        <spring.version>5.3.6</spring.version>
-        <spring-security.version>5.4.6</spring-security.version>
-        <spring.version>5.3.6</spring.version>
-        <spring-data.version>2.5.0</spring-data.version>
-        <springdoc.version>1.5.8</springdoc.version>
+        <netty.version>4.1.65.Final</netty.version>
+        <spring-boot.version>2.5.0</spring-boot.version>
+        <tomcat.version>9.0.46</tomcat.version>
+        <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
+        <gremlin.version>3.4.11</gremlin.version>
+        <spring-security.version>5.5.0</spring-security.version>
+        <spring.version>5.3.7</spring.version>
+        <spring-data.version>2.5.1</spring-data.version>
+        <springdoc.version>1.5.9</springdoc.version>
         <springdoc-plugin.version>1.3</springdoc-plugin.version>
-        <commons-io.version>2.8.0</commons-io.version>
+        <commons-io.version>2.9.0</commons-io.version>
+	<commons-text.version>1.9</commons-text.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>3.17.0</jena.version>
         <commons-lang.version>3.12.0</commons-lang.version>
@@ -195,11 +194,11 @@
         <lucene.version>8.4.1</lucene.version>
         <lucene-analyzers-common.version>8.6.0</lucene-analyzers-common.version>
         <guava.version>30.1.1-jre</guava.version>
-        <tink.version>1.5.0</tink.version>
+        <tink.version>1.6.0</tink.version>
         <jsonld.version>0.13.3</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.15</commons-codec.version>
-        <json-sanitizer.version>1.2.2</json-sanitizer.version>
+        <json-sanitizer.version>1.2.3</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.11.1</oss.version>
         <spotbugs-annotations.version>4.2.3</spotbugs-annotations.version>
@@ -209,25 +208,26 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.4</snappy.version>
         <snakeyaml.version>1.28</snakeyaml.version>
-        <classgraph.version>4.8.105</classgraph.version>
+        <classgraph.version>4.8.107</classgraph.version>
         <swagger.version>2.1.9</swagger.version>
         <groovy.version>3.0.8</groovy.version>
-        <micrometer-registry-prometheus.version>1.6.6</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.7.0</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
-        <javassist.version>3.27.0-GA</javassist.version>
+        <javassist.version>3.28.0-GA</javassist.version>
         <httpcore.version>4.4.14</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
-        <lettuce.version>6.1.1.RELEASE</lettuce.version>
+        <commons-configuration2.version>2.7</commons-configuration2.version>
+        <lettuce.version>6.1.2.RELEASE</lettuce.version>
         <lombok.version>1.18.20</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
-        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
         <maven-reports-plugin.version>3.1.2</maven-reports-plugin.version>
         <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
@@ -236,22 +236,22 @@
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.14.0</maven-pmd.version>
-        <owasp.version>6.1.6</owasp.version>
+        <owasp.version>6.2.0</owasp.version>
         <spotbugs-maven.version>4.2.3</spotbugs-maven.version>
         <maven-download.version>1.6.3</maven-download.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-        <jacoco-plugin.version>0.8.6</jacoco-plugin.version>
+        <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <frontend.plugin.version>1.11.3</frontend.plugin.version>
+        <frontend.plugin.version>1.12.0</frontend.plugin.version>
         <exec.plugin.version>3.0.0</exec.plugin.version>
         <resources.plugin.version>3.2.0</resources.plugin.version>
         <rat-plugin.version>0.13</rat-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
         <build-helper.version>3.2.0</build-helper.version>
@@ -355,7 +355,14 @@
                 <artifactId>commons-collections4</artifactId>
                 <scope>compile</scope>
                 <version>${commons-collections4.version}</version>
-            </dependency>
+	    </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <scope>compile</scope>
+                <version>${commons-text.version}</version>
+   	    </dependency>
 
             <dependency>
                 <groupId>org.apache.jena</groupId>
@@ -465,6 +472,20 @@
                 <artifactId>gremlin-driver</artifactId>
                 <scope>compile</scope>
                 <version>${gremlin.version}</version>
+	    </dependency>
+
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-shaded</artifactId>
+                <scope>compile</scope>
+                <version>${gremlin.version}</version>
+	    </dependency>
+
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-groovy</artifactId>
+                <scope>compile</scope>
+                <version>${gremlin.version}</version>
             </dependency>
 
             <dependency>
@@ -478,6 +499,13 @@
                 <groupId>commons-configuration</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons-configuration.version}</version>
+                <scope>compile</scope>
+	</dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-configuration2</artifactId>
+                <version>${commons-configuration2.version}</version>
                 <scope>compile</scope>
             </dependency>
 
@@ -586,13 +614,6 @@
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${commons-codec.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.janusgraph</groupId>
-                <artifactId>janusgraph-cassandra</artifactId>
-                <version>${janus.version}</version>
-                <scope>runtime</scope>
             </dependency>
 
             <dependency>
@@ -3370,7 +3391,12 @@
                                 <banDuplicatePomDependencyVersions/>
                                 <requireSameVersions/>
                                 <reactorModuleConvergence/>
-                                <requireUpperBoundDeps/>
+				<requireUpperBoundDeps>
+				    <excludes>
+				        <!-- Required as the ui chassis pulls in dependencies using older, but later versioned beta code -->
+                                        <exclude>org.slf4j:slf4j-api</exclude>
+                                    </excludes>
+			        </requireUpperBoundDeps>
                             </rules>
                         </configuration>
                     </execution>
