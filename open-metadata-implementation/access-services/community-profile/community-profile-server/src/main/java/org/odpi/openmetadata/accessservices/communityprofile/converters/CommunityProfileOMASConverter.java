@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -20,8 +22,11 @@ import java.util.List;
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Community Profile bean.
  */
-public abstract class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
+public class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {
+    int karmaPointPlateau = 0;
+
+
     /**
      * Constructor
      *
@@ -34,6 +39,24 @@ public abstract class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGe
                                          String                 serverName)
     {
         super (repositoryHelper, serviceName, serverName);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param repositoryHelper helper object to parse entity
+     * @param serviceName name of this component
+     * @param serverName local server name
+     * @param karmaPointPlateau how many karma points to a plateau
+     */
+    public CommunityProfileOMASConverter(OMRSRepositoryHelper repositoryHelper,
+                                         String               serviceName,
+                                         String               serverName,
+                                         int                  karmaPointPlateau)
+    {
+        this(repositoryHelper, serviceName, serverName);
+
+        this.karmaPointPlateau = karmaPointPlateau;
     }
 
 
@@ -62,6 +85,50 @@ public abstract class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGe
                                             entity,
                                             entity.getClassifications(),
                                             methodName);
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the entity or relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param header header from the entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementHeader getMetadataElementHeader(Class<B>       beanClass,
+                                                  InstanceHeader header,
+                                                  String         methodName) throws PropertyServerException
+    {
+        if (header != null)
+        {
+            ElementHeader elementHeader = new ElementHeader();
+
+            elementHeader.setGUID(header.getGUID());
+            elementHeader.setType(this.getElementType(header));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementHeader.setOrigin(elementOrigin);
+
+            return elementHeader;
         }
         else
         {
@@ -121,27 +188,105 @@ public abstract class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGe
 
 
     /**
-     * Extract an element stub from an entity proxy.
+     * Extract the properties from the entity.
      *
-     * @param entityProxy entity proxy from a relationship
-     * @return equivalent ElementStub
+     * @param beanClass name of the class to create
+     * @param entityProxy entityProxy from the relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    private ElementStub getElementStub(Class<B>    beanClass,
-                                       EntityProxy entityProxy,
-                                       String      methodName) throws PropertyServerException
+    public ElementStub getElementStub(Class<B>    beanClass,
+                                      EntityProxy entityProxy,
+                                      String      methodName) throws PropertyServerException
     {
         if (entityProxy != null)
         {
-            ElementHeader elementHeader = this.getMetadataElementHeader(beanClass, entityProxy, null, methodName);
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
 
-            if (elementHeader != null)
-            {
-                ElementStub elementStub = new ElementStub(elementHeader);
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entityProxy.getUniqueProperties(),
+                                                                         methodName));
 
-                elementStub.setUniqueName(super.getQualifiedName(entityProxy.getUniqueProperties()));
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
 
-                return elementStub;
-            }
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>     beanClass,
+                                      EntityDetail entity,
+                                      String       methodName) throws PropertyServerException
+    {
+        if (entity != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entity, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entity.getProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>     beanClass,
+                                      Relationship relationship,
+                                      String       methodName) throws PropertyServerException
+    {
+        if (relationship != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
         }
 
         return null;
@@ -341,5 +486,53 @@ public abstract class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGe
         }
 
         return ElementOriginCategory.UNKNOWN;
+    }
+
+
+    /**
+     * Retrieve the ContactMethodType enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return ContactMethodType  enum value
+     */
+    ContactMethodType getContactMethodTypeFromProperties(InstanceProperties   properties)
+    {
+        final String methodName = "getContactMethodTypeFromProperties";
+
+        ContactMethodType contactMethodType = ContactMethodType.OTHER;
+
+        if (properties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
+
+            switch (ordinal)
+            {
+                case 0:
+                    contactMethodType = ContactMethodType.EMAIL;
+                    break;
+
+                case 1:
+                    contactMethodType = ContactMethodType.PHONE;
+                    break;
+
+                case 2:
+                    contactMethodType = ContactMethodType.CHAT;
+                    break;
+
+                case 3:
+                    contactMethodType = ContactMethodType.PROFILE;
+                    break;
+
+                case 4:
+                    contactMethodType = ContactMethodType.ACCOUNT;
+                    break;
+
+                case 99:
+                    contactMethodType = ContactMethodType.OTHER;
+                    break;
+            }
+        }
+
+        return contactMethodType;
     }
 }

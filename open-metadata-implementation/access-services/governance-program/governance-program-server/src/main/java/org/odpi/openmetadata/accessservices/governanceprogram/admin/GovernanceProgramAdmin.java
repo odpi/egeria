@@ -59,7 +59,7 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
             this.repositoryConnector = enterpriseOMRSRepositoryConnector;
             this.instance = new GovernanceProgramServicesInstance(repositoryConnector,
                                                                   auditLog,
-                                                                  serverName,
+                                                                  serverUserName,
                                                                   enterpriseOMRSRepositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
