@@ -190,8 +190,6 @@
 ## S
 
 * [Security](../../open-metadata-implementation/common-services/metadata-security)
-* [Security Officer Server](../../open-metadata-implementation/admin-services/docs/concepts/security-officer-server.md)
-* [Security Sync Server](../../open-metadata-implementation/admin-services/docs/concepts/security-sync-server.md)
 * [Server Capabilities](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities)
 * [Server Chassis](../../open-metadata-implementation/server-chassis)
 * [Servers for Governance](../../open-metadata-implementation/governance-servers)

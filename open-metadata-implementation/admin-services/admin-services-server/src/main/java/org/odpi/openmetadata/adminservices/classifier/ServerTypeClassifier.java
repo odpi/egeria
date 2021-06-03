@@ -426,14 +426,6 @@ public class ServerTypeClassifier
                                                     methodName);
         }
 
-        if (configurationDocument.getSecurityOfficerConfig() != null)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
-                                                                                                              configurationDocument.getSecurityOfficerConfig().toString()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-
         if (configurationDocument.getStewardshipEngineServicesConfig() != null)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,

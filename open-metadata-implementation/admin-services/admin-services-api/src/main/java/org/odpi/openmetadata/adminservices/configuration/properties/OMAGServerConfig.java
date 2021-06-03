@@ -109,7 +109,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private EngineHostServicesConfig        engineHostServicesConfig        = null;
     private OpenLineageServerConfig         openLineageServerConfig         = null;
     private StewardshipEngineServicesConfig stewardshipEngineServicesConfig = null;
-    private SecurityOfficerConfig           securityOfficerConfig           = null;
     private DataEngineProxyConfig           dataEngineProxyConfig           = null;
     private DataPlatformServicesConfig      dataPlatformServicesConfig      = null;
     private List<String>                    auditTrail                      = null;
@@ -156,7 +155,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             dataEngineProxyConfig           = template.getDataEngineProxyConfig();
             discoveryEngineServicesConfig   = template.getDiscoveryEngineServicesConfig();
             stewardshipEngineServicesConfig = template.getStewardshipEngineServicesConfig();
-            securityOfficerConfig           = template.getSecurityOfficerConfig();
             dataPlatformServicesConfig      = template.getDataPlatformServicesConfig();
             auditTrail                      = template.getAuditTrail();
         }
@@ -636,28 +634,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration for the security officer services.
-     *
-     * @return SecurityOfficerConfig properties
-     */
-    @Deprecated
-    public SecurityOfficerConfig getSecurityOfficerConfig()
-    {
-        return securityOfficerConfig;
-    }
-
-    /**
-     * Set up the configuration for the security officer services.
-     *
-     * @param securityOfficerConfig SecurityOfficerConfig properties
-     */
-    @Deprecated
-    public void setSecurityOfficerConfig(SecurityOfficerConfig securityOfficerConfig)
-    {
-        this.securityOfficerConfig = securityOfficerConfig;
-    }
-
-    /**
      * Return the configuration for the data platform services.
      *
      * @return DataEngineProxyConfig properties
@@ -731,7 +707,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        ", discoveryEngineServicesConfig=" + discoveryEngineServicesConfig +
                        ", openLineageServerConfig=" + openLineageServerConfig +
                        ", stewardshipEngineServicesConfig=" + stewardshipEngineServicesConfig +
-                       ", securityOfficerConfig=" + securityOfficerConfig +
                        ", dataEngineProxyConfig=" + dataEngineProxyConfig +
                        ", dataPlatformServicesConfig=" + dataPlatformServicesConfig +
                        ", auditTrail=" + auditTrail +
@@ -777,7 +752,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        Objects.equals(getDiscoveryEngineServicesConfig(), that.getDiscoveryEngineServicesConfig()) &&
                        Objects.equals(getOpenLineageServerConfig(), that.getOpenLineageServerConfig()) &&
                        Objects.equals(getStewardshipEngineServicesConfig(), that.getStewardshipEngineServicesConfig()) &&
-                       Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
                        Objects.equals(getDataEngineProxyConfig(), that.getDataEngineProxyConfig()) &&
                        Objects.equals(getDataPlatformServicesConfig(), that.getDataPlatformServicesConfig()) &&
                        Objects.equals(getAuditTrail(), that.getAuditTrail());
@@ -798,7 +772,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                             getAccessServicesConfig(), getIntegrationServicesConfig(), getEngineHostServicesConfig(), getViewServicesConfig(),
                             getRepositoryServicesConfig(), getConformanceSuiteConfig(), getDiscoveryEngineServicesConfig(),
                             getOpenLineageServerConfig(),
-                            getStewardshipEngineServicesConfig(), getSecurityOfficerConfig(),
+                            getStewardshipEngineServicesConfig(),
                             getDataEngineProxyConfig(), getDataPlatformServicesConfig(), getAuditTrail());
     }
 }

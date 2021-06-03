@@ -19,8 +19,6 @@ entirely by changes in metadata and the IT landscape.
 | Data Engine Proxy Server | Manages capture of metadata from a data engine. | [Data Engine Proxy Services](../data-engine-proxy-services) | [Data Engine OMAS](../../access-services/data-engine) | Yes |
 | Integration Daemon | Manages the capture of metadata through configured integration services. | [Integration Daemon Services](../integration-daemon-services) | Defined in each [integration service](../../integration-services) | Yes |
 | Open Lineage Server | Provides a historic reporting warehouse for lineage. | [Open Lineage Services](../open-lineage-services) | [Asset Lineage OMAS](../../access-services/asset-lineage) | No |
-| Security Officer Server | Provide operational support for the security policies defined by the security officer. | [Security Officer Services](../security-officer-services) | [Security Officer OMAS](../../access-services/security-officer) | No |
-| Security Synchronization Server | Keep security enforcement engines supplied with the latest metadata. | [Security Sync Services](../security-sync-services) | [Governance Engine OMAS](../../access-services/governance-engine) | Yes |
 
 ## Further information
 
