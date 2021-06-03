@@ -31,6 +31,5 @@
 
     <artifactId>governance-engines-plugins</artifactId>
     <modules>
-        <module>gaian-ranger-plugin</module>
     </modules>
 </project>

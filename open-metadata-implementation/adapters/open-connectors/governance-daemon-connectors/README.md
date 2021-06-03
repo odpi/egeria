@@ -45,12 +45,7 @@ with security enforcement points.
 
    * These connectors will become Security Integration Connectors for the 
      [Security Integrator Open Metadata Integration Service (OMIS)](../../../integration-services/security-integrator)
-     running in the Integration Daemon. 
-
-* **[view-generator-connectors](view-generator-connectors)** provide plugins to the
-[Virtualizer](../../../admin-services/docs/concepts/virtualizer.md)
-that automatically configure data virtualization platforms from
-open metadata.
+     running in the Integration Daemon.
 
   * These connectors will become Database Integration Connectors for the 
     [Database Integrator Open Metadata Integration Service (OMIS)](../../../integration-services/database-integrator)

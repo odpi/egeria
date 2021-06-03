@@ -67,10 +67,6 @@ The security integration connectors run in the
 [Security Integrator Open Metadata Integration Service (OMIS)](../../../open-metadata-implementation/integration-services/security-integrator)
 hosted in the [Integration Daemon](../../../open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md).
 
-* The [Apache Ranger Integration Connector](../../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/security-sync-connectors/ranger-connector)
-  pushes assets and schemas marked up with tags and labels from the SecurityTag classification to Apache Ranger
-  to use in security enforcement policies.
-
 ### Open Discovery Services
 
 [Open Discovery Services](../../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-service.md) 
@@ -217,11 +213,6 @@ and services in the digital landscape along with stored metadata from Egeria.
   stored as a number of files within a folder (directory).
   
 ### Databases
-
- 
-* The [Gaian connector](../../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/gaian-connector)
-  provides a JDBC style connector to the [Gaian](https://github.com/gaiandb/gaiandb) virtualization engine.
-
 
 ----
 * Learn how to [write your own connector](../developer-guide/what-is-a-connector.md)

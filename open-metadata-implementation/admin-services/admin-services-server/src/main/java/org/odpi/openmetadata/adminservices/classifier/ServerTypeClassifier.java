@@ -434,26 +434,10 @@ public class ServerTypeClassifier
                                                     methodName);
         }
 
-        if (configurationDocument.getSecuritySyncConfig() != null)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
-                                                                                                              configurationDocument.getSecuritySyncConfig().toString()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-
         if (configurationDocument.getStewardshipEngineServicesConfig() != null)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
                                                                                                               configurationDocument.getStewardshipEngineServicesConfig().toString()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-
-        if (configurationDocument.getVirtualizationConfig() != null)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
-                                                                                                              configurationDocument.getVirtualizationConfig().toString()),
                                                     this.getClass().getName(),
                                                     methodName);
         }

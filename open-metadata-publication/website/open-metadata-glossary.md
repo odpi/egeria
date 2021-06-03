@@ -92,7 +92,6 @@
 ## I
 
 * [Informal Tag](../../open-metadata-implementation/access-services/docs/concepts/attachments/informal-tags.md)
-* [Information View OMAS](../../open-metadata-implementation/access-services/information-view)
 * [Instance Security](../../open-metadata-implementation/common-services/metadata-security)
 * Instances
    * [Metadata Instances](../../open-metadata-implementation/repository-services/docs/metadata-instances.md)

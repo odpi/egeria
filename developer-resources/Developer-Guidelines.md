@@ -216,9 +216,6 @@ Many of our team use [JetBrains IntelliJ](tools/IntelliJ.md).
 In the case of problems the first problem determination step is to check you can build Egeria normally at the command line ie `mvn clean install` from the source 
 root. That will prove at least java, maven are correct . 
 
-In addition, importantly, this also will retrieve additional dependencies which are not available in public
-repositories are retrieved, otherwise you may see an error like `Cannot resolve com.ibm.gaiandb:gaian` or `Cannot resolve org.apache.derby:derby`.
-
 We have also noticed that you need to ensure JAVA_HOME is set (see under 'Java' earlier on this page) or the build will fail running javadoc. 
 
 ## Issue Tracking
