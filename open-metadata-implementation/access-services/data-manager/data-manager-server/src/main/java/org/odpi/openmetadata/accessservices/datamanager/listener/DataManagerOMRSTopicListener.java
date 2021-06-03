@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerServic
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -130,9 +131,12 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                     publisher.sendEntityEvent(eventType, entity.getGUID(), instanceTypeName, classificationName, elementStub);
                 }
             }
-            catch (Exception error)
+            catch (UserNotAuthorizedException error)
             {
-                auditLog.logException(methodName,
+                // message already logged
+            }
+            catch (Exception error)
+            {    auditLog.logException(methodName,
                                       DataManagerAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(entity.getGUID(),
                                                                                                          instanceTypeName,
                                                                                                          error.getClass().getName(),
@@ -216,6 +220,10 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                      */
                     publisher.sendRelationshipEvent(eventType, relationship.getGUID(), instanceTypeName, relationshipElementStub, endOneElementStub, endTwoElementStub);
                 }
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                // message already logged
             }
             catch (Exception error)
             {

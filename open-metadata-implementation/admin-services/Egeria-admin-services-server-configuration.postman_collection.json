@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b5b75100-5b12-42d3-a0b2-5bc89648507a",
+		"_postman_id": "01b3f712-8bbb-474b-ad42-ab66fff58f9a",
 		"name": "Egeria-admin-services-server-configuration",
 		"description": "Requests for configuring an OMAG Server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -612,6 +612,41 @@
 									]
 								},
 								"description": "Delete the list of audit log destinations configured for a server."
+							},
+							"response": []
+						},
+						{
+							"name": "Set up event bus to send/receive events to other technologies Copy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"producer\":\n{\n\"bootstrap.servers\":\"{{kafkaep}}\"\n},\n\"consumer\":\n{\n\"bootstrap.servers\":\"{{kafkaep}}\"\n}\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"event-bus"
+									]
+								},
+								"description": "Set up the common properties needed to call your event bus.  The eventBusParams variable support the setting of the topic root and connector provider class name (if not using Kafka).  Additional properties are passed in the request body."
 							},
 							"response": []
 						}
@@ -1475,6 +1510,37 @@
 							"response": []
 						},
 						{
+							"name": "Add cohort configuration with topic structure",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-structure/DEDICATED_TOPICS",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"topic-structure",
+										"DEDICATED_TOPICS"
+									]
+								},
+								"description": "Request registration to an Open Metadata Repository Cohort.  Make sure you have set up the event bus configuration defaults before making this request."
+							},
+							"response": []
+						},
+						{
 							"name": "Get cohort configuration",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -1507,7 +1573,7 @@
 							"response": []
 						},
 						{
-							"name": "Override cohort topic name",
+							"name": "Override single cohort topic name",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -1549,7 +1615,136 @@
 							"response": []
 						},
 						{
-							"name": "Get cohort topic name",
+							"name": "Override registration cohort topic name",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "cp.cohort.{{cohort}}.registration",
+									"options": {
+										"raw": {
+											"language": "text"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/registration",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"topic-name-override",
+										"registration"
+									]
+								},
+								"description": "Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate."
+							},
+							"response": []
+						},
+						{
+							"name": "Override types cohort topic name",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "cp.cohort.{{cohort}}.types",
+									"options": {
+										"raw": {
+											"language": "text"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/types",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"topic-name-override",
+										"types"
+									]
+								},
+								"description": "Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate."
+							},
+							"response": []
+						},
+						{
+							"name": "Override instances cohort topic name",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "cp.cohort.{{cohort}}.instances",
+									"options": {
+										"raw": {
+											"language": "text"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/instances",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"topic-name-override",
+										"instances"
+									]
+								},
+								"description": "Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate."
+							},
+							"response": []
+						},
+						{
+							"name": "Get single cohort topic name",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -1568,6 +1763,32 @@
 										"cohorts",
 										"{{cohort}}",
 										"topic-name"
+									]
+								},
+								"description": "Return the name of the topic used by the requested cohort."
+							},
+							"response": []
+						},
+						{
+							"name": "Get dedicated cohort topic names",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/dedicated-topic-names",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"dedicated-topic-names"
 									]
 								},
 								"description": "Return the name of the topic used by the requested cohort."
@@ -1906,75 +2127,6 @@
 					"name": "Configuring View Servers",
 					"item": [
 						{
-							"name": "Update the server type name for a View Server",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-type?typeName=View Server",
-									"host": [
-										"{{baseURL}}"
-									],
-									"path": [
-										"open-metadata",
-										"admin-services",
-										"users",
-										"{{user}}",
-										"servers",
-										"{{server}}",
-										"server-type"
-									],
-									"query": [
-										{
-											"key": "typeName",
-											"value": "View Server"
-										}
-									]
-								},
-								"description": "Requests information about the author of the server platform."
-							},
-							"response": []
-						},
-						{
-							"name": "Configure the Glossary Author View services",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "      { \n         \"class\":\"ViewServiceConfig\",\n         \"omagserverName\":\"myMetadataAccessPoint\",\n         \"omagserverPlatformRootURL\":\"myPlatformRootURL1\"\n      }"
-								},
-								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/glossary-author",
-									"host": [
-										"{{baseURL}}"
-									],
-									"path": [
-										"open-metadata",
-										"admin-services",
-										"users",
-										"{{user}}",
-										"servers",
-										"{{server}}",
-										"view-services",
-										"glossary-author"
-									]
-								},
-								"description": "Requests information about the author of the server platform."
-							},
-							"response": []
-						},
-						{
 							"name": "Configure the REX View Services",
 							"request": {
 								"method": "POST",
@@ -2045,6 +2197,41 @@
 							"response": []
 						},
 						{
+							"name": "Configure the Dino View Services",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.dino.admin.DinoViewAdmin\",\n    \"viewServiceFullName\":\"Dino\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName1\",\n            \"serverName\"         : \"myServerName1\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName1 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName2\",\n            \"serverName\"         : \"myServerName2\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName2 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName3\",\n            \"serverName\"         : \"myServerName3\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"description\"        : \"myServerName3 description \"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/dino",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"view-services",
+										"dino"
+									]
+								},
+								"description": "Requests information about the author of the server platform."
+							},
+							"response": []
+						},
+						{
 							"name": "Configure the Server Author View Services",
 							"request": {
 								"method": "POST",
@@ -2080,7 +2267,7 @@
 							"response": []
 						},
 						{
-							"name": "Configure the Dino View Services",
+							"name": "Configure the Glossary Author View services",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -2092,10 +2279,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.dino.admin.DinoViewAdmin\",\n    \"viewServiceFullName\":\"Dino\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName1\",\n            \"serverName\"         : \"myServerName1\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName1 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName2\",\n            \"serverName\"         : \"myServerName2\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName2 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName3\",\n            \"serverName\"         : \"myServerName3\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"description\"        : \"myServerName3 description \"\n        }\n    ]\n}"
+									"raw": "      { \n         \"class\":\"ViewServiceConfig\",\n         \"omagserverName\":\"myMetadataAccessPoint\",\n         \"omagserverPlatformRootURL\":\"myPlatformRootURL1\"\n      }"
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/dino",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/glossary-author",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2107,7 +2294,7 @@
 										"servers",
 										"{{server}}",
 										"view-services",
-										"dino"
+										"glossary-author"
 									]
 								},
 								"description": "Requests information about the author of the server platform."

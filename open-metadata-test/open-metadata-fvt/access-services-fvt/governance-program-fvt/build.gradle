@@ -22,6 +22,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
     implementation project(':open-metadata-test:open-metadata-fvt:fvt-utilities')
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation project(':open-metadata-distribution:open-metadata-assemblies')

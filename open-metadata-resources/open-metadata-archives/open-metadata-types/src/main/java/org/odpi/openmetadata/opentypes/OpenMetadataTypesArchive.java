@@ -156,6 +156,7 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update0010BaseModel();
+        update04xxGovernanceDefinitions();
     }
 
     /*
@@ -232,6 +233,103 @@ public class OpenMetadataTypesArchive
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
+    }
+
+
+    /**
+     * A variety of changes to improve consistency and flexibility of the governance definitions
+     */
+    private void update04xxGovernanceDefinitions()
+    {
+
+        this.archiveBuilder.addEntityDef(addThreatEntity());
+
+        this.archiveBuilder.addRelationshipDef(addGovernanceDefinitionScopeRelationship());
+
+    }
+
+
+    /**
+     * This relationships allows the scope of a governance definition to be set up.
+     *
+     * @return  relationship definition
+     */
+    private RelationshipDef addGovernanceDefinitionScopeRelationship()
+    {
+        final String guid            = "3845b5cc-8c85-462f-b7e6-47472a568793";
+        final String name            = "GovernanceDefinitionScope";
+        final String description     = "Link between a scope - such as a digital service, infrastructure element or organization - and a governance definition.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "definitionAppliesTo";
+        final String                     end1AttributeDescription     = "Elements defining the scope that the governance definition applies to.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "GovernanceDefinition";
+        final String                     end2AttributeName            = "associatedGovernanceDefinitions";
+        final String                     end2AttributeDescription     = "Governance definitions for this scope.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+
+    /**
+     * This new subtype of governance driver is to document a specific threat.
+     *
+     * @return entity definition
+     */
+    private EntityDef addThreatEntity()
+    {
+        final String guid            = "4ca51fdf-9b70-46b1-bdf6-8860429e78d8";
+        final String name            = "Threat";
+        final String description     = "A description of a specific threat.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "GovernanceDriver";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
     }
 }
 

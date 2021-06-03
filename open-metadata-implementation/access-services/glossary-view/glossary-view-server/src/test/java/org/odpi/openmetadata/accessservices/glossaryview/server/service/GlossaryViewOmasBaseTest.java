@@ -162,7 +162,7 @@ public class GlossaryViewOmasBaseTest {
     protected TypeDef termTypedByRelationshipTypeDef;
 
     public void before(GlossaryViewOMAS underTest) throws Exception{
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(instanceHandler.getRepositoryHandler(eq(USER_ID), eq(SERVER_NAME), anyString())).thenReturn(repositoryHandler);
         when(instanceHandler.getRepositoryConnector(eq(USER_ID), eq(SERVER_NAME), anyString())).thenReturn(repositoryConnector);
         when(repositoryConnector.getRepositoryHelper()).thenReturn(repositoryHelper);
@@ -449,7 +449,7 @@ public class GlossaryViewOmasBaseTest {
         assertEquals(expected.getReportedHTTPCode(), actual.getRelatedHTTPCode());
         assertEquals(expected.getReportingClassName(), actual.getExceptionClassName());
         assertEquals(expected.getReportingActionDescription(), actual.getActionDescription());
-        assertEquals(expected.getErrorMessage(), actual.getExceptionErrorMessage());
+        assertEquals(expected.getReportedErrorMessage(), actual.getExceptionErrorMessage());
         assertEquals(expected.getReportedSystemAction(), actual.getExceptionSystemAction());
         assertEquals(expected.getReportedUserAction(), actual.getExceptionUserAction());
     }
