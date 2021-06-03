@@ -38,6 +38,7 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLab
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSETS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.AVRO_FILE;
@@ -127,36 +128,52 @@ public class LineageGraphConnectorHelper {
     }
 
     /**
-     * Returns a subgraph containing all root of the full graph that are connected with the queried node.
-     * The queried node can be a column or table.
+     * Returns the ultimate source graph of queried entity, which can be a column or a table. In case of tables,
+     * relationships of type LineageMapping will be traversed backwards, all the way to the source. If no vertices are
+     * found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
+     * directly used
      *
-     * @param guid The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param guid queried entity
+     * @param includeProcesses include processes
      *
-     * @return a subgraph in an Open Lineage specific format.
+     * @return graph in an Open Lineage specific format
      */
-
     public Optional<LineageVerticesAndEdges> ultimateSource(String guid, boolean includeProcesses) {
+        Vertex queriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
 
-        Graph sourceGraph = queryUltimateSourceGraph(guid, LINEAGE_MAPPING);
-        List<Vertex> sourcesList = querySourceList(guid, LINEAGE_MAPPING);
-        if(sourceGraph.vertices().hasNext()){
-            return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList),
-                    SOURCE_CONDENSATION, includeProcesses));
+        Graph sourceGraph;
+        List<Vertex> sourcesList;
+        if(ASSETS.contains(queriedVertex.label())) {
+            // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
+            sourceGraph = queryUltimateSource(guid, LINEAGE_MAPPING);
+            sourcesList = querySources(guid, LINEAGE_MAPPING);
+            if (sourceGraph.vertices().hasNext()) {
+                return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList),
+                        SOURCE_CONDENSATION, includeProcesses));
+            }
         }
 
-        Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
+        Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
         if (!edgeLabelOptional.isPresent()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
-        sourceGraph = queryUltimateSourceGraph(guid, edgeLabel);
-        sourcesList = querySourceList(guid, edgeLabel);
+        sourceGraph = queryUltimateSource(guid, edgeLabel);
+        sourcesList = querySources(guid, edgeLabel);
 
         return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList),
                 SOURCE_CONDENSATION, includeProcesses));
     }
 
-    private Graph queryUltimateSourceGraph(String guid, String edgeLabel){
+    /**
+     * Queries for ultimate source graph
+     *
+     * @param guid queried entity
+     * @param edgeLabel edge type to traverse
+     *
+     * @return graph
+     */
+    private Graph queryUltimateSource(String guid, String edgeLabel){
         Graph sourceGraph = null;
         try {
             sourceGraph = (Graph)
@@ -176,7 +193,15 @@ public class LineageGraphConnectorHelper {
         return sourceGraph;
     }
 
-    private List<Vertex> querySourceList(String guid, String edgeLabel){
+    /**
+     * Query graph for sources
+     *
+     * @param guid entity
+     * @param edgeLabel edge type to traverse
+     *
+     * @return sources
+     */
+    private List<Vertex> querySources(String guid, String edgeLabel){
         List<Vertex> sourceList = null;
         try {
             sourceList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -196,34 +221,53 @@ public class LineageGraphConnectorHelper {
     }
 
     /**
-     * Returns a subgraph containing all leaf nodes of the full graph that are connected with the queried node.
-     * The queried node can be a column or table.
+     * Returns the ultimate destination graph of queried entity, which can be a column or a table. In case of tables,
+     * relationships of type LineageMapping will be traversed forwards, all the way to the destination. If no vertices
+     * are found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
+     * directly used
      *
-     * @param guid The guid of the node of which the lineage is queried of. This can be a column or table node.
+     * @param guid queried entity
+     * @param includeProcesses include processes
      *
-     * @return a subgraph in an Open Lineage specific format.
+     * @return graph in an Open Lineage specific format
      */
     public Optional<LineageVerticesAndEdges> ultimateDestination(String guid, boolean includeProcesses) {
-        Graph destinationGraph = queryUltimateDestinationGraph(guid, LINEAGE_MAPPING);
-        List<Vertex> destinationsList = queryDestinationList(guid, LINEAGE_MAPPING);
-        if(destinationGraph.vertices().hasNext()){
-            return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList),
-                    DESTINATION_CONDENSATION, includeProcesses));
+        Vertex queriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+
+        Graph destinationGraph;
+        List<Vertex> destinationsList;
+        if(ASSETS.contains(queriedVertex.label())) {
+            // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
+            destinationGraph = queryUltimateDestination(guid, LINEAGE_MAPPING);
+            destinationsList = queryDestinations(guid, LINEAGE_MAPPING);
+            if (destinationGraph.vertices().hasNext()) {
+                return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList),
+                        DESTINATION_CONDENSATION, includeProcesses));
+            }
         }
 
-        Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
+
+        Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
         if (!edgeLabelOptional.isPresent()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
-        destinationGraph = queryUltimateDestinationGraph(guid, edgeLabel);
-        destinationsList = queryDestinationList(guid, edgeLabel);
+        destinationGraph = queryUltimateDestination(guid, edgeLabel);
+        destinationsList = queryDestinations(guid, edgeLabel);
 
         return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList),
                 DESTINATION_CONDENSATION, includeProcesses));
     }
 
-    private Graph queryUltimateDestinationGraph(String guid, String edgeLabel){
+    /**
+     * Queries for ultimate destination graph
+     *
+     * @param guid queried entity
+     * @param edgeLabel edge type to traverse
+     *
+     * @return graph
+     */
+    private Graph queryUltimateDestination(String guid, String edgeLabel){
         Graph destinationGraph = null;
         try {
             destinationGraph = (Graph)
@@ -243,7 +287,15 @@ public class LineageGraphConnectorHelper {
         return destinationGraph;
     }
 
-    private List<Vertex> queryDestinationList(String guid, String edgeLabel){
+    /**
+     * Query graph for destinations
+     *
+     * @param guid entity
+     * @param edgeLabel edge type to traverse
+     *
+     * @return sources
+     */
+    private List<Vertex> queryDestinations(String guid, String edgeLabel){
         List<Vertex> destinationList = null;
         try {
             destinationList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -263,30 +315,47 @@ public class LineageGraphConnectorHelper {
     }
 
     /**
-     * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
-     * leading from the queried node to any leaf nodes. The queried node can be a column or table.
+     * Returns the end to end graph of queried entity, which can be a column or a table. In case of tables, relationships
+     * of type LineageMapping will be traversed backwards and forwards, all the way to the source and the destination,
+     * respectively. If no vertices are found, than DataFlow relationships are used for traversal. In case of columns,
+     * DataFlow relationships are directly used
      *
-     * @param guid The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @param guid queried entity
+     * @param includeProcesses include processes
      *
-     * @return a subgraph in an Open Lineage specific format.
+     * @return graph in an Open Lineage specific format
      */
     public Optional<LineageVerticesAndEdges> endToEnd(String guid, boolean includeProcesses) {
-        Graph endToEndGraph = queryEndToEndGraph(guid, LINEAGE_MAPPING);
-        if(endToEndGraph.vertices().hasNext()){
-            return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
+        Vertex queriedVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+
+        Graph endToEndGraph ;
+        if(ASSETS.contains(queriedVertex.label())) {
+            // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
+            endToEndGraph = queryEndToEnd(guid, LINEAGE_MAPPING);
+            if (endToEndGraph.vertices().hasNext()) {
+                return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
+            }
         }
 
-        Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
+        Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(queriedVertex);
         if (!edgeLabelOptional.isPresent()) {
             return Optional.empty();
         }
         String edgeLabel = edgeLabelOptional.get();
-        endToEndGraph = queryEndToEndGraph(guid, edgeLabel);
+        endToEndGraph = queryEndToEnd(guid, edgeLabel);
 
         return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
     }
 
-    private Graph queryEndToEndGraph(String guid, String edgeLabel) {
+    /**
+     * Queries graph for end to end
+     *
+     * @param guid queried entity
+     * @param edgeLabel edge type to traverse
+     *
+     * @return graph
+     */
+    private Graph queryEndToEnd(String guid, String edgeLabel) {
         Graph endToEndGraph = null;
         try {
             endToEndGraph = (Graph)
@@ -988,9 +1057,9 @@ public class LineageGraphConnectorHelper {
         }
     }
 
-    private Optional<String> getEdgeLabelForDataFlow(Vertex queriedVertex) {
-        String queriedNodeType = queriedVertex.label();
-        switch (queriedNodeType) {
+    private Optional<String> getEdgeLabelForDataFlow(Vertex vertex) {
+        String label = vertex.label();
+        switch (label) {
             case TABULAR_COLUMN:
             case RELATIONAL_COLUMN:
                 return Optional.of(EDGE_LABEL_COLUMN_DATA_FLOW);
