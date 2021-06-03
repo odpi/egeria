@@ -68,7 +68,7 @@ public class AssetCatalogServiceTest {
 
     @Before
     public void before() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         Field instanceHandlerField = ReflectionUtils.findField(AssetCatalogRESTService.class, "instanceHandler");
         if(instanceHandlerField != null) {

@@ -2,12 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.analyticsmodeling.test;
 
-import static org.testng.Assert.fail;
-import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-import java.util.List;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
@@ -53,6 +47,12 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconten
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
 
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.testng.Assert.fail;
+
 public class InMemoryRepositoryTest {
 
 	protected static final String USER_ID = "userId";
@@ -78,7 +78,7 @@ public class InMemoryRepositoryTest {
     final private String context = "Analytics Modeling OMAS test";
     
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         omEntityDao = new OMEntityDaoForTests(enterpriseConnector, Collections.emptyList(), auditLog);
         omEntityDao.setContext("JUnitTest");
         

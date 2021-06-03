@@ -11,12 +11,13 @@ public class GlossaryViewOmasException extends OMRSCheckedExceptionBase {
 
     public GlossaryViewOmasException(int  httpCode, String className, String  actionDescription, String errorMessage,
                                      String systemAction, String userAction) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+        super(httpCode, className, actionDescription, errorMessage, null, null,
+                systemAction, userAction, null, null);
     }
 
     public GlossaryViewOmasException(OMRSCheckedExceptionBase omrsCheckedExceptionBase){
         this(omrsCheckedExceptionBase.getReportedHTTPCode(), omrsCheckedExceptionBase.getReportingClassName(),
-                omrsCheckedExceptionBase.getReportingActionDescription(), omrsCheckedExceptionBase.getErrorMessage(),
+                omrsCheckedExceptionBase.getReportingActionDescription(), omrsCheckedExceptionBase.getReportedErrorMessage(),
                 omrsCheckedExceptionBase.getReportedSystemAction(), omrsCheckedExceptionBase.getReportedUserAction());
     }
 
