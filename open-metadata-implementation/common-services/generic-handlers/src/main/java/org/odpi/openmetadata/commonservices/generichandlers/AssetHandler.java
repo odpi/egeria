@@ -32,7 +32,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     private ConnectionHandler<OpenMetadataAPIDummyBean> connectionHandler;
 
     /**
-     * Construct the asset handler with information needed to work with B objects.
+     * Construct the handler with information needed to work with B objects.
      *
      * @param converter specific converter for this bean class
      * @param beanClass name of bean class that is represented by the generic class B
@@ -654,8 +654,99 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         {
             builder.setAssetZones(userId, zoneMembership, methodName);
         }
+        else if (defaultZones != null)
+        {
+            builder.setAssetZones(userId, defaultZones, methodName);
+        }
+
         builder.setAssetOwnership(userId, owner, ownerType, methodName);
-        builder.setAssetOrigin(userId, originOrganizationCapabilityGUID, originBusinessCapabilityGUID, otherOriginValues, methodName);
+        builder.setAssetOrigin(userId,
+                               originOrganizationCapabilityGUID,
+                               OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                               originBusinessCapabilityGUID,
+                               OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                               otherOriginValues,
+                               methodName);
+
+        return this.createBeanInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           typeGUID,
+                                           typeName,
+                                           qualifiedName,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           builder,
+                                           methodName);
+    }
+
+
+    /**
+     * Add a simple asset description to the metadata repository.  Null values for requested typename, ownership,
+     * zone membership and latest change are filled in with default values.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param qualifiedName unique name for this asset
+     * @param technicalName the stored display name property for the asset
+     * @param technicalDescription the stored description property associated with the asset
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeGUID identifier of the type that is a subtype of asset - or null to create standard type
+     * @param typeName name of the type that is a subtype of asset - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param instanceStatus initial status of the Asset in the metadata repository
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new asset
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String  createAssetInRepository(String               userId,
+                                           String               externalSourceGUID,
+                                           String               externalSourceName,
+                                           String               qualifiedName,
+                                           String               technicalName,
+                                           String               technicalDescription,
+                                           Map<String, String>  additionalProperties,
+                                           String               typeGUID,
+                                           String               typeName,
+                                           Map<String, Object>  extendedProperties,
+                                           InstanceStatus       instanceStatus,
+                                           String               methodName) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        String assetTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
+                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                      serviceName,
+                                                                      methodName,
+                                                                      repositoryHelper);
+
+        AssetBuilder builder = new AssetBuilder(qualifiedName,
+                                                technicalName,
+                                                technicalDescription,
+                                                additionalProperties,
+                                                assetTypeId,
+                                                assetTypeName,
+                                                extendedProperties,
+                                                instanceStatus,
+                                                repositoryHelper,
+                                                serviceName,
+                                                serverName);
+
+        if (defaultZones != null)
+        {
+            builder.setAssetZones(userId, defaultZones, methodName);
+        }
 
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
@@ -995,12 +1086,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                               PropertyServerException
     {
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            assetGUID,
                                            assetGUIDParameterName,
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
                                            null,
+                                           false,
                                            methodName);
     }
 
@@ -1095,15 +1189,20 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         AssetBuilder builder = new AssetBuilder(repositoryHelper, serviceName, serverName);
 
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            assetGUID,
                                            assetGUIDParameterName,
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
                                            OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
                                            builder.getOriginProperties(organizationGUID,
+                                                                       OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
                                                                        businessCapabilityGUID,
+                                                                       OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
                                                                        otherOriginValues,
                                                                        methodName),
+                                           false,
                                            methodName);
     }
 
@@ -1213,12 +1312,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         AssetBuilder builder = new AssetBuilder(repositoryHelper, serviceName, serverName);
 
         this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
                                            assetGUID,
                                            assetGUIDParameterName,
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_GUID,
                                            OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME,
                                            builder.getZoneMembershipProperties(assetZones, methodName),
+                                           false,
                                            methodName);
     }
 
@@ -1237,6 +1339,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public void updateAssetOwner(String    userId,
                                  String    assetGUID,
                                  String    assetGUIDParameterName,
@@ -1246,16 +1349,25 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        AssetBuilder builder = new AssetBuilder(repositoryHelper, serviceName, serverName);
+        String ownerTypeName = null;
 
-        this.setClassificationInRepository(userId,
-                                           assetGUID,
-                                           assetGUIDParameterName,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                                           OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                           builder.getOwnerProperties(userId, ownerId, ownerType, methodName),
-                                           methodName);
+        if (ownerType == 0)
+        {
+            ownerTypeName = OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME;
+        }
+        else if (ownerType == 1)
+        {
+            ownerTypeName = OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME;
+        }
+
+        this.addOwner(userId,
+                      assetGUID,
+                      assetGUIDParameterName,
+                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                      ownerId,
+                      ownerTypeName,
+                      null,
+                      methodName);
     }
 
 
@@ -1296,12 +1408,69 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Remove any data sets connected to the asset by the DataContentFroDataSet relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier for asset
+     * @param assetTypeName type of asset
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeLinkedDataSet(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String assetGUID,
+                                    String assetTypeName,
+                                    String methodName) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       userId,
+                                                                                       assetGUID,
+                                                                                       assetTypeName,
+                                                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                                                       OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                                                       0,
+                                                                                       0,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if (relationship != null)
+            {
+                final String elementGUIDParameterName = "relationship.getEntityTwoProxy().getGUID()";
+
+                this.deleteBeanInRepository(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            relationship.getEntityTwoProxy().getGUID(),
+                                            elementGUIDParameterName,
+                                            OpenMetadataAPIMapper.DATA_SET_TYPE_GUID,
+                                            OpenMetadataAPIMapper.DATA_SET_TYPE_NAME,
+                                            null,
+                                            null,
+                                            methodName);
+            }
+        }
+    }
+
+
+    /**
      * Returns the asset corresponding to the supplied connection name.
      *
      * @param userId           userId of user making request.
      * @param connectionName   this may be the qualifiedName or displayName of the connection.
      * @param connectionNameParameter name of parameter supplying
      * @param methodName       calling method
+     *
      * @return unique identifier of asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -1327,6 +1496,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                 specificMatchPropertyNames,
                                                                 true,
                                                                 supportedZones,
+                                                                null,
                                                                 0,
                                                                 invalidParameterHandler.getMaxPagingSize(),
                                                                 methodName);
@@ -1418,6 +1588,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                              true,
                                                              null,
                                                              null,
+                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
                                                              methodName);
@@ -1464,6 +1635,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                              assetTypeGUID,
                                                              assetTypeName,
                                                              supportedZones,
+                                                             null,
                                                              startFrom,
                                                              pageSize,
                                                              methodName);
@@ -1898,6 +2070,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  userId,
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
+                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                                  startFrom,
                                                                                  queryPageSize,
                                                                                  methodName);
@@ -1986,6 +2159,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  userId,
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
+                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                                  startFrom,
                                                                                  queryPageSize,
                                                                                  methodName);
@@ -2116,7 +2290,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     resultTypeName,
                                     specificMatchPropertyNames,
                                     true,
+                                    null,
+                                    null,
                                     serviceSupportedZones,
+                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -2221,6 +2398,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         specificMatchPropertyNames,
                                         true,
                                         serviceSupportedZones,
+                                        null,
                                         startFrom,
                                         pageSize,
                                         methodName);
@@ -2324,7 +2502,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     resultTypeName,
                                     specificMatchPropertyNames,
                                     true,
+                                    null,
+                                    null,
+                                    false,
                                     serviceSupportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -2385,7 +2567,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     resultTypeName,
                                     specificMatchPropertyNames,
                                     true,
+                                    null,
+                                    null,
+                                    false,
                                     supportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -2441,6 +2627,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                   specificMatchPropertyNames,
                                                                   true,
                                                                   supportedZones,
+                                                                  null,
                                                                   startNextQueryFrom,
                                                                   maxPageSize,
                                                                   methodName);
@@ -2672,6 +2859,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         false,
                                         supportedZones,
+                                        null,
                                         startFrom,
                                         pageSize,
                                         methodName);
@@ -2760,7 +2948,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         /*
          * Notice that the parameter order for findBeans is different from findAssets
          */
-        return this.findBeans(userId, searchString, searchStringParameter, resultTypeGUID, resultTypeName, startFrom, pageSize, methodName);
+        return this.findBeans(userId,
+                              searchString,
+                              searchStringParameter,
+                              resultTypeGUID,
+                              resultTypeName,
+                              null,
+                              startFrom,
+                              pageSize,
+                              methodName);
     }
 
 

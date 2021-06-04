@@ -96,8 +96,6 @@ public class GovernanceActionTypeConverter<B> extends GovernanceEngineOMASConver
                     actionTypeProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     actionTypeProperties.setDisplayName(this.removeName(instanceProperties));
                     actionTypeProperties.setDescription(this.removeDescription(instanceProperties));
-                    actionTypeProperties.setOwner(this.removeOwner(instanceProperties));
-                    actionTypeProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
                     actionTypeProperties.setSupportedGuards(this.removeProducedGuards(instanceProperties));
                 }
                 else

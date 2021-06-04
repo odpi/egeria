@@ -1185,6 +1185,11 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
+                                    null,
+                                    null,
+                                    false,
+                                    supportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);
@@ -1226,6 +1231,11 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     false,
+                                    null,
+                                    null,
+                                    false,
+                                    supportedZones,
+                                    null,
                                     startFrom,
                                     pageSize,
                                     methodName);

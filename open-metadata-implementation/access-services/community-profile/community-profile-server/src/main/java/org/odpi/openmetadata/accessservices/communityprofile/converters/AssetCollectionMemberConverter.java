@@ -2,153 +2,113 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.AssetCollectionMemberMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetCollectionMember;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.OwnerType;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.WatchStatus;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.AssetCollectionMember;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 
 /**
  * AssetCollectionMemberConverter generates an AssetCollectionMember bean from an Asset entity
- * and a ResourceList relationship to it.
+ * and a CollectionMembership relationship to it.
  */
-public class AssetCollectionMemberConverter extends CommonHeaderConverter
+public class AssetCollectionMemberConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(AssetCollectionMemberConverter.class);
-
     /**
-     * Constructor captures the initial content with relationship
+     * Constructor
      *
-     * @param entity properties to convert
-     * @param relationship properties to convert
-     * @param repositoryHelper helper object to parse entity/relationship
+     * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public AssetCollectionMemberConverter(EntityDetail         entity,
-                                          Relationship         relationship,
-                                          OMRSRepositoryHelper repositoryHelper,
-                                          String               serviceName)
+    public AssetCollectionMemberConverter(OMRSRepositoryHelper repositoryHelper,
+                                          String               serviceName,
+                                          String               serverName)
     {
-        super(entity, relationship, repositoryHelper, serviceName);
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public AssetCollectionMember getBean()
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        AssetCollectionMember  bean = new AssetCollectionMember();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof AssetCollectionMember)
             {
+                AssetCollectionMember bean             = (AssetCollectionMember) returnBean;
+                AssetProperties       assetProperties = new AssetProperties();
+
+                InstanceProperties instanceProperties;
+
                 /*
-                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
-                 * resource properties.
+                 * The initial set of values come from the entity.
                  */
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, AssetCollectionMemberMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setName(repositoryHelper.removeStringProperty(serviceName, AssetCollectionMemberMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName, AssetCollectionMemberMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setOwner(repositoryHelper.removeStringProperty(serviceName, AssetCollectionMemberMapper.OWNER_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
-                bean.setDateAssetCreated(entity.getCreateTime());
-                bean.setDateAssetLastUpdated(entity.getUpdateTime());
-                bean.setLastChange(repositoryHelper.removeStringProperty(serviceName, AssetCollectionMemberMapper.LATEST_CHANGE_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setZoneMembership(repositoryHelper.removeStringArrayProperty(serviceName, AssetCollectionMemberMapper.ZONE_MEMBERSHIP_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, AssetCollectionMemberMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-            }
-        }
-
-        if (relationship != null)
-        {
-            bean.setDateAddedToCollection(relationship.getCreateTime());
-            InstanceProperties instanceProperties = relationship.getProperties();
-
-            if (instanceProperties != null)
-            {
-                bean.setMembershipRationale(repositoryHelper.getStringProperty(serviceName, AssetCollectionMemberMapper.MEMBERSHIP_RATIONALE_PROPERTY_NAME, instanceProperties, methodName));
-
-                if (instanceProperties.getPropertyValue(AssetCollectionMemberMapper.WATCH_STATUS_PROPERTY_NAME) != null)
+                if (entity != null)
                 {
-                    if (repositoryHelper.getBooleanProperty(serviceName, AssetCollectionMemberMapper.WATCH_STATUS_PROPERTY_NAME, instanceProperties, methodName))
-                    {
-                        bean.setWatchStatus(WatchStatus.WATCHED);
-                    }
-                    else
-                    {
-                        bean.setWatchStatus(WatchStatus.NOT_WATCHED);
-                    }
+                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    assetProperties.setName(this.removeName(instanceProperties));
+                    assetProperties.setDescription(this.removeDescription(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    assetProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    assetProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
                 }
                 else
                 {
-                    bean.setWatchStatus(WatchStatus.USE_DEFAULT);
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
-            }
-        }
 
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
-    }
-
-
-    /**
-     * Retrieve the OwnerType enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    private OwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
-    {
-        OwnerType   ownerType = null;
-
-        if (properties != null)
-        {
-            InstancePropertyValue instancePropertyValue = properties.getPropertyValue(AssetCollectionMemberMapper.OWNER_TYPE_PROPERTY_NAME);
-
-            if (instancePropertyValue instanceof EnumPropertyValue)
-            {
-                EnumPropertyValue enumPropertyValue = (EnumPropertyValue)instancePropertyValue;
-
-                switch (enumPropertyValue.getOrdinal())
+                if (relationship != null)
                 {
-                    case 0:
-                        ownerType = OwnerType.USER_ID;
-                        break;
+                    instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    case 1:
-                        ownerType = OwnerType.PROFILE_ID;
-                        break;
-
-                    case 99:
-                        ownerType = OwnerType.OTHER;
-                        break;
+                    bean.setMembershipRationale(this.removeMembershipRationale(instanceProperties));
+                    bean.setDateAddedToCollection(relationship.getCreateTime());
                 }
+
+                bean.setProperties(assetProperties);
             }
 
-            Map<String, InstancePropertyValue> instancePropertyValueMap = properties.getInstanceProperties();
-            instancePropertyValueMap.remove(AssetCollectionMemberMapper.OWNER_TYPE_PROPERTY_NAME);
-            properties.setInstanceProperties(instancePropertyValueMap);
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
-        log.debug("OwnerType: " + ownerType.getName());
-
-        return ownerType;
+        return null;
     }
 }

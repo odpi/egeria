@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -75,13 +74,6 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
                     processProperties.setTechnicalName(this.removeName(instanceProperties));
                     processProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    processProperties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    processProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    processProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
-
                     processProperties.setFormula(this.removeFormula(instanceProperties));
                     processProperties.setImplementationLanguage(this.removeImplementationLanguage(instanceProperties));
 
@@ -92,25 +84,6 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
                      */
                     processProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     processProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                    processProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                    processProperties.setOwner(this.getOwner(instanceProperties));
-                    processProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                    processProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    processProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    processProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
                     bean.setProcessProperties(processProperties);
                 }

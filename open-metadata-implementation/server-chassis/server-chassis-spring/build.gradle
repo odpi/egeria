@@ -11,27 +11,29 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot'
-  	testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
-    //TODO: readd implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    //TODO: implementation 'io.micrometer:micrometer-registry-prometheus'
+    //implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+    //implementation 'javax.servlet:javax.servlet-api'
+    // Explicitly needed for gradle - added by maven plugin
+    
+    implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.springframework:spring-beans'
-    //implementation 'javax.validation:validation-api'
+    implementation 'org.springframework:spring-core'
     implementation 'org.springframework:spring-context'
     implementation project(':open-metadata-implementation:admin-services:admin-services-server')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'ch.qos.logback:logback-classic'
     implementation 'ch.qos.logback:logback-core'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation 'org.slf4j:slf4j-api'
     implementation 'jakarta.annotation:jakarta.annotation-api'
-    implementation 'org.springframework:spring-core'
     implementation 'org.springdoc:springdoc-openapi-ui'
     implementation 'io.swagger.core.v3:swagger-annotations'
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')
@@ -65,6 +67,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:data-manager:data-manager-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:security-officer:security-officer-spring')
+    runtimeOnly project(':open-metadata-implementation:access-services:security-manager:security-manager-spring')
     runtimeOnly project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-spring')
     runtimeOnly project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-spring')
     runtimeOnly project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-spring')

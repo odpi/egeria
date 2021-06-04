@@ -29,16 +29,16 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * Create a new client with no authentication embedded in the HTTP request and an audit log.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ValidValuesAssetOwner(String   serverName,
-                                 String   serverPlatformRootURL,
+                                 String   serverPlatformURLRoot,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -46,14 +46,14 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ValidValuesAssetOwner(String serverName,
-                                 String serverPlatformRootURL) throws InvalidParameterException
+                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -63,7 +63,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * There is also an audit log destination.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
@@ -72,12 +72,12 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * REST API calls.
      */
     public ValidValuesAssetOwner(String   serverName,
-                                 String   serverPlatformRootURL,
+                                 String   serverPlatformURLRoot,
                                  String   userId,
                                  String   password,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -86,18 +86,18 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ValidValuesAssetOwner(String serverName,
-                                 String serverPlatformRootURL,
+                                 String serverPlatformURLRoot,
                                  String userId,
                                  String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -105,7 +105,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * Create a new client that is going to be used in an OMAG Server (view service or integration service typically).
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
      * @param auditLog logging destination
@@ -113,12 +113,12 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * REST API calls.
      */
     public ValidValuesAssetOwner(String               serverName,
-                                 String               serverPlatformRootURL,
+                                 String               serverPlatformURLRoot,
                                  AssetOwnerRESTClient restClient,
                                  int                  maxPageSize,
                                  AuditLog             auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
@@ -180,7 +180,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         requestBody.setExtendedProperties(extendedProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -240,7 +240,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         requestBody.setExtendedProperties(extendedProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -307,7 +307,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         requestBody.setExtendedProperties(extendedProperties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -344,7 +344,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         qualifiedName,
                                         serverName,
                                         userId,
@@ -381,7 +381,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -418,7 +418,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -453,7 +453,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
         ValidValueResponse restResult = restClient.callValidValueGetRESTCall(methodName,
-                                                                                                                                  serverPlatformRootURL + urlTemplate,
+                                                                                                                                  serverPlatformURLRoot + urlTemplate,
                                                                                                                                   serverName,
                                                                                                                                   userId,
                                                                                                                                   validValueGUID);
@@ -492,7 +492,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validateName(validValueName, validValueNameParameter, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
-                                                                               serverPlatformRootURL + urlTemplate,
+                                                                               serverPlatformURLRoot + urlTemplate,
                                                                                 validValueName,
                                                                                 serverName,
                                                                                 userId,
@@ -535,7 +535,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
-                                                                                serverPlatformRootURL + urlTemplate,
+                                                                                serverPlatformURLRoot + urlTemplate,
                                                                                 searchString,
                                                                                 serverName,
                                                                                 userId,
@@ -577,7 +577,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
-                                                                               serverPlatformRootURL + urlTemplate,
+                                                                               serverPlatformURLRoot + urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                validValueSetGUID,
@@ -618,7 +618,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
-                                                                               serverPlatformRootURL + urlTemplate,
+                                                                               serverPlatformURLRoot + urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                validValueGUID,
