@@ -2,15 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,11 +51,15 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
      * @return the entity containing the response exception
      */
     @ExceptionHandler(value = {InvalidParameterException.class, PropertyServerException.class})
-    protected ResponseEntity<Object> handleAssetCatalogException(AssetCatalogException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleAssetCatalogException(OCFCheckedExceptionBase ex, WebRequest request) {
         LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.INVALID_REQUEST_FOR_ASSET_CATALOG);
+        UserInterfaceErrorCodes errorCode = UserInterfaceErrorCodes.INVALID_REQUEST_FOR_ASSET_CATALOG;
+        if (ex.getReportedHTTPCode() == HttpStatus.NOT_FOUND.value()) {
+            errorCode = UserInterfaceErrorCodes.ENTITY_NOT_FOUND;
+        }
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, errorCode);
         return handleExceptionInternal(ex, errorAttributes,
-                new HttpHeaders(), UserInterfaceErrorCodes.INVALID_REQUEST_FOR_ASSET_CATALOG.getHttpErrorCode(), request);
+                new HttpHeaders(), errorCode.getHttpErrorCode(), request);
     }
     /**
      *
