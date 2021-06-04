@@ -51,7 +51,7 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
 	BAD_CONFIG(
 			"OMAS-ANALYTICS-MODELING-005",
-			"The Information View Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
+			"The Analytics Modeling Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
 			"The access service has not been passed valid configuration.",
 			"Correct the configuration and restart the service."),
 	ENTITY_NOT_FOUND_EXCEPTION(404,
