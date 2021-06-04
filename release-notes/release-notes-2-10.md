@@ -143,9 +143,8 @@ For details on both see the commit history in GitHub.
 
 * It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See [odpi/egeria-react-ui#96](https://github.com/odpi/egeria-react-ui/issues/96) .
 * When running the 'Understanding Platform Services' lab, ensure you run the 'egeria-service-config' notebook first and do not restart the python kernel before running this lab. See [#4842](https://github.com/odpi/egeria/issues/4842) .
-* The governance samples currently do not work. See See [#5300](https://github.com/odpi/egeria/issues/5300) and See [#5299](https://github.com/odpi/egeria/issues/5299) for more details
 * When logging in to the react UI for the coco pharma lab demo, ensure to use http://myhost.mydomain/coco/login as otherwise the login will not work. see [odpi/egeria#41](https://github.com/odpi/egeria-react-ui/issues/41)
-* A few further UI bugs are noted at https://github.com/odpi/egeria/issues/5211#issuecomment-850321243
+* A few further bugs are noted at https://github.com/odpi/egeria/issues/5211#issuecomment-850321243 including for samples and UI.
 
 ## Removal of Java 8 Support
 
