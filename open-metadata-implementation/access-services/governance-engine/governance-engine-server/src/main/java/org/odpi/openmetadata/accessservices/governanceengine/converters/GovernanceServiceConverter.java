@@ -87,33 +87,6 @@ public class GovernanceServiceConverter<B> extends GovernanceEngineOMASConverter
                     properties.setDisplayName(this.removeName(instanceProperties));
                     properties.setDescription(this.removeDescription(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    properties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    properties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    properties.setZoneMembership(this.removeZoneMembership(instanceProperties));
-
-
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, primaryEntity);
-
-                    properties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, primaryEntity);
-
-                    properties.setOwner(this.getOwner(instanceProperties));
-                    properties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, primaryEntity);
-
-                    properties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    properties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    properties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
-
                     if (supplementaryEntities != null)
                     {
                         for (EntityDetail entity : supplementaryEntities)
