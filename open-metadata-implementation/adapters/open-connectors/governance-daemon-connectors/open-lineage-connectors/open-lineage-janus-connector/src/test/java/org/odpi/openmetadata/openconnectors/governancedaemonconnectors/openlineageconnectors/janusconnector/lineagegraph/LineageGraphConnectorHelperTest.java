@@ -259,7 +259,6 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("t20");
         expectedNodeIDs.add(queriedNodeID);
 
-        System.out.println(mainGraphConnector);
         LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
