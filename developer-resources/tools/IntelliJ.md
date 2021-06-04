@@ -22,6 +22,8 @@ There is a [tutorial for IntelliJ](../../open-metadata-resources/open-metadata-t
 Lombok Plugin
 
 Egeria makes use of Project Lombok. If using JetBrains IntelliJ IDEA ensure the IDEA has the required plugin configured. See https://projectlombok.org/setup/intellij for more information.
+Also before running a Maven build please choose "Don't detect" from the "Generated sources folders" dropdown in Preferences -> Build, Execution, Deployment -> Build Tools -> Maven -> Importing. This will avoid triggering a duplicate classes build error caused by delomboked sources folder being added as source folder for the Maven module.
+
 
 ----
 * Return to [Developer Tools](.)
