@@ -29,8 +29,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>description - full description of the asset.
  *     (Sourced from attribute description within Asset - model 0010)</li>
  *     <li>owner - name of the person or organization that owns the asset.
- *     (Sourced from attribute owner within Asset - model 0010)</li>
- *     <li>ownerType - type of the person or organization that owns the asset.
+ *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
+ *     <li>ownerTypeName - name of the element type identifying the person or organization that owns the asset.
+ *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
+ *     <li>ownerPropertyName - name of the property identifying person or organization that owns the asset.
+ *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
+ *     <li>ownerType - type of the the person or organization that owns the asset.
  *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
  *     <li>zoneMembership - name of the person or organization that owns the asset.
  *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
@@ -52,14 +56,16 @@ public class Asset extends Referenceable
 {
     private static final long     serialVersionUID = 1L;
 
-    protected String              displayName      = null;
-    protected String              shortDescription = null;
-    protected String              description      = null;
-    protected String              owner            = null;
-    protected OwnerType           ownerType        = null;
-    protected List<String>        zoneMembership   = null;
-    protected Map<String, String> origin           = null;
-    protected boolean             isReferenceData  = false;
+    protected String              displayName       = null;
+    protected String              shortDescription  = null;
+    protected String              description       = null;
+    protected String              owner             = null;
+    protected String              ownerTypeName     = null;
+    protected String              ownerPropertyName = null;
+    protected OwnerType           ownerType         = null;
+    protected List<String>        zoneMembership    = null;
+    protected Map<String, String> origin            = null;
+    protected boolean             isReferenceData   = false;
 
 
     /**
@@ -85,6 +91,8 @@ public class Asset extends Referenceable
             shortDescription       = template.getShortDescription();
             description            = template.getDescription();
             owner                  = template.getOwner();
+            ownerTypeName          = template.getOwnerTypeName();
+            ownerPropertyName      = template.getOwnerPropertyName();
             ownerType              = template.getOwnerType();
             zoneMembership         = template.getZoneMembership();
             origin                 = template.getOrigin();
@@ -179,6 +187,50 @@ public class Asset extends Referenceable
     public void setOwner(String owner)
     {
         this.owner = owner;
+    }
+
+
+    /**
+     * Returns the name of the type used to identify of the owner for this asset.
+     *
+     * @return owner String
+     */
+    public String getOwnerTypeName()
+    {
+        return ownerTypeName;
+    }
+
+
+    /**
+     * Set up the name of the type used to identify the owner for this asset.
+     *
+     * @param ownerTypeName String name
+     */
+    public void setOwnerTypeName(String ownerTypeName)
+    {
+        this.ownerTypeName = ownerTypeName;
+    }
+
+
+    /**
+     * Returns the property name used to identify the owner for this asset.
+     *
+     * @return owner String
+     */
+    public String getOwnerPropertyName()
+    {
+        return ownerPropertyName;
+    }
+
+
+    /**
+     * Set up the property name used to identify the owner for this asset.
+     *
+     * @param ownerPropertyName String name
+     */
+    public void setOwnerPropertyName(String ownerPropertyName)
+    {
+        this.ownerPropertyName = ownerPropertyName;
     }
 
 
@@ -301,24 +353,26 @@ public class Asset extends Referenceable
     public String toString()
     {
         return "Asset{" +
-                "displayName='" + displayName + '\'' +
-                ", shortDescription='" + shortDescription + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerType=" + ownerType +
-                ", zoneMembership=" + zoneMembership +
-                ", origin=" + origin +
-                ", latestChange='" + latestChange + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "displayName='" + displayName + '\'' +
+                       ", shortDescription='" + shortDescription + '\'' +
+                       ", description='" + description + '\'' +
+                       ", owner='" + owner + '\'' +
+                       ", ownerType=" + ownerType +
+                       ", ownerTypeName=" + ownerTypeName +
+                       ", ownerPropertyName=" + ownerPropertyName+
+                       ", zoneMembership=" + zoneMembership +
+                       ", origin=" + origin +
+                       ", latestChange='" + latestChange + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", meanings=" + getMeanings() +
+                       ", type=" + getType() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", URL='" + getURL() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 
@@ -344,16 +398,17 @@ public class Asset extends Referenceable
             return false;
         }
         Asset asset = (Asset) objectToCompare;
-        return Objects.equals(getDisplayName(), asset.getDisplayName()) &&
-                Objects.equals(getShortDescription(), asset.getShortDescription()) &&
-                Objects.equals(getDescription(), asset.getDescription()) &&
-                Objects.equals(getOwner(), asset.getOwner()) &&
-                getOwnerType() == asset.getOwnerType() &&
-                Objects.equals(getZoneMembership(), asset.getZoneMembership()) &&
-                Objects.equals(getOrigin(), asset.getOrigin()) &&
-                Objects.equals(getLatestChange(), asset.getLatestChange());
+        return isReferenceData == asset.isReferenceData &&
+                       Objects.equals(displayName, asset.displayName) &&
+                       Objects.equals(shortDescription, asset.shortDescription) &&
+                       Objects.equals(description, asset.description) &&
+                       Objects.equals(owner, asset.owner) &&
+                       Objects.equals(ownerTypeName, asset.ownerTypeName) &&
+                       Objects.equals(ownerPropertyName, asset.ownerPropertyName) &&
+                       ownerType == asset.ownerType &&
+                       Objects.equals(zoneMembership, asset.zoneMembership) &&
+                       Objects.equals(origin, asset.origin);
     }
-
 
 
     /**
@@ -364,7 +419,7 @@ public class Asset extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getShortDescription(), getDescription(), getOwner(),
-                            getOwnerType(), getZoneMembership(), getOrigin(), getLatestChange());
+        return Objects.hash(super.hashCode(), displayName, shortDescription, description, owner, ownerTypeName, ownerPropertyName, ownerType,
+                            zoneMembership, origin, isReferenceData);
     }
 }

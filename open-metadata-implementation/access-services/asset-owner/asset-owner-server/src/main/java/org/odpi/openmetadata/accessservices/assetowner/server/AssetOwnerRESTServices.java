@@ -1701,6 +1701,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value="deprecation")
     public VoidResponse  updateAssetOwner(String           serverName,
                                           String           userId,
                                           String           assetGUID,
@@ -1721,19 +1722,28 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                int ownerType = OwnerType.USER_ID.getOpenTypeOrdinal();
+                String ownerTypeName = requestBody.getOwnerTypeName();
 
-                if (requestBody.getOwnerType() != null)
+                if ((ownerTypeName == null) && (requestBody.getOwnerType() != null))
                 {
-                    ownerType = requestBody.getOwnerType().getOpenTypeOrdinal();
+                    if (requestBody.getOwnerType() == org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType.USER_ID)
+                    {
+                        ownerTypeName = OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME;
+                    }
+                    else if (requestBody.getOwnerType() == org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType.PROFILE_ID)
+                    {
+                        ownerTypeName = OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME;
+                    }
                 }
 
-                handler.updateAssetOwner(userId,
-                                         assetGUID,
-                                         assetGUIDParameterName,
-                                         requestBody.getOwnerId(),
-                                         ownerType,
-                                         methodName);
+                handler.addOwner(userId,
+                                 assetGUID,
+                                 assetGUIDParameterName,
+                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                 requestBody.getOwnerId(),
+                                 ownerTypeName,
+                                 requestBody.getOwnerPropertyName(),
+                                 methodName);
             }
             else
             {

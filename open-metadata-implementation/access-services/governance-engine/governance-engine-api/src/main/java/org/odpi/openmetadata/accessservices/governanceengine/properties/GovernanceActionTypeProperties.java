@@ -28,9 +28,6 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     private String              displayName          = null;
     private String              description          = null;
 
-    private String              owner                = null;
-    private OwnerCategory       ownerCategory        = null;
-
     private List<String>        supportedGuards      = null;
 
     private String              governanceEngineGUID = null;
@@ -133,51 +130,6 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     public void setDescription(String description)
     {
         this.description = description;
-    }
-
-
-
-    /**
-     * Returns the name of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwner()
-    {
-        return owner;
-    }
-
-
-    /**
-     * Set up the name of the owner for this asset.
-     *
-     * @param owner String name
-     */
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
-    }
-
-
-    /**
-     * Return the type of owner stored in the owner property.
-     *
-     * @return OwnerCategory enum
-     */
-    public OwnerCategory getOwnerCategory()
-    {
-        return ownerCategory;
-    }
-
-
-    /**
-     * Set up the owner type for this asset.
-     *
-     * @param ownerCategory OwnerCategory enum
-     */
-    public void setOwnerCategory(OwnerCategory ownerCategory)
-    {
-        this.ownerCategory = ownerCategory;
     }
 
 
@@ -291,8 +243,6 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
                        "domainIdentifier=" + domainIdentifier +
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
-                       ", owner='" + owner + '\'' +
-                       ", ownerCategory=" + ownerCategory +
                        ", supportedGuards=" + supportedGuards +
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
                        ", requestType='" + requestType + '\'' +
@@ -328,8 +278,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
         return domainIdentifier == that.domainIdentifier &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(owner, that.owner) &&
-                       ownerCategory == that.ownerCategory &&
+
                        Objects.equals(supportedGuards, that.supportedGuards) &&
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
                        Objects.equals(requestType, that.requestType) &&
@@ -345,7 +294,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, owner, ownerCategory, supportedGuards, governanceEngineGUID,
-                            requestType, requestParameters);
+        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description,
+                            supportedGuards, governanceEngineGUID, requestType, requestParameters);
     }
 }
