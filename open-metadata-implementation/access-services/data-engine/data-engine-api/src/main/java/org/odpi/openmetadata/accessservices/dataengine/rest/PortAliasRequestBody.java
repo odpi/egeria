@@ -16,7 +16,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PortAliasRequestBody extends DataEngineOMASAPIRequestBody {
+    private String processQualifiedName;
     private PortAlias portAlias;
+
+    public String getProcessQualifiedName() {
+        return processQualifiedName;
+    }
+
+    public void setProcessQualifiedName(String processQualifiedName) {
+        this.processQualifiedName = processQualifiedName;
+    }
 
     public PortAlias getPortAlias() {
         return portAlias;
@@ -27,22 +36,24 @@ public class PortAliasRequestBody extends DataEngineOMASAPIRequestBody {
     }
 
     @Override
-    public String toString() {
-        return "PortAliasRequestBody{" +
-                "portAlias=" + portAlias +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PortAliasRequestBody that = (PortAliasRequestBody) o;
-        return Objects.equals(portAlias, that.portAlias);
+        return Objects.equals(processQualifiedName, that.processQualifiedName) &&
+                Objects.equals(portAlias, that.portAlias);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(portAlias);
+        return Objects.hash(processQualifiedName, portAlias);
+    }
+
+    @Override
+    public String toString() {
+        return "PortAliasRequestBody{" +
+                "processQualifiedName='" + processQualifiedName + '\'' +
+                ", portAlias=" + portAlias +
+                '}';
     }
 }

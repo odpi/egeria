@@ -44,7 +44,7 @@ public class AssetManagerOutTopicServerConnector extends OpenMetadataTopicSender
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             throw new ConnectorCheckedException(AssetManagerErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
                                                                                                                    event.toString(),

@@ -177,7 +177,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
                                                                                   OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                                                                                  schemaTypeBuilder.getTypeName(),
+                                                                                  typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
                                                                                   schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName));
@@ -203,7 +203,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
     /**
      * Set up the CalculatedValue classification for this entity.
-     * This method overrides any previously defined TypeEmbeddedAttribute classification for this entity.
+     * This method overrides any previously defined CalculatedValue classification for this entity.
      *
      * @param userId calling user
      * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
@@ -234,7 +234,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                                   instanceProvenanceType,
                                                                                   userId,
                                                                                   OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                                                  formula,
+                                                                                  typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
                                                                                   getCalculatedValueProperties(formula, methodName));

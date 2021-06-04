@@ -215,22 +215,31 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
         /*
          * Verify that the repository confirms it supports this TypeDef
          */
-        assertCondition(metadataCollection.verifyTypeDef(workPad.getLocalServerUserId(), typeDef),
+        long start = System.currentTimeMillis();
+        boolean verified = metadataCollection.verifyTypeDef(workPad.getLocalServerUserId(), typeDef);
+        long elapsedTime = System.currentTimeMillis() - start;
+        assertCondition(verified,
                         assertion13,
                         testTypeName + assertionMsg13,
                         super.defaultProfileId,
-                        super.defaultRequirementId);
+                        super.defaultRequirementId,
+                        "verifyTypeDef",
+                        elapsedTime);
 
         /*
          * Retrieve the TypeDef by name and confirm the result is consistent.
          */
+        start = System.currentTimeMillis();
         TypeDef   resultObject = metadataCollection.getTypeDefByName(workPad.getLocalServerUserId(), typeDef.getName());
+        elapsedTime = System.currentTimeMillis() - start;
 
         verifyCondition((resultObject != null),
                         assertion14,
                         testTypeName + assertionMsg14,
                         super.defaultProfileId,
-                        super.defaultRequirementId);
+                        super.defaultRequirementId,
+                        "getTypeDefByName",
+                        elapsedTime);
 
         verifyCondition(( (typeDef.getVersion() != resultObject.getVersion()) || typeDef.equals(resultObject) ),
                         assertion15,
@@ -241,13 +250,17 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
         /*
          * Retrieve the TypeDef by GUID and confirm the result is consistent.
          */
+        start = System.currentTimeMillis();
         resultObject = metadataCollection.getTypeDefByGUID(workPad.getLocalServerUserId(), typeDef.getGUID());
+        elapsedTime = System.currentTimeMillis() - start;
 
         verifyCondition((resultObject != null),
                         assertion16,
                         testTypeName + assertionMsg16,
                         super.defaultProfileId,
-                        super.defaultRequirementId);
+                        super.defaultRequirementId,
+                        "getTypeDefByGUID",
+                        elapsedTime);
 
         verifyCondition(( (typeDef.getVersion() != resultObject.getVersion()) || typeDef.equals(resultObject) ),
                         assertion17,
@@ -258,14 +271,18 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
         /*
          * Find the TypeDef by name and confirm the result is consistent.
          */
+        start = System.currentTimeMillis();
         TypeDefGallery resultGallery = metadataCollection.findTypesByName(workPad.getLocalServerUserId(), typeDef.getName());
+        elapsedTime = System.currentTimeMillis() - start;
         List<TypeDef>  resultList    = resultGallery.getTypeDefs();
 
         verifyCondition((resultList != null),
                         assertion18,
                         testTypeName + assertionMsg18,
                         super.defaultProfileId,
-                        super.defaultRequirementId);
+                        super.defaultRequirementId,
+                        "findTypesByName",
+                        elapsedTime);
 
         /*
          * Look in the result list for a typedef with the same name, and verify that it matches if it claims to be at the same version.

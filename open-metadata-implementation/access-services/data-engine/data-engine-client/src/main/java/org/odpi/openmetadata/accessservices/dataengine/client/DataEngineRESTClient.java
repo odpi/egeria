@@ -29,21 +29,23 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PORT_ALIAS_URL_TEMPLATE = DATA_ENGINE_PATH + "port-aliases";
     private static final String PROCESS_HIERARCHY_URL_TEMPLATE = DATA_ENGINE_PATH + "process-hierarchies";
     private static final String LINEAGE_MAPPINGS_URL_TEMPLATE = DATA_ENGINE_PATH + "lineage-mappings";
-    private static final String PORTS_TO_PROCESS_URL_TEMPLATE = DATA_ENGINE_PATH + "processes/{2}/ports";
 
     private static final String PROCESSES_METHOD_NAME = "createOrUpdateProcesses";
+    private static final String PROCESSES_DELETE_METHOD_NAME = "deleteProcesses";
     private static final String EXTERNAL_DATA_ENGINE_METHOD_NAME = "createExternalDataEngine";
+    private static final String EXTERNAL_DATA_ENGINE_DELETE_METHOD_NAME = "createExternalDataEngine";
     private static final String SCHEMA_TYPE_METHOD_NAME = "createOrUpdateSchemaType";
+    private static final String SCHEMA_TYPE_DELETE_METHOD_NAME = "deleteSchemaType";
     private static final String PORT_IMPLEMENTATION_METHOD_NAME = "createOrUpdatePortImplementation";
+    private static final String PORT_IMPLEMENTATION_DELETE_METHOD_NAME = "deletePortImplementation";
     private static final String PORT_ALIAS_METHOD_NAME = "createOrUpdatePortAlias";
+    private static final String PORT_ALIAS_DELETE_METHOD_NAME = "deletePortAlias";
     private static final String PROCESS_HIERARCHY_METHOD_NAME = "createOrUpdateProcessHierarchy";
     private static final String LINEAGE_MAPPINGS_METHOD_NAME = "addLineageMappings";
-    private static final String PORTS_TO_PROCESS_METHOD_NAME = "addPortsToProcess";
 
     private String serverPlatformRootURL;
-
     private String externalSourceName;
-
+    private DeleteSemantic deleteSemantic = DeleteSemantic.HARD;
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
@@ -87,6 +89,14 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         this.externalSourceName = externalSourceName;
     }
 
+    public DeleteSemantic getDeleteSemantic() {
+        return deleteSemantic;
+    }
+
+    public void setDeleteSemantic(DeleteSemantic deleteSemantic) {
+        this.deleteSemantic = deleteSemantic;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -102,6 +112,20 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         requestBody.setExternalSourceName(externalSourceName);
 
         return callProcessListPostRESTCall(userId, PROCESSES_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public void deleteProcesses(String userId, List<String> qualifiedNames, List<String> guids) throws InvalidParameterException,
+                                                                                                       PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, PROCESSES_DELETE_METHOD_NAME);
+
+        ProcessesDeleteRequestBody requestBody = new ProcessesDeleteRequestBody();
+        requestBody.setQualifiedNames(qualifiedNames);
+        requestBody.setGuids(guids);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setDeleteSemantic(deleteSemantic);
+
+        callVoidDeleteRESTCall(userId, PROCESSES_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
     }
 
     /**
@@ -123,6 +147,16 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         return callGUIDPostRESTCall(userId, EXTERNAL_DATA_ENGINE_METHOD_NAME, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
 
+    @Override
+    public void deleteExternalDataEngine(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                                  PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, EXTERNAL_DATA_ENGINE_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, EXTERNAL_DATA_ENGINE_DELETE_METHOD_NAME, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -135,47 +169,73 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         requestBody.setSchemaType(schemaType);
-
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, SCHEMA_TYPE_METHOD_NAME, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException {
-        invalidParameterHandler.validateUserId(userId, PORT_IMPLEMENTATION_METHOD_NAME);
+    public void deleteSchemaType(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, SCHEMA_TYPE_DELETE_METHOD_NAME);
 
-        PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
-        requestBody.setPortImplementation(portImplementation);
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
-        requestBody.setExternalSourceName(externalSourceName);
-
-        return callGUIDPostRESTCall(userId, PORT_IMPLEMENTATION_METHOD_NAME, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
+        callVoidDeleteRESTCall(userId, SCHEMA_TYPE_DELETE_METHOD_NAME, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException {
+    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation, String processQualifiedName) throws
+                                                                                                                                      InvalidParameterException,
+                                                                                                                                      UserNotAuthorizedException,
+                                                                                                                                      PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, PORT_IMPLEMENTATION_METHOD_NAME);
+
+        PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
+        requestBody.setPortImplementation(portImplementation);
+        requestBody.setProcessQualifiedName(processQualifiedName);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, PORT_IMPLEMENTATION_METHOD_NAME, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public void deletePortImplementation(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, PORT_IMPLEMENTATION_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody  = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, PORT_IMPLEMENTATION_DELETE_METHOD_NAME, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String createOrUpdatePortAlias(String userId, PortAlias portAlias, String processQualifiedName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException {
         final String methodName = PORT_ALIAS_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         requestBody.setPortAlias(portAlias);
-
+        requestBody.setProcessQualifiedName(processQualifiedName);
         requestBody.setExternalSourceName(externalSourceName);
 
-
         return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException{
+        invalidParameterHandler.validateUserId(userId, PORT_ALIAS_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody  = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, PORT_ALIAS_DELETE_METHOD_NAME, PORT_ALIAS_URL_TEMPLATE, requestBody);
     }
 
     /**
@@ -191,9 +251,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
         ProcessHierarchyRequestBody requestBody = new ProcessHierarchyRequestBody();
         requestBody.setProcessHierarchy(processHierarchy);
-
         requestBody.setExternalSourceName(externalSourceName);
-
 
         return callGUIDPostRESTCall(userId, methodName, PROCESS_HIERARCHY_URL_TEMPLATE, requestBody);
     }
@@ -211,29 +269,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
         LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
         requestBody.setLineageMappings(lineageMappings);
-
         requestBody.setExternalSourceName(externalSourceName);
 
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addPortsToProcess(String userId, List<String> portQualifiedNames, String processGUID) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException {
-        final String methodName = PORTS_TO_PROCESS_METHOD_NAME;
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        PortListRequestBody requestBody = new PortListRequestBody();
-        requestBody.setPorts(portQualifiedNames);
-
-        requestBody.setExternalSourceName(externalSourceName);
-
-        callVoidPostRESTCall(userId, methodName, PORTS_TO_PROCESS_URL_TEMPLATE, requestBody, processGUID);
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
@@ -260,4 +298,20 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
         return restResult.getGUIDs();
     }
+
+    private void callVoidDeleteRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
+                                        Object... params) throws PropertyServerException {
+        super.callDeleteRESTCall(methodName, VoidResponse.class, serverPlatformRootURL + urlTemplate, requestBody, serverName, userId, params);
+    }
+
+    private DeleteRequestBody getDeleteRequestBody(String qualifiedName, String guid) {
+        DeleteRequestBody requestBody = new DeleteRequestBody();
+        requestBody.setQualifiedName(qualifiedName);
+        requestBody.setGuid(guid);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setDeleteSemantic(deleteSemantic);
+
+        return requestBody;
+    }
 }
+

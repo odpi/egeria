@@ -1,0 +1,162 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: nginx
+  name: {{ .Release.Name }}-nginx
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 443
+      targetPort: 443
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
+      nodePort: {{ .Values.service.nodeport.nginx }}
+      {{- end }}
+  selector:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: nginx
+...
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: {{ include "myapp.fullname" . }}-nginx
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: nginx
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: nginx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: nginx
+    spec:
+      containers:
+        - name: nginx
+          # Note we don't include the default namespace here as this is a standard docker image with no namespace
+          image: "{{ if (.Values.image.nginx.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.nginx.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.nginx.namespace) }}{{ .Values.image.nginx.namespace }}/{{ end }}\
+                  {{ .Values.image.nginx.name }}\
+                  {{ if (.Values.image.nginx.tag) }}:{{ .Values.image.nginx.tag }}{{ end }}"
+          imagePullPolicy: {{ .Values.image.nginx.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          ports:
+            - containerPort: 443
+          readinessProbe:
+            tcpSocket:
+              port: 443
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          resources: {}
+          env:
+            - name: UI_STATIC
+              value: http://{{ .Release.Name }}-uistatic:80
+            - name: UI_API
+              value: https://{{ .Release.Name }}-ui:8443
+            - name: NGINX_SERVER_NAME
+              value: {{ .Release.Name}}-nginx
+          volumeMounts:
+            - name: template-vol
+              mountPath: /etc/nginx/templates
+            - name: ssl-vol
+              mountPath: /etc/nginx/ssl
+            - name: pass-vol
+              mountPath: /etc/nginx/pass
+      restartPolicy: Always
+      volumes:
+        - name: template-vol
+          configMap:
+            name: {{ .Release.Name }}-template-configmap
+        - name: ssl-vol
+          secret:
+            secretName: {{ .Release.Name }}-nginx-ssl
+            items:
+              - key: tls.key
+                path: tls.key
+              - key: tls.crt
+                path: tls.crt
+        - name: pass-vol
+          secret:
+            secretName: {{ .Release.Name }}-nginx-ssl-pass
+            items:
+              - key: pass.txt
+                path: pass.txt
+status: {}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: etc
+  name: {{ .Release.Name }}-template-configmap
+{{- if and (.Files.Glob "etc/**") }}
+binaryData:
+  {{- $root := . }}
+  {{- range $path, $bytes := .Files.Glob "etc/**" }}
+  {{ base $path }}: {{ $root.Files.Get $path | b64enc | quote }}
+  {{- end }}
+  {{- end }}
+
+---
+# The built in tls type is fixed to key/cert. So we need another secret to manage the key password (if required)
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: nginx-ssl-pass
+  name: {{ .Release.Name }}-nginx-ssl-pass
+data:
+  # echo 'egeria' | base64
+  pass.txt: ZWdlcmlhCg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: nginx-ssl
+  name: {{ .Release.Name }}-nginx-ssl
+type: kubernetes.io/tls
+# TODO - Initially hardcoded here to prove the k8s deployment/nginx config. Certs are copied from egeria master 17 Mar 2021
+# See open-metadata-resources/open-metadata-deployment/certificates . We're using the EgeriaClient certs
+# Also see https://stackoverflow.com/questions/51899844/nginx-ssl-no-start-line-expecting-trusted-certificate - for TRUSTED issue
+data:
+  # cat EgeriaUIChassis.cert.pem | sed 's/CERTIFICATE/TRUSTED CERTIFICATE/g' | base64
+  tls.crt: LS0tLS1CRUdJTiBUUlVTVEVEIENFUlRJRklDQVRFLS0tLS0KTUlJRkZUQ0NBdjJnQXdJQkFnSUNFQUV3RFFZSktvWklodmNOQVFFTEJRQXdYakVMTUFrR0ExVUVCaE1DVlZNeApDekFKQmdOVkJBZ01Ba05CTVJFd0R3WURWUVFLREFoTVJrRkpSR0YwWVRFdk1DMEdBMVVFQXd3bVJXZGxjbWxoClNXNTBaWEp0WldScFlYUmxRMlZ5ZEdsbWFXTmhkR1ZCZFhSb2IzSnBkSGt3SGhjTk1qRXdNekExTVRVeE1EUXoKV2hjTk1qSXdNekUxTVRVeE1EUXpXakJCTVFzd0NRWURWUVFHRXdKVlV6RUxNQWtHQTFVRUNBd0NRMEV4RVRBUApCZ05WQkFvTUNFeEdRVWxFWVhSaE1SSXdFQVlEVlFRRERBbFZTVU5vWVhOemFYTXdnZ0VpTUEwR0NTcUdTSWIzCkRRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRRHFhNWFOaG9YZzh1ZVdFblpJbXQ0Qm9OdHV1QWhPclJwNFZkbkEKSXEvR0VDSWxIVTdkQWhsUFJDbit5Rkh3MGxTTGZXaU1oNUp0M1RqeDZYVDhIK25BTTZXbUVCcVc1Q1EzNDhiRwpJZzZZSiszZmpiMkUxekthMkZPSXZLclZENW5sWEtybFg5MEVKcVJydGtuby9KeDd5WitGd1g4L0ZNdVNCWmJICkVYR2Vxc1U0WmU1SGxRR0RQY3I2L09KSkszUFk2OVRRa05IbVJmeExWOGY4K1BveGI3bXRaYkI4UTdkTXdia3UKbHVCblZ2R2YwZlA2NlNsdzJLQ1FTdGNhQWZkQkwzdmU1S3ViWFlLTFF1WFkwRkkyLzU1cDBZM1d2bHpRWlBXdAorMW9xMGI2OVMzaFR5cFd1ajdlRFA5NjNkKzA1UVJldWJKVVhjUERzbHJRUTVVYlBBZ01CQUFHamdma3dnZll3CkNRWURWUjBUQkFJd0FEQVJCZ2xnaGtnQmh2aENBUUVFQkFNQ0JrQXdIUVlEVlIwT0JCWUVGTGM4M3M2cWUrZnYKYmJDTXVpSVFJZ2JFbXJUWE1Bc0dBMVVkRHdRRUF3SUY0REFUQmdOVkhTVUVEREFLQmdnckJnRUZCUWNEQVRBVQpCZ05WSFJFRURUQUxnZ2xzYjJOaGJHaHZjM1F3ZndZRFZSMGpCSGd3ZG9BVWRkS1BGbUFEWWpINTNNWG13YTJxClVlM05zZmloV3FSWU1GWXhDekFKQmdOVkJBWVRBbFZUTVFzd0NRWURWUVFJREFKRFFURVJNQThHQTFVRUNnd0kKVEVaQlNVUmhkR0V4SnpBbEJnTlZCQU1NSGtWblpYSnBZVkp2YjNSRFpYSjBhV1pwWTJGMFpVRjFkR2h2Y21sMAplWUlDRUFBd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dJQkFDbCtpWjdQZC8vY2FHQWJIeHk1d2wrVkl1NDk3SkxJCk1KaVBYa0xzWXQ0N1ZDQUtxZWY0TjZZek8zZ0I4bXZ6VzdxNEFHbFdSR1dEbVJYbnY2R2J6RWxQaE8wTjE5eGoKVWtpT2RkR3ZVb1pwTXVMYmFkQUZjU29MZUNjRlFQMzYrZzgwMktuWDNHZ3M5R2U3aFllSUNrd25hbkFFdFRQWAp3NFBITnFnZzVWY3VGcHdVZ0lyeGl4c0RqbTVZcDhEaDdhaEU3Z3dITFRXWTdLdEdjUS9Qcis4MmI2ZkxnSGd3ClRwSmV6bmdEREozQU4yNUJ1eG5DU2lneUpLcEM2T0pFdkZJMlBkVW85TUZURkhrbHZNWXdEQlFtRlpvOU5YVWkKVURpMzk1cklKdXJjVnVqSlBxMUVGTlVaUkRPZkR2UDRWYmhJR2ZhRHUxU3VMeDMveEVCdGtuVDVvSENPcitGbQpjT1B4WFZ3MXY5bEJFRzFXaGFva2ZaWUl0cFJaOEVlU05RNTl5bjVYV1RZaGRIa1Q5bEhZUDc4TG5hSGZZUENCCm1wT0ozZFJSTCtRNUZ3aUZMTnNNTG5CZHI2OEROT24wN29RaDNmWjFrMGhCQ2VkNi9kYjdydHZVK2NyeU5wVWgKeVJNeFJ6elJ6K0JDSVJxQ2FzNExGaGdTMGNJMDlpVmU3K2xySW5OUUREMURaSjR0MzQ0S21CR0VvNVZQN3lWRgpBT2hnd09lYmdyS2sycTdkbk4rb2t2b0ZIVSt5OEQzMjQ4TXFuby9TT0xRYTROcVJCemhkTjU2UHpxb3lsckEvCmhHaUtWby8ydFlScy9Ub0pvSVRuY0piODBFc1lJc201RWxOMkZoa2tabnlKekVTekRNcXpQK041ZEdmdFp3TFMKcnpMNFBNVEd6YmI5Ci0tLS0tRU5EIFRSVVNURUQgQ0VSVElGSUNBVEUtLS0tLQo=
+  # cat EgeriaUIChassis.key.pem | base64
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpQcm9jLVR5cGU6IDQsRU5DUllQVEVECkRFSy1JbmZvOiBBRVMtMjU2LUNCQyw3OTQ5MjU5MEZFMjBGNkNEQzA4NEY2MEM5MUUxOEZGOQoKaFhLd1R3L3AyMEtlb0tlL1FHeGRPbDFmblB2SUF0SUQySDNkRzVDSEp6ZDRJeFEvS2M0Vmt3ekJJMDNKQ3d5RApZS3BLN01xd09WYVJqUVV4cDNYZGZ5QTd0Q1RUUzIwc2F5c2gyaGxPa1gvK3RVb1VNWHV3Y05QRGNYMWE3bnVLCjNtTUdRRXIwL2VwRUkrNjNscEwyRko0dmk2aHpoY2V3S2w1ZGJNbmtDVnpLWUpNNmt0bDYrSlVOZnZuUUllRjkKZEwzWW85ZTJUS2g3a3ZaSUxVRzF2RG9TcDR5aFU0R0w1Vk1mVG1NQWFLc0I4dFNRQUdyQ2t3RlQrL21uZ0M0ZwpmSGFXTWxqK0JlM1hCSlFaQUlrcXJYYXA1V2ppRXcrNW1JbFUvSisxTjZuV0ZoTHZocHBtR1U5TWRtYzMzd3h6CkQ0VHJSZ2w3Nm9HcDkveFlZMiswbjdySHlDVnAyR2dFUFR0MDV4VUo2WTFEMzVoOTZ0OURPVlZ2aXNQeG04SmQKdnZrMVVrRGIyb0NybjVzMUR4aXpURUVRRTE4TXJoL2xsQndvQXlvMUZNZlpwY04wTE1QanJ4SGMwTEtRQ25SVwpPWGZyWFhrU1ZDODRDWWNuc2N4UU9kd2ZWY1dYVCs0K3lBb01lcjJsVTVSOUZDVHhPTkNlKzZER1J2ZHREME1jClBaV0E2WUlSbi9KMTE1OE1hdmN6cmJIQXh2NytxRmJjYlYyWHJzUVN1a2h4a3AxVEZ6QVlBSSsvdURZQVNKM1MKVEZoMzcvT0JxUGloWmpFcnFoZnoySWpRZWxpRGlrSlJEVnE1bWdjaXp5Q0dUV3ZnNGhhQTVXMXFYMXlGa0dlNwpnSlZuTXlFcmVSZnBOaHhrMzg4QVhuT1AydnRIMWwxdndQLytKZHFiZTVOU01tT2Y1K2c1amJYaHVTMUNvdGRiClpJQ0h2YVZoZ2J0TGd1bkhmUGRxMWxoTVpPOU9Pb0xIQURkbllnd3I4YUk1Yno0QnFacTRpYTRFNlFiME9vTE8KbHpUbW43WDR4WnVRQnozY0tETU55V2paTCtDM1NtV29pd1p6dmw1SlJJNnIxSWhYbVJCSEdvSzQzKzRGM2RJRAptSEpqRWFyaS9UTHZUa1RsaGFkWCswRTVjT2cxTEdLYUdFSVVCWWVVcGtHZi9pRWhhVXFaUUphZm5jYnBBM2RuCm5JK0xpaXgzR3ZzT3YwazVSSXVnYjE5NjFVU292M0lsVlBOQy82U1U4UXNhTmFUTzZyTFZPcnNyVmxiZTBTNjMKc202eFR6WXlRejNWbEthS0RZYlV0c2ttdjFlL096cEE0YVM4eXJqU2FQbnRMOXpCZklrNTdFTzhXVkJIOW1OLwpUY1BNTFZmbUdTSFk5ZmlnNmZSQWUzcXJHRFdybEl4bVlFcGdwaHF6OEcwVjAyMzBqYXBkdmY1Y3g5Y1RxZ29FCjI3RDRQZnNuSmxoaW05N25KNG40TEJVVWNDTE0vUzhsc0FUTm0zUURyNmN3c0ZmRlVZNG92bjVjMmY3bDU0ZDIKN1BnYXg2OHdRZ1l0TEpQMDFQM0JFS1g4ME1BMHVRS0hVZVllZm1YS29uVno2SU44MnoyUHBOdGNBem1UNWRGQwpyODFpblVsRVJDbjJJQVFYcGV2emxXMWdWcmhtbm5hRUNtTXpQekxlL1UrdWJVbnBRN3ZkQ2ZSbk9qaTNqV3VvClJnTTd0QUZ4Z1JuQXM2WVgrQXVnSUN2bG54cmxya3pXRXU4UisyNHkxdCtXVVBOdTZYNTVLb2lML0FVTHBWcWkKOXJmd0dxb0NTVGhHSGNORDZZNUFnVU1aQk5PQzJOVVhLV1ZiMDNJelJXaDVBUmRBdzZTUDhpNjY3WktkVGxPYwpWTlB4aWI1RFZncGx1QzhVSWtrNzkwKy84RDFhVjJFMVJNTUhlZU5naWFySU5FRnN0RFhBN0E3REg0WGNtV29tCi82SG5aSkZEZjhGZzh0aVdXNVlncm05VEx0cGFPT1ltZUg1am1ET0NBeEZiVndDZFlnTCtEak44VGlYYzZjYy8KY1BXZ3U5RlpsTUpmcFVYQlFYMFRwUmZqMXhNRU5NdGdpYmhsZVh6K2VvMFBjcmo2T1FJbDQydFVFVDdxWXN1NAotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+...

@@ -13,7 +13,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation 'commons-io:commons-io'
+    implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'ch.qos.logback:logback-classic'
 }

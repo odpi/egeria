@@ -1,0 +1,65 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+name: "Merge (Java8, Maven)"
+
+# Trigger after code is merged. only on main repo
+# - does not run on modification (may be just text)
+
+on:
+  push:
+    branches: [master,egeria-release-*,feature-*]
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: "Merge"
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout source
+      # Prep for docker builds which are currently done as part of the maven build
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        # Only for a merge
+        if: ${{ github.event_name == 'push' && github.repository == 'odpi/egeria' }}
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          # Java 1.8 is used for merge builds (PRs do check Java 11)
+          java-version: '8'
+          distribution: 'zulu'
+          # Publishing attributes for maven central (this step adds to setting.xml)
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          # Keys must be known to maven central - require broad publishing
+          gpg-private-key: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      # Build and publish - but only for master
+      - name: Build with Maven (Publish snapshots to maven central + docker)
+        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
+        # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
+        run: 'mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=docker.io" "-Ddocker.images=core" clean deploy'
+        # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to 
+        # verify (close) the repository & release
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+          # Build and publish - but only for master
+      - name: Build with Maven (no snapshots / docker published)
+        if: ${{ github.repository != 'odpi/egeria' || github.ref != 'refs/heads/master'}}
+        run: mvn -B clean verify
+      # --
+      # TODO - Publish docker images
+      # --
+      # Mostly for verification - not published to the release itself for now
+      - name: Upload assemblies
+        uses: actions/upload-artifact@v2
+        with:
+          name: Assemblies
+          path: open-metadata-distribution/open-metadata-assemblies/target/*.gz

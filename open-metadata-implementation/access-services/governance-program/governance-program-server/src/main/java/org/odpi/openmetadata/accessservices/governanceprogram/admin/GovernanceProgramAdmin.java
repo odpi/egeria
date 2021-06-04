@@ -49,7 +49,7 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
                            AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
-        final String               actionDescription = "initialize";
+        final String actionDescription = "initialize";
 
         auditLog.logMessage(actionDescription, GovernanceProgramAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
@@ -59,7 +59,7 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
             this.repositoryConnector = enterpriseOMRSRepositoryConnector;
             this.instance = new GovernanceProgramServicesInstance(repositoryConnector,
                                                                   auditLog,
-                                                                  serverName,
+                                                                  serverUserName,
                                                                   enterpriseOMRSRepositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
@@ -71,7 +71,7 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
                                 GovernanceProgramAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
                                 accessServiceConfigurationProperties.toString());
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   GovernanceProgramAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

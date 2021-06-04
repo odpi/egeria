@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorC
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ProcessExchangeHandler;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.SchemaExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -35,6 +36,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
     private DataAssetExchangeHandler                                            dataAssetExchangeHandler;
     private GlossaryExchangeHandler                                             glossaryExchangeHandler;
     private ProcessExchangeHandler                                              processExchangeHandler;
+    private SchemaExchangeHandler                                               schemaExchangeHandler;
 
 
     /**
@@ -148,6 +150,18 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                  defaultZones,
                                                                  publishZones,
                                                                  auditLog);
+
+        this.schemaExchangeHandler = new SchemaExchangeHandler(serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
     }
 
 
@@ -228,5 +242,21 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return processExchangeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing schema objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaExchangeHandler getSchemaExchangeHandler() throws PropertyServerException
+    {
+        final String methodName = "getSchemaExchangeHandler";
+
+        validateActiveRepository(methodName);
+
+        return schemaExchangeHandler;
     }
 }

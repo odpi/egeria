@@ -33,16 +33,16 @@ public class PortBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    PortBuilder(String               qualifiedName,
-                String               displayName,
-                int                  portType,
-                Map<String, String>  additionalProperties,
-                String               typeGUID,
-                String               typeName,
-                Map<String, Object>  extendedProperties,
-                OMRSRepositoryHelper repositoryHelper,
-                String               serviceName,
-                String               serverName)
+    public PortBuilder(String               qualifiedName,
+                       String               displayName,
+                       int                  portType,
+                       Map<String, String>  additionalProperties,
+                       String               typeGUID,
+                       String               typeName,
+                       Map<String, Object>  extendedProperties,
+                       OMRSRepositoryHelper repositoryHelper,
+                       String               serviceName,
+                       String               serverName)
     {
         super(qualifiedName,
               additionalProperties,

@@ -59,6 +59,28 @@ public class OMAGConformanceSuiteConfigServices
 
 
     /**
+     * Request that the repository conformance suite workbench is activated in this server to test the
+     * performance of the repository services running in the server named tutRepositoryServerName.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param repositoryPerformanceWorkbenchConfig configuration for the repository performance workbench.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGConfigurationErrorException unexpected exception.
+     */
+    public VoidResponse enableRepositoryPerformanceSuiteWorkbench(String                               userId,
+                                                                  String                               serverName,
+                                                                  RepositoryPerformanceWorkbenchConfig repositoryPerformanceWorkbenchConfig)
+    {
+        return this.enableRepositoryPerformanceWorkbench(userId,
+                serverName,
+                repositoryPerformanceWorkbenchConfig);
+    }
+
+
+    /**
      * Request that the platform conformance suite workbench is activated in this server to test the
      * support of the platform services running in the platform at tutPlatformRootURL.
      *
@@ -78,6 +100,114 @@ public class OMAGConformanceSuiteConfigServices
                                                          serverName,
                                                          null,
                                                          requestBody.getUrlRoot());
+    }
+
+
+    /**
+     * Request that the repository performance suite services are activated in this server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param repositoryPerformanceWorkbenchConfig configuration for the repository performance workbench.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGConfigurationErrorException unexpected exception.
+     */
+    private VoidResponse enableRepositoryPerformanceWorkbench(String                               userId,
+                                                              String                               serverName,
+                                                              RepositoryPerformanceWorkbenchConfig repositoryPerformanceWorkbenchConfig)
+    {
+        final String methodName = "enableRepositoryPerformanceWorkbench";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            ConformanceSuiteConfig conformanceSuiteConfig = serverConfig.getConformanceSuiteConfig();
+
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            configAuditTrail.add(new Date().toString() + " " + userId + " begins adding configuration for " + GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName() + ".");
+
+            serverConfig.setAuditTrail(configAuditTrail);
+
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+
+            if (conformanceSuiteConfig == null)
+            {
+                conformanceSuiteConfig = new ConformanceSuiteConfig();
+            }
+
+            if ((conformanceSuiteConfig.getPlatformWorkbenchConfig() == null) &&
+                    (conformanceSuiteConfig.getRepositoryWorkbenchConfig() == null))
+            {
+                OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
+
+                adminAPI.setMaxPageSize(userId, serverName, maxPageSize);
+                adminAPI.setServerType(userId, serverName, GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
+                adminAPI.setInMemLocalRepository(userId, serverName, new NullRequestBody());
+
+                serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+                RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+                OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+                EnterpriseAccessConfig
+                        enterpriseAccessConfig = configurationFactory.getDefaultEnterpriseAccessConfig(serverConfig.getLocalServerName(),
+                        serverConfig.getLocalServerId());
+
+                repositoryServicesConfig.setEnterpriseAccessConfig(enterpriseAccessConfig);
+
+                serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+
+                configStore.saveServerConfig(serverName, methodName, serverConfig);
+            }
+
+            serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            configAuditTrail = serverConfig.getAuditTrail();
+
+            if (repositoryPerformanceWorkbenchConfig != null)
+            {
+                configAuditTrail.add(new Date().toString() + " " + userId + " enable repository performance to test " + repositoryPerformanceWorkbenchConfig.getTutRepositoryServerName() + ".");
+                conformanceSuiteConfig.setRepositoryPerformanceConfig(repositoryPerformanceWorkbenchConfig);
+            }
+
+            serverConfig.setConformanceSuiteConfig(conformanceSuiteConfig);
+
+            configAuditTrail.add(new Date().toString() + " " + userId + " finished adding configuration for " + GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName() + ".");
+
+            serverConfig.setAuditTrail(configAuditTrail);
+
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception   error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -192,7 +322,7 @@ public class OMAGConformanceSuiteConfigServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -262,7 +392,7 @@ public class OMAGConformanceSuiteConfigServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -332,7 +462,7 @@ public class OMAGConformanceSuiteConfigServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -393,7 +523,7 @@ public class OMAGConformanceSuiteConfigServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }

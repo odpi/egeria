@@ -4,11 +4,11 @@
 package org.odpi.openmetadata.accessservices.governanceengine.outtopic;
 
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineConfigurationEvent;
-import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineEventType;
-import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceServiceConfigurationEvent;
+import org.odpi.openmetadata.accessservices.governanceengine.events.*;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 
 /**
  * GovernanceEngineOutTopicPublisher is responsible for pushing events to the Governance Engine OMAS's out topic.
@@ -19,7 +19,7 @@ public class GovernanceEngineOutTopicPublisher
     private AuditLog                                outTopicAuditLog;
     private String                                  outTopicName;
 
-    private final String actionDescription = "Out topic configuration refresh event publishing";
+    private final String actionDescription = "Out topic event publishing";
 
     /**
      * Constructor for the publisher.
@@ -29,8 +29,8 @@ public class GovernanceEngineOutTopicPublisher
      * @param outTopicAuditLog logging destination if anything goes wrong.
      */
     public GovernanceEngineOutTopicPublisher(GovernanceEngineOutTopicServerConnector outTopicServerConnector,
-                                             String                                 outTopicName,
-                                             AuditLog                               outTopicAuditLog)
+                                             String                                  outTopicName,
+                                             AuditLog                                outTopicAuditLog)
     {
         this.outTopicServerConnector = outTopicServerConnector;
         this.outTopicAuditLog        = outTopicAuditLog;
@@ -50,7 +50,7 @@ public class GovernanceEngineOutTopicPublisher
      * @param governanceEngineName unique name for the governance engine
      */
     void publishRefreshGovernanceEngineEvent(String governanceEngineGUID,
-                                            String governanceEngineName)
+                                             String governanceEngineName)
     {
         final String methodName = "publishRefreshGovernanceEngineEvent";
 
@@ -70,12 +70,12 @@ public class GovernanceEngineOutTopicPublisher
                 {
                     outTopicAuditLog.logMessage(actionDescription,
                                                 GovernanceEngineAuditCode.REFRESH_GOVERNANCE_ENGINE.getMessageDefinition(governanceEngineName,
-                                                                                                                       governanceEngineGUID));
+                                                                                                                         governanceEngineGUID));
                 }
             }
             catch (Exception error)
             {
-                logUnexpectedPublishingException(governanceEngineGUID, governanceEngineName, error, methodName);
+                logUnexpectedPublishingException(error, methodName);
             }
         }
     }
@@ -91,9 +91,9 @@ public class GovernanceEngineOutTopicPublisher
      *                              governance service
      */
     void publishRefreshGovernanceServiceEvent(String       governanceEngineGUID,
-                                             String       governanceEngineName,
-                                             String       registeredGovernanceServiceGUID,
-                                             String       governanceRequestType)
+                                              String       governanceEngineName,
+                                              String       registeredGovernanceServiceGUID,
+                                              String       governanceRequestType)
     {
         final String methodName = "publishRefreshGovernanceServiceEvent";
 
@@ -115,14 +115,90 @@ public class GovernanceEngineOutTopicPublisher
                 {
                     outTopicAuditLog.logMessage(actionDescription,
                                                 GovernanceEngineAuditCode.REFRESH_GOVERNANCE_SERVICE.getMessageDefinition(governanceEngineName,
-                                                                                                                        governanceEngineGUID,
-                                                                                                                        governanceRequestType,
-                                                                                                                        registeredGovernanceServiceGUID));
+                                                                                                                          governanceEngineGUID,
+                                                                                                                          governanceRequestType,
+                                                                                                                          registeredGovernanceServiceGUID));
                 }
             }
             catch (Exception error)
             {
-                logUnexpectedPublishingException(governanceEngineGUID, governanceEngineName, error, methodName);
+                logUnexpectedPublishingException(error, methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Publish an event to notify listeners that there is a new governance action available for processing.
+     *
+     * @param governanceEngineGUID unique identifier for the governance engine
+     * @param governanceEngineName unique name for the governance engine
+     * @param governanceActionGUID element to execute
+     */
+    void publishNewGovernanceAction(String governanceEngineGUID,
+                                    String governanceEngineName,
+                                    String governanceActionGUID)
+    {
+        final String methodName = "publishNewGovernanceAction";
+
+        if (outTopicServerConnector != null)
+        {
+            try
+            {
+                GovernanceActionEvent newEvent = new GovernanceActionEvent();
+
+                newEvent.setEventType(GovernanceEngineEventType.REQUESTED_GOVERNANCE_ACTION_EVENT);
+                newEvent.setGovernanceEngineGUID(governanceEngineGUID);
+                newEvent.setGovernanceEngineName(governanceEngineName);
+                newEvent.setGovernanceActionGUID(governanceActionGUID);
+
+                outTopicServerConnector.sendEvent(newEvent);
+
+                if (outTopicAuditLog != null)
+                {
+                    outTopicAuditLog.logMessage(actionDescription,
+                                                GovernanceEngineAuditCode.NEW_GOVERNANCE_ACTION.getMessageDefinition(governanceActionGUID,
+                                                                                                                     governanceEngineName,
+                                                                                                                     governanceEngineGUID));
+                }
+            }
+            catch (Exception error)
+            {
+                logUnexpectedPublishingException(error, methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Publish an event for Open Watchdog Governance Action Services.
+     *
+     * @param watchdogGovernanceEvent GAF defined watchdog event
+     */
+    void publishWatchdogEvent(WatchdogGovernanceEvent  watchdogGovernanceEvent)
+    {
+        final String methodName = "publishWatchdogEvent";
+
+        if (outTopicServerConnector != null)
+        {
+            try
+            {
+                WatchdogGovernanceServiceEvent newEvent = new WatchdogGovernanceServiceEvent();
+
+                newEvent.setEventType(GovernanceEngineEventType.WATCHDOG_GOVERNANCE_SERVICE_EVENT);
+                newEvent.settWatchdogGovernanceEvent(watchdogGovernanceEvent);
+
+                outTopicServerConnector.sendEvent(newEvent);
+
+                if (outTopicAuditLog != null)
+                {
+                    outTopicAuditLog.logMessage(actionDescription,
+                                                GovernanceEngineAuditCode.WATCHDOG_EVENT.getMessageDefinition(watchdogGovernanceEvent.getEventType().getName()));
+                }
+            }
+            catch (Exception error)
+            {
+                logUnexpectedPublishingException(error, methodName);
             }
         }
     }
@@ -131,23 +207,18 @@ public class GovernanceEngineOutTopicPublisher
     /**
      * Log any exceptions that have come from the publishing process.
      *
-     * @param governanceEngineGUID unique identifier for the governance engine
-     * @param governanceEngineName unique name for the governance engine
      * @param error this is the exception that was thrown
      * @param methodName this is the calling method
      */
-    private void logUnexpectedPublishingException(String     governanceEngineGUID,
-                                                  String     governanceEngineName,
-                                                  Throwable  error,
+    private void logUnexpectedPublishingException(Throwable  error,
                                                   String     methodName)
     {
-
         if (outTopicAuditLog != null)
         {
-            outTopicAuditLog.logException(actionDescription,
+            outTopicAuditLog.logException(methodName,
                                           GovernanceEngineAuditCode.OUT_TOPIC_FAILURE.getMessageDefinition(outTopicName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          error.getMessage()),
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage()),
                                           error);
         }
     }
@@ -167,7 +238,7 @@ public class GovernanceEngineOutTopicPublisher
                 outTopicAuditLog.logMessage(actionDescription, GovernanceEngineAuditCode.PUBLISHING_SHUTDOWN.getMessageDefinition(outTopicName));
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             if (outTopicAuditLog != null)
             {

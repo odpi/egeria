@@ -22,17 +22,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = GovernanceEngineConfigurationEvent.class, name = "GovernanceEngineConfigurationEvent")
+                      @JsonSubTypes.Type(value = GovernanceEngineConfigurationEvent.class, name = "GovernanceEngineConfigurationEvent"),
+                      @JsonSubTypes.Type(value = GovernanceServiceConfigurationEvent.class, name = "GovernanceServiceConfigurationEvent"),
+                      @JsonSubTypes.Type(value = WatchdogGovernanceServiceEvent.class, name = "WatchdogGovernanceServiceEvent"),
+                      @JsonSubTypes.Type(value = GovernanceActionEvent.class, name = "GovernanceActionEvent")
 })
 public abstract class GovernanceEngineEvent implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-
-    private long                      eventVersionId = 1L;
-    private GovernanceEngineEventType eventType      = null;
-
-
+    private long                      eventVersionId       = 1L;
+    private GovernanceEngineEventType eventType            = null;
+    private String                    governanceEngineGUID = null;
+    private String                    governanceEngineName = null;
 
     /**
      * Default Constructor sets the properties to nulls
@@ -56,6 +58,8 @@ public abstract class GovernanceEngineEvent implements Serializable
         {
             this.eventVersionId = template.getEventVersionId();
             this.eventType = template.getEventType();
+            this.governanceEngineGUID = template.getGovernanceEngineGUID();
+            this.governanceEngineName = template.getGovernanceEngineName();
         }
     }
 
@@ -104,6 +108,49 @@ public abstract class GovernanceEngineEvent implements Serializable
     }
 
 
+    /**
+     * Return the unique identifier of the governance engine that has a configuration change.
+     *
+     * @return string guid
+     */
+    public String getGovernanceEngineGUID()
+    {
+        return governanceEngineGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the governance engine that has a configuration change.
+     *
+     * @param governanceEngineGUID string guid
+     */
+    public void setGovernanceEngineGUID(String governanceEngineGUID)
+    {
+        this.governanceEngineGUID = governanceEngineGUID;
+    }
+
+
+    /**
+     * Return the unique name of the governance engine that has a configuration change.
+     *
+     * @return string name
+     */
+    public String getGovernanceEngineName()
+    {
+        return governanceEngineName;
+    }
+
+
+    /**
+     * Set up the unique name of the governance engine that has a configuration change.
+     *
+     * @param governanceEngineName string name
+     */
+    public void setGovernanceEngineName(String governanceEngineName)
+    {
+        this.governanceEngineName = governanceEngineName;
+    }
+
 
     /**
      * JSON-style toString
@@ -114,9 +161,11 @@ public abstract class GovernanceEngineEvent implements Serializable
     public String toString()
     {
         return "GovernanceEngineEvent{" +
-                "eventVersionId=" + eventVersionId +
-                ", eventType=" + eventType +
-                '}';
+                       "eventVersionId=" + eventVersionId +
+                       ", eventType=" + eventType +
+                       ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
+                       ", governanceEngineName='" + governanceEngineName + '\'' +
+                       '}';
     }
 
 
@@ -138,8 +187,10 @@ public abstract class GovernanceEngineEvent implements Serializable
             return false;
         }
         GovernanceEngineEvent that = (GovernanceEngineEvent) objectToCompare;
-        return getEventVersionId() == that.getEventVersionId() &&
-                getEventType() == that.getEventType();
+        return eventVersionId == that.eventVersionId &&
+                       eventType == that.eventType &&
+                       Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
+                       Objects.equals(governanceEngineName, that.governanceEngineName);
     }
 
 
@@ -152,6 +203,6 @@ public abstract class GovernanceEngineEvent implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getEventVersionId(), getEventType());
+        return Objects.hash(eventVersionId, eventType, governanceEngineGUID, governanceEngineName);
     }
 }

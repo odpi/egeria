@@ -200,6 +200,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
      * @param templateGUID unique identifier of the metadata element to copy
      * @param schemaTypeExternalIdentifier unique identifier of the schema type in the external asset manager
      * @param schemaTypeExternalIdentifierName name of property for the external identifier in the external asset manager
@@ -220,6 +221,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
     public String createSchemaTypeFromTemplate(String              userId,
                                                String              assetManagerGUID,
                                                String              assetManagerName,
+                                               boolean             assetManagerIsHome,
                                                String              templateGUID,
                                                String              schemaTypeExternalIdentifier,
                                                String              schemaTypeExternalIdentifierName,
@@ -227,9 +229,9 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                String              schemaTypeExternalIdentifierSource,
                                                KeyPattern          schemaTypeExternalIdentifierKeyPattern,
                                                Map<String, String> mappingProperties,
-                                               TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+                                               TemplateProperties  templateProperties) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         final String methodName                  = "createSchemaTypeFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
@@ -253,14 +255,15 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                    mappingProperties,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/from-template/{2}?assetManagerIsHome={3}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  templateGUID);
+                                                                  templateGUID,
+                                                                  assetManagerIsHome);
 
         return restResult.getGUID();
     }
@@ -357,16 +360,16 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         invalidParameterHandler.validateGUID(parentElementGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}/parent/{3}/{4}?assetManagerIsHome={5}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/{3}/schema-types/{4}?assetManagerIsHome={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
-                                        schemaTypeGUID,
                                         parentElementGUID,
                                         parentElementTypeName,
+                                        schemaTypeGUID,
                                         assetManagerIsHome);
     }
 
@@ -405,16 +408,16 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         invalidParameterHandler.validateGUID(parentElementGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}/parent/{3}/{4}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/{3}/schema-types/{4}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
-                                        schemaTypeGUID,
                                         parentElementGUID,
-                                        parentElementTypeName);
+                                        parentElementTypeName,
+                                        schemaTypeGUID);
     }
 
 
@@ -544,7 +547,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentElementGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/elements/{2}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/schema-types/retrieve";
 
         SchemaTypeElementResponse restResult = restClient.callSchemaTypePostRESTCall(methodName,
                                                                                      urlTemplate,
@@ -683,7 +686,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/elements/{2}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/schema-types/{2}/retrieve";
 
         ElementHeaderResponse restResult = restClient.callElementHeaderPostRESTCall(methodName,
                                                                                     urlTemplate,
@@ -740,11 +743,13 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        final String methodName                  = "createSchemaAttribute";
-        final String propertiesParameterName     = "schemaAttributeProperties";
-        final String qualifiedNameParameterName  = "schemaAttributeProperties.qualifiedName";
+        final String methodName                     = "createSchemaAttribute";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
+        final String propertiesParameterName        = "schemaAttributeProperties";
+        final String qualifiedNameParameterName     = "schemaAttributeProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
@@ -760,13 +765,14 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                    mappingProperties,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes?assetManagerIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/schema-attributes?assetManagerIsHome={3}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
+                                                                  schemaElementGUID,
                                                                   assetManagerIsHome);
 
         return restResult.getGUID();
@@ -779,6 +785,8 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
+     * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
      * @param schemaAttributeExternalIdentifierName name of property for the external identifier in the external asset manager
@@ -799,6 +807,8 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
     public String createSchemaAttributeFromTemplate(String              userId,
                                                     String              assetManagerGUID,
                                                     String              assetManagerName,
+                                                    boolean             assetManagerIsHome,
+                                                    String              schemaElementGUID,
                                                     String              templateGUID,
                                                     String              schemaAttributeExternalIdentifier,
                                                     String              schemaAttributeExternalIdentifierName,
@@ -811,11 +821,13 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                                    PropertyServerException
     {
         final String methodName                  = "createSchemaAttributeFromTemplate";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
         final String templateGUIDParameterName   = "templateGUID";
         final String propertiesParameterName     = "templateProperties";
         final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -832,14 +844,16 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                    mappingProperties,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/schema-attributes/from-template/{3}?assetManagerIsHome={4}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  templateGUID);
+                                                                  schemaElementGUID,
+                                                                  templateGUID,
+                                                                  assetManagerIsHome);
 
         return restResult.getGUID();
     }
@@ -906,6 +920,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this classification
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param schemaElementExternalIdentifier unique identifier of the schema element in the external asset manager
      *
@@ -914,14 +929,15 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setSchemaElementAsCalculatedValue(String userId,
-                                                  String assetManagerGUID,
-                                                  String assetManagerName,
-                                                  String schemaElementGUID,
-                                                  String schemaElementExternalIdentifier,
-                                                  String formula) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void setSchemaElementAsCalculatedValue(String  userId,
+                                                  String  assetManagerGUID,
+                                                  String  assetManagerName,
+                                                  boolean assetManagerIsHome,
+                                                  String  schemaElementGUID,
+                                                  String  schemaElementExternalIdentifier,
+                                                  String  formula) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String methodName = "setSchemaElementAsCalculatedValue";
         final String schemaElementGUIDParameterName = "schemaElementGUID";
@@ -936,14 +952,15 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                    schemaElementExternalIdentifier,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/is-calculated-value";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/is-calculated-value?assetManagerIsHome={3}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        schemaElementGUID);
+                                        schemaElementGUID,
+                                        assetManagerIsHome);
     }
 
 
@@ -1025,15 +1042,13 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
         PrimaryKeyClassificationRequestBody requestBody = new PrimaryKeyClassificationRequestBody();
 
-        PrimaryKeyProperties                primaryKeyProperties = new PrimaryKeyProperties();
+        PrimaryKeyProperties primaryKeyProperties = new PrimaryKeyProperties();
         primaryKeyProperties.setName(primaryKeyName);
         primaryKeyProperties.setKeyPattern(primaryKeyPattern);
 
         requestBody.setPrimaryKeyProperties(primaryKeyProperties);
-        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
-                                                                                   assetManagerName,
-                                                                                   schemaAttributeExternalIdentifier,
-                                                                                   methodName));
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/is-primary-key?assetManagerIsHome={3}";
 
@@ -1220,7 +1235,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         invalidParameterHandler.validateGUID(primaryKeyGUID, primaryKeyGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(foreignKeyGUID, foreignKeyGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/terms/{4}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/relationships/{3}/foreign-keys/{4}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,

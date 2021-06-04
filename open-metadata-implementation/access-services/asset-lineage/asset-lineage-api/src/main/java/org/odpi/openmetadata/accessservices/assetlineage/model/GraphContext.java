@@ -121,4 +121,15 @@ public class GraphContext {
     public int hashCode() {
         return Objects.hash(relationshipType, fromVertex, toVertex);
     }
+
+    @Override
+    public String toString() {
+        return "GraphContext{" +
+                "relationshipType='" + relationshipType + '\'' +
+                ", relationshipGuid='" + relationshipGuid + '\'' +
+                ", fromVertex=" + fromVertex +
+                ", toVertex=" + toVertex +
+                '}';
+    }
 }
+

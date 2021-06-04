@@ -3,13 +3,10 @@
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.*;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.OwnerCategory;
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -29,7 +26,7 @@ import java.util.Map;
  */
 abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 {
-    private PropertyHelper propertyHelper = new PropertyHelper();
+    protected PropertyHelper propertyHelper = new PropertyHelper();
 
 
     /**
@@ -136,7 +133,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
      * @param entity entity containing the classifications
      * @return list of bean classifications
      */
-    private List<ElementClassification> getElementClassifications(EntityDetail entity)
+    List<ElementClassification> getElementClassifications(EntityDetail entity)
     {
         if (entity != null)
         {
@@ -167,11 +164,19 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
                 {
                     ElementClassification beanClassification = new ElementClassification();
 
+                    fillElementControlHeader(beanClassification, entityClassification);
+
                     beanClassification.setClassificationName(entityClassification.getName());
 
-                    Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties());
+                    if (entityClassification.getProperties() != null)
+                    {
+                        Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(
+                                entityClassification.getProperties());
 
-                    beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                        beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                        beanClassification.setEffectiveFromTime(entityClassification.getProperties().getEffectiveFromTime());
+                        beanClassification.setEffectiveToTime(entityClassification.getProperties().getEffectiveToTime());
+                    }
 
                     beanClassifications.add(beanClassification);
                 }
@@ -233,7 +238,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
      * @param instanceProvenanceType value from the repository services
      * @return ElementOrigin enum
      */
-    ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType)
+    private ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType)
     {
         if (instanceProvenanceType != null)
         {
@@ -266,16 +271,16 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
     }
 
 
-
     /**
-     * Retrieve and delete the OwnerCategory enum property from the instance properties of an entity
+     * Retrieve and delete the GovernanceActionStatus enum property from the instance properties of an entity
      *
      * @param properties  entity properties
      * @return OwnerType  enum value
      */
-    OwnerCategory removeOwnerCategoryFromProperties(InstanceProperties   properties)
+    GovernanceActionStatus removeActionStatus(String               propertyName,
+                                              InstanceProperties   properties)
     {
-        OwnerCategory ownerCategory = this.getOwnerCategoryFromProperties(properties);
+        GovernanceActionStatus ownerCategory = this.getActionStatus(propertyName, properties);
 
         if (properties != null)
         {
@@ -283,7 +288,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+                instancePropertiesMap.remove(propertyName);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);
@@ -294,14 +299,16 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 
 
     /**
-     * Retrieve the OwnerCategory enum property from the instance properties of a classification
+     * Retrieve the ActionStatus enum property from the instance properties of a Governance Action.
      *
+     * @param propertyName name ot property to extract the enum from
      * @param properties  entity properties
-     * @return OwnerType  enum value
+     * @return ActionStatus  enum value
      */
-    OwnerCategory getOwnerCategoryFromProperties(InstanceProperties   properties)
+    private GovernanceActionStatus getActionStatus(String               propertyName,
+                                                   InstanceProperties   properties)
     {
-        OwnerCategory ownerCategory = OwnerCategory.OTHER;
+        GovernanceActionStatus governanceActionStatus = GovernanceActionStatus.OTHER;
 
         if (properties != null)
         {
@@ -309,7 +316,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(propertyName);
 
                 if (instancePropertyValue instanceof EnumPropertyValue)
                 {
@@ -318,22 +325,212 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
                     switch (enumPropertyValue.getOrdinal())
                     {
                         case 0:
-                            ownerCategory = OwnerCategory.USER_ID;
+                            governanceActionStatus = GovernanceActionStatus.REQUESTED;
                             break;
 
                         case 1:
-                            ownerCategory = OwnerCategory.PROFILE_ID;
+                            governanceActionStatus = GovernanceActionStatus.APPROVED;
+                            break;
+
+                        case 2:
+                            governanceActionStatus = GovernanceActionStatus.WAITING;
+                            break;
+
+                        case 3:
+                            governanceActionStatus = GovernanceActionStatus.ACTIVATING;
+                            break;
+
+                        case 4:
+                            governanceActionStatus = GovernanceActionStatus.IN_PROGRESS;
+                            break;
+
+                        case 10:
+                            governanceActionStatus = GovernanceActionStatus.ACTIONED;
+                            break;
+
+                        case 11:
+                            governanceActionStatus = GovernanceActionStatus.INVALID;
+                            break;
+
+                        case 12:
+                            governanceActionStatus = GovernanceActionStatus.IGNORED;
+                            break;
+
+                        case 13:
+                            governanceActionStatus = GovernanceActionStatus.FAILED;
                             break;
 
                         case 99:
-                            ownerCategory = OwnerCategory.OTHER;
+                            governanceActionStatus = GovernanceActionStatus.OTHER;
                             break;
                     }
                 }
             }
         }
 
-        return ownerCategory;
+        return governanceActionStatus;
     }
 
+
+    /**
+     * Translate the repository services' InstanceStatus to an ElementStatus.
+     *
+     * @param instanceStatus value from the repository services
+     * @return ElementStatus enum
+     */
+    ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    {
+        if (instanceStatus != null)
+        {
+            switch (instanceStatus)
+            {
+                case UNKNOWN:
+                    return ElementStatus.UNKNOWN;
+
+                case DRAFT:
+                    return ElementStatus.DRAFT;
+
+                case PREPARED:
+                    return ElementStatus.PREPARED;
+
+                case PROPOSED:
+                    return ElementStatus.PROPOSED;
+
+                case APPROVED:
+                    return ElementStatus.APPROVED;
+
+                case REJECTED:
+                    return ElementStatus.REJECTED;
+
+                case APPROVED_CONCEPT:
+                    return ElementStatus.APPROVED_CONCEPT;
+
+                case UNDER_DEVELOPMENT:
+                    return ElementStatus.UNDER_DEVELOPMENT;
+
+                case DEVELOPMENT_COMPLETE:
+                    return ElementStatus.DEVELOPMENT_COMPLETE;
+
+                case APPROVED_FOR_DEPLOYMENT:
+                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
+
+                case STANDBY:
+                    return ElementStatus.STANDBY;
+
+                case ACTIVE:
+                    return ElementStatus.ACTIVE;
+
+                case FAILED:
+                    return ElementStatus.FAILED;
+
+                case DISABLED:
+                    return ElementStatus.DISABLED;
+
+                case COMPLETE:
+                    return ElementStatus.COMPLETE;
+
+                case DEPRECATED:
+                    return ElementStatus.DEPRECATED;
+
+                case OTHER:
+                    return ElementStatus.OTHER;
+            }
+        }
+
+        return ElementStatus.UNKNOWN;
+    }
+
+
+    /**
+     * Build an open metadata element bean from a matching entity.
+     *
+     * @param entityGUID unique identifier of desired entity
+     * @param entities list of retrieved entities
+     * @return new bean or null if guid is not in list
+     */
+    OpenMetadataElement getOpenMetadataElement(String              entityGUID,
+                                               List<EntityDetail>  entities)
+    {
+        OpenMetadataElement metadataElement = new OpenMetadataElement();
+
+        if (entities != null)
+        {
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    if (entityGUID.equals(entity.getGUID()))
+                    {
+                        this.fillOpenMetadataElement(metadataElement, entity);
+
+                        return metadataElement;
+                    }
+                }
+            }
+        }
+
+        /*
+         * The entity was not retrieved - however, returning the guid allows the caller to retrieve the element separately.
+         */
+        metadataElement.setElementGUID(entityGUID);
+
+        return metadataElement;
+    }
+
+
+    /**
+     * Fill a GAF control header from the information in a repository services element header.
+     *
+     * @param elementControlHeader GAF object control header
+     * @param header OMRS element header
+     */
+    void fillElementControlHeader(ElementControlHeader elementControlHeader,
+                                  InstanceAuditHeader  header)
+    {
+        if (header != null)
+        {
+            elementControlHeader.setElementSourceServer(serverName);
+            elementControlHeader.setElementOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementControlHeader.setElementMetadataCollectionId(header.getMetadataCollectionId());
+            elementControlHeader.setElementMetadataCollectionName(header.getMetadataCollectionName());
+            elementControlHeader.setElementLicense(header.getInstanceLicense());
+            elementControlHeader.setElementCreatedBy(header.getCreatedBy());
+            elementControlHeader.setElementUpdatedBy(header.getUpdatedBy());
+            elementControlHeader.setElementMaintainedBy(header.getMaintainedBy());
+            elementControlHeader.setElementCreateTime(header.getCreateTime());
+            elementControlHeader.setElementUpdateTime(header.getUpdateTime());
+            elementControlHeader.setElementVersion(header.getVersion());
+            elementControlHeader.setStatus(this.getElementStatus(header.getStatus()));
+            elementControlHeader.setMappingProperties(header.getMappingProperties());
+        }
+    }
+
+
+    /**
+     * Fill out the properties for the GAF Open Metadata Element bean with values from an OMRS entity.
+     *
+     * @param bean bean to fill
+     * @param entity values from repositories
+     */
+    void fillOpenMetadataElement(OpenMetadataElement bean,
+                                 EntityDetail        entity)
+    {
+        fillElementControlHeader(bean, entity);
+
+        bean.setElementGUID(entity.getGUID());
+        bean.setElementType(this.getElementType(entity));
+        bean.setClassifications(this.getElementClassifications(entity));
+
+        InstanceProperties instanceProperties = entity.getProperties();
+
+        if (instanceProperties != null)
+        {
+            bean.setEffectiveFromTime(instanceProperties.getEffectiveFromTime());
+            bean.setEffectiveToTime(instanceProperties.getEffectiveToTime());
+
+            Map<String, Object> propertyMap = repositoryHelper.getInstancePropertiesAsMap(instanceProperties);
+
+            bean.setElementProperties(propertyHelper.addPropertyMap(new ElementProperties(), propertyMap));
+        }
+    }
 }

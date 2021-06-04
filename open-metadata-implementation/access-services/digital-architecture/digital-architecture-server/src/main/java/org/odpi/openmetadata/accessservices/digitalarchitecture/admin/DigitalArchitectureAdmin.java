@@ -107,7 +107,7 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   DigitalArchitectureAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

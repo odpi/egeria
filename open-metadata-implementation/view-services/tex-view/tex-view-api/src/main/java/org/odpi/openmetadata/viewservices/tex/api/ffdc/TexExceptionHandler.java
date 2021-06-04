@@ -73,29 +73,32 @@ public class TexExceptionHandler {
     {
 
         String serverName;
-        switch (repositoryException.getReportedErrorMessageId()) {
-            case "OMAG-MULTI-TENANT-404-001":        // platform is contactable, but repository server is not available
-                serverName = repositoryException.getReportedErrorMessageParameters()[0];
-                return new TexViewServiceException(TexViewErrorCode.REPOSITORY_NOT_AVAILABLE.getMessageDefinition(methodName,serverName),
-                                                   className,
-                                                   methodName);
+        String reportedErrorMessageId = repositoryException.getReportedErrorMessageId();
+        if (reportedErrorMessageId != null)
+        {
+            switch (reportedErrorMessageId)
+            {
+                case "OMAG-MULTI-TENANT-404-001":        // platform is contactable, but repository server is not available
+                    serverName = repositoryException.getReportedErrorMessageParameters()[0];
+                    return new TexViewServiceException(TexViewErrorCode.REPOSITORY_NOT_AVAILABLE.getMessageDefinition(methodName, serverName),
+                                                       className,
+                                                       methodName);
 
-            case "OMRS-REST-API-503-006":           // platform is not contactable, suspect wrong platform URL
-                serverName = repositoryException.getReportedErrorMessageParameters()[1];
-                return new TexViewServiceException(TexViewErrorCode.PLATFORM_NOT_AVAILABLE.getMessageDefinition(methodName,serverName),
-                                                   className,
-                                                   methodName);
-
-            default:
-                /*
-                 * This is a non-specific repository error - so just pass on the message from the original exception
-                 */
-                String message = repositoryException.getReportedErrorMessage();
-                return new TexViewServiceException(TexViewErrorCode.REPOSITORY_ERROR.getMessageDefinition(methodName,message),
-                                                   className,
-                                                   methodName);
-
+                case "OMRS-REST-API-503-006":           // platform is not contactable, suspect wrong platform URL
+                    serverName = repositoryException.getReportedErrorMessageParameters()[1];
+                    return new TexViewServiceException(TexViewErrorCode.PLATFORM_NOT_AVAILABLE.getMessageDefinition(methodName, serverName),
+                                                       className,
+                                                       methodName);
+            }
         }
+
+        /*
+         * This is a non-specific repository error - so just pass on the message from the original exception
+         */
+        String message = repositoryException.getReportedErrorMessage();
+        return new TexViewServiceException(TexViewErrorCode.REPOSITORY_ERROR.getMessageDefinition(methodName, message),
+                                           className,
+                                           methodName);
 
     }
 

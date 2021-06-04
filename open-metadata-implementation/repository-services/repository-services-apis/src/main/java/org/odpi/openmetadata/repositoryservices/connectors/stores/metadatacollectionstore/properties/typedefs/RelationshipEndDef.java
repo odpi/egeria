@@ -82,7 +82,14 @@ public class RelationshipEndDef extends TypeDefElementHeader
      */
     public void setEntityType(TypeDefLink entityType)
     {
-        this.entityType = entityType;
+        if (entityType == null)
+        {
+            this.entityType = null;
+        }
+        else
+        {
+            this.entityType = new TypeDefLink(entityType);
+        }
     }
 
 

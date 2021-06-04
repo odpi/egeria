@@ -6,10 +6,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeCl
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTermClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaLine;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
@@ -32,7 +32,7 @@ public class CheckSerializationFVT {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         this.subjectAreaTerm = new SubjectAreaTermClient<>(client);
         this.subjectAreaGlossary = new SubjectAreaGlossaryClient<>(client);
-        this.subjectAreaRelationship = new SubjectAreaLine(client);
+        this.subjectAreaRelationship = new SubjectAreaRelationship(client);
     }
 
     public static void main(String[] args) {
@@ -87,54 +87,54 @@ public class CheckSerializationFVT {
     }
 
     public void checkChildrenSerialization(String oneTermGuid, String twoTermGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
-        List<Line> termAnchors = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
+        List<Relationship> termAnchors = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         checkCastChild(termAnchors.get(0), TermAnchor.class);
         System.out.println("TermAnchor is ok.");
 
         createHasA(oneTermGuid, twoTermGuid);
-        List<Line> hasAList = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
+        List<Relationship> hasAList = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         hasAList.removeIf(line -> line instanceof TermAnchor);
         HasA hasA = checkCastChild(hasAList.get(0), HasA.class);
         subjectAreaRelationship.hasA().delete(userId, hasA.getGuid());
         System.out.println("HasA is ok.");
 
         createIsA(oneTermGuid, twoTermGuid);
-        List<Line> isAList = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
+        List<Relationship> isAList = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         isAList.removeIf(line -> line instanceof TermAnchor);
         IsA isA = checkCastChild(isAList.get(0), IsA.class);
         subjectAreaRelationship.isA().delete(userId, isA.getGuid());
         System.out.println("IsA is ok.");
 
         createRelatedTerm(oneTermGuid,twoTermGuid);
-        List<Line> relatedTerms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
+        List<Relationship> relatedTerms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         relatedTerms.removeIf(line -> line instanceof TermAnchor);
         RelatedTerm relatedTerm = checkCastChild(relatedTerms.get(0), RelatedTerm.class);
         subjectAreaRelationship.relatedTerm().delete(userId, relatedTerm.getGuid());
         System.out.println("RelatedTerm is ok.");
 
         createTranslation(oneTermGuid, twoTermGuid);
-        List<Line> translations = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
+        List<Relationship> translations = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         translations.removeIf(line -> line instanceof TermAnchor);
         Translation translation = checkCastChild(translations.get(0), Translation.class);
         subjectAreaRelationship.translation().delete(userId, translation.getGuid());
         System.out.println("Translation is ok.");
 
         createPreferredTerm(oneTermGuid, twoTermGuid);
-        List<Line> preferredTerms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
+        List<Relationship> preferredTerms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         preferredTerms.removeIf(line -> line instanceof TermAnchor);
         PreferredTerm preferredTerm = checkCastChild(preferredTerms.get(0), PreferredTerm.class);
         subjectAreaRelationship.preferredTerm().delete(userId, preferredTerm.getGuid());
         System.out.println("PreferredTerm is ok.");
 
         createSynonym(oneTermGuid, twoTermGuid);
-        List<Line> synonyms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
+        List<Relationship> synonyms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         synonyms.removeIf(line -> line instanceof TermAnchor);
         Synonym synonym = checkCastChild(synonyms.get(0), Synonym.class);
         subjectAreaRelationship.synonym().delete(userId, synonym.getGuid());
         System.out.println("Synonym is ok.");
     }
 
-    private  <L extends Line, ForCast extends Line>ForCast checkCastChild(L line, Class<ForCast> lClass) throws SubjectAreaFVTCheckedException {
+    private  <L extends Relationship, ForCast extends Relationship>ForCast checkCastChild(L line, Class<ForCast> lClass) throws SubjectAreaFVTCheckedException {
         try {
             return (ForCast) line;
         } catch (ClassCastException e) {

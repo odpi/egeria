@@ -40,7 +40,7 @@ Figure 1 shows the repository proxy in action:
 > **Figure 1:** showing a repository proxy acting as an adapter for a third party metadata server
 
 You can create your own implementation of the repository connectors for your favorite metadata server
-using [these instructions](https://www.odpi.org/blog/2019/07/08/implementing-an-open-metadata-connector).
+using [these instructions](https://wiki.lfaidata.foundation/display/EG/Implement+an+Open+Metadata+Repository+Connector).
 Alternatively Egeria provides repository connector implementations for two third party metadata servers:
 
   * [IBM Information Governance Catalog (IGC)](https://github.com/odpi/egeria-connector-ibm-information-server)
@@ -190,7 +190,7 @@ These are links to more information about cohorts
 * [Querying the members of an Open Metadata Repository Cohort](../../../../open-metadata-implementation/repository-services/docs/component-descriptions/omrs-rest-services.md)
 
 This link provides guidance if you are interested in writing your own repository connectors:
-* [Writing repository connectors for a third party metadata repository](https://www.odpi.org/blog/2019/07/08/implementing-an-open-metadata-connector)
+* [Writing repository connectors for a third party metadata repository](https://wiki.lfaidata.foundation/display/EG/Implement+an+Open+Metadata+Repository+Connector)
 
 ----
 * Return to the [Egeria solutions](..)

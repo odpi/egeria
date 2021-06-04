@@ -17,18 +17,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "class")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = GovernanceServiceConfigurationEvent.class, name = "GovernanceServiceConfigurationEvent")
-})
 public class GovernanceEngineConfigurationEvent extends GovernanceEngineEvent
 {
     private static final long serialVersionUID = 1L;
 
-    private String governanceEngineGUID = null;
-    private String governanceEngineName = null;
+
 
     /**
      * Default constructor
@@ -47,57 +40,8 @@ public class GovernanceEngineConfigurationEvent extends GovernanceEngineEvent
     public GovernanceEngineConfigurationEvent(GovernanceEngineConfigurationEvent template)
     {
         super(template);
-
-        if (template != null)
-        {
-            governanceEngineGUID = template.getGovernanceEngineGUID();
-            governanceEngineName = template.getGovernanceEngineName();
-        }
     }
 
-
-    /**
-     * Return the unique identifier of the governance engine that has a configuration change.
-     *
-     * @return string guid
-     */
-    public String getGovernanceEngineGUID()
-    {
-        return governanceEngineGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the governance engine that has a configuration change.
-     *
-     * @param governanceEngineGUID string guid
-     */
-    public void setGovernanceEngineGUID(String governanceEngineGUID)
-    {
-        this.governanceEngineGUID = governanceEngineGUID;
-    }
-
-
-    /**
-     * Return the unique name of the governance engine that has a configuration change.
-     *
-     * @return string name
-     */
-    public String getGovernanceEngineName()
-    {
-        return governanceEngineName;
-    }
-
-
-    /**
-     * Set up the unique name of the governance engine that has a configuration change.
-     *
-     * @param governanceEngineName string name
-     */
-    public void setGovernanceEngineName(String governanceEngineName)
-    {
-        this.governanceEngineName = governanceEngineName;
-    }
 
 
     /**
@@ -109,47 +53,10 @@ public class GovernanceEngineConfigurationEvent extends GovernanceEngineEvent
     public String toString()
     {
         return "GovernanceEngineConfigurationEvent{" +
-                "governanceEngineGUID='" + governanceEngineGUID + '\'' +
-                ", governanceEngineName='" + governanceEngineName + '\'' +
-                '}';
-    }
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        GovernanceEngineConfigurationEvent that = (GovernanceEngineConfigurationEvent) objectToCompare;
-        return Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
-                Objects.equals(governanceEngineName, that.governanceEngineName);
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), governanceEngineGUID, governanceEngineName);
+                       "eventVersionId=" + getEventVersionId() +
+                       ", eventType=" + getEventType() +
+                       ", governanceEngineGUID='" + getGovernanceEngineGUID() + '\'' +
+                       ", governanceEngineName='" + getGovernanceEngineName() + '\'' +
+                       '}';
     }
 }

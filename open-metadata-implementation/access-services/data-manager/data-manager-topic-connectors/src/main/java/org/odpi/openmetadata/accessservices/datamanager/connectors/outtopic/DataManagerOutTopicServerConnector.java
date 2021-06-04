@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerAuditCode;
-import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -25,7 +25,7 @@ public class DataManagerOutTopicServerConnector extends OpenMetadataTopicSenderC
      * @throws InvalidParameterException the event is null
      * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s)./
      */
-    public void sendEvent(DataManagerOutTopicEvent event) throws InvalidParameterException, ConnectorCheckedException
+    public void sendEvent(DataManagerOutboundEvent event) throws InvalidParameterException, ConnectorCheckedException
     {
         final String methodName = "sendEvent";
         ObjectMapper objectMapper = new ObjectMapper();
@@ -44,7 +44,7 @@ public class DataManagerOutTopicServerConnector extends OpenMetadataTopicSenderC
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             throw new ConnectorCheckedException(DataManagerErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
                                                                                                                    event.toString(),

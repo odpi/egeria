@@ -1,35 +1,117 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
+
+# -- Certificate authority 
+[ ca ]
+default_ca = CA_default
+
+[CA_default]
+dir               = ${ENV::CA}
+certs             = $dir/certs
+crl_dir           = $dir/crl
+new_certs_dir     = $dir/newcerts
+database          = $dir/index.txt
+serial            = $dir/serial
+RANDFILE          = $dir/private/.rand
+private_key       = $dir/private/${ENV::CA}.key.pem
+certificate       = $dir/certs/${ENV::CA}.cert.pem
+crlnumber         = $dir/crlnumber
+crl               = $dir/crl/${ENV::CA}.crl.pem
+crl_extensions    = crl_ext
+default_crl_days  = 30
+default_md        = sha256
+name_opt          = ca_default
+cert_opt          = ca_default
+default_days      = 375
+preserve          = no
+policy            = ${ENV::CA_POLICY}
+
+[ policy_strict ]
+countryName             = match
+stateOrProvinceName     = match
+organizationName        = match
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+# Not used -- when creating the intermediate CA, optionally use an alternate config with this policy instead for the ca
+[ policy_loose ]
+countryName             = optional
+stateOrProvinceName     = optional
+localityName            = optional
+organizationName        = optional
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
 [req]
-prompt = no
 distinguished_name = req-distinguished-name
 default_bits = 4096
-req_extensions = v3_req
 x509_extensions = v3_ca
 default_days = 824
+string_mask = utf8only
+default_md = sha256
+
 
 [req-distinguished-name]
-C = US
-L = San Francisco
-ST = CA
-O = ODPi
-OU = Egeria
-CN = RootCertificateAuthority
+countryName_default = US
+LocalityName_default = San Francisco
+stateOrProvinceName_default = CA
+organizationName_default = LFAIData
+organizationalUnitName_default = Egeria
+
+[ usr_cert ]
+nsCertType = client, email
+nsCommentType = "Self signed user cert from egeria"
+basicConstraints = CA:false
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = clientAuth, emailProtection
+
 
 [v3_ca]
 subjectKeyIdentifier    = hash
 authorityKeyIdentifier  = keyid:always, issuer:always
-basicConstraints = critical, CA:true
-keyUsage = critical, digitalSignature, keyCertSign, cRLSign
+basicConstraints = critical,CA:true
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
 
-[v3_req]
-basicConstraints = critical, CA:false
+[ v3_intermediate_ca ]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical, CA:true, pathlen:0
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+
+[server_cert]
+basicConstraints = CA:false
+nsCertType = server
 subjectKeyIdentifier    = hash
-keyUsage                = critical, nonRepudiation, digitalSignature, keyEncipherment, keyAgreement
+keyUsage                = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage        = serverAuth
+subjectAltName          = ${ENV::SAN}
+#nsCommentType = "Self signed server cert from egeria"
+authorityKeyIdentifier = keyid,issuer:always
 
-[v3_server]
-extendedKeyUsage        = critical, serverAuth
+# Not used in script - for revocation requests
+[ crl_ext ]
+authorityKeyIdentifier=keyid:always
 
-[v3_client]
-extendedKeyUsage        = critical, clientAuth
+# Also not used - for oscp signing
+[ ocsp ]
+# Extension for OCSP signing certificates (`man ocsp`).
+basicConstraints = CA:FALSE
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+keyUsage = critical, digitalSignature
+extendedKeyUsage = critical, OCSPSigning
+
+#
+[client_cert]
+nsCertType = client, email
+#nsCommentType = "Self signed client cert from egeria"
+basicConstraints = CA:false
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = clientAuth
 

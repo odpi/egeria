@@ -29,10 +29,12 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     private String                                  testCaseName           = null;
     private String                                  testCaseDescriptionURL = null;
     private OpenMetadataConformanceTestEvidenceType testEvidenceType       = null;
-    private String                                  assertionMessage       = null;
+    private String                                  assertionId            = null;
     private String                                  propertyName           = null;
     private Object                                  propertyValue          = null;
     private ExceptionBean                           conformanceException   = null;
+    private String                                  methodName             = null;
+    private Long                                    elapsedTime            = null;
 
 
     /**
@@ -45,26 +47,24 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
 
 
     /**
-     * Return the message to confirm the outcome of the test.
+     * Return the ID for the test, which can be cross-referenced with the specific testCaseId for additional details.
      *
-     * @return string message
+     * @return string ID
      */
-    public String getAssertionMessage()
+    public String getAssertionId()
     {
-        return assertionMessage;
+        return assertionId;
     }
-
 
     /**
-     * Set up the message to confirm the outcome of the test.
+     * Set up the assertion ID that defines the test.
      *
-     * @param assertionMessage string message
+     * @param assertionId string ID
      */
-    public void setAssertionMessage(String assertionMessage)
+    public void setAssertionId(String assertionId)
     {
-        this.assertionMessage = assertionMessage;
+        this.assertionId = assertionId;
     }
-
 
     /**
      * Return the identifier of the profile that this test evidence supports.
@@ -265,6 +265,48 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
 
 
     /**
+     * Return the name of the method that this evidence supports.
+     *
+     * @return String
+     */
+    public String getMethodName() {
+        return methodName;
+    }
+
+
+    /**
+     * Set up the name of the method that this evidence supports.
+     *
+     * @param methodName that this evidence supports
+     */
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+
+    /**
+     * Return the elapsed time taken to execute the specific test.
+     *
+     * @return integer giving elapsed time in milliseconds
+     */
+    public Long getElapsedTime()
+    {
+        return elapsedTime;
+    }
+
+
+    /**
+     * Set up the elapsed time to execute a specific test.
+     *
+     * @param elapsedTime in milliseconds
+     */
+    public void setElapsedTime(Long elapsedTime)
+    {
+        this.elapsedTime = elapsedTime;
+    }
+
+
+    /**
      * toString() JSON-style
      *
      * @return string description
@@ -279,10 +321,12 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
                 ", testCaseName='" + testCaseName + '\'' +
                 ", testCaseDescriptionURL='" + testCaseDescriptionURL + '\'' +
                 ", testEvidenceType=" + testEvidenceType +
-                ", assertionMessage='" + assertionMessage + '\'' +
+                ", assertionId='" + assertionId + '\'' +
                 ", propertyName='" + propertyName + '\'' +
                 ", propertyValue=" + propertyValue +
                 ", conformanceException=" + conformanceException +
+                ", methodName=" + methodName +
+                ", elapsedTime=" + elapsedTime +
                 '}';
     }
 }

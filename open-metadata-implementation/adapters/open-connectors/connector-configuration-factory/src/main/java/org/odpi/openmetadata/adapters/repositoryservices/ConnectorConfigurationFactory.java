@@ -2,20 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
-import org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider;
-import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider;
+
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
@@ -23,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConn
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +29,30 @@ public class ConnectorConfigurationFactory
     /*
      * Default property fillers
      */
-    private static final String defaultTopicRootName     = "openmetadata.repositoryservices.";
-    private static final String defaultOMRSTopicLeafName = ".OMRSTopic";
+    private static final String defaultTopicRootName                 = "openmetadata.repositoryservices.";
+    private static final String defaultSingleOMRSTopicLeafName       = ".OMRSTopic";
+    private static final String defaultRegistrationOMRSTopicLeafName = ".OMRSTopic.registration";
+    private static final String defaultTypesOMRSTopicLeafName        = ".OMRSTopic.types";
+    private static final String defaultInstancesOMRSTopicLeafName    = ".OMRSTopic.instances";
 
     private static final String defaultEnterpriseTopicConnectorRootName = defaultTopicRootName + "enterprise.";
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
+
+
+    private static final String ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER          = "org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider";
+    private static final String IN_MEMORY_OPEN_METADATA_TOPIC_PROVIDER                     = "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider";
+    private static final String KAFKA_OPEN_METADATA_TOPIC_PROVIDER                         = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
+    private static final String FILE_BASED_OPEN_METADATA_ARCHIVE_STORE_PROVIDER            = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider";
+    private static final String CONSOLE_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider";
+    private static final String EVENT_TOPIC_AUDIT_LOG_STORE_PROVIDER                       = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider";
+    private static final String FILE_BASED_AUDIT_LOG_STORE_PROVIDER                        = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider";
+    private static final String SLF_4_J_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider";
+    private static final String FILE_BASED_REGISTRY_STORE_PROVIDER                         = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
+    private static final String GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER                   = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
+    private static final String IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
+    private static final String READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
+    private static final String OMRSREST_REPOSITORY_CONNECTOR_PROVIDER                     = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
+    private static final String OMRS_TOPIC_PROVIDER                                        = "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider";
 
     private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
 
@@ -71,7 +78,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(EncryptedFileBasedServerConfigStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
         connection.setQualifiedName(endpoint.getAddress());
 
         return connection;
@@ -82,10 +89,10 @@ public class ConnectorConfigurationFactory
      *
      * @return Connection object
      */
-    public Connection getServerConfigConnectionForRetrieveAll()
+   public Connection getServerConfigConnectionForRetrieveAll()
     {
         Connection connection = new Connection();
-        connection.setConnectorType(getConnectorType(EncryptedFileBasedServerConfigStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
         return connection;
     }
 
@@ -139,14 +146,14 @@ public class ConnectorConfigurationFactory
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return OCF Connection used to create the stdout console audit logger
      */
-    public Connection getConsoleAuditLogConnection(List<String> supportedSeverities)
+   public Connection getConsoleAuditLogConnection(List<String> supportedSeverities)
     {
         final String destinationName = "Console";
 
         Connection connection = new Connection();
 
         connection.setDisplayName(destinationName);
-        connection.setConnectorType(getConnectorType(ConsoleAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(CONSOLE_AUDIT_LOG_STORE_PROVIDER));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
 
@@ -177,7 +184,7 @@ public class ConnectorConfigurationFactory
 
         connection.setDisplayName(destinationName + " in " + endpointAddress);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(FileBasedAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(FILE_BASED_AUDIT_LOG_STORE_PROVIDER));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
 
@@ -199,7 +206,7 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
 
         connection.setDisplayName(destinationName);
-        connection.setConnectorType(getConnectorType(SLF4JAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(SLF_4_J_AUDIT_LOG_STORE_PROVIDER));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
 
@@ -232,7 +239,7 @@ public class ConnectorConfigurationFactory
         VirtualConnection connection = new VirtualConnection();
 
         connection.setDisplayName(destinationName + " " + topicName);
-        connection.setConnectorType(getConnectorType(EventTopicAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(EVENT_TOPIC_AUDIT_LOG_STORE_PROVIDER));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection(localServerName + " Audit Log Event Topic Destination",
                                                                         null,
                                                                         eventBusConnectorProviderClassName,
@@ -262,7 +269,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
-        connection.setConnectorType(getConnectorType(FileBasedOpenMetadataArchiveStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(FILE_BASED_OPEN_METADATA_ARCHIVE_STORE_PROVIDER));
         connection.setEndpoint(endpoint);
 
         return connection;
@@ -287,7 +294,7 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
 
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(FileBasedRegistryStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(FILE_BASED_REGISTRY_STORE_PROVIDER));
 
         return connection;
     }
@@ -324,7 +331,7 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
 
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(OMRSRESTRepositoryConnectorProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(OMRSREST_REPOSITORY_CONNECTOR_PROVIDER));
 
         return connection;
     }
@@ -343,7 +350,7 @@ public class ConnectorConfigurationFactory
     {
         Connection connection = new Connection();
 
-        connection.setConnectorType(getConnectorType(GraphOMRSRepositoryConnectorProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
         connection.setConfigurationProperties(storageProperties);
 
         return connection;
@@ -359,7 +366,7 @@ public class ConnectorConfigurationFactory
     {
         Connection connection = new Connection();
 
-        connection.setConnectorType(getConnectorType(InMemoryOMRSRepositoryConnectorProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
 
         return connection;
     }
@@ -374,7 +381,7 @@ public class ConnectorConfigurationFactory
     {
         Connection connection = new Connection();
 
-        connection.setConnectorType(getConnectorType(ReadOnlyOMRSRepositoryConnectorProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
 
         return connection;
     }
@@ -391,9 +398,9 @@ public class ConnectorConfigurationFactory
      * @throws InstantiationException when the provided class cannot be instantiated
      * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
      */
-    public Connection  getRepositoryProxyConnection(String              connectorProviderClassName,
-                                                    String              url,
-                                                    Map<String, Object> configurationProperties) throws ClassNotFoundException,
+    public Connection getRepositoryConnection(String              connectorProviderClassName,
+                                              String              url,
+                                              Map<String, Object> configurationProperties) throws ClassNotFoundException,
                                                                                                         InstantiationException,
                                                                                                         IllegalAccessException
     {
@@ -494,9 +501,9 @@ public class ConnectorConfigurationFactory
             }
         }
 
-        String connectorTypeJavaClassName = KafkaOpenMetadataTopicProvider.class.getName();
+        String connectorTypeJavaClassName = KAFKA_OPEN_METADATA_TOPIC_PROVIDER;
 
-        if ((connectorProviderClassName != null) && (! "".equals(connectorProviderClassName)))
+        if ((connectorProviderClassName != null) && (connectorProviderClassName.length() > 0))
         {
             connectorTypeJavaClassName = connectorProviderClassName;
         }
@@ -506,7 +513,7 @@ public class ConnectorConfigurationFactory
             configurationProperties = new HashMap<>();
         }
 
-        configurationProperties.put(KafkaOpenMetadataTopicProvider.serverIdPropertyName, serverId);
+        configurationProperties.put("local.server.id", serverId);
 
         Connection connection = new Connection();
 
@@ -528,14 +535,14 @@ public class ConnectorConfigurationFactory
     public Connection getDefaultEnterpriseOMRSTopicConnection(String              localServerName,
                                                               String              serverId)
     {
-        String topicName = defaultEnterpriseTopicConnectorRootName + localServerName + defaultOMRSTopicLeafName;
+        String topicName = defaultEnterpriseTopicConnectorRootName + localServerName + defaultSingleOMRSTopicLeafName;
 
         VirtualConnection connection = new VirtualConnection();
 
-        connection.setConnectorType(getConnectorType(OMRSTopicProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(OMRS_TOPIC_PROVIDER));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection("Enterprise OMRS Events",
                                                                         null,
-                                                                        InMemoryOpenMetadataTopicProvider.class.getName(),
+                                                                        IN_MEMORY_OPEN_METADATA_TOPIC_PROVIDER,
                                                                         localServerName,
                                                                         topicName,
                                                                         serverId,
@@ -546,7 +553,7 @@ public class ConnectorConfigurationFactory
 
 
     /**
-     * Return the connection for the OMRS topic for the named cohort.
+     * Return the connection for the single OMRS topic for the named cohort.
      *
      * @param cohortName   name of the cohort
      * @param configurationProperties name value property pairs for the topic connection
@@ -556,25 +563,145 @@ public class ConnectorConfigurationFactory
      * @param eventBusConfigurationProperties name value property pairs for the event bus connection
      * @return Connection object
      */
-    public Connection getDefaultCohortOMRSTopicConnection(String              cohortName,
+    public Connection getDefaultSingleCohortOMRSTopicConnection(String              cohortName,
+                                                                Map<String, Object> configurationProperties,
+                                                                String              eventBusConnectorProvider,
+                                                                String              topicURLRoot,
+                                                                String              serverId,
+                                                                Map<String, Object> eventBusConfigurationProperties)
+    {
+        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultSingleOMRSTopicLeafName;
+        String eventSource = cohortName + " OMRS Topic";
+
+        return this.getDefaultCohortOMRSTopicConnection(topicName,
+                                                        configurationProperties,
+                                                        eventSource,
+                                                        eventBusConnectorProvider,
+                                                        topicURLRoot,
+                                                        serverId,
+                                                        eventBusConfigurationProperties);
+    }
+
+
+    /**
+     * Return the connection for the registration OMRS topic for the named cohort.
+     *
+     * @param cohortName   name of the cohort
+     * @param configurationProperties name value property pairs for the topic connection
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
+     * @return Connection object
+     */
+    public Connection getDefaultRegistrationCohortOMRSTopicConnection(String              cohortName,
+                                                                      Map<String, Object> configurationProperties,
+                                                                      String              eventBusConnectorProvider,
+                                                                      String              topicURLRoot,
+                                                                      Map<String, Object> eventBusConfigurationProperties)
+    {
+        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultRegistrationOMRSTopicLeafName;
+        String eventSource = cohortName + " OMRS Topic for registrations";
+
+        return this.getDefaultCohortOMRSTopicConnection(topicName,
+                                                        configurationProperties,
+                                                        eventSource,
+                                                        eventBusConnectorProvider,
+                                                        topicURLRoot,
+                                                        UUID.randomUUID().toString(),
+                                                        eventBusConfigurationProperties);
+    }
+
+
+    /**
+     * Return the connection for the registration OMRS topic for the named cohort.
+     *
+     * @param cohortName   name of the cohort
+     * @param configurationProperties name value property pairs for the topic connection
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
+     * @return Connection object
+     */
+    public Connection getDefaultTypesCohortOMRSTopicConnection(String              cohortName,
+                                                               Map<String, Object> configurationProperties,
+                                                               String              eventBusConnectorProvider,
+                                                               String              topicURLRoot,
+                                                               Map<String, Object> eventBusConfigurationProperties)
+    {
+        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultTypesOMRSTopicLeafName;
+        String eventSource = cohortName + " OMRS Topic for types";
+
+        return this.getDefaultCohortOMRSTopicConnection(topicName,
+                                                        configurationProperties,
+                                                        eventSource,
+                                                        eventBusConnectorProvider,
+                                                        topicURLRoot,
+                                                        UUID.randomUUID().toString(),
+                                                        eventBusConfigurationProperties);
+    }
+
+
+    /**
+     * Return the connection for the single OMRS topic for the named cohort.
+     *
+     * @param cohortName   name of the cohort
+     * @param configurationProperties name value property pairs for the topic connection
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
+     * @return Connection object
+     */
+    public Connection getDefaultInstancesCohortOMRSTopicConnection(String              cohortName,
+                                                                   Map<String, Object> configurationProperties,
+                                                                   String              eventBusConnectorProvider,
+                                                                   String              topicURLRoot,
+                                                                   String              serverId,
+                                                                   Map<String, Object> eventBusConfigurationProperties)
+    {
+        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultInstancesOMRSTopicLeafName;
+        String eventSource = cohortName + " OMRS Topic for instances";
+
+        return this.getDefaultCohortOMRSTopicConnection(topicName,
+                                                        configurationProperties,
+                                                        eventSource,
+                                                        eventBusConnectorProvider,
+                                                        topicURLRoot,
+                                                        serverId,
+                                                        eventBusConfigurationProperties);
+    }
+
+
+    /**
+     * Return the connection for the registration OMRS topic for the named cohort.
+     *
+     * @param topicName   name of the topic in the cohort
+     * @param configurationProperties name value property pairs for the topic connection
+     * @param eventSourceName name of the event source
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param consumerGroupId identifier of the consumer group - used to pick up the right offset for the inbound messages.
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
+     * @return Connection object
+     */
+    public Connection getDefaultCohortOMRSTopicConnection(String              topicName,
                                                           Map<String, Object> configurationProperties,
+                                                          String              eventSourceName,
                                                           String              eventBusConnectorProvider,
                                                           String              topicURLRoot,
-                                                          String              serverId,
+                                                          String              consumerGroupId,
                                                           Map<String, Object> eventBusConfigurationProperties)
     {
-        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultOMRSTopicLeafName;
-
         VirtualConnection connection = new VirtualConnection();
 
-        connection.setConnectorType(getConnectorType(OMRSTopicProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(OMRS_TOPIC_PROVIDER));
         connection.setConfigurationProperties(configurationProperties);
-        connection.setEmbeddedConnections(getEmbeddedEventBusConnection(cohortName + " OMRS Topic",
+        connection.setEmbeddedConnections(getEmbeddedEventBusConnection(eventSourceName,
                                                                         null,
                                                                         eventBusConnectorProvider,
                                                                         topicURLRoot,
                                                                         topicName,
-                                                                        serverId,
+                                                                        consumerGroupId,
                                                                         eventBusConfigurationProperties));
 
         return connection;

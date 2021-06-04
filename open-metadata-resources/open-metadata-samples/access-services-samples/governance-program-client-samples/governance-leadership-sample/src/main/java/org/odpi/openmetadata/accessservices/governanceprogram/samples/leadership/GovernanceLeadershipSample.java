@@ -3,13 +3,15 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.samples.leadership;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.PersonalProfileManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.NoProfileForUserException;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
-import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramLeadership;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceRoleManager;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceAppointee;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleAppointee;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleHistory;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerAppointee;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -72,7 +74,7 @@ public class GovernanceLeadershipSample
      * @param serverURLRoot server location to connect to.
      * @param clientUserId user id to use to access metadata.
      */
-    private GovernanceLeadershipSample(String  serverName, String serverURLRoot, String clientUserId)
+    public GovernanceLeadershipSample(String  serverName, String serverURLRoot, String clientUserId)
     {
         this.serverName = serverName;
         this.serverURLRoot = serverURLRoot;
@@ -93,15 +95,15 @@ public class GovernanceLeadershipSample
     private void  printPersonalProfile(PersonalProfileManagement     client,
                                        String                        clientUserId,
                                        String                        guid) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        PersonalProfile profile = client.getPersonalProfileByGUID(clientUserId, guid);
+        PersonalProfileUniverse profile = client.getPersonalProfileByGUID(clientUserId, guid);
 
         System.out.println("----------------------------");
         System.out.println("Profile: " + guid);
 
-        List<UserIdentity> userIdentities = profile.getAssociatedUserIds();
+        List<UserIdentityElement> userIdentities = profile.getUserIdentities();
         if (userIdentities == null)
         {
             System.out.println("  UserId: null <ERROR>");
@@ -112,20 +114,20 @@ public class GovernanceLeadershipSample
         }
         else if (userIdentities.size() == 1)
         {
-            UserIdentity   userIdentity = userIdentities.get(0);
+            UserIdentityElement   userIdentity = userIdentities.get(0);
             if (userIdentity == null)
             {
                 System.out.println("  UserId: empty <ERROR>");
             }
             else
             {
-                System.out.println("  UserId: " + userIdentity.getUserId());
+                System.out.println("  UserId: " + userIdentity.getProperties().getQualifiedName());
             }
         }
         else
         {
             System.out.print("  UserIds:");
-            for (UserIdentity  userIdentity : userIdentities)
+            for (UserIdentityElement  userIdentity : userIdentities)
             {
                 if (userIdentity == null)
                 {
@@ -133,24 +135,30 @@ public class GovernanceLeadershipSample
                 }
                 else
                 {
-                    System.out.print(" " + userIdentity.getUserId());
+                    System.out.print(" " + userIdentity.getProperties().getQualifiedName());
                 }
             }
             System.out.println();
         }
-        System.out.println("  Employee Id: " + profile.getQualifiedName());
-        System.out.println("  Full Name: " + profile.getFullName());
-        System.out.println("  Known Name: " + profile.getName());
-        System.out.println("  Job Title: " + profile.getJobTitle());
-        System.out.println("  Job Description: " + profile.getJobTitle());
-        System.out.println("  Work Location: " + profile.getAdditionalProperties().get(workLocationPropertyName));
-        System.out.println("  Contact Type: " + profile.getAdditionalProperties().get(contactTypePropertyName));
+
+        System.out.println("  Employee Id: " + profile.getProfileProperties().getQualifiedName());
+        System.out.println("  Full Name: " + profile.getProfileProperties().getFullName());
+        System.out.println("  Known Name: " + profile.getProfileProperties().getKnownName());
+        System.out.println("  Job Title: " + profile.getProfileProperties().getJobTitle());
+        System.out.println("  Job Description: " + profile.getProfileProperties().getJobTitle());
+
+        if (profile.getProfileProperties().getAdditionalProperties() != null)
+        {
+            System.out.println("  Work Location: " + profile.getProfileProperties().getAdditionalProperties().get(workLocationPropertyName));
+            System.out.println("  Contact Type: " + profile.getProfileProperties().getAdditionalProperties().get(contactTypePropertyName));
+        }
+
         System.out.println("----------------------------");
     }
 
 
     /**
-     * Extract and print out a governance office
+     * Extract and print out a governance officer
      *
      * @param client the client to call.
      * @param clientUserId the user id to use on the call.
@@ -159,45 +167,121 @@ public class GovernanceLeadershipSample
      * @throws PropertyServerException the property server is not available.
      * @throws UserNotAuthorizedException the user id is not authorized to access the personal profile.
      */
-    private void  printGovernanceOfficer(GovernanceProgramLeadership     client,
-                                         String                          clientUserId,
-                                         String                          guid) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+    private void  printGovernanceRole(GovernanceRoleManager client,
+                                      String                clientUserId,
+                                      String                guid) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
     {
-        GovernanceOfficerProperties governanceOfficer = client.getGovernanceOfficerByGUID(clientUserId, guid);
+        GovernanceRoleHistory    governanceRoleElement = client.getGovernanceRoleHistoryByGUID(clientUserId, guid);
 
-        System.out.println("----------------------------");
-        System.out.println("Governance Officer: " + guid);
-        System.out.println("  Domain: " + governanceOfficer.getGovernanceDomain());
-        System.out.println("  Appointment Id: " + governanceOfficer.getAppointmentId());
-        System.out.println("  Appointment Context: " + governanceOfficer.getAppointmentContext());
-        System.out.println("  Title: " + governanceOfficer.getQualifiedName());
+        printGovernanceRoleHistory(governanceRoleElement);
+    }
 
-        GovernanceOfficerAppointee appointee = governanceOfficer.getAppointee();
 
-        if (appointee != null)
-        {
-            System.out.println("  Appointee: " + appointee.getProfile().getKnownName());
-            System.out.println("  Start Date: " + appointee.getStartDate());
-            System.out.println("  End Date: " + appointee.getEndDate());
-        }
-        else
-        {
-            System.out.println("  Appointee: <None> ");
-        }
+    /**
+     * Extract and print out a governance officer and everyone who has been appointed to that role
+     *
+     * @param governanceRoleElement details to print out
+     */
+    private void  printGovernanceRoleHistory(GovernanceRoleHistory governanceRoleElement)
+    {
+        printGovernanceRole(governanceRoleElement);
+
+        System.out.println("  -- Current Appointees-----");
+
+        printGovernanceAppointees(governanceRoleElement.getCurrentAppointees());
+
+        System.out.println("  -- Predecessors ----------");
+
+        printGovernanceAppointees(governanceRoleElement.getPredecessors());
+
+        System.out.println("  -- Planned Successors-----");
+
+        printGovernanceAppointees(governanceRoleElement.getSuccessors());
+
         System.out.println("----------------------------");
     }
 
 
 
-    private void run() throws InvalidParameterException,
-                              PropertyServerException,
-                              NoProfileForUserException,
-                              UserNotAuthorizedException
+    /**
+     * Extract and print out a governance officer and everyone who has been appointed to that role
+     *
+     * @param governanceRoleElement details to print out
+     */
+    private void  printGovernanceRoleAppointee(GovernanceRoleAppointee governanceRoleElement)
     {
-        PersonalProfileManagement   ppmClient  = new PersonalProfileManagement(serverName, serverURLRoot);
-        GovernanceProgramLeadership gplClient = new GovernanceProgramLeadership(serverName, serverURLRoot);
+        printGovernanceRole(governanceRoleElement);
+
+        printGovernanceAppointees(governanceRoleElement.getCurrentAppointees());
+    }
+
+
+    /**
+     * Extract and print out a governance officer
+     *
+     * @param governanceRoleElement details to print out
+     */
+    private void  printGovernanceRole(GovernanceRoleElement governanceRoleElement)
+    {
+        GovernanceRoleProperties governanceRole = governanceRoleElement.getRole();
+
+        System.out.println("----------------------------");
+        System.out.println("Governance Role: " + governanceRoleElement.getElementHeader().getGUID());
+        if (governanceRole != null)
+        {
+            System.out.println("  Domain: " + governanceRole.getDomainIdentifier());
+            System.out.println("  Appointment Id: " + governanceRole.getRoleId());
+            System.out.println("  Appointment Scope: " + governanceRole.getScope());
+            System.out.println("  Title: " + governanceRole.getTitle());
+        }
+        else
+        {
+            System.out.println("  <no properties>");
+        }
+    }
+
+
+    /**
+     * Extract and print out a governance officer
+     *
+     * @param appointees retrieved appointees
+     */
+    private void printGovernanceAppointees(List<GovernanceAppointee> appointees)
+    {
+        if (appointees == null)
+        {
+            System.out.println("  Appointee: <None> ");
+        }
+        else
+        {
+            for (GovernanceAppointee appointee : appointees)
+            {
+                if (appointee != null)
+                {
+                    System.out.println("  Appointee: " + appointee.getProfile().getProfileProperties().getKnownName());
+                    System.out.println("     Start Date: " + appointee.getStartDate());
+                    System.out.println("     End Date: " + appointee.getEndDate());
+                }
+                else
+                {
+                    System.out.println("  Appointee: <Null> ");
+                }
+            }
+        }
+        System.out.println("----------------------------");
+    }
+
+
+    public void run() throws InvalidParameterException,
+                             PropertyServerException,
+                             UserNotAuthorizedException
+    {
+        PersonalProfileManagement ppmClient = new PersonalProfileManagement(serverName, serverURLRoot);
+        GovernanceRoleManager     gplClient = new GovernanceRoleManager(serverName, serverURLRoot);
+
+        GovernanceRoleProperties governanceRoleProperties;
 
         System.out.println("Creating profiles for Jules and Ivor");
 
@@ -206,13 +290,15 @@ public class GovernanceLeadershipSample
         julesAdditionalProperties.put(contactTypePropertyName, "Employee");
 
         String julesKeeperProfileGUID = ppmClient.createPersonalProfile(clientUserId,
-                                                                     julesKeeperUserId,
-                                                                     julesKeeperEmpNo,
-                                                                     "Julian Keeper",
-                                                                     "Jules Keeper",
-                                                                     "Chief Data and Privacy Officer",
-                                                                     "Ensuring CocoP makes the best use of data.",
-                                                                     julesAdditionalProperties);
+                                                                        null,
+                                                                        null,
+                                                                        julesKeeperUserId,
+                                                                        julesKeeperEmpNo,
+                                                                        "Julian Keeper",
+                                                                        "Jules Keeper",
+                                                                        "Chief Data and Privacy Role",
+                                                                        "Ensuring CocoP makes the best use of data.",
+                                                                        julesAdditionalProperties);
 
         this.printPersonalProfile(ppmClient, clientUserId, julesKeeperProfileGUID);
 
@@ -222,76 +308,76 @@ public class GovernanceLeadershipSample
         ivorAdditionalProperties.put(contactTypePropertyName, "Employee");
 
         String ivorPadlockProfileGUID  = ppmClient.createPersonalProfile(clientUserId,
-                                                                      ivorPadlockUserId,
-                                                                      ivorPadlockEmpNo,
-                                                                      null,  /* optional property */
-                                                                      "Ivor Padlock",
-                                                                      "Security Executive",
-                                                                      "Manages security for Coco Pharmaceuticals.",
-                                                                      ivorAdditionalProperties);
+                                                                         null,
+                                                                         null,
+                                                                         ivorPadlockUserId,
+                                                                         ivorPadlockEmpNo,
+                                                                         null,  /* optional property */
+                                                                         "Ivor Padlock",
+                                                                         "Security Executive",
+                                                                         "Manages security for Coco Pharmaceuticals.",
+                                                                         ivorAdditionalProperties);
 
         this.printPersonalProfile(ppmClient, clientUserId, ivorPadlockProfileGUID);
 
         System.out.println("Creating CDO, CPO and CSO governance officers");
 
-        String cdoGUID  = gplClient.createGovernanceOfficer(clientUserId,
-                                                            GovernanceDomain.DATA,
-                                                            cdoAppointmentId,
-                                                            null,
-                                                            "Chief Data Officer (CDO)",
-                                                            null,
-                                                            null);
+        governanceRoleProperties = new GovernanceRoleProperties();
 
-        this.printGovernanceOfficer(gplClient, clientUserId, cdoGUID);
+        governanceRoleProperties.setDomainIdentifier(GovernanceDomain.DATA.getOrdinal());
+        governanceRoleProperties.setRoleId(cdoAppointmentId);
+        governanceRoleProperties.setTitle("Chief Data Role (CDO)");
 
+        String cdoGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
-        String cpoGUID  = gplClient.createGovernanceOfficer(clientUserId,
-                                                         GovernanceDomain.PRIVACY,
-                                                         cpoAppointmentId,
-                                                         null,
-                                                         "Chief Privacy Officer (CPO)",
-                                                         null,
-                                                         null);
+        this.printGovernanceRole(gplClient, clientUserId, cdoGUID);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, cpoGUID);
+        governanceRoleProperties = new GovernanceRoleProperties();
 
+        governanceRoleProperties.setDomainIdentifier(GovernanceDomain.PRIVACY.getOrdinal());
+        governanceRoleProperties.setRoleId(cpoAppointmentId);
+        governanceRoleProperties.setTitle("Chief Privacy Role (CPO)");
 
-        String csoGUID  = gplClient.createGovernanceOfficer(clientUserId,
-                                                         GovernanceDomain.SECURITY,
-                                                         csoAppointmentId,
-                                                         null,
-                                                         "Chief Security Officer (CSO)",
-                                                         null,
-                                                         null);
+        String cpoGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, csoGUID);
+        this.printGovernanceRole(gplClient, clientUserId, cpoGUID);
 
-        List<GovernanceOfficerProperties> governanceOfficers = gplClient.getGovernanceOfficers(clientUserId);
+        governanceRoleProperties = new GovernanceRoleProperties();
 
-        System.out.println(governanceOfficers.size() + " governance officers");
+        governanceRoleProperties.setDomainIdentifier(GovernanceDomain.SECURITY.getOrdinal());
+        governanceRoleProperties.setRoleId(csoAppointmentId);
+        governanceRoleProperties.setTitle("Chief Security Role (CSO)");
+
+        String csoGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
+
+        this.printGovernanceRole(gplClient, clientUserId, csoGUID);
+
+        List<GovernanceRoleElement> governanceRoles = gplClient.getGovernanceRolesByDomainId(clientUserId, 0, 0 , 0);
+
+        System.out.println(governanceRoles.size() + " governance officers");
 
         System.out.println("Appointing CDO, CPO and CSO governance officers");
 
-        gplClient.appointGovernanceOfficer(clientUserId,
-                                        cdoGUID,
-                                        julesKeeperProfileGUID,
-                                        null);
+        gplClient.appointGovernanceRole(clientUserId,
+                                           cdoGUID,
+                                           julesKeeperProfileGUID,
+                                           null);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, cdoGUID);
+        this.printGovernanceRole(gplClient, clientUserId, cdoGUID);
 
-        gplClient.appointGovernanceOfficer(clientUserId,
-                                        cpoGUID,
-                                        julesKeeperProfileGUID,
-                                        null);
+        String julesAsCPOAppointmentId = gplClient.appointGovernanceRole(clientUserId,
+                                                                         cpoGUID,
+                                                                         julesKeeperProfileGUID,
+                                                                         null);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, cpoGUID);
+        this.printGovernanceRole(gplClient, clientUserId, cpoGUID);
 
-        gplClient.appointGovernanceOfficer(clientUserId,
-                                        csoGUID,
-                                        ivorPadlockProfileGUID,
-                                        null);
+        gplClient.appointGovernanceRole(clientUserId,
+                                           csoGUID,
+                                           ivorPadlockProfileGUID,
+                                           null);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, csoGUID);
+        this.printGovernanceRole(gplClient, clientUserId, csoGUID);
 
         System.out.println("Changing CPO to Faith");
 
@@ -300,52 +386,52 @@ public class GovernanceLeadershipSample
         faithAdditionalProperties.put(contactTypePropertyName, "Employee");
 
         String faithBrokerProfileGUID  = ppmClient.createPersonalProfile(clientUserId,
-                                                                     faithBrokerUserId,
-                                                                     faithBrokerEmpNo,
-                                                                     "Faith Charity Broker",
-                                                                     "Faith Broker",
-                                                                     "Human Resources Director",
-                                                                     "Providing support to Coco Pharmaceutical employees.",
-                                                                     faithAdditionalProperties);
+                                                                         null,
+                                                                         null,
+                                                                         faithBrokerUserId,
+                                                                         faithBrokerEmpNo,
+                                                                         "Faith Charity Broker",
+                                                                         "Faith Broker",
+                                                                         "Human Resources Director",
+                                                                         "Providing support to Coco Pharmaceutical employees.",
+                                                                         faithAdditionalProperties);
 
         this.printPersonalProfile(ppmClient, clientUserId, faithBrokerProfileGUID);
 
         long   handoverTime = new Date().getTime();
         Date   handoverDate = new Date(handoverTime + 100);
 
-        gplClient.relieveGovernanceOfficer(clientUserId, cpoGUID, julesKeeperProfileGUID, handoverDate);
+        gplClient.relieveGovernanceRole(clientUserId, cpoGUID, julesKeeperProfileGUID, julesAsCPOAppointmentId, handoverDate);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, cpoGUID);
+        this.printGovernanceRole(gplClient, clientUserId, cpoGUID);
 
-        gplClient.appointGovernanceOfficer(clientUserId,
-                                        cpoGUID,
-                                        faithBrokerProfileGUID,
-                                        handoverDate);
+        gplClient.appointGovernanceRole(clientUserId,
+                                           cpoGUID,
+                                           faithBrokerProfileGUID,
+                                           handoverDate);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, cpoGUID);
+        this.printGovernanceRole(gplClient, clientUserId, cpoGUID);
 
-        governanceOfficers = gplClient.getGovernanceOfficers(clientUserId);
+        governanceRoles = gplClient.getGovernanceRolesByDomainId(clientUserId, 0, 0 , 0);
 
-        System.out.println(governanceOfficers.size() + " governance officers");
+        System.out.println(governanceRoles.size() + " governance officers");
 
-        governanceOfficers = gplClient.getActiveGovernanceOfficers(clientUserId);
+        List<GovernanceRoleAppointee> governanceRoleAppointees = gplClient.getCurrentGovernanceRoleAppointments(clientUserId, 0, 0, 0);
 
-        System.out.println(governanceOfficers.size() + " active governance officers");
+        System.out.println(governanceRoleAppointees.size() + " active governance officers\n");
 
-        for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
+        for (GovernanceRoleAppointee governanceRole : governanceRoleAppointees)
         {
-            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getQualifiedName());
+            printGovernanceRoleAppointee(governanceRole);
         }
 
-        governanceOfficers = gplClient.getGovernanceOfficersByDomain(clientUserId, GovernanceDomain.PRIVACY);
+        governanceRoleAppointees = gplClient.getCurrentGovernanceRoleAppointments(clientUserId, GovernanceDomain.PRIVACY.getOrdinal(), 0, 0);
 
-        System.out.println(governanceOfficers.size() + " privacy governance officers");
+        System.out.println(governanceRoles.size() + " privacy governance officers");
 
-        for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
+        for (GovernanceRoleAppointee governanceRole : governanceRoleAppointees)
         {
-            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() +
-                                       " is the privacy officer from " + governanceOfficer.getAppointee().getStartDate()
-                                       + " to " + governanceOfficer.getAppointee().getEndDate());
+            printGovernanceRoleAppointee(governanceRole);
         }
 
         /*
@@ -361,27 +447,29 @@ public class GovernanceLeadershipSample
             System.out.println("Sleep interrupted");
         }
 
-        governanceOfficers = gplClient.getActiveGovernanceOfficers(clientUserId);
+        governanceRoleAppointees = gplClient.getCurrentGovernanceRoleAppointments(clientUserId, 0 ,0, 0);
 
-        System.out.println(governanceOfficers.size() + " active governance officers");
+        System.out.println(governanceRoles.size() + " active governance officers");
 
-        for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
+        for (GovernanceRoleAppointee governanceRole : governanceRoleAppointees)
         {
-            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getQualifiedName());
+            printGovernanceRoleAppointee(governanceRole);
         }
 
         /*
          * Update Jule's job title
          */
         ppmClient.updatePersonalProfile(clientUserId,
-                                     julesKeeperProfileGUID,
-                                     julesKeeperEmpNo,
-                                     "Julian Keeper",
-                                     "Jules Keeper",
-                                     "Chief Data Officer",
-                                     "Ensuring CocoP makes the best use of data.",
-                                     null,
-                                     julesAdditionalProperties);
+                                        null,
+                                        null,
+                                        julesKeeperProfileGUID,
+                                        julesKeeperEmpNo,
+                                        "Julian Keeper",
+                                        "Jules Keeper",
+                                        "Chief Data Role",
+                                        "Ensuring CocoP makes the best use of data.",
+                                        null,
+                                        julesAdditionalProperties);
 
         this.printPersonalProfile(ppmClient, clientUserId, julesKeeperProfileGUID);
 
@@ -394,34 +482,37 @@ public class GovernanceLeadershipSample
         erinAdditionalProperties.put(workLocationPropertyName, "2");
         erinAdditionalProperties.put(contactTypePropertyName, "Employee");
         String erinOverviewProfileGUID  = ppmClient.createPersonalProfile(clientUserId,
-                                                                       erinOverviewUserId,
-                                                                       erinOverviewEmpNo,
-                                                                      null,  /* optional property */
-                                                                      "Erin Overview",
-                                                                      "Information Architect",
-                                                                      "Manages all information architecture and standards for Coco Pharmaceuticals IT systems.",
-                                                                       erinAdditionalProperties);
+                                                                          null,
+                                                                          null,
+                                                                          erinOverviewUserId,
+                                                                          erinOverviewEmpNo,
+                                                                          null,  /* optional property */
+                                                                          "Erin Overview",
+                                                                          "Information Architect",
+                                                                          "Manages all information architecture and standards for Coco Pharmaceuticals IT systems.",
+                                                                          erinAdditionalProperties);
 
         this.printPersonalProfile(ppmClient, clientUserId, erinOverviewProfileGUID);
 
         System.out.println("Creating CDO for IT governance officer");
 
-        String cdoForITGUID  = gplClient.createGovernanceOfficer(clientUserId,
-                                                         GovernanceDomain.DATA,
-                                                         cdoForITAppointmentId,
-                                                         "IT Systems",
-                                                         "Chief Data Officer (CDO) for IT",
-                                                         null,
-                                                         null);
+        governanceRoleProperties = new GovernanceRoleProperties();
+
+        governanceRoleProperties.setDomainIdentifier(GovernanceDomain.DATA.getOrdinal());
+        governanceRoleProperties.setRoleId(cdoForITAppointmentId);
+        governanceRoleProperties.setScope("IT Systems");
+        governanceRoleProperties.setTitle("Chief Data Role (CDO) for IT");
+
+        String cdoForITGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
         System.out.println("Appointing Erin as CDO for IT");
 
-        gplClient.appointGovernanceOfficer(clientUserId,
-                                        cdoForITGUID,
-                                        erinOverviewProfileGUID,
-                                        new Date());
+        gplClient.appointGovernanceRole(clientUserId,
+                                           cdoForITGUID,
+                                           erinOverviewProfileGUID,
+                                           new Date());
 
-        this.printGovernanceOfficer(gplClient, clientUserId, cdoForITGUID);
+        this.printGovernanceRole(gplClient, clientUserId, cdoForITGUID);
 
 
         /*
@@ -433,72 +524,75 @@ public class GovernanceLeadershipSample
         garyAdditionalProperties.put(workLocationPropertyName, "1");
         garyAdditionalProperties.put(contactTypePropertyName, "Employee");
         String garyGeekeProfileGUID  = ppmClient.createPersonalProfile(clientUserId,
-                                                                    garyGeekeUserId,
-                                                                    garyGeekeEmpNo,
-                                                                    null,  /* optional property */
-                                                                    "Gary Geeke",
-                                                                    "Infrastructure Architect",
-                                                                    "Manages all the IT infrastructure for Coco Pharmaceuticals.",
-                                                                    garyAdditionalProperties);
+                                                                       null,
+                                                                       null,
+                                                                       garyGeekeUserId,
+                                                                       garyGeekeEmpNo,
+                                                                       null,  /* optional property */
+                                                                       "Gary Geeke",
+                                                                       "Infrastructure Architect",
+                                                                       "Manages all the IT infrastructure for Coco Pharmaceuticals.",
+                                                                       garyAdditionalProperties);
 
         this.printPersonalProfile(ppmClient, clientUserId, garyGeekeProfileGUID);
         System.out.println("Creating IT governance officer");
 
-        String infraGovForITGUID  = gplClient.createGovernanceOfficer(clientUserId,
-                                                                   GovernanceDomain.IT_INFRASTRUCTURE,
-                                                                   infraGovForITAppointmentId,
-                                                                  null,
-                                                                  "Chief Infrastructure Architect",
-                                                                  null,
-                                                                  null);
+        governanceRoleProperties = new GovernanceRoleProperties();
+
+        governanceRoleProperties.setDomainIdentifier(GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal());
+        governanceRoleProperties.setRoleId(infraGovForITAppointmentId);
+        governanceRoleProperties.setTitle("Chief Infrastructure Architect");
+
+        String infraGovForITGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
         System.out.println("Appointing Gary as gov officer for IT");
 
-        gplClient.appointGovernanceOfficer(clientUserId,
-                                        infraGovForITGUID,
-                                        garyGeekeProfileGUID,
-                                        null);
+        gplClient.appointGovernanceRole(clientUserId,
+                                           infraGovForITGUID,
+                                           garyGeekeProfileGUID,
+                                           null);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, infraGovForITGUID);
+        this.printGovernanceRole(gplClient, clientUserId, infraGovForITGUID);
 
 
         /*
          * Appointing Polly Tasker as as the governance officer for software development.
          */
-        System.out.println("Creating profile for Gary");
+        System.out.println("Creating profile for Polly");
 
         Map<String, String>  pollyAdditionalProperties = new HashMap<>();
         pollyAdditionalProperties.put(workLocationPropertyName, "1");
         pollyAdditionalProperties.put(contactTypePropertyName, "Employee");
         String pollyTaskerProfileGUID  = ppmClient.createPersonalProfile(clientUserId,
-                                                                      pollyTaskerUserId,
-                                                                      pollyTaskerEmpNo,
-                                                                      null,  /* optional property */
-                                                                      "Polly Tasker",
-                                                                      "Lead Project Manager for IT",
-                                                                      "Manages IT projects for Coco Pharmaceuticals.",
-                                                                      pollyAdditionalProperties);
+                                                                         null,
+                                                                         null,
+                                                                         pollyTaskerUserId,
+                                                                         pollyTaskerEmpNo,
+                                                                         null,  /* optional property */
+                                                                         "Polly Tasker",
+                                                                         "Lead Project Manager for IT",
+                                                                         "Manages IT projects for Coco Pharmaceuticals.",
+                                                                         pollyAdditionalProperties);
 
         this.printPersonalProfile(ppmClient, clientUserId, pollyTaskerProfileGUID);
         System.out.println("Creating SDLC governance officer");
 
-        String projLeadForITGUID  = gplClient.createGovernanceOfficer(clientUserId,
-                                                                   GovernanceDomain.SOFTWARE_DEVELOPMENT,
-                                                                   projLeadForITAppointmentId,
-                                                                   null,
-                                                                   "Chief Project Lead for Software",
-                                                                   null,
-                                                                   null);
+        governanceRoleProperties = new GovernanceRoleProperties();
+
+        governanceRoleProperties.setDomainIdentifier(GovernanceDomain.SOFTWARE_DEVELOPMENT.getOrdinal());
+        governanceRoleProperties.setRoleId(projLeadForITAppointmentId);
+        governanceRoleProperties.setTitle("Chief Project Lead for Software");
+
+        String projLeadForITGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
         System.out.println("Appointing Polly as gov officer for Software Development");
 
-        gplClient.appointGovernanceOfficer(clientUserId,
-                                        projLeadForITGUID,
-                                        pollyTaskerProfileGUID,
-                                        null);
+        gplClient.appointGovernanceRole(clientUserId,
+                                           projLeadForITGUID,
+                                           pollyTaskerProfileGUID,
+                                           null);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, projLeadForITGUID);
-
+        this.printGovernanceRole(gplClient, clientUserId, projLeadForITGUID);
 
         /*
          * Appointing Reggie Mint as as the corporate governance officer.
@@ -509,57 +603,59 @@ public class GovernanceLeadershipSample
         reggieAdditionalProperties.put(workLocationPropertyName, "1");
         reggieAdditionalProperties.put(contactTypePropertyName, "Employee");
         String reggieMintProfileGUID  = ppmClient.createPersonalProfile(clientUserId,
-                                                                     reggieMintUserId,
-                                                                     reggieMintEmpNo,
-                                                                     "Reginald S P Mint",  /* optional property */
-                                                                     "Reggie Mint",
-                                                                     "Chief Finance Officer",
-                                                                     "Manages finance for Coco Pharmaceuticals.",
-                                                                     reggieAdditionalProperties);
+                                                                        null,
+                                                                        null,
+                                                                        reggieMintUserId,
+                                                                        reggieMintEmpNo,
+                                                                        "Reginald S P Mint",  /* optional property */
+                                                                        "Reggie Mint",
+                                                                        "Chief Finance Role",
+                                                                        "Manages finance for Coco Pharmaceuticals.",
+                                                                        reggieAdditionalProperties);
 
         this.printPersonalProfile(ppmClient, clientUserId, pollyTaskerProfileGUID);
         System.out.println("Creating corporate governance officer");
 
-        String corpGUID  = gplClient.createGovernanceOfficer(clientUserId,
-                                                          GovernanceDomain.CORPORATE,
-                                                          corpAppointmentId,
-                                                          null,
-                                                          "Corporate Governance Officer",
-                                                          null,
-                                                          null);
+        governanceRoleProperties = new GovernanceRoleProperties();
+
+        governanceRoleProperties.setDomainIdentifier(GovernanceDomain.CORPORATE.getOrdinal());
+        governanceRoleProperties.setRoleId(corpAppointmentId);
+        governanceRoleProperties.setTitle("Corporate Governance Role");
+
+        String corpGUID  = gplClient.createGovernanceRole(clientUserId, governanceRoleProperties);
 
         System.out.println("Appointing Reggie as corporate gov officer");
 
-        gplClient.appointGovernanceOfficer(clientUserId,
-                                        corpGUID,
-                                        reggieMintProfileGUID,
-                                        null);
+        gplClient.appointGovernanceRole(clientUserId,
+                                           corpGUID,
+                                           reggieMintProfileGUID,
+                                           null);
 
-        this.printGovernanceOfficer(gplClient, clientUserId, corpGUID);
+        this.printGovernanceRole(gplClient, clientUserId, corpGUID);
 
 
 
         System.out.println("Update the CSO to the CISO");
 
-        gplClient.updateGovernanceOfficer(clientUserId,
-                                       csoGUID,
-                                       GovernanceDomain.SECURITY,
-                                       csoAppointmentId,
-                                       null,
-                                       "Chief Information Security Officer (CISO)",
-                                       null,
-                                       null);
+        governanceRoleProperties = new GovernanceRoleProperties();
 
-        governanceOfficers = gplClient.getGovernanceOfficers(clientUserId);
+        governanceRoleProperties.setTitle("Chief Information Security Role (CISO)");
+
+        gplClient.updateGovernanceRole(clientUserId,
+                                          csoGUID,
+                                          true,
+                                          governanceRoleProperties);
+
+        governanceRoles = gplClient.getGovernanceRolesByDomainId(clientUserId, 0, 0, 0);
 
         /*
          * See the team
          */
-        System.out.println(governanceOfficers.size() + " governance officers");
+        System.out.println(governanceRoles.size() + " governance officers");
 
-        for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
+        for (GovernanceRoleAppointee governanceRole : governanceRoleAppointees)
         {
-            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getQualifiedName());
+            printGovernanceRoleAppointee(governanceRole);
         }
 
         System.out.println("Deleting all profiles and governance officers");
@@ -567,25 +663,25 @@ public class GovernanceLeadershipSample
         /*
          * Delete all of the governance officers
          */
-        gplClient.deleteGovernanceOfficer(clientUserId, cdoGUID, cdoAppointmentId, GovernanceDomain.DATA);
-        gplClient.deleteGovernanceOfficer(clientUserId, cdoForITGUID, cdoForITAppointmentId, GovernanceDomain.DATA);
-        gplClient.deleteGovernanceOfficer(clientUserId, cpoGUID, cpoAppointmentId, GovernanceDomain.PRIVACY);
-        gplClient.deleteGovernanceOfficer(clientUserId, csoGUID, csoAppointmentId, GovernanceDomain.SECURITY);
-        gplClient.deleteGovernanceOfficer(clientUserId, corpGUID, corpAppointmentId, GovernanceDomain.CORPORATE);
-        gplClient.deleteGovernanceOfficer(clientUserId, projLeadForITGUID, projLeadForITAppointmentId, GovernanceDomain.SOFTWARE_DEVELOPMENT);
-        gplClient.deleteGovernanceOfficer(clientUserId, infraGovForITGUID, infraGovForITAppointmentId, GovernanceDomain.IT_INFRASTRUCTURE);
+        gplClient.deleteGovernanceRole(clientUserId, cdoGUID);
+        gplClient.deleteGovernanceRole(clientUserId, cdoForITGUID);
+        gplClient.deleteGovernanceRole(clientUserId, cpoGUID);
+        gplClient.deleteGovernanceRole(clientUserId, csoGUID);
+        gplClient.deleteGovernanceRole(clientUserId, corpGUID);
+        gplClient.deleteGovernanceRole(clientUserId, projLeadForITGUID);
+        gplClient.deleteGovernanceRole(clientUserId, infraGovForITGUID);
 
 
         /*
          * Delete all of the personal profiles
          */
-        ppmClient.deletePersonalProfile(clientUserId, julesKeeperProfileGUID, julesKeeperEmpNo);
-        ppmClient.deletePersonalProfile(clientUserId, ivorPadlockProfileGUID, ivorPadlockEmpNo);
-        ppmClient.deletePersonalProfile(clientUserId, faithBrokerProfileGUID, faithBrokerEmpNo);
-        ppmClient.deletePersonalProfile(clientUserId, erinOverviewProfileGUID, erinOverviewEmpNo);
-        ppmClient.deletePersonalProfile(clientUserId, garyGeekeProfileGUID, garyGeekeEmpNo);
-        ppmClient.deletePersonalProfile(clientUserId, reggieMintProfileGUID, reggieMintEmpNo);
-        ppmClient.deletePersonalProfile(clientUserId, pollyTaskerProfileGUID, pollyTaskerEmpNo);
+        ppmClient.deletePersonalProfile(clientUserId, null, null, julesKeeperProfileGUID, julesKeeperEmpNo);
+        ppmClient.deletePersonalProfile(clientUserId, null, null, ivorPadlockProfileGUID, ivorPadlockEmpNo);
+        ppmClient.deletePersonalProfile(clientUserId, null, null, faithBrokerProfileGUID, faithBrokerEmpNo);
+        ppmClient.deletePersonalProfile(clientUserId, null, null, erinOverviewProfileGUID, erinOverviewEmpNo);
+        ppmClient.deletePersonalProfile(clientUserId, null, null, garyGeekeProfileGUID, garyGeekeEmpNo);
+        ppmClient.deletePersonalProfile(clientUserId, null, null, reggieMintProfileGUID, reggieMintEmpNo);
+        ppmClient.deletePersonalProfile(clientUserId, null, null, pollyTaskerProfileGUID, pollyTaskerEmpNo);
 
         /*
          * Sleep so that the deletes propagate throughout the cohort.
@@ -603,16 +699,15 @@ public class GovernanceLeadershipSample
         /*
          * Should be all gone
          */
-        governanceOfficers = gplClient.getGovernanceOfficers(clientUserId);
+        governanceRoles = gplClient.getGovernanceRolesByDomainId(clientUserId, 0, 0, 0);
 
-        if (governanceOfficers != null)
+        if (governanceRoles != null)
         {
-            System.out.println(governanceOfficers.size() + " governance officers");
+            System.out.println(governanceRoles.size() + " governance officers");
 
-            for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
+            for (GovernanceRoleElement governanceRole : governanceRoles)
             {
-                System.out.println(
-                        governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getQualifiedName());
+                System.out.println(governanceRole.toString() + " is still defined");
             }
             System.exit(-1);
         }

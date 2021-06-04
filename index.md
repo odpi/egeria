@@ -3,7 +3,7 @@ layout: homepage
 css: style-sub.css
 ---
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project. -->
+<!-- Copyright Contributors to the Egeria project. -->
 
 # Egeria - Open Metadata and Governance
 
@@ -18,7 +18,7 @@ but manage it in a siloed, proprietary way that assumes
 they are the only technology employed by the organization.
 The result is that knowledge is not shared between people that use different tool sets.
 
-ODPi Egeria is an open source project dedicated to making metadata open and automatically exchanged between tools
+Egeria is an open source project dedicated to making metadata open and automatically exchanged between tools
 and platforms, no matter which vendor they come from.
 
 We believe in the **open metadata and governance manifesto**:
@@ -107,6 +107,8 @@ If you would like to browse to see what is available then these pages may be of 
   the scope and usage of metadata supported by Egeria "out of the box".
 * [Egeria Glossary](open-metadata-publication/website/open-metadata-glossary.md) - provides definitions to terms 
   used in the Egeria project.
+* [Egeria Connector Catalog](open-metadata-publication/website/connector-catalog) - provides descriptions of the
+  connectors supporting the use of third party technology in the open metadata ecosystem.
 * [Egeria Status and Road Map](open-metadata-publication/website/roadmap) - describes the various
   components of Egeria, how they fit together and their current status.
 * [Egeria Module Organization](Content-Organization.md) - defines the hierarchical structure of the modules in the
@@ -119,8 +121,8 @@ The following articles may answer additional questions that you have.
 * [Where is the code?](https://github.com/odpi/egeria) - link to GitHub.
 * [Who is contributing?](https://lfanalytics.io/projects/odpi%2Fegeria/dashboard) - see the project activity by logging
   in with your GitHub Account.
-* [How do I join the mailing list?](https://lists.odpi.org/g/odpi-project-egeria) - go to the sign up page.
-* [What is the ODPi?](https://www.odpi.org/) - visit their website.
+* [How do I join the mailing list?](https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics) - go to the sign up page.
+* [What is the LF AI & Data Foundation?](https://lfaidata.foundation/) - visit their website.
 * [Why is the project called Egeria?](open-metadata-publication/website/why-egeria) - understand the background of the project.
 * [What are the goals of Egeria?](open-metadata-publication/website) - understand the motivation behind this project and its key components.
 * [How do I run Egeria?](open-metadata-resources/open-metadata-tutorials) - try our getting started tutorials and labs.
@@ -135,14 +137,15 @@ The following articles may answer additional questions that you have.
 
 ## ODPi Egeria project governance
 
-This project is maintained by the ODPi Egeria community.
+This project is maintained by the Egeria community.
 To understand how to join and contribute see the
 [Community Guide](Community-Guide.md).
 
 We aim to operate in a transparent, accessible way for the benefit
 of the Egeria community. All participation in this project is therefore open and not
-bound to any corporate affiliation nor membership of the ODPi.
-Participants are only required to follow the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
+bound to any corporate affiliation nor membership of the [Linux Foundation](https://www.linuxfoundation.org/) or 
+[LF AI & Data Foundation](https://lfaidata.foundation/).
+Participants are only required to follow Egeria's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 
 The governance of the project is described in more detail in the
 [Egeria Operations](Egeria-Operations.md).
@@ -151,4 +154,4 @@ The governance of the project is described in more detail in the
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
-Copyright Contributors to the ODPi Egeria project.
+Copyright Contributors to the Egeria project.

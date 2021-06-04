@@ -4,11 +4,9 @@ package org.odpi.openmetadata.platformservices.server;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
@@ -48,13 +46,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredAccessServices(userId));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -82,13 +76,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredEngineServices(userId));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -116,13 +106,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredIntegrationServices(userId));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -150,13 +136,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredViewServices(userId));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -184,13 +166,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredGovernanceServices(userId));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -218,13 +196,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getRegisteredCommonServices(userId));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -251,13 +225,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServices(serverInstanceMap.getAllRegisteredServices(userId));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -286,13 +256,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setFlag(serverInstanceMap.isServerKnown(userId, serverName));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -319,13 +285,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServerList(serverInstanceMap.getKnownServerList(userId));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -352,13 +314,9 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServerList(serverInstanceMap.getActiveServerList(userId));
         }
-        catch (UserNotAuthorizedException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -386,22 +344,15 @@ public class OMAGServerPlatformActiveServices
         try
         {
             response.setServerName(serverName);
+            response.setServerType(serverInstanceMap.getServerType(userId, serverName, methodName));
             response.setActive(serverInstanceMap.isServerActive(userId, serverName));
             response.setServerStartTime(serverInstanceMap.getServerStartTime(userId, serverName));
             response.setServerEndTime(serverInstanceMap.getServerEndTime(userId, serverName));
             response.setServerHistory(serverInstanceMap.getServerHistory(userId, serverName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -431,17 +382,9 @@ public class OMAGServerPlatformActiveServices
             response.setServerName(serverName);
             response.setServerServicesList(serverInstanceMap.getActiveServiceListForServer(userId, serverName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            exceptionHandler.captureThrowable(response, error, methodName);
+            exceptionHandler.captureExceptions(response, error, methodName, null);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

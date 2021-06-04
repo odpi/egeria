@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.kafka.clients.consumer.CommitFailedException;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -523,25 +524,40 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
         public void onPartitionsRevoked(Collection<TopicPartition> partitions)
         {
-            log.info("Lost partitions in rebalance. Committing current offsets:" + currentOffsets);
-            try {
-                consumer.commitSync(currentOffsets);
-            }
-            catch( WakeupException error)
+            final String methodName = "onPartitionsRevoked.commitSync";
+            if( !currentOffsets.isEmpty() )
             {
-                //ignore
-            }
-            catch( Exception error)
-            {
-                if (auditLog != null)
+                log.info("Lost partitions in rebalance. Committing current offsets:" + currentOffsets);
+                try
                 {
-                    auditLog.logException("onPartitionsRevoked.commitSync",
-                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
-                                                                                                                       topicToSubscribe,
-                                                                                                                       error.getMessage()),
-                            error);
+                    consumer.commitSync(currentOffsets);
+                } catch (WakeupException error)
+                {
+                    /*
+                    This has occurred because a client was woken up to poll for new messages
+                    and can safely be ignored.
+                     */
                 }
+                catch (CommitFailedException error )
+                {
+                    /*
+                    This is usually encountered during development because a debug session has prevented the kafka client
+                    from honouring the heartbeat configuration.
+                     */
+                    auditLog.logMessage( methodName, KafkaOpenMetadataTopicConnectorAuditCode.FAILED_TO_COMMIT_CONSUMED_EVENTS.getMessageDefinition());
+                }
+                catch (Exception error)
+                {
+                    if (auditLog != null)
+                    {
+                        auditLog.logException(methodName,
+                                KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                        topicToSubscribe,
+                                        error.getMessage()),
+                                error);
+                    }
 
+                }
             }
         }
     }

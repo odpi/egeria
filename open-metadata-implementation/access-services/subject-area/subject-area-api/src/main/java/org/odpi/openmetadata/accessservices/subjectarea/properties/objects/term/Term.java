@@ -47,12 +47,12 @@ public class Term extends GovernedNode implements Serializable {
 
     private GlossarySummary glossary =null;
     private List<CategorySummary> categories = null;
-    @JsonProperty(value="isSpineObject")
-    private boolean isSpineObject =false;
-    @JsonProperty(value="isSpineAttribute")
-    private boolean isSpineAttribute =false;
-    @JsonProperty(value="isObjectIdentifier")
-    private boolean isObjectIdentifier =false;
+    @JsonProperty(value="spineObject")
+    private boolean spineObject =false;
+    @JsonProperty(value="spineAttribute")
+    private boolean spineAttribute =false;
+    @JsonProperty(value="objectIdentifier")
+    private boolean objectIdentifier =false;
 
     public Term() {
         nodeType = NodeType.Term;
@@ -123,11 +123,11 @@ public class Term extends GovernedNode implements Serializable {
      * @return <code>true</code> if spine object, false otherwise.
      */
     public boolean isSpineObject() {
-        return isSpineObject;
+        return spineObject;
     }
 
     public void setSpineObject(boolean spineObject) {
-        isSpineObject = spineObject;
+        this.spineObject = spineObject;
     }
 
     /**
@@ -135,11 +135,11 @@ public class Term extends GovernedNode implements Serializable {
       * @return <code>true</code> if spine object, false otherwise.
      */
     public boolean isSpineAttribute() {
-        return isSpineAttribute;
+        return spineAttribute;
     }
 
     public void setSpineAttribute(boolean spineAttribute) {
-        isSpineAttribute = spineAttribute;
+        this.spineAttribute = spineAttribute;
     }
 
     /**
@@ -147,11 +147,11 @@ public class Term extends GovernedNode implements Serializable {
      * @return <code>true</code> if term is an identifier, false otherwise.
      */
     public boolean isObjectIdentifier() {
-        return isObjectIdentifier;
+        return objectIdentifier;
     }
 
     public void setObjectIdentifier(boolean objectIdentifier) {
-        isObjectIdentifier = objectIdentifier;
+        this.objectIdentifier = objectIdentifier;
     }
     /**
      * The Categories that categorize this Term
@@ -186,16 +186,16 @@ public class Term extends GovernedNode implements Serializable {
             }
             sb.append("]");
         }
-        sb.append(getGovernanceActions());
+        sb.append(getGovernanceClassifications());
         sb.append(", SpineInformation=[");
 
-        if (isSpineObject) {
+        if (spineObject) {
             sb.append("SpineObject ");
         }
-        if (isSpineAttribute) {
+        if (spineAttribute) {
             sb.append("SpineAttribute ");
         }
-        if (isObjectIdentifier) {
+        if (objectIdentifier) {
             sb.append("SpineIdentifier");
         }
         sb.append("]");
@@ -215,34 +215,34 @@ public class Term extends GovernedNode implements Serializable {
         if (!super.equals(o)) return false;
         Term term = (Term) o;
 
-        return isSpineObject == term.isSpineObject &&
-                isSpineAttribute == term.isSpineAttribute &&
-                isObjectIdentifier == term.isObjectIdentifier &&
+        return spineObject == term.spineObject &&
+                spineAttribute == term.spineAttribute &&
+                objectIdentifier == term.objectIdentifier &&
                 Objects.equals(categories,term.categories) &&
                 Objects.equals(summary, term.summary) &&
                 Objects.equals(abbreviation, term.abbreviation) &&
                 Objects.equals(usage, term.usage) &&
-                Objects.equals(getGovernanceActions(), term.getGovernanceActions()) &&
+                Objects.equals(getGovernanceClassifications(), term.getGovernanceClassifications()) &&
                 Objects.equals(glossary, term.glossary);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), summary, usage, abbreviation, glossary, isSpineObject, isSpineAttribute, isObjectIdentifier, categories, getGovernanceActions());
+        return Objects.hash(super.hashCode(), summary, usage, abbreviation, glossary, spineObject, spineAttribute, objectIdentifier, categories, getGovernanceClassifications());
     }
 
     protected void processClassification(Classification classification) {
         String classificationName = new SpineObject().getClassificationName();
         if (classification.getClassificationName().equals(classificationName)) {
-            this.isSpineObject = true;
+            this.spineObject = true;
         }
         classificationName = new SpineAttribute().getClassificationName();
         if (classification.getClassificationName().equals(classificationName)) {
-            this.isSpineAttribute = true;
+            this.spineAttribute = true;
         }
         classificationName = new ObjectIdentifier().getClassificationName();
         if (classification.getClassificationName().equals(classificationName)) {
-            this.isObjectIdentifier = true;
+            this.objectIdentifier = true;
         }
     }
 }

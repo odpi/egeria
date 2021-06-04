@@ -60,12 +60,12 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
 
     EVENT_PROCESSING_ERROR("OMAS-GOVERNANCE-ENGINE-0007",
                            OMRSAuditLogRecordSeverity.EXCEPTION,
-                           "The Governance Engine Open Metadata Access Service (OMAS) encounter an exception while processing event of type {0}",
-                           "The event could not be processed",
-                           "Review the exception to determine the source of the error and correct it."),
+                           "The Governance Engine Open Metadata Access Service (OMAS) encountered an unexpected {0} exception while processing event from {1} of type {2} for instance {3}. Error message is: {4}",
+                           "The event could not be processed due to an unexpected error",
+                           "Review the exception to determine the source of the error and correct it if necessary."),
 
 
-    UNEXPECTED_INITIALIZATION_EXCEPTION("OMAS-GOVERNANCE-ENGINE-0005",
+    UNEXPECTED_INITIALIZATION_EXCEPTION("OMAS-GOVERNANCE-ENGINE-0008",
                                         OMRSAuditLogRecordSeverity.EXCEPTION,
                                         "The Governance Engine Open Metadata Access Service (OMAS) detected an unexpected {0} exception during the " +
                                                 "initialization of its services; error message is {1}",
@@ -74,13 +74,13 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                                         "Review the error message and any other reported failures to determine the cause of the problem.  In particular consider the" +
                                                 " state of the Event Bus.  Once this is resolved, restart the server."),
 
-    SERVICE_TERMINATING("OMAS-GOVERNANCE-ENGINE-0008",
+    SERVICE_TERMINATING("OMAS-GOVERNANCE-ENGINE-0009",
                         OMRSAuditLogRecordSeverity.SHUTDOWN,
                         "The Governance Engine Open Metadata Access Service (OMAS) is shutting down server instance {0}",
                         "The local handlers has requested shut down of the Governance Engine OMAS.",
                         "No action is required.  This is part of the normal operation of the service."),
 
-    PUBLISHING_SHUTDOWN("OMAS-GOVERNANCE-ENGINE-0009",
+    PUBLISHING_SHUTDOWN("OMAS-GOVERNANCE-ENGINE-0010",
                         OMRSAuditLogRecordSeverity.SHUTDOWN,
                         "The Governance Engine Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
                         "The local administrator has requested shut down of an Governance Engine OMAS instance.  " +
@@ -88,7 +88,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                         "This is part of the normal shutdown of the service.   No action is required if this is service" +
                                 "shutdown was intentional."),
 
-    PUBLISHING_SHUTDOWN_ERROR("OMAS-GOVERNANCE-ENGINE-0010",
+    PUBLISHING_SHUTDOWN_ERROR("OMAS-GOVERNANCE-ENGINE-0011",
                               OMRSAuditLogRecordSeverity.SHUTDOWN,
                               "The Governance Engine Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out " +
                                       "topic {1}. The error message was: {2}",
@@ -99,7 +99,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                                       "is the consequence of a previous error. Review the error message and any other reported failures to " +
                                       "determine if this exception needs special attention."),
 
-    SERVICE_SHUTDOWN("OMAS-GOVERNANCE-ENGINE-0011",
+    SERVICE_SHUTDOWN("OMAS-GOVERNANCE-ENGINE-0012",
                      OMRSAuditLogRecordSeverity.SHUTDOWN,
                      "The Governance Engine Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
                      "The local administrator has requested shut down of an Governance Engine OMAS instance.  " +
@@ -107,7 +107,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                              "be published to the out topic",
                      "This is part of the normal shutdown of the service.  Verify that all resources have been released."),
 
-    REFRESH_GOVERNANCE_ENGINE("OMAS-GOVERNANCE-ENGINE-0012",
+    REFRESH_GOVERNANCE_ENGINE("OMAS-GOVERNANCE-ENGINE-0013",
                              OMRSAuditLogRecordSeverity.INFO,
                              "The Governance Engine Open Metadata Access Service (OMAS) sent notification that the configuration for governance engine {0} " +
                                      "({1}) has changed",
@@ -119,19 +119,45 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                                      "Governance Engine OMAS configuration interface to query the status of the governance engine properties.  " +
                                      "It should be possible to trace the source of the update to correct it."),
 
-    REFRESH_GOVERNANCE_SERVICE("OMAS-GOVERNANCE-ENGINE-0013",
-                              OMRSAuditLogRecordSeverity.INFO,
-                              "The Governance Engine Open Metadata Access Service (OMAS) sent notification that governance engine {0} ({1}) had a " +
-                                      "configuration change for governance request type {2} mapped to registered governance service {3}",
-                              "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
-                                      "configuration about the governance service.",
-                              "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
-                                      " the affected governance engines are updated with the latest governance services information.  If the change " +
-                                      "is unexpected, use the " +
-                                      "Governance Engine OMAS configuration interface to query the status of the registered governance services for " +
-                                      "the affected governance engine.  It should be possible to trace the source of the update to correct it."),
+    REFRESH_GOVERNANCE_SERVICE("OMAS-GOVERNANCE-ENGINE-0014",
+                               OMRSAuditLogRecordSeverity.INFO,
+                               "The Governance Engine Open Metadata Access Service (OMAS) sent notification that governance engine {0} ({1}) had a " +
+                                       "configuration change for governance request type {2} mapped to registered governance service {3}",
+                               "The access service sends out configuration notifications to ensure connected governance engine servers have the most up to-date " +
+                                       "configuration about the governance service.",
+                               "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
+                                       " the affected governance engines are updated with the latest governance services information.  If the change " +
+                                       "is unexpected, use the " +
+                                       "Governance Engine OMAS configuration interface to query the status of the registered governance services for " +
+                                       "the affected governance engine.  It should be possible to trace the source of the update to correct it."),
 
-    OUT_TOPIC_FAILURE("OMAS-GOVERNANCE-ENGINE-0014",
+    NEW_GOVERNANCE_ACTION("OMAS-GOVERNANCE-ENGINE-0015",
+                               OMRSAuditLogRecordSeverity.INFO,
+                               "The Governance Engine Open Metadata Access Service (OMAS) sent notification of a new governance action {0} for governance engine {1} ({2})",
+                               "The access service sends out notifications about new governance actions to governance engines so " +
+                                       "they can claim it and execute the requested governance service.",
+                               "This is part of the normal operation of the service.  No action is required if this action is expected " +
+                                       "beyond verifying that the requested action is picked up and executed."),
+
+    BAD_GOVERNANCE_ACTION("OMAS-GOVERNANCE-ENGINE-0016",
+                          OMRSAuditLogRecordSeverity.ERROR,
+                          "The Governance Engine Open Metadata Access Service (OMAS) sent notification of a new governance action with no governance engine executor: {0}",
+                          "The access service sends out notifications about new governance actions to governance engines so " +
+                                  "they can claim it and execute the requested governance service.  However, this governance action does not have information " +
+                                  "about the governance engine.",
+                          "Review the governance action in the metadata repository.  Try to work out how it was set up.  Is it linked to a " +
+                                  "governance engine? If not, why not? If it is then why was the governance action not populated with the governance engine name?"),
+
+    WATCHDOG_EVENT("OMAS-GOVERNANCE-ENGINE-0017",
+                          OMRSAuditLogRecordSeverity.INFO,
+                          "The Governance Engine Open Metadata Access Service (OMAS) sent a metadata change event to listening Open Watchdog Governance Action Services: {0}",
+                          "The access service sends out metadata change events when metadata instances change (with the exception of metadata " +
+                                  "associated with processing governance services).  These events are passed to listening Open Watchdog Governance Action Services " +
+                                  "as long as the event matches the criteria that where specified when the listener was registered.",
+                          "This is part of the normal operation of the service.  Verify that these events are being received by the " +
+                                  "watchdog governance action services."),
+
+    OUT_TOPIC_FAILURE("OMAS-GOVERNANCE-ENGINE-0018",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "The Governance Engine Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned " +
                               "error message: {2}",
@@ -139,20 +165,28 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                       "Review the error message and any other reported failures to determine the cause of the problem.  Check the status of the event " +
                               "bus.  Once this is resolved, restart the server."),
 
-    OUT_TOPIC_EVENT("OMAS-GOVERNANCE-ENGINE-0015",
+    OUT_TOPIC_EVENT("OMAS-GOVERNANCE-ENGINE-0019",
                     OMRSAuditLogRecordSeverity.EVENT,
-                    "The Governance Engine Open Metadata Access Service (OMAS) has sent event: {0}",
+                    "The Governance Engine Open Metadata Access Service (OMAS) has sent event of type {0} ",
                     "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
                             "configuration.  This message is to create a record of the events that are being published.",
                     "This event indicates that the configuration for a governance engine, or governance service has changed.  " +
                             "Check that each connected governance server receives this event and updates its configuration if " +
                             "the change affects their operation."),
 
-    ASSET_AUDIT_LOG("OMAS-GOVERNANCE-ENGINE-0016",
+    ASSET_AUDIT_LOG("OMAS-GOVERNANCE-ENGINE-0020",
                     OMRSAuditLogRecordSeverity.INFO,
                     "Log message for asset {0} from governance service {1}: {2}",
                     "A governance service has logged a message about an asset.",
                     "Review the message to ensure no action is required."),
+
+    SKIPPING_INSTANCE("OMAS-GOVERNANCE-ENGINE-0021",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "The Governance Engine Open Metadata Access Service (OMAS) is ignoring event from {0} of type {1} for instance {2} because it does not have access to all of the instance's information. Error message is: {3}",
+                           "The event could not be processed because additional information, such as the anchor entity, is not available to this server.  " +
+                                   "This is not necessarily an error if the server is connected to a cohort where members are also connected to other cohorts, of there is strict security in place that is restricting what this server can see.",
+                           "Review the exception to reassure your self that this is expected behavior."),
+
     ;
 
 

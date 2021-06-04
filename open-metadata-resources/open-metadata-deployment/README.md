@@ -93,5 +93,10 @@ kafka:
 When `kafka.internal.enabled` is set to `true` (as it is by default), the options under `external` are simply ignored.
 
 ----
+* Return to [open-metadata-resources](..)
+* Return to [Site Map](../../Content-Organization.md)
+* Return to [Home Page](../../index.md)
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

@@ -96,7 +96,7 @@ public class DesignModelAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   DesignModelAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

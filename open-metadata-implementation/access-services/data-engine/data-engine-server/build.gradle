@@ -11,6 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
+    implementation project(':open-metadata-implementation:common-services:generic-handlers')
     implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')

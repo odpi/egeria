@@ -3,7 +3,11 @@
 
 # Data Store Connectors
 
-The Data Store Connectors module contains connectors to different types of data stores.  These connectors implement the
+The Data Store Connectors module contains
+a small collection of connectors for applications.
+The aim is to eventually cover most common types of data sources.
+connectors to different types of data stores.  These connectors implement the
+
 [Open Connector Framework (OCF)](../../../frameworks/open-connector-framework) **Connector** interface.
 
 * **[file-connectors](file-connectors)** provides connector to read files.
@@ -15,7 +19,11 @@ engine.
 [Apache Cassandra](http://cassandra.apache.org/).
 
 
-Return to [open-connectors](..) module.
+There is a code sample that shows how to work with the file connector
+in the [asset-management-samples](../../../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples).
+
+----
+* Return to [open-connectors](..) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

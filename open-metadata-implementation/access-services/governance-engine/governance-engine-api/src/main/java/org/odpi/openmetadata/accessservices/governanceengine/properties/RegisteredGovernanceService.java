@@ -106,15 +106,8 @@ public class RegisteredGovernanceService extends GovernanceServiceProperties
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerType=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                ", otherOriginValues=" + getOtherOriginValues() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", connection=" + getConnection() +
-                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

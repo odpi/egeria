@@ -96,7 +96,7 @@ public class DataPrivacyAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   DataPrivacyAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

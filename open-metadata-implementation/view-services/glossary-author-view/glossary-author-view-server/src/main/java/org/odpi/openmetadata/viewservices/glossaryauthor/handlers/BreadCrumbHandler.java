@@ -5,8 +5,8 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.handlers;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
@@ -55,11 +55,11 @@ public class BreadCrumbHandler {
     private boolean hasParentCategory() throws InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, UserNotAuthorizedException {
         boolean hasParent = false;
         Category parentCategory = null;
-        List<Line> categoryLines = clients.terms().getAllRelationships(userId, currentCategory.getSystemAttributes().getGUID());
-        for (Line categoryLine : categoryLines) {
-            if (categoryLine.getLineType().equals(LineType.CategoryHierarchyLink)) {
+        List<Relationship> categoryRelationships = clients.terms().getAllRelationships(userId, currentCategory.getSystemAttributes().getGUID());
+        for (Relationship categoryRelationship : categoryRelationships) {
+            if (categoryRelationship.getRelationshipType().equals(RelationshipType.CategoryHierarchyLink)) {
                 // if there is more than one parent  - it will get the last one its sees
-                String parentCategoryGuid =categoryLine.getEnd1().getNodeGuid();
+                String parentCategoryGuid =categoryRelationship.getEnd1().getNodeGuid();
                 if (!parentCategoryGuid.equals(currentCategory.getSystemAttributes().getGUID())) {
                     parentCategory = clients.categories().getByGUID(userId, parentCategoryGuid);
                 }
@@ -104,13 +104,13 @@ public class BreadCrumbHandler {
         } else {
             // create term breadcrumb
             breadCrumbs.add(new BreadCrumb(termGuid, term.getName(), NodeType.Term));
-            List<Line> termLines = clients.terms().getAllRelationships(userId, termGuid);
+            List<Relationship> termRelationships = clients.terms().getAllRelationships(userId, termGuid);
             if (rootCategory == null && leafCategory == null ) {
                 boolean termCorrectlyAnchored = false;
                // check that the term is anchored in the glossary
-                for (Line termLine : termLines) {
-                    if (termLine.getLineType().equals(LineType.TermAnchor)) {
-                        if (termLine.getEnd1().getNodeGuid().equals(glossaryGuid)) {
+                for (Relationship termRelationship : termRelationships) {
+                    if (termRelationship.getRelationshipType().equals(RelationshipType.TermAnchor)) {
+                        if (termRelationship.getEnd1().getNodeGuid().equals(glossaryGuid)) {
                             termCorrectlyAnchored = true;
                         } else {
                             // Found a TermAnchor, but not pointing to the right glossary
@@ -129,9 +129,9 @@ public class BreadCrumbHandler {
             } else if (rootCategory !=null && leafCategory == null ) {
                 // check that the rootCategory categories this term
                 boolean termCorrectlyCategorized = false;
-                for (Line termLine : termLines) {
-                    if (termLine.getLineType().equals(LineType.TermCategorization)) {
-                        if (termLine.getEnd1().getNodeGuid().equals(rootCategoryGuid)) {
+                for (Relationship termRelationship : termRelationships) {
+                    if (termRelationship.getRelationshipType().equals(RelationshipType.TermCategorization)) {
+                        if (termRelationship.getEnd1().getNodeGuid().equals(rootCategoryGuid)) {
                             breadCrumbs.add(new BreadCrumb(rootCategoryGuid, rootCategory.getName(), NodeType.Category));
                             termCorrectlyCategorized = true;
                         }
@@ -146,9 +146,9 @@ public class BreadCrumbHandler {
             } else if (rootCategory !=null && leafCategory != null ) {
                 // check that the leaf category categories this term
                 boolean termCorrectlyCategorized = false;
-                for (Line termLine : termLines) {
-                    if (termLine.getLineType().equals(LineType.TermCategorization)) {
-                        if (termLine.getEnd1().getNodeGuid().equals(leafCategoryGuid)) {
+                for (Relationship termRelationship : termRelationships) {
+                    if (termRelationship.getRelationshipType().equals(RelationshipType.TermCategorization)) {
+                        if (termRelationship.getEnd1().getNodeGuid().equals(leafCategoryGuid)) {
                             breadCrumbs.add(new BreadCrumb(leafCategoryGuid, leafCategory.getName(), NodeType.Category));
                             termCorrectlyCategorized = true;
                         }
@@ -163,7 +163,7 @@ public class BreadCrumbHandler {
 
             }
         }
-        // At this stage we have processed the Term and the Lines that it has to its parent. We have also added the first Category breadcrumb
+        // At this stage we have processed the Term and the relationships that it has to its parent. We have also added the first Category breadcrumb
 
         if (leafCategory != null && rootCategory != null) {
             // we have at least 2 Categories in our tree.
@@ -181,9 +181,9 @@ public class BreadCrumbHandler {
             } else {
                 // check that the CategoryAnchor glossary is the supplied one
 
-                List<Line> categoryLines = clients.terms().getAllRelationships(userId, currentCategory.getSystemAttributes().getGUID());
-                for (Line categoryLine : categoryLines) {
-                    if (categoryLine.getLineType().equals(LineType.CategoryAnchor)) {
+                List<Relationship> categoryRelationships = clients.terms().getAllRelationships(userId, currentCategory.getSystemAttributes().getGUID());
+                for (Relationship categoryRelationship : categoryRelationships) {
+                    if (categoryRelationship.getRelationshipType().equals(RelationshipType.CategoryAnchor)) {
                         // if there is more than one parent  - it will get the last one its sees
                         if (!glossary.getSystemAttributes().getGUID().equals(glossaryGuid)) {
                             // the supplied glossary guid does not match the owning glossary of the rootCategory

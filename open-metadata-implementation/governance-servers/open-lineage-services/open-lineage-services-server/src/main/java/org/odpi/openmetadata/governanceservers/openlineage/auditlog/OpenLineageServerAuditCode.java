@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.auditlog;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,19 +98,38 @@ public enum OpenLineageServerAuditCode {
             "An error occured while disconnecting the LineageGraph connector",
             "Please verify that the Open Lineage Services have shut down properly."),
 
+    ASSET_CONTEXT_EXCEPTION("OPEN-LINEAGE-SERVICES-0018",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Asset Context for entity {0} could not be retrieved from Asset Lineage server. Error: {1}",
+            "The system is unable to process the request.",
+            "Verify Open Lineage Services configuration for Asset Lineage server or the Asset Lineage server's health."),
+
     ERROR_DISCONNECTING_IN_TOPIC_CONNECTOR("OPEN-LINEAGE-SERVICES-0019",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Open Lineage Services server {0} encountered an error while disconnecting the In-topic connector",
             "An error occured while disconnecting the In-topic connector",
             "Please verify that the Open Lineage Services have shut down properly."),
 
-    ;
+    ASSET_CONTEXT_INFO("OPEN-LINEAGE-SERVICES-0020",
+            OMRSAuditLogRecordSeverity.INFO,
+            "Asset Context for entity {0} was stored in the graph.",
+            "Asset Context was stored in the graph.",
+            "No action is required."),
+
+    ASSET_CONTEXT_REQUEST("OPEN-LINEAGE-SERVICES-0021",
+            OMRSAuditLogRecordSeverity.INFO,
+            "Asset Context for entity {0} was requested from Asset Lineage and will be expected as event." +
+                    " Entities in the context will be: {1}",
+            "Asset Context was requested from Asset Lineage.",
+            "No action is required.");
+
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerAuditCode.class);
-    private String logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String logMessage;
-    private String systemAction;
-    private String userAction;
+    private final String logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String logMessage;
+    private final String systemAction;
+    private final String userAction;
+    private AuditLogMessageDefinition messageDefinition;
 
     OpenLineageServerAuditCode(String logMessageId, OMRSAuditLogRecordSeverity severity, String logMessage, String systemAction, String userAction) {
         this.logMessageId = logMessageId;
@@ -117,6 +137,7 @@ public enum OpenLineageServerAuditCode {
         this.logMessage = logMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.messageDefinition = new AuditLogMessageDefinition(logMessageId, severity, logMessage, systemAction, userAction);
     }
 
     /**
@@ -180,4 +201,22 @@ public enum OpenLineageServerAuditCode {
         return userAction;
     }
 
+    /**
+     * Gets message definition.
+     *
+     * @return the message definition
+     */
+    public AuditLogMessageDefinition getMessageDefinition(String... params) {
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
+    }
+
+    /**
+     * Sets message definition.
+     *
+     * @param messageDefinition the message definition
+     */
+    public void setMessageDefinition(AuditLogMessageDefinition messageDefinition) {
+        this.messageDefinition = messageDefinition;
+    }
 }

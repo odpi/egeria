@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
+import java.io.Serializable;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -23,9 +25,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PortAliasRequestBody.class, name = "portAlias"),
                 @JsonSubTypes.Type(value = ProcessesRequestBody.class, name = "processes"),
                 @JsonSubTypes.Type(value = SchemaTypeRequestBody.class, name = "schema"),
+                @JsonSubTypes.Type(value = DatabaseRequestBody.class, name = "database"),
+                @JsonSubTypes.Type(value = DatabaseRequestBody.class, name = "table"),
+                @JsonSubTypes.Type(value = DataFileRequestBody.class, name = "dataFile")
         })
 
-public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializable {
+public abstract class DataEngineOMASAPIRequestBody implements Serializable {
     private static final long serialVersionUID = 1L;
 
 

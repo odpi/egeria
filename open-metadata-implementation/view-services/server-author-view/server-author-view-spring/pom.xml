@@ -9,12 +9,18 @@
     <parent>
         <artifactId>server-author-view</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.6-SNAPSHOT</version>
+        <version>2.11-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>server-author-view-spring</artifactId>
     <name>Server Author OMVS with Spring</name>
+
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
 
     <dependencies>
 

@@ -35,11 +35,12 @@ public class ServerOverview {
     private Map<String,ServerCohortDetails> cohortDetails;
     private ServerStatus                    serverStatus;
     private List<RegisteredOMAGService>     integrationServices;
-    //private List<RegisteredOMAGService>     accessServices;
+    private List<RegisteredOMAGService>     engineServices;
+    private List<RegisteredOMAGService>     accessServices;
+    private List<RegisteredOMAGService>     viewServices;
     //private List<RegisteredOMAGService>     commonServices;
     //private List<RegisteredOMAGService>     governanceServices;
-    //private List<RegisteredOMAGService>     viewServices;
-    //private List<RegisteredOMAGService>     engineServices;
+
 
 
 
@@ -64,12 +65,13 @@ public class ServerOverview {
                           boolean                         isActive,
                           Map<String,ServerCohortDetails> cohortDetails,
                           ServerStatus                    serverStatus,
-                          List<RegisteredOMAGService>     integrationServices
-                          //List<RegisteredOMAGService>     accessServices,
+                          List<RegisteredOMAGService>     integrationServices,
+                          List<RegisteredOMAGService>     engineServices,
+                          List<RegisteredOMAGService>     accessServices,
+                          List<RegisteredOMAGService>     viewServices
                           //List<RegisteredOMAGService>     commonServices,
                           //List<RegisteredOMAGService>     governanceServices,
-                          //List<RegisteredOMAGService>     viewServices,
-                          //List<RegisteredOMAGService>     engineServices
+
                           ) {
 
         this.serverInstanceName          = serverInstanceName;
@@ -82,11 +84,12 @@ public class ServerOverview {
         this.cohortDetails               = cohortDetails;
         this.serverStatus                = serverStatus;
         this.integrationServices         = integrationServices;
-        //this.accessServices              = accessServices;
+        this.engineServices              = engineServices;
+        this.accessServices              = accessServices;
+        this.viewServices                = viewServices;
         //this.commonServices              = commonServices;
         //this.governanceServices          = governanceServices;
-        //this.viewServices                = viewServices;
-        //this.engineServices              = engineServices;
+
 
     }
 
@@ -181,6 +184,30 @@ public class ServerOverview {
         this.integrationServices = integrationServices;
     }
 
+    public List<RegisteredOMAGService> getEngineServices() {
+        return engineServices;
+    }
+
+    public void setEngineServices(List<RegisteredOMAGService> engineServices) {
+        this.engineServices = engineServices;
+    }
+
+    public List<RegisteredOMAGService> getAccessServices() {
+        return accessServices;
+    }
+
+    public void setAccessServices(List<RegisteredOMAGService> accessServices) {
+        this.accessServices = accessServices;
+    }
+
+    public List<RegisteredOMAGService> getViewServices() {
+        return viewServices;
+    }
+
+    public void setViewServices(List<RegisteredOMAGService> viewServices) {
+        this.viewServices = viewServices;
+    }
+
 
     /**
      * Standard toString method.
@@ -201,6 +228,9 @@ public class ServerOverview {
                 ", cohortDetails=" + cohortDetails +'\'' +
                 ", serverStatus=" + serverStatus +'\'' +
                 ", integrationServices=" + integrationServices +'\'' +
+                ", engineServices=" + engineServices +'\'' +
+                ", accessServices=" + accessServices +'\'' +
+                ", viewServices=" + viewServices +'\'' +
                 '}';
     }
 
@@ -230,6 +260,10 @@ public class ServerOverview {
                 Objects.equals(getServerOrigin(), that.getServerOrigin()) &&
                 Objects.equals(getIsActive(), that.getIsActive()) &&
                 Objects.equals(getCohortDetails(), that.getCohortDetails()) &&
+                Objects.equals(getIntegrationServices(), that.getIntegrationServices()) &&
+                Objects.equals(getEngineServices(), that.getEngineServices()) &&
+                Objects.equals(getAccessServices(), that.getAccessServices()) &&
+                Objects.equals(getViewServices(), that.getViewServices()) &&
                 Objects.equals(getServerStatus(), that.getServerStatus());
     }
 
@@ -242,7 +276,9 @@ public class ServerOverview {
     @Override
     public int hashCode()
     {
-        return Objects.hash(getServerInstanceName(), getDescription(), getPlatformRootURL(), getServerName(),  getServerOrigin(), getIsActive(), getCohortDetails(), getServerStatus());
+        return Objects.hash(getServerInstanceName(), getDescription(), getPlatformRootURL(), getServerName(),
+                            getServerOrigin(), getIsActive(), getCohortDetails(), getServerStatus(),
+                            getIntegrationServices(), getAccessServices(), getViewServices(), getEngineServices());
     }
 
 }

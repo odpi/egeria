@@ -23,7 +23,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
 {
     private static final Logger log = LoggerFactory.getLogger(DataFolderMonitorIntegrationConnector.class);
 
-    private File              dataFolderFile    = null;
+    private File dataFolderFile = null;
 
     /**
      * Set up the file listener class - this is implemented by the subclasses
@@ -108,7 +108,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
                 FileFolderProperties properties = new FileFolderProperties();
 
                 properties.setModifiedTime(modifiedTime);
-                context.updateDataFolderInCatalog(folderElement.getElementHeader().getGUID(), true, properties);
+                this.getContext().updateDataFolderInCatalog(folderElement.getElementHeader().getGUID(), true, properties);
 
                 if (auditLog != null)
                 {

@@ -82,7 +82,7 @@
                 <!--include>org.odpi.egeria:ranger-connector:*</include-->
                 <!--include>org.odpi.egeria:view-generator-connectors:*</include-->
                 <!-- pluggable discovery service -->
-                <include>org.odpi.egeria:discovery-service-sample:*</include>
+                <include>org.odpi.egeria:governance-services-sample:*</include>
             </includes>
             <binaries>
                 <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
@@ -104,7 +104,6 @@
                 <include>org.odpi.egeria:cloud-information-model:*</include>
                 <include>org.odpi.egeria:glossary-canonical-model:*</include>
                 <include>org.odpi.egeria:open-metadata-types:*</include>
-                <include>org.odpi.egeria:open-connector-archives:*</include>
             </includes>
             <binaries>
                 <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
@@ -126,7 +125,6 @@
                 <include>org.odpi.egeria:governance-leadership-sample:*</include>
                 <include>org.odpi.egeria:governance-zone-create-sample:*</include>
                 <include>org.odpi.egeria:subject-area-definition-sample:*</include>
-                <include>org.odpi.egeria:open-connector-archives:*</include>
             </includes>
             <binaries>
                 <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
@@ -166,7 +164,6 @@
                 <includeDependencies>false</includeDependencies>
             </binaries>
         </moduleSet>
-        <!-- LICENSE & NOTICE and truststore from top level - this is a custom artifact -->
         <moduleSet>
             <!-- See https://issues.apache.org/jira/browse/MASSEMBLY-938 - causes a warning - appears to be bug, without - assembly fails-->
             <useAllReactorProjects>true</useAllReactorProjects>
@@ -185,6 +182,37 @@
                             <include>NOTICE</include>
                             <include>LICENSE</include>
                             <include>truststore.p12</include>
+                        </includes>
+                    </fileSet>
+                    <fileSet>
+                        <outputDirectory>/</outputDirectory>
+                        <includes>
+                            <include>content-packs/CloudInformationModel.json</include>
+                            <include>content-packs/DataStoreConnectorTypes.json</include>
+                            <include>content-packs/OpenMetadataTypes.json</include>
+                        </includes>
+                    </fileSet>
+                    <fileSet>
+                        <outputDirectory>/</outputDirectory>
+                        <includes>
+                            <include>sample-data/oak-dene-drop-foot-weekly-measurements/week1.csv</include>
+                            <include>sample-data/oak-dene-drop-foot-weekly-measurements/week2.csv</include>
+                            <include>sample-data/oak-dene-drop-foot-weekly-measurements/week3.csv</include>
+                            <include>sample-data/oak-dene-drop-foot-weekly-measurements/week4.csv</include>
+                            <include>sample-data/oak-dene-drop-foot-weekly-measurements/week5.csv</include>
+                            <include>sample-data/oak-dene-drop-foot-weekly-measurements/week6.csv</include>
+                            <include>sample-data/oak-dene-drop-foot-weekly-measurements/week7.csv</include>
+                            <include>sample-data/oak-dene-drop-foot-weekly-measurements/week8.csv</include>
+                            <include>sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv</include>
+                            <include>sample-data/old-market-drop-foot-weekly-measurements/week1.csv</include>
+                            <include>sample-data/old-market-drop-foot-weekly-measurements/week2.csv</include>
+                            <include>sample-data/old-market-drop-foot-weekly-measurements/week3.csv</include>
+                            <include>sample-data/old-market-drop-foot-weekly-measurements/week4.csv</include>
+                            <include>sample-data/old-market-drop-foot-weekly-measurements/week5.csv</include>
+                            <include>sample-data/old-market-drop-foot-weekly-measurements/week6.csv</include>
+                            <include>sample-data/old-market-drop-foot-weekly-measurements/week7.csv</include>
+                            <include>sample-data/old-market-drop-foot-weekly-measurements/week8.csv</include>
+                            <include>sample-data/old-market-drop-foot-weekly-measurements/week9.csv</include>
                         </includes>
                     </fileSet>
                 </fileSets>

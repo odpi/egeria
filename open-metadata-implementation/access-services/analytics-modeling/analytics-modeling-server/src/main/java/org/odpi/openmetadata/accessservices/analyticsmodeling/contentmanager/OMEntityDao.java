@@ -185,6 +185,29 @@ public class OMEntityDao {
 
 		}
 	}
+	/**
+	 * Get relationships of certain GUID for the entity.
+	 * @param entity whose relationships are requested.
+	 * @param relationshipTypeGUID only relationship of the type are requested. All relationships are returned if null.
+	 * @return requested relationships.
+	 * @throws AnalyticsModelingCheckedException in case of repository fails.
+	 */
+	public List<Relationship> getRelationshipsByGUIDForEntity(EntityDetail entity, String relationshipTypeGUID) throws AnalyticsModelingCheckedException {
+		try {
+			return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.ANALYTICS_MODELING_USER_ID,
+					entity.getGUID(), relationshipTypeGUID, 0, FILTER_ACTIVE, null, null, null, 0);
+		} catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException
+				| PropertyErrorException | PagingErrorException | FunctionNotSupportedException
+				| UserNotAuthorizedException ex) {
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.GET_RELATIONSHIP_EXCEPTION.getMessageDefinition(relationshipTypeGUID, getEntityQName(entity)),
+					this.getClass().getSimpleName(),
+					"getRelationshipsForEntity",
+					ex);
+
+
+		}
+	}
 
 	/**
 	 * Get qualified name property for the entity.

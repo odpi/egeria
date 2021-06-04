@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the antonym and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class AntonymMapper extends LineMapper<Antonym> {
+public class AntonymMapper extends RelationshipMapper<Antonym> {
     public static final String ANTONYM = "Antonym";
 
     public AntonymMapper(OMRSAPIHelper omrsapiHelper) {
@@ -24,13 +24,13 @@ public class AntonymMapper extends LineMapper<Antonym> {
 
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param antonym            supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param antonym            supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(Antonym antonym, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(Antonym antonym, InstanceProperties instanceProperties) {
         if (antonym.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getDescription(), "description");
         }
@@ -53,13 +53,13 @@ public class AntonymMapper extends LineMapper<Antonym> {
     /**
      * Map a primitive omrs property to the antonym object.
      *
-     * @param antonym      the glossary to be updated
+     * @param antonym      the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(Antonym antonym, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(Antonym antonym, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -82,7 +82,7 @@ public class AntonymMapper extends LineMapper<Antonym> {
     }
 
     @Override
-    protected boolean mapEnumToLine(Antonym antonym, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(Antonym antonym, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -98,7 +98,7 @@ public class AntonymMapper extends LineMapper<Antonym> {
     }
 
     @Override
-    protected Antonym getLineInstance() {
+    protected Antonym getRelationshipInstance() {
         return new Antonym();
     }
 

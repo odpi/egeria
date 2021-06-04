@@ -44,6 +44,7 @@ public class ConnectionConverter<B> extends DiscoveryEngineOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @SuppressWarnings(value = "unchecked")
     @Override
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,

@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt.junit;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.apache.commons.lang3.StringUtils;
+import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.accessservices.subjectarea.fvt.CheckSerializationFVT;
 import org.odpi.openmetadata.http.HttpHelper;
 
@@ -19,6 +21,6 @@ public class CheckSerializationT {
     @ParameterizedTest
     @ValueSource(strings = {"serverinmem","servergraph"})
     public void testRelationships(String server) {
-        assertDoesNotThrow(() -> CheckSerializationFVT.runIt("https://localhost:10443", server, "garygeeke"));
+        assertDoesNotThrow(() -> CheckSerializationFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));
     }
 }

@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+name: egeria-base
+description: Egeria simple deployment to Kubernetes
+apiVersion: v2
+version: 1.0.0
+icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+keywords:
+  - odpi, egeria, base, simple
+sources:
+  - https://github.com/odpi/egeria
+home: https://github.com/odpi/egeria
+maintainers:
+  - name: Nigel Jones
+    email: nigel.l.jones+git@gmail.com
+dependencies:
+  - name: kafka
+    version: 12.5.0
+    repository: https://charts.bitnami.com/bitnami

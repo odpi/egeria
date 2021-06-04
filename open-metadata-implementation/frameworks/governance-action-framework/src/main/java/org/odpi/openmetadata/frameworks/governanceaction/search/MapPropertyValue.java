@@ -31,7 +31,7 @@ public class MapPropertyValue extends PropertyValue
      */
     public MapPropertyValue()
     {
-        super(PropertyCategory.MAP);
+        super();
     }
 
 
@@ -69,7 +69,7 @@ public class MapPropertyValue extends PropertyValue
      */
     public String valueAsString()
     {
-      return mapValuesAsString(mapValues.getPropertyValues()).toString();
+      return mapValuesAsString(mapValues.getInstanceProperties()).toString();
     }
 
 
@@ -80,7 +80,7 @@ public class MapPropertyValue extends PropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(mapValues.getPropertyValues());
+        return mapValuesAsObject(mapValues.getInstanceProperties());
     }
 
 
@@ -158,8 +158,6 @@ public class MapPropertyValue extends PropertyValue
         return "MapPropertyValue{" +
                 "mapValues=" + mapValues +
                 ", mapElementCount=" + getMapElementCount() +
-                ", instancePropertyCategory=" + getPropertyCategory() +
-                ", typeGUID='" + getTypeGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
     }

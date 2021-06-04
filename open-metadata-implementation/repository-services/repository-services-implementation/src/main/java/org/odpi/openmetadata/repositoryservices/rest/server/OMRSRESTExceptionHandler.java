@@ -99,11 +99,11 @@ class OMRSRESTExceptionHandler
      * @param serverName targeted server instance
      * @param methodName calling method
      */
-    void captureThrowable(OMRSAPIResponse              response,
-                          Throwable                    error,
-                          String                       userId,
-                          String                       serverName,
-                          String                       methodName)
+    void captureGenericException(OMRSAPIResponse              response,
+                                 Exception                    error,
+                                 String                       userId,
+                                 String                       serverName,
+                                 String                       methodName)
     {
         String  message = error.getMessage();
 
@@ -143,7 +143,7 @@ class OMRSRESTExceptionHandler
                                       error);
             }
         }
-        catch (Throwable  secondError)
+        catch (Exception  secondError)
         {
             log.error("Unexpected exception processing error {}", error.toString(), secondError);
         }

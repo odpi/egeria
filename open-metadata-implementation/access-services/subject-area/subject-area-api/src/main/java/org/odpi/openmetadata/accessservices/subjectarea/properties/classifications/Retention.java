@@ -178,28 +178,28 @@ public class Retention extends Classification {
        }
 
 
-       private Date archiveAfter;
+       private Long archiveAfter;
        /**
         * {@literal Related entity used to determine the retention period. }
         * @return Related entity used to determine the retention period.
         */
-       public Date getArchiveAfter() {
+       public Long getArchiveAfter() {
            return this.archiveAfter;
        }
-       public void setArchiveAfter(Date archiveAfter)  {
+       public void setArchiveAfter(Long archiveAfter)  {
            this.archiveAfter = archiveAfter;
        }
 
 
-       private Date deleteAfter;
+       private Long deleteAfter;
        /**
         * {@literal Related entity used to determine the retention period. }
         * @return  Related entity used to determine the retention period.
         */
-       public Date getDeleteAfter() {
+       public Long getDeleteAfter() {
            return this.deleteAfter;
        }
-       public void setDeleteAfter(Date deleteAfter)  {
+       public void setDeleteAfter(Long deleteAfter)  {
            this.deleteAfter = deleteAfter;
        }
 

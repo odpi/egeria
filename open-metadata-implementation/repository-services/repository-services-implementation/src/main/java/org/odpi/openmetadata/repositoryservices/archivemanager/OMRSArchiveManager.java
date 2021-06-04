@@ -71,7 +71,7 @@ public class OMRSArchiveManager
                 {
                     archiveStore.disconnect();
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     /*
                      * nothing to do

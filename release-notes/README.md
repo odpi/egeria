@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# ODPi Egeria Release Notes
+# Egeria Release Notes
 
 Below are the official releases of Egeria.  The project aims to
 produce a new release about once a month.  Each release includes
@@ -24,14 +24,51 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest Egeria release:
 
+* [Release 2.10](release-notes-2-10.md) - June 2021
+  * Changes to metadata types
+  * Updates to Governance Program OMAS API
+  * Bug Fixes
+  * Dependency updates
+  * Important notes included on known issues
+  
+## Older Releases
+
+* [Release 2.9](release-notes-2-9.md) - May 2021
+  * Updates to open metadata types
+  * Changes to building Egeria on Windows
+  * Bug Fixes
+  * Dependency updates
+  * Important notes included on known issues
+
+* [Release 2.8](release-notes-2-8.md) - April 2021
+  * New support for event and property filtering for the open metadata server security connector
+  * Changes to metadata types
+  * New performance workbench for the CTS (technical preview)
+  * New interface for retrieving the complete history of a single metadata instance
+  * Splitting of CTS results into multiple smaller files
+  * Bug Fixes
+  * Dependency updates
+  * Important notes included on known issues
+
+* [Release 2.7](release-notes-2-7.md) - March 2021
+  * Bug Fixes
+  * Dependency updates
+
+* [Release 2.6](release-notes-2-6.md) - February 2021
+  * Governance Server, replacing Stewardship, Discovery & Security Server
+  * Changes to location of configuration files
+  * New metadata types for Governance Actions, Duplicate Processing
+  * Improvements and build changes for the React based UI
+  * A new simple helm chart deployment sample
+  * Bug Fixes
+  * Dependency updates
+
 * [Release 2.5](release-notes-2-5.md) - December 2020
   * User Interface improvements
   * Additional tests
   * Bug fixes
   * Dependency updates
- 
-## Older Releases
-
+  
 * [Release 2.4](release-notes-2-4.md) - November 2020
     * Integration Daemon
     * Rex/Tex in Presentation Server
@@ -125,6 +162,32 @@ resolve the problem, please raise a new
 You can also follow our discussions by joining the LF AI & Data Foundation Slack team.
 Sign up at https://slack.lfai.foundation/ & join the
 `egeria-discussions` channel.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ----

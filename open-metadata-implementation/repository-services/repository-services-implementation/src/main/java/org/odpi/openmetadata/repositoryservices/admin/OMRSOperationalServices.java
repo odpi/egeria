@@ -176,7 +176,7 @@ public class OMRSOperationalServices
 
                 return omrsRepositoryConnector;
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logException(actionDescription,
                                       OMRSAuditCode.ENTERPRISE_CONNECTOR_FAILED.getMessageDefinition(callingServiceName,
@@ -408,7 +408,7 @@ public class OMRSOperationalServices
             {
                 localRepositoryConnector.start();
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logMessage(actionDescription,
                                     OMRSAuditCode.LOCAL_REPOSITORY_FAILED_TO_START.getMessageDefinition(error.getMessage()));
@@ -464,7 +464,6 @@ public class OMRSOperationalServices
                                                        cohortConfigList);
         }
 
-
         /*
          * Set up the OMRS REST Services with the local repository so it is able to process incoming REST
          * calls.
@@ -479,19 +478,23 @@ public class OMRSOperationalServices
                                                          maxPageSize);
 
         /*
-         * The local repository (if configured) has been started while the archives were loaded and the
-         * cohorts initialized.  During this time, outbound repository events have been buffered.
-         * Calling start() releases these buffered events into the cohort(s).
+         * All done and no exceptions :)
          */
+        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZED.getMessageDefinition());
+    }
+
+
+    /**
+     * The local repository (if configured) has been started while the archives were loaded and the
+     * cohorts initialized.  During this time, outbound repository events have been buffered.
+     * Calling start() releases these buffered events into the cohort(s).
+     */
+    private void startOutboundEvents()
+    {
         if (localRepositoryEventManager != null)
         {
             localRepositoryEventManager.start();
         }
-
-        /*
-         * All done and no exceptions :)
-         */
-        auditLog.logMessage(actionDescription, OMRSAuditCode.OMRS_INITIALIZED.getMessageDefinition());
     }
 
 
@@ -707,6 +710,7 @@ public class OMRSOperationalServices
              */
             LocalOMRSConnectorProvider localConnectorProvider =
                     new LocalOMRSConnectorProvider(localMetadataCollectionId,
+                                                   localRepositoryConfig.getLocalRepositoryMode(),
                                                    localRepositoryConfig.getLocalRepositoryRemoteConnection(),
                                                    getLocalRepositoryEventMapper(localRepositoryConfig.getEventMapperConnection()),
                                                    localRepositoryEventManager,
@@ -836,10 +840,18 @@ public class OMRSOperationalServices
         {
             if (localRepositoryConnector != null)
             {
-                this.localRepositoryConnector.setSecurityVerifier(securityVerifier);
+                localRepositoryConnector.setSecurityVerifier(securityVerifier);
+            }
+
+            if (metadataHighwayManager != null)
+            {
+                metadataHighwayManager.setSecurityVerifier(securityVerifier);
             }
         }
+
+        this.startOutboundEvents();
     }
+
 
     /**
      * Add an open metadata archive to the local repository.
@@ -883,7 +895,7 @@ public class OMRSOperationalServices
             {
                 enterpriseOMRSTopicConnector.disconnect();
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_TOPIC_DISCONNECT_ERROR.getMessageDefinition());
             }
@@ -898,7 +910,7 @@ public class OMRSOperationalServices
             {
                 enterpriseConnectorManager.disconnect();
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_CONNECTOR_DISCONNECT_ERROR.getMessageDefinition(error.getMessage()));
             }
@@ -958,7 +970,7 @@ public class OMRSOperationalServices
             connector.start();
             return (OMRSAuditLogStore)connector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getAuditLogStore";
 
@@ -996,7 +1008,7 @@ public class OMRSOperationalServices
 
             return topicConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getTopicConnector";
 
@@ -1035,7 +1047,7 @@ public class OMRSOperationalServices
 
             return archiveStoreConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getOpenMetadataArchiveStore";
 
@@ -1091,7 +1103,7 @@ public class OMRSOperationalServices
 
             return eventMapperConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getLocalRepositoryEventMapper";
 
@@ -1154,7 +1166,7 @@ public class OMRSOperationalServices
 
             return localRepositoryConnector;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             /*
              * If there is a problem initializing the connector then the ConnectorBroker will have created a

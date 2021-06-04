@@ -590,7 +590,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                                                                              error.getReportedErrorMessage());
                 }
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 auditLog.logMessage(actionDescription,
                                     OMRSAuditCode.OUTGOING_BAD_CONNECTION.getMessageDefinition(cohortName,

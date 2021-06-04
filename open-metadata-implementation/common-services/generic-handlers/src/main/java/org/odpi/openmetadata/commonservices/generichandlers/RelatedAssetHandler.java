@@ -24,7 +24,7 @@ import java.util.List;
 public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
     /**
-     * Construct the asset handler with information needed to work with B objects.
+     * Construct the handler with information needed to work with B objects.
      *
      * @param converter specific converter for this bean class
      * @param beanClass name of bean class that is represented by the generic class B
@@ -177,23 +177,30 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                     if ((otherEnd != null) && (otherEnd.getType() != null))
                     {
-                        EntityDetail entity = this.getEntityFromRepository(userId,
-                                                                           otherEnd.getGUID(),
-                                                                           entityGUIDParameterName,
-                                                                           otherEnd.getType().getTypeDefName(),
-                                                                           null,
-                                                                           null,
-                                                                           serviceSupportedZones,
-                                                                           methodName);
-
-                        if (entity != null)
+                        try
                         {
-                            B bean = converter.getNewBean(beanClass, entity, relationship, methodName);
+                            EntityDetail entity = this.getEntityFromRepository(userId,
+                                                                               otherEnd.getGUID(),
+                                                                               entityGUIDParameterName,
+                                                                               otherEnd.getType().getTypeDefName(),
+                                                                               null,
+                                                                               null,
+                                                                               serviceSupportedZones,
+                                                                               methodName);
 
-                            if (bean != null)
+                            if (entity != null)
                             {
-                                results.add(bean);
+                                B bean = converter.getNewBean(beanClass, entity, relationship, methodName);
+
+                                if (bean != null)
+                                {
+                                    results.add(bean);
+                                }
                             }
+                        }
+                        catch (UserNotAuthorizedException notVisible)
+                        {
+                            // skip this one
                         }
                     }
                 }

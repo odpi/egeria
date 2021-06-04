@@ -27,21 +27,15 @@ public class LineageVertex {
     private String nodeType;
     private String displayName;
     private String guid;
+    private String qualifiedName;
     private Map<String, String> properties;
 
-    public LineageVertex(){}
+    public LineageVertex() {
+    }
 
     public LineageVertex(String nodeID, String nodeType) {
         this.nodeID = nodeID;
         this.nodeType = nodeType;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
     }
 
     public String getNodeType() {
@@ -52,12 +46,24 @@ public class LineageVertex {
         return guid;
     }
 
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
     public String getNodeID() {
         return nodeID;
     }
 
+    public void setNodeID(String nodeID) {
+        this.nodeID = nodeID;
+    }
+
     public String getDisplayName() {
         return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public Map<String, String> getProperties() {
@@ -68,8 +74,12 @@ public class LineageVertex {
         this.properties = properties;
     }
 
-    public void setNodeID(String nodeID) {
-        this.nodeID = nodeID;
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
     }
 
     @Override
@@ -77,15 +87,11 @@ public class LineageVertex {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LineageVertex that = (LineageVertex) o;
-        return nodeID.equals(that.nodeID) &&
-                nodeType.equals(that.nodeType) &&
-                Objects.equals(displayName, that.displayName) &&
-                Objects.equals(guid, that.guid) &&
-                Objects.equals(properties, that.properties);
+        return Objects.equals(nodeID, that.nodeID) && Objects.equals(nodeType, that.nodeType) && Objects.equals(displayName, that.displayName) && Objects.equals(guid, that.guid) && Objects.equals(qualifiedName, that.qualifiedName) && Objects.equals(properties, that.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nodeID, nodeType, displayName, guid, properties);
+        return Objects.hash(nodeID, nodeType, displayName, guid, qualifiedName, properties);
     }
 }

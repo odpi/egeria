@@ -21,6 +21,10 @@ events onto the [Open Metadata Access Services](../../access-services).
 * **EventsToSave Rule**: controls which of the inbound events received by the Local Repository Services
 should be saved to the local repository.
 
+
+----
+* Return to [Repository Services Design](.)
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

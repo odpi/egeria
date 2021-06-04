@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.db;
 
 
-import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.User;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.db.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -328,7 +328,7 @@ public class OmrsBeanGenerator {
             reader = new BufferedReader(new FileReader(RELATIONSHIP_TO_LINES_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
-                List<String> loopLines = new ArrayList();
+                List<String> loopLines = new ArrayList<>();
 
                 if (line.contains(" <$$RELATIONSHIP$")) {
                     // read all the lines in the loop
@@ -435,7 +435,7 @@ public class OmrsBeanGenerator {
             reader = new BufferedReader(new FileReader(ENUM_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
-                Map<String, String> replacementMap = new HashMap();
+                Map<String, String> replacementMap = new HashMap<>();
                 replacementMap.put("description", this.omrsBeanModel.getTypeDefDescription(GeneratorUtilities.uppercase1stLetter(enumName)));
                 replacementMap.put("package", pkg);
                 replacementMap.put("name", org.odpi.openmetadata.fvt.opentypes.utils.GeneratorUtilities.lowercase1stLetter(enumName));
@@ -515,7 +515,7 @@ public class OmrsBeanGenerator {
      */
     private void writeOMRSBeansAccessorFile(Map<String, String> replacementMap, FileWriter outputFileWriter, BufferedReader reader, String line) throws IOException {
         Set<String> allEntities = omrsBeanModel.getOmrsBeanEntityAttributeMap().keySet();
-        List<String> loopEntityLines = new ArrayList();
+        List<String> loopEntityLines = new ArrayList<>();
         List<String> loopRelationshipLines = new ArrayList<>();
         if (line.contains("<$$$")) {
             // read all the lines in the loop
@@ -702,7 +702,7 @@ public class OmrsBeanGenerator {
             } else if (newLine.contains("<$$AttrList$$")) {
                 loopArtifactCounter++;
                 // we have attribute code that we need to repeat
-                List<String> loopAttrLines = new ArrayList();
+                List<String> loopAttrLines = new ArrayList<>();
                 newLine = loopArtifactLines.get(loopArtifactCounter);
                 while (newLine != null) {
                     //stash the lines for the loop and spit them out for each entity
@@ -769,7 +769,7 @@ public class OmrsBeanGenerator {
                 }
             } else if (newLine.contains("<$$Enum$$")) {
                 // TODO Lists of enums
-                List<String> loopEnumLines = new ArrayList();
+                List<String> loopEnumLines = new ArrayList<>();
                 loopArtifactCounter++;
                 newLine = loopArtifactLines.get(loopArtifactCounter);
                 while (newLine != null) {
@@ -801,7 +801,7 @@ public class OmrsBeanGenerator {
                     }
                 }
             } else if (newLine.contains("<$$Map$$")) {
-                List<String> loopMapLines = new ArrayList();
+                List<String> loopMapLines = new ArrayList<>();
                 loopArtifactCounter++;
                 newLine = loopArtifactLines.get(loopArtifactCounter);
                 while (newLine != null) {

@@ -32,6 +32,7 @@ public class TriageGovernanceContext extends GovernanceContext
      * Constructor sets up the key parameters for processing the request to the governance action service.
      *
      * @param userId calling user
+     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param requestType unique identifier of the asset that the annotations should be attached to
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
@@ -39,17 +40,19 @@ public class TriageGovernanceContext extends GovernanceContext
      * @param openMetadataStore client to the metadata store for use by the governance action service
      */
     public TriageGovernanceContext(String                     userId,
+                                   String                     governanceActionGUID,
                                    String                     requestType,
                                    Map<String, String>        requestParameters,
                                    List<RequestSourceElement> requestSourceElements,
                                    List<ActionTargetElement>  actionTargetElements,
                                    OpenMetadataClient openMetadataStore)
     {
-        super(userId, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
+        super(userId, governanceActionGUID, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
     }
 
 
     /**
+     * Create a To Do request for someone to work on.
      *
      * @param toDoQualifiedName unique name for the to do.  (Could be the engine name and a guid?)
      * @param title short meaningful phrase for the person receiving the request
@@ -73,9 +76,9 @@ public class TriageGovernanceContext extends GovernanceContext
     {
         final String methodName = "openToDo";
 
-        final String todoTypeName            = "ToDo";
-        final String personRoleTypeName      = "PersonRole";
-        final String actionAsignmentTypeName = "ActionAssignment";
+        final String todoTypeName             = "ToDo";
+        final String personRoleTypeName       = "PersonRole";
+        final String actionAssignmentTypeName = "ActionAssignment";
 
         final String qualifiedNamePropertyName = "qualifiedName";
         final String titlePropertyName         = "name";
@@ -83,6 +86,7 @@ public class TriageGovernanceContext extends GovernanceContext
         final String priorityPropertyName      = "priority";
         final String dueDatePropertyName       = "dueTime";
         final String statusPropertyName        = "status";
+        final String statusPropertyTypeName    = "ToDoStatus";
         final String openEnumPropertyValue     = "Open";
 
         final String toDoQualifiedNameParameterName = "toDoQualifiedName";
@@ -99,7 +103,6 @@ public class TriageGovernanceContext extends GovernanceContext
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         primitivePropertyValue.setPrimitiveValue(assignTo);
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
 
         condition.setProperty(qualifiedNamePropertyName);
         condition.setOperator(PropertyComparisonOperator.EQ);
@@ -182,14 +185,14 @@ public class TriageGovernanceContext extends GovernanceContext
         }
 
         properties = propertyHelper.addIntProperty(properties, priorityPropertyName, priority);
-        properties = propertyHelper.addEnumProperty(properties, statusPropertyName, openEnumPropertyValue);
+        properties = propertyHelper.addEnumProperty(properties, statusPropertyName, statusPropertyTypeName, openEnumPropertyValue);
 
         String todoGUID = openMetadataStore.createMetadataElementInStore(todoTypeName, ElementStatus.ACTIVE, null, null, properties, null);
 
         /*
          * Link the "to do" and the person role
          */
-        openMetadataStore.createRelatedElementsInStore(actionAsignmentTypeName, personRoleGUID, todoGUID, null, null, null);
+        openMetadataStore.createRelatedElementsInStore(actionAssignmentTypeName, personRoleGUID, todoGUID, null, null, null);
 
         return todoGUID;
     }

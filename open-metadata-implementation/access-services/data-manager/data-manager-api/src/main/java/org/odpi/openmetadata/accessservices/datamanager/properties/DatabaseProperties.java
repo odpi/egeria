@@ -154,6 +154,7 @@ public class DatabaseProperties extends DataStoreProperties
                        ", databaseVersion='" + databaseVersion + '\'' +
                        ", databaseInstance='" + databaseInstance + '\'' +
                        ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                       ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
                        ", modifiedTime=" + getModifiedTime() +
                        ", encodingType='" + getEncodingType() + '\'' +
@@ -162,12 +163,6 @@ public class DatabaseProperties extends DataStoreProperties
                        ", encodingProperties=" + getEncodingProperties() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerCategory=" + getOwnerCategory() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                       ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                       ", otherOriginValues=" + getOtherOriginValues() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +

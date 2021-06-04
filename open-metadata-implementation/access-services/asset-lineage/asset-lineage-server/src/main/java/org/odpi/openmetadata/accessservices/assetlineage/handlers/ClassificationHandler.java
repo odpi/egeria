@@ -2,58 +2,56 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 
 /**
- * The classification handler maps classifications attached with an entity to an lineage entity.
+ * The Classification Handler maps classifications attached with an entity to an lineage entity.
  */
 public class ClassificationHandler {
 
-    private InvalidParameterHandler invalidParameterHandler;
-    private HandlerHelper handlerHelper;
+    private final InvalidParameterHandler invalidParameterHandler;
+    private final HandlerHelper handlerHelper;
 
     /**
      * Instantiates a new Classification handler.
      *
      * @param invalidParameterHandler the invalid parameter handler
      */
-    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, Set<String> lineageClassificationTypes, OMRSRepositoryHelper repositoryHelper) {
+    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, Set<String> lineageClassificationTypes,
+                                 OMRSRepositoryHelper repositoryHelper) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, null, lineageClassificationTypes);
     }
 
 
     /**
+     * Builds the classification context for an entity.
      * Gets asset context from the entity by classification type.
      *
-     * @param entityDetail the entity for retrieving the classifications attached to it
-     * @return the asset context by classification
+     * @param entityDetail          the entity for retrieving the classifications attached to it
+     * @param assetLineageEventType the event type to be published
+     *
+     * @return the classification context of the entity
      */
-    public Map<String, Set<GraphContext>> buildClassificationContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    public Map<String, RelationshipsContext> buildClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType) throws
+                                                                                                                                                OCFCheckedExceptionBase {
         String methodName = "buildClassificationContext";
         invalidParameterHandler.validateGUID(entityDetail.getGUID(), GUID_PARAMETER, methodName);
 
-        List<Classification> classifications = handlerHelper.filterLineageClassifications(entityDetail.getClassifications());
-        if (CollectionUtils.isEmpty(classifications)) {
-            return null;
-        }
+        Map<String, RelationshipsContext> context = new HashMap<>();
 
-        AssetContext assetContext = new AssetContext();
-        handlerHelper.addLineageClassificationToContext(entityDetail, assetContext);
-
-        return assetContext.getNeighbors();
+        context.put(assetLineageEventType.getEventTypeName(), handlerHelper.buildContextForLineageClassifications(entityDetail));
+        return context;
     }
 }

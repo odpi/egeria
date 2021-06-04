@@ -107,6 +107,8 @@ public class CreateTagTest
         System.out.println("AssetGUID: " + assetGUID);
         String schemaTypeGUID = factory.getSchemaType(userId, assetGUID);
         System.out.println("SchemaTypeGUID: " + schemaTypeGUID);
+        String asset2GUID = factory.getAssetFromTemplate(userId, assetGUID);
+        System.out.println("Asset2GUID: " + asset2GUID);
         String publicTagGUID = thisTest.getPublicTag(client, userId);
         System.out.println("PublicTagGUID: " + publicTagGUID);
     }

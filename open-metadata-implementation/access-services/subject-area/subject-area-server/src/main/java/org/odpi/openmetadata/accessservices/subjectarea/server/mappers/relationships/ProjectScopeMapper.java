@@ -13,7 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the ProjectScope and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class ProjectScopeMapper extends LineMapper<ProjectScope> {
+public class ProjectScopeMapper extends RelationshipMapper<ProjectScope> {
     public static final String PROJECT_SCOPE = "ProjectScope";
 
     public ProjectScopeMapper(OMRSAPIHelper omrsapiHelper) {
@@ -26,18 +26,18 @@ public class ProjectScopeMapper extends LineMapper<ProjectScope> {
     }
 
     @Override
-    public ProjectScope getLineInstance() {
+    public ProjectScope getRelationshipInstance() {
         return new ProjectScope();
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param projectScope               supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param projectScope               supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    public void mapLineToInstanceProperties(ProjectScope projectScope, InstanceProperties instanceProperties) {
+    public void mapRelationshipToInstanceProperties(ProjectScope projectScope, InstanceProperties instanceProperties) {
         if (projectScope.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, projectScope.getDescription(), "description");
         }
@@ -49,10 +49,10 @@ public class ProjectScopeMapper extends LineMapper<ProjectScope> {
      * @param projectScope         the ProjectScope to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(ProjectScope projectScope, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(ProjectScope projectScope, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {

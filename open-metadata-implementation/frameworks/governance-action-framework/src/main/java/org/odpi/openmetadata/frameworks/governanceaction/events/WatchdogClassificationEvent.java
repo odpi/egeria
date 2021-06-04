@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public abstract class WatchdogClassificationEvent extends WatchdogMetadataElementEvent
+public class WatchdogClassificationEvent extends WatchdogMetadataElementEvent
 {
     private static final long      serialVersionUID = 1L;
 

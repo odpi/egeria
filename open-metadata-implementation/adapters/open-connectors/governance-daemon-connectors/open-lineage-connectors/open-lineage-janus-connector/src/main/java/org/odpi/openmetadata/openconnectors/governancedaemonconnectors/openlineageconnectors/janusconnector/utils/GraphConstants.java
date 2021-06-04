@@ -53,6 +53,8 @@ public class GraphConstants {
     private static final String PROPERTY_NAME_PATH = "path";
     public static final String PROPERTY_NAME_PROCESS_LINEAGE_COMPLETED_FLAG = "processLineageCompletedFlag";
 
+    public static final String VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME = "assetLineageLastUpdateTimestamp";
+
     public static final String CONDENSED_NODE_DISPLAY_NAME = "...";
     public static final String SOURCE_CONDENSATION = "source";
     public static final String DESTINATION_CONDENSATION = "destination";
@@ -86,6 +88,12 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_COLUMN_IN_GUID = "columnInGuid";
     public static final String PROPERTY_KEY_COLUMN_OUT_GUID = "columnOutGuid";
 
+    //EMBEDDED PROPERTIES
+
+    public static final String PROPERTY_KEY_ADDITIONAL_PROPERTIES = "additionalProperties";
+    public static final String PROPERTY_KEY_EXTENDED_PROPERTIES = "extendedProperties";
+
+
     public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_NAME_QUALIFIED_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_QUALIFIED_NAME;
@@ -108,6 +116,8 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_CONNECTION_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_CONNECTION;
     public static final String PROPERTY_KEY_PATH = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_PATH;
     public static final String PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG = PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY + PROPERTY_NAME_PROCESS_LINEAGE_COMPLETED_FLAG;
+    public static final String PROPERTY_KEY_INSTANCE_PROP_ADDITIONAL_PROPERTIES =
+            PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY + PROPERTY_KEY_ADDITIONAL_PROPERTIES;
 
     public static final String PROPERTY_KEY_RELATIONSHIP_GUID = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_RELATIONSHIP_VERSION = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_VERSION;

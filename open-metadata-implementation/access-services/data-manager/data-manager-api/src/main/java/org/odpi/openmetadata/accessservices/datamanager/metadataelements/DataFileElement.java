@@ -130,10 +130,6 @@ public class DataFileElement implements MetadataElement, Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         DataFileElement that = (DataFileElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(dataFileProperties, that.dataFileProperties);

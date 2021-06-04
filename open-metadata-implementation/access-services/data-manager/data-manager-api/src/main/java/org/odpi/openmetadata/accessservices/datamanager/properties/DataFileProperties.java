@@ -81,24 +81,22 @@ public class DataFileProperties extends DataStoreProperties
     public String toString()
     {
         return "DataFileProperties{" +
-                "fileType='" + fileType + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encodingType='" + getEncodingType() + '\'' +
-                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOtherOriginValues() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "fileType='" + fileType + '\'' +
+                       ", pathName='" + getPathName() + '\'' +
+                       ", createTime=" + getCreateTime() +
+                       ", modifiedTime=" + getModifiedTime() +
+                       ", encodingType='" + getEncodingType() + '\'' +
+                       ", encodingLanguage='" + getEncodingLanguage() + '\'' +
+                       ", encodingDescription='" + getEncodingDescription() + '\'' +
+                       ", encodingProperties=" + getEncodingProperties() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

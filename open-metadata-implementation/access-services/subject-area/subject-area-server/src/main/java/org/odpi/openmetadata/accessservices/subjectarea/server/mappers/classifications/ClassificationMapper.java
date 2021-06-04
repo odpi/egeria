@@ -159,8 +159,18 @@ abstract public class ClassificationMapper {
         systemAttributes.setStatus(status);
         systemAttributes.setCreatedBy(omrsClassification.getCreatedBy());
         systemAttributes.setUpdatedBy(omrsClassification.getUpdatedBy());
-        systemAttributes.setCreateTime(omrsClassification.getCreateTime());
-        systemAttributes.setUpdateTime(omrsClassification.getUpdateTime());
+        Date createtimeDate = omrsClassification.getCreateTime();
+        Long createTimeLong=null;
+        if (createtimeDate != null) {
+            createTimeLong = createtimeDate.getTime();
+        }
+        systemAttributes.setCreateTime(createTimeLong);
+        Date updatetimeDate = omrsClassification.getUpdateTime();
+        Long updateTimeLong=null;
+        if (updatetimeDate != null) {
+            updateTimeLong = updatetimeDate.getTime();
+        }
+        systemAttributes.setUpdateTime(updateTimeLong);
         systemAttributes.setVersion(omrsClassification.getVersion());
         return systemAttributes;
     }

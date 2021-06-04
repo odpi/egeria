@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -31,6 +32,8 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     private Connection inTopicConnection;
     private Connection lineageGraphConnection;
     private int jobIntervalInSeconds;
+    private OLSSimplifiedAccessServiceConfig accessServiceConfig;
+    private List<OLSBackgroundJob> backgroundJobs;
 
     /**
      * Default constructor
@@ -56,13 +59,15 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
             inTopicName = template.inTopicName;
             inTopicConnection = template.inTopicConnection;
             lineageGraphConnection = template.lineageGraphConnection;
+            accessServiceConfig = template.accessServiceConfig;
+            backgroundJobs = template.backgroundJobs;
         }
     }
 
     /**
      * Return the code number (ordinal) for this Open Lineage
      *
-     * @return the code numner for Open Lineage component
+     * @return the code number for Open Lineage component
      */
     public int getOpenLineageId() {
         return openLineageId;
@@ -206,6 +211,42 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
         this.jobIntervalInSeconds = jobIntervalInSeconds;
     }
 
+    /**
+     * Gets access service config.
+     *
+     * @return the access service config
+     */
+    public OLSSimplifiedAccessServiceConfig getAccessServiceConfig() {
+        return accessServiceConfig;
+    }
+
+    /**
+     * Sets access service config.
+     *
+     * @param accessServiceConfig the access service config
+     */
+    public void setAccessServiceConfig(OLSSimplifiedAccessServiceConfig accessServiceConfig) {
+        this.accessServiceConfig = accessServiceConfig;
+    }
+
+    /**
+     * Gets background jobs.
+     *
+     * @return the background jobs
+     */
+    public List<OLSBackgroundJob> getBackgroundJobs() {
+        return backgroundJobs;
+    }
+
+    /**
+     * Sets background jobs.
+     *
+     * @param backgroundJobs the background jobs
+     */
+    public void setBackgroundJobs(List<OLSBackgroundJob> backgroundJobs) {
+        this.backgroundJobs = backgroundJobs;
+    }
+
     @Override
     public String toString() {
         return "OpenLineageServerConfig{" +
@@ -216,6 +257,8 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 ", inTopicName='" + inTopicName + '\'' +
                 ", inTopicConnection=" + inTopicConnection +
                 ", openLineageGraphConnection=" + lineageGraphConnection +
+                ", accessServiceConfig=" + accessServiceConfig +
+                ", backgroundJobs=" + backgroundJobs +
                 '}';
     }
 
@@ -230,13 +273,14 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 Objects.equals(lineageServerURL, that.lineageServerURL) &&
                 Objects.equals(inTopicName, that.inTopicName) &&
                 Objects.equals(inTopicConnection, that.inTopicConnection) &&
-                Objects.equals(lineageGraphConnection, that.lineageGraphConnection);
+                Objects.equals(lineageGraphConnection, that.lineageGraphConnection) &&
+                Objects.equals(accessServiceConfig, that.accessServiceConfig) &&
+                Objects.equals(backgroundJobs, that.backgroundJobs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(openLineageId, openLineageName,
-                openLineageDescription, lineageServerURL,
-                inTopicName, inTopicConnection, lineageGraphConnection);
+        return Objects.hash(openLineageId, openLineageName, openLineageDescription, lineageServerURL,
+                inTopicName, inTopicConnection, lineageGraphConnection, accessServiceConfig, backgroundJobs);
     }
 }

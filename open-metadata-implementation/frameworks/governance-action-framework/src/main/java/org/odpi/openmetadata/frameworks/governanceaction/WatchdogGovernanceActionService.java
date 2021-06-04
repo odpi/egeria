@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * it may just be looking for a specific change before completing.
  *
  * To create your own watchdog governance action service, create a new class that extends this class
- * along with another class that extends the GovernanceServiceProvider class to act as its connector provider.
+ * along with another class that extends the GovernanceActionServiceProviderBase class to act as its connector provider.
  * Add a start() method that begins by calling super.start() and then registers a listener to wait for the desired event(s).
  *
  * THe listener is called each time an event occurs.  It can use the methods on the governance context to:
@@ -77,6 +77,10 @@ public abstract class WatchdogGovernanceActionService extends GovernanceActionSe
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
+        if ((isActive()) && (governanceContext != null))
+        {
+            governanceContext.disconnectListener();
+        }
         super.disconnect();
     }
 }

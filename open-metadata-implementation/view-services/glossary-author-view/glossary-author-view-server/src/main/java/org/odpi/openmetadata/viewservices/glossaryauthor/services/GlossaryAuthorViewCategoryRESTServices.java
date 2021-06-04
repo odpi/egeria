@@ -2,15 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.AbstractSubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -63,8 +61,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Category createdCategory = clients.categories().create(userId, suppliedCategory);
             response.addResult(createdCategory);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -98,8 +96,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Category obtainedCategory = clients.categories().getByGUID(userId, guid);
             response.addResult(obtainedCategory);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -162,8 +160,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             Config subjectAreaConfig = client.getConfig(userId);
             List<Category> categories = clients.categories().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(categories);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -189,7 +187,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(
+    public SubjectAreaOMASAPIResponse<Relationship> getCategoryRelationships(
             String serverName,
             String userId,
             String guid,
@@ -200,11 +198,11 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             String sequencingProperty
 
 
-    ) {
+                                                                            ) {
         final String methodName = "getCategoryRelationships";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             if (pageSize == null) {
@@ -223,10 +221,10 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Line> lines =  clients.categories().getRelationships(userId, guid, findRequest);
-            response.addAllResults(lines);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+            List<Relationship> relationships =  clients.categories().getRelationships(userId, guid, findRequest);
+            response.addAllResults(relationships);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -275,8 +273,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
                 updatedCategory = clients.categories().update(userId, guid, category);
             }
             response.addResult(updatedCategory);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -330,8 +328,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             } else {
                 clients.categories().delete(userId, guid);
             }
-        }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -369,14 +367,31 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Category category = clients.categories().restore(userId, guid);
             response.addResult(category);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response =  getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+    /**
+     * Get this Category's child Categories. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the parent category
+     * @param searchCriteria String expression matching child Category property values.
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of child categories filtered by the search criteria if one is supplied.
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     **/
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, String searchCriteria, Integer startingFrom, Integer pageSize) {
 
-    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
         final String methodName = "getCategoryChildren";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -389,22 +404,41 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         if (pageSize == null) {
             pageSize = invalidParameterHandler.getMaxPagingSize();
         }
+
         try {
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             findRequest.setPageSize(pageSize);
             findRequest.setStartingFrom(startingFrom);
+            findRequest.setSearchCriteria(searchCriteria);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest);
             response.addAllResults(categories);
-        } catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
-    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+    /**
+     * Get the terms that are categorized by this Category
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @param searchCriteria String expression to match the categorized Term property values.
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of terms is categorized by this Category
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     **/
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid,String searchCriteria, Integer startingFrom, Integer pageSize) {
             final String methodName = "getCategorizedTerms";
 
             RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -421,12 +455,13 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
                 invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
                 findRequest.setPageSize(pageSize);
                 findRequest.setStartingFrom(startingFrom);
+                findRequest.setSearchCriteria(searchCriteria);
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
                 List<Term> terms = ((SubjectAreaCategoryClient)clients.categories()).getTerms(userId, guid, findRequest);
                 response.addAllResults(terms);
-            } catch (Throwable error) {
-                response = getResponseForError(error, auditLog, className, methodName);
+            } catch (Exception exception) {
+                response = getResponseForException(exception, auditLog, className, methodName);
             }
             restCallLogger.logRESTCallReturn(token, response.toString());
             return response;

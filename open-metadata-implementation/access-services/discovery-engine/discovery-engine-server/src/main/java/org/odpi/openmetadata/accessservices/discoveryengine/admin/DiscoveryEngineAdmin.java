@@ -3,20 +3,13 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.admin;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineAuditCode;
-import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic.DiscoveryEngineOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
-import org.odpi.openmetadata.accessservices.discoveryengine.outtopic.DiscoveryEngineOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.discoveryengine.outtopic.DiscoveryEnginePublisher;
 import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryEngineServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -31,7 +24,6 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
     private AuditLog                        auditLog       = null;
     private DiscoveryEngineServicesInstance instance       = null;
     private String                          serverName     = null;
-    private DiscoveryEnginePublisher        eventPublisher = null;
 
     /**
      * Default constructor
@@ -96,40 +88,9 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
                                                                 publishZones,
                                                                 auditLog,
                                                                 serverUserName,
-                                                                repositoryConnector.getMaxPageSize(),
-                                                                accessServiceConfig.getAccessServiceOutTopic());
+                                                                repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
-            /*
-             * This piece is setting up the server-side mechanism for the out topic.
-             */
-            Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
-
-            if (outTopicEventBusConnection != null)
-            {
-                Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
-
-                AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
-                                                                                     DiscoveryEngineOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
-                DiscoveryEngineOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
-                                                                                                         DiscoveryEngineOutTopicServerConnector.class,
-                                                                                                         outTopicAuditLog,
-                                                                                                         AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
-                                                                                                         actionDescription);
-                eventPublisher = new DiscoveryEnginePublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
-
-                this.registerWithEnterpriseTopic(AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
-                                                 serverName,
-                                                 omrsTopicConnector,
-                                                 new DiscoveryEngineOMRSTopicListener(AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
-                                                                                      eventPublisher,
-                                                                                      repositoryConnector.getRepositoryHelper(),
-                                                                                      outTopicAuditLog),
-                                                 auditLog);
-            }
 
             /*
              * Initialization is complete.  The service is now waiting for REST API calls (typically from the Discovery Server) and events
@@ -145,7 +106,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
                                   error);
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   DiscoveryEngineAuditCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(error.getClass().getName(),
@@ -175,11 +136,6 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
         if (this.instance != null)
         {
             this.instance.shutdown();
-        }
-
-        if (this.eventPublisher != null)
-        {
-            this.eventPublisher.disconnect();
         }
 
         auditLog.logMessage(actionDescription, DiscoveryEngineAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));

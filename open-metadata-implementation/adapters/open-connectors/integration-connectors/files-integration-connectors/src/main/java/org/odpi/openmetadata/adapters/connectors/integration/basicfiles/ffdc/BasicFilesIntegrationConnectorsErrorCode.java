@@ -33,13 +33,13 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
                     "for this connector in the Files Integration integration service configuration which is part of the configuration of the " +
                     "Integration Daemon OMAG server where this connector is running."),
     FILES_LOCATION_NOT_DIRECTORY(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-002",
-            "The location of the files {0} given in Connection object {1} is not a directory",
+            "The file location {0} is not a directory",
             "The connector is unable to work with this location since it is not a directory (folder).",
             "Ensure a valid directory name is passed in the address property in the Endpoint object of the Connection object.  " +
                     "This connection object is part of he Files Integration integration service configuration which is part of the configuration " +
                     "of the Integration Daemon OMAG server where this connector is running."),
     FILES_LOCATION_NOT_READABLE(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-003",
-            "The directory {0} given in Connection object {1} is not readable",
+            "The directory (folder) {0} is not readable",
             "The connector is unable to open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
     UNEXPECTED_EXC_RETRIEVING_FOLDER(400,"BASIC-FILES-INTEGRATION-CONNECTORS-400-004",
@@ -55,7 +55,7 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
                     "This file is not catalogued at this time but may succeed later.",
             "Use the message in the unexpected exception to determine the root cause of the error and fix it."),
     FILES_LOCATION_NOT_FOUND(404, "BASIC-FILES-INTEGRATION-CONNECTORS-404-001",
-             "The directory named {0} in the Connection object {1} does not exist",
+             "The directory named {0} does not exist",
              "The connector is unable to locate the file it has been asked to work with.",
              "Ensure that the name of the file in the address property of the connection's Endpoint object matches the location of the file " +
                            "that the connector is to access."),

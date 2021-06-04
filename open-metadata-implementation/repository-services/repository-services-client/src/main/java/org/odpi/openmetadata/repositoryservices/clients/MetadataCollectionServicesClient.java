@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -51,7 +52,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
-    protected AuditLog          auditLog = null;
+    protected AuditLog auditLog = null;
 
 
     /**
@@ -185,12 +186,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         catch (Throwable error)
         {
            throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
-                                                                                                          repositoryName,
-                                                                                                          error.getClass().getSimpleName(),
-                                                                                                          error.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               error);
+                                                                                                         repositoryName,
+                                                                                                         error.getClass().getSimpleName(),
+                                                                                                         error.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              error);
         }
 
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
@@ -222,7 +223,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
                                                     userId);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
                                                                                                           repositoryName,
@@ -234,6 +235,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
 
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        if (restResult.getMetadataCollectionId() == null)
+        {
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION_ID_FROM_REMOTE.getMessageDefinition(repositoryName),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
 
         return restResult.getMetadataCollectionId();
     }
@@ -1211,7 +1219,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         HistoryRequest requestBody = new HistoryRequest();
         requestBody.setAsOfTime(asOfTime);
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                                                                           restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                            restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
                                                                             requestBody,
                                                                             userId,
                                                                             guid);
@@ -1224,6 +1232,68 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getEntity();
+    }
+
+
+    /**
+     * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<EntityDetail>} of each historical version of the entity detail within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
+     *                                   at the time requested.
+     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public List<EntityDetail> getEntityDetailHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    EntityNotKnownException,
+                                                                                                    EntityProxyOnlyException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName           = "getEntityDetailHistory";
+        final String operationSpecificURL = "instances/entity/{1}/history/all";
+
+        HistoryRangeRequest requestBody = new HistoryRangeRequest();
+        requestBody.setFromTime(fromTime);
+        requestBody.setToTime(toTime);
+        requestBody.setOffset(startFromElement);
+        requestBody.setPageSize(pageSize);
+        requestBody.setSequencingOrder(sequencingOrder);
+        EntityListResponse restResult = this.callEntityListPostRESTCall(methodName,
+                                                                        restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                        requestBody,
+                                                                        userId,
+                                                                        guid);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowEntityProxyOnlyException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getEntities();
     }
 
 
@@ -1280,7 +1350,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if (asOfTime == null)
         {
-            final String           operationSpecificURL           = "instances/entity/{1}/relationships";
+            final String           operationSpecificURL  = "instances/entity/{1}/relationships";
             TypeLimitedFindRequest findRequestParameters = new TypeLimitedFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
@@ -1298,7 +1368,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
         else
         {
-            final String                     operationSpecificURL = "instances/entity/{1}/relationships/history";
+            final String                     operationSpecificURL  = "instances/entity/{1}/relationships/history";
             TypeLimitedHistoricalFindRequest findRequestParameters = new TypeLimitedHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
@@ -1386,7 +1456,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if (asOfTime == null)
         {
-            final String operationSpecificURL       = "instances/entities";
+            final String      operationSpecificURL  = "instances/entities";
             EntityFindRequest findRequestParameters = new EntityFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
@@ -1406,7 +1476,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
         else
         {
-            final String                 operationSpecificURL = "instances/entities/history";
+            final String                operationSpecificURL  = "instances/entities/history";
             EntityHistoricalFindRequest findRequestParameters = new EntityHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
@@ -1497,7 +1567,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if (asOfTime == null)
         {
-            final String              operationSpecificURL           = "instances/entities/by-property";
+            final String              operationSpecificURL  = "instances/entities/by-property";
             EntityPropertyFindRequest findRequestParameters = new EntityPropertyFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
@@ -1517,7 +1587,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
         else
         {
-            final String                        operationSpecificURL = "instances/entities/by-property/history";
+            final String                        operationSpecificURL  = "instances/entities/by-property/history";
             EntityPropertyHistoricalFindRequest findRequestParameters = new EntityPropertyHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
@@ -1611,7 +1681,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if (asOfTime == null)
         {
-            final String             operationSpecificURL           = "instances/entities/by-classification/{1}";
+            final String             operationSpecificURL  = "instances/entities/by-classification/{1}";
             PropertyMatchFindRequest findRequestParameters = new PropertyMatchFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
@@ -1631,8 +1701,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
         else
         {
-            final String                        operationSpecificURL = "instances/entities/by-classification/{1}/history";
-            PropertyMatchHistoricalFindRequest  findRequestParameters = new PropertyMatchHistoricalFindRequest();
+            final String                       operationSpecificURL  = "instances/entities/by-classification/{1}/history";
+            PropertyMatchHistoricalFindRequest findRequestParameters = new PropertyMatchHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
             findRequestParameters.setMatchProperties(matchClassificationProperties);
@@ -1717,13 +1787,13 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                                   FunctionNotSupportedException,
                                                                                                   UserNotAuthorizedException
     {
-        final String methodName  = "findEntitiesByPropertyValue";
+        final String       methodName  = "findEntitiesByPropertyValue";
         EntityListResponse restResult;
 
         if (asOfTime == null)
         {
-            final String               operationSpecificURL = "instances/entities/by-property-value?searchCriteria={1}";
-            EntityPropertyFindRequest  findRequestParameters = new EntityPropertyFindRequest();
+            final String              operationSpecificURL  = "instances/entities/by-property-value?searchCriteria={1}";
+            EntityPropertyFindRequest findRequestParameters = new EntityPropertyFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
             findRequestParameters.setOffset(fromEntityElement);
@@ -1741,8 +1811,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
         else
         {
-            final String                         operationSpecificURL = "instances/entities/by-property-value/history?searchCriteria={1}";
-            EntityPropertyHistoricalFindRequest  findRequestParameters = new EntityPropertyHistoricalFindRequest();
+            final String                        operationSpecificURL  = "instances/entities/by-property-value/history?searchCriteria={1}";
+            EntityPropertyHistoricalFindRequest findRequestParameters = new EntityPropertyHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
             findRequestParameters.setAsOfTime(asOfTime);
@@ -1783,10 +1853,10 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public Relationship  isRelationshipKnown(String     userId,
-                                             String     guid) throws InvalidParameterException,
-                                                                     RepositoryErrorException,
-                                                                     UserNotAuthorizedException
+    public Relationship isRelationshipKnown(String     userId,
+                                            String     guid) throws InvalidParameterException,
+                                                                    RepositoryErrorException,
+                                                                    UserNotAuthorizedException
     {
         final String methodName  = "isRelationshipKnown";
         final String operationSpecificURL = "instances/relationship/{1}/existence";
@@ -1855,22 +1925,22 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  Relationship getRelationship(String    userId,
-                                         String    guid,
-                                         Date      asOfTime) throws InvalidParameterException,
-                                                                    RepositoryErrorException,
-                                                                    RelationshipNotKnownException,
-                                                                    FunctionNotSupportedException,
-                                                                    UserNotAuthorizedException
+    public Relationship getRelationship(String    userId,
+                                        String    guid,
+                                        Date      asOfTime) throws InvalidParameterException,
+                                                                   RepositoryErrorException,
+                                                                   RelationshipNotKnownException,
+                                                                   FunctionNotSupportedException,
+                                                                   UserNotAuthorizedException
     {
         final String methodName  = "getRelationship";
         final String operationSpecificURL = "instances/relationship/{1}/history";
 
-        HistoryRequest  requestBody = new HistoryRequest();
+        HistoryRequest requestBody = new HistoryRequest();
         requestBody.setAsOfTime(asOfTime);
 
         RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
-                                                                           restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                            restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
                                                                             requestBody,
                                                                             userId,
                                                                             guid);
@@ -1882,6 +1952,65 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
 
         return restResult.getRelationship();
+    }
+
+
+    /**
+     * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
+     * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<Relationship>} of each historical version of the relationship within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
+     *                                       at the time requested.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public List<Relationship> getRelationshipHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    RelationshipNotKnownException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName           = "getRelationshipHistory";
+        final String operationSpecificURL = "instances/relationship/{1}/history/all";
+
+        HistoryRangeRequest requestBody = new HistoryRangeRequest();
+        requestBody.setFromTime(fromTime);
+        requestBody.setToTime(toTime);
+        requestBody.setOffset(startFromElement);
+        requestBody.setPageSize(pageSize);
+        requestBody.setSequencingOrder(sequencingOrder);
+        RelationshipListResponse restResult = this.callRelationshipListPostRESTCall(methodName,
+                                                                                    restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                                    requestBody,
+                                                                                    userId,
+                                                                                    guid);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getRelationships();
     }
 
 
@@ -1937,14 +2066,14 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                             FunctionNotSupportedException,
                                                                                             UserNotAuthorizedException
     {
-        final String methodName  = "findRelationships";
+        final String             methodName  = "findRelationships";
         RelationshipListResponse restResult;
 
         if (asOfTime == null)
         {
             final String operationSpecificURL = "instances/relationships";
 
-            InstanceFindRequest  findRequestParameters = new InstanceFindRequest();
+            InstanceFindRequest findRequestParameters = new InstanceFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
             findRequestParameters.setSubtypeGUIDs(relationshipSubtypeGUIDs);
@@ -1964,7 +2093,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         {
             final String operationSpecificURL = "instances/relationships/history";
 
-            InstanceHistoricalFindRequest  findRequestParameters = new InstanceHistoricalFindRequest();
+            InstanceHistoricalFindRequest findRequestParameters = new InstanceHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
             findRequestParameters.setSubtypeGUIDs(relationshipSubtypeGUIDs);
@@ -2046,14 +2175,14 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                                                                       FunctionNotSupportedException,
                                                                                                       UserNotAuthorizedException
     {
-        final String methodName  = "findRelationshipsByProperty";
+        final String             methodName  = "findRelationshipsByProperty";
         RelationshipListResponse restResult;
 
         if (asOfTime == null)
         {
             final String operationSpecificURL = "instances/relationships/by-property";
 
-            PropertyMatchFindRequest  findRequestParameters = new PropertyMatchFindRequest();
+            PropertyMatchFindRequest findRequestParameters = new PropertyMatchFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
             findRequestParameters.setMatchProperties(matchProperties);
@@ -2073,7 +2202,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         {
             final String operationSpecificURL = "instances/relationships/by-property/history";
 
-            PropertyMatchHistoricalFindRequest  findRequestParameters = new PropertyMatchHistoricalFindRequest();
+            PropertyMatchHistoricalFindRequest findRequestParameters = new PropertyMatchHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
             findRequestParameters.setMatchProperties(matchProperties);
@@ -2156,8 +2285,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if (asOfTime == null)
         {
-            final String            operationSpecificURL = "instances/relationships/by-property-value?searchCriteria={1}";
-            TypeLimitedFindRequest  findRequestParameters = new TypeLimitedFindRequest();
+            final String           operationSpecificURL  = "instances/relationships/by-property-value?searchCriteria={1}";
+            TypeLimitedFindRequest findRequestParameters = new TypeLimitedFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
             findRequestParameters.setOffset(fromRelationshipElement);
@@ -2174,8 +2303,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
         else
         {
-            final String            operationSpecificURL = "instances/relationships/by-property-value/history?searchCriteria={1}";
-            TypeLimitedHistoricalFindRequest  findRequestParameters = new TypeLimitedHistoricalFindRequest();
+            final String                     operationSpecificURL  = "instances/relationships/by-property-value/history?searchCriteria={1}";
+            TypeLimitedHistoricalFindRequest findRequestParameters = new TypeLimitedHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
             findRequestParameters.setAsOfTime(asOfTime);
@@ -2225,24 +2354,24 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraph getLinkingEntities(String                    userId,
-                                             String                    startEntityGUID,
-                                             String                    endEntityGUID,
-                                             List<InstanceStatus>      limitResultsByStatus,
-                                             Date                      asOfTime) throws InvalidParameterException,
-                                                                                        RepositoryErrorException,
-                                                                                        EntityNotKnownException,
-                                                                                        PropertyErrorException,
-                                                                                        FunctionNotSupportedException,
-                                                                                        UserNotAuthorizedException
+    public InstanceGraph getLinkingEntities(String                    userId,
+                                            String                    startEntityGUID,
+                                            String                    endEntityGUID,
+                                            List<InstanceStatus>      limitResultsByStatus,
+                                            Date                      asOfTime) throws InvalidParameterException,
+                                                                                       RepositoryErrorException,
+                                                                                       EntityNotKnownException,
+                                                                                       PropertyErrorException,
+                                                                                       FunctionNotSupportedException,
+                                                                                       UserNotAuthorizedException
     {
         final String          methodName  = "getLinkingEntities";
         InstanceGraphResponse restResult;
 
         if (asOfTime == null)
         {
-            final String operationSpecificURL = "instances/entities/from-entity/{1}/by-linkage?endEntityGUID={2}";
-            OMRSAPIFindRequest  findRequestParameters = new OMRSAPIFindRequest();
+            final String       operationSpecificURL  = "instances/entities/from-entity/{1}/by-linkage?endEntityGUID={2}";
+            OMRSAPIFindRequest findRequestParameters = new OMRSAPIFindRequest();
 
             findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
 
@@ -2255,8 +2384,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
         else
         {
-            final String operationSpecificURL = "instances/entities/from-entity/{1}/by-linkage/history?endEntityGUID={2}";
-            OMRSAPIHistoricalFindRequest  findRequestParameters = new OMRSAPIHistoricalFindRequest();
+            final String                 operationSpecificURL  = "instances/entities/from-entity/{1}/by-linkage/history?endEntityGUID={2}";
+            OMRSAPIHistoricalFindRequest findRequestParameters = new OMRSAPIHistoricalFindRequest();
 
             findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
             findRequestParameters.setAsOfTime(asOfTime);
@@ -2309,28 +2438,28 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraph getEntityNeighborhood(String               userId,
-                                                String               entityGUID,
-                                                List<String>         entityTypeGUIDs,
-                                                List<String>         relationshipTypeGUIDs,
-                                                List<InstanceStatus> limitResultsByStatus,
-                                                List<String>         limitResultsByClassification,
-                                                Date                 asOfTime,
-                                                int                  level) throws InvalidParameterException,
-                                                                                   RepositoryErrorException,
-                                                                                   TypeErrorException,
-                                                                                   EntityNotKnownException,
-                                                                                   PropertyErrorException,
-                                                                                   FunctionNotSupportedException,
-                                                                                   UserNotAuthorizedException
+    public InstanceGraph getEntityNeighborhood(String               userId,
+                                               String               entityGUID,
+                                               List<String>         entityTypeGUIDs,
+                                               List<String>         relationshipTypeGUIDs,
+                                               List<InstanceStatus> limitResultsByStatus,
+                                               List<String>         limitResultsByClassification,
+                                               Date                 asOfTime,
+                                               int                  level) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  TypeErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  PropertyErrorException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
     {
         final String          methodName  = "getEntityNeighborhood";
         InstanceGraphResponse restResult;
 
         if (asOfTime == null)
         {
-            final String                   operationSpecificURL = "instances/entities/from-entity/{1}/by-neighborhood?level={2}";
-            EntityNeighborhoodFindRequest  findRequestParameters = new EntityNeighborhoodFindRequest();
+            final String                  operationSpecificURL  = "instances/entities/from-entity/{1}/by-neighborhood?level={2}";
+            EntityNeighborhoodFindRequest findRequestParameters = new EntityNeighborhoodFindRequest();
 
             findRequestParameters.setEntityTypeGUIDs(entityTypeGUIDs);
             findRequestParameters.setRelationshipTypeGUIDs(relationshipTypeGUIDs);
@@ -2346,8 +2475,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
         else
         {
-            final String                   operationSpecificURL = "instances/entities/from-entity/{1}/by-neighborhood/history?level={2}";
-            EntityNeighborhoodHistoricalFindRequest  findRequestParameters = new EntityNeighborhoodHistoricalFindRequest();
+            final String                            operationSpecificURL  = "instances/entities/from-entity/{1}/by-neighborhood/history?level={2}";
+            EntityNeighborhoodHistoricalFindRequest findRequestParameters = new EntityNeighborhoodHistoricalFindRequest();
 
             findRequestParameters.setEntityTypeGUIDs(entityTypeGUIDs);
             findRequestParameters.setRelationshipTypeGUIDs(relationshipTypeGUIDs);
@@ -2432,8 +2561,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if (asOfTime == null)
         {
-            final String operationSpecificURL = "instances/entities/from-entity/{1}/by-relationship";
-            RelatedEntitiesFindRequest  findRequestParameters = new RelatedEntitiesFindRequest();
+            final String               operationSpecificURL  = "instances/entities/from-entity/{1}/by-relationship";
+            RelatedEntitiesFindRequest findRequestParameters = new RelatedEntitiesFindRequest();
 
             findRequestParameters.setEntityTypeGUIDs(entityTypeGUIDs);
             findRequestParameters.setOffset(fromEntityElement);
@@ -2451,8 +2580,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         }
         else
         {
-            final String operationSpecificURL = "instances/entities/from-entity/{1}/by-relationship";
-            RelatedEntitiesHistoricalFindRequest  findRequestParameters = new RelatedEntitiesHistoricalFindRequest();
+            final String                         operationSpecificURL  = "instances/entities/from-entity/{1}/by-relationship";
+            RelatedEntitiesHistoricalFindRequest findRequestParameters = new RelatedEntitiesHistoricalFindRequest();
 
             findRequestParameters.setEntityTypeGUIDs(entityTypeGUIDs);
             findRequestParameters.setAsOfTime(asOfTime);
@@ -2511,18 +2640,18 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail addEntity(String                     userId,
-                                  String                     entityTypeGUID,
-                                  InstanceProperties         initialProperties,
-                                  List<Classification>       initialClassifications,
-                                  InstanceStatus             initialStatus) throws InvalidParameterException,
-                                                                                   RepositoryErrorException,
-                                                                                   TypeErrorException,
-                                                                                   PropertyErrorException,
-                                                                                   ClassificationErrorException,
-                                                                                   StatusNotSupportedException,
-                                                                                   FunctionNotSupportedException,
-                                                                                   UserNotAuthorizedException
+    public EntityDetail addEntity(String               userId,
+                                  String               entityTypeGUID,
+                                  InstanceProperties   initialProperties,
+                                  List<Classification> initialClassifications,
+                                  InstanceStatus       initialStatus) throws InvalidParameterException,
+                                                                             RepositoryErrorException,
+                                                                             TypeErrorException,
+                                                                             PropertyErrorException,
+                                                                             ClassificationErrorException,
+                                                                             StatusNotSupportedException,
+                                                                             FunctionNotSupportedException,
+                                                                             UserNotAuthorizedException
     {
         final String methodName  = "addEntity";
         final String operationSpecificURL = "instances/entity";
@@ -2582,20 +2711,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail addExternalEntity(String                userId,
-                                          String                entityTypeGUID,
-                                          String                externalSourceGUID,
-                                          String                externalSourceName,
-                                          InstanceProperties    initialProperties,
-                                          List<Classification>  initialClassifications,
-                                          InstanceStatus        initialStatus) throws InvalidParameterException,
-                                                                                      RepositoryErrorException,
-                                                                                      TypeErrorException,
-                                                                                      PropertyErrorException,
-                                                                                      ClassificationErrorException,
-                                                                                      StatusNotSupportedException,
-                                                                                      FunctionNotSupportedException,
-                                                                                      UserNotAuthorizedException
+    public EntityDetail addExternalEntity(String               userId,
+                                          String               entityTypeGUID,
+                                          String               externalSourceGUID,
+                                          String               externalSourceName,
+                                          InstanceProperties   initialProperties,
+                                          List<Classification> initialClassifications,
+                                          InstanceStatus       initialStatus) throws InvalidParameterException,
+                                                                                     RepositoryErrorException,
+                                                                                     TypeErrorException,
+                                                                                     PropertyErrorException,
+                                                                                     ClassificationErrorException,
+                                                                                     StatusNotSupportedException,
+                                                                                     FunctionNotSupportedException,
+                                                                                     UserNotAuthorizedException
     {
         final String  methodName = "addExternalEntity";
 
@@ -2640,11 +2769,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support entity proxies as first class elements.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public void addEntityProxy(String       userId,
-                               EntityProxy  entityProxy) throws InvalidParameterException,
-                                                                RepositoryErrorException,
-                                                                FunctionNotSupportedException,
-                                                                UserNotAuthorizedException
+    public void addEntityProxy(String      userId,
+                               EntityProxy entityProxy) throws InvalidParameterException,
+                                                               RepositoryErrorException,
+                                                               FunctionNotSupportedException,
+                                                               UserNotAuthorizedException
     {
         final String methodName  = "addEntityProxy";
         final String operationSpecificURL = "instances/entity-proxy";
@@ -2676,14 +2805,14 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail updateEntityStatus(String           userId,
-                                           String           entityGUID,
-                                           InstanceStatus   newStatus) throws InvalidParameterException,
-                                                                              RepositoryErrorException,
-                                                                              EntityNotKnownException,
-                                                                              StatusNotSupportedException,
-                                                                              FunctionNotSupportedException,
-                                                                              UserNotAuthorizedException
+    public EntityDetail updateEntityStatus(String         userId,
+                                           String         entityGUID,
+                                           InstanceStatus newStatus) throws InvalidParameterException,
+                                                                            RepositoryErrorException,
+                                                                            EntityNotKnownException,
+                                                                            StatusNotSupportedException,
+                                                                            FunctionNotSupportedException,
+                                                                            UserNotAuthorizedException
     {
         final String methodName  = "updateEntityStatus";
         final String operationSpecificURL = "instances/entity/{1}/status";
@@ -2721,14 +2850,14 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail updateEntityProperties(String               userId,
-                                               String               entityGUID,
-                                               InstanceProperties   properties) throws InvalidParameterException,
-                                                                                       RepositoryErrorException,
-                                                                                       EntityNotKnownException,
-                                                                                       PropertyErrorException,
-                                                                                       FunctionNotSupportedException,
-                                                                                       UserNotAuthorizedException
+    public EntityDetail updateEntityProperties(String             userId,
+                                               String             entityGUID,
+                                               InstanceProperties properties) throws InvalidParameterException,
+                                                                                     RepositoryErrorException,
+                                                                                     EntityNotKnownException,
+                                                                                     PropertyErrorException,
+                                                                                     FunctionNotSupportedException,
+                                                                                     UserNotAuthorizedException
     {
         final String methodName  = "updateEntityProperties";
         final String operationSpecificURL = "instances/entity/{1}/properties";
@@ -2810,14 +2939,14 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      *                                       soft-deletes use purgeEntity() to remove the entity permanently.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail   deleteEntity(String userId,
-                                       String typeDefGUID,
-                                       String typeDefName,
-                                       String obsoleteEntityGUID) throws InvalidParameterException,
-                                                                         RepositoryErrorException,
-                                                                         EntityNotKnownException,
-                                                                         FunctionNotSupportedException,
-                                                                         UserNotAuthorizedException
+    public EntityDetail deleteEntity(String userId,
+                                     String typeDefGUID,
+                                     String typeDefName,
+                                     String obsoleteEntityGUID) throws InvalidParameterException,
+                                                                       RepositoryErrorException,
+                                                                       EntityNotKnownException,
+                                                                       FunctionNotSupportedException,
+                                                                       UserNotAuthorizedException
     {
         final String methodName  = "deleteEntity";
         final String operationSpecificURL = "instances/entity/{1}/delete";
@@ -2949,16 +3078,16 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail classifyEntity(String               userId,
-                                       String               entityGUID,
-                                       String               classificationName,
-                                       InstanceProperties   classificationProperties) throws InvalidParameterException,
-                                                                                             RepositoryErrorException,
-                                                                                             EntityNotKnownException,
-                                                                                             ClassificationErrorException,
-                                                                                             PropertyErrorException,
-                                                                                             FunctionNotSupportedException,
-                                                                                             UserNotAuthorizedException
+    public EntityDetail classifyEntity(String             userId,
+                                       String             entityGUID,
+                                       String             classificationName,
+                                       InstanceProperties classificationProperties) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           ClassificationErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           FunctionNotSupportedException,
+                                                                                           UserNotAuthorizedException
     {
         final String methodName  = "classifyEntity";
         final String operationSpecificURL = "instances/entity/{1}/classification/{2}";
@@ -3008,20 +3137,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
-    public  EntityDetail classifyEntity(String               userId,
-                                        String               entityGUID,
-                                        String               classificationName,
-                                        String               externalSourceGUID,
-                                        String               externalSourceName,
-                                        ClassificationOrigin classificationOrigin,
-                                        String               classificationOriginGUID,
-                                        InstanceProperties   classificationProperties) throws InvalidParameterException,
-                                                                                              RepositoryErrorException,
-                                                                                              EntityNotKnownException,
-                                                                                              ClassificationErrorException,
-                                                                                              PropertyErrorException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              FunctionNotSupportedException
+    public EntityDetail classifyEntity(String               userId,
+                                       String               entityGUID,
+                                       String               classificationName,
+                                       String               externalSourceGUID,
+                                       String               externalSourceName,
+                                       ClassificationOrigin classificationOrigin,
+                                       String               classificationOriginGUID,
+                                       InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException
     {
         final String methodName = "classifyEntity (detailed)";
         final String operationSpecificURL = "instances/entity/{1}/classification/{2}/detailed";
@@ -3117,16 +3246,16 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail updateEntityClassification(String               userId,
-                                                   String               entityGUID,
-                                                   String               classificationName,
-                                                   InstanceProperties   properties) throws InvalidParameterException,
-                                                                                           RepositoryErrorException,
-                                                                                           EntityNotKnownException,
-                                                                                           ClassificationErrorException,
-                                                                                           PropertyErrorException,
-                                                                                           FunctionNotSupportedException,
-                                                                                           UserNotAuthorizedException
+    public EntityDetail updateEntityClassification(String             userId,
+                                                   String             entityGUID,
+                                                   String             classificationName,
+                                                   InstanceProperties properties) throws InvalidParameterException,
+                                                                                         RepositoryErrorException,
+                                                                                         EntityNotKnownException,
+                                                                                         ClassificationErrorException,
+                                                                                         PropertyErrorException,
+                                                                                         FunctionNotSupportedException,
+                                                                                         UserNotAuthorizedException
     {
         final String methodName  = "updateEntityClassification";
         final String operationSpecificURL = "instances/entity/{1}/classification/{2}/properties";
@@ -3177,19 +3306,19 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public Relationship addRelationship(String               userId,
-                                        String               relationshipTypeGUID,
-                                        InstanceProperties   initialProperties,
-                                        String               entityOneGUID,
-                                        String               entityTwoGUID,
-                                        InstanceStatus       initialStatus) throws InvalidParameterException,
-                                                                                   RepositoryErrorException,
-                                                                                   TypeErrorException,
-                                                                                   PropertyErrorException,
-                                                                                   EntityNotKnownException,
-                                                                                   StatusNotSupportedException,
-                                                                                   FunctionNotSupportedException,
-                                                                                   UserNotAuthorizedException
+    public Relationship addRelationship(String             userId,
+                                        String             relationshipTypeGUID,
+                                        InstanceProperties initialProperties,
+                                        String             entityOneGUID,
+                                        String             entityTwoGUID,
+                                        InstanceStatus     initialStatus) throws InvalidParameterException,
+                                                                                 RepositoryErrorException,
+                                                                                 TypeErrorException,
+                                                                                 PropertyErrorException,
+                                                                                 EntityNotKnownException,
+                                                                                 StatusNotSupportedException,
+                                                                                 FunctionNotSupportedException,
+                                                                                 UserNotAuthorizedException
     {
         final String methodName  = "addRelationship";
         final String operationSpecificURL = "instances/relationship";
@@ -3248,21 +3377,21 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
-    public Relationship addExternalRelationship(String               userId,
-                                                String               relationshipTypeGUID,
-                                                String               externalSourceGUID,
-                                                String               externalSourceName,
-                                                InstanceProperties   initialProperties,
-                                                String               entityOneGUID,
-                                                String               entityTwoGUID,
-                                                InstanceStatus       initialStatus) throws InvalidParameterException,
-                                                                                           RepositoryErrorException,
-                                                                                           TypeErrorException,
-                                                                                           PropertyErrorException,
-                                                                                           EntityNotKnownException,
-                                                                                           StatusNotSupportedException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           FunctionNotSupportedException
+    public Relationship addExternalRelationship(String             userId,
+                                                String             relationshipTypeGUID,
+                                                String             externalSourceGUID,
+                                                String             externalSourceName,
+                                                InstanceProperties initialProperties,
+                                                String             entityOneGUID,
+                                                String             entityTwoGUID,
+                                                InstanceStatus     initialStatus) throws InvalidParameterException,
+                                                                                         RepositoryErrorException,
+                                                                                         TypeErrorException,
+                                                                                         PropertyErrorException,
+                                                                                         EntityNotKnownException,
+                                                                                         StatusNotSupportedException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         FunctionNotSupportedException
     {
         final String  methodName = "addExternalRelationship";
 
@@ -4024,8 +4153,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         ClassificationListResponse restResult = this.callClassificationListGetRESTCall(methodName,
                                                                                        restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
-                                                                                       entityGUID,
-                                                                                       userId);
+                                                                                       userId,
+                                                                                       entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -4068,8 +4197,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         ClassificationListResponse restResult = this.callClassificationListPostRESTCall(methodName,
                                                                                         restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
                                                                                         requestBody,
-                                                                                        entityGUID,
-                                                                                        userId);
+                                                                                        userId,
+                                                                                        entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -4103,16 +4232,16 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  void deleteEntityReferenceCopy(String         userId,
-                                           EntityDetail   entity) throws InvalidParameterException,
-                                                                         RepositoryErrorException,
-                                                                         TypeErrorException,
-                                                                         PropertyErrorException,
-                                                                         HomeEntityException,
-                                                                         EntityConflictException,
-                                                                         InvalidEntityException,
-                                                                         FunctionNotSupportedException,
-                                                                         UserNotAuthorizedException
+    public  void deleteEntityReferenceCopy(String       userId,
+                                           EntityDetail entity) throws InvalidParameterException,
+                                                                       RepositoryErrorException,
+                                                                       TypeErrorException,
+                                                                       PropertyErrorException,
+                                                                       HomeEntityException,
+                                                                       EntityConflictException,
+                                                                       InvalidEntityException,
+                                                                       FunctionNotSupportedException,
+                                                                       UserNotAuthorizedException
     {
         final String methodName  = "deleteEntityReferenceCopy";
         final String operationSpecificURL = "instances/entities/reference-copy/delete";
@@ -4160,16 +4289,16 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  void purgeEntityReferenceCopy(String         userId,
-                                          EntityDetail   entity) throws InvalidParameterException,
-                                                                        RepositoryErrorException,
-                                                                        TypeErrorException,
-                                                                        PropertyErrorException,
-                                                                        HomeEntityException,
-                                                                        EntityConflictException,
-                                                                        InvalidEntityException,
-                                                                        FunctionNotSupportedException,
-                                                                        UserNotAuthorizedException
+    public  void purgeEntityReferenceCopy(String       userId,
+                                          EntityDetail entity) throws InvalidParameterException,
+                                                                      RepositoryErrorException,
+                                                                      TypeErrorException,
+                                                                      PropertyErrorException,
+                                                                      HomeEntityException,
+                                                                      EntityConflictException,
+                                                                      InvalidEntityException,
+                                                                      FunctionNotSupportedException,
+                                                                      UserNotAuthorizedException
     {
         final String methodName  = "purgeEntityReferenceCopy";
         final String operationSpecificURL = "instances/entities/reference-copy/purge";
@@ -4461,6 +4590,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
     }
 
+
     /**
      * Remove the reference copy of the relationship from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
@@ -4485,17 +4615,17 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  void deleteRelationshipReferenceCopy(String         userId,
-                                                 Relationship   relationship) throws InvalidParameterException,
-                                                                                     RepositoryErrorException,
-                                                                                     TypeErrorException,
-                                                                                     EntityNotKnownException,
-                                                                                     PropertyErrorException,
-                                                                                     HomeRelationshipException,
-                                                                                     RelationshipConflictException,
-                                                                                     InvalidRelationshipException,
-                                                                                     FunctionNotSupportedException,
-                                                                                     UserNotAuthorizedException
+    public  void deleteRelationshipReferenceCopy(String       userId,
+                                                 Relationship relationship) throws InvalidParameterException,
+                                                                                   RepositoryErrorException,
+                                                                                   TypeErrorException,
+                                                                                   EntityNotKnownException,
+                                                                                   PropertyErrorException,
+                                                                                   HomeRelationshipException,
+                                                                                   RelationshipConflictException,
+                                                                                   InvalidRelationshipException,
+                                                                                   FunctionNotSupportedException,
+                                                                                   UserNotAuthorizedException
     {
         final String methodName  = "deleteRelationshipReferenceCopy";
         final String operationSpecificURL = "instances/relationships/reference-copy/delete";
@@ -4545,17 +4675,17 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  void purgeRelationshipReferenceCopy(String         userId,
-                                                Relationship   relationship) throws InvalidParameterException,
-                                                                                    RepositoryErrorException,
-                                                                                    TypeErrorException,
-                                                                                    EntityNotKnownException,
-                                                                                    PropertyErrorException,
-                                                                                    HomeRelationshipException,
-                                                                                    RelationshipConflictException,
-                                                                                    InvalidRelationshipException,
-                                                                                    FunctionNotSupportedException,
-                                                                                    UserNotAuthorizedException
+    public  void purgeRelationshipReferenceCopy(String       userId,
+                                                Relationship relationship) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  TypeErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  PropertyErrorException,
+                                                                                  HomeRelationshipException,
+                                                                                  RelationshipConflictException,
+                                                                                  InvalidRelationshipException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
     {
         final String methodName  = "purgeRelationshipReferenceCopy";
         final String operationSpecificURL = "instances/relationships/reference-copy/purge";
@@ -5350,9 +5480,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param restResult this is the response from the rest call
      * @return equivalent InstanceGraph
      */
-    private InstanceGraph   getInstanceGraphFromRESTResult(InstanceGraphResponse   restResult)
+    private InstanceGraph getInstanceGraphFromRESTResult(InstanceGraphResponse restResult)
     {
-        InstanceGraph  instanceGraph = new InstanceGraph();
+        InstanceGraph instanceGraph = new InstanceGraph();
 
         instanceGraph.setEntities(restResult.getEntityElementList());
         instanceGraph.setRelationships(restResult.getRelationshipElementList());
@@ -5367,9 +5497,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param restResult this is the response from the rest call
      * @return equivalent TypeDefGallery
      */
-    private TypeDefGallery   getTypeDefGalleryFromRESTResult(TypeDefGalleryResponse   restResult)
+    private TypeDefGallery getTypeDefGalleryFromRESTResult(TypeDefGalleryResponse restResult)
     {
-        TypeDefGallery  typeDefGallery = new TypeDefGallery();
+        TypeDefGallery typeDefGallery = new TypeDefGallery();
 
         typeDefGallery.setAttributeTypeDefs(restResult.getAttributeTypeDefs());
         typeDefGallery.setTypeDefs(restResult.getTypeDefs());

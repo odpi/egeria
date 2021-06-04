@@ -7,7 +7,8 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 
 public interface LineageGraph extends OpenLineageGraphConnector {
@@ -18,6 +19,14 @@ public interface LineageGraph extends OpenLineageGraphConnector {
      * @param graphContext graph Collection
      */
     void storeToGraph(Set<GraphContext> graphContext);
+
+    /**
+     * Updates the neighbours of a node by removing all the relationships that no longer have a direct link to the entity.
+     *
+     * @param nodeGUID - the identifier of the entity that was updated
+     * @param neighboursGUIDS - the identifiers of the nodes that have a direct relationship to the entity
+     */
+    void updateNeighbours(String nodeGUID, Set<String> neighboursGUIDS);
 
     /**
      * Updates a vertex in the Graph
@@ -73,6 +82,27 @@ public interface LineageGraph extends OpenLineageGraphConnector {
     /**
      * Task that the scheduler performs based on the interval
      */
-    void schedulerTask();
+    void performLineageGraphJob();
 
+    /**
+     * Save last asset lineage update time in the graph
+     *
+     * @param timestamp the standard epoch time in milliseconds
+     */
+    void saveAssetLineageUpdateTime(Long timestamp);
+
+    /**
+     * Gets last asset lineage update time from the graph
+     *
+     * @return last update time represented as epoch time milliseconds
+     */
+    Optional<Long> getAssetLineageUpdateTime();
+
+    /**
+     * Returns whether an entity exists in the graph or not
+     *
+     * @param guid the lineage entity guid
+     * @return the boolean
+     */
+    boolean isEntityInGraph(String guid);
 }

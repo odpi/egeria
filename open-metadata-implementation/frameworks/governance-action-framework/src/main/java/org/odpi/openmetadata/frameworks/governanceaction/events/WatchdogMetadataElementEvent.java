@@ -33,7 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = WatchdogClassificationEvent.class, name = "WatchdogClassificationEvent"),
         })
-public abstract class WatchdogMetadataElementEvent extends WatchdogGovernanceEvent
+public class WatchdogMetadataElementEvent extends WatchdogGovernanceEvent
 {
     private static final long      serialVersionUID = 1L;
 

@@ -41,7 +41,9 @@ These are the software server capabilities defined in the open types:
    * [Policy Enforcement Point](0435-Policy-Management-Capabilities.md)  
    * [Policy Information Point](0435-Policy-Management-Capabilities.md)  
    * [Policy Retrieval Point](0435-Policy-Management-Capabilities.md)  
-* [Open Discovery Engine](0601-Open-Discovery-Engine.md)  
+* [Governance Engine](0461-Governance-Engines.md)  
+   * [Governance Action Engine](0461-Governance-Engines.md)  
+   * [Open Discovery Engine](0601-Open-Discovery-Engine.md)  
 
 
 

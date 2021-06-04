@@ -29,9 +29,9 @@ on each request.
 
 ## Client operations
 
-Once you have an instance of the client, you can use connectors to get find the to entities by type and to publish the events that describe the lineage context on the Asset Lineage Out Topic as it is described in: 
-
-* [**publish-entities**](publish-entities.md)
+Once you have an instance of the client, you can use connectors to:
+- get the entities by type and to publish the events that describe the lineage context on the Asset Lineage Out Topic as it is described in [**publish-entities**](publish-entities.md);
+- get the asset context of the entity as it is described in [**provide-asset-context**](provide-asset-context.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

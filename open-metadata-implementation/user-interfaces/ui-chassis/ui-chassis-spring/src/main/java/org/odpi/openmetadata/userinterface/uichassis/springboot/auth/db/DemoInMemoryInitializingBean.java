@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.db;
 
-import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.Role;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.User;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.db.domain.Role;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.db.domain.User;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

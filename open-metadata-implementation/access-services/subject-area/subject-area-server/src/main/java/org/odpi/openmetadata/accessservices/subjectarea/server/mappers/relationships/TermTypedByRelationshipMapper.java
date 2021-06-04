@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the termTYPEDBYRelationship and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class TermTypedByRelationshipMapper extends LineMapper<TypedBy> {
+public class TermTypedByRelationshipMapper extends RelationshipMapper<TypedBy> {
     public static final String TERM_TYPED_BY_RELATIONSHIP = "TermTYPEDBYRelationship";
 
     public TermTypedByRelationshipMapper(OMRSAPIHelper omrsapiHelper) {
@@ -23,13 +23,13 @@ public class TermTypedByRelationshipMapper extends LineMapper<TypedBy> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param termTYPEDBYRelationship               supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param termTYPEDBYRelationship               supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(TypedBy termTYPEDBYRelationship, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(TypedBy termTYPEDBYRelationship, InstanceProperties instanceProperties) {
         if (termTYPEDBYRelationship.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getDescription(), "description");
         }
@@ -49,13 +49,13 @@ public class TermTypedByRelationshipMapper extends LineMapper<TypedBy> {
     /**
      * Map a primitive omrs property to the termTYPEDBYRelationship object.
      *
-     * @param termTYPEDBYRelationship         the glossary to be updated
+     * @param termTYPEDBYRelationship         the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(TypedBy termTYPEDBYRelationship, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(TypedBy termTYPEDBYRelationship, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -74,7 +74,7 @@ public class TermTypedByRelationshipMapper extends LineMapper<TypedBy> {
     }
 
     @Override
-    protected boolean mapEnumToLine(TypedBy termTYPEDBYRelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(TypedBy termTYPEDBYRelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -90,7 +90,7 @@ public class TermTypedByRelationshipMapper extends LineMapper<TypedBy> {
     }
 
     @Override
-    protected TypedBy getLineInstance() {
+    protected TypedBy getRelationshipInstance() {
         return new TypedBy();
     }
 

@@ -89,7 +89,7 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
             auditLog.logException(actionDescription, SecurityOfficerAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
                                   accessServiceConfigurationProperties.toString(), error);
             throw error;
-        } catch (Throwable error) {
+        } catch (Exception error) {
             auditLog.logException(actionDescription, SecurityOfficerAuditCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(error.getClass().getName(),
                                                                                                                          error.getMessage()), error);
 

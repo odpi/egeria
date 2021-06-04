@@ -74,15 +74,15 @@ public class AnalyticsModelingOMASResourceTest {
 
 	@Test
 	void getModule() {
-		when(restAPI.getModule(SERVER_NAME, USER, GUID, CATALOG, SCHEMA)).thenReturn(null);
+		when(restAPI.getModule(SERVER_NAME, USER, GUID, CATALOG, SCHEMA, null)).thenReturn(null);
 		resource.getPhysicalModule(SERVER_NAME, USER, GUID, CATALOG, SCHEMA, null);
-		verify(restAPI, times(1)).getModule(SERVER_NAME, USER, GUID, CATALOG, SCHEMA);
+		verify(restAPI, times(1)).getModule(SERVER_NAME, USER, GUID, CATALOG, SCHEMA, null);
 	}
 	
 	@Test
 	void getModuleInvalidGUIDParameter() throws AnalyticsModelingCheckedException, InvalidParameterException {
 		InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-		when(restAPI.getModule(SERVER_NAME, USER, null, CATALOG, SCHEMA)).thenCallRealMethod();
+		when(restAPI.getModule(SERVER_NAME, USER, null, CATALOG, SCHEMA, null)).thenCallRealMethod();
 		when(restAPI.getInvalidParameterHandler()).thenReturn(invalidParameterHandler);
 		doCallRealMethod().when(restAPI).validateUrlParameters(SERVER_NAME, USER, null, DATABASE_GUID, null, null, "getModule");
 		

@@ -16,7 +16,7 @@ and a **resources** directory.
 
 ```bash
 $ ls
-resources				server-chassis-spring-2.6-SNAPSHOT.jar
+resources				server-chassis-spring-2.11-SNAPSHOT.jar
 ```
 
 Change to the resources directory and you will see the **banner.txt**
@@ -68,7 +68,7 @@ and issue the following REST call to check the server is running with the new se
 
 ```bash
 $ curl --insecure -X GET https://localhost:9444/open-metadata/platform-services/users/test/server-platform/origin
-ODPi Egeria OMAG Server Platform
+Egeria OMAG Server Platform
 ```
 
 

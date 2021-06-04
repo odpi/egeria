@@ -50,7 +50,7 @@ public class GovernedAssetClientClientTest
 
     @Before
     public void before() throws InvalidParameterException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         governedAssetClient = new GovernedAssetClient(SERVER_NAME, SERVER_URL);
         Field connectorField = ReflectionUtils.findField(GovernedAssetClient.class, "clientConnector");

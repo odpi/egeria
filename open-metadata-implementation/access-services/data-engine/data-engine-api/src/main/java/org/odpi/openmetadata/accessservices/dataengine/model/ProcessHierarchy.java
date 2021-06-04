@@ -13,6 +13,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The type Process hierarchy.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -23,26 +26,56 @@ public class ProcessHierarchy implements Serializable {
     @JsonProperty("containmentType")
     private ProcessContainmentType processContainmentType;
 
+    /**
+     * Gets parent process.
+     *
+     * @return the parent process
+     */
     public String getParentProcess() {
         return parentProcess;
     }
 
+    /**
+     * Sets parent process.
+     *
+     * @param parentProcess the parent process
+     */
     public void setParentProcess(String parentProcess) {
         this.parentProcess = parentProcess;
     }
 
+    /**
+     * Gets child process.
+     *
+     * @return the child process
+     */
     public String getChildProcess() {
         return childProcess;
     }
 
+    /**
+     * Sets child process.
+     *
+     * @param childProcess the child process
+     */
     public void setChildProcess(String childProcess) {
         this.childProcess = childProcess;
     }
 
+    /**
+     * Gets process containment type.
+     *
+     * @return the process containment type
+     */
     public ProcessContainmentType getProcessContainmentType() {
         return processContainmentType;
     }
 
+    /**
+     * Sets process containment type.
+     *
+     * @param processContainmentType the process containment type
+     */
     public void setProcessContainmentType(ProcessContainmentType processContainmentType) {
         this.processContainmentType = processContainmentType;
     }

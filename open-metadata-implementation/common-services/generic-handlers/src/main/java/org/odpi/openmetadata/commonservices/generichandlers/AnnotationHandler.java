@@ -11,9 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.SchemaAnalysisAnnotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.SuspectDuplicateAnnotation;
+import org.odpi.openmetadata.frameworks.discovery.properties.*;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -172,12 +170,93 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                           serverName);
 
         // todo add all of the other types
-        if (annotation instanceof SchemaAnalysisAnnotation)
+        if (annotation instanceof ClassificationAnnotation)
+        {
+            ClassificationAnnotation classificationAnnotation = (ClassificationAnnotation) annotation;
+
+            builder.setClassificationSubtypeProperties(classificationAnnotation.getCandidateClassifications());
+        }
+        else if (annotation instanceof DataClassAnnotation)
+        {
+            DataClassAnnotation dataClassAnnotation = (DataClassAnnotation) annotation;
+
+            builder.setDataClassSubtypeProperties(dataClassAnnotation.getCandidateDataClassGUIDs(),
+                                                  dataClassAnnotation.getMatchingValues(),
+                                                  dataClassAnnotation.getNonMatchingValues());
+        }
+        else if (annotation instanceof DataProfileAnnotation)
+        {
+            DataProfileAnnotation dataProfileAnnotation = (DataProfileAnnotation) annotation;
+
+            builder.setDataProfileSubtypeProperties(dataProfileAnnotation.getLength(),
+                                                    dataProfileAnnotation.getInferredDataType(),
+                                                    dataProfileAnnotation.getInferredFormat(),
+                                                    dataProfileAnnotation.getInferredLength(),
+                                                    dataProfileAnnotation.getInferredPrecision(),
+                                                    dataProfileAnnotation.getInferredScale(),
+                                                    dataProfileAnnotation.getProfileProperties(),
+                                                    dataProfileAnnotation.getProfileFlags(),
+                                                    dataProfileAnnotation.getProfileCounts(),
+                                                    dataProfileAnnotation.getValueList(),
+                                                    dataProfileAnnotation.getValueCount(),
+                                                    dataProfileAnnotation.getValueRangeFrom(),
+                                                    dataProfileAnnotation.getValueRangeTo(),
+                                                    dataProfileAnnotation.getAverageValue());
+        }
+        else if (annotation instanceof DataSourcePhysicalStatusAnnotation)
+        {
+            DataSourcePhysicalStatusAnnotation dataSourcePhysicalStatusAnnotation = (DataSourcePhysicalStatusAnnotation) annotation;
+
+            builder.setDataSourcePhysicalStatusSubtypeProperties(dataSourcePhysicalStatusAnnotation.getDataSourceProperties(),
+                                                                 dataSourcePhysicalStatusAnnotation.getCreateTime(),
+                                                                 dataSourcePhysicalStatusAnnotation.getModifiedTime(),
+                                                                 dataSourcePhysicalStatusAnnotation.getSize(),
+                                                                 dataSourcePhysicalStatusAnnotation.getEncoding());
+        }
+        else if (annotation instanceof DataSourceMeasurementAnnotation)
+        {
+            DataSourceMeasurementAnnotation dataSourceMeasurementAnnotation = (DataSourceMeasurementAnnotation) annotation;
+
+            builder.setDataSourceMeasurementSubtypeProperties(dataSourceMeasurementAnnotation.getDataSourceProperties());
+        }
+        else if (annotation instanceof QualityAnnotation)
+        {
+            QualityAnnotation qualityAnnotation = (QualityAnnotation) annotation;
+
+            builder.setQualitySubtypeProperties(qualityAnnotation.getQualityDimension(),
+                                                qualityAnnotation.getQualityScore());
+        }
+        else if (annotation instanceof RelationshipAdviceAnnotation)
+        {
+            RelationshipAdviceAnnotation relationshipAdviceAnnotation = (RelationshipAdviceAnnotation) annotation;
+
+            builder.setRelationshipAdviceSubtypeProperties(relationshipAdviceAnnotation.getRelatedEntityGUID(),
+                                                           relationshipAdviceAnnotation.getRelationshipTypeName(),
+                                                           relationshipAdviceAnnotation.getRelationshipProperties());
+        }
+        else if (annotation instanceof RequestForActionAnnotation)
+        {
+            RequestForActionAnnotation requestForActionAnnotation = (RequestForActionAnnotation) annotation;
+
+            builder.setRequestForActionSubtypeProperties(requestForActionAnnotation.getDiscoveryActivity(),
+                                                         requestForActionAnnotation.getActionRequested(),
+                                                         requestForActionAnnotation.getActionProperties());
+        }
+        else if (annotation instanceof SchemaAnalysisAnnotation)
         {
             SchemaAnalysisAnnotation schemaAnalysisAnnotation = (SchemaAnalysisAnnotation) annotation;
 
             builder.setSchemaAnalysisSubTypeProperties(schemaAnalysisAnnotation.getSchemaName(),
                                                        schemaAnalysisAnnotation.getSchemaName());
+        }
+        else if (annotation instanceof SemanticAnnotation)
+        {
+            SemanticAnnotation semanticAnnotation = (SemanticAnnotation) annotation;
+
+            builder.setSemanticSubTypeProperties(semanticAnnotation.getInformalTerm(),
+                                                 semanticAnnotation.getInformalTopic(),
+                                                 semanticAnnotation.getCandidateGlossaryTermGUIDs(),
+                                                 semanticAnnotation.getCandidateGlossaryCategoryGUIDs());
         }
         else if (annotation instanceof SuspectDuplicateAnnotation)
         {
@@ -304,8 +383,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        final String   annotationParameterName = "annotation";
-        final String   discoveryReportGUIDParameterName = "discoveryReportGUID";
+        final String annotationParameterName = "annotation";
+        final String discoveryReportGUIDParameterName = "discoveryReportGUID";
 
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
 
@@ -338,6 +417,69 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                       OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
                                       OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
+                                      null,
+                                      methodName);
+        }
+
+        return annotationGUID;
+    }
+
+
+    /**
+     * Add a new annotation and link it to an existing data field.
+     *
+     * @param userId identifier of calling user
+     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param annotation data field object
+     * @param methodName calling method
+     * @return unique identifier of new annotation
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    public String  addAnnotationToDataField(String     userId,
+                                            String     parentDataFieldGUID,
+                                            Annotation annotation,
+                                            String     methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        final String   dataFieldGUIDParameterName = "parentDataFieldGUID";
+        final String   annotationParameterName = "annotation";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentDataFieldGUID, dataFieldGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
+
+        String assetGUID          = null;
+        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
+                                                              parentDataFieldGUID,
+                                                              dataFieldGUIDParameterName,
+                                                              OpenMetadataAPIMapper.DATA_FIELD_ANNOTATION_TYPE_NAME,
+                                                              false,
+                                                              supportedZones,
+                                                              methodName);
+
+        if (anchorEntity != null)
+        {
+            assetGUID = anchorEntity.getGUID();
+        }
+
+        String annotationGUID = this.addNewAnnotation(userId, assetGUID, annotation, methodName);
+
+        if (annotationGUID != null)
+        {
+            this.linkElementToElement(userId,
+                                      null,
+                                      null,
+                                      annotationGUID,
+                                      annotationParameterName,
+                                      OpenMetadataAPIMapper.DATA_FIELD_ANNOTATION_TYPE_NAME,
+                                      annotationGUID,
+                                      annotationParameterName,
+                                      OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
+                                      OpenMetadataAPIMapper.DATA_FIELD_ANALYSIS_TYPE_GUID,
+                                      OpenMetadataAPIMapper.DATA_FIELD_ANALYSIS_TYPE_NAME,
                                       null,
                                       methodName);
         }

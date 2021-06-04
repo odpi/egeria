@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * GetEntityExecutor provides the executor for the isEntityKnown and getEntityDetail methods.
@@ -25,18 +25,12 @@ import java.util.*;
  * entities from other repositories.  This means that the phase two calls will only go remote if the remote repository
  * supports the getHomeClassifications method.
  */
-public class GetEntityExecutor extends RepositoryExecutorBase
+public class GetEntityExecutor extends GetEntitySummaryExecutor
 {
-    private String                      entityGUID;
     private boolean                     allExceptions       = true;
     private Date                        asOfTime            = null;
 
-    private boolean                     inPhaseOne          = true;
-    private EntityDetail                latestEntity        = null;
-    private Map<String, Classification> homeClassifications = new HashMap<>();
-
-    private MaintenanceAccumulator      accumulator         = new MaintenanceAccumulator();
-
+    private EntityDetail latestEntity = null;
 
 
     /**
@@ -45,16 +39,17 @@ public class GetEntityExecutor extends RepositoryExecutorBase
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier (guid) for the entity.
      * @param allExceptions is the a isEntityKnown or getEntityDetail request.
+     * @param auditLog logging destination
      * @param methodName calling method
      */
-    public GetEntityExecutor(String               userId,
-                             String               entityGUID,
-                             boolean              allExceptions,
-                             String               methodName)
+    public GetEntityExecutor(String   userId,
+                             String   entityGUID,
+                             boolean  allExceptions,
+                             AuditLog auditLog,
+                             String   methodName)
     {
-        super(userId, methodName);
+        super(userId, entityGUID, auditLog, methodName);
 
-        this.entityGUID = entityGUID;
         this.allExceptions = allExceptions;
     }
 
@@ -65,16 +60,17 @@ public class GetEntityExecutor extends RepositoryExecutorBase
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier (guid) for the  entity.
      * @param asOfTime is this a historical query.
+     * @param auditLog logging destination
      * @param methodName calling method
      */
-    public GetEntityExecutor(String               userId,
-                             String               entityGUID,
-                             Date                 asOfTime,
-                             String               methodName)
+    public GetEntityExecutor(String   userId,
+                             String   entityGUID,
+                             Date     asOfTime,
+                             AuditLog auditLog,
+                             String   methodName)
     {
-        super(userId, methodName);
+        super(userId, entityGUID, auditLog, methodName);
 
-        this.entityGUID = entityGUID;
         this.asOfTime = asOfTime;
     }
 
@@ -89,6 +85,7 @@ public class GetEntityExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -118,25 +115,7 @@ public class GetEntityExecutor extends RepositoryExecutorBase
 
                 if (retrievedEntity != null)
                 {
-                    /*
-                     * The classifications from every retrieved entity are harvested.
-                     */
-                    if (retrievedEntity.getClassifications() != null)
-                    {
-                        for (Classification entityClassification : retrievedEntity.getClassifications())
-                        {
-                            if (entityClassification != null)
-                            {
-                                /*
-                                 * Only home classifications are saved.
-                                 */
-                                if (metadataCollectionId.equals(entityClassification.getMetadataCollectionId()))
-                                {
-                                    homeClassifications.put(entityClassification.getName(), entityClassification);
-                                }
-                            }
-                        }
-                    }
+                    saveClassifications(retrievedEntity.getClassifications());
 
                     if (metadataCollectionId.equals(retrievedEntity.getMetadataCollectionId()))
                     {
@@ -158,33 +137,14 @@ public class GetEntityExecutor extends RepositoryExecutorBase
                         }
                     }
                 }
+                else /* retrieving additional classifications */
+                {
+                    getHomeClassifications(metadataCollection);
+                }
             }
             else /* retrieving additional classifications */
             {
-                List<Classification> homeClassifications;
-
-                if (asOfTime == null)
-                {
-                    homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID);
-                }
-                else
-                {
-                    homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID, asOfTime);
-                }
-
-                /*
-                 * Home classifications override any matching classifications stored in the entity.
-                 */
-                if (homeClassifications != null)
-                {
-                    for (Classification homeClassification : homeClassifications)
-                    {
-                        if (homeClassification != null)
-                        {
-                            this.homeClassifications.put(homeClassification.getName(), homeClassification);
-                        }
-                    }
-                }
+                getHomeClassifications(metadataCollection);
             }
         }
         catch (InvalidParameterException error)
@@ -198,6 +158,7 @@ public class GetEntityExecutor extends RepositoryExecutorBase
         catch (EntityProxyOnlyException error)
         {
             accumulator.captureException(error);
+            getHomeClassifications(metadataCollection);
         }
         catch (RepositoryErrorException error)
         {
@@ -207,9 +168,11 @@ public class GetEntityExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return false;
@@ -225,19 +188,19 @@ public class GetEntityExecutor extends RepositoryExecutorBase
      *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityDetail isEntityKnown() throws InvalidParameterException,
-                                                RepositoryErrorException,
-                                                UserNotAuthorizedException
+    public EntityDetail isEntityKnown() throws InvalidParameterException,
+                                               RepositoryErrorException,
+                                               UserNotAuthorizedException
     {
         if (latestEntity != null)
         {
-            if (homeClassifications.isEmpty())
+            if (allClassifications.isEmpty())
             {
                 latestEntity.setClassifications(null);
             }
             else
             {
-                latestEntity.setClassifications(new ArrayList<>(homeClassifications.values()));
+                latestEntity.setClassifications(new ArrayList<>(allClassifications.values()));
             }
 
             return latestEntity;
@@ -262,13 +225,13 @@ public class GetEntityExecutor extends RepositoryExecutorBase
      * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityDetail  getEntityDetail() throws InvalidParameterException,
-                                                   RepositoryErrorException,
-                                                   EntityNotKnownException,
-                                                   EntityProxyOnlyException,
-                                                   UserNotAuthorizedException
+    public EntityDetail getEntityDetail() throws InvalidParameterException,
+                                                 RepositoryErrorException,
+                                                 EntityNotKnownException,
+                                                 EntityProxyOnlyException,
+                                                 UserNotAuthorizedException
     {
-        EntityDetail  entity = this.isEntityKnown();
+        EntityDetail entity = this.isEntityKnown();
 
         if (entity != null)
         {
@@ -295,14 +258,14 @@ public class GetEntityExecutor extends RepositoryExecutorBase
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityDetail  getEntityDetailHistory() throws InvalidParameterException,
-                                                          RepositoryErrorException,
-                                                          EntityNotKnownException,
-                                                          EntityProxyOnlyException,
-                                                          FunctionNotSupportedException,
-                                                          UserNotAuthorizedException
+    public EntityDetail getEntityDetailHistory() throws InvalidParameterException,
+                                                        RepositoryErrorException,
+                                                        EntityNotKnownException,
+                                                        EntityProxyOnlyException,
+                                                        FunctionNotSupportedException,
+                                                        UserNotAuthorizedException
     {
-        EntityDetail  entity = this.getEntityDetail();
+        EntityDetail entity = this.getEntityDetail();
 
         if (entity != null)
         {

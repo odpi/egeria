@@ -47,6 +47,7 @@ public class SearchStringRequestBody implements Serializable
         if (template != null)
         {
             searchString = template.getSearchString();
+            searchStringParameterName = template.getSearchStringParameterName();
         }
     }
 

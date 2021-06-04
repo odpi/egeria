@@ -4,11 +4,12 @@
 package org.odpi.openmetadata.governanceservers.enginehostservices.threads;
 
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
-import org.odpi.openmetadata.governanceservers.enginehostservices.listener.EngineConfigurationRefreshListener;
+import org.odpi.openmetadata.governanceservers.enginehostservices.listener.GovernanceEngineOutTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,7 @@ public class EngineConfigurationRefreshThread implements Runnable
 {
     private Map<String, GovernanceEngineHandler> engineHandlers;
     private GovernanceEngineConfigurationClient  configurationClient;
+    private GovernanceEngineEventClient          eventClient;
     private AuditLog                             auditLog;
     private String                               localServerUserId;
     private String                               localServerName;
@@ -41,16 +43,18 @@ public class EngineConfigurationRefreshThread implements Runnable
      * The constructor takes details of the governance engine handlers needed by the listener and the information
      * needed to log errors if the metadata server is not available.
      *
-     * @param engineHandlers list of governance engine handlers running locally mapped to their names.
-     * @param configurationClient client that the listener is to be registered with.
+     * @param engineHandlers list of governance engine handlers running locally mapped to their names
+     * @param configurationClient client that the listener is to be registered with
+     * @param eventClient client for accessing the Governance Engine OMAS OutTopic
      * @param auditLog logging destination
      * @param localServerUserId userId for configuration requests
      * @param localServerName this server's name
      * @param accessServiceServerName metadata server's name
-     * @param accessServiceRootURL platform location for metadata server.
+     * @param accessServiceRootURL platform location for metadata server
      */
     public EngineConfigurationRefreshThread(Map<String, GovernanceEngineHandler> engineHandlers,
                                             GovernanceEngineConfigurationClient  configurationClient,
+                                            GovernanceEngineEventClient          eventClient,
                                             AuditLog                             auditLog,
                                             String                               localServerUserId,
                                             String                               localServerName,
@@ -59,6 +63,7 @@ public class EngineConfigurationRefreshThread implements Runnable
     {
         this.engineHandlers = new HashMap<>(engineHandlers);
         this.configurationClient     = configurationClient;
+        this.eventClient             = eventClient;
         this.auditLog                = auditLog;
         this.localServerUserId       = localServerUserId;
         this.localServerName         = localServerName;
@@ -93,7 +98,7 @@ public class EngineConfigurationRefreshThread implements Runnable
             {
                 try
                 {
-                    configurationClient.registerListener(localServerUserId, new EngineConfigurationRefreshListener(engineHandlers, auditLog));
+                    eventClient.registerListener(localServerUserId, new GovernanceEngineOutTopicListener(engineHandlers, auditLog));
                     listenerRegistered = true;
 
                     auditLog.logMessage(actionDescription,

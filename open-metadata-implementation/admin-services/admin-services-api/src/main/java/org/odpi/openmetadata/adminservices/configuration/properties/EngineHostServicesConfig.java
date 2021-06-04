@@ -33,6 +33,7 @@ public class EngineHostServicesConfig extends OMAGServerClientConfig
 {
     private static final long    serialVersionUID = 1L;
 
+    
     private List<EngineServiceConfig> engineServiceConfigs = null;
 
 

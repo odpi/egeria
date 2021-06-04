@@ -59,7 +59,7 @@ public class AssetConsumerPublisher
                 connector.sendEvent(this.getJSONPayload(event));
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             log.error("Unable to publish new asset event: " + event.toString() + "; error was " + error.toString());
         }
@@ -80,7 +80,7 @@ public class AssetConsumerPublisher
                 connector.sendEvent(this.getJSONPayload(event));
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             log.error("Unable to publish undated asset event: " + event.toString() + "; error was " + error.toString());
         }
@@ -111,7 +111,7 @@ public class AssetConsumerPublisher
 
             return topicConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getTopicConnector";
 
@@ -146,7 +146,7 @@ public class AssetConsumerPublisher
         {
             jsonString = objectMapper.writeValueAsString(event);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             log.error("Unable to create event payload: " + error.toString());
         }

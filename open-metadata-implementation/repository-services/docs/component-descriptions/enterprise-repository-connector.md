@@ -17,6 +17,8 @@ dynamically configures the enterprise repository connector with appropriate
 instances of the OMRS connectors using information from the [cohort registry](cohort-registry.md).
 
 
+----
+* Return to [repository services component descriptions](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

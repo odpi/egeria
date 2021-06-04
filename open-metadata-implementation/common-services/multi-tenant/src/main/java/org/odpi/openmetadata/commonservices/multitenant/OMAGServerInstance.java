@@ -20,6 +20,7 @@ import java.util.*;
 class OMAGServerInstance
 {
     private String                                 serverName;
+    private String                                 serverType;
     private List<OMAGServerInstanceHistory>        serverHistory      = new ArrayList<>();
     private Map<String, OMAGServerServiceInstance> serviceInstanceMap = new HashMap<>();
     private Date                                   serverStartTime    = new Date();
@@ -45,6 +46,28 @@ class OMAGServerInstance
     String getServerName()
     {
         return serverName;
+    }
+
+
+    /**
+     * Set up the server type.
+     *
+     * @param serverType   Type of the server for this instance
+     */
+    void setServerType(String serverType)
+    {
+        this.serverType = serverType;
+    }
+
+
+    /**
+     * Return the server type.
+     *
+     * @return  Type of the server for this instance
+     */
+    String getServerType()
+    {
+        return serverType;
     }
 
 

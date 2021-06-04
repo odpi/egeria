@@ -45,7 +45,7 @@ class AdminServicesRESTClient
         {
             this.clientConnector = factory.getClientConnector();
         }
-        catch (Throwable     error)
+        catch (Exception error)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                     this.getClass().getName(),
@@ -83,7 +83,7 @@ class AdminServicesRESTClient
         {
             this.clientConnector = factory.getClientConnector();
         }
-        catch (Throwable     error)
+        catch (Exception error)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
                                                     this.getClass().getName(),
@@ -156,13 +156,13 @@ class AdminServicesRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a GUIDResponse object.
+     * Issue a GET REST call that returns a StringResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return GUIDResponse
+     * @return StringResponse
      * @throws OMAGInvalidParameterException one of the parameters is invalid.
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
@@ -174,6 +174,33 @@ class AdminServicesRESTClient
                                                                   OMAGConfigurationErrorException
     {
         StringResponse restResult = this.callGetRESTCall(methodName, StringResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a GET REST call that returns a DedicatedTopicListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DedicatedTopicListResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    DedicatedTopicListResponse callDedicatedTopicListGetRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object... params) throws OMAGInvalidParameterException,
+                                                                                          OMAGNotAuthorizedException,
+                                                                                          OMAGConfigurationErrorException
+    {
+        DedicatedTopicListResponse restResult = this.callGetRESTCall(methodName, DedicatedTopicListResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowAdminExceptions(restResult);
 
@@ -592,7 +619,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callGetRESTCall(methodName, returnClass, urlTemplate);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -622,7 +649,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callGetRESTCall(methodName, returnClass, urlTemplate, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -653,7 +680,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callPostRESTCallNoParams(methodName, returnClass, urlTemplate, requestBody);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -686,7 +713,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callPostRESTCall(methodName, returnClass, urlTemplate, requestBody, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -716,7 +743,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callDeleteRESTCallNoParams(methodName, returnClass, urlTemplate, requestBody);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }
@@ -748,7 +775,7 @@ class AdminServicesRESTClient
         {
             return clientConnector.callDeleteRESTCall(methodName, returnClass, urlTemplate, requestBody, params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
         }

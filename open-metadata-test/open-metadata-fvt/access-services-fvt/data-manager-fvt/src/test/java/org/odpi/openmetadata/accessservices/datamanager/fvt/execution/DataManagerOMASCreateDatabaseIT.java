@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.datamanager.fvt.execution;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.apache.commons.lang3.StringUtils;
+import org.odpi.openmetadata.accessservices.datamanager.fvt.databases.CreateDatabaseTest;
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
@@ -24,9 +26,9 @@ public class DataManagerOMASCreateDatabaseIT
 
     @ParameterizedTest
     @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
-    public void testInvalidParameters(String serverName)
+    public void testCreateDB(String serverName)
     {
-        FVTResults results = InvalidParameterTest.performFVT(serverName, FVTConstants.SERVER_PLATFORM_URL_ROOT, FVTConstants.USERID);
+        FVTResults results = CreateDatabaseTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
 
         results.printResults();
         assertTrue(results.isSuccessful());

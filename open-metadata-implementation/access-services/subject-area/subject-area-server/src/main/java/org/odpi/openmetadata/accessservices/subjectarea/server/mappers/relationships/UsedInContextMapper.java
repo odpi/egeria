@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the usedInContext and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class UsedInContextMapper extends LineMapper<UsedInContext> {
+public class UsedInContextMapper extends RelationshipMapper<UsedInContext> {
     public static final String USED_IN_CONTEXT = "UsedInContext";
 
     public UsedInContextMapper(OMRSAPIHelper omrsapiHelper) {
@@ -23,13 +23,13 @@ public class UsedInContextMapper extends LineMapper<UsedInContext> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param usedInContext               supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param usedInContext               supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(UsedInContext usedInContext, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(UsedInContext usedInContext, InstanceProperties instanceProperties) {
         if (usedInContext.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getDescription(), "description");
         }
@@ -52,13 +52,13 @@ public class UsedInContextMapper extends LineMapper<UsedInContext> {
     /**
      * Map a primitive omrs property to the usedInContext object.
      *
-     * @param usedInContext         the glossary to be updated
+     * @param usedInContext         the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(UsedInContext usedInContext, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(UsedInContext usedInContext, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -81,7 +81,7 @@ public class UsedInContextMapper extends LineMapper<UsedInContext> {
     }
 
     @Override
-    protected boolean mapEnumToLine(UsedInContext usedInContext, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(UsedInContext usedInContext, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -97,7 +97,7 @@ public class UsedInContextMapper extends LineMapper<UsedInContext> {
     }
 
     @Override
-    protected UsedInContext getLineInstance() {
+    protected UsedInContext getRelationshipInstance() {
         return new UsedInContext();
     }
 

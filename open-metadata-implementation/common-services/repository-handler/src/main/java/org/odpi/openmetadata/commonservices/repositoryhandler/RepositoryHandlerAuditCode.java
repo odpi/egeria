@@ -40,10 +40,10 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                           "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service {2} on " +
                                   "server {3}; message was {0}",
                           "The system is unable to process the request because of an internal error.",
-                          "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the ODPi Egeria community for help."),
+                          "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the Egeria community for help."),
 
     UNABLE_TO_SET_ANCHORS("OMAG-REPOSITORY-HANDLER-0004",
-                          OMRSAuditLogRecordSeverity.ERROR,
+                          OMRSAuditLogRecordSeverity.EXCEPTION,
                           "The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of type {1} during method {2}." +
                                   " The resulting exception was {3} with error message {4}",
                           "The server was attempting to add Anchors classifications to a collection of metadata instances that are " +
@@ -54,6 +54,37 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                                   "because none of the repositories in the cohort support the Anchors classification.  To enable the " +
                                   "optimization provided through the Anchors classification, add an Egeria native metadata server to the cohort.  " +
                                   "This will provide the support for the Anchors classification."),
+
+    NULL_INSTANCE( "OMAG-REPOSITORY-HANDLER-0005",
+                OMRSAuditLogRecordSeverity.ERROR,
+                "A null instance of type {0} has been retrieved by method {1} from service {2}",
+               "The system is unable to format all or part of the response because the repositories have returned a null instance. This instance is ignored.",
+               "Use knowledge of the request and the contents of the repositories to track down and correct the invalid instance.  " +
+                       "There is probably an error in the implementation of the repository that originated the instance."),
+
+    BAD_ENTITY( "OMAG-REPOSITORY-HANDLER-0006",
+                OMRSAuditLogRecordSeverity.ERROR,
+                "A {0} entity has been retrieved by method {1} from service {2} that has an invalid header: {3}",
+                "The system is unable to format all or part of the response because the repositories have returned an invalid entity. This entity is ignored.",
+                "Use knowledge of the request and the contents of the repositories to track down and correct the invalid entity.  " +
+                        "There is probably an error in the implementation of the repository that originated the entity."),
+
+    BAD_ENTITY_PROXY("OMAG-REPOSITORY-HANDLER-0007",
+                     OMRSAuditLogRecordSeverity.ERROR,
+                     "A relationship {0} has been retrieved by method {1} from service {2} that has an invalid entity proxy at end {3}: {4}",
+                     "The system is unable to format all or part of the response because the repositories have returned a relationship with an " +
+                             "invalid entity proxy that links it to an entity. This relationship is ignored.",
+                     "Use knowledge of the request and the contents of the repositories to track down and correct the relationship with the " +
+                             "invalid entity proxy.  There is probably an error in the implementation of the repository that originated the relationship."),
+
+    BAD_RELATIONSHIP("OMAG-REPOSITORY-HANDLER-0008",
+                     OMRSAuditLogRecordSeverity.ERROR,
+                     "A {0} relationship has been retrieved by method {1} from service {2} that has an invalid header: {3}",
+                     "The system is unable to format all or part of the response because the repositories have returned an invalid relationship. This relationship is ignored.",
+                     "Use knowledge of the request and the contents of the repositories to track down and correct the invalid relationship.  " +
+                             "There is probably an error in the implementation of the repository that originated the relationship."),
+
+
     ;
 
     private String                     logMessageId;

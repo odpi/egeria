@@ -18,9 +18,27 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PortAliasEvent extends DataEngineEventHeader{
-
+public class PortAliasEvent extends DataEngineEventHeader {
+    private String processQualifiedName;
     private PortAlias portAlias;
+
+    /**
+     * Gets the process qualified name.
+     *
+     * @return the process qualified name
+     */
+    public String getProcessQualifiedName() {
+        return processQualifiedName;
+    }
+
+    /**
+     * Sets the process qualified name.
+     *
+     * @param processQualifiedName the process qualified name
+     */
+    public void setProcessQualifiedName(String processQualifiedName) {
+        this.processQualifiedName = processQualifiedName;
+    }
 
     /**
      * Gets port.

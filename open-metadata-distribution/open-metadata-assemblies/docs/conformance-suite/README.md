@@ -8,7 +8,7 @@ a specific technology conforms with the open metadata and governance
 standards.
 
 Details of the test can be found on the
-[ODPi Egeria website](https://egeria.odpi.org/open-metadata-conformance-suite/)
+[Egeria website](https://egeria.odpi.org/open-metadata-conformance-suite/)
 
 
 

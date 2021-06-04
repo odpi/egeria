@@ -52,6 +52,13 @@ public enum SubjectAreaAuditCode implements AuditLogMessageSet
                                      "occurred with error message: {2}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
+    UNEXPECTED_EXCEPTION("OMAS-SUBJECT_AREA-0006",
+                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
+                         "The request returns a SubjectAreaCheckedException.",
+                         "This is probably a logic error. Review the stack trace to identify where the error " +
+                                 "occurred and work to resolve the cause.")
     
 
     ;

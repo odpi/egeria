@@ -21,8 +21,8 @@ public class AssetManagerIdentifiersRequestBody implements Serializable
 {
     private static final long   serialVersionUID = 1L;
 
-    private String              assetManagerGUID        = null;
-    private String              assetManagerName        = null;
+    private String assetManagerGUID = null;
+    private String assetManagerName = null;
 
 
     /**

@@ -47,7 +47,7 @@ public class PlatformConnectionProvider {
         Properties properties = new Properties();
         properties.load(new FileInputStream(appConfigPath));
         String userId = properties.getProperty(USER);
-        String serverPlatformRootURL = properties.getProperty(BASE_URL) + properties.getProperty(PORT);
+        String serverPlatformRootURL = properties.getProperty(BASE_URL) + ":" + properties.getProperty(PORT);
 
         List<Arguments> servers = new ArrayList<>();
         if (Boolean.parseBoolean(properties.getProperty(SERVER_IN_MEMORY_ENABLED))) {

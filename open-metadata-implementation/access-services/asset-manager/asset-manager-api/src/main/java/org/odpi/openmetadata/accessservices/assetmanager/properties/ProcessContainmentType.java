@@ -129,7 +129,7 @@ public enum ProcessContainmentType implements Serializable
     @Override
     public String toString()
     {
-        return "PortType{" +
+        return "ProcessContainmentType{" +
                        "codeValue=" + ordinal +
                        ", codeName='" + name + '\'' +
                        ", description='" + description +

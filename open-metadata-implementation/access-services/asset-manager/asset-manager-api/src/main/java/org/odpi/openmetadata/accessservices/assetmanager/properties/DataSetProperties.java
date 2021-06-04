@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-public class DataSetProperties extends AssetProperties
+public class DataSetProperties extends DataAssetProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -50,10 +50,6 @@ public class DataSetProperties extends AssetProperties
         return "DataSetProperties{" +
                 "displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", typeName='" + getTypeName() + '\'' +

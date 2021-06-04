@@ -11,8 +11,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * ReferenceDataAssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from AssetProperties.
+ * ValidValueConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a bean that inherits from ValidValueElement.
  */
 public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
 {

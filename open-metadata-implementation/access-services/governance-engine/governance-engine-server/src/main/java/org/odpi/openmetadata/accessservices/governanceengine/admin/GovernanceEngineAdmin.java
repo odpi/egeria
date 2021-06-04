@@ -114,6 +114,9 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                                                  serverName,
                                                  omrsTopicConnector,
                                                  new GovernanceEngineOMRSTopicListener(AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                       serverUserName,
+                                                                                       instance.getMetadataElementHandler(),
+                                                                                       instance.getGovernanceActionHandler(),
                                                                                        eventPublisher,
                                                                                        repositoryConnector.getRepositoryHelper(),
                                                                                        outTopicAuditLog),
@@ -121,7 +124,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
             }
 
             /*
-             * Initialization is complete.  The service is now waiting for REST API calls (typically from the Governance Server) and events
+             * Initialization is complete.  The service is now waiting for REST API calls (typically from the Engine Host) and events
              * from OMRS to indicate that there are metadata changes.
              */
             auditLog.logMessage(actionDescription, GovernanceEngineAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
@@ -134,7 +137,7 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                                   error);
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   GovernanceEngineAuditCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(error.getClass().getName(),

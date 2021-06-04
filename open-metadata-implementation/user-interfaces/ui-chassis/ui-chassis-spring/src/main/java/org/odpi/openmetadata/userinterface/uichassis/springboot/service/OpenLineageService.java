@@ -23,10 +23,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,25 +34,18 @@ import java.util.stream.Stream;
 @Service
 public class OpenLineageService {
 
-    public static final String EDGES_LABEL = "edges";
-    public static final String NODES_LABEL = "nodes";
-    private static final String TABULAR_COLUMN = "TabularColumn";
-    private static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
-    private static final String SUB_PROCESS = "subProcess";
-    private static final String VERTEX_INSTANCE_PROPQUALIFIED_NAME = "vertex--InstancePropqualifiedName";
-    private static final String TRANSFORMATION_PROJECT = "transformationProject";
-    private static final String TRANSFORMATION_PROJECT_NAME_PATTERN = "transformation_project\\)=(.*?)::";
     private final OpenLineageClient openLineageClient;
-    private final LineageGraphDisplayRulesService lineageGraphDisplayRulesService;
+    private final LineageGraphDisplayService lineageGraphDisplayService;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     /**
      * @param openLineageClient client to connect to open lineage services
+     * @param lineageGraphDisplayService the rules for display
      */
     @Autowired
-    public OpenLineageService(OpenLineageClient openLineageClient, LineageGraphDisplayRulesService lineageGraphDisplayRulesService) {
+    public OpenLineageService(OpenLineageClient openLineageClient, LineageGraphDisplayService lineageGraphDisplayService) {
         this.openLineageClient = openLineageClient;
-        this.lineageGraphDisplayRulesService = lineageGraphDisplayRulesService;
+        this.lineageGraphDisplayService = lineageGraphDisplayService;
     }
 
 
@@ -136,6 +126,22 @@ public class OpenLineageService {
     }
 
     /**
+     * Gets node details.
+     *
+     * @param userId the user id
+     * @param guid   the guid
+     * @return the node details
+     */
+    public LineageVertex getEntityDetails(String userId, String guid) {
+        try {
+        return openLineageClient.getEntityDetails(userId, guid);
+        } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
+            LOG.error("Cannot get node details for guid {}", guid);
+            throw new RuntimeException("entity details error", e);
+        }
+    }
+
+    /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
      * @param includeProcesses if true includes processes in the response
@@ -157,6 +163,7 @@ public class OpenLineageService {
 
     /**
      * @param response string returned from Open Lineage Services to be processed
+     * @param guid the guid to process
      * @return map of nodes and edges describing the end to end flow
      */
     private Graph processResponse(LineageVerticesAndEdges response, String guid) {
@@ -185,85 +192,13 @@ public class OpenLineageService {
                 .collect(Collectors.toList());
 
         if(startList.size() > 0) {
-            setNodesLevel(startList, new ArrayList<>(nodes), new ArrayList<>(edges));
+            lineageGraphDisplayService.setNodesLevel(startList, new ArrayList<>(nodes), new ArrayList<>(edges));
         }
 
-        if (isQueriedNodeTabularColumn(guid, nodes)) {
-            adjustGraphForTabularColumn(edges, nodes);
-        }
         Graph graph = new Graph(nodes, edges);
-        lineageGraphDisplayRulesService.applyRules(graph);
-        nodes.stream().filter(node -> SUB_PROCESS.equals(node.getGroup())).forEach(this::extractTransformationProjectFromQualifiedName);
+        lineageGraphDisplayService.applyRules(graph, guid);
 
         return graph;
-    }
-
-
-
-    private void extractTransformationProjectFromQualifiedName(Node node) {
-        if (node.getProperties() == null) {
-            return;
-        }
-        String qualifiedName = node.getProperties().get(VERTEX_INSTANCE_PROPQUALIFIED_NAME);
-        if (qualifiedName == null) {
-            return;
-        }
-        Pattern pattern = Pattern.compile(TRANSFORMATION_PROJECT_NAME_PATTERN, Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(qualifiedName);
-        if (matcher.find()) {
-            node.getProperties().put(TRANSFORMATION_PROJECT, matcher.group(1));
-        }
-        node.getProperties().remove(VERTEX_INSTANCE_PROPQUALIFIED_NAME);
-    }
-
-    /**
-     * sets the level field for the nodes, in order to be displayed on levels
-     * Stars from a start list of nodes and sets a the level+1 for the nodes on the ends of "to" edges and
-     * legel -1 for the nodes from the "from" end of it's edges
-     * once an edge or node is processed is removed from the list.
-     *
-     * @param startNodes the starting nodes
-     * @param listNodes the list of nodes
-     * @param listEdges the list of edges
-     */
-    private void setNodesLevel(List<Node> startNodes, List<Node> listNodes, List<Edge> listEdges) {
-
-        ArrayList<Node> newStartNodes = new ArrayList<>();
-
-        ListIterator<Edge> edgeListIterator = listEdges.listIterator();
-
-        while (edgeListIterator.hasNext()) {
-            Edge e = edgeListIterator.next();
-            for ( Node node: startNodes ){
-                if ( node.getId().equals(e.getFrom()) ) {
-
-                    listNodes.stream()
-                            .filter( n -> n.getLevel() == 0 && n.getId().equals( e.getTo() ))
-                            .forEach( item -> {
-                                item.setLevel( node.getLevel() + 1 );
-                                newStartNodes.add(item);
-                                edgeListIterator.remove();
-                            });
-
-                } else if ( node.getId().equals(e.getTo()) ) {
-
-                    listNodes.stream()
-                            .filter( n -> n.getLevel() == 0 && n.getId().equals( e.getFrom() ))
-                            .forEach( item -> {
-                                item.setLevel( node.getLevel() - 1 );
-                                newStartNodes.add(item);
-                                edgeListIterator.remove();
-                            });
-
-                }
-                listNodes.removeAll(newStartNodes);
-            }
-
-        }
-
-        if(newStartNodes.size() > 0 && listEdges.size() > 0){
-            setNodesLevel(newStartNodes , listNodes, listEdges );
-        }
     }
 
     /**
@@ -287,49 +222,8 @@ public class OpenLineageService {
         String displayName = currentNode.getDisplayName();
         Node node = new Node(currentNode.getNodeID(), displayName);
         node.setGroup(currentNode.getNodeType());
+        node.setQualifiedName(currentNode.getQualifiedName());
         node.setProperties(currentNode.getProperties());
         return node;
     }
-
-    private boolean isQueriedNodeTabularColumn(String guid, List<Node> nodes) {
-        return nodes.stream().anyMatch(node -> node.getId().equals(guid) && node.getGroup().equals(TABULAR_COLUMN));
-    }
-
-    /**
-    * For vertical lineage the TabularSchemaType node should be removed when querying a TabularColumn
-     * so the relationship appears between the TabularColumn and DataFile
-     *
-     * @param edges the edges of the graph
-     * @param nodes nodes of the graph
-    * */
-    private void adjustGraphForTabularColumn(List<Edge> edges, List<Node> nodes) {
-        List<Edge> edgesToRemove = new ArrayList<>();
-        List<Node> nodesToRemove = new ArrayList<>();
-        for (Node node : nodes) {
-            if (node.getGroup().equals(TABULAR_SCHEMA_TYPE)) {
-                nodesToRemove.add(node);
-                String newFrom = "";
-                List<String> newTo = new ArrayList<>();
-                for (Edge edge : edges) {
-                    if (edge.getTo().equals(node.getId())) {
-                        edgesToRemove.add(edge);
-                        newFrom = edge.getFrom();
-                    }
-                }
-                for (Edge edge : edges) {
-                    if (edge.getFrom().equals(node.getId())) {
-                        edgesToRemove.add(edge);
-                        newTo.add(edge.getTo());
-                    }
-                }
-                for (String newTos : newTo) {
-                    edges.add(new Edge(newFrom, newTos));
-                }
-
-            }
-        }
-        nodes.removeAll(nodesToRemove);
-        edges.removeAll(edgesToRemove);
-    }
-
 }

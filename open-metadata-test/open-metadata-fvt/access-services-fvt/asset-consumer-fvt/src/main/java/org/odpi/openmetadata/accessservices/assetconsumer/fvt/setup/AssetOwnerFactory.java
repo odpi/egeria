@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.PrimitiveSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
@@ -113,6 +114,49 @@ public class AssetOwnerFactory
             properties.setAdditionalProperties(additionalProperties);
 
             String assetGUID = client.addAssetToCatalog(userId, properties);
+
+            if (assetGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
+            }
+
+            return assetGUID;
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Throwable unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Create an asset and return its GUID.
+     *
+     * @param userId calling user
+     * @return GUID of asset
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    public String getAssetFromTemplate(String userId,
+                                       String templateGUID) throws FVTUnexpectedCondition
+    {
+        final String activityName = "getAsset";
+
+        try
+        {
+            Map<String, String> additionalProperties = new HashMap<>();
+            additionalProperties.put(assetAdditionalPropertyName, assetAdditionalPropertyValue);
+
+            TemplateProperties properties = new TemplateProperties();
+
+            properties.setQualifiedName(assetName + "-2");
+            properties.setDisplayName(assetDisplayName + "-2");
+            properties.setDescription(assetDescription + "-2");
+
+            String assetGUID = client.addAssetToCatalogUsingTemplate(userId, templateGUID, properties);
 
             if (assetGUID == null)
             {

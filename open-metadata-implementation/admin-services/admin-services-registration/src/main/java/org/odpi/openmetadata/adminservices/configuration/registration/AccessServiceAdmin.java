@@ -136,7 +136,7 @@ public abstract class AccessServiceAdmin
                     auditLog.logMessage(methodName, OMAGAdminAuditCode.SUPPORTED_ZONES.getMessageDefinition(accessServiceFullName, zoneList.toString()));
                     return zoneList;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            supportedZonesPropertyName,
@@ -191,7 +191,7 @@ public abstract class AccessServiceAdmin
                     auditLog.logMessage(methodName, OMAGAdminAuditCode.PUBLISH_ZONES.getMessageDefinition(accessServiceFullName, zoneList.toString()));
                     return zoneList;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            publishZonesPropertyName,
@@ -246,7 +246,7 @@ public abstract class AccessServiceAdmin
                     auditLog.logMessage(methodName, OMAGAdminAuditCode.DEFAULT_ZONES.getMessageDefinition(accessServiceFullName, zoneList.toString()));
                     return zoneList;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            defaultZonesPropertyName,
@@ -301,7 +301,7 @@ public abstract class AccessServiceAdmin
 
                     return increment;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            karmaPointIncrementPropertyName,
@@ -375,7 +375,7 @@ public abstract class AccessServiceAdmin
 
                     return plateauThreshold;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     logBadConfigProperties(accessServiceFullName,
                                            karmaPointPlateauPropertyName,

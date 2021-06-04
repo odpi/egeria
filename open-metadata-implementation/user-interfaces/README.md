@@ -5,19 +5,20 @@
 
 # Open Metadata User Interface
 
-Egeria provides a basic user interface (UI() to demonstrate the power of the open
+Egeria provides a basic user interface (UI) to demonstrate the power of the open
 metadata and governance capabilities. They are fully functional as
 far as the standards go, and could be used by a small company. However,
 it is likely that commercial offerings will offer a richer user experience,
 particularly for a larger organization.
 
-The user interface supports user-facing view services. A view service is a personna orientated
-experience of open metadata.
+There are 2 User Interfaces :
 
+* The **[Presentation Server](../admin-services/docs/concepts/presentation-server.md)** is a multi-tenant server that serves a user interface - it issues rest calls downstream primarily to view
+  servers. All the code for the Presentation Server has been moved to [Egeria React UI Git repository](https://github.com/odpi/egeria-react-ui)
 
-* [ui-chassis](ui-chassis) the user interface platform.
+*  [UI Application](ui-chassis) the user interface platform. The Server side of the user interface is maintained in the [ui-chassis](ui-chassis) module.
+The client side has been moved to [Egeria UI Git repository](https://github.com/odpi/egeria-ui)
 
-* [repository-explorer](ui-chassis/ui-chassis-spring/docs/RepositoryExplorer) provides a repository explorer interface.
 
 ----
 Return to [open-metadata-implementation](..).

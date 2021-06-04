@@ -41,7 +41,7 @@ public class CreateAssetTest
     /*
      * The schemaType name is constant - the guid is created as part of the test.
      */
-    private final static String schemaTypeName         = "TestSchemaType";
+    private final static String schemaTypeName         = "SchemaType qualifiedNAme";
     private final static String schemaTypeDisplayName  = "SchemaType displayName";
     private final static String schemaTypeDescription  = "SchemaType description";
     private final static String schemaTypeType         = "SchemaType type";

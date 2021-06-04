@@ -100,7 +100,7 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   AssetConsumerAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getClass().getName(), error.getMessage()),

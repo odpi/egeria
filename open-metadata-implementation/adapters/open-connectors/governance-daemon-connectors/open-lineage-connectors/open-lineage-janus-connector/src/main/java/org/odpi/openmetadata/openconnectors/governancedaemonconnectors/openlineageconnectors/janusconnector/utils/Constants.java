@@ -1,12 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 public final class Constants {
 
     private Constants() {
     }
 
     //Asset Types
+    public static final String GLOSSARY = "Glossary";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
     public static final String GLOSSARY_CATEGORY = "GlossaryCategory";
     public static final String RELATIONAL_COLUMN_TYPE = "RelationalColumnType";
@@ -20,13 +24,24 @@ public final class Constants {
     public static final String TABULAR_COLUMN_TYPE = "TabularColumnType";
     public static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
     public static final String DATA_FILE = "DataFile";
+    public static final String AVRO_FILE = "AvroFile";
+    public static final String CSV_FILE = "CSVFile";
+    public static final String JSON_FILE = "JSONFile";
+    public static final String KEYSTORE_FILE = "KeystoreFile";
+    public static final String LOG_FILE = "LogFile";
+    public static final String MEDIA_FILE = "MediaFile";
+    public static final String DOCUMENT = "Document";
     public static final String FILE_FOLDER = "FileFolder";
     public static final String CONNECTION = "Connection";
     public static final String PROCESS = "Process";
     public static final String ENDPOINT = "Endpoint";
-    public static final String GLOSSARY = "Glossary";
+    public static final String COLLECTION = "Collection";
+
+    public static final Collection<String> DATA_FILE_AND_SUBTYPES = Arrays.asList(DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
+            KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
 
     public static final String RELATIONAL_TABLE_KEY = "relationalTable";
+    public static final String TRANSFORMATION_PROJECT_KEY = "transformationProject";
     public static final String SCHEMA_TYPE_KEY = "schema";
     public static final String DATABASE_KEY = "database";
     public static final String DATA_FILE_KEY = "dataFile";

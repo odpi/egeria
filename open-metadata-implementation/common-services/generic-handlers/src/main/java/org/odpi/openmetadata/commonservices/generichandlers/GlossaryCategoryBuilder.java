@@ -20,11 +20,11 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
     /**
      * Create constructor
      *
-     * @param qualifiedName unique name for the glossary
-     * @param displayName short display name for the glossary
-     * @param description description of the glossary
-     * @param additionalProperties additional properties for a glossary
-     * @param extendedProperties  properties for a glossary subtype
+     * @param qualifiedName unique name for the glossary category
+     * @param displayName short display name for the glossary category
+     * @param description description of the glossary category
+     * @param additionalProperties additional properties for a glossary category
+     * @param extendedProperties  properties for a glossary category subtype
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
@@ -55,9 +55,9 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
     /**
      * Create constructor
      *
-     * @param qualifiedName unique name for the glossary
-     * @param displayName short display name for the glossary
-     * @param description description of the glossary
+     * @param qualifiedName unique name for the glossary category
+     * @param displayName short display name for the glossary category
+     * @param description description of the glossary category
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
@@ -114,23 +114,16 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
         return properties;
     }

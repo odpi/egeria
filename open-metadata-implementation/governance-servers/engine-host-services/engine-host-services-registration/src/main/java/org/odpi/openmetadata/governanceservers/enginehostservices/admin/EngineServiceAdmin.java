@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
-import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
-import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 
 import java.util.List;
@@ -39,7 +39,8 @@ public abstract class EngineServiceAdmin
      * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages
      * @param localServerPassword password for this server to use if sending REST requests
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
-     * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions.
+     * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions
+     * @param governanceActionClient client used to connect to the Governance Engine OMAS to manage governance actions
      * @param engineServiceConfig details of the options and the engines to run
      *
      * @return map of governance engine names to handlers
@@ -52,6 +53,7 @@ public abstract class EngineServiceAdmin
                                                                     String                              localServerPassword,
                                                                     int                                 maxPageSize,
                                                                     GovernanceEngineConfigurationClient configurationClient,
+                                                                    GovernanceEngineClient              governanceActionClient,
                                                                     EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException;
 
 
@@ -79,11 +81,11 @@ public abstract class EngineServiceAdmin
             final String methodName        = "getAccessServiceRootURL";
 
             auditLog.logMessage(actionDescription,
-                                OMAGAdminAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(engineServicesConfig.getEngineServiceFullName(),
-                                                                                           localServerName,
-                                                                                           engineServicesConfig.getEngineServicePartnerOMAS()));
+                                EngineHostServicesAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(engineServicesConfig.getEngineServiceFullName(),
+                                                                                                    localServerName,
+                                                                                                    engineServicesConfig.getEngineServicePartnerOMAS()));
 
-            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.NO_OMAS_SERVER_URL.getMessageDefinition(engineServicesConfig.getEngineServiceFullName(),
+            throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_OMAS_SERVER_URL.getMessageDefinition(engineServicesConfig.getEngineServiceFullName(),
                                                                                                                  localServerName,
                                                                                                                  engineServicesConfig.getEngineServicePartnerOMAS()),
                                                       this.getClass().getName(),
@@ -98,12 +100,11 @@ public abstract class EngineServiceAdmin
      * Validate the content of the configuration.
      *
      * @param engineServiceConfig configuration
-     * @param methodName calling method
      * @throws InvalidParameterException Missing content from the config
      */
-    protected void validateConfigDocument(EngineServiceConfig engineServiceConfig,
-                                          String              methodName) throws InvalidParameterException
+    protected void validateConfigDocument(EngineServiceConfig engineServiceConfig) throws InvalidParameterException
     {
+        final String methodName                  = "validateConfigDocument";
         final String configPropertyName          = "engineServiceConfig";
         final String fullServiceNamePropertyName = "engineServiceConfig.engineServiceFullName";
         final String serviceNamePropertyName     = "engineServiceConfig.engineServiceName";
@@ -140,11 +141,11 @@ public abstract class EngineServiceAdmin
             final String methodName        = "getAccessServiceServerName";
 
             auditLog.logMessage(actionDescription,
-                                OMAGAdminAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
+                                EngineHostServicesAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
                                                                                             localServerName,
                                                                                             engineServiceConfig.getEngineServicePartnerOMAS()));
 
-            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.NO_OMAS_SERVER_NAME.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
+            throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_OMAS_SERVER_NAME.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
                                                                                                                   localServerName,
                                                                                                                   engineServiceConfig.getEngineServicePartnerOMAS()),
                                                       this.getClass().getName(),
@@ -171,10 +172,10 @@ public abstract class EngineServiceAdmin
             final String actionDescription = "Validate engine services configuration.";
             final String methodName        = "getEngines";
 
-            auditLog.logMessage(actionDescription, OMAGAdminAuditCode.NO_ENGINES.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
+            auditLog.logMessage(actionDescription, EngineHostServicesAuditCode.NO_ENGINES.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
                                                                                                       localServerName));
 
-            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.NO_ENGINES.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
+            throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_ENGINES.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),
                                                                                                          localServerName),
                                                       this.getClass().getName(),
                                                       methodName);

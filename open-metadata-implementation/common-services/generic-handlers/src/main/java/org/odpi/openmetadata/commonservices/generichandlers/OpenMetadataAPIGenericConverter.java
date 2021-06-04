@@ -137,8 +137,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * relationships between them.  The relationships may be omitted if they do not have any properties.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
-     *                      content of the bean
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
      * @param methodName calling method
@@ -194,7 +193,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param schemaRootClassifications classifications from the schema root entity
      * @param attributeCount number of attributes (for a complex schema type)
      * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
-     * @param externalSchemaType bean containing the properties of the schema type that is shared by multiple attributes/assets
+     * @param externalSchemaType unique identifier for the properties of the schema type that is shared by multiple attributes/assets
      * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
      * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
      * @param schemaTypeOptions list of schema types that could be the type for this attribute
@@ -216,11 +215,61 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                   List<B>              schemaTypeOptions,
                                   String               methodName) throws PropertyServerException
     {
-        final String thisMethodName = "getNewSchemaTypeBean)";
+        final String thisMethodName = "getNewSchemaTypeBean";
 
         handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 
         return null;
+    }
+
+
+    /**
+     * Return the converted bean.  This is a special method used for schema types since they are stored
+     * as a collection of instances.
+     *
+     * @param beanClass name of the class to create
+     * @param schemaRootHeader header of the schema element that holds the root information
+     * @param schemaTypeTypeName name of type of the schema type to create
+     * @param instanceProperties properties describing the schema type
+     * @param schemaRootClassifications classifications from the schema root entity
+     * @param attributeCount number of attributes (for a complex schema type)
+     * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
+     * @param externalSchemaTypeGUID unique identifier of the external schema type
+     * @param externalSchemaType unique identifier for the properties of the schema type that is shared by multiple attributes/assets
+     * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
+     * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
+     * @param schemaTypeOptions list of schema types that could be the type for this attribute
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    public B getNewSchemaTypeBean(Class<B>             beanClass,
+                                  InstanceHeader       schemaRootHeader,
+                                  String               schemaTypeTypeName,
+                                  InstanceProperties   instanceProperties,
+                                  List<Classification> schemaRootClassifications,
+                                  int                  attributeCount,
+                                  String               validValueSetGUID,
+                                  String               externalSchemaTypeGUID,
+                                  B                    externalSchemaType,
+                                  B                    mapFromSchemaType,
+                                  B                    mapToSchemaType,
+                                  List<B>              schemaTypeOptions,
+                                  String               methodName) throws PropertyServerException
+    {
+        return this.getNewSchemaTypeBean(beanClass,
+                                         schemaRootHeader,
+                                         schemaTypeTypeName,
+                                         instanceProperties,
+                                         schemaRootClassifications,
+                                         attributeCount,
+                                         validValueSetGUID,
+                                         externalSchemaType,
+                                         mapFromSchemaType,
+                                         mapToSchemaType,
+                                         schemaTypeOptions,
+                                         methodName);
     }
 
 
@@ -412,6 +461,92 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                                                                           expectedTypeName),
                                           this.getClass().getName(),
                                           methodName);
+    }
+
+
+    /**
+     * Throw an exception to indicate that a retrieved entity has missing information.
+     *
+     * @param beanClassName class name of bean
+     * @param entity the entity with the bad header
+     * @param methodName calling method
+     * @throws PropertyServerException an invalid instance has been returned from the metadata repositories
+     */
+    protected void handleBadEntity(String          beanClassName,
+                                   EntityDetail    entity,
+                                   String          methodName) throws PropertyServerException
+    {
+        if (entity == null)
+        {
+            handleMissingMetadataInstance(beanClassName, TypeDefCategory.ENTITY_DEF, methodName);
+        }
+        else
+        {
+            throw new PropertyServerException(GenericHandlersErrorCode.BAD_ENTITY.getMessageDefinition(methodName,
+                                                                                                       serviceName,
+                                                                                                       entity.toString()),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
+     * Throw an exception to indicate that a retrieved entity proxy is missing critical information.
+     *
+     * @param relationship the relationship with a bad entity proxy
+     * @param end number of the end where the proxy is stored
+     * @param entityProxy the entity proxy with the bad values
+     * @param methodName calling method
+     * @throws PropertyServerException an invalid instance has been returned from the metadata repositories
+     */
+    protected void handleBadEntityProxy(Relationship relationship,
+                                        int          end,
+                                        EntityProxy  entityProxy,
+                                        String       methodName) throws PropertyServerException
+    {
+        String entityProxyString = "<null>";
+
+        if (entityProxy != null)
+        {
+            entityProxyString = entityProxy.toString();
+        }
+
+        throw new PropertyServerException(GenericHandlersErrorCode.BAD_ENTITY_PROXY.getMessageDefinition(relationship.getGUID(),
+                                                                                                         methodName,
+                                                                                                         serviceName,
+                                                                                                         Integer.toString(end),
+                                                                                                         entityProxyString),
+                                          this.getClass().getName(),
+                                          methodName);
+    }
+
+
+    /**
+     * Throw an exception to indicate that a critical instance (typically the main entity) has not been passed
+     * to the converter.
+     *
+     * @param beanClassName class name of bean
+     * @param relationship the relationship with the bad header
+     * @param methodName calling method
+     * @throws PropertyServerException an invalid instance has been returned from the metadata repositories
+     */
+    protected void handleBadRelationship(String       beanClassName,
+                                         Relationship relationship,
+                                         String       methodName) throws PropertyServerException
+    {
+        if (relationship == null)
+        {
+            handleMissingMetadataInstance(beanClassName, TypeDefCategory.RELATIONSHIP_DEF, methodName);
+        }
+        else
+        {
+            throw new PropertyServerException(GenericHandlersErrorCode.BAD_RELATIONSHIP.getMessageDefinition(methodName,
+                                                                                                             serviceName,
+                                                                                                             relationship.toString()),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
     }
 
 
@@ -667,6 +802,116 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+    /**
+     * Extract and delete the fullName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeFullName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeFullName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.FULL_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the jobTitle property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeJobTitle(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeJobTitle";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.JOB_TITLE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the contactMethodService property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string name or null
+     */
+    protected String removeContactMethodService(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeContactMethodService";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.CONTACT_METHOD_SERVICE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the contactMethodValue property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string name or null
+     */
+    protected String removeContactMethodValue(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeContactMethodValue";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.CONTACT_METHOD_VALUE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the mission property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeMission(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeMission";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.MISSION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
 
     /**
      * Extract and delete the identifier property from the supplied instance properties.
@@ -682,6 +927,138 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the URL property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeURL(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeURL";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.URL_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the organization property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeOrganization(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeOrganization";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the referenceVersion property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeReferenceVersion(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeReferenceVersion";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.REFERENCE_VERSION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the referenceId property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from relationship
+     * @return string text or null
+     */
+    protected String getReferenceId(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getReferenceId";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.REFERENCE_ID_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the orderPropertyName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeOrderPropertyName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeOrderPropertyName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ORDER_PROPERTY_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the membershipRationale property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeMembershipRationale(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeMembershipRationale";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -749,8 +1126,138 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
+            String networkAddress = repositoryHelper.removeStringProperty(serviceName,
+                                                                          OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName);
+
+            if (networkAddress == null)
+            {
+                networkAddress = repositoryHelper.removeStringProperty(serviceName,
+                                                                       OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME_DEP,
+                                                                       instanceProperties,
+                                                                       methodName);
+            }
+
+            return networkAddress;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the postalAddress property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removePostalAddress(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removePostalAddress";
+
+        if (instanceProperties != null)
+        {
+            String postalAddress = repositoryHelper.removeStringProperty(serviceName,
+                                                                          OpenMetadataAPIMapper.POSTAL_ADDRESS_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName);
+
+            if (postalAddress == null)
+            {
+                postalAddress = repositoryHelper.removeStringProperty(serviceName,
+                                                                       OpenMetadataAPIMapper.POSTAL_ADDRESS_PROPERTY_NAME_DEP,
+                                                                       instanceProperties,
+                                                                       methodName);
+            }
+
+            return postalAddress;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the coordinates property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeCoordinates(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeCoordinates";
+
+        if (instanceProperties != null)
+        {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                         OpenMetadataAPIMapper.COORDINATES_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the mapProjection property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeMapProjection(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeMapProjection";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.MAP_PROJECTION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the timeZone property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeTimeZone(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeTimeZone";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.TIME_ZONE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the level property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeLevel(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeLevel";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.LEVEL_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -1134,6 +1641,207 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+
+    /**
+     * Extract the ownerTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string text or null
+     */
+    protected String getOwnerTypeName(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getOwnerTypeName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the ownerPropertyName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string text or null
+     */
+    protected String getOwnerPropertyName(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getOwnerPropertyName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the ownerType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return ordinal or 0 for not specified
+     */
+    protected int getOwnerTypeOrdinal(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getOwnerTypeOrdinal";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                           OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME,
+                                                           instanceProperties,
+                                                           methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract the ownerType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return ordinal or 0 for not specified
+     */
+    protected int removeOwnerTypeOrdinal(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeOwnerTypeOrdinal";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                              OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the ownerPropertyName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string
+     */
+    protected String removeOwnerPropertyName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeClassificationPropertyName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the ownerTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string
+     */
+    protected String removeOwnerTypeName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeTypePropertyName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the securityLabels property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string map or null
+     */
+    protected List<String> getSecurityLabels(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getSecurityLabels";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringArrayProperty(serviceName,
+                                                           OpenMetadataAPIMapper.SECURITY_LABELS_PROPERTY_NAME,
+                                                           instanceProperties,
+                                                           methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the securityProperties property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string map or null
+     */
+    protected Map<String, String> getSecurityProperties(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getSecurityProperties";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringMapFromProperty(serviceName,
+                                                             OpenMetadataAPIMapper.SECURITY_PROPERTIES_PROPERTY_NAME,
+                                                             instanceProperties,
+                                                             methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the karmaPoints property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return ordinal or 0 for not specified
+     */
+    protected int removeKarmaPoints(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeKarmaPoints";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                      OpenMetadataAPIMapper.KARMA_POINTS_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return 0;
+    }
+
+
     /**
      * Extract the organizationGUID property from the supplied instance properties.
      *
@@ -1147,7 +1855,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataAPIMapper.ORGANIZATION_GUID_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -1169,7 +1877,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataAPIMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -1249,6 +1957,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                                      instanceProperties,
                                                                      methodName);
             return modifiedTime1 == null ? modifiedTime2 : modifiedTime1;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the pathName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string or null
+     */
+    protected String removePathName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removePathName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
         }
 
         return null;
@@ -1568,21 +2298,25 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from entity
      * @return string text or null
      */
-    protected String removeCapabilityType(InstanceProperties  instanceProperties)
+    protected String removeDeployedImplementationType(InstanceProperties  instanceProperties)
     {
-        final String methodName = "removeType";
+        final String methodName = "removeDeployedImplementationType";
 
         if (instanceProperties != null)
         {
-            String type1 = repositoryHelper.removeStringProperty(serviceName,
-                                                                 OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME,
-                                                                 instanceProperties,
-                                                                 methodName);
-            String type2 = repositoryHelper.removeStringProperty(serviceName,
-                                                                 OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME_DEP,
-                                                                 instanceProperties,
-                                                                 methodName);
-            return type1 == null ? type2 : type1;
+            String type = repositoryHelper.removeStringProperty(serviceName,
+                                                                OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME,
+                                                                instanceProperties,
+                                                                methodName);
+            if (type == null)
+            {
+                type = repositoryHelper.removeStringProperty(serviceName,
+                                                             OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME_DEP,
+                                                             instanceProperties,
+                                                             methodName);
+            }
+
+            return type;
         }
 
         return null;
@@ -1590,14 +2324,14 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the version property from the supplied instance properties.
+     * Extract and delete the capabilityVersion property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string text or null
      */
-    protected String removeVersion(InstanceProperties  instanceProperties)
+    protected String removeCapabilityVersion(InstanceProperties  instanceProperties)
     {
-        final String methodName = "removeVersion";
+        final String methodName = "removeCapabilityVersion";
 
         if (instanceProperties != null)
         {
@@ -1629,7 +2363,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.CAPABILITY_PATCH_LEVEL_PROPERTY_NAME,
+                                                         OpenMetadataAPIMapper.PATCH_LEVEL_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2288,9 +3022,31 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.CAPABILITY_SOURCE_PROPERTY_NAME,
+                                                         OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the usage property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String getUsage(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getUsage";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
         }
 
         return null;
@@ -2349,6 +3105,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from governance entities
      * @return string property or null
      */
+    protected String getSummary(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getSummary";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and remove the summary property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
     protected String removeSummary(InstanceProperties instanceProperties)
     {
         final String methodName = "removeSummary";
@@ -2357,6 +3135,53 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+
+
+    /**
+     * Extract the abbreviation property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
+    protected String getAbbreviation(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getAbbreviation";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and remove the abbreviation property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
+    protected String removeAbbreviation(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeAbbreviation";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2388,6 +3213,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the text property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
+    protected String removeText(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeText";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.TEXT_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the priority property from the supplied instance properties.
      *
      * @param instanceProperties properties from governance entities
@@ -2406,6 +3253,50 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Extract the priority integer property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
+    protected int removeIntPriority(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeIntPriority";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                      OpenMetadataAPIMapper.PRIORITY_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract the headcount integer property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
+    protected int removeHeadCount(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeHeadCount";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                      OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return 0;
     }
 
 
@@ -2497,9 +3388,118 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+    /**
+     * Extract and delete the businessImperatives property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string list or null
+     */
+    protected List<String> removeBusinessImperatives(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeBusinessImperatives";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataAPIMapper.BUSINESS_IMPERATIVES_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
 
     /**
-     * Extract and delete the description property from the supplied instance properties.
+     * Extract and delete the jurisdiction property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeJurisdiction(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeJurisdiction";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.JURISDICTION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the details property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeDetails(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeDetails";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.DETAILS_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the rational property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from relationship
+     * @return string text or null
+     */
+    protected String getRationale(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeRationale";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.RATIONALE_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the implementationDescription property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeImplementationDescription(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeImplementationDescription";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.IMPLEMENTATION_DESCRIPTION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the criteria property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string text or null
@@ -2520,7 +3520,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
-
     /**
      * Extract and delete the domain identifier property from the supplied instance properties.
      *
@@ -2535,12 +3534,495 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeIntProperty(serviceName,
-                                                      OpenMetadataAPIMapper.CRITERIA_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }
 
         return 0;
+    }
+
+
+    /**
+     * Extract and delete the level identifier property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return integer = default is 0 which is ALL
+     */
+    protected int removeLevelIdentifier(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeLevelIdentifier";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                      OpenMetadataAPIMapper.LEVEL_IDENTIFIER_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the classificationName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeClassificationName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeClassificationName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.CLASSIFICATION_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the classificationPropertyName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeClassificationPropertyName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeClassificationPropertyName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.CLASSIFICATION_PROPERTY_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the processingEngineUserId property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeProcessingEngineUserId(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProcessingEngineUserId";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requestType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeRequestType(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequestType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requestParameters property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected Map<String, String> removeRequestParameters(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequestParameters";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                         OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the producedGuards property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return array of guards
+     */
+    protected List<String> removeProducedGuards(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProducedGuards";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataAPIMapper.PRODUCED_GUARDS_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the mandatoryGuards property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return array of guards
+     */
+    protected List<String> removeMandatoryGuards(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeMandatoryGuards";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataAPIMapper.MANDATORY_GUARDS_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the receivedGuards property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return array of guards
+     */
+    protected List<String> removeReceivedGuards(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeReceivedGuards";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataAPIMapper.RECEIVED_GUARDS_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the completionGuards property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return array of guards
+     */
+    protected List<String> removeCompletionGuards(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeCompletionGuards";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataAPIMapper.COMPLETION_GUARDS_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the startDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removeStartDate(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeStartDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.START_DATE_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the plannedEndDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removePlannedEndDate(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removePlannedEndDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.PLANNED_END_DATE_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the creationTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removeCreationTime(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeCreationTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.CREATION_TIME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the dueTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removeDueTime(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeDueTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.DUE_TIME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the completionTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removeCompletionTime(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeCompletionTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.COMPLETION_TIME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the completionDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removeCompletionDate(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeCompletionDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataAPIMapper.COMPLETION_DATE_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the status property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeStatus(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeStatus";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requestSourceName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeRequestSourceName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequestSourceName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataAPIMapper.REQUEST_SOURCE_NAME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the actionTargetName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeActionTargetName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeActionTargetName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ACTION_TARGET_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the originGovernanceService property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeOriginGovernanceService(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeOriginGovernanceService";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ORIGIN_GOVERNANCE_SERVICE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the originGovernanceEngine property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeOriginGovernanceEngine(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeOriginGovernanceEngine";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ORIGIN_GOVERNANCE_ENGINE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
     }
 
 
@@ -2760,7 +4242,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataAPIMapper.LICENSE_RECIPIENT_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.LICENSEE_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -2862,7 +4344,8 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     /**
      * Extract the notes property from the supplied instance properties.
      *
-     * @param instanceProperties properties from ReferenceValueAssignment or ValidValuesMapping relationship
+     * @param instanceProperties properties from GovernanceRuleImplementation, GovernanceProcessImplementation,
+     *                           ReferenceValueAssignment or ValidValuesMapping relationship
      * @return string text or null
      */
     protected String getNotes(InstanceProperties  instanceProperties)
@@ -2872,7 +4355,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataAPIMapper.VALID_VALUES_NOTES_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the pointType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string text or null
+     */
+    protected String getPointType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getPointType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.POINT_TYPE_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }

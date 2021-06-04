@@ -98,7 +98,7 @@ public class ProjectManagementAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   ProjectManagementAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

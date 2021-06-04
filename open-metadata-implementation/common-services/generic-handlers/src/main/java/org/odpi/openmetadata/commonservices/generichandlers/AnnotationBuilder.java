@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,12 +32,81 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private String               jsonProperties;
     private Map<String, String>  additionalProperties;
 
+    /*
+     * Attributes for the ClassificationAnnotation
+     */
+    private Map<String, String> candidateClassifications = null;
+
+    /*
+     * Attributes for the DataClassAnnotation
+     */
+    private List<String> candidateDataClassGUIDs = null;
+    private long         matchingValues = 0;
+    private long         nonMatchingValues = 0;
+
+
+    /*
+     * Attributes for the DataProfileAnnotation
+     */
+    private int                  length            = 0;
+    private String               inferredDataType  = null;
+    private String               inferredFormat    = null;
+    private int                  inferredLength    = 0;
+    private int                  inferredPrecision = 0;
+    private int                  inferredScale     = 0;
+    private Map<String, String>  profileProperties = null;
+    private Map<String, Boolean> profileFlags      = null;
+    private Map<String, Long>    profileCounts     = null;
+    private List<String>         valueList         = null;
+    private Map<String, Integer> valueCount        = null;
+    private String               valueRangeFrom    = null;
+    private String               valueRangeTo      = null;
+    private String               averageValue      = null;
+
+    /*
+     * Attributes for the DataSourceMeasurementAnnotation and DataSourcePhysicalStatusAnnotation
+     */
+    private Map<String, String> dataSourceProperties = null;
+
+    private Date   createTime     = null;
+    private Date   modifiedTime   = null;
+    private int    size           = 0;
+    private String encoding       = null;
+
+    /*
+     * Attributes for the QualityAnnotation
+     */
+    private String qualityDimension = null;
+    private int    qualityScore     = 0;
+
+
+    /*
+     * Attributes for RelationshipAdviceAnnotation
+     */
+    private String              relatedEntityGUID = null;
+    private String              relationshipTypeName = null;
+    private Map<String, String> relationshipProperties = null;
+
+    /*
+     * Attributes for RequestForActionAnnotation
+     */
+    private String              discoveryActivity = null;
+    private String              actionRequested   = null;
+    private Map<String, String> actionProperties  = null;
 
     /*
      * Attributes for the SchemaAnalysisAnnotation
      */
-    private String schemaName     = null;
-    private String schemaTypeName = null;
+    private  String schemaName     = null;
+    private  String schemaTypeName = null;
+
+    /*
+     * Attributes for SemanticAnnotation
+     */
+    private String       informalTerm = null;
+    private String       informalTopic = null;
+    private List<String> candidateGlossaryTermGUIDs = null;
+    private List<String> candidateGlossaryCategoryGUIDs = null;
 
     /*
      * Attributes for the suspect duplicate annotation
@@ -112,6 +182,166 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     /**
      * Add properties for annotation subtype.
      *
+     * @param candidateClassifications discovered classifications
+     */
+    void setClassificationSubtypeProperties(Map<String, String> candidateClassifications)
+    {
+        this.candidateClassifications = candidateClassifications;
+    }
+
+
+    /**
+     * Add properties for annotation subtype.
+     *
+     * @param candidateDataClassGUIDs discovered data class candidates
+     * @param matchingValues number of values in the field that match the data class
+     * @param nonMatchingValues number of values in the field that do not match the data class
+     */
+    void setDataClassSubtypeProperties(List<String> candidateDataClassGUIDs,
+                                       long         matchingValues,
+                                       long         nonMatchingValues)
+    {
+        this.candidateDataClassGUIDs = candidateDataClassGUIDs;
+        this.matchingValues          = matchingValues;
+        this.nonMatchingValues       = nonMatchingValues;
+    }
+
+
+    /**
+     * Add properties for annotation subtype.
+     *
+     * @param length length of the data field.  Assumes static predefined lengths
+     * @param inferredDataType name of the data type that the discovery service believes the field is
+     * @param inferredFormat name of the data format that the discovery service believes the field is
+     * @param inferredLength length of the data field that has been deduced from the data stored
+     * @param inferredPrecision precision of the data field that has been deduced from the data stored
+     * @param inferredScale inferred scale used in other properties
+     * @param profileProperties the map of properties that make up the profile
+     * @param profileFlags a set of boolean flags describing different aspects of the data
+     * @param profileCounts the map of different profiling counts that have been calculated
+     * @param valueList the list of values found in the data field
+     * @param valueCount  a map of values to value count for the data field
+     * @param valueRangeFrom the lowest value of the data stored in this data field
+     * @param valueRangeTo the upper value of the data stored in this data field
+     * @param averageValue the average (mean) value of the values stored in the data field
+     */
+    void setDataProfileSubtypeProperties(int                  length,
+                                         String               inferredDataType,
+                                         String               inferredFormat,
+                                         int                  inferredLength,
+                                         int                  inferredPrecision,
+                                         int                  inferredScale,
+                                         Map<String, String>  profileProperties,
+                                         Map<String, Boolean> profileFlags,
+                                         Map<String, Long>    profileCounts,
+                                         List<String>         valueList,
+                                         Map<String, Integer> valueCount,
+                                         String               valueRangeFrom,
+                                         String               valueRangeTo,
+                                         String               averageValue)
+    {
+        this.length            = length;
+        this.inferredDataType  = inferredDataType;
+        this.inferredFormat    = inferredFormat;
+        this.inferredLength    = inferredLength;
+        this.inferredPrecision = inferredPrecision;
+        this.inferredScale     = inferredScale;
+        this.profileProperties = profileProperties;
+        this.profileFlags      = profileFlags;
+        this.profileCounts     = profileCounts;
+        this.valueList         = valueList;
+        this.valueCount        = valueCount;
+        this.valueRangeFrom    = valueRangeFrom;
+        this.valueRangeTo      = valueRangeTo;
+        this.averageValue      = averageValue;
+    }
+
+
+    /**
+     * Add properties for annotation subtype.
+     *
+     * @param dataSourceProperties properties of the data source
+     */
+    void setDataSourceMeasurementSubtypeProperties(Map<String, String> dataSourceProperties)
+    {
+        this.dataSourceProperties = dataSourceProperties;
+    }
+
+
+    /**
+     * Add properties for annotation subtype.
+     *
+     * @param dataSourceProperties properties of the data source
+     * @param createTime the date and time that the data source was created
+     * @param modifiedTime the time that the file was last modified.
+     * @param size the size in bytes of the data source
+     * @param encoding the encoding of the data source
+     */
+    void setDataSourcePhysicalStatusSubtypeProperties(Map<String, String> dataSourceProperties,
+                                                      Date                createTime,
+                                                      Date                modifiedTime,
+                                                      int                 size,
+                                                      String              encoding)
+    {
+        this.dataSourceProperties = dataSourceProperties;
+        this.createTime = createTime;
+        this.modifiedTime = modifiedTime;
+        this.size = size;
+        this.encoding = encoding;
+    }
+
+
+    /**
+     * Add properties for annotation subtype.
+     *
+     * @param qualityDimension the type of quality being measured
+     * @param qualityScore a quality score between 0 and 100 - 100 is the best
+     */
+    void setQualitySubtypeProperties(String qualityDimension,
+                                     int    qualityScore)
+    {
+        this.qualityDimension = qualityDimension;
+        this.qualityScore = qualityScore;
+    }
+
+
+    /**
+     * Add properties for annotation subtype.
+     *
+     * @param relatedEntityGUID the unique identifier of the object to connect to
+     * @param relationshipTypeName the type of relationship to create
+     * @param relationshipProperties the properties that should be stored in the relationship
+     */
+    void setRelationshipAdviceSubtypeProperties(String              relatedEntityGUID,
+                                                String              relationshipTypeName,
+                                                Map<String, String> relationshipProperties)
+    {
+        this.relatedEntityGUID = relatedEntityGUID;
+        this.relationshipTypeName = relationshipTypeName;
+        this.relationshipProperties = relationshipProperties;
+    }
+
+
+    /**
+     * Add properties for annotation subtype.
+     *
+     * @param discoveryActivity the unique name of the discovery activity
+     * @param actionRequested the identifier of the type of action that needs to be run
+     * @param actionProperties the properties that will guide the governance action
+     */
+    void setRequestForActionSubtypeProperties(String              discoveryActivity,
+                                              String              actionRequested,
+                                              Map<String, String> actionProperties)
+    {
+        this.discoveryActivity = discoveryActivity;
+        this.actionRequested = actionRequested;
+        this.actionProperties = actionProperties;
+    }
+
+
+    /**
+     * Add properties for annotation subtype.
+     *
      * @param schemaName name of schema
      * @param schemaTypeName type of schema
      */
@@ -120,6 +350,26 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     {
         this.schemaName     = schemaName;
         this.schemaTypeName = schemaTypeName;
+    }
+
+
+    /**
+     * Add properties for annotation subtype.
+     *
+     * @param informalTerm a string that describes the meaning of this data
+     * @param informalTopic a string that describes the topic that this data is about
+     * @param candidateGlossaryTermGUIDs a list of unique identifiers of glossary terms that describe the meaning of the data
+     * @param candidateGlossaryCategoryGUIDs a list of unique identifiers of glossary categories that describe the topic of the data
+     */
+    void setSemanticSubTypeProperties(String       informalTerm,
+                                      String       informalTopic,
+                                      List<String> candidateGlossaryTermGUIDs,
+                                      List<String> candidateGlossaryCategoryGUIDs)
+    {
+        this.informalTerm = informalTerm;
+        this.informalTopic = informalTopic;
+        this.candidateGlossaryTermGUIDs = candidateGlossaryTermGUIDs;
+        this.candidateGlossaryCategoryGUIDs = candidateGlossaryCategoryGUIDs;
     }
 
 
@@ -240,10 +490,6 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
         {
             return addDataProfileAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DATA_PROFILE_LOG_ANNOTATION_TYPE_NAME))
-        {
-            return addDataProfileLogAnnotationInstanceProperties(properties, methodName);
-        }
         else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.DS_PHYSICAL_STATUS_ANNOTATION_TYPE_NAME))
         {
             return addDataSourcePhysicalStatusAnnotationInstanceProperties(properties, methodName);
@@ -315,7 +561,15 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addClassificationAnnotationInstanceProperties(InstanceProperties properties,
                                                                              String             methodName)
     {
-        // todo
+        if ((candidateClassifications != null) && (!candidateClassifications.isEmpty()))
+        {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         OpenMetadataAPIMapper.CANDIDATE_CLASSIFICATIONS_PROPERTY_NAME,
+                                                                         candidateClassifications,
+                                                                         methodName);
+        }
+
         return properties;
     }
 
@@ -330,7 +584,27 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addDataClassAnnotationInstanceProperties(InstanceProperties properties,
                                                                         String             methodName)
     {
-        // todo
+        if ((candidateDataClassGUIDs != null) && (!candidateDataClassGUIDs.isEmpty()))
+        {
+            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                           properties,
+                                                                           OpenMetadataAPIMapper.CANDIDATE_DATA_CLASS_GUIDS_PROPERTY_NAME,
+                                                                           candidateDataClassGUIDs,
+                                                                           methodName);
+        }
+
+        properties = repositoryHelper.addLongPropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataAPIMapper.MATCHING_VALUES_PROPERTY_NAME,
+                                                                matchingValues,
+                                                                methodName);
+
+        properties = repositoryHelper.addLongPropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataAPIMapper.NON_MATCHING_VALUES_PROPERTY_NAME,
+                                                                nonMatchingValues,
+                                                                methodName);
+
         return properties;
     }
 
@@ -345,22 +619,120 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addDataProfileAnnotationInstanceProperties(InstanceProperties properties,
                                                                           String             methodName)
     {
-        // todo
-        return properties;
-    }
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.LENGTH_PROPERTY_NAME,
+                                                               length,
+                                                               methodName);
 
+        if (inferredDataType != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.INFERRED_DATA_TYPE_PROPERTY_NAME,
+                                                                      inferredDataType,
+                                                                      methodName);
+        }
 
-    /**
-     * Return the supplied bean properties in an InstanceProperties object for the annotation entity.
-     *
-     * @param properties properties to fill out
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    private InstanceProperties addDataProfileLogAnnotationInstanceProperties(InstanceProperties properties,
-                                                                             String             methodName)
-    {
-        // todo
+        if (inferredFormat != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.INFERRED_FORMAT_PROPERTY_NAME,
+                                                                      inferredFormat,
+                                                                      methodName);
+        }
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.INFERRED_LENGTH_PROPERTY_NAME,
+                                                               inferredLength,
+                                                               methodName);
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.INFERRED_PRECISION_PROPERTY_NAME,
+                                                               inferredPrecision,
+                                                               methodName);
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.INFERRED_SCALE_PROPERTY_NAME,
+                                                               inferredScale,
+                                                               methodName);
+
+        if ((profileProperties != null) && (! profileProperties.isEmpty()))
+        {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         OpenMetadataAPIMapper.PROFILE_PROPERTIES_PROPERTY_NAME,
+                                                                         profileProperties,
+                                                                         methodName);
+        }
+
+        if ((profileFlags != null) && (! profileFlags.isEmpty()))
+        {
+            properties = repositoryHelper.addBooleanMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         OpenMetadataAPIMapper.PROFILE_FLAGS_PROPERTY_NAME,
+                                                                         profileFlags,
+                                                                         methodName);
+        }
+
+        if ((profileCounts != null) && (! profileCounts.isEmpty()))
+        {
+            properties = repositoryHelper.addLongMapPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.PROFILE_COUNTS_PROPERTY_NAME,
+                                                                       profileCounts,
+                                                                       methodName);
+        }
+
+        if ((valueList != null) && (! valueList.isEmpty()))
+        {
+            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                           properties,
+                                                                           OpenMetadataAPIMapper.VALUE_LIST_PROPERTY_NAME,
+                                                                           valueList,
+                                                                           methodName);
+        }
+
+        if ((valueCount != null) && (! valueCount.isEmpty()))
+        {
+            properties = repositoryHelper.addIntMapPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.VALUE_COUNT_PROPERTY_NAME,
+                                                                      valueCount,
+                                                                      methodName);
+        }
+
+        if (valueRangeFrom != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.VALUE_RANGE_FROM_PROPERTY_NAME,
+                                                                      valueRangeFrom,
+                                                                      methodName);
+        }
+
+        if (valueRangeTo != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.VALUE_RANGE_TO_PROPERTY_NAME,
+                                                                      valueRangeTo,
+                                                                      methodName);
+        }
+
+        if (averageValue != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.AVERAGE_VALUE_PROPERTY_NAME,
+                                                                      averageValue,
+                                                                      methodName);
+        }
+
         return properties;
     }
 
@@ -375,7 +747,41 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addDataSourcePhysicalStatusAnnotationInstanceProperties(InstanceProperties properties,
                                                                                        String             methodName)
     {
-        // todo
+        properties = this.addDataSourceMeasurementAnnotationInstanceProperties(properties, methodName);
+
+        if (createTime != null)
+        {
+            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.SOURCE_CREATE_TIME_PROPERTY_NAME,
+                                                                    createTime,
+                                                                    methodName);
+        }
+
+        if (modifiedTime != null)
+        {
+            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.SOURCE_UPDATE_TIME_PROPERTY_NAME,
+                                                                    modifiedTime,
+                                                                    methodName);
+        }
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.DS_PHYSICAL_SIZE_PROPERTY_NAME,
+                                                               size,
+                                                               methodName);
+
+        if (encoding != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DS_PHYSICAL_ENCODING_PROPERTY_NAME,
+                                                                      encoding,
+                                                                      methodName);
+        }
+
         return properties;
     }
 
@@ -390,7 +796,15 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addDataSourceMeasurementAnnotationInstanceProperties(InstanceProperties properties,
                                                                                     String             methodName)
     {
-        // todo
+        if ((dataSourceProperties != null) && (! dataSourceProperties.isEmpty()))
+        {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         OpenMetadataAPIMapper.DATA_SOURCE_PROPERTIES_PROPERTY_NAME,
+                                                                         dataSourceProperties,
+                                                                         methodName);
+        }
+
         return properties;
     }
 
@@ -495,7 +909,21 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addQualityAnnotationInstanceProperties(InstanceProperties properties,
                                                                       String             methodName)
     {
-        // todo
+        if (qualityDimension != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.QUALITY_DIMENSION_PROPERTY_NAME,
+                                                                      qualityDimension,
+                                                                      methodName);
+        }
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.QUALITY_SCORE_PROPERTY_NAME,
+                                                               qualityScore,
+                                                               methodName);
+
         return properties;
     }
 
@@ -510,7 +938,33 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addRelationshipAdviceAnnotationInstanceProperties(InstanceProperties properties,
                                                                                  String             methodName)
     {
-        // todo
+        if (relatedEntityGUID != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.RELATED_ENTITY_GUID_PROPERTY_NAME,
+                                                                      relatedEntityGUID,
+                                                                      methodName);
+        }
+
+        if (relationshipTypeName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.RELATIONSHIP_TYPE_NAME_PROPERTY_NAME,
+                                                                      relationshipTypeName,
+                                                                      methodName);
+        }
+
+        if ((relationshipProperties != null) && (! relationshipProperties.isEmpty()))
+        {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         OpenMetadataAPIMapper.RELATIONSHIP_PROPERTIES_PROPERTY_NAME,
+                                                                         relationshipProperties,
+                                                                         methodName);
+        }
+
         return properties;
     }
 
@@ -525,7 +979,33 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addRequestForActionAnnotationInstanceProperties(InstanceProperties properties,
                                                                                String             methodName)
     {
-        // todo
+        if (discoveryActivity != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DISCOVERY_ACTIVITY_PROPERTY_NAME,
+                                                                      discoveryActivity,
+                                                                      methodName);
+        }
+
+        if (actionRequested != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.ACTION_REQUESTED_PROPERTY_NAME,
+                                                                      actionRequested,
+                                                                      methodName);
+        }
+
+        if ((actionProperties != null) && (! actionProperties.isEmpty()))
+        {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         OpenMetadataAPIMapper.ACTION_PROPERTIES_PROPERTY_NAME,
+                                                                         actionProperties,
+                                                                         methodName);
+        }
+
         return properties;
     }
 
@@ -572,7 +1052,42 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addSemanticAnnotationInstanceProperties(InstanceProperties properties,
                                                                       String             methodName)
     {
-        // todo
+        if (informalTerm != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.INFORMAL_TERM_PROPERTY_NAME,
+                                                                      informalTerm,
+                                                                      methodName);
+        }
+
+        if (informalTopic != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.INFORMAL_TOPIC_PROPERTY_NAME,
+                                                                      informalTopic,
+                                                                      methodName);
+        }
+
+        if ((candidateGlossaryTermGUIDs != null) && (! candidateGlossaryTermGUIDs.isEmpty()))
+        {
+            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                           properties,
+                                                                           OpenMetadataAPIMapper.CANDIDATE_GLOSSARY_TERM_GUIDS_PROPERTY_NAME,
+                                                                           candidateGlossaryTermGUIDs,
+                                                                           methodName);
+        }
+
+        if ((candidateGlossaryCategoryGUIDs != null) && (! candidateGlossaryCategoryGUIDs.isEmpty()))
+        {
+            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                           properties,
+                                                                           OpenMetadataAPIMapper.CANDIDATE_GLOSSARY_CATEGORY_GUIDS_PROPERTY_NAME,
+                                                                           candidateGlossaryCategoryGUIDs,
+                                                                           methodName);
+        }
+
         return properties;
     }
 

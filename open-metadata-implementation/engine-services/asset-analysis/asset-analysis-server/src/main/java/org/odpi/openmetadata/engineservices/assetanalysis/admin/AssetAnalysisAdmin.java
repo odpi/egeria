@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.engineservices.assetanalysis.admin;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
-import org.odpi.openmetadata.accessservices.discoveryengine.client.ODFRESTClient;
+import org.odpi.openmetadata.accessservices.discoveryengine.client.rest.ODFRESTClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
@@ -31,12 +32,13 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
      *
      * @param localServerId unique identifier of this server
      * @param localServerName name of this server
-     * @param auditLog link to the repository responsible for servicing the REST calls.
-     * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages.
-     * @param localServerPassword password for this server to use if sending REST requests.
+     * @param auditLog link to the repository responsible for servicing the REST calls
+     * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages
+     * @param localServerPassword password for this server to use if sending REST requests
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
-     * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions.
-     * @param engineServiceConfig details of the options and the engines to run.
+     * @param configurationClient client used by the engine host services to connect to the Governance Engine OMAS to retrieve the governance engine definitions
+     * @param governanceActionClient client used by the engine host services to connect to the Governance Engine OMAS to manage governance actions
+     * @param engineServiceConfig details of the options and the engines to run
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
     public Map<String, GovernanceEngineHandler> initialize(String                              localServerId,
@@ -46,6 +48,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                            String                              localServerPassword,
                                                            int                                 maxPageSize,
                                                            GovernanceEngineConfigurationClient configurationClient,
+                                                           GovernanceEngineClient              governanceActionClient,
                                                            EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize engine service";
@@ -60,7 +63,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
 
         try
         {
-            this.validateConfigDocument(engineServiceConfig, methodName);
+            this.validateConfigDocument(engineServiceConfig);
 
             /*
              * The discovery services need access to an open metadata server to retrieve information about the asset they are analysing and
@@ -101,6 +104,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                                                           accessServiceServerName,
                                                                                                           localServerUserId,
                                                                                                           configurationClient,
+                                                                                                          governanceActionClient,
                                                                                                           restClient,
                                                                                                           maxPageSize);
 
@@ -161,6 +165,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
      * @param accessServiceServerName Server Name for the Discovery Engine OMAS
      * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages.
      * @param configurationClient client to retrieve configuration from
+     * @param governanceActionClient client used by the engine host services to connect to the Governance Engine OMAS to manage governance actions
      * @param odfRESTClient client for calling REST APIs
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      * @return map of discovery engine GUIDs to handlers
@@ -171,6 +176,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                             String                              accessServiceServerName,
                                                                             String                              localServerUserId,
                                                                             GovernanceEngineConfigurationClient configurationClient,
+                                                                            GovernanceEngineClient              governanceActionClient,
                                                                             ODFRESTClient                       odfRESTClient,
                                                                             int                                 maxPageSize) throws OMAGConfigurationErrorException
     {
@@ -212,6 +218,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                              accessServiceServerName,
                                                                              localServerUserId,
                                                                              configurationClient,
+                                                                             governanceActionClient,
                                                                              discoveryEngineClient,
                                                                              auditLog,
                                                                              maxPageSize);
@@ -232,7 +239,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
 
 
     /**
-     * Shutdown the view service.
+     * Shutdown the engine service.
      */
     public void shutdown()
     {

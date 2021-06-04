@@ -50,12 +50,37 @@ public class DataFieldConverter<B> extends DiscoveryEngineOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
+    @SuppressWarnings(value = "unused")
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<EntityDetail> supplementaryEntities,
                                List<Relationship> relationships,
                                String             methodName) throws PropertyServerException
     {
+        return this.getNewComplexBean(beanClass, primaryEntity, relationships, methodName);
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
+     *
+     * @param beanClass name of the class to create
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @Override
+    public B getNewComplexBean(Class<B>           beanClass,
+                               EntityDetail       primaryEntity,
+                               List<Relationship> relationships,
+                               String             methodName) throws PropertyServerException
+    {
+        final String thisMethodName = "getNewComplexBean";
+
         try
         {
             /*

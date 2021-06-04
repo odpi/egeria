@@ -1,0 +1,53 @@
+{
+  "displayName" : "dbo",
+  "uid" : "iBASEMODULE",
+  "location" : "CAMID(\":\")/dataSource[@name='_GOSALES_Egeria']/dataSourceConnection[@name='_GOSALES_Egeria']/dataSourceSchema[@name='GOSALES/dbo']/baseModule[@name='dbo']",
+  "sourceGuid" : [ "databaseGUID:dbo" ],
+  "container" : [ {
+    "displayName" : "Country",
+    "elementPosition" : 0,
+    "identifier" : "COUNTRY",
+    "sourceGuid" : [ "tableGUID:COUNTRY@dbo" ],
+    "type" : "querySubject",
+    "item" : [ {
+      "displayName" : "Country",
+      "elementPosition" : 0,
+      "identifier" : "COUNTRY",
+      "sourceGuid" : [ "columnGUID:COUNTRY@COUNTRY@dbo" ],
+      "type" : "queryItem",
+      "expression" : "COUNTRY",
+      "dataType" : "VARCHAR"
+    }, {
+      "displayName" : "Country Code",
+      "elementPosition" : 0,
+      "identifier" : "COUNTRYCODE",
+      "sourceGuid" : [ "columnGUID:COUNTRYCODE@COUNTRY@dbo" ],
+      "type" : "queryItem",
+      "expression" : "COUNTRYCODE",
+      "dataType" : "INTEGER"
+    } ]
+  }, {
+    "displayName" : "Sales",
+    "elementPosition" : 0,
+    "identifier" : "SALES",
+    "sourceGuid" : [ "tableGUID:@SALES@dbo" ],
+    "type" : "querySubject",
+    "item" : [ {
+      "displayName" : "Sales Country Code",
+      "elementPosition" : 0,
+      "identifier" : "SALESCOUNTRYCODE",
+      "sourceGuid" : [ "columnGUID:SALESCOUNTRYCODE@SALES@dbo" ],
+      "type" : "queryItem",
+      "expression" : "SALESCOUNTRYCODE",
+      "dataType" : "INTEGER"
+    }, {
+      "displayName" : "Quantity",
+      "elementPosition" : 0,
+      "identifier" : "QUANTITY",
+      "sourceGuid" : [ "columnGUID:QUANTITY@SALES@dbo" ],
+      "type" : "queryItem",
+      "expression" : "QUANTITY",
+      "dataType" : "INTEGER"
+    } ]
+  } ]
+}

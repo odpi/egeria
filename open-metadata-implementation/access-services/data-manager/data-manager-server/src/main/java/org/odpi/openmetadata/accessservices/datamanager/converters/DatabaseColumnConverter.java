@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnTypeElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -101,22 +102,36 @@ public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
                     databaseColumnProperties.setAliases(this.removeAliases(instanceProperties));
 
                     /*
-                     * Any remaining properties are returned in the extended properties.  They are
-                     * assumed to be defined in a subtype.
+                     * Any remaining properties are returned in the extended properties.  They are assumed to be defined in a subtype.
                      */
                     databaseColumnProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     databaseColumnProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = new InstanceProperties(super.getClassificationProperties(OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                                                                                                  schemaAttributeEntity));
-
-                    databaseColumnProperties.setDataType(this.removeDataType(instanceProperties));
-                    databaseColumnProperties.setDefaultValue(this.removeDefaultValue(instanceProperties));
-                    databaseColumnProperties.setFixedValue(this.removeFixedValue(instanceProperties));
-
-                    if (schemaType instanceof DatabaseColumnTypeElement)
+                    if (schemaType instanceof SchemaTypeElement)
                     {
-                        databaseColumnProperties.setSchemaType((SchemaTypeProperties) schemaType);
+                        SchemaTypeProperties schemaTypeProperties = ((SchemaTypeElement)schemaType).getSchemaTypeProperties();
+
+                        super.addSchemaTypeToColumn(schemaTypeProperties, databaseColumnProperties);
+
+                        databaseColumnProperties.setFormula(schemaTypeProperties.getFormula());
+                        if ((schemaTypeProperties.getQueries() != null) && (! schemaTypeProperties.getQueries().isEmpty()))
+                        {
+                            List<DatabaseQueryProperties> databaseQueryPropertiesList = new ArrayList<>();
+
+                            for (DerivedSchemaTypeQueryTargetProperties derivedSchemaTypeQueryTargetProperties : schemaTypeProperties.getQueries())
+                            {
+                                if (derivedSchemaTypeQueryTargetProperties != null)
+                                {
+                                    DatabaseQueryProperties databaseQueryProperties = new DatabaseQueryProperties();
+
+                                    databaseQueryProperties.setQuery(derivedSchemaTypeQueryTargetProperties.getQuery());
+                                    databaseQueryProperties.setQueryId(derivedSchemaTypeQueryTargetProperties.getQueryId());
+                                    databaseQueryProperties.setQueryTargetGUID(derivedSchemaTypeQueryTargetProperties.getQueryTargetGUID());
+                                }
+                            }
+
+                            databaseColumnProperties.setQueries(databaseQueryPropertiesList);
+                        }
                     }
 
                     bean.setDatabaseColumnProperties(databaseColumnProperties);

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.initialization;
 
-import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewServicesInstance;
+import org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances.GlossaryAuthorViewServicesInstance;
 import java.util.HashMap;
 import java.util.Map;
 

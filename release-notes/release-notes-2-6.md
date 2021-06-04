@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 2.6 (Planned January 2021)
+# Release 2.6 (February 2021)
 
 Release 2.6 adds support for:
  * New Governance Server called [Engine Host](../open-metadata-implementation/admin-services/docs/concepts/engine-host.md)
@@ -14,10 +14,9 @@ Release 2.6 adds support for:
 The release also changes the default location of some important files in order to facilitate deployment
 and seperate program files from writeable data. 
 
-Details of these changes are in the sections that follow.
+Details of these and other changes are in the sections that follow.
 
 ## Description of Changes
-
 ### Changes to data files created/used by Egeria
 
 Up to and including release 2.5, various data files were created in the current working directory when Egeria was run. This included
@@ -41,7 +40,6 @@ so this can be mapped to a volume easily.
 
 If you have already explicitly configured the relevant connector yourself there will be no change. this updates the defaults only.
 
-
 ### Removal of the Discovery Server and Stewardship Server
  
 The Discovery Server, Stewardship Server, Virtualizer and Security Officer Server have been consolidated into a new
@@ -50,7 +48,7 @@ The Engine Host runs one-to-many [Open Metadata Engine Services (OMES)](../open-
 Each engine services hosts a specific type of governance engine. The first engine service called
 [Asset Analysis OMES](../open-metadata-implementation/engine-services/asset-analysis) will be for
 [discovery engines](../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-engine.md)
-and others for the different types of [governance action engines](../open-metadata-implementation/frameworks/governance-action-framework/docs/goverance-action-engine.md).
+and others for the different types of [governance action engines](../open-metadata-implementation/frameworks/governance-action-framework/docs/governance-action-engine.md).
 from the 
 [Governance Action Framework (GAF)](../open-metadata-implementation/frameworks/governance-action-framework).
 
@@ -81,17 +79,50 @@ there will be multiple metadata instances that represent the same real-world "th
 [0465 Duplicate Processing](../open-metadata-publication/website/open-metadata-types/0465-Duplicate-Processing.md)
 types allow these elements to be linked together.
 
+### Presentation Server / React UI
 
-### New Metadata Types for the Software Development Lifecycle and Analytics Models
+* The node based User Interface component known as 'Presentation Server' has now fully moved to it's own
+[GitHub Repository](https://github.com/odpi/egeria-react-ui). 
+* The docker image has been renamed to [egeria-react-ui](https://hub.docker.com/repository/docker/odpi/egeria-react-ui) 
+* Dino - Adds display of integration servers’ integration services and engine hosts’ engine services, including display of a dependency on a partnerOMAS.
+* Rex - Improved error reporting and geometry management plus more consistent handling of focus objects.
+Enterprise queries are now the default, but can be over-ridden to perform a local operation.
+* At this time 'Server Author' and 'Glossary Author' are still in development.
 
-*Details to follow...*
+### New Helm Chart
 
-## Egeria Implementation Status at Release 2.6
+In addition to our 'lab' helm chart to support the Coco Pharmaceuticals environment, we have now added an [additional
+helm chart](../open-metadata-resources/open-metadata-deployment/egeria-base) which provides a simpler environment with just a single platform, and a single server, but configured with 
+persistence and auto start. This offers an example of a simple Kubernetes deployment.
+
+### Graph Repository
+* Now implements the findEntities and fnidRelationships methods of the OMRS MetadataCollection API.
+* Added detailed documentation for the graph repository
+
+### Conformance Test Suite
+* CTS now has tests for findEntities and findRelationships methods and search tests have been realigned into profiles so that all search operations are in optional profiles, with basic and advanced profiles for each of entities and relationships.
+
+### Other changes
+
+Release 2.6 also contains many bug fixes and minor improvements & dependency updates
+### Removals and Deprecations
+
+* Discovery Server, Stewardship Server, Virtualizer and Security Officer Server have been replaced with more extensive capability - see above.
+* Information View OMAS has now been removed following earlier deprecation.
+
+# Egeria Implementation Status at Release 2.6
 
 ![Egeria Implementation Status](../open-metadata-publication/website/roadmap/functional-organization-showing-implementation-status-for-2.6.png#pagewidth)
 
 Link to Egeria's [Roadmap](../open-metadata-publication/website/roadmap) for more details about the
 Open Metadata and Governance vision, strategy and content.
+
+
+# Further Help and Support
+
+As part of the Linux AI & Data Foundation, our slack channels have moved to the [LF AI & Data Slack workspace](slack.lfaidata.foundation), and our mailing lists can now be found at https://lists.lfaidata.foundation/groups
+
+Continue to use these resources, along with GitHub to report bugs or ask questions.
 
 ----
 * Return to [Release Notes](.)

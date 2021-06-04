@@ -73,6 +73,8 @@ the commands to start and stop an OMAG Server are
 There is design information on the OMAG Server and its relationship to
 the OMAG Server Platform [here](../../../../open-metadata-publication/website/omag-server).
 
+----
+* Return to the [Administration Guide](../user)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -3,14 +3,19 @@
 package org.odpi.openmetadata.engineservices.assetanalysis.handlers;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.discovery.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
+import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.*;
 
@@ -21,18 +26,20 @@ import java.util.*;
  */
 public class DiscoveryEngineHandler extends GovernanceEngineHandler
 {
-    private DiscoveryEngineClient        discoveryEngineClient;    /* Initialized in constructor */
+    private DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
 
     private static final String supportGovernanceEngineType = "OpenDiscoveryEngine";
+    private static final String assetTypeName = "Asset";
 
     /**
      * Create a client-side object for calling a discovery engine.
      *
      * @param engineConfig the unique identifier of the discovery engine.
-     * @param serverName the name of the discovery server where the discovery engine is running
+     * @param serverName the name of the engine host server where the discovery engine is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
-     * @param discoveryEngineClient REST client for direct REST Calls
+     * @param serverClient client used by the engine host services to control the execution of governance action requests
+     * @param discoveryEngineClient REST client for direct REST Calls to Discovery Engine OMAS - used by discovery services
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
@@ -40,11 +47,19 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                   String                              serverName,
                                   String                              serverUserId,
                                   GovernanceEngineConfigurationClient configurationClient,
+                                  GovernanceEngineClient              serverClient,
                                   DiscoveryEngineClient               discoveryEngineClient,
                                   AuditLog                            auditLog,
                                   int                                 maxPageSize)
     {
-        super(engineConfig, serverName, serverUserId, configurationClient, auditLog, maxPageSize);
+        super(engineConfig,
+              serverName,
+              serverUserId,
+              EngineServiceDescription.ASSET_ANALYSIS_OMES.getEngineServiceFullName(),
+              configurationClient,
+              serverClient,
+              auditLog,
+              maxPageSize);
 
         this.discoveryEngineClient = discoveryEngineClient;
     }
@@ -154,6 +169,73 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
 
 
     /**
+     * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
+     *
+     * @param governanceActionGUID unique identifier of the asset to analyse
+     * @param requestType unique identifier of the asset that the annotations should be attached to
+     * @param requestParameters name-value properties to control the governance action service
+     * @param requestSourceElements metadata elements associated with the request to the governance action service
+     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
+     *
+     * @return service handler for this request
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the governance action engine.
+     */
+    @Override
+    public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
+                                                         String                     requestType,
+                                                         Map<String, String>        requestParameters,
+                                                         List<RequestSourceElement> requestSourceElements,
+                                                         List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
+    {
+        final String methodName = "runGovernanceService";
+
+        super.validateGovernanceEngineInitialized(supportGovernanceEngineType, methodName);
+
+        GovernanceServiceCache governanceServiceCache = super.getServiceCache(requestType);
+
+        if ((governanceServiceCache != null) && (actionTargetElements != null) && (! actionTargetElements.isEmpty()))
+        {
+            String assetGUID = null;
+
+            for (ActionTargetElement actionTargetElement : actionTargetElements)
+            {
+                if ((actionTargetElement != null)
+                            && (actionTargetElement.getTargetElement() != null)
+                            && (actionTargetElement.getTargetElement().getElementType() != null))
+                {
+                    String       typeName       = actionTargetElement.getTargetElement().getElementType().getElementTypeName();
+                    List<String> superTypeNames = actionTargetElement.getTargetElement().getElementType().getElementSuperTypeNames();
+
+                    if ((assetTypeName.equals(typeName)) || ((superTypeNames != null) && (superTypeNames.contains(assetTypeName))))
+                    {
+                        assetGUID = actionTargetElement.getTargetElement().getElementGUID();
+                    }
+                }
+            }
+
+            DiscoveryServiceHandler discoveryServiceHandler = this.getDiscoveryServiceHandler(assetGUID,
+                                                                                              requestType,
+                                                                                              requestParameters,
+                                                                                              null,
+                                                                                              governanceActionGUID,
+                                                                                              governanceServiceCache);
+
+            Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date().toString());
+            thread.start();
+
+            return discoveryServiceHandler;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Run an instance of a discovery service in its own thread.
      *
      * @param assetGUID unique identifier of the asset to analyse
@@ -176,6 +258,46 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
+        DiscoveryServiceHandler discoveryServiceHandler = this.getDiscoveryServiceHandler(assetGUID,
+                                                                                          discoveryRequestType,
+                                                                                          suppliedAnalysisParameters,
+                                                                                          annotationTypes,
+                                                                                          null,
+                                                                                          governanceServiceCache);
+
+        Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date().toString());
+        thread.start();
+
+        return discoveryServiceHandler.getDiscoveryReportGUID();
+    }
+
+
+
+    /**
+     * Create an instance of a discovery service handler.
+     *
+     * @param assetGUID unique identifier of the asset to analyse
+     * @param discoveryRequestType type of discovery
+     * @param suppliedAnalysisParameters parameters for the discovery
+     * @param annotationTypes types of annotations that can be returned
+     * @param governanceActionGUID unique identifier of the associated governance action entity
+     * @param governanceServiceCache factory for discovery services
+     *
+     * @return unique identifier for this request.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the discovery engine.
+     */
+    private DiscoveryServiceHandler getDiscoveryServiceHandler(String                 assetGUID,
+                                                               String                 discoveryRequestType,
+                                                               Map<String, String>    suppliedAnalysisParameters,
+                                                               List<String>           annotationTypes,
+                                                               String                 governanceActionGUID,
+                                                               GovernanceServiceCache governanceServiceCache) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException
+    {
         Date                creationTime = new Date();
         Map<String, String> analysisParameters = suppliedAnalysisParameters;
 
@@ -187,9 +309,9 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
         String reportQualifiedName = "DiscoveryAnalysisReport:" + discoveryRequestType + ":" + assetGUID + ":" + creationTime.toString();
         String reportDisplayName   = "Discovery Analysis Report for " + assetGUID;
         String reportDescription   = "This is the " + discoveryRequestType + " discovery analysis report for asset " + assetGUID + " generated at " +
-                creationTime.toString() +
-                " by the " + governanceServiceCache.getGovernanceServiceName() + " discovery service running on discovery engine " +
-                governanceEngineProperties.getDisplayName() + " (" + governanceEngineName + ").";
+                                             creationTime.toString() +
+                                             " by the " + governanceServiceCache.getGovernanceServiceName() + " discovery service running on discovery engine " +
+                                             governanceEngineProperties.getDisplayName() + " (" + governanceEngineName + ").";
 
         DiscoveryAnalysisReportClient discoveryAnalysisReportClient = new DiscoveryAnalysisReportClient(engineUserId,
                                                                                                         DiscoveryRequestStatus.WAITING,
@@ -223,17 +345,19 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                                  annotationStore,
                                                                  assetCatalogStore);
 
-        DiscoveryServiceHandler discoveryServiceHandler = new DiscoveryServiceHandler(governanceEngineProperties,
-                                                                                      governanceEngineGUID,
-                                                                                      discoveryRequestType,
-                                                                                      governanceServiceCache.getGovernanceServiceName(),
-                                                                                      governanceServiceCache.getNextGovernanceService(),
-                                                                                      discoveryContext,
-                                                                                      auditLog);
-        Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date().toString());
-        thread.start();
+        return new DiscoveryServiceHandler(governanceEngineProperties,
+                                           governanceEngineGUID,
+                                           serverUserId,
+                                           governanceActionGUID,
+                                           serverClient,
+                                           discoveryRequestType,
+                                           governanceServiceCache.getGovernanceServiceGUID(),
+                                           governanceServiceCache.getGovernanceServiceName(),
+                                           governanceServiceCache.getNextGovernanceService(),
+                                           discoveryContext,
+                                           discoveryAnalysisReportClient.getDiscoveryReportGUID(),
+                                           auditLog);
 
-        return discoveryAnalysisReportClient.getDiscoveryReportGUID();
     }
 
 
@@ -285,7 +409,6 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
     /**
      * Return any annotations attached to this annotation.
      *
-     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -296,15 +419,13 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem connecting to the metadata server.
      */
-    public  List<Annotation>  getExtendedAnnotations(String   discoveryRequestGUID,
-                                                     String   annotationGUID,
+    public  List<Annotation>  getExtendedAnnotations(String   annotationGUID,
                                                      int      startingFrom,
                                                      int      maximumResults) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
         return discoveryEngineClient.getExtendedAnnotations(engineUserId,
-                                                            discoveryRequestGUID,
                                                             annotationGUID,
                                                             startingFrom,
                                                             maximumResults);
@@ -315,7 +436,6 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values
      * for an annotation.
      *
-     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object
@@ -324,11 +444,10 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem connecting to the metadata server.
      */
-    public  Annotation        getAnnotation(String   discoveryRequestGUID,
-                                            String   annotationGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public  Annotation getAnnotation(String annotationGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
-        return discoveryEngineClient.getAnnotation(engineUserId, discoveryRequestGUID, annotationGUID);
+        return discoveryEngineClient.getAnnotation(engineUserId, annotationGUID);
     }
 }

@@ -65,6 +65,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
      * @param processExternalIdentifier unique identifier of the process in the external asset manager
      * @param processExternalIdentifierName name of property for the external identifier in the external asset manager
@@ -84,6 +85,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
     String createProcessFromTemplate(String              userId,
                                      String              assetManagerGUID,
                                      String              assetManagerName,
+                                     boolean             assetManagerIsHome,
                                      String              templateGUID,
                                      String              processExternalIdentifier,
                                      String              processExternalIdentifierName,

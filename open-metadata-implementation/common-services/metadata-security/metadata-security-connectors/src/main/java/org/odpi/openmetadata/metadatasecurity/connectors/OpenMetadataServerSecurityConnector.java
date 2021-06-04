@@ -37,12 +37,8 @@ import java.util.List;
  * in this base class can be called if access is to be denied as a way of making use of the message
  * logging and exceptions.
  */
-public class OpenMetadataServerSecurityConnector extends ConnectorBase implements AuditLoggingComponent,
-                                                                                  OpenMetadataRepositorySecurity,
-                                                                                  OpenMetadataServerSecurity,
-                                                                                  OpenMetadataServiceSecurity,
-                                                                                  OpenMetadataConnectionSecurity,
-                                                                                  OpenMetadataAssetSecurity
+public class OpenMetadataServerSecurityConnector extends ConnectorBase implements AuditLoggingComponent
+
 {
     protected AuditLog auditLog          = null;
     protected String   serverName        = null;
@@ -219,10 +215,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
         if (auditLog != null)
         {
             auditLog.logMessage(methodName,
-                               OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
-                                                                                                              serviceOperationName,
-                                                                                                              serviceName,
-                                                                                                              serverName));
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
+                                                                                                               serviceOperationName,
+                                                                                                               serviceName,
+                                                                                                               serverName));
         }
 
         throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId, serviceOperationName),
@@ -336,7 +332,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         if (auditLog != null)
         {
-             auditLog.logMessage(methodName,
+            auditLog.logMessage(methodName,
                                 OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_ACCESS.getMessageDefinition(userId,
                                                                                                                 instanceGUID,
                                                                                                                 typeName,
@@ -434,7 +430,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
                                 OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_CHANGE.getMessageDefinition(userId, this.getAssetGUID(asset)));
         }
 
-       throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CHANGE.getMessageDefinition(userId,
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CHANGE.getMessageDefinition(userId,
                                                                                                                           this.getAssetGUID(asset)),
                                              this.getClass().getName(),
                                              methodName,
@@ -475,20 +471,24 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @param userId calling user
      * @param asset asset being accessed
+     * @param propertyName name of property that is missing
      * @param methodName calling method
      * @throws UserNotAuthorizedException the authorization check failed
      */
     protected void throwIncompleteAsset(String   userId,
                                         Asset    asset,
+                                        String   propertyName,
                                         String   methodName) throws UserNotAuthorizedException
     {
         if (auditLog != null)
         {
             auditLog.logMessage(methodName,
-                                OpenMetadataSecurityAuditCode.INCOMPLETE_ASSET.getMessageDefinition(userId, this.getAssetGUID(asset)));
+                                OpenMetadataSecurityAuditCode.INCOMPLETE_ASSET.getMessageDefinition(userId, this.getAssetGUID(asset), propertyName));
         }
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.INCOMPLETE_ASSET.getMessageDefinition(userId, this.getAssetGUID(asset)),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.INCOMPLETE_ASSET.getMessageDefinition(userId,
+                                                                                                                 this.getAssetGUID(asset),
+                                                                                                                 propertyName),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
@@ -652,11 +652,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @throws InvalidParameterException one of the parameter values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
-    @Override
-    public List<String> setSupportedZonesForUser(List<String>  supportedZones,
-                                                 String        serviceName,
-                                                 String        user) throws InvalidParameterException,
-                                                                            PropertyServerException
+    protected List<String> setSupportedZonesForUser(List<String>  supportedZones,
+                                                    String        serviceName,
+                                                    String        user) throws InvalidParameterException,
+                                                                               PropertyServerException
     {
         return supportedZones;
     }
@@ -676,10 +675,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
-    @Override
-    public List<String> setAssetZonesToDefault(List<String>  defaultZones,
-                                               Asset         asset) throws InvalidParameterException,
-                                                                           PropertyServerException
+    protected List<String> setAssetZonesToDefault(List<String>  defaultZones,
+                                                  Asset         asset) throws InvalidParameterException,
+                                                                              PropertyServerException
     {
         List<String>  resultingZones = null;
 
@@ -708,41 +706,6 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @param defaultZones setting of the default zones for the service
      * @param supportedZones setting of the supported zones for the service
-     * @param originalAsset original values for the asset
-     * @param updatedAsset updated values for the asset
-     *
-     * @return list of zones to set in the asset
-     * @throws InvalidParameterException one of the asset values is invalid
-     * @throws PropertyServerException there is a problem calculating the zones
-     */
-    @Deprecated
-    @Override
-    public List<String> verifyAssetZones(List<String>  defaultZones,
-                                         List<String>  supportedZones,
-                                         Asset         originalAsset,
-                                         Asset         updatedAsset) throws InvalidParameterException,
-                                                                            PropertyServerException
-    {
-        List<String>  resultingZones = null;
-
-        if (updatedAsset != null)
-        {
-            resultingZones = updatedAsset.getZoneMembership();
-        }
-
-        return resultingZones;
-    }
-
-
-    /**
-     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
-     * settings of both default zones and supported zones.  This method is called whenever an asset's
-     * values are changed.
-     *
-     * The default behavior is to keep the updated zones as they are.
-     *
-     * @param defaultZones setting of the default zones for the service
-     * @param supportedZones setting of the supported zones for the service
      * @param publishZones  setting of the publishZones for the service
      * @param originalAsset original values for the asset
      * @param updatedAsset updated values for the asset
@@ -751,13 +714,12 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
-    @Override
-    public List<String> verifyAssetZones(List<String>  defaultZones,
-                                         List<String>  supportedZones,
-                                         List<String>  publishZones,
-                                         Asset         originalAsset,
-                                         Asset         updatedAsset) throws InvalidParameterException,
-                                                                            PropertyServerException
+    protected List<String> verifyAssetZones(List<String>  defaultZones,
+                                            List<String>  supportedZones,
+                                            List<String>  publishZones,
+                                            Asset         originalAsset,
+                                            Asset         updatedAsset) throws InvalidParameterException,
+                                                                               PropertyServerException
     {
         List<String>  resultingZones = null;
 
@@ -777,8 +739,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this function
      */
-    @Override
-    public void  validateUserForServer(String   userId) throws UserNotAuthorizedException
+    protected void validateUserForServer(String   userId) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForServer";
 
@@ -793,8 +754,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @throws UserNotAuthorizedException the user is not authorized to change configuration
      */
-    @Override
-    public void  validateUserAsServerAdmin(String   userId) throws UserNotAuthorizedException
+    protected void  validateUserAsServerAdmin(String   userId) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserAsServerAdmin";
         final String  serviceName = "Administration Services";
@@ -811,8 +771,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue operator commands to this server
      */
-    @Override
-    public void  validateUserAsServerOperator(String   userId) throws UserNotAuthorizedException
+    protected void  validateUserAsServerOperator(String   userId) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserAsServerOperator";
         final String  serviceName = "Administration Services";
@@ -829,8 +788,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue diagnostic commands to this server
      */
-    @Override
-    public void  validateUserAsServerInvestigator(String   userId) throws UserNotAuthorizedException
+    protected void  validateUserAsServerInvestigator(String   userId) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserAsServerInvestigator";
         final String  serviceName = "Administration Services";
@@ -848,9 +806,8 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
-    @Override
-    public void  validateUserForService(String   userId,
-                                        String   serviceName) throws UserNotAuthorizedException
+    protected void  validateUserForService(String   userId,
+                                           String   serviceName) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForService";
         final String  serviceOperationName = "any";
@@ -868,10 +825,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
-    @Override
-    public void  validateUserForServiceOperation(String   userId,
-                                                 String   serviceName,
-                                                 String   serviceOperationName) throws UserNotAuthorizedException
+    protected void  validateUserForServiceOperation(String   userId,
+                                                    String   serviceName,
+                                                    String   serviceOperationName) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForServiceOperation";
 
@@ -885,9 +841,8 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param connection connection object
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
-    @Override
-    public void  validateUserForConnection(String     userId,
-                                           Connection connection) throws UserNotAuthorizedException
+    protected void  validateUserForConnection(String     userId,
+                                              Connection connection) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForConnection";
 
@@ -904,10 +859,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @return selected connection or null (pretend there are no connections attached to the asset) or
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
-    @Override
-    public Connection validateUserForAssetConnectionList(String           userId,
-                                                         Asset            asset,
-                                                         List<Connection> connections) throws UserNotAuthorizedException
+    protected Connection validateUserForAssetConnectionList(String           userId,
+                                                            Asset            asset,
+                                                            List<Connection> connections) throws UserNotAuthorizedException
     {
         UserNotAuthorizedException caughtException = null;
 
@@ -946,9 +900,8 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param asset asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    @Override
-    public void  validateUserForAssetCreate(String     userId,
-                                            Asset      asset) throws UserNotAuthorizedException
+    protected void  validateUserForAssetCreate(String     userId,
+                                               Asset      asset) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForAssetCreate";
 
@@ -963,9 +916,8 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param asset asset to test
      * @throws UserNotAuthorizedException the user is not authorized to access this asset
      */
-    @Override
-    public void  validateUserForAssetRead(String     userId,
-                                          Asset      asset) throws UserNotAuthorizedException
+    protected void  validateUserForAssetRead(String     userId,
+                                             Asset      asset) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForAssetRead";
 
@@ -984,11 +936,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param newAsset new asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    @Override
-    public void  validateUserForAssetDetailUpdate(String           userId,
-                                                  Asset            originalAsset,
-                                                  AssetAuditHeader originalAssetAuditHeader,
-                                                  Asset            newAsset) throws UserNotAuthorizedException
+    protected void  validateUserForAssetDetailUpdate(String           userId,
+                                                     Asset            originalAsset,
+                                                     AssetAuditHeader originalAssetAuditHeader,
+                                                     Asset            newAsset) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForAssetDetailUpdate";
 
@@ -1004,9 +955,8 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param asset original asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    @Override
-    public void  validateUserForAssetAttachmentUpdate(String     userId,
-                                                      Asset      asset) throws UserNotAuthorizedException
+    protected void validateUserForAssetAttachmentUpdate(String     userId,
+                                                        Asset      asset) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForAssetAttachmentUpdate";
 
@@ -1022,9 +972,8 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param asset original asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    @Override
-    public void  validateUserForAssetFeedback(String     userId,
-                                              Asset      asset) throws UserNotAuthorizedException
+    protected void  validateUserForAssetFeedback(String     userId,
+                                                 Asset      asset) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForAssetFeedback";
 
@@ -1039,9 +988,8 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param asset asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    @Override
-    public void  validateUserForAssetDelete(String     userId,
-                                            Asset      asset) throws UserNotAuthorizedException
+    protected void  validateUserForAssetDelete(String     userId,
+                                               Asset      asset) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForAssetDelete";
 
@@ -1057,10 +1005,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param typeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
-    @Override
-    public void  validateUserForTypeCreate(String     userId,
-                                           String     metadataCollectionName,
-                                           TypeDef    typeDef) throws UserNotAuthorizedException
+    protected void  validateUserForTypeCreate(String     userId,
+                                              String     metadataCollectionName,
+                                              TypeDef    typeDef) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeCreate";
 
@@ -1079,10 +1026,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param attributeTypeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
-    @Override
-    public void  validateUserForTypeCreate(String              userId,
-                                           String              metadataCollectionName,
-                                           AttributeTypeDef    attributeTypeDef) throws UserNotAuthorizedException
+    protected void  validateUserForTypeCreate(String              userId,
+                                              String              metadataCollectionName,
+                                              AttributeTypeDef    attributeTypeDef) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeCreate";
 
@@ -1101,10 +1047,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param typeDef  type details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve types
      */
-    @Override
-    public void  validateUserForTypeRead(String       userId,
-                                         String       metadataCollectionName,
-                                         TypeDef      typeDef) throws UserNotAuthorizedException
+    protected void  validateUserForTypeRead(String       userId,
+                                            String       metadataCollectionName,
+                                            TypeDef      typeDef) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeRead";
 
@@ -1123,10 +1068,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param attributeTypeDef  type details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve types
      */
-    @Override
-    public void  validateUserForTypeRead(String                userId,
-                                         String                metadataCollectionName,
-                                         AttributeTypeDef      attributeTypeDef) throws UserNotAuthorizedException
+    protected void  validateUserForTypeRead(String                userId,
+                                            String                metadataCollectionName,
+                                            AttributeTypeDef      attributeTypeDef) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeRead";
 
@@ -1146,11 +1090,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param patch proposed changes to type
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
-    @Override
-    public void  validateUserForTypeUpdate(String       userId,
-                                           String       metadataCollectionName,
-                                           TypeDef      typeDef,
-                                           TypeDefPatch patch) throws UserNotAuthorizedException
+    protected void  validateUserForTypeUpdate(String       userId,
+                                              String       metadataCollectionName,
+                                              TypeDef      typeDef,
+                                              TypeDefPatch patch) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeUpdate";
 
@@ -1169,10 +1112,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param typeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
-    @Override
-    public void  validateUserForTypeDelete(String     userId,
-                                           String     metadataCollectionName,
-                                           TypeDef    typeDef) throws UserNotAuthorizedException
+    protected void  validateUserForTypeDelete(String     userId,
+                                              String     metadataCollectionName,
+                                              TypeDef    typeDef) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeDelete";
 
@@ -1191,10 +1133,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param attributeTypeDef type details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
-    @Override
-    public void  validateUserForTypeDelete(String           userId,
-                                           String           metadataCollectionName,
-                                           AttributeTypeDef attributeTypeDef) throws UserNotAuthorizedException
+    protected void  validateUserForTypeDelete(String           userId,
+                                              String           metadataCollectionName,
+                                              AttributeTypeDef attributeTypeDef) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeDelete";
 
@@ -1215,12 +1156,11 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param newTypeDefName new name for this type.
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
-    @Override
-    public void  validateUserForTypeReIdentify(String  userId,
-                                               String  metadataCollectionName,
-                                               TypeDef originalTypeDef,
-                                               String  newTypeDefGUID,
-                                               String  newTypeDefName) throws UserNotAuthorizedException
+    protected void  validateUserForTypeReIdentify(String  userId,
+                                                  String  metadataCollectionName,
+                                                  TypeDef originalTypeDef,
+                                                  String  newTypeDefGUID,
+                                                  String  newTypeDefName) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeReIdentify";
 
@@ -1241,12 +1181,11 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param newTypeDefName new name for this type.
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
-    @Override
-    public void  validateUserForTypeReIdentify(String           userId,
-                                               String           metadataCollectionName,
-                                               AttributeTypeDef originalAttributeTypeDef,
-                                               String           newTypeDefGUID,
-                                               String           newTypeDefName) throws UserNotAuthorizedException
+    protected void  validateUserForTypeReIdentify(String           userId,
+                                                  String           metadataCollectionName,
+                                                  AttributeTypeDef originalAttributeTypeDef,
+                                                  String           newTypeDefGUID,
+                                                  String           newTypeDefName) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeReIdentify";
 
@@ -1271,13 +1210,12 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityCreate(String                     userId,
-                                             String                     metadataCollectionName,
-                                             String                     entityTypeGUID,
-                                             InstanceProperties         initialProperties,
-                                             List<Classification>       initialClassifications,
-                                             InstanceStatus             initialStatus) throws UserNotAuthorizedException
+    protected void  validateUserForEntityCreate(String                     userId,
+                                                String                     metadataCollectionName,
+                                                String                     entityTypeGUID,
+                                                InstanceProperties         initialProperties,
+                                                List<Classification>       initialClassifications,
+                                                InstanceStatus             initialStatus) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityCreate";
 
@@ -1291,12 +1229,12 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
+     * @return entity to return (may be altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
-    @Override
-    public void  validateUserForEntityRead(String          userId,
-                                           String          metadataCollectionName,
-                                           EntityDetail    instance) throws UserNotAuthorizedException
+    protected EntityDetail  validateUserForEntityRead(String          userId,
+                                                      String          metadataCollectionName,
+                                                      EntityDetail    instance) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityRead";
 
@@ -1308,8 +1246,11 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
             {
                 typeName = instance.getType().getTypeDefName();
             }
+
             throwUnauthorizedInstanceAccess(userId, instance.getGUID(), typeName, methodName);
         }
+
+        return null;
     }
 
 
@@ -1320,10 +1261,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
-    @Override
-    public void  validateUserForEntitySummaryRead(String        userId,
-                                                  String        metadataCollectionName,
-                                                  EntitySummary instance) throws UserNotAuthorizedException
+    protected void  validateUserForEntitySummaryRead(String        userId,
+                                                     String        metadataCollectionName,
+                                                     EntitySummary instance) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntitySummaryRead";
 
@@ -1348,10 +1288,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
-    @Override
-    public void  validateUserForEntityProxyRead(String      userId,
-                                                String      metadataCollectionName,
-                                                EntityProxy instance) throws UserNotAuthorizedException
+    protected void  validateUserForEntityProxyRead(String      userId,
+                                                   String      metadataCollectionName,
+                                                   EntityProxy instance) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityProxyRead";
 
@@ -1363,6 +1302,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
             {
                 typeName = instance.getType().getTypeDefName();
             }
+
             throwUnauthorizedInstanceAccess(userId, instance.getGUID(), typeName, methodName);
         }
     }
@@ -1376,10 +1316,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityUpdate(String          userId,
-                                             String          metadataCollectionName,
-                                             EntityDetail    instance) throws UserNotAuthorizedException
+    protected void  validateUserForEntityUpdate(String          userId,
+                                                String          metadataCollectionName,
+                                                EntityDetail    instance) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityUpdate";
 
@@ -1407,12 +1346,11 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param properties list of properties for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityClassificationAdd(String               userId,
-                                                        String               metadataCollectionName,
-                                                        EntityDetail         instance,
-                                                        String               classificationName,
-                                                        InstanceProperties   properties) throws UserNotAuthorizedException
+    protected void  validateUserForEntityClassificationAdd(String               userId,
+                                                           String               metadataCollectionName,
+                                                           EntityDetail         instance,
+                                                           String               classificationName,
+                                                           InstanceProperties   properties) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityClassificationAdd";
 
@@ -1440,12 +1378,11 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param properties list of properties for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityClassificationUpdate(String               userId,
-                                                           String               metadataCollectionName,
-                                                           EntityDetail         instance,
-                                                           String               classificationName,
-                                                           InstanceProperties   properties) throws UserNotAuthorizedException
+    protected void  validateUserForEntityClassificationUpdate(String               userId,
+                                                              String               metadataCollectionName,
+                                                              EntityDetail         instance,
+                                                              String               classificationName,
+                                                              InstanceProperties   properties) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityClassificationUpdate";
 
@@ -1472,11 +1409,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param classificationName String name for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityClassificationDelete(String               userId,
-                                                           String               metadataCollectionName,
-                                                           EntityDetail         instance,
-                                                           String               classificationName) throws UserNotAuthorizedException
+    protected void  validateUserForEntityClassificationDelete(String               userId,
+                                                              String               metadataCollectionName,
+                                                              EntityDetail         instance,
+                                                              String               classificationName) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityClassificationDelete";
 
@@ -1501,10 +1437,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityDelete(String       userId,
-                                             String       metadataCollectionName,
-                                             EntityDetail instance) throws UserNotAuthorizedException
+    protected void  validateUserForEntityDelete(String       userId,
+                                                String       metadataCollectionName,
+                                                EntityDetail instance) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityDelete";
 
@@ -1529,10 +1464,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityRestore(String       userId,
-                                              String       metadataCollectionName,
-                                              String       deletedEntityGUID) throws UserNotAuthorizedException
+    protected void  validateUserForEntityRestore(String       userId,
+                                                 String       metadataCollectionName,
+                                                 String       deletedEntityGUID) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityRestore";
 
@@ -1549,11 +1483,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param newGUID the new guid for the instance.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityReIdentification(String       userId,
-                                                       String       metadataCollectionName,
-                                                       EntityDetail instance,
-                                                       String       newGUID) throws UserNotAuthorizedException
+    protected void  validateUserForEntityReIdentification(String       userId,
+                                                          String       metadataCollectionName,
+                                                          EntityDetail instance,
+                                                          String       newGUID) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityReIdentification";
 
@@ -1582,11 +1515,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param newTypeDefSummary details of this instance's new TypeDef.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityReTyping(String         userId,
-                                               String         metadataCollectionName,
-                                               EntityDetail   instance,
-                                               TypeDefSummary newTypeDefSummary) throws UserNotAuthorizedException
+    protected void  validateUserForEntityReTyping(String         userId,
+                                                  String         metadataCollectionName,
+                                                  EntityDetail   instance,
+                                                  TypeDefSummary newTypeDefSummary) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityReTyping";
 
@@ -1616,12 +1548,11 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForEntityReHoming(String         userId,
-                                               String         metadataCollectionName,
-                                               EntityDetail   instance,
-                                               String         newHomeMetadataCollectionId,
-                                               String         newHomeMetadataCollectionName) throws UserNotAuthorizedException
+    protected void  validateUserForEntityReHoming(String         userId,
+                                                  String         metadataCollectionName,
+                                                  EntityDetail   instance,
+                                                  String         newHomeMetadataCollectionId,
+                                                  String         newHomeMetadataCollectionName) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityReHoming";
 
@@ -1653,14 +1584,13 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForRelationshipCreate(String               userId,
-                                                   String               metadataCollectionName,
-                                                   String               relationshipTypeGUID,
-                                                   InstanceProperties   initialProperties,
-                                                   EntitySummary        entityOneSummary,
-                                                   EntitySummary        entityTwoSummary,
-                                                   InstanceStatus       initialStatus) throws UserNotAuthorizedException
+    protected void  validateUserForRelationshipCreate(String               userId,
+                                                      String               metadataCollectionName,
+                                                      String               relationshipTypeGUID,
+                                                      InstanceProperties   initialProperties,
+                                                      EntitySummary        entityOneSummary,
+                                                      EntitySummary        entityTwoSummary,
+                                                      InstanceStatus       initialStatus) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForRelationshipCreate";
 
@@ -1676,10 +1606,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
-    @Override
-    public void  validateUserForRelationshipRead(String          userId,
-                                                 String          metadataCollectionName,
-                                                 Relationship    instance) throws UserNotAuthorizedException
+    protected Relationship validateUserForRelationshipRead(String       userId,
+                                                           String       metadataCollectionName,
+                                                           Relationship instance) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForRelationshipRead";
 
@@ -1693,6 +1622,8 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
             }
             throwUnauthorizedInstanceAccess(userId, instance.getGUID(), typeName, methodName);
         }
+
+        return null;
     }
 
 
@@ -1704,10 +1635,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForRelationshipUpdate(String          userId,
-                                                   String          metadataCollectionName,
-                                                   Relationship    instance) throws UserNotAuthorizedException
+    protected void validateUserForRelationshipUpdate(String        userId,
+                                                     String        metadataCollectionName,
+                                                     Relationship  instance) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForRelationshipUpdate";
 
@@ -1732,10 +1662,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForRelationshipDelete(String       userId,
-                                                   String       metadataCollectionName,
-                                                   Relationship instance) throws UserNotAuthorizedException
+    protected void  validateUserForRelationshipDelete(String       userId,
+                                                      String       metadataCollectionName,
+                                                      Relationship instance) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForRelationshipDelete";
 
@@ -1760,10 +1689,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForRelationshipRestore(String       userId,
-                                                    String       metadataCollectionName,
-                                                    String       deletedRelationshipGUID) throws UserNotAuthorizedException
+    protected void  validateUserForRelationshipRestore(String       userId,
+                                                       String       metadataCollectionName,
+                                                       String       deletedRelationshipGUID) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForRelationshipRestore";
 
@@ -1780,11 +1708,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param newGUID the new guid for the instance.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForRelationshipReIdentification(String       userId,
-                                                             String       metadataCollectionName,
-                                                             Relationship instance,
-                                                             String       newGUID) throws UserNotAuthorizedException
+    protected void  validateUserForRelationshipReIdentification(String       userId,
+                                                                String       metadataCollectionName,
+                                                                Relationship instance,
+                                                                String       newGUID) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForRelationshipReIdentification";
 
@@ -1813,11 +1740,10 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param newTypeDefSummary details of this instance's new TypeDef.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForRelationshipReTyping(String         userId,
-                                                     String         metadataCollectionName,
-                                                     Relationship   instance,
-                                                     TypeDefSummary newTypeDefSummary) throws UserNotAuthorizedException
+    protected void  validateUserForRelationshipReTyping(String         userId,
+                                                        String         metadataCollectionName,
+                                                        Relationship   instance,
+                                                        TypeDefSummary newTypeDefSummary) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForRelationshipReTyping";
 
@@ -1847,12 +1773,11 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    @Override
-    public void  validateUserForRelationshipReHoming(String         userId,
-                                                     String         metadataCollectionName,
-                                                     Relationship   instance,
-                                                     String         newHomeMetadataCollectionId,
-                                                     String         newHomeMetadataCollectionName) throws UserNotAuthorizedException
+    protected void  validateUserForRelationshipReHoming(String         userId,
+                                                        String         metadataCollectionName,
+                                                        Relationship   instance,
+                                                        String         newHomeMetadataCollectionId,
+                                                        String         newHomeMetadataCollectionName) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForRelationshipReHoming";
 

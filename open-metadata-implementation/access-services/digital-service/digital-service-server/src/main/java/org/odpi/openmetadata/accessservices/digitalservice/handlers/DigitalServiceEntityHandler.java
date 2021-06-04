@@ -66,11 +66,13 @@ public class DigitalServiceEntityHandler {
 
 
 
-            String digitalServiceGUID = repositoryHandler.createEntity( userId,
-                                                                        DigitalServiceMapper.DIGITAL_SERVICE_ENTITY_TYPE_GUID,
-                                                                        DigitalServiceMapper.DIGITAL_SERVICE_ENTITY_TYPE_NAME,
-                                                                        digitalServiceBuilder.getInstanceProperties(methodName),
-                                                                        methodName);
+            String digitalServiceGUID = repositoryHandler.createEntity(userId,
+                                                                       DigitalServiceMapper.DIGITAL_SERVICE_ENTITY_TYPE_GUID,
+                                                                       DigitalServiceMapper.DIGITAL_SERVICE_ENTITY_TYPE_NAME,
+                                                                       null,
+                                                                       null,
+                                                                       digitalServiceBuilder.getInstanceProperties(methodName),
+                                                                       methodName);
 
 
         return digitalServiceGUID;

@@ -3,9 +3,19 @@
 
 package org.odpi.openmetadata.governanceservers.enginehostservices.properties;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
  * GovernanceEngineStatus defines the status of a governance engine.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public enum GovernanceEngineStatus
 {
     ASSIGNED    (0, "Assigned", "The governance engine is assigned to the engine host server but has not yet been configured."),

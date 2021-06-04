@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetCollectionMember;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.AssetCollectionMember;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -212,7 +212,7 @@ public class AssetListResponseTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -221,7 +221,7 @@ public class AssetListResponseTest
         {
             validateResultObject(objectMapper.readValue(jsonString, AssetListResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -235,7 +235,7 @@ public class AssetListResponseTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -244,7 +244,7 @@ public class AssetListResponseTest
         {
             validateResultObject((AssetListResponse) objectMapper.readValue(jsonString, CommunityProfileOMASAPIResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

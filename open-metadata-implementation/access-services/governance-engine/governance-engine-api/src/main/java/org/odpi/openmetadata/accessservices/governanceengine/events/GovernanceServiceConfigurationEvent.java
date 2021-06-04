@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceServiceConfigurationEvent extends GovernanceEngineConfigurationEvent
+public class GovernanceServiceConfigurationEvent extends GovernanceEngineEvent
 {
     private static final long serialVersionUID = 1L;
 
@@ -140,11 +140,16 @@ public class GovernanceServiceConfigurationEvent extends GovernanceEngineConfigu
     public String toString()
     {
         return "GovernanceServiceConfigurationEvent{" +
-                "registeredGovernanceServiceGUID='" + registeredGovernanceServiceGUID + '\'' +
-                ", requestType=" + requestType +
-                ", requestParameters=" + requestParameters +
-                '}';
+                       "registeredGovernanceServiceGUID='" + registeredGovernanceServiceGUID + '\'' +
+                       ", requestType='" + requestType + '\'' +
+                       ", requestParameters=" + requestParameters +
+                       ", eventVersionId=" + getEventVersionId() +
+                       ", eventType=" + getEventType() +
+                       ", governanceEngineGUID='" + getGovernanceEngineGUID() + '\'' +
+                       ", governanceEngineName='" + getGovernanceEngineName() + '\'' +
+                       '}';
     }
+
 
     /**
      * Return comparison result based on the content of the properties.

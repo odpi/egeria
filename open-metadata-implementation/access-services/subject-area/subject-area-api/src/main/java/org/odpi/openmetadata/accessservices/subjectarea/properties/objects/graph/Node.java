@@ -13,7 +13,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * A Node is an entity in the subject area omas that has a type {@code  NodeType}, name, qualified name and description.
  * A node may be in one or more projects.
  * <p>
- * Nodes can be connected with {@code Line }s to form graphs. As they may be visualised, so a node has an associated
+ * Nodes can be connected with {@code Relationship }s to form graphs. As they may be visualised, so a node has an associated
  * icon.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -46,8 +45,9 @@ public class Node implements Serializable, OmasObject {
     private String name =null;
     private String qualifiedName =null;
     private SystemAttributes systemAttributes=null;
-    private Date effectiveFromTime = null;
-    private Date effectiveToTime = null;
+    private boolean readOnly = false;
+    private Long effectiveFromTime = null;
+    private Long effectiveToTime = null;
     private String description =null;
     protected List<Classification> classifications = null;
     private Set<IconSummary> icons = null;
@@ -109,6 +109,22 @@ public class Node implements Serializable, OmasObject {
     }
 
     /**
+     * The Node is readOnly
+     * @return whether read only
+     */
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    /**
+     * set whether the node is readOnly
+     * @param readOnly readonly flag
+     */
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    /**
      * List of associated classifications
      * @return {@code List<Classification>  }
      */
@@ -143,12 +159,12 @@ public class Node implements Serializable, OmasObject {
      * Return the date/time that this node should start to be used (null means it can be used from creationTime).
      * @return Date the node becomes effective.
      */
-    public Date getEffectiveFromTime()
+    public Long getEffectiveFromTime()
     {
         return effectiveFromTime;
     }
 
-    public void setEffectiveFromTime(Date effectiveFromTime)
+    public void setEffectiveFromTime(Long effectiveFromTime)
     {
         this.effectiveFromTime = effectiveFromTime;
     }
@@ -157,12 +173,12 @@ public class Node implements Serializable, OmasObject {
      *
      * @return Date the node stops being effective.
      */
-    public Date getEffectiveToTime()
+    public Long getEffectiveToTime()
     {
         return effectiveToTime;
     }
 
-    public void setEffectiveToTime(Date effectiveToTime)
+    public void setEffectiveToTime(Long effectiveToTime)
     {
         this.effectiveToTime = effectiveToTime;
     }

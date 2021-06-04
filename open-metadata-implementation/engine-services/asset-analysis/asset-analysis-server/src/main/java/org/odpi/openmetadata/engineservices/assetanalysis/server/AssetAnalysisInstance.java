@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * AssetAnalysisInstance maintains the instance information needed to execute requests on behalf of
- * a discovery server.
+ * a engine host server.
  */
 public class AssetAnalysisInstance extends OMESServiceInstance
 {

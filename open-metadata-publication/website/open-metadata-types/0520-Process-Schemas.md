@@ -10,7 +10,7 @@ and it provides the basis for detailed lineage.
 
 ![UML](0520-Process-Schemas.png#pagewidth)
 
-(See also [Ports](0290-Ports.md).)
+(See also [Ports](0217-Ports.md).)
 
 Return to [Area 2](Area-2-models.md).
 

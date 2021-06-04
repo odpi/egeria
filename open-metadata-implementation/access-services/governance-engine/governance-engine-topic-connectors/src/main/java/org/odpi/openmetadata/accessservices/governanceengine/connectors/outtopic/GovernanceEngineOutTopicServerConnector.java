@@ -23,7 +23,7 @@ public class GovernanceEngineOutTopicServerConnector extends OpenMetadataTopicSe
      *
      * @param event event object
      * @throws InvalidParameterException the event is null
-     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s)./
+     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */
     public void sendEvent(GovernanceEngineEvent event) throws InvalidParameterException, ConnectorCheckedException
     {
@@ -37,14 +37,16 @@ public class GovernanceEngineOutTopicServerConnector extends OpenMetadataTopicSe
 
             if (super.auditLog != null)
             {
-                super.auditLog.logMessage(methodName, GovernanceEngineAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(eventString));
+                super.auditLog.logMessage(methodName,
+                                          GovernanceEngineAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
+                                          eventString);
             }
         }
         catch (InvalidParameterException | ConnectorCheckedException error)
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             throw new ConnectorCheckedException(GovernanceEngineErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
                                                                                                                    event.toString(),

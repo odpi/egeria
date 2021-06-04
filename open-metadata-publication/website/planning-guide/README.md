@@ -145,9 +145,12 @@ More importantly, it helps with the definition of the organization's
 This is a checklist of planning tasks for the deployment of your OMAG Server Platforms
 and OMAG Servers.
 
+* Set up unique certificates for your OMAG Server Platforms
+  [more information](../../../open-metadata-implementation/admin-services/docs/user/omag-server-platform-transport-level-security.md).
+
 * Use an encrypted configuration document store for your platforms since
   configuration documents can have certificates and passwords in them
-  [more information](../../../open-metadata-implementation/admin-services/docs/user/configuring-configuration-file-store.md).
+  [more information](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-configuration-document-store.md).
 
 * Implement the metadata security connectors for your organization to
   ensure only authorized users access metadata

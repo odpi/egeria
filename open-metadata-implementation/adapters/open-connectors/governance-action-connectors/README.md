@@ -5,9 +5,13 @@
 
 # Governance Action Connectors
 
-This module will contain the implementation of the
-governance action connectors that will run in the
-[Stewardship Server](../../../admin-services/docs/concepts/stewardship-server.md).
+This module contains the implementation of the
+governance action service connectors that run in the
+[Governance Action Open Metadata Engine Service (OMES)](../../../engine-services/governance-action)
+hosted by the
+[Engine Host OMAG Server](../../../admin-services/docs/concepts/engine-host.md).
+
+
 
 ----
 Return to [open-connectors](..) module.

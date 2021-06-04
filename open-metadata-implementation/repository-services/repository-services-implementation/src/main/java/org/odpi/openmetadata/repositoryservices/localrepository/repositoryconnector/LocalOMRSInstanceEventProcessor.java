@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
@@ -47,6 +46,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     private OMRSRepositoryValidator         repositoryValidator;
     private OMRSRepositoryEventExchangeRule saveExchangeRule;
     private OMRSMetadataCollection          localMetadataCollection = null;
+    private boolean                         produceRefreshEvents;
     private OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor;
 
     /*
@@ -68,6 +68,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param repositoryHelper                 helper class for building instances
      * @param repositoryValidator              helper class for validating instances
      * @param saveExchangeRule                 rule that determines which events to process.
+     * @param produceRefreshEvents             flag indicating whether the local connector should respond to refresh events
      * @param outboundRepositoryEventProcessor event processor
      * @param auditLog                         audit log for this component.
      */
@@ -77,6 +78,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                     OMRSRepositoryHelper            repositoryHelper,
                                     OMRSRepositoryValidator         repositoryValidator,
                                     OMRSRepositoryEventExchangeRule saveExchangeRule,
+                                    boolean                         produceRefreshEvents,
                                     OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor,
                                     AuditLog                        auditLog)
     {
@@ -90,6 +92,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
         this.saveExchangeRule = saveExchangeRule;
+        this.produceRefreshEvents = produceRefreshEvents;
         this.outboundRepositoryEventProcessor = outboundRepositoryEventProcessor;
         this.auditLog = auditLog;
 
@@ -99,7 +102,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
             {
                 this.localMetadataCollection = localConnector.getMetadataCollection();
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 /*
                  * Nothing to do, error will be logged in verifyEventProcessor
@@ -173,6 +176,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param cohortName source of the event
      * @param instanceEvent the event to process
      */
+    @Override
     public void   sendInstanceEvent(String            cohortName,
                                     OMRSInstanceEvent instanceEvent)
     {
@@ -713,6 +717,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the new entity
      */
+    @Override
     public void processNewEntityEvent(String       sourceName,
                                       String       originatorMetadataCollectionId,
                                       String       originatorServerName,
@@ -743,6 +748,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param oldEntity                      original values for the entity.
      * @param newEntity                      details of the new version of the entity.
      */
+    @Override
     public void processUpdatedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,
@@ -773,6 +779,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the version of the entity that has been restored.
      */
+    @Override
     public void processUndoneEntityEvent(String       sourceName,
                                          String       originatorMetadataCollectionId,
                                          String       originatorServerName,
@@ -803,6 +810,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
      * @param classification new classification
      */
+    @Override
     public void processClassifiedEntityEvent(String         sourceName,
                                              String         originatorMetadataCollectionId,
                                              String         originatorServerName,
@@ -819,7 +827,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.saveClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, classification);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -842,6 +850,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
      * @param originalClassification classification that was removed
      */
+    @Override
     public void processDeclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -858,7 +867,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.purgeClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, originalClassification);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -882,6 +891,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
+    @Override
     public void processReclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -899,7 +909,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.saveClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, classification);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -928,6 +938,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         deleted entity
      */
+    @Override
     public void processDeletedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,
@@ -943,7 +954,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.deleteEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -965,6 +976,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the version of the entity that has been purged.
      */
+    @Override
     public  void processPurgedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,
@@ -980,7 +992,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.purgeEntityReferenceCopy(localRepositoryConnector.getServerUserId(), entity);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1007,6 +1019,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param typeDefName                    name of this entity's TypeDef
      * @param instanceGUID                   unique identifier for the entity
      */
+    @Override
     public void processPurgedEntityEvent(String sourceName,
                                          String originatorMetadataCollectionId,
                                          String originatorServerName,
@@ -1034,7 +1047,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
              * Ignore - just means the repository did not have the instance.
              */
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1056,6 +1069,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the version of the entity that has been restored.
      */
+    @Override
     public void processRestoredEntityEvent(String       sourceName,
                                            String       originatorMetadataCollectionId,
                                            String       originatorServerName,
@@ -1088,6 +1102,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originalEntityGUID             the existing identifier for the entity.
      * @param entity                         new values for this entity, including the new guid.
      */
+    @Override
     public void processReIdentifiedEntityEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -1121,6 +1136,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originalTypeDefSummary         original details of this entity's TypeDef.
      * @param entity                         new values for this entity, including the new type information.
      */
+    @Override
     public void processReTypedEntityEvent(String         sourceName,
                                           String         originatorMetadataCollectionId,
                                           String         originatorServerName,
@@ -1154,6 +1170,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originalHomeMetadataCollectionId unique identifier for the original home repository.
      * @param entity                           new values for this entity, including the new home information.
      */
+    @Override
     public void processReHomedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,
@@ -1188,6 +1205,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param instanceGUID                   unique identifier for the entity
      * @param homeMetadataCollectionId       metadata collection id for the home of this instance.
      */
+    @Override
     public void processRefreshEntityRequested(String sourceName,
                                               String originatorMetadataCollectionId,
                                               String originatorServerName,
@@ -1204,7 +1222,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         {
             verifyEventProcessor(methodName);
 
-            if (localMetadataCollectionId.equals(homeMetadataCollectionId))
+            if (produceRefreshEvents && (localMetadataCollectionId.equals(homeMetadataCollectionId)))
             {
                 EntityDetail entity = localMetadataCollection.isEntityKnown(localRepositoryConnector.getServerUserId(),
                                                                             instanceGUID);
@@ -1220,7 +1238,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1242,6 +1260,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the requested entity
      */
+    @Override
     public void processRefreshEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,
@@ -1271,6 +1290,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   details of the new relationship
      */
+    @Override
     public void processNewRelationshipEvent(String       sourceName,
                                             String       originatorMetadataCollectionId,
                                             String       originatorServerName,
@@ -1301,6 +1321,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param oldRelationship                original details of the relationship.
      * @param newRelationship                details of the new version of the relationship.
      */
+    @Override
     public void processUpdatedRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
                                                 String       originatorServerName,
@@ -1331,6 +1352,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   details of the version of the relationship that has been restored.
      */
+    @Override
     public void processUndoneRelationshipEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -1364,6 +1386,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   deleted relationship
      */
+    @Override
     public void processDeletedRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
                                                 String       originatorServerName,
@@ -1379,7 +1402,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.deleteRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1401,6 +1424,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  details of the  relationship that has been purged.
      */
+    @Override
     public void processPurgedRelationshipEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -1416,7 +1440,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
             localMetadataCollection.purgeRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(), relationship);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1443,6 +1467,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param typeDefName                    name of this relationship's TypeDef.
      * @param instanceGUID                   unique identifier for the relationship.
      */
+    @Override
     public void processPurgedRelationshipEvent(String sourceName,
                                                String originatorMetadataCollectionId,
                                                String originatorServerName,
@@ -1471,7 +1496,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
              * Ignore as this just means that he reference copy was not stored for this instance.
              */
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1493,6 +1518,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   details of the version of the relationship that has been restored.
      */
+    @Override
     public void processRestoredRelationshipEvent(String       sourceName,
                                                  String       originatorMetadataCollectionId,
                                                  String       originatorServerName,
@@ -1525,6 +1551,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originalRelationshipGUID       the existing identifier for the relationship.
      * @param relationship                   new values for this relationship, including the new guid.
      */
+    @Override
     public void processReIdentifiedRelationshipEvent(String       sourceName,
                                                      String       originatorMetadataCollectionId,
                                                      String       originatorServerName,
@@ -1558,6 +1585,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originalTypeDefSummary         original details of this relationship's TypeDef.
      * @param relationship                   new values for this relationship, including the new type information.
      */
+    @Override
     public void processReTypedRelationshipEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
                                                 String         originatorServerName,
@@ -1591,6 +1619,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originalHomeMetadataCollection unique identifier for the original home repository.
      * @param relationship                   new values for this relationship, including the new home information.
      */
+    @Override
     public void processReHomedRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
                                                 String       originatorServerName,
@@ -1625,6 +1654,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param instanceGUID                   unique identifier for the instance
      * @param homeMetadataCollectionId       metadata collection id for the home of this instance.
      */
+    @Override
     public void processRefreshRelationshipRequest(String sourceName,
                                                   String originatorMetadataCollectionId,
                                                   String originatorServerName,
@@ -1641,7 +1671,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
         {
             verifyEventProcessor(methodName);
 
-            if (localMetadataCollectionId.equals(homeMetadataCollectionId))
+            if (produceRefreshEvents && (localMetadataCollectionId.equals(homeMetadataCollectionId)))
             {
                 Relationship relationship = localMetadataCollection.isRelationshipKnown(localRepositoryConnector.getServerUserId(),
                                                                                         instanceGUID);
@@ -1659,7 +1689,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
             }
 
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1682,6 +1712,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   relationship details
      */
+    @Override
     public void processRefreshRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
                                                 String       originatorServerName,
@@ -1712,6 +1743,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param instances multiple entities and relationships for sharing.
      */
+    @Override
     public void processInstanceBatchEvent(String         sourceName,
                                           String         originatorMetadataCollectionId,
                                           String         originatorServerName,
@@ -1728,7 +1760,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
             localMetadataCollection.saveInstanceReferenceCopies(localRepositoryConnector.getServerUserId(),
                                                                 instances);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -1760,6 +1792,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param otherInstanceGUID              unique identifier for the other (older) instance
      * @param errorMessage                   description of the error.
      */
+    @Override
     public void processConflictingInstancesEvent(String                 sourceName,
                                                  String                 originatorMetadataCollectionId,
                                                  String                 originatorServerName,
@@ -1824,7 +1857,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                                                           targetInstanceGUID,
                                                                                                           newGUID));
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logMessage(methodName,
                                     OMRSAuditCode.UNABLE_TO_RE_IDENTIFY_INSTANCE.getMessageDefinition(localServerName,
@@ -1864,6 +1897,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param otherTypeDefSummary            details of the local copy of the instance's TypeDef
      * @param errorMessage                   description of the error.
      */
+    @Override
     public void processConflictingTypeEvent(String         sourceName,
                                             String         originatorMetadataCollectionId,
                                             String         originatorServerName,
@@ -1948,7 +1982,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             final String methodName = "processRetrievedEntity";
 
@@ -1996,7 +2030,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 }
             }
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             final String methodName = "processRetrievedRelationship";
 
@@ -2016,6 +2050,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param metadataCollectionId unique identifier for the metadata from the remote repository
      * @param processedEntity  the retrieved entity.
      */
+    @Override
     public void processRetrievedEntitySummary(String        sourceName,
                                               String        metadataCollectionId,
                                               EntitySummary processedEntity)
@@ -2049,6 +2084,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param metadataCollectionId unique identifier for the metadata from the remote repository
      * @param processedEntity the retrieved entity.
      */
+    @Override
     public void processRetrievedEntityDetail(String       sourceName,
                                              String       metadataCollectionId,
                                              EntityDetail processedEntity)
@@ -2082,6 +2118,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param metadataCollectionId unique identifier for the metadata from the remote repository
      * @param processedRelationship         the retrieved relationship
      */
+    @Override
     public void processRetrievedRelationship(String       sourceName,
                                              String       metadataCollectionId,
                                              Relationship processedRelationship)
@@ -2147,7 +2184,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                  homeMetadataCollectionId);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logMessage(methodName,
                                 OMRSAuditCode.UNABLE_TO_REMOVE_REFERENCE_COPY.getMessageDefinition(localServerName,
@@ -2209,7 +2246,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -2337,7 +2374,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                                                      methodName),
                                                                                              messageFormatter.getFormattedMessage(messageDefinition));
                             }
-                            catch (Throwable error)
+                            catch (Exception error)
                             {
                                 /*
                                  * Don't ever expect to be here - it probably means that the getTypeDef method
@@ -2388,7 +2425,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                                           storedInstance.getGUID(),
                                                                                           messageFormatter.getFormattedMessage(messageDefinition));
                     }
-                    catch (Throwable error)
+                    catch (Exception error)
                     {
                         /*
                          * Don't ever expect to be here - it probably means that the getTypeDef method
@@ -2444,7 +2481,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                       relationship);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             handleUnexpectedErrorFromEvent(error,
                                            methodName,
@@ -2513,7 +2550,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * @param originatorServerName originator server name
      * @param originatorMetadataCollectionId originators metadata collection id
      */
-    private void handleUnexpectedErrorFromEvent(Throwable  error,
+    private void handleUnexpectedErrorFromEvent(Exception  error,
                                                 String     methodName,
                                                 String     originatorServerName,
                                                 String     originatorMetadataCollectionId)

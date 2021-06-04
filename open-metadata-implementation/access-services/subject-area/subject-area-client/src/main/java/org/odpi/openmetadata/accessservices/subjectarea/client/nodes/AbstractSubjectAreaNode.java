@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.AbstractSubjectAr
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
@@ -28,22 +28,22 @@ public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSu
     }
 
     @Override
-    public List<Line> getRelationships(String userId, String guid, FindRequest findRequest, Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
-                                                                                                                                      PropertyServerException,
-                                                                                                                                      UserNotAuthorizedException {
+    public List<Relationship> getRelationships(String userId, String guid, FindRequest findRequest, Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
+                                                                                                                                              PropertyServerException,
+                                                                                                                                              UserNotAuthorizedException {
         final String urlTemplate = BASE_URL + "/%s/relationships";
         final String methodInfo = getMethodInfo("getRelationships");
 
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Line.class);
-        ParameterizedTypeReference<GenericResponse<Line>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        GenericResponse<Line> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest, maximumPageSizeOnRestCall);
+        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Relationship.class);
+        ParameterizedTypeReference<GenericResponse<Relationship>> type = ParameterizedTypeReference.forType(resolvableType.getType());
+        GenericResponse<Relationship> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest, maximumPageSizeOnRestCall);
         return response.results();
     }
 
     @Override
-    public List<Line> getRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException {
+    public List<Relationship> getRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException {
         return getRelationships(userId, guid, findRequest, null);
     }
 

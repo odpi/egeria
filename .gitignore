@@ -73,8 +73,13 @@ __MACOSX
 omag.server.*.config
 omag.server.*.auditlog/**
 *.registrystore
-*.testlab.results
 keystore_*/**
+
+# Conformance Test Suite results for Egeria
+*.testlab.results
+openmetadata_cts_summary.json
+profile-details/*.json
+test-case-details/*.json
 
 # Dynamic data used by egeria
 data/**
@@ -118,6 +123,8 @@ open-metadata-implementation/user-interfaces/presentation-server/nodejs/yarn.loc
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/node/**
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/.env
 open-metadata-implementation/user-interfaces/presentation-server/node/**
+open-metadata-implementation/user-interfaces/presentation-server/package-lock.json
+
 
 open-metadata-implementation/user-interfaces/presentation-server/cra-client/node_modules
 open-metadata-implementation/user-interfaces/presentation-server/cra-client/.env

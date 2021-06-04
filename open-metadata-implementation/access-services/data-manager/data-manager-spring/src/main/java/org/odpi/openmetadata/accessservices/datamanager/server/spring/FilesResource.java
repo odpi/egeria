@@ -585,7 +585,7 @@ public class FilesResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @GetMapping(path = "/folders/by-path-name")
+    @PostMapping(path = "/folders/by-path-name")
 
     public FileFolderResponse getFolderByPathName(@PathVariable String                serverName,
                                                   @PathVariable String                userId,

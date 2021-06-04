@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.client.rest.ODFRESTClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public class DiscoveryEngineClient extends ConnectedAssetClientBase
 {
-    private ODFRESTClient                          restClient;               /* Initialized in constructor */
+    private ODFRESTClient restClient;               /* Initialized in constructor */
 
     private static final String  serviceURLName = "discovery-engine";
 
@@ -31,18 +32,18 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
     /**
      * Create a client-side object for calling a discovery engine within a discovery server.
      *
-     * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
+     * @param serverPlatformURLRoot the root url of the platform where the discovery engine is running.
      * @param serverName the name of the discovery server where the discovery engine is running
      * @param restClient pre-built client
      * @param auditLog logging destination
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     public DiscoveryEngineClient(String        serverName,
-                                 String        serverPlatformRootURL,
+                                 String        serverPlatformURLRoot,
                                  ODFRESTClient restClient,
                                  AuditLog      auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
         this.restClient = restClient;
     }
@@ -52,18 +53,18 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
      *
      * @throws InvalidParameterException null URL or server name
      */
     public DiscoveryEngineClient(String   serverName,
-                                 String   serverPlatformRootURL,
+                                 String   serverPlatformURLRoot,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
-        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, auditLog);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -71,15 +72,15 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException null URL or server name
      */
     public DiscoveryEngineClient(String serverName,
-                                 String serverPlatformRootURL) throws InvalidParameterException
+                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformURLRoot);
 
-        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -88,21 +89,21 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
      * @throws InvalidParameterException null URL or server name
      */
     public DiscoveryEngineClient(String     serverName,
-                                 String     serverPlatformRootURL,
+                                 String     serverPlatformURLRoot,
                                  String     userId,
                                  String     password,
                                  AuditLog   auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
-        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, userId, password, auditLog);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -111,19 +112,41 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException null URL or server name
      */
     public DiscoveryEngineClient(String     serverName,
-                                 String     serverPlatformRootURL,
+                                 String     serverPlatformURLRoot,
                                  String     userId,
                                  String     password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformURLRoot);
 
-        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+    /**
+     * Create a new client that is to be used within an OMAG Server.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param restClient pre-initialized REST client
+     * @param maxPageSize pre-initialized parameter limit
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem with the information about the remote OMAS
+     */
+    public DiscoveryEngineClient(String       serverName,
+                                String        serverPlatformURLRoot,
+                                ODFRESTClient restClient,
+                                int           maxPageSize,
+                                AuditLog      auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
+
+        this.restClient = restClient;
     }
 
 
@@ -150,9 +173,8 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformRootURL + urlTemplate,
-                                                                          nullRequestBody,
+        GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
+                                                                          serverPlatformURLRoot + urlTemplate,
                                                                           serverName,
                                                                           userId,
                                                                           startFrom,
@@ -191,7 +213,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateSearchString(searchParameter, searchParameterName, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          serverPlatformURLRoot + urlTemplate,
                                                                           searchParameter,
                                                                           serverName,
                                                                           userId,
@@ -423,7 +445,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateName(discoveryService, discoveryServiceParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         message,
                                         serverName,
                                         userId,
@@ -492,7 +514,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         requestBody.setAdditionalProperties(additionalProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -527,12 +549,12 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateObject(updatedReport.getElementHeader(), reportHeaderParameterName, methodName);
         invalidParameterHandler.validateGUID(updatedReport.getElementHeader().getGUID(), reportGUIDParameterName, methodName);
 
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  updatedReport,
-                                                                  serverName,
-                                                                  userId,
-                                                                  updatedReport.getElementHeader().getGUID());
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        updatedReport,
+                                        serverName,
+                                        userId,
+                                        updatedReport.getElementHeader().getGUID());
 
     }
 
@@ -618,7 +640,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(discoveryReportGUID, reportGUIDParameterName, methodName);
 
         DiscoveryAnalysisReportResponse restResult = restClient.callDiscoveryAnalysisReportGetRESTCall(methodName,
-                                                                                                       serverPlatformRootURL + urlTemplate,
+                                                                                                       serverPlatformURLRoot + urlTemplate,
                                                                                                        serverName,
                                                                                                        userId,
                                                                                                        discoveryReportGUID);
@@ -646,7 +668,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateUserId(userId, methodName);
 
         NameListResponse restResult = restClient.callNameListGetRESTCall(methodName,
-                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverPlatformURLRoot + urlTemplate,
                                                                          serverName,
                                                                          userId);
 
@@ -673,7 +695,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateUserId(userId, methodName);
 
         StringMapResponse restResult = restClient.callStringMapGetRESTCall(methodName,
-                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          serverPlatformURLRoot + urlTemplate,
                                                                            serverName,
                                                                            userId);
 
@@ -717,7 +739,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         requestBody.setAnnotationStatus(status);
 
         AnnotationListResponse restResult = restClient.callAnnotationListPostRESTCall(methodName,
-                                                                                      serverPlatformRootURL + urlTemplate,
+                                                                                      serverPlatformURLRoot + urlTemplate,
                                                                                       requestBody,
                                                                                       serverName,
                                                                                       userId,
@@ -787,7 +809,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         AnnotationListResponse restResult = restClient.callAnnotationListGetRESTCall(methodName,
-                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                     serverPlatformURLRoot + urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      discoveryReportGUID,
@@ -802,8 +824,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Return any annotations attached to this annotation.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
-     * @param annotationGUID anchor annotation
+     * @param annotationGUID parent annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
      *
@@ -814,7 +835,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
     public  List<Annotation>  getExtendedAnnotations(String   userId,
-                                                     String   discoveryReportGUID,
                                                      String   annotationGUID,
                                                      int      startingFrom,
                                                      int      maximumResults) throws InvalidParameterException,
@@ -830,7 +850,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         AnnotationListResponse restResult = restClient.callAnnotationListGetRESTCall(methodName,
-                                                                                     serverPlatformRootURL + urlTemplate,
+                                                                                     serverPlatformURLRoot + urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      annotationGUID,
@@ -846,7 +866,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * for an annotation.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object
@@ -855,11 +874,10 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public  Annotation        getAnnotation(String   userId,
-                                            String   discoveryReportGUID,
-                                            String   annotationGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public Annotation getAnnotation(String userId,
+                                    String annotationGUID) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String   methodName = "getAnnotation";
         final String   annotationGUIDParameterName = "annotationGUID";
@@ -869,7 +887,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
         AnnotationResponse restResult = restClient.callAnnotationGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate,
+                                                                             serverPlatformURLRoot + urlTemplate,
                                                                              serverName,
                                                                              userId,
                                                                              annotationGUID);
@@ -905,7 +923,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   annotation,
                                                                   serverName,
                                                                   userId,
@@ -919,8 +937,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Add a new annotation and link it to an existing annotation.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
-     * @param anchorAnnotationGUID unique identifier of the annotation that this new one is to be attached to
+     * @param parentAnnotationGUID unique identifier of the annotation that this new one is to be attached to
      * @param annotation annotation object
      * @return unique identifier of new annotation
      * @throws InvalidParameterException one of the parameters is invalid
@@ -928,28 +945,26 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there was a problem saving annotations in the annotation store.
      */
     String  addAnnotationToAnnotation(String     userId,
-                                      String     discoveryReportGUID,
-                                      String     anchorAnnotationGUID,
+                                      String     parentAnnotationGUID,
                                       Annotation annotation) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
         final String   methodName = "addAnnotationToAnnotation";
-        final String   annotationGUIDParameterName = "anchorAnnotationGUID";
+        final String   annotationGUIDParameterName = "parentAnnotationGUID";
         final String   annotationParameterName = "annotation";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}/annotations/{3}/extended-annotations";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/extended-annotations";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorAnnotationGUID, annotationGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(parentAnnotationGUID, annotationGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                              serverPlatformRootURL + urlTemplate,
-                                                                              annotation,
-                                                                              serverName,
-                                                                              userId,
-                                                                              discoveryReportGUID,
-                                                                              anchorAnnotationGUID);
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  annotation,
+                                                                  serverName,
+                                                                  userId,
+                                                                  parentAnnotationGUID);
 
         return restResult.getGUID();
     }
@@ -959,7 +974,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Replace the current properties of an annotation.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
      * @param annotation new properties
      *
      * @throws InvalidParameterException one of the parameters is invalid
@@ -967,30 +981,30 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there was a problem updating the annotation in the annotation store.
      */
     void  updateAnnotation(String     userId,
-                           String     discoveryReportGUID,
                            Annotation annotation) throws InvalidParameterException,
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
         final String   methodName = "updateAnnotation";
         final String   annotationParameterName = "annotation";
-        final String   annotationGUIDParameterName = "annotation.getGUID()";
+        final String   headerParameterName = "annotation.getElementHeader()";
+        final String   annotationGUIDParameterName = "annotation.getElementHeader().getGUID()";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}/annotations/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
+        invalidParameterHandler.validateObject(annotation.getElementHeader(), headerParameterName, methodName);
 
         ElementHeader elementHeader = annotation.getElementHeader();
 
         invalidParameterHandler.validateGUID(elementHeader.getGUID(), annotationGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         annotation,
                                         serverName,
                                         userId,
-                                        discoveryReportGUID,
                                         elementHeader.getGUID());
     }
 
@@ -999,31 +1013,28 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Remove an annotation from the annotation store.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
      * @param annotationGUID unique identifier of the annotation
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem deleting the annotation from the annotation store.
      */
     void  deleteAnnotation(String   userId,
-                           String   discoveryReportGUID,
                            String   annotationGUID) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
         final String   methodName = "deleteAnnotation";
         final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}/annotations/{3}/delete";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
+                                        serverPlatformURLRoot + urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        discoveryReportGUID,
                                         annotationGUID);
     }
 
@@ -1031,6 +1042,8 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
     /**
      * Return the list of data fields from previous runs of the discovery service.
      *
+     * @param userId identifier of calling user
+     * @param discoveryReportGUID unique identifier of the discovery analysis report
      * @param startingFrom starting position in the list.
      * @param maximumResults maximum number of elements that can be returned
      * @return list of data fields (or null if none are registered)
@@ -1045,7 +1058,23 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return null;
+        final String   methodName = "getPreviousDataFieldsForAsset";
+        final String   discoveryReportGUIDParameterName = "discoveryReportGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}/data-fields/previous?startingFrom={3}&maximumResults={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(discoveryReportGUID, discoveryReportGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+
+        DataFieldListResponse restResult = restClient.callDataFieldListGetRESTCall(methodName,
+                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     discoveryReportGUID,
+                                                                                     Integer.toString(startingFrom),
+                                                                                     Integer.toString(maximumResults));
+
+        return restResult.getDataFields();
     }
 
 
@@ -1059,21 +1088,37 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving data fields from the annotation store.
      */
-    List<Annotation>  getNewDataFieldsForAsset(String    userId,
-                                               String    discoveryReportGUID,
-                                               int       startingFrom,
-                                               int       maximumResults) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    List<DataField> getNewDataFieldsForAsset(String    userId,
+                                             String    discoveryReportGUID,
+                                             int       startingFrom,
+                                             int       maximumResults) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return null;
+        final String   methodName = "getNewDataFieldsForAsset";
+        final String   discoveryReportGUIDParameterName = "discoveryReportGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}/data-fields?startingFrom={3}&maximumResults={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(discoveryReportGUID, discoveryReportGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+
+        DataFieldListResponse restResult = restClient.callDataFieldListGetRESTCall(methodName,
+                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   discoveryReportGUID,
+                                                                                   Integer.toString(startingFrom),
+                                                                                   Integer.toString(maximumResults));
+
+        return restResult.getDataFields();
     }
 
 
     /**
      * Return any annotations attached to this annotation.
      *
-     * @param anchorDataFieldGUID anchor data field identifier
+     * @param parentDataFieldGUID parent data field identifier
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
      *
@@ -1084,14 +1129,29 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
     List<DataField>  getNestedDataFields(String   userId,
-                                         String   discoveryReportGUID,
-                                         String   anchorDataFieldGUID,
+                                         String   parentDataFieldGUID,
                                          int      startingFrom,
                                          int      maximumResults) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return null;
+        final String   methodName = "getNestedDataFields";
+        final String   dataFieldGUIDParameterName = "parentDataFieldGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/data-fields/{2}/nested-data-fields?startingFrom={3}&maximumResults={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentDataFieldGUID, dataFieldGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+
+        DataFieldListResponse restResult = restClient.callDataFieldListGetRESTCall(methodName,
+                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   parentDataFieldGUID,
+                                                                                   Integer.toString(startingFrom),
+                                                                                   Integer.toString(maximumResults));
+
+        return restResult.getDataFields();
     }
 
 
@@ -1105,12 +1165,24 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there was a problem retrieving the data field from the annotation store.
      */
     DataField  getDataField(String   userId,
-                            String   discoveryReportGUID,
                             String   dataFieldGUID) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        return null;
+        final String   methodName = "getDataField";
+        final String   dataFieldGUIDParameterName = "dataFieldGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/data-fields/{2}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFieldGUID, dataFieldGUIDParameterName, methodName);
+
+        DataFieldResponse restResult = restClient.callDataFieldGetRESTCall(methodName,
+                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   dataFieldGUID);
+
+        return restResult.getDataField();
     }
 
 
@@ -1118,7 +1190,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Add a new data field to the Annotation store linked off of an annotation (typically SchemaAnalysisAnnotation).
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
      * @param annotationGUID unique identifier of the annotation that the data field is to be linked to
      * @param dataField dataField object
      * @return unique identifier of new data field
@@ -1128,13 +1199,28 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there was a problem  adding the data field to the Annotation store.
      */
     String  addDataFieldToDiscoveryReport(String    userId,
-                                          String    discoveryReportGUID,
                                           String    annotationGUID,
                                           DataField dataField) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return null;
+        final String   methodName = "addDataFieldToDiscoveryReport";
+        final String   annotationGUIDParameterName = "annotationGUID";
+        final String   dataFieldParameterName = "dataField";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/data-fields";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(dataField, dataFieldParameterName, methodName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  dataField,
+                                                                  serverName,
+                                                                  userId,
+                                                                  annotationGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -1142,8 +1228,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Add a new data field and link it to an existing data field.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
-     * @param anchorDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
      * @param dataField data field object
      * @return unique identifier of new data field
      * @throws InvalidParameterException one of the parameters is invalid
@@ -1151,13 +1236,28 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there was a problem saving data fields in the annotation store.
      */
     String  addDataFieldToDataField(String    userId,
-                                    String    discoveryReportGUID,
-                                    String    anchorDataFieldGUID,
+                                    String    parentDataFieldGUID,
                                     DataField dataField) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        return null;
+        final String   methodName = "addDataFieldToDataField";
+        final String   dataFieldGUIDParameterName = "parentDataFieldGUID";
+        final String   dataFieldParameterName = "dataField";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/data-fields/{2}/nested-data-fields";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentDataFieldGUID, dataFieldGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(dataField, dataFieldParameterName, methodName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  dataField,
+                                                                  serverName,
+                                                                  userId,
+                                                                  parentDataFieldGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -1165,8 +1265,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Add a new annotation and link it to an existing data field.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
-     * @param anchorDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
      * @param annotation data field object
      * @return unique identifier of new annotation
      * @throws InvalidParameterException one of the parameters is invalid
@@ -1174,13 +1273,28 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there was a problem saving data fields in the annotation store.
      */
     String  addAnnotationToDataField(String     userId,
-                                     String     discoveryReportGUID,
-                                     String     anchorDataFieldGUID,
+                                     String     parentDataFieldGUID,
                                      Annotation annotation) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return null;
+        final String   methodName = "addAnnotationToDataField";
+        final String   dataFieldGUIDParameterName = "parentDataFieldGUID";
+        final String   annotationParameterName = "annotation";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/data-fields/{2}/annotations";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentDataFieldGUID, dataFieldGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  annotation,
+                                                                  serverName,
+                                                                  userId,
+                                                                  parentDataFieldGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -1188,7 +1302,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Replace the current properties of a data field.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
      * @param dataField new properties
      *
      * @return fully filled out data field
@@ -1196,13 +1309,32 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating the data field in the annotation store.
      */
-    DataField  updateDataField(String    userId,
-                               String    discoveryReportGUID,
-                               DataField dataField) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    void  updateDataField(String    userId,
+                          DataField dataField) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException
     {
-        return null;
+        final String   methodName = "updateDataField";
+        final String   dataFieldParameterName = "dataField";
+        final String   headerParameterName = "dataField.getElementHeader()";
+        final String   annotationGUIDParameterName = "dataField.getElementHeader().getGUID()";
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/data-fields/{2}/update";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(dataField, dataFieldParameterName, methodName);
+        invalidParameterHandler.validateObject(dataField.getElementHeader(), headerParameterName, methodName);
+
+        ElementHeader elementHeader = dataField.getElementHeader();
+
+        invalidParameterHandler.validateGUID(elementHeader.getGUID(), annotationGUIDParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        dataField,
+                                        serverName,
+                                        userId,
+                                        elementHeader.getGUID());
     }
 
 
@@ -1210,17 +1342,28 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Remove a data field from the annotation store.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery report.
      * @param dataFieldGUID unique identifier of the data field
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem deleting the data field from the annotation store.
      */
     void  deleteDataField(String   userId,
-                          String   discoveryReportGUID,
                           String   dataFieldGUID) throws InvalidParameterException,
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
+        final String   methodName = "deleteDataField";
+        final String   dataFieldGUIDParameterName = "dataFieldGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/data-fields/{2}/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFieldGUID, dataFieldGUIDParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        dataFieldGUID);
     }
 }

@@ -447,7 +447,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
             if (testMember != null)
             {
-                if ((testMember.getMetadataCollectionId() == null) || ("".equals(testMember.getMetadataCollectionId())))
+                if ((testMember.getMetadataCollectionId() == null) || (testMember.getMetadataCollectionId().length() == 0))
                 {
                     auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_REGISTERED_MC_ID.getMessageDefinition(testMember.getServerName()));
                 }
@@ -466,7 +466,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                 }
 
 
-                if ((testMember.getServerName() == null) || ("".equals(testMember.getServerName())))
+                if ((testMember.getServerName() == null) || (testMember.getServerName().length() == 0))
                 {
                     auditLog.logMessage(actionDescription,
                                         OMRSAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getMetadataCollectionId()),

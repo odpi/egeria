@@ -122,8 +122,14 @@ The [Open Metadata Repository Services (OMRS)](../../repository-services)
 makes extensive use of OCF connectors for accessing open metadata repository servers and other resources.
 These connectors are collectively called the [OMRS Connectors](../../repository-services/docs/component-descriptions/connectors).
 
-Many of the [Open Metadata Governance Servers](../../governance-servers) make use of OCF connectors to
+Many of the [Open Metadata Governance Servers](../../admin-services/docs/concepts/governance-server-types.md) make use of OCF connectors to
 loosely-couple integration with a variety of underlying technologies.
+
+The [Developer Guide](../../../open-metadata-publication/website/developer-guide) provides more
+information on writing connectors for Egeria.
+
+The [Connector Catalog](../../../open-metadata-publication/website/connector-catalog) lists the
+pre-built connectors supplied by Egeria.
 
 
 ----

@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -12,10 +11,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.List;
+
 
 /**
  * AssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into an AssetElement bean.
+ * EntityDetail object into an DataAssetElement bean.
  */
 public class AssetConverter<B> extends AssetManagerOMASConverter<B>
 {
@@ -56,10 +57,10 @@ public class AssetConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.newInstance();
 
-            if (returnBean instanceof AssetElement)
+            if (returnBean instanceof DataAssetElement)
             {
-                AssetElement    bean            = (AssetElement) returnBean;
-                AssetProperties assetProperties = new AssetProperties();
+                DataAssetElement    bean            = (DataAssetElement) returnBean;
+                DataAssetProperties assetProperties = new DataAssetProperties();
 
                 if (entity != null)
                 {
@@ -75,13 +76,6 @@ public class AssetConverter<B> extends AssetManagerOMASConverter<B>
                     assetProperties.setTechnicalName(this.removeName(instanceProperties));
                     assetProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    assetProperties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    assetProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    assetProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
-
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
@@ -89,26 +83,7 @@ public class AssetConverter<B> extends AssetManagerOMASConverter<B>
                     assetProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     assetProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                    assetProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                    assetProperties.setOwner(this.getOwner(instanceProperties));
-                    assetProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                    assetProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    assetProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    assetProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
-
-                    bean.setAssetProperties(assetProperties);
+                    bean.setDataAssetProperties(assetProperties);
                 }
                 else
                 {
@@ -145,5 +120,30 @@ public class AssetConverter<B> extends AssetManagerOMASConverter<B>
                         String       methodName) throws PropertyServerException
     {
         return getNewBean(beanClass, entity, methodName);
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
+     * relationships between them.  The relationships may be omitted if they do not have any properties.
+     *
+     * @param beanClass name of the class to create
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the content of the bean
+     * @param supplementaryEntities entities connected to the primary entity by the relationships
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @Override
+    public B getNewComplexBean(Class<B>           beanClass,
+                               EntityDetail       primaryEntity,
+                               List<EntityDetail> supplementaryEntities,
+                               List<Relationship> relationships,
+                               String             methodName) throws PropertyServerException
+    {
+        // todo process supplement properties
+        return getNewBean(beanClass, primaryEntity, methodName);
     }
 }

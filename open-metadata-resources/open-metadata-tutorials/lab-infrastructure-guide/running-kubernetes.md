@@ -59,7 +59,7 @@ shutting down.
 
 ## Help
 
-For additional help refer to our slack channels at `http://odpi.slack.com`
+For additional help refer to our slack channels at http://slack.lfai.foundation
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

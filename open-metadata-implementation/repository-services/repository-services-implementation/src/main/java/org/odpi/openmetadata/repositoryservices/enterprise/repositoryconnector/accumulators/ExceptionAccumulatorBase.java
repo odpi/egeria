@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
@@ -10,6 +11,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class ExceptionAccumulatorBase
 {
+    AuditLog auditLog;
+
     ClassificationErrorException    classificationErrorException    = null;
     EntityNotDeletedException       entityNotDeletedException       = null;
     EntityNotKnownException         entityNotKnownException         = null;
@@ -23,7 +26,7 @@ public class ExceptionAccumulatorBase
     RelationshipNotKnownException   relationshipNotKnownException   = null;
     RepositoryErrorException        repositoryErrorException        = null;
     StatusNotSupportedException     statusNotSupportedException     = null;
-    Throwable                       anotherException                = null;
+    Exception                       anotherException                = null;
     TypeDefConflictException        typeDefConflictException        = null;
     TypeDefNotKnownException        typeDefNotKnownException        = null;
     TypeDefNotSupportedException    typeDefNotSupportedException    = null;
@@ -33,9 +36,12 @@ public class ExceptionAccumulatorBase
 
     /**
      * Constructor restricted to use by this package
+     *
+     * @param auditLog logging destination
      */
-    ExceptionAccumulatorBase()
+    ExceptionAccumulatorBase(AuditLog auditLog)
     {
+        this.auditLog = auditLog;
     }
 
 
@@ -225,17 +231,18 @@ public class ExceptionAccumulatorBase
 
 
     /**
-     * Throw a RepositoryErrorException if an unexpected Throwable exception was returned by one of the calls
+     * Throw a RepositoryErrorException if an unexpected exception was returned by one of the calls
      * to a cohort connector.
      *
      * @param methodName calling method
      * @throws RepositoryErrorException there was an unexpected error in the repository
      */
-    public synchronized void throwCapturedThrowableException(String      methodName) throws RepositoryErrorException
+    public synchronized void throwCapturedGenericException(String methodName) throws RepositoryErrorException
     {
         if (anotherException != null)
         {
-            throw new RepositoryErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT.getMessageDefinition(methodName,
+            throw new RepositoryErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION_FROM_COHORT.getMessageDefinition(anotherException.getClass().getName(),
+                                                                                                                   methodName,
                                                                                                                    anotherException.getMessage()),
                                                this.getClass().getName(),
                                                methodName);

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +29,18 @@ public class GovernanceContext
     private List<RequestSourceElement> requestSourceElements;
     private List<ActionTargetElement>  actionTargetElements;
 
-    protected OpenMetadataClient       openMetadataStore;
-    protected PropertyHelper           propertyHelper = new PropertyHelper();
+    private String                     governanceActionGUID;
+
+    private volatile CompletionStatus  completionStatus = null;
+
+    OpenMetadataClient       openMetadataStore;
+    PropertyHelper           propertyHelper = new PropertyHelper();
 
     /**
      * Constructor sets up the key parameters for processing the request to the governance action service.
      *
      * @param userId calling user
+     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param requestType unique identifier of the asset that the annotations should be attached to
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
@@ -42,6 +48,7 @@ public class GovernanceContext
      * @param openMetadataStore client to the metadata store for use by the governance action service
      */
     public GovernanceContext(String                     userId,
+                             String                     governanceActionGUID,
                              String                     requestType,
                              Map<String, String>        requestParameters,
                              List<RequestSourceElement> requestSourceElements,
@@ -49,6 +56,7 @@ public class GovernanceContext
                              OpenMetadataClient         openMetadataStore)
     {
         this.userId = userId;
+        this.governanceActionGUID = governanceActionGUID;
         this.requestType = requestType;
         this.requestParameters = requestParameters;
         this.requestSourceElements = requestSourceElements;
@@ -146,17 +154,93 @@ public class GovernanceContext
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
+     *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
      *                                     action service completion status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public void recordCompletionStatus(CompletionStatus status,
-                                       List<String>     outputGuards) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public synchronized  void recordCompletionStatus(CompletionStatus    status,
+                                                     List<String>        outputGuards) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
-        openMetadataStore.recordCompletionStatus(status, outputGuards);
+        this.completionStatus = status;
+
+        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, null);
+    }
+
+
+    /**
+     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     *
+     * @param status completion status enum value
+     * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
+     *                                     action service completion status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public synchronized  void recordCompletionStatus(CompletionStatus      status,
+                                                     List<String>          outputGuards,
+                                                     List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        this.completionStatus = status;
+
+        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargets);
+    }
+
+
+    /**
+     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     *
+     * @param status completion status enum value
+     * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newRequestParameters additional request parameters.  These override/augment any request parameters defined for the next invoked service
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
+     *                                     action service completion status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public synchronized  void recordCompletionStatus(CompletionStatus      status,
+                                                     List<String>          outputGuards,
+                                                     Map<String, String>   newRequestParameters,
+                                                     List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        this.completionStatus = status;
+
+        Map<String, String> combinedRequestParameters = new HashMap<>();
+
+        if (requestParameters != null)
+        {
+            combinedRequestParameters.putAll(requestParameters);
+        }
+
+        if (newRequestParameters != null)
+        {
+            combinedRequestParameters.putAll(newRequestParameters);
+        }
+
+        openMetadataStore.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargets);
+    }
+
+
+    /**
+     * Return any completion status from the governance action service.
+     *
+     * @return completion status enum
+     */
+    public synchronized CompletionStatus getCompletionStatus()
+    {
+        return completionStatus;
     }
 
 
@@ -174,7 +258,9 @@ public class GovernanceContext
                        ", requestParameters=" + requestParameters +
                        ", requestSourceElements=" + requestSourceElements +
                        ", actionTargetElements=" + actionTargetElements +
+                       ", completionStatus=" + completionStatus +
                        ", openMetadataStore=" + openMetadataStore +
+                       ", propertyHelper=" + propertyHelper +
                        '}';
     }
 }

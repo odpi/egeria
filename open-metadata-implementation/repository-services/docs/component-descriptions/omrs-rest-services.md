@@ -24,8 +24,9 @@ There are 4 REST APIs:
 * **Audit Log services API** providing information about the audit log and the destinations configured
   in the server.
 
+
 ----
-* Return to [Repository Services Design](.)
+* Return to [repository services component descriptions](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

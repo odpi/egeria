@@ -163,12 +163,24 @@ public enum DinoViewErrorCode implements ExceptionMessageSet
              "The system could not perform the requested action.",
              "Check the configuration of the view service and its platform."),
 
+    COULD_NOT_RETRIEVE_SERVICE_CONFIGURATION
+            (400, "OMVS-DINO-400-021",
+             "The dino view service operation {0} could not retrieve the configuration for service {1}",
+             "The system could not perform the requested action.",
+             "Check the configuration of the view service and its platform."),
+
+    COULD_NOT_RETRIEVE_GOVERNANCE_ENGINE
+            (400, "OMVS-DINO-400-022",
+             "The dino view service operation {0} could not find a governance engine with qualified name {1}",
+             "The system could not perform the requested action.",
+             "Please check the supplied engine name matches the engine service's engine configuration."),
+
     /*
      * Provide a catch-all error code in case Rex catches a Throwable. It will capture the Throwable
      * and package it into the REST response, but does not specific error handling for the error
      */
     UNKNOWN_ERROR
-            (400, "OMVS-DINO-400-020",
+            (400, "OMVS-DINO-400-099",
              "The dino view service caught an unknown error during operation {0}. The detailed message is {1}",
              "The system could not perform the requested action.",
              "Please check the detailed message and the system log.")

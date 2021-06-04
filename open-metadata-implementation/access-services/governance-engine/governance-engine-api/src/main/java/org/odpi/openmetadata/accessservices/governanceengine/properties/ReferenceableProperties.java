@@ -13,8 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Many open metadata entities are referenceable.  It means that they have a qualified name and additional
- * properties.
+ * Many open metadata entities are referenceable.  It means that they have a qualified name and additional properties.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,7 +24,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = GovernanceEngineProperties.class, name = "GovernanceEngineProperties"),
-                @JsonSubTypes.Type(value = GovernanceServiceProperties.class, name = "GovernanceServiceProperties")
+                @JsonSubTypes.Type(value = GovernanceServiceProperties.class, name = "GovernanceServiceProperties"),
+                @JsonSubTypes.Type(value = GovernanceActionProperties.class, name = "GovernanceActionProperties"),
+                @JsonSubTypes.Type(value = GovernanceActionTypeProperties.class, name = "GovernanceActionTypeProperties"),
+                @JsonSubTypes.Type(value = GovernanceActionProcessProperties.class, name = "GovernanceActionProcessProperties"),
         })
 public class ReferenceableProperties implements Serializable
 {
@@ -33,8 +35,7 @@ public class ReferenceableProperties implements Serializable
 
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
-    private Map<String, String>  vendorProperties     = null;
-    private Map<String, Object>  extendedProperties   = null;
+
 
     /**
      * Default constructor
@@ -56,8 +57,6 @@ public class ReferenceableProperties implements Serializable
         {
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
-            vendorProperties     = template.getVendorProperties();
-            extendedProperties   = template.getExtendedProperties();
         }
     }
 
@@ -118,73 +117,6 @@ public class ReferenceableProperties implements Serializable
     }
 
 
-    /**
-     * Return specific properties for the specific technology vendor.
-     *
-     * @return name value pairs
-     */
-    public Map<String, String> getVendorProperties()
-    {
-        if (vendorProperties == null)
-        {
-            return null;
-        }
-        else if (vendorProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(vendorProperties);
-        }
-    }
-
-
-    /**
-     * Set up specific properties for the specific technology vendor.
-     *
-     * @param vendorProperties name value pairs
-     */
-    public void setVendorProperties(Map<String, String> vendorProperties)
-    {
-        this.vendorProperties = vendorProperties;
-    }
-
-
-    /**
-     * Return the properties that have been defined for a subtype of this object that are not supported explicitly
-     * by this bean.
-     *
-     * @return property map
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up the properties that have been defined for a subtype of this object that are not supported explicitly
-     * by this bean.
-     *
-     * @param extendedProperties property map
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties)
-    {
-        this.extendedProperties = extendedProperties;
-    }
-
 
     /**
      * Standard toString method.
@@ -197,8 +129,6 @@ public class ReferenceableProperties implements Serializable
         return "ReferenceableProperties{" +
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", additionalProperties=" + additionalProperties +
-                       ", vendorProperties=" + vendorProperties +
-                       ", extendedProperties=" + extendedProperties +
                        '}';
     }
 
@@ -222,9 +152,7 @@ public class ReferenceableProperties implements Serializable
         }
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(vendorProperties, that.vendorProperties) &&
-                Objects.equals(extendedProperties, that.extendedProperties);
+                Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -236,6 +164,6 @@ public class ReferenceableProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, vendorProperties, extendedProperties);
+        return Objects.hash(qualifiedName, additionalProperties);
     }
 }

@@ -131,10 +131,6 @@ public class DatabaseViewElement implements MetadataElement, Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         DatabaseViewElement that = (DatabaseViewElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(databaseViewProperties, that.databaseViewProperties);

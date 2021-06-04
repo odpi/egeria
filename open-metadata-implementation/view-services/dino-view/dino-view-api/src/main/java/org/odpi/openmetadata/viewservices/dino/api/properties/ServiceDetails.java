@@ -6,10 +6,10 @@ package org.odpi.openmetadata.viewservices.dino.api.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
-import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
-
-import java.util.List;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,10 +19,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ServiceDetails {
 
+    public enum ServiceCat {
+        IntegrationService,
+        EngineService,
+        AccessService,
+        ViewService
+    }
+
     private static final long    serialVersionUID = 1L;
 
 
-    private String serviceName;
+    private ServiceCat               serviceCat;
+    private IntegrationServiceConfig integrationServiceConfig;
+    private EngineServiceConfig      engineServiceConfig;
+    private AccessServiceConfig      accessServiceConfig;
+    private ViewServiceConfig        viewServiceConfig;
 
 
     /**
@@ -41,19 +52,41 @@ public class ServiceDetails {
      */
     public ServiceDetails(ServiceDetails template) {
 
-        this.serviceName = template.getServiceName();
-
-
-
+        this.integrationServiceConfig = template.getIntegrationServiceConfig();
+        this.engineServiceConfig      = template.getEngineServiceConfig();
+        this.accessServiceConfig      = template.getAccessServiceConfig();
+        this.viewServiceConfig        = template.getViewServiceConfig();
     }
 
-    public String getServiceName() {  return serviceName;  }
+    public ServiceCat getServiceCat() {  return serviceCat;  }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    public void setServiceCat(ServiceCat serviceCat) {
+        this.serviceCat = serviceCat;
     }
 
+    public IntegrationServiceConfig getIntegrationServiceConfig() {  return integrationServiceConfig;  }
 
+    public void setIntegrationServiceConfig(IntegrationServiceConfig integrationServiceConfig) {
+        this.integrationServiceConfig = integrationServiceConfig;
+    }
+
+    public EngineServiceConfig getEngineServiceConfig() {  return engineServiceConfig;  }
+
+    public void setEngineServiceConfig(EngineServiceConfig engineServiceConfig) {
+        this.engineServiceConfig = engineServiceConfig;
+    }
+
+    public AccessServiceConfig getAccessServiceConfig() {  return accessServiceConfig;  }
+
+    public void setAccessServiceConfig(AccessServiceConfig accessServiceConfig) {
+        this.accessServiceConfig = accessServiceConfig;
+    }
+
+    public ViewServiceConfig getViewServiceConfig() {  return viewServiceConfig;  }
+
+    public void setViewServiceConfig(ViewServiceConfig viewServiceConfig) {
+        this.viewServiceConfig = viewServiceConfig;
+    }
 
 
 }

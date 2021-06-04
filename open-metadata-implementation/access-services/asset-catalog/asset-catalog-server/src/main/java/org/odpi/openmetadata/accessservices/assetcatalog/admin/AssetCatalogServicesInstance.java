@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
+import lombok.Getter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
@@ -21,7 +22,18 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
 
     private static final AccessServiceDescription description = AccessServiceDescription.ASSET_CATALOG_OMAS;
 
+    /**
+     * Return the handler for assets requests
+     * @return handler object
+     */
+    @Getter
     private AssetCatalogHandler assetCatalogHandler;
+
+    /**
+     * Return the handler for relationships requests
+     * @return handler object
+     */
+    @Getter
     private RelationshipHandler relationshipHandler;
 
     /**
@@ -51,25 +63,4 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
                     methodName);
         }
     }
-
-
-    /**
-     * Return the handler for assets requests
-     *
-     * @return handler object
-     */
-    AssetCatalogHandler getAssetCatalogHandler() {
-        return assetCatalogHandler;
-    }
-
-
-    /**
-     * Return the handler for relationships requests
-     *
-     * @return handler object
-     */
-    RelationshipHandler getRelationshipHandler() {
-        return relationshipHandler;
-    }
-
 }

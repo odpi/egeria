@@ -80,9 +80,9 @@ public class GovernanceConfigRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -121,9 +121,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElement(handler.getGovernanceEngineByGUID(userId, guid));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -162,9 +162,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElement(handler.getGovernanceEngineByName(userId, name));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -205,9 +205,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElements(handler.getAllGovernanceEngines(userId, startingFrom, maximumResults));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -268,9 +268,9 @@ public class GovernanceConfigRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -320,9 +320,9 @@ public class GovernanceConfigRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -381,9 +381,9 @@ public class GovernanceConfigRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -422,9 +422,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElement(handler.getGovernanceServiceByGUID(userId, guid));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -463,9 +463,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElement(handler.getGovernanceServiceByName(userId, name));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -506,9 +506,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElements(handler.getAllGovernanceServices(userId, startingFrom, maximumResults));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -547,9 +547,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUIDs(handler.getGovernanceServiceRegistrations(userId, governanceServiceGUID));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -607,9 +607,9 @@ public class GovernanceConfigRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -660,9 +660,9 @@ public class GovernanceConfigRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -717,9 +717,9 @@ public class GovernanceConfigRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -760,9 +760,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setRegisteredGovernanceService(handler.getRegisteredGovernanceService(userId, governanceEngineGUID, governanceServiceGUID));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -805,9 +805,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
             response.setGUIDs(handler.getRegisteredGovernanceServices(userId, governanceEngineGUID, startingFrom, maximumResults));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -853,9 +853,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.unregisterGovernanceServiceRequestFromEngine(userId, requestType, governanceEngineGUID, governanceServiceGUID);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -899,9 +899,9 @@ public class GovernanceConfigRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.unregisterGovernanceServiceFromEngine(userId, governanceEngineGUID, governanceServiceGUID);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

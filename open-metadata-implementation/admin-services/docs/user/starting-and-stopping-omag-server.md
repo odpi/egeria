@@ -8,31 +8,34 @@ for an [OMAG Server](../concepts/omag-server.md), it can be started using the fo
 REST call:
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance
 ```
 
 and stopped, as follows:
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance
 ```
 
 The configuration document is not changed by these calls.
 It is possible to query the running server's configuration using the following REST API:
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance/configuration
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/instance/configuration
 ```
 
 If you want to delete the server's configuration document then issue:
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}
 ```
 
 If the OMAG server is running, this command also unregisters the named server from the cohorts it
 is connected to.  Only use this command if the server is being permanently removed.
 
+----
+
+* Return to [operating an OMAG Server](operating-omag-server.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/open-metadata/admin-services/users/{userId}")
 
 @Tag(name="Administration Services - Operational",
-        description="The operational administration services support the management" +
+        description="The operational administration services support the management " +
                 "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
         externalDocs=@ExternalDocumentation(description="Further information",
                 url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/operating-omag-server.html"))

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.DataEnginePropertiesMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -32,7 +32,6 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
      * @param patchLevel           new patch level for the discovery engine implementation.
      * @param source               new source description for the implementation of the discovery engine.
      * @param additionalProperties additional properties
-     * @param extendedProperties   properties from the subtype.
      * @param repositoryHelper     helper methods
      * @param serviceName          name of this OMAS
      * @param serverName           name of local server
@@ -40,11 +39,10 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
     public ExternalDataEnginePropertiesBuilder(String qualifiedName, String name, String description,
                                                String type, String version, String patchLevel, String source,
                                                Map<String, String> additionalProperties,
-                                               Map<String, Object> extendedProperties,
                                                OMRSRepositoryHelper repositoryHelper, String serviceName,
                                                String serverName) {
 
-        super(qualifiedName, additionalProperties, extendedProperties, repositoryHelper, serviceName, serverName);
+        super(qualifiedName, additionalProperties, repositoryHelper, serviceName, serverName);
 
         this.name = name;
         this.description = description;
@@ -69,32 +67,32 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
 
         if (name != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    DataEnginePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, name, methodName);
+                    OpenMetadataAPIMapper.NAME_PROPERTY_NAME, name, methodName);
         }
 
         if (description != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    DataEnginePropertiesMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+                    OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
         }
 
         if (type != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    DataEnginePropertiesMapper.TYPE_DESCRIPTION_PROPERTY_NAME, type, methodName);
+                    OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME_DEP, type, methodName);
         }
 
         if (version != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    DataEnginePropertiesMapper.VERSION_PROPERTY_NAME, version, methodName);
+                    OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME_DEP, version, methodName);
         }
 
         if (patchLevel != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    DataEnginePropertiesMapper.PATCH_LEVEL_PROPERTY_NAME, patchLevel, methodName);
+                    OpenMetadataAPIMapper.PATCH_LEVEL_PROPERTY_NAME, patchLevel, methodName);
         }
 
         if (source != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    DataEnginePropertiesMapper.SOURCE_PROPERTY_NAME, source, methodName);
+                    OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME, source, methodName);
         }
 
         return properties;
@@ -115,7 +113,7 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
             String literalName = repositoryHelper.getExactMatchRegex(name);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    DataEnginePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, literalName, methodName);
+                    OpenMetadataAPIMapper.NAME_PROPERTY_NAME, literalName, methodName);
         }
 
         return properties;

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * PersonalProfileResponse is the response structure used on the OMAS REST API calls that return a
- * PersonalProfile object as a response.
+ * PersonalProfileUniverse object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,7 +25,7 @@ public class PersonalProfileResponse extends CommunityProfileOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private PersonalProfile personalProfile = null;
+    private PersonalProfileUniverse personalProfile = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class PersonalProfileResponse extends CommunityProfileOMASAPIResponse
      *
      * @return details of individual
      */
-    public PersonalProfile getPersonalProfile()
+    public PersonalProfileUniverse getPersonalProfile()
     {
         return personalProfile;
     }
@@ -69,7 +69,7 @@ public class PersonalProfileResponse extends CommunityProfileOMASAPIResponse
      *
      * @param personalProfile details of individual
      */
-    public void setPersonalProfile(PersonalProfile personalProfile)
+    public void setPersonalProfile(PersonalProfileUniverse personalProfile)
     {
         this.personalProfile = personalProfile;
     }

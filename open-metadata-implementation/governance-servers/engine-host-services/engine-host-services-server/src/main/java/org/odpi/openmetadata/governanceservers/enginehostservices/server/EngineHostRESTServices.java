@@ -63,21 +63,9 @@ public class EngineHostRESTServices
 
             instanceHandler.refreshConfig(userId, serverName, governanceEngineName, methodName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -98,8 +86,8 @@ public class EngineHostRESTServices
      *  UserNotAuthorizedException user does not have access to the requested server
      *  PropertyServerException the service name is not known - indicating a logic error
      */
-    public GovernanceEngineSummaryResponse getGovernanceEngineSummary(String userId,
-                                                                      String serverName,
+    public GovernanceEngineSummaryResponse getGovernanceEngineSummary(String serverName,
+                                                                      String userId,
                                                                       String governanceEngineName)
     {
         final String methodName = "getGovernanceEngineSummary";
@@ -115,21 +103,9 @@ public class EngineHostRESTServices
 
             response.setGovernanceEngineSummary(instanceHandler.getGovernanceEngineSummary(userId, serverName, governanceEngineName, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -166,21 +142,9 @@ public class EngineHostRESTServices
 
             response.setGovernanceEngineSummaries(instanceHandler.getGovernanceEngineSummaries(userId, serverName, serviceURLMarker, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -215,21 +179,9 @@ public class EngineHostRESTServices
 
             response.setGovernanceEngineSummaries(instanceHandler.getGovernanceEngineSummaries(userId, serverName, methodName));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

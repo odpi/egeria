@@ -26,9 +26,10 @@ Some processes copy data from one store to another.  Other processes may retriev
 from multiple stores and combine them to produce a new value that is stored in another store.
 The result is that a logical flow of data emerges from the interaction. 
 
-
 ![Figure 2](lineage-capture.png#pagewidth)
 > **Figure 2:** The lineage graph emerges
+
+## Lineage Capture
 
 Since there is no over-arching controller, lineage capture involves contributions from many
 technologies that have to be stitched together to created the overall flow.
@@ -65,31 +66,68 @@ Figure 4 shows the lineage mapping between processes.
 This shows the flow of control between processes but no details about the
 processing inside the processes.
 
-![Figure 4](lineage-mapping-process-to-process.png#pagewidth)
+![Figure 4](lineage-mapping-process-to-process.png)
 > **Figure 4:** Lineage mapping between processes
 
 Figure 5 shows lineage mapping between ports on the processes.  This detail is useful for
 more complex processes where different subsets of data fields are received and sent by the
 process through different interfaces.
 
-![Figure 5](lineage-mapping-port-to-port.png#pagewidth)
+![Figure 5](lineage-mapping-port-to-port.png)
 > **Figure 5:** Lineage mapping between ports
 
 Figure 6 shows detailed mapping between data fields.  This level of lineage means that it is possible to
 trace what is happening with specific data fields.
 
-![Figure 6](lineage-mapping-data-fields.png#pagewidth)
+![Figure 6](lineage-mapping-data-fields.png)
 > **Figure 6:** Lineage mapping between the data fields
 
-Figure 7 shows lineage across multiple technologies.
+Figure 7 shows lineage across multiple technologies where the lineage mapping is done at different levels
+of detail.
 
 ![Figure 7](complex-lineage-mapping.png#pagewidth)
-> **Figure 6:** Lineage mapping between the data fields
+> **Figure 7:** Lineage mapping between the data fields
+
+## Lineage capture for Dynamic landscapes
+
+In some situations, particularly when working with files, there are data sources that only
+have an existence for a short period of time.
+
+When an asset is deleted from the open metadata repositories, all of its
+relationships with other elements are also deleted.
+This includes the lineage relationships.
+So we do not want to delete the asset if it is needed for lineage.
+Similarly if we just leave it unchanged, it suggests that there is a file in the landing area
+which would be confusing to users of the catalog.
+
+It is possible to move assets out of the
+[governance zones](../../../open-metadata-implementation/access-services/docs/concepts/governance-zones) where
+active users are working with assets.  This ensures the assets are no longer
+visible to these users.  However it also means they are not visible for the lineage graph either.
+
+There is an option to mark assets as deleted whilst sill keeping them in the
+active governance zones.
+This involves adding the [Memento](../open-metadata-types/0010-Base-Model.md) 
+classification to the asset.  With this classification in place, the
+asset is only returned on lineage queries.
+
+The Memento classification is set in APIs such as the
+`archiveDataFileInCatalog()` methods on the 
+[Data Manager Open Metadata Access Service (OMAS)](../../../open-metadata-implementation/access-services/data-manager)
+and
+[Files Integrator Open Metadata Integration Service (OMIS)](../../../open-metadata-implementation/integration-services/files-integrator).
 
 ## Further reading
 
+* [Modeling technology using open metadata types](../modelling-technology)
+* [File Lineage solutions using Egeria](../solutions/file-lineage)
+
+APIs for capturing lineage
+* [Asset Manager Open Metadata Access Service (OMAS)](../../../open-metadata-implementation/access-services/asset-manager)
 * [Lineage Integrator Open Metadata Integration Server (OMIS)](../../../open-metadata-implementation/integration-services/lineage-integrator)
 
+APIs for retrieving lineage
+* [Open Lineage Services](../../../open-metadata-implementation/governance-servers/open-lineage-services)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

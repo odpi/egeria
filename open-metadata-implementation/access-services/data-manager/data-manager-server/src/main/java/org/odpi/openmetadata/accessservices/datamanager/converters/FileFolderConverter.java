@@ -73,13 +73,10 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
                     fileFolderProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     fileFolderProperties.setDisplayName(this.removeName(instanceProperties));
                     fileFolderProperties.setDescription(this.removeDescription(instanceProperties));
+                    fileFolderProperties.setPathName(this.removePathName(instanceProperties));
+                    fileFolderProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
+                    fileFolderProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    fileFolderProperties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    fileFolderProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    fileFolderProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
@@ -88,24 +85,6 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
                     fileFolderProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     fileFolderProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                    fileFolderProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                    fileFolderProperties.setOwner(this.getOwner(instanceProperties));
-                    fileFolderProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                    fileFolderProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    fileFolderProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    fileFolderProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
 

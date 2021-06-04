@@ -149,8 +149,7 @@
 					"response": []
 				}
 			],
-			"description": "These rest calls allow you to work with the configuration document.",
-			"protocolProfileBehavior": {}
+			"description": "These rest calls allow you to work with the configuration document."
 		},
 		{
 			"name": "Configuring OMAG Servers",
@@ -615,11 +614,44 @@
 								"description": "Delete the list of audit log destinations configured for a server."
 							},
 							"response": []
+						},
+						{
+							"name": "Set up event bus to send/receive events to other technologies Copy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"producer\":\n{\n\"bootstrap.servers\":\"{{kafkaep}}\"\n},\n\"consumer\":\n{\n\"bootstrap.servers\":\"{{kafkaep}}\"\n}\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"event-bus"
+									]
+								},
+								"description": "Set up the common properties needed to call your event bus.  The eventBusParams variable support the setting of the topic root and connector provider class name (if not using Kafka).  Additional properties are passed in the request body."
+							},
+							"response": []
 						}
 					],
-					"description": "This folder has the configuration commands that are common for all types of OMAG Server.\n\nThis is the link to their documentation https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-omag-server-basic-properties.html",
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					"description": "This folder has the configuration commands that are common for all types of OMAG Server.\n\nThis is the link to their documentation https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-omag-server-basic-properties.html"
 				},
 				{
 					"name": "Configuration for Cohort Members",
@@ -763,9 +795,7 @@
 									"response": []
 								}
 							],
-							"description": "These values need to be set up first when configuring a cohort member.  These are the links to the documentation:\n* https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-event-bus.html\n* https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-local-server-url.html",
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							"description": "These values need to be set up first when configuring a cohort member.  These are the links to the documentation:\n* https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-event-bus.html\n* https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-local-server-url.html"
 						},
 						{
 							"name": "Configuration for Metadata Access Points",
@@ -942,9 +972,7 @@
 											"response": []
 										}
 									],
-									"description": "These are the specialized requests for metadata servers.",
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									"description": "These are the specialized requests for metadata servers."
 								},
 								{
 									"name": "Get registered access services",
@@ -1325,7 +1353,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "a59574e9-82e7-44f7-8995-7ac46584a713",
 										"type": "text/javascript",
 										"exec": [
 											""
@@ -1335,16 +1362,13 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ea309630-c700-4284-96eb-29572778029c",
 										"type": "text/javascript",
 										"exec": [
 											""
 										]
 									}
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						},
 						{
 							"name": "Configuration for Repository Proxies",
@@ -1454,9 +1478,7 @@
 									"response": []
 								}
 							],
-							"description": "This folder contains the specialized configuration for a repository proxy server.\nThis type of server it typically a cohort member and also needs the configuration values common to all types of server.",
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							"description": "This folder contains the specialized configuration for a repository proxy server.\nThis type of server it typically a cohort member and also needs the configuration values common to all types of server."
 						},
 						{
 							"name": "Add cohort configuration",
@@ -1481,6 +1503,37 @@
 										"{{server}}",
 										"cohorts",
 										"{{cohort}}"
+									]
+								},
+								"description": "Request registration to an Open Metadata Repository Cohort.  Make sure you have set up the event bus configuration defaults before making this request."
+							},
+							"response": []
+						},
+						{
+							"name": "Add cohort configuration with topic structure",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-structure/DEDICATED_TOPICS",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"topic-structure",
+										"DEDICATED_TOPICS"
 									]
 								},
 								"description": "Request registration to an Open Metadata Repository Cohort.  Make sure you have set up the event bus configuration defaults before making this request."
@@ -1520,7 +1573,7 @@
 							"response": []
 						},
 						{
-							"name": "Override cohort topic name",
+							"name": "Override single cohort topic name",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -1562,7 +1615,136 @@
 							"response": []
 						},
 						{
-							"name": "Get cohort topic name",
+							"name": "Override registration cohort topic name",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "cp.cohort.{{cohort}}.registration",
+									"options": {
+										"raw": {
+											"language": "text"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/registration",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"topic-name-override",
+										"registration"
+									]
+								},
+								"description": "Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate."
+							},
+							"response": []
+						},
+						{
+							"name": "Override types cohort topic name",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "cp.cohort.{{cohort}}.types",
+									"options": {
+										"raw": {
+											"language": "text"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/types",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"topic-name-override",
+										"types"
+									]
+								},
+								"description": "Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate."
+							},
+							"response": []
+						},
+						{
+							"name": "Override instances cohort topic name",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "cp.cohort.{{cohort}}.instances",
+									"options": {
+										"raw": {
+											"language": "text"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/instances",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"topic-name-override",
+										"instances"
+									]
+								},
+								"description": "Set up the name of the topic that the server sould use to connect to the name Open Metadata Repository Cohort.  Obviously this value needs to be the same in all members of the cohort in order for them to be able to communicate."
+							},
+							"response": []
+						},
+						{
+							"name": "Get single cohort topic name",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -1581,6 +1763,32 @@
 										"cohorts",
 										"{{cohort}}",
 										"topic-name"
+									]
+								},
+								"description": "Return the name of the topic used by the requested cohort."
+							},
+							"response": []
+						},
+						{
+							"name": "Get dedicated cohort topic names",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/dedicated-topic-names",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"cohorts",
+										"{{cohort}}",
+										"dedicated-topic-names"
 									]
 								},
 								"description": "Return the name of the topic used by the requested cohort."
@@ -1622,7 +1830,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "d33d66ca-d6b8-4135-8dc5-899367b8d361",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -1632,16 +1839,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a8f85975-55fa-4ee4-8592-1318acc36939",
 								"type": "text/javascript",
 								"exec": [
 									""
 								]
 							}
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Configuration for Engine Host Servers",
@@ -1779,9 +1983,7 @@
 							"response": []
 						}
 					],
-					"description": "This folder includes the requests for configuring engine services in an Engine Host OMAG Server.",
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					"description": "This folder includes the requests for configuring engine services in an Engine Host OMAG Server."
 				},
 				{
 					"name": "Configuration for Integration Daemons",
@@ -1919,13 +2121,186 @@
 							"response": []
 						}
 					],
-					"description": "An Integration Daemon is an OMAG Server that hosts integration services.  Each integration service hosts one or more integration connectors.\n\nThe Integration daemon is configured in two stages:\n* Add the audit log configuration\n* Add the list of Connections for the integration connectors for each of the integration services that are to run in the integration connector.\n\nDetails on configuring integration daemons can be found here:\nhttps://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/integration-daemon.html",
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					"description": "An Integration Daemon is an OMAG Server that hosts integration services.  Each integration service hosts one or more integration connectors.\n\nThe Integration daemon is configured in two stages:\n* Add the audit log configuration\n* Add the list of Connections for the integration connectors for each of the integration services that are to run in the integration connector.\n\nDetails on configuring integration daemons can be found here:\nhttps://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/integration-daemon.html"
 				},
 				{
 					"name": "Configuring View Servers",
 					"item": [
+						{
+							"name": "Configure the REX View Services",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.rex.admin.RexViewAdmin\",\n    \"viewServiceFullName\":\"RepositoryExplorer\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName1\",\n            \"serverName\"         : \"myServerName1\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName1 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName2\",\n            \"serverName\"         : \"myServerName2\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName2 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName3\",\n            \"serverName\"         : \"myServerName3\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"description\"        : \"myServerName3 description \"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/rex",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"view-services",
+										"rex"
+									]
+								},
+								"description": "Requests information about the author of the server platform."
+							},
+							"response": []
+						},
+						{
+							"name": "Configure the TEX View Services",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.rex.admin.TexViewAdmin\",\n    \"viewServiceFullName\":\"TypeExplorer\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName1\",\n            \"serverName\"         : \"myServerName1\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName1 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName2\",\n            \"serverName\"         : \"myServerName2\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName2 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName3\",\n            \"serverName\"         : \"myServerName3\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"description\"        : \"myServerName3 description \"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/tex",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"view-services",
+										"tex"
+									]
+								},
+								"description": "Requests information about the author of the server platform."
+							},
+							"response": []
+						},
+						{
+							"name": "Configure the Dino View Services",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.dino.admin.DinoViewAdmin\",\n    \"viewServiceFullName\":\"Dino\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName1\",\n            \"serverName\"         : \"myServerName1\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName1 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName2\",\n            \"serverName\"         : \"myServerName2\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName2 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName3\",\n            \"serverName\"         : \"myServerName3\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"description\"        : \"myServerName3 description \"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/dino",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"view-services",
+										"dino"
+									]
+								},
+								"description": "Requests information about the author of the server platform."
+							},
+							"response": []
+						},
+						{
+							"name": "Configure the Server Author View Services",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.serverauthor.admin.ServerAuthorViewAdmin\",\n    \"viewFullServiceName\":\"ServerAuthor\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"omagserverPlatformRootURL\":\"myPlatformRootURL1\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/server-author",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"view-services",
+										"server-author"
+									]
+								},
+								"description": "Requests information about the author of the server platform."
+							},
+							"response": []
+						},
+						{
+							"name": "Configure the Glossary Author View services",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "      { \n         \"class\":\"ViewServiceConfig\",\n         \"omagserverName\":\"myMetadataAccessPoint\",\n         \"omagserverPlatformRootURL\":\"myPlatformRootURL1\"\n      }"
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/glossary-author",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{user}}",
+										"servers",
+										"{{server}}",
+										"view-services",
+										"glossary-author"
+									]
+								},
+								"description": "Requests information about the author of the server platform."
+							},
+							"response": []
+						},
 						{
 							"name": "Get registered view services",
 							"request": {
@@ -1975,14 +2350,10 @@
 							"response": []
 						}
 					],
-					"description": "This folder contains the requests used to configure view services in a view server.",
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					"description": "This folder contains the requests used to configure view services in a view server."
 				}
 			],
-			"description": "This folder groups all of the requests to configure the different types of OMAG Servers.  There is a folder for requests that are common to all types of OMAG Servers, and then aditional folders for specialized OMAG Servers.",
-			"protocolProfileBehavior": {}
+			"description": "This folder groups all of the requests to configure the different types of OMAG Servers.  There is a folder for requests that are common to all types of OMAG Servers, and then aditional folders for specialized OMAG Servers."
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

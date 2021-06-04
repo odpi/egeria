@@ -97,7 +97,7 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   ITInfrastructureAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

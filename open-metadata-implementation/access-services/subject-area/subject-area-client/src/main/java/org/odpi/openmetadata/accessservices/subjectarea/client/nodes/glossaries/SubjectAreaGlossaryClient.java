@@ -92,6 +92,7 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @param userId unique identifier for requesting user, under which the request is performed.
      * @param guid  unique identifier of the object to which the found objects should relate.
      * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
+     * @param maximumPageSizeOnRestCall maximum page size on rest call.
      * @return list of Terms
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.

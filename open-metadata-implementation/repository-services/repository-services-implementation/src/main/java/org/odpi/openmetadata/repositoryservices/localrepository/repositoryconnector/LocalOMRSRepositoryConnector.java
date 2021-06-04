@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryMode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
@@ -59,6 +60,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      * @param saveExchangeRule rule to determine what events to save to the local repository.
      */
     protected LocalOMRSRepositoryConnector(OMRSRepositoryConnector            realLocalConnector,
+                                           LocalRepositoryMode                localRepositoryMode,
                                            OMRSRepositoryEventMapperConnector realEventMapper,
                                            OMRSRepositoryEventManager         outboundRepositoryEventManager,
                                            OMRSRepositoryContentManager       repositoryContentManager,
@@ -88,25 +90,34 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                          outboundRepositoryEventManager);
         }
 
+
         /*
-         * The realEventMapper is a plug-in component that handles repository events for
-         * repository that have additional APIs for managing metadata and need their own mechanism for
-         * sending OMRS Repository Events.  If there is no realEventMapper then the localOMRSMetadataCollection
-         * will send the outbound repository events.
+         * The local repository is not allowed to produce events for a repository proxy.
+         * The event mapper is optional and only ever activated in a repository proxy.
          */
-        if (realEventMapper != null)
+        if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY)
         {
-            realEventMapper.initialize(repositoryEventMapperName,
-                                       realLocalConnector);
-            realEventMapper.setRepositoryEventProcessor(outboundRepositoryEventManager);
             produceEventsForRealConnector = false;
+
+            /*
+             * The realEventMapper is a plug-in component that handles repository events for
+             * repository that have additional APIs for managing metadata and need their own mechanism for
+             * sending OMRS Repository Events.  If there is no realEventMapper then the localOMRSMetadataCollection
+             * will send the outbound repository events.
+             */
+            if (realEventMapper != null)
+            {
+                realEventMapper.initialize(repositoryEventMapperName,
+                                           realLocalConnector);
+                realEventMapper.setRepositoryEventProcessor(outboundRepositoryEventManager);
+            }
         }
 
     }
 
 
     /**
-     * Set up a new security verifier (the metadata collection runs with a default verifier until this
+     * Set up a new security verifier (the cohort manager runs with a default verifier until this
      * method is called).
      *
      * The security verifier provides authorization checks for access and maintenance
@@ -390,13 +401,14 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                           super.repositoryHelper,
                                                           super.repositoryValidator,
                                                           saveExchangeRule,
+                                                          produceEventsForRealConnector,
                                                           outboundRepositoryEventManager,
                                                           auditLog.createNewAuditLog(OMRSAuditingComponent.INSTANCE_EVENT_PROCESSOR));
 
             this.incomingInstanceEventProcessor = localOMRSInstanceEventProcessor;
             this.instanceRetrievalEventProcessor = localOMRSInstanceEventProcessor;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(repositoryName),
                                               this.getClass().getName(),

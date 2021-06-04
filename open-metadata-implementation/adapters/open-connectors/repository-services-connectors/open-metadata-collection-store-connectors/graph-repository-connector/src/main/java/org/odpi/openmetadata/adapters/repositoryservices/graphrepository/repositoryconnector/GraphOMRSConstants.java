@@ -20,6 +20,7 @@ public class GraphOMRSConstants {
     // Short names for core properties
 
     public static final String PROPERTY_NAME_GUID                             = "guid";
+    public static final String PROPERTY_NAME_REIDENTIFIED_FROM_GUID           = "reIdentifiedFromGUID";
     public static final String PROPERTY_NAME_TYPE_NAME                        = "typeName";
     public static final String PROPERTY_NAME_METADATACOLLECTION_ID            = "metadataCollectionId";
     public static final String PROPERTY_NAME_METADATACOLLECTION_NAME          = "metadataCollectionName";
@@ -65,6 +66,7 @@ public class GraphOMRSConstants {
         put(PROPERTY_NAME_ENTITY_IS_PROXY,                "java.lang.Boolean");
         put(PROPERTY_NAME_REPLICATED_BY,                  "java.lang.String");
         put(PROPERTY_NAME_MAPPING_PROPERTIES,             "java.lang.String");     // map of string->serializable stored in serialized form
+        put(PROPERTY_NAME_REIDENTIFIED_FROM_GUID,         "java.lang.String");
     }};
 
 
@@ -77,6 +79,7 @@ public class GraphOMRSConstants {
     public static final String PROPERTY_KEY_PREFIX_ENTITY                   = "ve";
 
     public static final String PROPERTY_KEY_ENTITY_GUID                     = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_GUID;
+    public static final String PROPERTY_KEY_ENTITY_REIDENTIFIED_FROM_GUID   = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_REIDENTIFIED_FROM_GUID;
     public static final String PROPERTY_KEY_ENTITY_TYPE_NAME                = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_TYPE_NAME;
     public static final String PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID    = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_METADATACOLLECTION_ID;
     public static final String PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME  = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_METADATACOLLECTION_NAME;
@@ -130,6 +133,7 @@ public class GraphOMRSConstants {
 
 
     public static final String PROPERTY_KEY_RELATIONSHIP_GUID                        = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_GUID;
+    public static final String PROPERTY_KEY_RELATIONSHIP_REIDENTIFIED_FROM_GUID      = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_REIDENTIFIED_FROM_GUID;
     public static final String PROPERTY_KEY_RELATIONSHIP_TYPE_NAME                   = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_TYPE_NAME;
     public static final String PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID       = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_METADATACOLLECTION_ID;
     public static final String PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME     = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_METADATACOLLECTION_NAME;
@@ -150,6 +154,7 @@ public class GraphOMRSConstants {
     // Map of names to property key names
     protected static final Map<String, String> corePropertiesRelationship = new HashMap<String,String>() {{
         put(PROPERTY_NAME_GUID, PROPERTY_KEY_RELATIONSHIP_GUID);
+        put(PROPERTY_NAME_REIDENTIFIED_FROM_GUID, PROPERTY_KEY_RELATIONSHIP_REIDENTIFIED_FROM_GUID);
         put(PROPERTY_NAME_TYPE_NAME, PROPERTY_KEY_RELATIONSHIP_TYPE_NAME);
         put(PROPERTY_NAME_METADATACOLLECTION_ID, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID);
         put(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME);
@@ -224,7 +229,14 @@ public class GraphOMRSConstants {
         return PROPERTY_KEY_PREFIX_CLASSIFICATION + propertyName;
     }
 
-
+    /*
+     * Constant separator for qualifiedPropertyNames for type-defined attributes. The separator is inserted
+     * between the type name and the (short) property name. It serves no function purpose but improves readability
+     * of things like qualified property names and index names, both of which appear in debug logs.
+     * The separator is deliberately alphanumeric (only) because other characters are not compatible with the
+     * Lucene indexing interface.
+     */
+    public static final String QUALIFIED_PROPERTY_SEPARATOR = "x";
 
     public enum ElementType {
         Vertex,

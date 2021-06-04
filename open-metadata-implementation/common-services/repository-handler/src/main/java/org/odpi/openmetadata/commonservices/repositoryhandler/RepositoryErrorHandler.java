@@ -120,7 +120,18 @@ public class RepositoryErrorHandler
             Map<String, InstancePropertyValue> instancePropertyValueMap = retrievedProperties.getInstanceProperties();
             InstancePropertyValue retrievedPropertyValue = instancePropertyValueMap.get(validatingPropertyName);
 
-            if (! validatingProperty.equals(retrievedPropertyValue.valueAsString()))
+            if (retrievedPropertyValue == null)
+            {
+                throw new InvalidParameterException(
+                        RepositoryHandlerErrorCode.UNRECOGNIZED_PROPERTY.getMessageDefinition(validatingPropertyName,
+                                                                                               validatingProperty,
+                                                                                               methodName,
+                                                                                               instanceGUID),
+                        this.getClass().getName(),
+                        methodName,
+                        validatingPropertyName);
+            }
+            else if (! validatingProperty.equals(retrievedPropertyValue.valueAsString()))
             {
                 throw new InvalidParameterException(
                         RepositoryHandlerErrorCode.INVALID_PROPERTY_VALUE.getMessageDefinition(validatingPropertyName,
@@ -165,7 +176,8 @@ public class RepositoryErrorHandler
             return;
         }
 
-        if (instanceHeader.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
+        if ((instanceHeader.getInstanceProvenanceType() == null) ||
+            (instanceHeader.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT))
         {
             /*
              * Local cohort instances can be updated by any caller provided they have the right security (tested elsewhere).
@@ -299,6 +311,107 @@ public class RepositoryErrorHandler
 
 
     /**
+     * Throw an exception to indicate that a retrieved entity has missing information.
+     *
+     * @param expectedTypeName type name of instance
+     * @param methodName calling method
+     */
+    public void logNullInstance(String  expectedTypeName,
+                                String  methodName)
+    {
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.NULL_INSTANCE.getMessageDefinition(expectedTypeName, methodName, serviceName));
+        }
+    }
+
+
+    /**
+     * Throw an exception to indicate that a retrieved entity has missing information.
+     *
+     * @param expectedTypeName type name of instance
+     * @param entity the entity with the bad header
+     * @param methodName calling method
+     */
+    public void logBadEntity(String          expectedTypeName,
+                             EntityDetail    entity,
+                             String          methodName)
+    {
+        if (entity == null)
+        {
+            logNullInstance(expectedTypeName, methodName);
+        }
+        else if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.BAD_ENTITY.getMessageDefinition(expectedTypeName, methodName, serviceName, ((InstanceHeader)entity).toString()),
+                                entity.toString());
+        }
+    }
+
+
+    /**
+     * Throw an exception to indicate that a retrieved entity proxy is missing critical information.
+     *
+     * @param relationship the relationship with a bad entity proxy - not null
+     * @param end number of the end where the proxy is stored
+     * @param entityProxy the entity proxy with the bad values
+     * @param methodName calling method
+     */
+    public void handleBadEntityProxy(Relationship relationship,
+                                     int          end,
+                                     EntityProxy  entityProxy,
+                                     String       methodName)
+    {
+        if (auditLog != null)
+        {
+            String entityProxyString = "<null>";
+
+            if (entityProxy != null)
+            {
+                entityProxyString = entityProxy.toString();
+            }
+
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.BAD_ENTITY_PROXY.getMessageDefinition(relationship.getGUID(),
+                                                                                                 methodName,
+                                                                                                 serviceName,
+                                                                                                 Integer.toString(end),
+                                                                                                 entityProxyString));
+        }
+    }
+
+
+    /**
+     * Throw an exception to indicate that a critical instance (typically the main entity) has not been passed
+     * to the converter.
+     *
+     * @param expectedTypeName type name of instance
+     * @param relationship the relationship with the bad header
+     * @param methodName calling method
+     */
+    public void logBadRelationship(String       expectedTypeName,
+                                   Relationship relationship,
+                                   String       methodName)
+    {
+        if (relationship == null)
+        {
+            logNullInstance(expectedTypeName, methodName);
+        }
+        else if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                RepositoryHandlerAuditCode.BAD_RELATIONSHIP.getMessageDefinition(expectedTypeName,
+                                                                                                 methodName,
+                                                                                                 serviceName,
+                                                                                                 ((InstanceHeader)relationship).toString()),
+                                relationship.toString());
+        }
+    }
+
+
+    /**
      * Throw an exception if the supplied guid returned an entity of the wrong type
      *
      * @param guid  unique identifier of entity
@@ -326,6 +439,8 @@ public class RepositoryErrorHandler
                                             defaultGUIDParameterName);
 
     }
+
+
 
 
     /**
@@ -456,16 +571,32 @@ public class RepositoryErrorHandler
      * @param error  caught exception
      * @param methodName  name of the method making the call
      * @param typeName  name of the property in error
+     * @throws PropertyServerException no audit log
      */
-    public void handleUnsupportedAnchorsType(Throwable  error,
+    public void handleUnsupportedAnchorsType(Exception  error,
                                              String     methodName,
-                                             String     typeName)
+                                             String     typeName) throws PropertyServerException
     {
-        auditLog.logMessage(methodName, RepositoryHandlerAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
-                                                                                                              typeName,
-                                                                                                              methodName,
-                                                                                                              error.getClass().getName(),
-                                                                                                              error.getMessage()));
+        if (auditLog != null)
+        {
+            auditLog.logException(methodName, RepositoryHandlerAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
+                                                                                                                    typeName,
+                                                                                                                    methodName,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                                  error);
+        }
+        else
+        {
+            throw new PropertyServerException(RepositoryHandlerErrorCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
+                                                                                                                    typeName,
+                                                                                                                    methodName,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                                              error.getClass().getName(),
+                                              methodName,
+                                              error);
+        }
     }
 
 
@@ -526,7 +657,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if there is a problem with the asset guid
+     * Throw an exception if there is a problem with the entity guid
      *
      * @param error  caught exception
      * @param entityGUID  unique identifier for the requested entity
@@ -548,6 +679,44 @@ public class RepositoryErrorHandler
                                                                                                            serviceName,
                                                                                                            serverName,
                                                                                                            error.getMessage()),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            error,
+                                            guidParameterName);
+
+    }
+
+
+    /**
+     * Throw an exception if there is a problem with the relationship guid
+     *
+     * @param error  caught exception
+     * @param relationshipGUID  unique identifier for the requested entity
+     * @param relationshipTypeName expected type of asset
+     * @param methodName  name of the method making the call
+     * @param guidParameterName name of the parameter that passed the GUID.
+     *
+     * @throws InvalidParameterException unexpected exception from property server
+     */
+    public void handleUnknownRelationship(Throwable error,
+                                          String    relationshipGUID,
+                                          String    relationshipTypeName,
+                                          String    methodName,
+                                          String    guidParameterName) throws InvalidParameterException
+    {
+        String typeName = "<Unknown>";
+
+        if (relationshipTypeName != null)
+        {
+            typeName = relationshipTypeName;
+        }
+
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.UNKNOWN_RELATIONSHIP.getMessageDefinition(typeName,
+                                                                                                                 relationshipGUID,
+                                                                                                                 methodName,
+                                                                                                                 serviceName,
+                                                                                                                 serverName,
+                                                                                                                 error.getMessage()),
                                             this.getClass().getName(),
                                             methodName,
                                             error,

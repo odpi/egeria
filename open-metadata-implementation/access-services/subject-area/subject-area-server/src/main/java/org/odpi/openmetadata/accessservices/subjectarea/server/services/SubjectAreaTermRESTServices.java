@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
@@ -63,11 +63,15 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.createTerm(userId, suppliedTerm);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -96,12 +100,16 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.getTermByGuid(userId, guid);
 
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -131,21 +139,23 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(String serverName,
-                                                                 String userId,
-                                                                 String guid,
-                                                                 Date asOfTime,
-                                                                 Integer startingFrom,
-                                                                 Integer pageSize,
-                                                                 SequencingOrder sequencingOrder,
-                                                                 String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getTermRelationships(String serverName,
+                                                                         String userId,
+                                                                         String guid,
+                                                                         Date asOfTime,
+                                                                         Integer startingFrom,
+                                                                         Integer pageSize,
+                                                                         SequencingOrder sequencingOrder,
+                                                                         String sequencingProperty
+                                                                        ) {
         String methodName = "getTermRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
@@ -156,6 +166,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             response = handler.getTermRelationships(userId, guid, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -189,7 +201,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                                                      Date asOfTime,
                                                      Integer startingFrom,
                                                      Integer pageSize,
-                                                     SequencingOrder sequencingOrder,
+                                                     String sequencingOrder,
                                                      String sequencingProperty) {
 
         final String methodName = "findTerm";
@@ -197,18 +209,16 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
-            FindRequest findRequest = new FindRequest();
-            findRequest.setSearchCriteria(searchCriteria);
-            findRequest.setAsOfTime(asOfTime);
-            findRequest.setStartingFrom(startingFrom);
-            findRequest.setPageSize(pageSize);
-            findRequest.setSequencingOrder(sequencingOrder);
-            findRequest.setSequencingProperty(sequencingProperty);
+            FindRequest findRequest = getFindRequest(searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty, handler.getMaxPageSize());
             response = handler.findTerm(userId, findRequest);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -228,7 +238,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @param userId       userId under which the request is performed
      * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
-     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceAction content is always replaced.
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceClassification content is always replaced.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
@@ -245,11 +255,15 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.updateTerm(userId, guid, suppliedTerm, isReplace);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -291,11 +305,15 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.deleteTerm(userId, guid, isPurge);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -325,11 +343,15 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.restoreTerm(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -359,7 +381,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
         try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             if (pageSize == null) {
                 pageSize = handler.getMaxPageSize();
@@ -367,6 +391,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             response = handler.getTermCategories(userId, guid, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName), startingFrom, pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
+        } catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);

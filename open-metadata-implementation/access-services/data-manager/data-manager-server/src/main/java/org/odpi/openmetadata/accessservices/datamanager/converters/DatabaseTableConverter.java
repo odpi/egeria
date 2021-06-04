@@ -4,7 +4,9 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ComplexSchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -94,6 +96,16 @@ public class DatabaseTableConverter<B> extends DataManagerOMASConverter<B>
                     databaseTableProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
                     bean.setDatabaseTableProperties(databaseTableProperties);
+
+                    if (schemaType instanceof SchemaTypeElement)
+                    {
+                        SchemaTypeProperties schemaTypeProperties = ((SchemaTypeElement) schemaType).getSchemaTypeProperties();
+
+                        if (schemaTypeProperties instanceof ComplexSchemaTypeProperties)
+                        {
+                            bean.setDatabaseColumnCount(((ComplexSchemaTypeProperties) schemaTypeProperties).getAttributeCount());
+                        }
+                    }
                 }
                 else
                 {

@@ -21,6 +21,10 @@ interface that supports metadata access to a remote open metadata repository ser
   * OMRS REST Metadata Collection - Manages calls to the OMRS REST Repository Services in a remote open metadata repository.
 
 
+
+----
+* Return to [repository services subsystem descriptions](.)
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

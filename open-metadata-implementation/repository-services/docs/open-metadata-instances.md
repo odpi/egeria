@@ -21,6 +21,10 @@ that describes what it represents and the properties that may be stored in it.
 Although not proper metadata instances, the classifications are also linked to a TypeDef to ensure they
 are have a well defined meaning.
 
+
+----
+* Return to [Repository Services Design](.)
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

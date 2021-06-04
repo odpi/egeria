@@ -44,7 +44,7 @@ public class OMAGServerErrorHandler
                         String serverName,
                         String methodName) throws OMAGNotAuthorizedException
     {
-        if (("".equals(userId)) || (userId == null))
+        if ((userId == null) || (userId.length() == 0))
         {
             throw new OMAGNotAuthorizedException(OMAGAdminErrorCode.NULL_USER_NAME.getMessageDefinition(serverName),
                                                  this.getClass().getName(),
@@ -66,7 +66,7 @@ public class OMAGServerErrorHandler
         /*
          * If the local server name is still null then save the server name in the configuration.
          */
-        if ("".equals(serverName) || (serverName == null))
+        if ((serverName == null) || (serverName.length() == 0))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(),
                                                     this.getClass().getName(),
@@ -265,7 +265,7 @@ public class OMAGServerErrorHandler
                                       String  serverName,
                                       String  serverService) throws OMAGInvalidParameterException
     {
-        if ((accessServiceRootURL == null) || ("".equals(accessServiceRootURL)))
+        if ((accessServiceRootURL == null) || (accessServiceRootURL.length() == 0))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_ACCESS_SERVICE_ROOT_URL.getMessageDefinition(serverService, serverName, accessServiceName),
                                                     this.getClass().getName(),
@@ -288,7 +288,7 @@ public class OMAGServerErrorHandler
                                          String  serverName,
                                          String  serverService) throws OMAGInvalidParameterException
     {
-        if ((accessServiceServerName == null) || ("".equals(accessServiceServerName)))
+        if ((accessServiceServerName == null) || (accessServiceServerName.length() == 0))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_ACCESS_SERVICE_SERVER_NAME.getMessageDefinition(serverService, serverName, accessServiceName),
                                                     this.getClass().getName(),
@@ -309,7 +309,7 @@ public class OMAGServerErrorHandler
                             String  serverName,
                             String  methodName) throws OMAGInvalidParameterException
     {
-        if (("".equals(cohortName)) || (cohortName == null))
+        if ((cohortName == null) || (cohortName.length() == 0))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_COHORT_NAME.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
@@ -397,7 +397,7 @@ public class OMAGServerErrorHandler
                           String  serverName,
                           String  methodName) throws OMAGInvalidParameterException
     {
-        if (("".equals(fileName)) || (fileName == null))
+        if ((fileName == null) || (fileName.length() == 0))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_FILE_NAME.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
@@ -418,7 +418,7 @@ public class OMAGServerErrorHandler
                                         String  serverName,
                                         String  methodName) throws OMAGInvalidParameterException
     {
-        if (("".equals(name)) || (name == null))
+        if ((name == null) || (name.length() == 0))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_METADATA_COLLECTION_NAME.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
@@ -537,7 +537,7 @@ public class OMAGServerErrorHandler
                                           String  serverName,
                                           String  serverService) throws OMAGInvalidParameterException
     {
-        if ((omagServerServiceRootURL == null) || ("".equals(omagServerServiceRootURL)))
+        if ((omagServerServiceRootURL == null) || (omagServerServiceRootURL.length() == 0))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_OMAG_SERVER_ROOT_URL.getMessageDefinition(serverService, serverName),
                                                     this.getClass().getName(),
@@ -556,7 +556,7 @@ public class OMAGServerErrorHandler
      */
     public void validateOMAGServerName(String omagServerName, String serverName, String serverService)  throws OMAGInvalidParameterException
     {
-        if ((omagServerName == null) || ("".equals(omagServerName)))
+        if ((omagServerName == null) || (omagServerName.length() == 0))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_OMAG_SERVER_NAME.getMessageDefinition(serverService, serverName),
                                                     this.getClass().getName(),
@@ -575,7 +575,7 @@ public class OMAGServerErrorHandler
      */
     public void validateServiceURLMarker(String serviceURLMarker, String serverName, String serverService) throws OMAGInvalidParameterException
     {
-        if ((serviceURLMarker == null) || ("".equals(serviceURLMarker)))
+        if ((serviceURLMarker == null) || (serviceURLMarker.length() == 0))
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_SERVICE_URL_MARKER.getMessageDefinition(serverService, serverName),
                                                     this.getClass().getName(),

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageExcep
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 
 public class OpenLineageHandler {
 
@@ -28,4 +29,13 @@ public class OpenLineageHandler {
         return lineageGraph.lineage(scope, guid, displayNameMustContain, includeProcesses);
     }
 
+    /**
+     * Gets entity details.
+     *
+     * @param guid the guid
+     * @return the entity details
+     */
+    public LineageVertexResponse getEntityDetails(String guid) {
+        return lineageGraph.getEntityDetails(guid);
+    }
 }

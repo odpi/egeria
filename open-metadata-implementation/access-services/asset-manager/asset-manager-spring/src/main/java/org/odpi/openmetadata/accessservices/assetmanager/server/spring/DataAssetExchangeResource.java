@@ -51,12 +51,12 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets")
 
-    public GUIDResponse createAsset(@PathVariable String           serverName,
-                                    @PathVariable String           userId,
-                                    @RequestParam boolean          assetManagerIsHome,
-                                    @RequestBody  AssetRequestBody requestBody)
+    public GUIDResponse createDataAsset(@PathVariable String               serverName,
+                                        @PathVariable String               userId,
+                                        @RequestParam boolean              assetManagerIsHome,
+                                        @RequestBody  DataAssetRequestBody requestBody)
     {
-        return restAPI.createAsset(serverName, userId, assetManagerIsHome, requestBody);
+        return restAPI.createDataAsset(serverName, userId, assetManagerIsHome, requestBody);
     }
 
 
@@ -68,6 +68,7 @@ public class DataAssetExchangeResource
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template and correlate to external identifiers
      *
@@ -78,12 +79,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/from-template/{templateGUID}")
 
-    public GUIDResponse createAssetFromTemplate(@PathVariable String              serverName,
-                                                @PathVariable String              userId,
-                                                @PathVariable String              templateGUID,
-                                                @RequestBody  TemplateRequestBody requestBody)
+    public GUIDResponse createDataAssetFromTemplate(@PathVariable String              serverName,
+                                                    @PathVariable String              userId,
+                                                    @PathVariable String              templateGUID,
+                                                    @RequestParam boolean             assetManagerIsHome,
+                                                    @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createAssetFromTemplate(serverName, userId, templateGUID, requestBody);
+        return restAPI.createDataAssetFromTemplate(serverName, userId, assetManagerIsHome, templateGUID, requestBody);
     }
 
 
@@ -103,13 +105,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/{assetGUID}")
 
-    public VoidResponse updateAsset(@PathVariable String           serverName,
-                                    @PathVariable String           userId,
-                                    @PathVariable String           assetGUID,
-                                    @RequestParam boolean          isMergeUpdate,
-                                    @RequestBody  AssetRequestBody requestBody)
+    public VoidResponse updateDataAsset(@PathVariable String           serverName,
+                                        @PathVariable String           userId,
+                                        @PathVariable String           assetGUID,
+                                        @RequestParam boolean          isMergeUpdate,
+                                        @RequestBody DataAssetRequestBody requestBody)
     {
-        return restAPI.updateAsset(serverName, userId, assetGUID, isMergeUpdate, requestBody);
+        return restAPI.updateDataAsset(serverName, userId, assetGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -130,13 +132,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/{assetGUID}/publish")
 
-    public VoidResponse publishAsset(@PathVariable String                             serverName,
-                                     @PathVariable String                             userId,
-                                     @PathVariable String                             assetGUID,
-                                     @RequestBody(required=false)
-                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse publishDataAsset(@PathVariable String                             serverName,
+                                         @PathVariable String                             userId,
+                                         @PathVariable String                             assetGUID,
+                                         @RequestBody(required=false)
+                                                       AssetManagerIdentifiersRequestBody requestBody)
     {
-        return restAPI.publishAsset(serverName, userId, assetGUID, requestBody);
+        return restAPI.publishDataAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -157,13 +159,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/{assetGUID}/withdraw")
 
-    public VoidResponse withdrawAsset(@PathVariable String                             serverName,
-                                      @PathVariable String                             userId,
-                                      @PathVariable String                             assetGUID,
-                                      @RequestBody(required=false)
-                                                    AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse withdrawDataAsset(@PathVariable String                             serverName,
+                                          @PathVariable String                             userId,
+                                          @PathVariable String                             assetGUID,
+                                          @RequestBody(required=false)
+                                                        AssetManagerIdentifiersRequestBody requestBody)
     {
-        return restAPI.withdrawAsset(serverName, userId, assetGUID, requestBody);
+        return restAPI.withdrawDataAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -183,13 +185,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/{assetGUID}/remove")
 
-    public VoidResponse removeAsset(@PathVariable String                        serverName,
-                                    @PathVariable String                        userId,
-                                    @PathVariable String                        assetGUID,
-                                    @RequestBody(required = false)
-                                                  MetadataCorrelationProperties requestBody)
+    public VoidResponse removeDataAsset(@PathVariable String                        serverName,
+                                        @PathVariable String                        userId,
+                                        @PathVariable String                        assetGUID,
+                                        @RequestBody(required = false)
+                                                      MetadataCorrelationProperties requestBody)
     {
-        return restAPI.removeAsset(serverName, userId, assetGUID, requestBody);
+        return restAPI.removeDataAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -208,13 +210,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/{assetGUID}/is-reference-data")
 
-    public VoidResponse setAssetAsReferenceData(@PathVariable String                        serverName,
-                                                @PathVariable String                        userId,
-                                                @PathVariable String                        assetGUID,
-                                                @RequestBody(required = false)
-                                                              MetadataCorrelationProperties requestBody)
+    public VoidResponse setDataAssetAsReferenceData(@PathVariable String                        serverName,
+                                                    @PathVariable String                        userId,
+                                                    @PathVariable String                        assetGUID,
+                                                    @RequestBody(required = false)
+                                                                  MetadataCorrelationProperties requestBody)
     {
-        return restAPI.setAssetAsReferenceData(serverName, userId, assetGUID, requestBody);
+        return restAPI.setDataAssetAsReferenceData(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -233,13 +235,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/{assetGUID}/is-reference-data/remove")
 
-    public VoidResponse clearAssetAsReferenceData(@PathVariable String                        serverName,
-                                                  @PathVariable String                        userId,
-                                                  @PathVariable String                        assetGUID,
-                                                  @RequestBody(required = false)
-                                                                MetadataCorrelationProperties requestBody)
+    public VoidResponse clearDataAssetAsReferenceData(@PathVariable String                        serverName,
+                                                      @PathVariable String                        userId,
+                                                      @PathVariable String                        assetGUID,
+                                                      @RequestBody(required = false)
+                                                                    MetadataCorrelationProperties requestBody)
     {
-        return restAPI.clearAssetAsReferenceData(serverName, userId, assetGUID, requestBody);
+        return restAPI.clearDataAssetAsReferenceData(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -260,13 +262,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/by-search-string")
 
-    public AssetElementsResponse findAssets(@PathVariable String                  serverName,
-                                            @PathVariable String                  userId,
-                                            @RequestParam int                     startFrom,
-                                            @RequestParam int                     pageSize,
-                                            @RequestBody  SearchStringRequestBody requestBody)
+    public DataAssetElementsResponse findDataAssets(@PathVariable String                  serverName,
+                                                    @PathVariable String                  userId,
+                                                    @RequestParam int                     startFrom,
+                                                    @RequestParam int                     pageSize,
+                                                    @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findAssets(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findDataAssets(serverName, userId, startFrom, pageSize, requestBody);
     }
 
 
@@ -286,13 +288,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/scan")
 
-    public AssetElementsResponse scanAssets(@PathVariable String                             serverName,
-                                            @PathVariable String                             userId,
-                                            @RequestParam int                                startFrom,
-                                            @RequestParam int                                pageSize,
-                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public DataAssetElementsResponse scanDataAssets(@PathVariable String                             serverName,
+                                                    @PathVariable String                             userId,
+                                                    @RequestParam int                                startFrom,
+                                                    @RequestParam int                                pageSize,
+                                                    @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
     {
-        return restAPI.scanAssets(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.scanDataAssets(serverName, userId, startFrom, pageSize, requestBody);
     }
 
 
@@ -313,13 +315,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/by-name")
 
-    public AssetElementsResponse   getAssetsByName(@PathVariable String          serverName,
-                                                   @PathVariable String          userId,
-                                                   @RequestParam int             startFrom,
-                                                   @RequestParam int             pageSize,
-                                                   @RequestBody  NameRequestBody requestBody)
+    public DataAssetElementsResponse getDataAssetsByName(@PathVariable String          serverName,
+                                                         @PathVariable String          userId,
+                                                         @RequestParam int             startFrom,
+                                                         @RequestParam int             pageSize,
+                                                         @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getAssetsByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getDataAssetsByName(serverName, userId, startFrom, pageSize, requestBody);
     }
 
 
@@ -339,13 +341,13 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/by-asset-manager")
 
-    public AssetElementsResponse   getAssetsForAssetManager(@PathVariable String                             serverName,
-                                                            @PathVariable String                             userId,
-                                                            @RequestParam int                                startFrom,
-                                                            @RequestParam int                                pageSize,
-                                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public DataAssetElementsResponse getDataAssetsForAssetManager(@PathVariable String                             serverName,
+                                                                  @PathVariable String                             userId,
+                                                                  @RequestParam int                                startFrom,
+                                                                  @RequestParam int                                pageSize,
+                                                                  @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
     {
-        return restAPI.getAssetsForAssetManager(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getDataAssetsForAssetManager(serverName, userId, startFrom, pageSize, requestBody);
     }
 
 
@@ -364,12 +366,12 @@ public class DataAssetExchangeResource
      */
     @PostMapping(path = "/data-assets/{assetGUID}/retrieve")
 
-    public AssetElementResponse getAssetByGUID(@PathVariable String                             serverName,
-                                               @PathVariable String                             userId,
-                                               @PathVariable String                             assetGUID,
-                                               @RequestBody(required = false)
-                                                             AssetManagerIdentifiersRequestBody requestBody)
+    public DataAssetElementResponse getDataAssetByGUID(@PathVariable String                             serverName,
+                                                       @PathVariable String                             userId,
+                                                       @PathVariable String                             assetGUID,
+                                                       @RequestBody(required = false)
+                                                                     AssetManagerIdentifiersRequestBody requestBody)
     {
-        return restAPI.getAssetByGUID(serverName, userId, assetGUID, requestBody);
+        return restAPI.getDataAssetByGUID(serverName, userId, assetGUID, requestBody);
     }
 }

@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+server {
+
+    listen                443 ssl;
+    #listen                 80;
+    server_name           ${NGINX_SERVER_NAME};
+    ssl_certificate       /etc/nginx/ssl/tls.crt;
+    ssl_certificate_key   /etc/nginx/ssl/tls.key;
+    ssl_password_file     /etc/nginx/pass/pass.txt;
+
+
+    #root /var/www/;
+    #index index.html;
+
+    # Force all paths to load either itself (js files) or go through index.html.
+    location /api {
+        proxy_pass ${UI_API};
+        proxy_set_header Host $http_host;
+        proxy_ssl_verify       off;
+        proxy_ssl_session_reuse on;
+        proxy_ssl_server_name on;
+    }
+
+    location / {
+        proxy_pass ${UI_STATIC};
+        proxy_set_header Host $http_host;
+        proxy_ssl_verify       off;
+        proxy_ssl_session_reuse on;
+        proxy_ssl_server_name on;
+    }
+
+}

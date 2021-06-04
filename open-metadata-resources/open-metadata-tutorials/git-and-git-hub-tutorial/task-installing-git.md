@@ -11,12 +11,11 @@ You can check whether it is installed on your system by running `git --version` 
 
 Git can be installed:
 
-- On Windows, by downloading either [Git SCM](https://git-scm.com/download/win) or [Git for Windows](https://gitforwindows.org)
-and running the installer that is downloaded.
 - On MacOS, as part of the **Xcode** suite (running `git --version` will prompt you to install it if it is not already
 installed).
 - On Linux operating systems, by using your distribution's package manager (`yum install git`, `apt-get install git`, etc).
-
+- On Windows, you should use [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) Version 2 or above, install an appropriate Linux distribution, and follow
+  the instructions for Linux.
 ----
 * Return to [Git and GitHub Tutorial](.)
 * Return to [Egeria Dojo - Making a contribution step by step](../egeria-dojo/egeria-dojo-day-2-3-contribution-to-egeria.md)

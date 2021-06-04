@@ -8,12 +8,14 @@ IT infrastructure (nodes, computers, etc) that data resources are hosted on.
 
 ![UML](0030-Hosts-and-Platforms.png#pagewidth)
 
-A Host is an IT Infrastructure concept associated with the hardware running the systems.
+**ITInfrastructure** is a type of [Asset](0010-Base-Model.md).
+
+A **Host** is an IT Infrastructure concept associated with the hardware running the systems.
 It provides a mechanism for describing a unit of hardware that provides the ability to host software servers.
 
-The host can be linked to its location through the HostLocation relationship.
+The host can be linked to its location through the [AssetLocation](0025-Locations.md) relationship.
 
-The operating platform is an informational structure to describe the
+The **OperatingPlatform** is an informational structure to describe the
 operating system of the host.
 Many hosts could have the same operating platform.
 

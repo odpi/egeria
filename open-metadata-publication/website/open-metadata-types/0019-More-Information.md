@@ -11,7 +11,13 @@ such as [Semantic Assignment](0370-Semantic-Assignment.md).
 
 ![UML](0019-More-Information.png#pagewidth)
 
-Return to [Area 0](Area-0-models.md).
+The [Asset Manager Open Metadata Access Service (OMAS)](../../../open-metadata-implementation/access-services/asset-manager)
+makes use of this relationship to link an asset to a glossary term that is providing supplementary properties
+to the asset.
+
+----
+
+* Return to [Area 0](Area-0-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

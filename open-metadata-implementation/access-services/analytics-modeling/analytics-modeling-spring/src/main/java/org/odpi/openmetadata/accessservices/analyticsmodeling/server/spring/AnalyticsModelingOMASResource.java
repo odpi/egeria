@@ -8,11 +8,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import javax.validation.constraints.PositiveOrZero;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.server.AnalyticsModelingRestServices;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -121,10 +124,50 @@ public class AnalyticsModelingOMASResource {
 			@PathVariable("databaseGUID") String database,
 			@RequestParam(required=false) String catalog,
 			@RequestParam(required=true) String schema,
-			@RequestBody(required=false) Object request
+			@RequestBody(required=false) ModuleTableFilter request
 			) {
 
-		return restAPI.getModule(serverName, userId, database, catalog, schema);
+		return restAPI.getModule(serverName, userId, database, catalog, schema, request);
 	}
+
     
+	/**
+	 * Create assets in repository defined by artifact (body of the request).
+     * @param serverName  unique identifier for requested server.
+     * @param userId      request user
+	 * @param serverCapability where the artifact is stored.
+	 * @param artifact definition json.
+	 * @return errors or list of created assets.
+	 */
+    @Operation(summary = "Create assets representing analytics artifact.")
+	@PostMapping(path = "/sync")
+	public AnalyticsModelingOMASAPIResponse createArtifact(
+			@PathVariable("serverName") String serverName,
+            @PathVariable("userId") String userId,
+			@RequestParam(required=true) String serverCapability,
+			@RequestBody(required=true) String artifact
+			) {
+
+		return restAPI.createArtifact(serverName, userId, serverCapability, artifact);
+	}
+
+    /**
+	 * Update assets in repository defined by artifact (body of the request).
+     * @param serverName  unique identifier for requested server.
+     * @param userId      request user
+	 * @param serverCapability where the artifact is stored.
+	 * @param artifact from json definition.
+	 * @return errors or list of created assets.
+	 */
+    @Operation(summary = "Update assets representing analytics artifact.")
+	@PutMapping(path = "/sync")
+	public AnalyticsModelingOMASAPIResponse updateArtifact(
+			@PathVariable("serverName") String serverName,
+            @PathVariable("userId") String userId,
+			@RequestParam(required=true) String serverCapability,
+			@RequestBody(required=true) AnalyticsAsset artifact
+			) {
+
+		return restAPI.updateArtifact(serverName, userId, serverCapability, artifact);
+	}
 }

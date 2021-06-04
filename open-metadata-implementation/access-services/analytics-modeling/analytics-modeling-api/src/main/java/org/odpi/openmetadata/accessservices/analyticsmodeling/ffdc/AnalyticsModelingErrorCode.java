@@ -116,16 +116,72 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"Review the exception to resolve the issue."),
 	FAILED_FETCH_DATABASE_SCHEMAS(
 			"OMAS-ANALYTICS-MODELING-017", 
-			"Schemas for database {} could not be fetched.",
+			"Schemas for database {0} could not be fetched.",
 			"The system is unable to process the request.", 
 			"Review the exception to resolve the issue."),
-
+	FAILED_FIND_DATABASE_SCHEMA(
+			"OMAS-ANALYTICS-MODELING-018", 
+			"Schema {0} for database {1} could not be found.",
+			"The system is unable to process the request.", 
+			"Review the exception to resolve the issue."),
+	FAILED_FETCH_SCHEMAS_TABLES(
+			"OMAS-ANALYTICS-MODELING-019", 
+			"Tables for schemas {0} of the database {1} could not be fetched.",
+			"The system is unable to process the request.", 
+			"Review the exception to resolve the issue."),
+	UNEXPECTED_CLASS(
+			"OMAS-ANALYTICS-MODELING-020", 
+			"Unexpected class {0} of the AnalyticsMetadata.",
+			"The system is unable to process the request.", 
+			"Fix data in repository."),
+	FAILED_CREATE_BEAN(
+			"OMAS-ANALYTICS-MODELING-021", 
+			"Failed to create bean of class {0} of the AnalyticsMetadata.",
+			"The system is unable to process the request.", 
+			"Fix data in repository or class path."),
+	MISSING_BEAN_CLASS(
+			"OMAS-ANALYTICS-MODELING-022", 
+			"Java class of the AnalyticsMetadata is not defined.",
+			"The system is unable to process the request.", 
+			"Fix data in repository."),
+	MISSING_BEAN_PROPERTIES(
+			"OMAS-ANALYTICS-MODELING-023", 
+			"Entity {0} of the AnalyticsMetadata is missing properties.",
+			"The system is unable to process the request.", 
+			"Fix data in repository."),
+	INCORRECT_ARTIFACT_DEFINITION(
+			"OMAS-ANALYTICS-MODELING-024", 
+			"Definition of Analytics artifact cannot be parsed: {0}.",
+			"The system is unable to process the request.",
+			"Fix the definition."),
+	FAILED_CREATE_ARTIFACT(
+			"OMAS-ANALYTICS-MODELING-025", 
+			"Failed to create analytics artifact.",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue."),
+	FAILED_CREATE_SERVER_CAPABILITY(
+			"OMAS-ANALYTICS-MODELING-026", 
+			"User {0} failed to create server capability {1}. Cause: {2}",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue."),
+	FAILED_UPDATE_ARTIFACT(
+			"OMAS-ANALYTICS-MODELING-027", 
+			"User {0} failed to update artifact {1}. Cause: {2}",
+			"The system is unable to process the request.",
+			"Review the exception to resolve the issue and repeat request to fix artifact."),
+	
+    UNEXPECTED_EXCEPTION(400, "OMAG-ANALYTICS-MODELING-499",
+            "An unexpected {0} exception was caught by {1}; error message was {2}",
+            "The system is unable to process the request and has returned an exception to the caller.",
+            "Review the error message.  Also look up its full message definition which includes the system action " +
+                    "and user action.  This is most likely to describe the correct action to take to resolve the error.  " +
+                    "If that does not help, look for other diagnostics created at the same time.  Also validate that the " +
+                    "caller is a valid client of this server and is operating correctly."),
 	UNKNOWN_ERROR(
 			"OMAS-ANALYTICS-MODELING-500", 
 			"Server failed to execute request with unknown reason.",
 			"The system is unable to process the request.", 
-			"Report the error to administrator."), 
-	;
+			"Report the error to administrator.");
 	
 	private static final long    serialVersionUID = 1L;
 

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ValidValue;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

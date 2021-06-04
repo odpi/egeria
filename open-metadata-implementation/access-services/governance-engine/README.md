@@ -5,15 +5,17 @@
 
 # Governance Engine Open Metadata Access Service (OMAS)
 
+The **Governance Engine OMAS** supports the implementation of a [governance program](../governance-program)
+by providing the metadata services for running
+**[governance engines](docs/concepts/governance-engine.md)**.
 
-A **[governance engine](docs/concepts/governance-engine.md)** is a collection of related 
+A governance engine is a collection of related 
 **[governance services](docs/concepts/governance-service.md)** that provide pluggable
 governance functions.  The governance services are implemented as 
 specialist [connectors](../../frameworks/open-connector-framework) that are defined by:
 
  * [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework) for Open Discovery Services
    that analyse the content of resources in the digital landscape.
-   
  * [Governance Action Framework (GAF)](../../frameworks/governance-action-framework) of Governance Action Services
    that monitor, assess and maintain metadata.
 
@@ -35,6 +37,10 @@ The Governance Engine OMAS has the following capabilities:
 * Notification of new [governance actions](docs/concepts/governance-action.md) to the 
   Engine Host OMAG Servers that then invoke the appropriate governance services to action them.
 * Supporting the metadata requirements for many of the [engine services](../../engine-services).
+* Linking the governance actions, governance action processes and governance services
+  to the governance definitions supported by the [Governance Program OMAS](../governance-program).
+* Providing APIs to query the status of the governance capabilities implemented through the governance
+  engines.
 
 
 
@@ -47,8 +53,9 @@ The documentation for writing governance services is located:
 
 * [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework) for Open Discovery Services.
 * [Governance Action Framework (GAF)](../../frameworks/governance-action-framework) for the
-Governance Action Services: Open Watchdog Services, Open Triage Services, Open Verification Services, Open Remediation Services
-and Open Provisioning Services. 
+Governance Action Services: Watchdog Governance Services, Triage Governance Services, Verification Governance Services,
+Remediation Governance Services
+and Provisioning Governance Services. 
 
 
 ## Internals

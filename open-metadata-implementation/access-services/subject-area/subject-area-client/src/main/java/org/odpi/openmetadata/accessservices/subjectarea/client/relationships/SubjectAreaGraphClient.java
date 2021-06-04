@@ -8,7 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.NeighborhoodHistoricalFindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -46,13 +46,13 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, ResponseParamet
     public QueryBuilder createGraphQuery(NeighborhoodHistoricalFindRequest request) {
         QueryBuilder queryBuilder = new QueryBuilder();
         String nodeFilter = request.getNodeFilter().stream().map(NodeType::name).collect(Collectors.joining(","));
-        String lineFilter = request.getLineFilter().stream().map(LineType::name).collect(Collectors.joining(","));
+        String relationshipFilter = request.getRelationshipFilter().stream().map(RelationshipType::name).collect(Collectors.joining(","));
 
         if (!nodeFilter.isEmpty())
             queryBuilder.addParam("nodeFilter", nodeFilter);
 
-        if(!lineFilter.isEmpty())
-            queryBuilder.addParam("lineFilter", lineFilter);
+        if(!relationshipFilter.isEmpty())
+            queryBuilder.addParam("relationshipFilter", relationshipFilter);
 
         return queryBuilder
                 .addParam("asOfTime", request.getAsOfTime())

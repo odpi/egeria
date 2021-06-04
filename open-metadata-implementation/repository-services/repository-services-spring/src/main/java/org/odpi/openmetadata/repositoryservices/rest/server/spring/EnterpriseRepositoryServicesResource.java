@@ -1561,11 +1561,11 @@ public class EnterpriseRepositoryServicesResource
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/detailed")
 
-    public EntityDetailResponse  classifyEntity(String                serverName,
-                                                String                userId,
-                                                String                entityGUID,
-                                                String                classificationName,
-                                                ClassificationRequest classificationRequestBody)
+    public EntityDetailResponse  classifyEntity(@PathVariable String                serverName,
+                                                @PathVariable String                userId,
+                                                @PathVariable String                entityGUID,
+                                                @PathVariable String                classificationName,
+                                                @RequestBody  ClassificationRequest classificationRequestBody)
     {
         return restAPI.classifyEntity(serverName, userId, entityGUID, classificationName, classificationRequestBody);
     }
@@ -1590,11 +1590,12 @@ public class EnterpriseRepositoryServicesResource
      */
     @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/delete")
 
-    public EntityDetailResponse declassifyEntity(@PathVariable String          serverName,
-                                                 @PathVariable String          userId,
-                                                 @PathVariable String          entityGUID,
-                                                 @PathVariable String          classificationName,
-                                                 @RequestBody  OMRSAPIRequest  requestBody)
+    @SuppressWarnings(value = "unused")
+    public EntityDetailResponse declassifyEntity(@PathVariable                  String          serverName,
+                                                 @PathVariable                  String          userId,
+                                                 @PathVariable                  String          entityGUID,
+                                                 @PathVariable                  String          classificationName,
+                                                 @RequestBody(required = false) OMRSAPIRequest  requestBody)
     {
         return restAPI.declassifyEntity(serverName, userId, entityGUID, classificationName);
     }

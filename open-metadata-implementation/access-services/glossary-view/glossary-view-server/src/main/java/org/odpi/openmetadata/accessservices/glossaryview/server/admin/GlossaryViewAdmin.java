@@ -5,7 +5,8 @@ package org.odpi.openmetadata.accessservices.glossaryview.server.admin;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -16,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class GlossaryViewAdmin extends AccessServiceAdmin
 {
 
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
     private GlossaryViewServiceInstance instance;
     private String serverName;
 
@@ -31,30 +32,34 @@ public class GlossaryViewAdmin extends AccessServiceAdmin
      */
     @Override
     public void initialize(AccessServiceConfig accessServiceConfig, OMRSTopicConnector enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector repositoryConnector, OMRSAuditLog auditLog, String serverUserName) {
+                           OMRSRepositoryConnector repositoryConnector, AuditLog auditLog, String serverUserName) {
         final String actionDescription = "initialize Glossary View OMAS";
         this.auditLog = auditLog;
 
         GlossaryViewAuditCode auditCode;
         try {
             auditCode = GlossaryViewAuditCode.SERVICE_INITIALIZING;
-            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
+            AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(auditCode.getLogMessageId(),
+                    auditCode.getSeverity(), auditCode.getFormattedLogMessage(serverName), auditCode.getSystemAction(),
                     auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, messageDefinition);
 
             instance = new GlossaryViewServiceInstance(repositoryConnector, auditLog, serverUserName, repositoryConnector.getMaxPageSize());
             serverName = instance.getServerName();
 
             auditCode = GlossaryViewAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName), accessServiceConfig.toString(), auditCode.getSystemAction(),
+            messageDefinition = new AuditLogMessageDefinition(auditCode.getLogMessageId(),
+                    auditCode.getSeverity(), auditCode.getFormattedLogMessage(serverName), auditCode.getSystemAction(),
                     auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, messageDefinition);
 
-        } catch (Throwable error) {
+        } catch (Exception error) {
             auditCode = GlossaryViewAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logException(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(error.getMessage()), accessServiceConfig.toString(),
-                    auditCode.getSystemAction(), auditCode.getUserAction(), error);
+
+            AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(auditCode.getLogMessageId(),
+                    auditCode.getSeverity(), auditCode.getFormattedLogMessage(error.getMessage()), auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+            auditLog.logException(actionDescription, messageDefinition, error);
         }
     }
 
@@ -71,10 +76,10 @@ public class GlossaryViewAdmin extends AccessServiceAdmin
         if (auditLog != null) {
             final String actionDescription = "shutdown";
             GlossaryViewAuditCode auditCode = GlossaryViewAuditCode.SERVICE_SHUTDOWN;
-
-            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(),
+            AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(auditCode.getLogMessageId(),
+                    auditCode.getSeverity(), auditCode.getFormattedLogMessage(serverName), auditCode.getSystemAction(),
                     auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, messageDefinition);
         }
     }
 }

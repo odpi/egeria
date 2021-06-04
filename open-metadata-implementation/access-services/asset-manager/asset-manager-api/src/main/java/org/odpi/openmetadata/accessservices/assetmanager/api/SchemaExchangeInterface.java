@@ -66,6 +66,7 @@ public interface SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
      * @param templateGUID unique identifier of the metadata element to copy
      * @param schemaTypeExternalIdentifier unique identifier of the schema type in the external asset manager
      * @param schemaTypeExternalIdentifierName name of property for the external identifier in the external asset manager
@@ -85,6 +86,7 @@ public interface SchemaExchangeInterface
     String createSchemaTypeFromTemplate(String              userId,
                                         String              assetManagerGUID,
                                         String              assetManagerName,
+                                        boolean             assetManagerIsHome,
                                         String              templateGUID,
                                         String              schemaTypeExternalIdentifier,
                                         String              schemaTypeExternalIdentifierName,
@@ -92,9 +94,9 @@ public interface SchemaExchangeInterface
                                         String              schemaTypeExternalIdentifierSource,
                                         KeyPattern          schemaTypeExternalIdentifierKeyPattern,
                                         Map<String, String> mappingProperties,
-                                        TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
+                                        TemplateProperties  templateProperties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
 
 
     /**
@@ -366,6 +368,8 @@ public interface SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
+     * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
      * @param schemaAttributeExternalIdentifierName name of property for the external identifier in the external asset manager
@@ -385,6 +389,8 @@ public interface SchemaExchangeInterface
     String createSchemaAttributeFromTemplate(String              userId,
                                              String              assetManagerGUID,
                                              String              assetManagerName,
+                                             boolean             assetManagerIsHome,
+                                             String              schemaElementGUID,
                                              String              templateGUID,
                                              String              schemaAttributeExternalIdentifier,
                                              String              schemaAttributeExternalIdentifierName,
@@ -429,21 +435,24 @@ public interface SchemaExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this classification
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param schemaElementExternalIdentifier unique identifier of the schema element in the external asset manager
+     * @param formula description of the logic that maps data values to
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setSchemaElementAsCalculatedValue(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String schemaElementGUID,
-                                           String schemaElementExternalIdentifier,
-                                           String formula) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException;
+    void setSchemaElementAsCalculatedValue(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           boolean assetManagerIsHome,
+                                           String  schemaElementGUID,
+                                           String  schemaElementExternalIdentifier,
+                                           String  formula) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException;
 
 
     /**

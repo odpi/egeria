@@ -8,6 +8,18 @@ These technologies are needed in order to build and develop Egeria.
 If you simply want to try out and explore Egeria, or if you find yourself lost in all of these technologies,
 choose one of the [self-contained environments](README.md) instead.
 
+## Supported Platforms
+
+Egeria currently supports building on *nix, Linux & Linux-like operating systems such as MacOS.
+
+Our official build pipelines are based on x86_64 architecture, but it is expected other architectures would build ok, subject
+to the availablility of the required tools and interpreters/jvms/runtimes ie Java, Python, Docker/containerd/k8s etc.
+
+On Windows, you should use [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) Version 2 or above, and install 
+a Linux distribution such as Ubuntu. This avoids issues we have seen with path seperators, symbolic links, slow I/O performance, long pathnames. 
+
+Some IDEs such as JetBrains IntelliJ and Microsoft VisualCode will run the GUI in Windows natively, and then use a linux environment
+(via WSL2 - which uses a real Linux kernel) to perform build and execution
 ## Git
 
 Git is an open source version control system.  It is what we use to:
@@ -29,12 +41,12 @@ You can check whether it is installed on your system by running `git --version` 
 
 Git can be installed:
 
-- On Windows, by downloading either [Git SCM](https://git-scm.com/download/win) or [Git for Windows](https://gitforwindows.org)
-and running the installer that is downloaded.
 - On MacOS, as part of the **Xcode** suite (running `git --version` will prompt you to install it if it is not already
 installed).
 - On Linux operating systems, by using your distribution's package manager (`yum install git`, `apt-get install git`, etc).
-
+- On Windows, you should use [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) Version 2 or above, install an appropriate Linux distribution, and follow
+  the instructions for Linux.
+  
 Interested to learn more?
 [GitHub provides some great introductory guides](https://guides.github.com/introduction/git-handbook/).
 
@@ -66,12 +78,12 @@ You can check if Maven installed by running the command `mvn --version` from the
 
 Maven can be installed:
 
-- On Windows, by downloading the [binary zip archive](https://maven.apache.org/download.cgi) and
-[following Maven's installation instructions for Windows](https://maven.apache.org/guides/getting-started/windows-prerequisites.html).
 - On MacOS, by first installing the [HomeBrew](https://brew.sh) package manager and then running
 `brew install maven` from the command-line.
 - On Linux operating systems, by using your distribution's package manager (`yum install maven`, `apt-get install maven`, etc).
-
+- On Windows, you should use [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) Version 2 or above, install an appropriate Linux distribution, and follow
+  the instructions for Linux.
+  
 Ensure you are using version 3.5.0 or higher in order to build Egeria.
 
 

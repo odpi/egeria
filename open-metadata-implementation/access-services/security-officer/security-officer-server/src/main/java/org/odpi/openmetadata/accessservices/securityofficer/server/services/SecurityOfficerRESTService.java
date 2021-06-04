@@ -49,8 +49,8 @@ public class SecurityOfficerRESTService
             SecurityOfficerRequestHandler handler = instanceHandler.getSecurityOfficerRequestHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setSecurityTag(handler.getSecurityTagBySchemaElementId(userId, schemaElementId, methodName));
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -74,8 +74,8 @@ public class SecurityOfficerRESTService
             SecurityOfficerRequestHandler handler = instanceHandler.getSecurityOfficerRequestHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setSecurityTags(handler.getAvailableSecurityTags(userId, methodName));
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -104,8 +104,8 @@ public class SecurityOfficerRESTService
             SecurityOfficerRequestHandler handler = instanceHandler.getSecurityOfficerRequestHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setSchemaElementEntityList(handler.updateSecurityTagBySchemaElementId(userId, schemaElementId, securityClassification, methodName));
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -133,8 +133,8 @@ public class SecurityOfficerRESTService
             SecurityOfficerRequestHandler handler = instanceHandler.getSecurityOfficerRequestHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setSchemaElementEntityList(handler.deleteSecurityTagBySchemaElementId(userId, schemaElementId, methodName));
-        } catch (Throwable error) {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

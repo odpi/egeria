@@ -9,13 +9,13 @@ public interface Mapper<OMRS extends InstanceAuditHeader, OMAS extends OmasObjec
 
     /**
      * Map from an OMRS object to a Subject Area OMAS object
-     * @param omrsObject OMRS Lines
+     * @param omrsObject OMRS Relationship
      * @return Subject Area OMAS object
      */
     OMAS map(OMRS omrsObject);
 
     /**
-     * Map from a Subject Area OMAS ibject to an OMRS object
+     * Map from a Subject Area OMAS object to an OMRS object
      * @param omasObject a Subject Area OMAS object
      * @return  an OMRS object
      */

@@ -26,6 +26,8 @@ public class OpenMetadataTestCaseResult extends OpenMetadataTestCaseSummary
 
     private String              successMessage       = null;
 
+    private Long                elapsedTime = null;
+
     private List<String>        successfulAssertions   = new ArrayList<>();
     private List<String>        unsuccessfulAssertions = new ArrayList<>();
     private List<String>        notSupportedAssertions = new ArrayList<>();
@@ -33,7 +35,6 @@ public class OpenMetadataTestCaseResult extends OpenMetadataTestCaseSummary
     private Map<String, Object> discoveredProperties   = null;
 
     private ExceptionBean       conformanceException  = null;
-
 
     /**
      * Default Constructor used when converting from JSON
@@ -75,6 +76,28 @@ public class OpenMetadataTestCaseResult extends OpenMetadataTestCaseSummary
     public void setSuccessMessage(String successMessage)
     {
         this.successMessage = successMessage;
+    }
+
+
+    /**
+     * Return the elapsed time that this test case executed.
+     *
+     * @return time in milliseconds
+     */
+    public Long getElapsedTime()
+    {
+        return elapsedTime;
+    }
+
+
+    /**
+     * Set the elapsed time that this test case executed.
+     *
+     * @param elapsedTime time in milliseconds
+     */
+    public void setElapsedTime(Long elapsedTime)
+    {
+        this.elapsedTime = elapsedTime;
     }
 
 
@@ -198,6 +221,7 @@ public class OpenMetadataTestCaseResult extends OpenMetadataTestCaseSummary
     {
         return "OpenMetadataTestCaseResult{" +
                 "successMessage='" + successMessage + '\'' +
+                ", elapsedTime='" + elapsedTime + '\'' +
                 ", successfulAssertions=" + successfulAssertions +
                 ", unsuccessfulAssertions=" + unsuccessfulAssertions +
                 ", notSupportedAssertions=" + notSupportedAssertions +

@@ -131,7 +131,7 @@ public class LogRecordRequestBodyTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -140,7 +140,7 @@ public class LogRecordRequestBodyTest
         {
             validateResultObject(objectMapper.readValue(jsonString, LogRecordRequestBody.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -154,7 +154,7 @@ public class LogRecordRequestBodyTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -163,7 +163,7 @@ public class LogRecordRequestBodyTest
         {
             validateResultObject((LogRecordRequestBody) objectMapper.readValue(jsonString, AssetConsumerOMASAPIRequestBody.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

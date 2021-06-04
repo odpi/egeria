@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.assetconsumer.fvt.execution;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -26,7 +27,7 @@ public class AssetConsumerOMASClientConstructorIT
     @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
     public void testClientConstructors(String serverName)
     {
-        FVTResults results = ClientConstructorTest.performFVT(serverName, FVTConstants.SERVER_PLATFORM_URL_ROOT);
+        FVTResults results = ClientConstructorTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT));
 
         results.printResults();
         assertTrue(results.isSuccessful());

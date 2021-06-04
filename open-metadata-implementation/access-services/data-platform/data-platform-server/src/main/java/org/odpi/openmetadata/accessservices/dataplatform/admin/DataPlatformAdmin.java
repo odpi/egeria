@@ -94,7 +94,7 @@ public class DataPlatformAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   DataPlatformAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

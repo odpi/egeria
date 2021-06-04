@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.metadatahighway;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
+import org.odpi.openmetadata.repositoryservices.events.OpenMetadataEventsSecurity;
 import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
 import org.slf4j.Logger;
@@ -87,7 +88,7 @@ public class OMRSMetadataHighwayManager
      *
      * @param cohortConfigList list of cohorts to initialize
      */
-    public void initialize(List<CohortConfig>   cohortConfigList)
+    public void initialize(List<CohortConfig> cohortConfigList)
     {
         if (cohortConfigList != null)
         {
@@ -102,13 +103,42 @@ public class OMRSMetadataHighwayManager
     }
 
 
+
+    /**
+     * Set up a new security verifier (the cohort manager runs with a default verifier until this
+     * method is called).
+     *
+     * The security verifier provides authorization checks for access and maintenance
+     * changes to open metadata.  Authorization checks are enabled through the
+     * OpenMetadataServerSecurityConnector.
+     *
+     * @param securityVerifier new security verifier
+     */
+    public void setSecurityVerifier(OpenMetadataEventsSecurity securityVerifier)
+    {
+        if (securityVerifier != null)
+        {
+            /*
+             * Loop through the existing cohort managers to set up the security verifier
+             */
+            for (OMRSCohortManager existingCohortManager : cohortManagers)
+            {
+                if (existingCohortManager != null)
+                {
+                    existingCohortManager.setSecurityVerifier(securityVerifier);
+                }
+            }
+        }
+    }
+
+
     /**
      * Initialize the components to connect the local repository to a cohort.
      *
      * @param cohortConfig description of cohort.
      * @return the status of the cohort
      */
-    public CohortConnectionStatus connectToCohort(CohortConfig         cohortConfig)
+    public CohortConnectionStatus connectToCohort(CohortConfig cohortConfig)
     {
         OMRSCohortManager cohortManager  = new OMRSCohortManager(auditLog.createNewAuditLog(OMRSAuditingComponent.COHORT_MANAGER));
         String            localMetadataCollectionId = null;
@@ -159,10 +189,38 @@ public class OMRSMetadataHighwayManager
                     = getCohortRegistryStore(cohortConfig.getCohortName(),
                                              cohortConfig.getCohortRegistryConnection());
 
-            OMRSTopicConnector cohortTopicConnector
-                    = getTopicConnector(cohortConfig.getCohortName(),
-                                        cohortConfig.getCohortOMRSTopicConnection(),
-                                        cohortConfig.getCohortOMRSTopicProtocolVersion());
+            OMRSTopicConnector cohortSingleTopicConnector = null;
+            OMRSTopicConnector cohortRegistrationTopicConnector = null;
+            OMRSTopicConnector cohortTypesTopicConnector = null;
+            OMRSTopicConnector cohortInstancesTopicConnector = null;
+
+            if (cohortConfig.getCohortOMRSTopicConnection() != null)
+            {
+                cohortSingleTopicConnector = getTopicConnector(cohortConfig.getCohortName() + " (single)",
+                                                               cohortConfig.getCohortOMRSTopicConnection(),
+                                                               cohortConfig.getCohortOMRSTopicProtocolVersion());
+            }
+
+            if (cohortConfig.getCohortOMRSRegistrationTopicConnection() != null)
+            {
+                cohortRegistrationTopicConnector = getTopicConnector(cohortConfig.getCohortName() + " (registration)",
+                                                                     cohortConfig.getCohortOMRSRegistrationTopicConnection(),
+                                                                     cohortConfig.getCohortOMRSTopicProtocolVersion());
+            }
+
+            if (cohortConfig.getCohortOMRSTypesTopicConnection() != null)
+            {
+                cohortTypesTopicConnector = getTopicConnector(cohortConfig.getCohortName() + " (types)",
+                                                              cohortConfig.getCohortOMRSTypesTopicConnection(),
+                                                              cohortConfig.getCohortOMRSTopicProtocolVersion());
+            }
+
+            if (cohortConfig.getCohortOMRSInstancesTopicConnection() != null)
+            {
+                cohortInstancesTopicConnector = getTopicConnector(cohortConfig.getCohortName() + " (instances)",
+                                                                  cohortConfig.getCohortOMRSInstancesTopicConnection(),
+                                                                  cohortConfig.getCohortOMRSTopicProtocolVersion());
+            }
 
             OMRSRepositoryEventExchangeRule inboundEventExchangeRule
                     = new OMRSRepositoryEventExchangeRule(cohortConfig.getEventsToProcessRule(),
@@ -180,7 +238,13 @@ public class OMRSMetadataHighwayManager
                                      enterpriseAccessTopicConnector,
                                      cohortRegistryStore,
                                      cohortConfig.getCohortOMRSTopicConnection(),
-                                     cohortTopicConnector,
+                                     cohortSingleTopicConnector,
+                                     cohortConfig.getCohortOMRSRegistrationTopicConnection(),
+                                     cohortRegistrationTopicConnector,
+                                     cohortConfig.getCohortOMRSTypesTopicConnection(),
+                                     cohortTypesTopicConnector,
+                                     cohortConfig.getCohortOMRSInstancesTopicConnection(),
+                                     cohortInstancesTopicConnector,
                                      inboundEventExchangeRule);
 
             /*
@@ -195,7 +259,7 @@ public class OMRSMetadataHighwayManager
 
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw error;
         }
@@ -436,7 +500,7 @@ public class OMRSMetadataHighwayManager
 
             return (OMRSCohortRegistryStore)connector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             if (log.isDebugEnabled())
             {
@@ -484,7 +548,7 @@ public class OMRSMetadataHighwayManager
 
             return topicConnector;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             String methodName = "getTopicConnector()";
 

@@ -69,8 +69,8 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
                     databaseManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     databaseManagerProperties.setDisplayName(this.removeName(instanceProperties));
                     databaseManagerProperties.setDescription(this.removeDescription(instanceProperties));
-                    databaseManagerProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                    databaseManagerProperties.setVersion(this.removeVersion(instanceProperties));
+                    databaseManagerProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                    databaseManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     databaseManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     databaseManagerProperties.setSource(this.removeSource(instanceProperties));
 

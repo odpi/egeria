@@ -75,6 +75,9 @@ public class FileFolderConverter<B> extends AssetConverter<B>
                     folderProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     folderProperties.setDisplayName(this.removeName(instanceProperties));
                     folderProperties.setDescription(this.removeDescription(instanceProperties));
+                    folderProperties.setPathName(this.removePathName(instanceProperties));
+                    folderProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
+                    folderProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
 
                     /* Note this value should be in the classification */
                     folderProperties.setOwner(this.removeOwner(instanceProperties));

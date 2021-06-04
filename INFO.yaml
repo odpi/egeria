@@ -18,11 +18,11 @@ issue_tracking:
     key: 'egeria'
 mailing_list:
     type: 'other'
-    url: 'https://lists.odpi.org/g/odpi-project-egeria'
+    url: 'https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics'
     tag: ''
 realtime_discussion:
     type: 'slack'
-    url: 'https://slack.odpi.org'
+    url: 'https://lfaifoundation.slack.com'
 meetings:
     - type: 'zoom'
       agenda: 'https://github.com/odpi/egeria/wiki'

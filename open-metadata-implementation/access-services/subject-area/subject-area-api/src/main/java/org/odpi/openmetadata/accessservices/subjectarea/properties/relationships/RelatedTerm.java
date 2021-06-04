@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.RelationshipEnd;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,28 +22,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RelatedTerm extends Line {
+public class RelatedTerm extends Relationship {
     private String description = "Link between similar glossary terms.";
 
     /*
      * Set up end 1.
      */
-     protected static final String END_1_NODE_TYPE = "Term";
-     protected static final String END_1_ATTRIBUTE_NAME = "seeAlso";
-     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Related glossary terms.";
-     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
-            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
+     private static final String END_1_NODE_TYPE = "Term";
+     private static final String END_1_ATTRIBUTE_NAME = "seeAlso";
+     private static final String END_1_ATTRIBUTE_DESCRIPTION = "Related glossary terms.";
+     private static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final RelationshipEnd RELATIONSHIP_END_1 = new RelationshipEnd(END_1_NODE_TYPE,
+                                                                           END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-     protected static final String END_2_NODE_TYPE = "Term";
-     protected static final String END_2_ATTRIBUTE_NAME = "seeAlso";
-     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Related glossary terms.";
-     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
-            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
+     private static final String END_2_NODE_TYPE = "Term";
+     private static final String END_2_ATTRIBUTE_NAME = "seeAlso";
+     private static final String END_2_ATTRIBUTE_DESCRIPTION = "Related glossary terms.";
+     private static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     private static final RelationshipEnd RELATIONSHIP_END_2 = new RelationshipEnd(END_2_NODE_TYPE,
+                                                                           END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String expression;
     private TermRelationshipStatus status;
@@ -51,7 +51,7 @@ public class RelatedTerm extends Line {
     private String source;
 
     public RelatedTerm() {
-        super("RelatedTerm", "b1161696-e563-4cf9-9fd9-c0c76e47d063", LINE_END_1, LINE_END_2);
+        super("RelatedTerm", RELATIONSHIP_END_1, RELATIONSHIP_END_2);
     }
 
     /**

@@ -13,6 +13,9 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The type Parent process.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,18 +25,38 @@ public class ParentProcess implements Serializable {
     @JsonProperty("containmentType")
     private ProcessContainmentType processContainmentType;
 
+    /**
+     * Gets qualified name.
+     *
+     * @return the qualified name
+     */
     public String getQualifiedName() {
         return qualifiedName;
     }
 
+    /**
+     * Sets qualified name.
+     *
+     * @param qualifiedName the qualified name
+     */
     public void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
     }
 
+    /**
+     * Gets process containment type.
+     *
+     * @return the process containment type
+     */
     public ProcessContainmentType getProcessContainmentType() {
         return processContainmentType;
     }
 
+    /**
+     * Sets process containment type.
+     *
+     * @param processContainmentType the process containment type
+     */
     public void setProcessContainmentType(ProcessContainmentType processContainmentType) {
         this.processContainmentType = processContainmentType;
     }

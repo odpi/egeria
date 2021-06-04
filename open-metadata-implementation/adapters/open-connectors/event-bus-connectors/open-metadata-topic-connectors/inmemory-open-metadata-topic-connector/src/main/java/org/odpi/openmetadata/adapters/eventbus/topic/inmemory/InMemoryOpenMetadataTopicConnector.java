@@ -69,6 +69,7 @@ public class InMemoryOpenMetadataTopicConnector extends OpenMetadataTopicConnect
      *
      * @return a list of received events or null
      */
+    @SuppressWarnings(value = "deprecation")
     @Override
     protected List<String> checkForEvents()
     {

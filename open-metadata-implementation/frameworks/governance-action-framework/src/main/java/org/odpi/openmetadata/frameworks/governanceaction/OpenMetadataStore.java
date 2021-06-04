@@ -41,6 +41,40 @@ public interface OpenMetadataStore
 
 
     /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     *
+     * @return metadata element properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    OpenMetadataElement getMetadataElementByUniqueName(String uniqueName,
+                                                       String uniquePropertyName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException;
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     *
+     * @return metadata element unique identifier (guid)
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    String getMetadataElementGUIDByUniqueName(String uniqueName,
+                                              String uniquePropertyName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param searchString name to retrieve
@@ -55,25 +89,26 @@ public interface OpenMetadataStore
     List<OpenMetadataElement> findMetadataElementsWithString(String searchString,
                                                              int    startFrom,
                                                              int    pageSize) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException;
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
     /**
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param elementGUID unique identifier for the starting metadata element
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
      * @return list of related elements
-     *
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     List<RelatedMetadataElement> getRelatedMetadataElements(String elementGUID,
+                                                            int    startingAtEnd,
                                                             String relationshipTypeName,
                                                             int    startFrom,
                                                             int    pageSize) throws InvalidParameterException,
@@ -132,12 +167,12 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<RelatedMetadataElement> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                          SearchProperties searchProperties,
-                                                                          String           sequencingProperty,
-                                                                          SequencingOrder  sequencingOrder,
-                                                                          int              startFrom,
-                                                                          int              pageSize) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException;
+    List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                                           SearchProperties searchProperties,
+                                                                           String           sequencingProperty,
+                                                                           SequencingOrder  sequencingOrder,
+                                                                           int              startFrom,
+                                                                           int              pageSize) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException;
 }

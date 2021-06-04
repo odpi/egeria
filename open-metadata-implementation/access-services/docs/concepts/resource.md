@@ -3,11 +3,10 @@
 
 # Resource
 
-The term **resource** is used throughout the ODPi Egeria
+The term **resource** is used throughout the Egeria
 documentation to refer to something - either physical
 or digital - that is of value to the operation
-of the
-organization, or to the services it provides.
+of the organization, or to the services it provides.
 
 Resources are described in metadata as [Referenceables](referenceable.md).
 

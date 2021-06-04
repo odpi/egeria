@@ -104,9 +104,9 @@ public class ValidValuesRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -174,9 +174,9 @@ public class ValidValuesRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -246,9 +246,9 @@ public class ValidValuesRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -309,9 +309,9 @@ public class ValidValuesRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -363,9 +363,9 @@ public class ValidValuesRESTServices
 
             handler.attachValidValueToSet(userId, null, null, setGUID, validValueGUID, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -416,9 +416,9 @@ public class ValidValuesRESTServices
 
             handler.detachValidValueFromSet(userId, null, null, setGUID, validValueGUID, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -464,9 +464,9 @@ public class ValidValuesRESTServices
 
             response.setElement(handler.getValidValueByGUID(userId, validValueGUID, methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -521,9 +521,9 @@ public class ValidValuesRESTServices
                 response.setElementList(handler.getValidValueByName(userId, validValueName, nameParameterName, startFrom, pageSize, methodName));
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -578,9 +578,9 @@ public class ValidValuesRESTServices
                 response.setElementList(handler.findValidValues(userId, searchString, searchStringParameterName, startFrom, pageSize, methodName));
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -636,9 +636,9 @@ public class ValidValuesRESTServices
                                                                     pageSize,
                                                                     methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -694,9 +694,9 @@ public class ValidValuesRESTServices
                                                                  pageSize,
                                                                  methodName));
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

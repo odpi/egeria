@@ -88,21 +88,6 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     }
 
     /**
-     * Retrieve a list of the changed port implementations between the dates and times provided.
-     *
-     * @param from the date and time from which to look for changes (exclusive)
-     * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<PortImplementation>}
-     */
-    @Override
-    public List<PortImplementation> getChangedPortImplementations(Date from, Date to) {
-        if (requiresPolling()) {
-            log.debug("DataEngineConnectorBase::getChangedPortImplementations(Date, Date) is not overridden (unimplemented).");
-        }
-        return Collections.emptyList();
-    }
-
-    /**
      * Retrieve a list of the changed processes between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
@@ -113,21 +98,6 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     public List<Process> getChangedProcesses(Date from, Date to) {
         if (requiresPolling()) {
             log.debug("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
-        }
-        return Collections.emptyList();
-    }
-
-    /**
-     * Retrieve a list of the changed port aliases between the dates and times provided.
-     *
-     * @param from the date and time from which to look for changes (exclusive)
-     * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<PortAlias>}
-     */
-    @Override
-    public List<PortAlias> getChangedPortAliases(Date from, Date to) {
-        if (requiresPolling()) {
-            log.debug("DataEngineConnectorBase::getChangedPortAliases(Date, Date) is not overridden (unimplemented).");
         }
         return Collections.emptyList();
     }

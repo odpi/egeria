@@ -22,7 +22,7 @@ that are registered with the [OMAG Server Platform](../concepts/omag-server-plat
 using the following command.
 
 ```
-GET {serverURLRoot}/open-metadata/platform-services/users/{adminUserId}/server-platform/registered-services/access-services
+GET {platformURLRoot}/open-metadata/platform-services/users/{adminUserId}/server-platform/registered-services/access-services
 ```
 The result looks something like this:
 
@@ -73,7 +73,7 @@ The result looks something like this:
             "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/glossary-view/"
         },
         {
-            "serviceName": "Security Officer",
+            "serviceName": "Security Manager",
             "serviceURLMarker": "security-officer",
             "serviceDescription": "Set up rules to protect data",
             "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/security-officer/"
@@ -180,7 +180,7 @@ To enable all of the access services (and the [Enterprise Repository Services](.
 that support them) with default configuration values use the following command.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services
 ```
 
 ## Configure an individual access service
@@ -188,7 +188,7 @@ POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{s
 Alternatively, each service can be configured individually with the following command:
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/{serviceURLMarker}
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/{serviceURLMarker}
 ```
 The service URL marker for each service is shown in the list above.
 
@@ -206,7 +206,7 @@ This also disables the enterprise repository services since they
 are not being used.
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services
 ```
 
 ## Retrieve the current configuration for the access services
@@ -214,14 +214,14 @@ DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/
 It is possible to retrieve the 
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/configuration
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/configuration
 ```
 
 it is then possible to make changes to the configuration and 
 save it back:
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/configuration
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/access-services/configuration
 ```
 
 ----

@@ -3,23 +3,21 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
 
-import org.odpi.openmetadata.userinterface.uichassis.springboot.domain.User;
 import org.springframework.security.core.Authentication;
-
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class TokenAuthService extends  TokenSettings implements AuthService{
+public class TokenAuthService extends TokenSettings implements AuthService {
 
-    public User addAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+
+    public void addAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         TokenUser tokenUser = getTokenUser(authentication);
-        String token = createTokenForUser(tokenUser.getUser(), tokenSecret);
+        String token = createTokenForUser(tokenUser, tokenSecret);
         response.addHeader(AUTH_HEADER_NAME, token);
-
-        return tokenUser.getUser();
     }
+
 
     public Authentication getAuthentication(HttpServletRequest request) {
         final String token = request.getHeader(AUTH_HEADER_NAME);

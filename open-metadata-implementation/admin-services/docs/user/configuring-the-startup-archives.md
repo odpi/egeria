@@ -12,13 +12,14 @@ following types of [OMAG Servers](../concepts/omag-server.md).
 * [Metadata Server](../concepts/metadata-server.md)
 * [Repository Proxy](../concepts/repository-proxy.md)
 
+These OMAG Servers are collectively called [Cohort Members](../concepts/cohort-member.md).
 
 Typically open metadata archives are stored as files.  To configure the load of a file
 use the following command.  The file should be specified either as a fully qualified path name
 or as a path name relative to the start up directory of the OMAG Server Platform.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives/file
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives/file
 { path name of file }
 ```
 
@@ -26,7 +27,7 @@ Alternatively it is possible to set up the list of open metadata archives as a l
 [Connections](../../../frameworks/open-connector-framework/docs/concepts/connection.md).
 These connections refer to connectors that can read and retrieve the open metadata archive content.
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserID}/servers/serverName/open-metadata-archives
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives
 { list of connections }
 ```
 This option can be used when the open metadata archives are not stored in a file, or a different
@@ -35,7 +36,7 @@ file connector from the default one for the OMAG Server Platform is required.
 Finally this is how to remove the archives from the configuration document.
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives
 { path name of file }
 ```
 

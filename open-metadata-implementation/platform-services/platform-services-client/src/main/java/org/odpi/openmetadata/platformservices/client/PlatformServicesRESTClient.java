@@ -3,9 +3,8 @@
 package org.odpi.openmetadata.platformservices.client;
 
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -18,7 +17,7 @@ import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
 /**
  * AssetOwnerRESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-class PlatformServicesRESTClient extends OCFRESTClient
+class PlatformServicesRESTClient extends FFDCRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -30,8 +29,8 @@ class PlatformServicesRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    PlatformServicesRESTClient(String    platformName,
-                               String    platformURLRoot,
+    PlatformServicesRESTClient(String   platformName,
+                               String   platformURLRoot,
                                AuditLog auditLog) throws InvalidParameterException
     {
         super(platformName, platformURLRoot, auditLog);
@@ -145,6 +144,7 @@ class PlatformServicesRESTClient extends OCFRESTClient
         return restResult;
     }
 
+
     /**
      * Issue a GET REST call that returns a 'ServerServicesListResponse object.
      *
@@ -169,9 +169,6 @@ class PlatformServicesRESTClient extends OCFRESTClient
 
         return restResult;
     }
-
-
-
 
 
     /**
@@ -224,10 +221,4 @@ class PlatformServicesRESTClient extends OCFRESTClient
 
         return restResult;
     }
-
-
-
-
-
-
 }

@@ -6,16 +6,20 @@ import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerSchemaTables;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AssetsResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.DatabasesResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ErrorResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ModuleResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemaTablesResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemasResponse;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -160,10 +164,11 @@ public class AnalyticsModelingRestServices {
 	 * @param databaseGuid of the requested database.
 	 * @param catalog      catalog name of the database.
 	 * @param schema       schema name of the database.
+	 * @param request      table filter 
 	 * @return module for the requested schema.
 	 */
 	public AnalyticsModelingOMASAPIResponse getModule(String serverName, String userId, String databaseGuid, String catalog,
-			String schema) {
+			String schema, ModuleTableFilter request) {
 
 		String methodName = "getModule";
 		AnalyticsModelingOMASAPIResponse ret;
@@ -175,7 +180,7 @@ public class AnalyticsModelingRestServices {
 
 			ModuleResponse response = new ModuleResponse();
 			ResponseContainerModule module = getHandler().getDatabaseContextHandler(serverName, userId, methodName)
-					.getModule(databaseGuid, catalog, schema);
+					.getModule(databaseGuid, catalog, schema, request);
 			response.setModule(module);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
@@ -187,7 +192,75 @@ public class AnalyticsModelingRestServices {
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
 	}
+	
+	/**
+	 * Create analytics artifact defined as json input.
+	 * @param serverName where to create artifact.
+	 * @param userId requested the operation.
+	 * @param serverCapability source where artifact persist.
+	 * @param artifact definition.
+	 * @return response with artifact or error description.
+	 */
+	public AnalyticsModelingOMASAPIResponse createArtifact(String serverName, String userId, String serverCapability, String artifact) {
 
+		String methodName = "createArtifact";
+		AnalyticsModelingOMASAPIResponse ret;
+		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+		try {
+
+			validateUrlParameters(serverName, userId, null, null, null, null, methodName);
+
+			AssetsResponse response = new AssetsResponse();
+			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
+					.createAssets(userId, serverCapability, artifact);
+			response.setAssetList(assets);
+			ret = response;
+		} catch (AnalyticsModelingCheckedException e) {
+			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
+		}
+		
+		restCallLogger.logRESTCallReturn(token, ret.toString());
+		return ret;
+	}
+
+	/**
+	 * Update analytics artifact defined as json input.
+	 * @param serverName where to create artifact.
+	 * @param userId requested the operation.
+	 * @param serverCapability source where artifact persist.
+	 * @param artifact definition.
+	 * @return response with artifact or error description.
+	 */
+	public AnalyticsModelingOMASAPIResponse updateArtifact(String serverName, String userId, String serverCapability, AnalyticsAsset artifact) {
+
+		String methodName = "updateArtifact";
+		AnalyticsModelingOMASAPIResponse ret;
+		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+		try {
+
+			validateUrlParameters(serverName, userId, null, null, null, null, methodName);
+
+			AssetsResponse response = new AssetsResponse();
+			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
+					.updateAssets(userId, serverCapability, artifact);
+			response.setAssetList(assets);
+			ret = response;
+		} catch (AnalyticsModelingCheckedException e) {
+			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
+		} catch (Exception e) {
+			ret = handleExceptionResponse(e, methodName);
+        }
+		
+		restCallLogger.logRESTCallReturn(token, ret.toString());
+		return ret;
+	}
+	
 	/**
 	 * Validate path and query parameters from URL.
 	 * @param serverName mandatory path parameter of the base URL.
@@ -231,6 +304,17 @@ public class AnalyticsModelingRestServices {
 	private AnalyticsModelingOMASAPIResponse handleInvalidParameterResponse(InvalidParameterException e, String methodName)	{
 		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
 				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition(e.getParameterName()),
+				this.getClass().getSimpleName(),
+				methodName,
+				e);
+		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
+		getExceptionHandler().captureThrowable(ret, error, methodName);
+		return ret;
+	}
+	
+	private AnalyticsModelingOMASAPIResponse handleExceptionResponse(Exception e, String methodName)	{
+		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
+				AnalyticsModelingErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(e.getClass().getName(), methodName, e.getLocalizedMessage()),
 				this.getClass().getSimpleName(),
 				methodName,
 				e);

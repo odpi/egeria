@@ -147,6 +147,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
         InstanceProperties instProps = null;
 
+        long elapsedTime;
         try {
 
             /*
@@ -158,17 +159,21 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
             instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
 
+            long start = System.currentTimeMillis();
             newEntity = metadataCollection.addEntity(workPad.getLocalServerUserId(),
                                                      entityDef.getGUID(),
                                                      super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef),
                                                      null,
                                                      null);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
                             assertion28,
                             testTypeName + assertionMsg28,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "addEntity",
+                            elapsedTime);
 
             // Record the created instance for later clean up.
             createdEntities.add(newEntity);
@@ -278,27 +283,45 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
         try {
 
+            long start = System.currentTimeMillis();
+            EntityDetail knownEntity = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
+
             retrievalOperationName = "isEntityKnown";
-            verifyCondition((newEntity.equals(metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID()))),
+            verifyCondition((newEntity.equals(knownEntity)),
                             assertion9,
                             testTypeName + assertionMsg9,
                             RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
-                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
+                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId(),
+                            "isEntityKnown",
+                            elapsedTime);
 
+
+            start = System.currentTimeMillis();
+            EntitySummary entitySummary = metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), newEntity.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             retrievalOperationName = "getEntitySummary";
-            verifyCondition((metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), newEntity.getGUID()) != null),
+            verifyCondition((entitySummary != null),
                             assertion10,
                             testTypeName + assertionMsg10,
                             RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
-                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
+                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId(),
+                            "getEntitySummary",
+                            elapsedTime);
+
+            start = System.currentTimeMillis();
+            EntityDetail entityDetail = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             retrievalOperationName = "getEntityDetail";
-            verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
+            verifyCondition((newEntity.equals(entityDetail)),
                             assertion11,
                             testTypeName + assertionMsg11,
                             RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
-                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
+                            RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId(),
+                            "getEntityDetail",
+                            elapsedTime);
 
         } catch (Exception exc) {
             /*
@@ -321,20 +344,24 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
         try {
 
-
-            verifyCondition((metadataCollection.getRelationshipsForEntity(workPad.getLocalServerUserId(),
-                                                                          newEntity.getGUID(),
-                                                                          null,
-                                                                          0,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          null,
-                                                                          0) == null),
+            long start = System.currentTimeMillis();
+            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(workPad.getLocalServerUserId(),
+                    newEntity.getGUID(),
+                    null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    0);
+            elapsedTime = System.currentTimeMillis() - start;
+            verifyCondition((relationships == null),
                             assertion12,
                             testTypeName + assertionMsg12,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "getRelationshipsForEntity-negative",
+                            elapsedTime);
         } catch (Exception exc) {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
@@ -368,7 +395,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                 EntityDetail updatedEntity = null;
                 try {
 
+                    long start = System.currentTimeMillis();
                     updatedEntity = metadataCollection.updateEntityStatus(workPad.getLocalServerUserId(), newEntity.getGUID(), validInstanceStatus);
+                    elapsedTime = System.currentTimeMillis() - start;
 
                 } catch (Exception exc) {
                     /*
@@ -390,7 +419,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                 assertion13,
                                 testTypeName + assertionMsg13,
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                                "updateEntityStatus",
+                                elapsedTime);
 
                 assertCondition((updatedEntity.getStatus() == validInstanceStatus),
                                 assertion14,
@@ -408,19 +439,26 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             }
         }
 
+        long start = System.currentTimeMillis();
         try {
             metadataCollection.updateEntityStatus(workPad.getLocalServerUserId(), newEntity.getGUID(), InstanceStatus.DELETED);
+            elapsedTime = System.currentTimeMillis() - start;
             verifyCondition((false),
                             assertion16,
                             testTypeName + assertionMsg16,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "updateEntityStatus-negative",
+                            elapsedTime);
         } catch (StatusNotSupportedException exception) {
+            elapsedTime = System.currentTimeMillis() - start;
             verifyCondition((true),
                             assertion16,
                             testTypeName + assertionMsg16,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "updateEntityStatus-negative",
+                            elapsedTime);
         } catch (Exception exc) {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -452,9 +490,11 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             EntityDetail minPropertiesEntity = null;
             try {
 
+                start = System.currentTimeMillis();
                 minPropertiesEntity = metadataCollection.updateEntityProperties(workPad.getLocalServerUserId(),
                                                                                 newEntity.getGUID(),
                                                                                 minEntityProps);
+                elapsedTime = System.currentTimeMillis() - start;
             } catch (Exception exc) {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
@@ -483,7 +523,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                             assertion17,
                             testTypeName + assertionMsg17,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "updateEntityProperties",
+                            elapsedTime);
 
             /*
              * Check that the returned entity has the new version number...
@@ -504,14 +546,18 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
             try {
 
+                start = System.currentTimeMillis();
                 undoneEntity = metadataCollection.undoEntityUpdate(workPad.getLocalServerUserId(), newEntity.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
 
 
                 assertCondition(true,
                                 assertion29,
                                 testTypeName + assertionMsg29,
                                 RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
-                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId(),
+                                "undoEntityUpdate",
+                                elapsedTime);
 
 
                 assertCondition(((undoneEntity != null) && (undoneEntity.getProperties() != null)),
@@ -592,23 +638,26 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
         try {
 
+            start = System.currentTimeMillis();
             deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                                                             newEntity.getType().getTypeDefGUID(),
                                                             newEntity.getType().getTypeDefName(),
                                                             newEntity.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition(true,
                             assertion30,
                             testTypeName + assertionMsg30,
                             RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId(),
+                            "deleteEntity",
+                            elapsedTime);
 
             assertCondition(((deletedEntity != null) && (deletedEntity.getVersion() >= nextVersion)),
                             assertion21,
                             testTypeName + assertionMsg21 + nextVersion,
                             RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
                             RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
-
 
         } catch (FunctionNotSupportedException exception) {
 
@@ -639,21 +688,28 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
         try {
 
+            start = System.currentTimeMillis();
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((false),
                             assertion22,
                             testTypeName + assertionMsg22,
                             RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId(),
+                            "getEntityDetail-negative",
+                            elapsedTime);
 
         } catch (EntityNotKnownException exception) {
 
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion22,
                             testTypeName + assertionMsg22,
                             RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId(),
+                            "getEntityDetail-negative",
+                            elapsedTime);
 
         }
         catch (Exception exc) {
@@ -682,8 +738,10 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         EntityDetail restoredEntity = null;
         try {
 
+            start = System.currentTimeMillis();
             restoredEntity = metadataCollection.restoreEntity(workPad.getLocalServerUserId(),
                                                                            newEntity.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
         }
         catch (Exception exc) {
             /*
@@ -704,7 +762,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                         assertion23,
                         testTypeName + assertionMsg23,
                         RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId(),
+                        "restoreEntity",
+                        elapsedTime);
 
         assertCondition((restoredEntity.getVersion() >= nextVersion),
                         assertion24,
@@ -716,11 +776,16 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
          * Verify that entity can be retrieved following restore
          */
         try {
-            verifyCondition((restoredEntity.equals(metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), restoredEntity.getGUID()))),
+            start = System.currentTimeMillis();
+            EntityDetail knownEntity = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), restoredEntity.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
+            verifyCondition((restoredEntity.equals(knownEntity)),
                             assertion25,
                             testTypeName + assertionMsg25,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "isEntityKnown",
+                            elapsedTime);
         }
         catch (Exception exc) {
             /*
@@ -777,11 +842,12 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
         try {
 
-
+            start = System.currentTimeMillis();
             metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
                                            newEntity.getType().getTypeDefGUID(),
                                            newEntity.getType().getTypeDefName(),
                                            newEntity.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
         }
         catch (Exception exc) {
@@ -810,7 +876,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                             assertion26,
                             testTypeName + assertionMsg26,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "purgeEntity",
+                            elapsedTime);
         }
         catch (EntityNotKnownException exception) {
 
@@ -818,7 +886,9 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                             assertion26,
                             testTypeName + assertionMsg26,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "purgeEntity",
+                            elapsedTime);
         }
         catch (Exception exc) {
             /*
@@ -837,11 +907,13 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
 
         /*
-         * Perform a historic get of the entity - this should return the entity even though it has now been [deleted and] purged
+         * Perform a historic get of the entity - this should not return the entity since it has now been [deleted and] purged
          * The time for the query is the time set just before the delete operation above.
          */
         try {
+            start = System.currentTimeMillis();
             EntityDetail earlierEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID(), preDeleteDate);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition(true,
                             assertion31,
@@ -850,24 +922,32 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                             RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
 
             /*
-             * Check that the earlierEntity is not null and that the entity matches the copy saved at preDeleteDate.
+             * Check that the earlierEntity is null (really it should be the EntityNotKnownException below that handles)
              */
-            assertCondition(((earlierEntity != null) && earlierEntity.equals(preDeleteEntity)),
+            assertCondition((earlierEntity == null),
                             assertion27,
                             testTypeName + assertionMsg27,
                             RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId(),
+                            "getEntityDetail-negative",
+                            elapsedTime);
 
 
         } catch (EntityNotKnownException exception) {
+
             /*
-             * If it supports historical retrieval, the repository should have returned the entity, hence fail the test
+             * Even if it supports historical retrieval, the repository should not return any version of a purged entity,
+             * as the entity and all of its history should have been purged. Therefore this exception being thrown
+             * indicates success -- so we do not need to handle it any further.
              */
-            assertCondition((false),
-                            assertion27,
-                            testTypeName + assertionMsg27,
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId());
+            elapsedTime = System.currentTimeMillis() - start;
+            assertCondition((true),
+                    assertion27,
+                    testTypeName + assertionMsg27,
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.HISTORICAL_PROPERTY_SEARCH.getRequirementId(),
+                    "getEntityDetail-negative",
+                    elapsedTime);
 
         } catch (FunctionNotSupportedException exception) {
 

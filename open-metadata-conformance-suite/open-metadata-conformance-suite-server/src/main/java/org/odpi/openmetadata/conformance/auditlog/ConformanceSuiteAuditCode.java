@@ -138,6 +138,12 @@ public enum ConformanceSuiteAuditCode
              "This server will no longer receive metadata instances from the conformance tests.",
              "No action is required.  This is part of the normal operation of the service."),
 
+    TEST_EXECUTION_WAITING("CONFORMANCE-SUITE-0020",
+            OMRSAuditLogRecordSeverity.INFO,
+            "Test execution will now pause for {0} seconds",
+            "The execution of tests will now pause for the specified number of seconds, based on the configuration of the workbench.",
+            "No action is required.  This is part of the normal operation of the service."),
+
     ;
 
     private String                     logMessageId;

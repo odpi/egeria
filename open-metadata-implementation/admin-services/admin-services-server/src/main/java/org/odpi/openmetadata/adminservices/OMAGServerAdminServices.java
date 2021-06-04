@@ -5,23 +5,17 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.classifier.ServerTypeClassifier;
 import org.odpi.openmetadata.adminservices.client.ConfigurationManagementClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.properties.DedicatedTopicList;
 import org.odpi.openmetadata.adminservices.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -88,7 +82,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -140,7 +134,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(typeName))
+            if ((typeName != null) && (typeName.length() == 0))
             {
                 typeName = null;
             }
@@ -167,7 +161,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -213,7 +207,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(name))
+            if (name != null && (name.length() == 0))
             {
                 name = null;
             }
@@ -240,7 +234,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -286,7 +280,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(serverUserId))
+            if ((serverUserId != null) && (serverUserId.length() == 0))
             {
                 serverUserId = null;
             }
@@ -313,7 +307,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -359,7 +353,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(serverPassword))
+            if ((serverPassword != null) && (serverPassword.length() == 0))
             {
                 serverPassword = null;
             }
@@ -386,7 +380,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -459,7 +453,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -516,7 +510,7 @@ public class OMAGServerAdminServices
 
             EventBusConfig   eventBusConfig = new EventBusConfig();
 
-            if ("".equals(connectorProvider))
+            if ((connectorProvider != null) && (connectorProvider.length() == 0))
             {
                 eventBusConfig.setConnectorProvider(null);
             }
@@ -525,7 +519,7 @@ public class OMAGServerAdminServices
                 eventBusConfig.setConnectorProvider(connectorProvider);
             }
 
-            if ("".equals(topicURLRoot))
+            if ((topicURLRoot != null) && (topicURLRoot.length() == 0))
             {
                 eventBusConfig.setTopicURLRoot(null);
             }
@@ -569,7 +563,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -624,7 +618,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -694,7 +688,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -703,6 +697,7 @@ public class OMAGServerAdminServices
 
         return response;
     }
+
 
     /**
      * Set up the root URL for this server that is used to construct full URL paths to calls for
@@ -746,7 +741,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ("".equals(url))
+            if ((url != null) && (url.length() == 0))
             {
                 url = null;
             }
@@ -773,7 +768,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -855,7 +850,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -939,7 +934,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -987,7 +982,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1035,7 +1030,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1083,7 +1078,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1140,7 +1135,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1207,7 +1202,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1263,7 +1258,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1304,7 +1299,6 @@ public class OMAGServerAdminServices
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
-
             this.setLocalRepositoryConfig(userId,
                                           serverName,
                                           configurationFactory.getLocalGraphLocalRepositoryConfig(serverConfig.getLocalServerName(),
@@ -1319,7 +1313,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1372,7 +1366,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1398,6 +1392,125 @@ public class OMAGServerAdminServices
     {
         return clearLocalRepositoryConfig(userId, serverName);
     }
+
+
+    /**
+     * Provide the connection to the local repository - used when the local repository mode is set to plugin repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connection  connection to the OMRS repository connector.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     */
+    public VoidResponse setPluginRepositoryConnection(String     userId,
+                                                      String     serverName,
+                                                      Connection connection)
+    {
+        final String methodName = "setPluginRepositoryConnection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateServerConnection(connection, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+            LocalRepositoryConfig localRepositoryConfig
+                    = configurationFactory.getPluginRepositoryLocalRepositoryConfig(serverConfig.getLocalServerName(),
+                                                                                    serverConfig.getLocalServerURL());
+
+            /*
+             * Set up the repository connection in the local repository config and clear any event mapper
+             */
+            localRepositoryConfig.setLocalRepositoryLocalConnection(connection);
+            localRepositoryConfig.setEventMapperConnection(null);
+
+            this.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Provide the connection to the local repository.
+     * This is used when the local repository mode is set to plugin repository.
+     *
+     * @param userId                    user that is issuing the request.
+     * @param serverName                local server name.
+     * @param connectorProvider         connector provider class name to the OMRS repository connector.
+     * @param additionalProperties      additional parameters to pass to the repository connector
+     * @return void response or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set.
+     */
+    public VoidResponse setPluginRepositoryConnection(String               userId,
+                                                      String               serverName,
+                                                      String               connectorProvider,
+                                                      Map<String, Object>  additionalProperties)
+    {
+        final String methodName  = "setPluginRepositoryConnection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
+            this.setPluginRepositoryConnection(userId,
+                                               serverName,
+                                               connectorConfigurationFactory.getRepositoryConnection(connectorProvider,
+                                                                                                     serverConfig.getLocalServerURL(),
+                                                                                                     additionalProperties));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
 
     /**
@@ -1448,7 +1561,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1494,9 +1607,9 @@ public class OMAGServerAdminServices
 
             this.setRepositoryProxyConnection(userId,
                                               serverName,
-                                              connectorConfigurationFactory.getRepositoryProxyConnection(connectorProvider,
-                                                                                                         serverConfig.getLocalServerURL(),
-                                                                                                         additionalProperties));
+                                              connectorConfigurationFactory.getRepositoryConnection(connectorProvider,
+                                                                                                    serverConfig.getLocalServerURL(),
+                                                                                                    additionalProperties));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -1506,7 +1619,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1530,11 +1643,11 @@ public class OMAGServerAdminServices
      * OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
      * OMAGConfigurationErrorException the local repository mode has not been set
      */
-    public VoidResponse setLocalRepositoryEventMapper(String     userId,
+    public VoidResponse setRepositoryProxyEventMapper(String     userId,
                                                       String     serverName,
                                                       Connection connection)
     {
-        final String methodName = "setLocalRepositoryEventMapper";
+        final String methodName = "setRepositoryProxyEventMapper";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1568,6 +1681,13 @@ public class OMAGServerAdminServices
                                                           this.getClass().getName(),
                                                           methodName);
             }
+            else if (localRepositoryConfig.getLocalRepositoryMode() != LocalRepositoryMode.REPOSITORY_PROXY)
+            {
+                throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_PROXY.getMessageDefinition(serverName,
+                                                                                                                                  localRepositoryConfig.getLocalRepositoryMode().getName()),
+                                                          this.getClass().getName(),
+                                                          methodName);
+            }
 
             /*
              * Set up the event mapper connection in the local repository config
@@ -1588,7 +1708,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1614,13 +1734,13 @@ public class OMAGServerAdminServices
      * OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    public VoidResponse setLocalRepositoryEventMapper(String              userId,
+    public VoidResponse setRepositoryProxyEventMapper(String              userId,
                                                       String              serverName,
                                                       String              connectorProvider,
                                                       String              eventSource,
                                                       Map<String, Object> additionalProperties)
     {
-        final String methodName = "setLocalRepositoryEventMapper";
+        final String methodName = "setRepositoryProxyEventMapper";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1633,7 +1753,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            this.setLocalRepositoryEventMapper(userId,
+            this.setRepositoryProxyEventMapper(userId,
                                                serverName,
                                                connectorConfigurationFactory.getRepositoryEventMapperConnection(connectorProvider,
                                                                                                                 additionalProperties,
@@ -1647,7 +1767,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1722,7 +1842,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1803,7 +1923,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1821,21 +1941,23 @@ public class OMAGServerAdminServices
      * information and events related to changes in their supported metadata types and instances.
      * They are also able to query each other's metadata directly through REST calls.
      *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param cohortName  name of the cohort.
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @param cohortName  name of the cohort
+     * @param cohortTopicStructure the style of cohort topic set up to use
      * @param configurationProperties additional properties for the cohort
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    public VoidResponse addCohortConfig(String               userId,
-                                        String               serverName,
-                                        String               cohortName,
-                                        Map<String, Object>  configurationProperties)
+    public VoidResponse addCohortRegistration(String               userId,
+                                              String               serverName,
+                                              String               cohortName,
+                                              CohortTopicStructure cohortTopicStructure,
+                                              Map<String, Object>  configurationProperties)
     {
-        final String methodName = "addCohortConfig";
+        final String methodName = "addCohortRegistration";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1858,6 +1980,7 @@ public class OMAGServerAdminServices
 
             CohortConfig newCohortConfig = configurationFactory.getDefaultCohortConfig(serverConfig.getLocalServerName(),
                                                                                        cohortName,
+                                                                                       cohortTopicStructure,
                                                                                        configurationProperties,
                                                                                        eventBusConfig.getConnectorProvider(),
                                                                                        eventBusConfig.getTopicURLRoot(),
@@ -1879,7 +2002,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1890,11 +2013,10 @@ public class OMAGServerAdminServices
     }
 
 
-
     /**
      * Retrieve the topic name that is used by this server to contact the other members of the
-     * open metadata repository cohort.  Note this name needs to be configured to same
-     * in all members of a cohort.
+     * open metadata repository cohort.  This call can only be made once the cohort
+     * is set up with addCohortRegistration().
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -1928,27 +2050,7 @@ public class OMAGServerAdminServices
 
                 if (currentCohortDetails != null)
                 {
-                    Connection eventTopicConnection = currentCohortDetails.getCohortOMRSTopicConnection();
-
-                    if (eventTopicConnection instanceof VirtualConnection)
-                    {
-                        VirtualConnection virtualConnection = (VirtualConnection)eventTopicConnection;
-                        List<EmbeddedConnection> embeddedConnections = virtualConnection.getEmbeddedConnections();
-                        if ((embeddedConnections != null) && (embeddedConnections.size() == 1))
-                        {
-                            Connection connection = embeddedConnections.get(0).getEmbeddedConnection();
-
-                            if (connection != null)
-                            {
-                                Endpoint endpoint = connection.getEndpoint();
-
-                                if (endpoint != null)
-                                {
-                                    response.setResultString(endpoint.getAddress());
-                                }
-                            }
-                        }
-                    }
+                    response.setResultString(this.getCohortTopicName(currentCohortDetails.getCohortOMRSTopicConnection()));
                 }
             }
         }
@@ -1960,7 +2062,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -1968,6 +2070,104 @@ public class OMAGServerAdminServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Retrieve the current topic names for the three dedicated topics of the cohort.  This call can only be made once the cohort
+     * is set up with addCohortRegistration().
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @return list of topics response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     */
+    public DedicatedTopicListResponse getDedicatedCohortTopicNames(String userId,
+                                                                   String serverName,
+                                                                   String cohortName)
+    {
+        final String methodName = "getDedicatedCohortTopicNames";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        DedicatedTopicListResponse response = new DedicatedTopicListResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateCohortName(cohortName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                CohortConfig currentCohortDetails = errorHandler.validateCohortIsSet(serverName, serverConfig, cohortName, methodName);
+
+                if (currentCohortDetails != null)
+                {
+                    DedicatedTopicList topicNames = new DedicatedTopicList();
+
+                    topicNames.setRegistrationTopicName(this.getCohortTopicName(currentCohortDetails.getCohortOMRSRegistrationTopicConnection()));
+                    topicNames.setTypesTopicName(this.getCohortTopicName(currentCohortDetails.getCohortOMRSTypesTopicConnection()));
+                    topicNames.setInstancesTopicName(this.getCohortTopicName(currentCohortDetails.getCohortOMRSInstancesTopicConnection()));
+
+                    response.setDedicatedTopicList(topicNames);
+                }
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the topic name from an event topic connection.
+     *
+     * @param eventTopicConnection  connection object to interrogate
+     * @return string  or null
+     */
+    private String getCohortTopicName(Connection eventTopicConnection)
+    {
+        if (eventTopicConnection instanceof VirtualConnection)
+        {
+            VirtualConnection virtualConnection = (VirtualConnection)eventTopicConnection;
+            List<EmbeddedConnection> embeddedConnections = virtualConnection.getEmbeddedConnections();
+
+            if ((embeddedConnections != null) && (embeddedConnections.size() == 1))
+            {
+                Connection connection = embeddedConnections.get(0).getEmbeddedConnection();
+
+                if (connection != null)
+                {
+                    Endpoint endpoint = connection.getEndpoint();
+
+                    if (endpoint != null)
+                    {
+                        return endpoint.getAddress();
+                    }
+                }
+            }
+        }
+
+       return null;
     }
 
 
@@ -2002,7 +2202,6 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateCohortName(cohortName, serverName, methodName);
 
-            boolean topicChanged = false;
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             if (serverConfig != null)
@@ -2011,43 +2210,20 @@ public class OMAGServerAdminServices
 
                 if (currentCohortDetails != null)
                 {
-                    Connection eventTopicConnection = currentCohortDetails.getCohortOMRSTopicConnection();
+                    Connection eventTopicConnection = overrideCohortTopicName(currentCohortDetails.getCohortOMRSTopicConnection(), topicName);
 
-                    if (eventTopicConnection instanceof VirtualConnection)
+                    if (eventTopicConnection != null)
                     {
-                        VirtualConnection virtualConnection = (VirtualConnection)eventTopicConnection;
-                        List<EmbeddedConnection> embeddedConnections = virtualConnection.getEmbeddedConnections();
-                        if ((embeddedConnections != null) && (embeddedConnections.size() == 1))
-                        {
-                            EmbeddedConnection embeddedConnection = embeddedConnections.get(0);
-                            Connection connection = embeddedConnection.getEmbeddedConnection();
+                        currentCohortDetails.setCohortOMRSTopicConnection(eventTopicConnection);
 
-                            if (connection != null)
-                            {
-                                Endpoint endpoint = connection.getEndpoint();
-
-                                if (endpoint != null)
-                                {
-                                    endpoint.setAddress(topicName);
-                                    connection.setEndpoint(endpoint);
-                                    embeddedConnection.setEmbeddedConnection(connection);
-                                    embeddedConnections = new ArrayList<>();
-                                    embeddedConnections.add(embeddedConnection);
-                                    virtualConnection.setEmbeddedConnections(embeddedConnections);
-                                    currentCohortDetails.setCohortOMRSTopicConnection(virtualConnection);
-
-                                    this.setCohortConfig(userId, serverName, cohortName, currentCohortDetails);
-                                    topicChanged = true;
-                                }
-                            }
-                        }
+                        this.setCohortConfig(userId, serverName, cohortName, currentCohortDetails);
                     }
-                }
-            }
+                    else
+                    {
+                        errorHandler.logNoCohortTopicChange(cohortName, serverName, methodName);
+                    }
 
-            if (! topicChanged)
-            {
-                errorHandler.logNoCohortTopicChange(cohortName, serverName, methodName);
+                }
             }
         }
         catch (OMAGConfigurationErrorException  error)
@@ -2062,7 +2238,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2070,6 +2246,291 @@ public class OMAGServerAdminServices
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Change the topic name that is used by this server to register members in the
+     * open metadata repository cohort.  Note this name needs to be configured to same
+     * in all members of a cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @param topicName new topic name
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     */
+    public VoidResponse overrideRegistrationCohortTopicName(String userId,
+                                                            String serverName,
+                                                            String cohortName,
+                                                            String topicName)
+    {
+        final String methodName = "overrideRegistrationCohortTopicName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateCohortName(cohortName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                CohortConfig currentCohortDetails = errorHandler.validateCohortIsSet(serverName, serverConfig, cohortName, methodName);
+
+                if (currentCohortDetails != null)
+                {
+                    Connection eventTopicConnection = overrideCohortTopicName(currentCohortDetails.getCohortOMRSRegistrationTopicConnection(), topicName);
+
+                    if (eventTopicConnection != null)
+                    {
+                        currentCohortDetails.setCohortOMRSRegistrationTopicConnection(eventTopicConnection);
+
+                        this.setCohortConfig(userId, serverName, cohortName, currentCohortDetails);
+                    }
+                    else
+                    {
+                        errorHandler.logNoCohortTopicChange(cohortName, serverName, methodName);
+                    }
+
+                }
+            }
+        }
+        catch (OMAGConfigurationErrorException  error)
+        {
+            exceptionHandler.captureConfigurationErrorException(response, error);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Change the topic name that is used by this server to verify type consistency with the other members of the
+     * open metadata repository cohort.  Note this name needs to be configured to same
+     * in all members of a cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @param topicName new topic name
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     */
+    public VoidResponse overrideTypesCohortTopicName(String userId,
+                                                     String serverName,
+                                                     String cohortName,
+                                                     String topicName)
+    {
+        final String methodName = "overrideTypesCohortTopicName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateCohortName(cohortName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                CohortConfig currentCohortDetails = errorHandler.validateCohortIsSet(serverName, serverConfig, cohortName, methodName);
+
+                if (currentCohortDetails != null)
+                {
+                    Connection eventTopicConnection = overrideCohortTopicName(currentCohortDetails.getCohortOMRSTypesTopicConnection(), topicName);
+
+                    if (eventTopicConnection != null)
+                    {
+                        currentCohortDetails.setCohortOMRSTypesTopicConnection(eventTopicConnection);
+
+                        this.setCohortConfig(userId, serverName, cohortName, currentCohortDetails);
+                    }
+                    else
+                    {
+                        errorHandler.logNoCohortTopicChange(cohortName, serverName, methodName);
+                    }
+
+                }
+            }
+        }
+        catch (OMAGConfigurationErrorException  error)
+        {
+            exceptionHandler.captureConfigurationErrorException(response, error);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Change the topic name that is used by this server to exchange metadata instances with the other members of the
+     * open metadata repository cohort.  Note this name needs to be configured to same
+     * in all members of a cohort.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param cohortName  name of the cohort.
+     * @param topicName new topic name
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     */
+    public VoidResponse overrideInstancesCohortTopicName(String userId,
+                                                         String serverName,
+                                                         String cohortName,
+                                                         String topicName)
+    {
+        final String methodName = "overrideInstancesCohortTopicName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateCohortName(cohortName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                CohortConfig currentCohortDetails = errorHandler.validateCohortIsSet(serverName, serverConfig, cohortName, methodName);
+
+                if (currentCohortDetails != null)
+                {
+                    Connection eventTopicConnection = overrideCohortTopicName(currentCohortDetails.getCohortOMRSInstancesTopicConnection(), topicName);
+
+                    if (eventTopicConnection != null)
+                    {
+                        currentCohortDetails.setCohortOMRSInstancesTopicConnection(eventTopicConnection);
+
+                        this.setCohortConfig(userId, serverName, cohortName, currentCohortDetails);
+                    }
+                    else
+                    {
+                        errorHandler.logNoCohortTopicChange(cohortName, serverName, methodName);
+                    }
+
+                }
+            }
+        }
+        catch (OMAGConfigurationErrorException  error)
+        {
+            exceptionHandler.captureConfigurationErrorException(response, error);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Change the topic name that is used by this server to contact the other members of the
+     * open metadata repository cohort.  Note this name needs to be configured to same
+     * in all members of a cohort.
+     *
+     * @param eventTopicConnection  connection object to update
+     * @param topicName new topic name
+     * @return
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or cohortName parameter.
+     * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
+     */
+    private Connection overrideCohortTopicName(Connection eventTopicConnection,
+                                               String     topicName)
+    {
+        if (eventTopicConnection instanceof VirtualConnection)
+        {
+            VirtualConnection virtualConnection = (VirtualConnection)eventTopicConnection;
+            List<EmbeddedConnection> embeddedConnections = virtualConnection.getEmbeddedConnections();
+
+            if ((embeddedConnections != null) && (embeddedConnections.size() == 1))
+            {
+                EmbeddedConnection embeddedConnection = embeddedConnections.get(0);
+                Connection connection = embeddedConnection.getEmbeddedConnection();
+
+                if (connection != null)
+                {
+                    Endpoint endpoint = connection.getEndpoint();
+
+                    if (endpoint != null)
+                    {
+                        endpoint.setAddress(topicName);
+                        connection.setEndpoint(endpoint);
+                        embeddedConnection.setEmbeddedConnection(connection);
+                        embeddedConnections = new ArrayList<>();
+                        embeddedConnections.add(embeddedConnection);
+                        virtualConnection.setEmbeddedConnections(embeddedConnections);
+
+                        return virtualConnection;
+                    }
+                }
+            }
+        }
+
+       return null;
     }
 
 
@@ -2157,7 +2618,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2252,7 +2713,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2304,7 +2765,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2408,7 +2869,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2460,7 +2921,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2574,7 +3035,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2625,7 +3086,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2670,7 +3131,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2805,7 +3266,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2858,7 +3319,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2909,7 +3370,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -2973,7 +3434,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -3036,7 +3497,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureConfigurationErrorException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -3080,7 +3541,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
@@ -3110,7 +3571,7 @@ public class OMAGServerAdminServices
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable  error)
+        } catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -3154,7 +3615,7 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }

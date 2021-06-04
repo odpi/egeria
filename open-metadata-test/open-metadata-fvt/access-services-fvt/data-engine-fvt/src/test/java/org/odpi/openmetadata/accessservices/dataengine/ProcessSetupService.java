@@ -101,15 +101,15 @@ public class ProcessSetupService {
      * @param userId               the user which creates the data engine
      * @param dataEngineOMASClient the data engine client that is used to create the external data engine
      * @return the software server capability used to create the external data source that is needed for checks inside the FVT
-     * @throws InvalidParameterException
-     * @throws UserNotAuthorizedException
-     * @throws PropertyServerException
-     * @throws ConnectorCheckedException
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public SoftwareServerCapability createExternalDataEngine(String userId, DataEngineClient dataEngineOMASClient)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException {
         SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
-        softwareServerCapability.setDisplayName(DATA_ENGINE_DISPLAY_NAME);
+        softwareServerCapability.setName(DATA_ENGINE_DISPLAY_NAME);
         softwareServerCapability.setQualifiedName(DATA_ENGINE_NAME);
         softwareServerCapability.setDescription(DATA_ENGINE_DESCRIPTION);
         softwareServerCapability.setEngineType(DATA_ENGINE_TYPE);
@@ -123,10 +123,11 @@ public class ProcessSetupService {
     /** Creates the job process containing all the stage processes, port implementations, schemas, attributes and virtual assets
      * @param userId the user which created the job process
      * @param dataEngineOMASClient the data engine client that is used to create the job process
-     * @throws InvalidParameterException
-     * @throws PropertyServerException
-     * @throws UserNotAuthorizedException
-     * @throws ConnectorCheckedException
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void createJobProcessWithContent(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
         createVirtualAssets(userId, dataEngineOMASClient);
@@ -321,19 +322,19 @@ public class ProcessSetupService {
     }
 
     private String getPortAliasName(String delegatesTo) {
-        return PORT_ALIAS + SEPARATOR + JOB_NAME + SEPARATOR + delegatesTo;
+        return String.join(SEPARATOR, PORT_ALIAS, JOB_NAME, delegatesTo);
     }
 
     private String getPortImplementationName(String processName, String portName) {
-        return PORT_IMPLEMENTATION + SEPARATOR + processName + SEPARATOR + portName;
+        return String.join(SEPARATOR, PORT_IMPLEMENTATION, processName, portName);
     }
 
     private String getSchemaTypeName(String processName, String portName) {
-        return SCHEMA_TYPE + SEPARATOR + processName + SEPARATOR + portName;
+        return String.join(SEPARATOR, SCHEMA_TYPE, processName, portName);
     }
 
     private String getAttributeName(String processName, String portName, String portType, String attributeName) {
-        return ATTRIBUTE + SEPARATOR + processName + SEPARATOR + portName + SEPARATOR + portType + SEPARATOR + attributeName;
+        return String.join(SEPARATOR, ATTRIBUTE, processName, portName, portType, attributeName);
     }
 
     private String getDisplayName(String name) {

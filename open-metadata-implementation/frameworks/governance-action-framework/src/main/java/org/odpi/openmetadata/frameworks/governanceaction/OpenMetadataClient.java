@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * OpenMetadataClient provides access to metadata elements stored in the metadata repositories.  It is implemented by a
- * metadata repository provider. In Egeria, this class is implemented in the Governance Engine OMAS client.
+ * metadata repository provider. In Egeria, this class is implemented in the Governance Action OMES server.
  */
 public abstract class OpenMetadataClient implements OpenMetadataStore
 {
@@ -56,6 +56,42 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
 
 
     /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     *
+     * @return metadata element properties
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public abstract OpenMetadataElement getMetadataElementByUniqueName(String uniqueName,
+                                                                       String uniquePropertyName) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException;
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     *
+     * @return metadata element unique identifier (guid)
+     * @throws InvalidParameterException the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public abstract String getMetadataElementGUIDByUniqueName(String uniqueName,
+                                                              String uniquePropertyName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param searchString name to retrieve
@@ -79,6 +115,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * Retrieve the metadata elements connected to the supplied element.
      *
      * @param elementGUID unique identifier for the starting metadata element
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -91,6 +128,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      */
     @Override
     public abstract List<RelatedMetadataElement> getRelatedMetadataElements(String elementGUID,
+                                                                            int    startingAtEnd,
                                                                             String relationshipTypeName,
                                                                             int    startFrom,
                                                                             int    pageSize) throws InvalidParameterException,
@@ -151,7 +189,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  abstract List<RelatedMetadataElement> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+    public  abstract List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
                                                                                            SearchProperties searchProperties,
                                                                                            String           sequencingProperty,
                                                                                            SequencingOrder  sequencingOrder,
@@ -365,7 +403,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @param relationshipGUID unique identifier of the relationship to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
-     * @param properties new properties for the classification
+     * @param properties new properties for the relationship
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
@@ -438,16 +476,19 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param requestParameters properties to pass to the next governance action service
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public abstract void recordCompletionStatus(CompletionStatus status,
-                                                List<String>     outputGuards) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
-
-
+    public abstract void recordCompletionStatus(CompletionStatus      status,
+                                                List<String>          outputGuards,
+                                                Map<String, String>   requestParameters,
+                                                List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
 
 
     /**
@@ -460,37 +501,38 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @param displayName display name for this action
      * @param description description for this action
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargetGUIDs list of action targets for the resulting governance action service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param governanceEngineName name of the governance engine to run the request
      * @param startTime future start time or null for "as soon as possible".
      * @param requestType request type to identify the governance action service to run
-     * @param guards guards to pass on to the requested action
-     * @param requestProperties properties to pass to the governance action service
+     * @param requestParameters properties to pass to the governance action service
      *
      * @return unique identifier of the governance action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public abstract String initiateGovernanceAction(String              qualifiedName,
-                                                    int                 domainIdentifier,
-                                                    String              displayName,
-                                                    String              description,
-                                                    List<String>        requestSourceGUIDs,
-                                                    List<String>        actionTargetGUIDs,
-                                                    Date                startTime,
-                                                    String              requestType,
-                                                    String              guards,
-                                                    Map<String, String> requestProperties) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException;
+    public abstract String initiateGovernanceAction(String                qualifiedName,
+                                                    int                   domainIdentifier,
+                                                    String                displayName,
+                                                    String                description,
+                                                    List<String>          requestSourceGUIDs,
+                                                    List<NewActionTarget> actionTargets,
+                                                    Date                  startTime,
+                                                    String                governanceEngineName,
+                                                    String                requestType,
+                                                    Map<String, String>   requestParameters) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException;
 
 
     /**
      * Using the named governance action process as a template, initiate a chain of governance actions.
      *
      * @param processQualifiedName unique name of the governance action process to use
+     * @param requestParameters initial set of request parameters to pass to the governance actions
      * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargetGUIDs list of action targets for the resulting governance action service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible".
      *
      * @return unique identifier of the first governance action of the process
@@ -498,12 +540,13 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public abstract String initiateGovernanceActionProcess(String       processQualifiedName,
-                                                           List<String> requestSourceGUIDs,
-                                                           List<String> actionTargetGUIDs,
-                                                           Date         startTime) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException;
+    public abstract String initiateGovernanceActionProcess(String                processQualifiedName,
+                                                           Map<String, String>   requestParameters,
+                                                           List<String>          requestSourceGUIDs,
+                                                           List<NewActionTarget> actionTargets,
+                                                           Date                  startTime) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
 
 
     /**
@@ -544,18 +587,26 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * the interesting metadata types.  That is an event is only passed to the listener if it matches both
      * the interesting event types and the interesting metadata types.
      *
-     * If interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
+     * If specific instance, interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
      * If the listener parameter is null, no more events are passed to the listener.
      *
      * @param listener listener object to receive events
      * @param interestingEventTypes types of events that should be passed to the listener
-     * @param interestingMetadataTypes types of elements that are the subject of the interesting event types.
+     * @param interestingMetadataTypes types of elements that are the subject of the interesting event types
+     * @param specificInstance unique identifier of a specific instance to watch for
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
     public abstract void registerListener(WatchdogGovernanceListener listener,
                                           List<WatchdogEventType>    interestingEventTypes,
-                                          List<String>               interestingMetadataTypes) throws InvalidParameterException;
+                                          List<String>               interestingMetadataTypes,
+                                          String                     specificInstance) throws InvalidParameterException;
+
+
+    /**
+     * Unregister the listener from the event infrastructure.
+     */
+    public abstract void disconnectListener();
 
 
     /**

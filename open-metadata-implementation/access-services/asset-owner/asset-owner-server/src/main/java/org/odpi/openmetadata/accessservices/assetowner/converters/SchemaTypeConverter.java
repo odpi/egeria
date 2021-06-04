@@ -45,6 +45,7 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
      * @param instanceProperties properties describing the schema type
      * @param attributeCount number of attributes (for a complex schema type)
      * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
+     * @param externalSchemaTypeGUID unique identifier of the external schema type
      * @param externalSchemaType bean containing the properties of the schema type that is shared by multiple attributes/assets
      * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
      * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
@@ -61,6 +62,7 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
                                   List<Classification> schemaRootClassifications,
                                   int                  attributeCount,
                                   String               validValueSetGUID,
+                                  String               externalSchemaTypeGUID,
                                   B                    externalSchemaType,
                                   B                    mapFromSchemaType,
                                   B                    mapToSchemaType,
@@ -91,6 +93,7 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
                                                                               schemaRootClassifications,
                                                                               attributeCount,
                                                                               validValueSetGUID,
+                                                                              externalSchemaTypeGUID,
                                                                               externalSchemaType,
                                                                               mapFromSchemaType,
                                                                               mapToSchemaType,
@@ -123,6 +126,7 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
      * @param instanceProperties properties describing the schema type
      * @param attributeCount number of attributes (for a complex schema type)
      * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
+     * @param externalSchemaTypeGUID unique identifier of the external schema type
      * @param externalSchemaType bean containing the properties of the schema type that is shared by multiple attributes/assets
      * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
      * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
@@ -137,6 +141,7 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
                                                          List<Classification> schemaRootClassifications,
                                                          int                  attributeCount,
                                                          String               validValueSetGUID,
+                                                         String               externalSchemaTypeGUID,
                                                          B                    externalSchemaType,
                                                          B                    mapFromSchemaType,
                                                          B                    mapToSchemaType,
@@ -176,7 +181,7 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
         }
         else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
         {
-            returnBean = this.getExternalSchemaType(instanceProperties, externalSchemaType);
+            returnBean = this.getExternalSchemaType(instanceProperties, externalSchemaTypeGUID, externalSchemaType);
         }
         else
         {
@@ -365,10 +370,12 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
      * Return the converted bean.
      *
      * @param instanceProperties properties describing the schema type
+     * @param externalSchemaTypeGUID unique identifier of the external schema type
      * @param externalSchemaType bean containing the properties of the schema type that is shared by multiple attributes/assets
      * @return bean populated with properties from the instance properties supplied
      */
     private SchemaTypeProperties getExternalSchemaType(InstanceProperties   instanceProperties,
+                                                       String               externalSchemaTypeGUID,
                                                        B                    externalSchemaType)
     {
         ExternalSchemaTypeProperties schemaType = new ExternalSchemaTypeProperties();
@@ -379,6 +386,7 @@ public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
 
         if (externalSchemaType != null)
         {
+            schemaType.setExternalSchemaTypeGUID(externalSchemaTypeGUID);
             schemaType.setExternalSchemaType((SchemaTypeProperties)externalSchemaType);
         }
 

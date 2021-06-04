@@ -6,8 +6,8 @@
 
 The governance action request type defines the descriptive name of a specific
 governance action that the organization wishes to run.
-They are used by the [Governance Action Engines](goverance-action-engine.md)
-to determine which [Governance Action Service](goverance-action-service.md)
+They are used by the [Governance Action Engines](governance-action-engine.md)
+to determine which [Governance Action Service](governance-action-service.md)
 to run.
 
 ## Related Information

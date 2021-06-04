@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -1843,6 +1844,37 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
+     * Validate the parameters for a retrieve multiple historical versions of an instance.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the relationship.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param methodName name of calling method.
+     * @throws InvalidParameterException the guid is null or the 'fromTime' is after the 'toTime'
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     */
+    protected  void getInstanceHistoryParameterValidation(String    userId,
+                                                          String    guid,
+                                                          Date      fromTime,
+                                                          Date      toTime,
+                                                          String    methodName) throws InvalidParameterException,
+                                                                                       RepositoryErrorException
+    {
+        final String  guidParameterName = "guid";
+        final String  timeRangeParameterNames = "fromTime/toTime";
+
+        /*
+         * Validate parameters
+         */
+        super.basicRequestValidation(userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        repositoryValidator.validateDateRange(repositoryName, timeRangeParameterNames, fromTime, toTime, methodName);
+    }
+
+
+    /**
      * Validate the parameters for getRelationshipsForEntity.
      *
      * @param userId unique identifier for requesting user.
@@ -1851,9 +1883,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -1911,9 +1943,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
@@ -1980,9 +2012,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param matchClassifications Optional list of entity classifications to match.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
@@ -2041,9 +2073,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
@@ -2141,9 +2173,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2203,9 +2235,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2265,9 +2297,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2335,9 +2367,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromRelationshipElement Element number of the results to skip to when building the results list
      *                                to return.  Zero means begin at the start of the results.  This is used
      *                                to retrieve the results over a number of pages.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2399,9 +2431,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                          all entities found, irrespective of their type.
      * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
      *                                all relationships found, irrespective of their type.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
@@ -2481,9 +2513,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
      * @param endEntityGUID the other entity that defines the scope of the query.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @throws InvalidParameterException one of the parameters is invalid or null.
@@ -2520,9 +2552,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param startEntityGUID unique identifier of the starting entity.
      * @param entityTypeGUIDs list of types to search for.  Null means any type.
      * @param fromEntityElement starting element for results list.  Used in paging.  Zero means first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
@@ -2728,6 +2760,58 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
+     * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<EntityDetail>} of each historical version of the entity detail within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
+     *                                   at the time requested.
+     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<EntityDetail> getEntityDetailHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    EntityNotKnownException,
+                                                                                                    EntityProxyOnlyException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String  methodName        = "getEntityDetailHistory";
+
+        /*
+         * Validate parameters
+         */
+        this.getInstanceHistoryParameterValidation(userId, guid, fromTime, toTime, methodName);
+
+        /*
+         * Perform operation
+         */
+        reportUnsupportedOptionalFunction(methodName);
+        return null;
+    }
+
+
+    /**
      * Return the relationships for a specific entity.
      *
      * @param userId unique identifier for requesting user.
@@ -2736,9 +2820,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2811,9 +2895,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param matchClassifications Optional list of entity classifications to match.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
@@ -2889,9 +2973,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
@@ -2971,9 +3055,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
@@ -3055,9 +3139,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -3229,6 +3313,54 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
+     * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
+     * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<Relationship>} of each historical version of the relationship within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
+     *                                       at the time requested.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<Relationship> getRelationshipHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    RelationshipNotKnownException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String  methodName = "getRelationshipHistory";
+
+        this.getInstanceHistoryParameterValidation(userId, guid, fromTime, toTime, methodName);
+
+        /*
+         * Perform operation
+         */
+        reportUnsupportedOptionalFunction(methodName);
+
+        return null;
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of
      * pages.
      *
@@ -3241,9 +3373,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -3316,9 +3448,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -3391,9 +3523,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param fromRelationshipElement Element number of the results to skip to when building the results list
      *                                to return.  Zero means begin at the start of the results.  This is used
      *                                to retrieve the results over a number of pages.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -3460,9 +3592,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
      * @param endEntityGUID the other entity that defines the scope of the query.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
      * @return InstanceGraph the sub-graph that represents the returned linked entities and their relationships.
@@ -3516,9 +3648,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                          all entities found, irrespective of their type.
      * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
      *                                all relationships found, irrespective of their type.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
@@ -3583,9 +3715,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param startEntityGUID unique identifier of the starting entity.
      * @param entityTypeGUIDs list of types to search for.  Null means any type.
      * @param fromEntityElement starting element for results list.  Used in paging.  Zero means first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
+     *                             status values except DELETED.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
      *                 present values.
@@ -4632,9 +4764,11 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
     /**
      * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
-     * on queries.  All relationships to the entity are also soft-deleted and will no longer be usable.
+     * on queries.  All homed relationships to the entity are also soft-deleted and will no longer be usable, while any
+     * reference copy relationships to the entity will be purged (and will no longer be accessible in this repository).
      * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
-     * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
+     * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use; however,
+     * this will not restore any of the relationships that were soft-deleted as part of the original deleteEntity() call.
      *
      * @param userId unique identifier for requesting user.
      * @param typeDefGUID unique identifier of the type of the entity to delete.
@@ -4681,7 +4815,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Permanently removes a deleted entity from the metadata collection.  This request can not be undone.
+     * Permanently removes a deleted entity from the metadata collection. All relationships to the entity -- both homed
+     * and reference copies -- will also be purged to maintain referential integrity within the repository. This request
+     * can not be undone.
      *
      * @param userId unique identifier for requesting user.
      * @param typeDefGUID unique identifier of the type of the entity to purge.

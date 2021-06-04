@@ -6,9 +6,12 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-server')
+    implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'
+    implementation 'org.springframework:spring-context'
 }
 
 description = 'Asset Lineage OMAS with Spring'

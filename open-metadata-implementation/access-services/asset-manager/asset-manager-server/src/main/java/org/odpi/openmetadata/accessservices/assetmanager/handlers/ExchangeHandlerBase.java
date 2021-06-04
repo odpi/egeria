@@ -29,8 +29,9 @@ public class ExchangeHandlerBase
     ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
 
     String               serviceName;
+    String               serverName;
     OMRSRepositoryHelper repositoryHelper;
-
+    RepositoryHandler    repositoryHandler;
 
     /**
      * Construct the base exchange handler with information needed to work with the external identifiers
@@ -78,9 +79,130 @@ public class ExchangeHandlerBase
 
         this.invalidParameterHandler = invalidParameterHandler;
         this.serviceName = serviceName;
+        this.serverName = serverName;
         this.repositoryHelper = repositoryHelper;
+        this.repositoryHandler = repositoryHandler;
     }
 
+
+    /* ========================================================
+     * Setting up whether the element is an external element (ie homed in the external asset manager) or local to the cohort.
+     */
+
+    /**
+     * Retrieve the external source unique identifier from the correlation properties if available or needed.
+     * Otherwise return null;
+     *
+     * @param correlationProperties correlation properties containing the asset manager information
+     * @param assetManagerIsHome true if this element should be homed in the external asset manager - ie an external element
+     * @return unique identifier or null
+     */
+    String getExternalSourceGUID(MetadataCorrelationProperties correlationProperties,
+                                 boolean                       assetManagerIsHome)
+    {
+        if ((assetManagerIsHome) && (correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
+        {
+            return correlationProperties.getAssetManagerGUID();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the external source unique identifier if needed.
+     * Otherwise return null.
+     *
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerIsHome true if this element should be homed in the external asset manager - ie an external element
+     * @return unique name or null
+     */
+    String getExternalSourceGUID(String  assetManagerGUID,
+                                 boolean assetManagerIsHome)
+    {
+        if (assetManagerIsHome)
+        {
+            return assetManagerGUID;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the external source unique identifier from the correlation properties if available or needed.
+     * Otherwise return null;
+     *
+     * @param correlationProperties correlation properties containing the asset manager information
+     * @return unique identifier or null
+     */
+    String getExternalSourceGUID(MetadataCorrelationProperties correlationProperties)
+    {
+        if ((correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
+        {
+            return correlationProperties.getAssetManagerGUID();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the external source unique name from the correlation properties if available or needed.
+     * Otherwise return null.
+     *
+     * @param correlationProperties correlation properties containing the asset manager information
+     * @param assetManagerIsHome true if this element should be homed in the external asset manager - ie an external element
+     * @return unique name or null
+     */
+    String getExternalSourceName(MetadataCorrelationProperties correlationProperties,
+                                 boolean                       assetManagerIsHome)
+    {
+        if ((assetManagerIsHome) && (correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
+        {
+            return correlationProperties.getAssetManagerName();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the external source unique name if needed.
+     * Otherwise return null.
+     *
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome true if this element should be homed in the external asset manager - ie an external element
+     * @return unique name or null
+     */
+    String getExternalSourceName(String  assetManagerName,
+                                 boolean assetManagerIsHome)
+    {
+        if (assetManagerIsHome)
+        {
+            return assetManagerName;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the external source unique name from the correlation properties if available or needed.
+     * Otherwise return null.
+     *
+     * @param correlationProperties correlation properties containing the asset manager information
+     * @return unique name or null
+     */
+    String getExternalSourceName(MetadataCorrelationProperties correlationProperties)
+    {
+        if ((correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
+        {
+            return correlationProperties.getAssetManagerName();
+        }
+
+        return null;
+    }
 
 
     /* ========================================================

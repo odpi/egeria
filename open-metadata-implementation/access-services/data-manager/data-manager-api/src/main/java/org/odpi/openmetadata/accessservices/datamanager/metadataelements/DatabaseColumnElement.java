@@ -245,17 +245,13 @@ public class DatabaseColumnElement  implements MetadataElement, Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         DatabaseColumnElement that = (DatabaseColumnElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader)  &&
-                Objects.equals(databaseColumnProperties, that.databaseColumnProperties) &&
-                Objects.equals(primaryKeyProperties, that.primaryKeyProperties) &&
-                Objects.equals(foreignKeyProperties, that.foreignKeyProperties) &&
-                Objects.equals(referencedColumnGUID, that.referencedColumnGUID) &&
-                Objects.equals(referencedColumnQualifiedName, that.referencedColumnQualifiedName);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(databaseColumnProperties, that.databaseColumnProperties) &&
+                       Objects.equals(primaryKeyProperties, that.primaryKeyProperties) &&
+                       Objects.equals(foreignKeyProperties, that.foreignKeyProperties) &&
+                       Objects.equals(referencedColumnGUID, that.referencedColumnGUID) &&
+                       Objects.equals(referencedColumnQualifiedName, that.referencedColumnQualifiedName);
     }
 
 

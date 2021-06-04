@@ -44,7 +44,7 @@ public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSende
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             throw new ConnectorCheckedException(AssetConsumerErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
                                                                                                                    event.toString(),

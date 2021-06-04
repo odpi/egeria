@@ -149,7 +149,17 @@ public abstract class TypeDef extends TypeDefSummary
      *
      * @param superType TypeDefLink for the super type
      */
-    public void setSuperType(TypeDefLink superType) { this.superType = superType; }
+    public void setSuperType(TypeDefLink superType)
+    {
+        if (superType == null)
+        {
+            this.superType = null;
+        }
+        else
+        {
+            this.superType = new TypeDefLink(superType);
+        }
+    }
 
 
     /**

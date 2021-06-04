@@ -18,7 +18,7 @@ import java.util.Map;
  * Mapping methods to map between the semanticAssignment and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class SemanticAssignmentMapper extends LineMapper<SemanticAssignment> {
+public class SemanticAssignmentMapper extends RelationshipMapper<SemanticAssignment> {
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
 
     public SemanticAssignmentMapper(OMRSAPIHelper omrsapiHelper) {
@@ -26,13 +26,13 @@ public class SemanticAssignmentMapper extends LineMapper<SemanticAssignment> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param semanticAssignment       supplied line
-     * @param properties equivalent instance properties to the Line
+     * @param semanticAssignment       supplied relationship
+     * @param properties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(SemanticAssignment semanticAssignment, InstanceProperties properties) {
+    protected void mapRelationshipToInstanceProperties(SemanticAssignment semanticAssignment, InstanceProperties properties) {
         if (semanticAssignment.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getDescription(), "description");
         }
@@ -61,13 +61,13 @@ public class SemanticAssignmentMapper extends LineMapper<SemanticAssignment> {
     /**
      * Map a primitive omrs property to the semanticAssignment object.
      *
-     * @param semanticAssignment         the glossary to be updated
+     * @param semanticAssignment         the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(SemanticAssignment semanticAssignment, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(SemanticAssignment semanticAssignment, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -94,7 +94,7 @@ public class SemanticAssignmentMapper extends LineMapper<SemanticAssignment> {
     }
 
     @Override
-    protected boolean mapEnumToLine(SemanticAssignment semanticAssignment, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(SemanticAssignment semanticAssignment, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermAssignmentStatus status = TermAssignmentStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -110,7 +110,7 @@ public class SemanticAssignmentMapper extends LineMapper<SemanticAssignment> {
     }
 
     @Override
-    protected SemanticAssignment getLineInstance() {
+    protected SemanticAssignment getRelationshipInstance() {
         return new SemanticAssignment();
     }
 

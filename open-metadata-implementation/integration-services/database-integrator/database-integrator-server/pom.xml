@@ -10,7 +10,7 @@
     <parent>
         <artifactId>database-integrator</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.6-SNAPSHOT</version>
+        <version>2.11-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -67,12 +67,22 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
+            <artifactId>admin-services-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-api</artifactId>
+            <artifactId>integration-daemon-services-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
         </dependency>
 
     </dependencies>

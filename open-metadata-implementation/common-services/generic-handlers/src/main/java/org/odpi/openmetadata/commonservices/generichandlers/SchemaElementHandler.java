@@ -75,25 +75,28 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID unique identifier of software server capability representing the caller - if null a local element is created
      * @param externalSourceName unique name of software server capability representing the caller
      * @param assetGUID unique identifier of the database schema where the database table is located
+     * @param assetGUIDParameterName name of the parameter of assetGUID
+     * @param assetTypeName the name of the asset's type
+     * @param schemaTypeTypeGUID unique identifier of the type
+     * @param schemaTypeTypeName unique name of the type
      * @param methodName calling method
-
      * @return properties of the anchor schema type for the database schema
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String getAssetSchemaTypeGUID(String          userId,
-                                  String          externalSourceGUID,
-                                  String          externalSourceName,
-                                  String          assetGUID,
-                                  String          assetGUIDParameterName,
-                                  String          assetTypeName,
-                                  String          schemaTypeGUID,
-                                  String          schemaTypeName,
-                                  String          methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    String getAssetSchemaTypeGUID(String userId,
+                                  String externalSourceGUID,
+                                  String externalSourceName,
+                                  String assetGUID,
+                                  String assetGUIDParameterName,
+                                  String assetTypeName,
+                                  String schemaTypeTypeGUID,
+                                  String schemaTypeTypeName,
+                                  String methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
@@ -130,7 +133,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                assetTypeName,
                                                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                                                               schemaTypeName,
+                                                               schemaTypeTypeName,
                                                                methodName);
 
         if (schemaTypeEntity == null)
@@ -141,23 +144,44 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
             String schemaTypeQualifiedName = "SchemaOf:" + assetQualifiedName;
 
             SchemaTypeBuilder builder = new SchemaTypeBuilder(schemaTypeQualifiedName,
-                                                              schemaTypeGUID,
-                                                              schemaTypeName,
+                                                              schemaTypeTypeGUID,
+                                                              schemaTypeTypeName,
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
 
             builder.setAnchors(userId, assetGUID, methodName);
 
-            return this.createBeanInRepository(userId,
-                                               externalSourceGUID,
-                                               externalSourceName,
-                                               schemaTypeGUID,
-                                               schemaTypeName,
-                                               schemaTypeQualifiedName,
-                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                               builder,
-                                               methodName);
+            String schemaTypeGUID = this.createBeanInRepository(userId,
+                                                                externalSourceGUID,
+                                                                externalSourceName,
+                                                                schemaTypeTypeGUID,
+                                                                schemaTypeTypeName,
+                                                                schemaTypeQualifiedName,
+                                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                builder,
+                                                                methodName);
+
+            final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+
+            if (schemaTypeGUID != null)
+            {
+                this.linkElementToElement(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          assetGUID,
+                                          assetGUIDParameterName,
+                                          assetTypeName,
+                                          schemaTypeGUID,
+                                          schemaTypeGUIDParameterName,
+                                          schemaTypeTypeName,
+                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                          null,
+                                          methodName);
+            }
+
+            return schemaTypeGUID;
         }
         else
         {
@@ -367,7 +391,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Count the number of attributes attached to an parent schema attribute or type type.
+     * Count the number of attributes attached to an parent schema attribute or schema type.
      *
      * @param userId     calling user
      * @param schemaElementGUID identifier for the parent complex schema type - this could be a schemaAttribute or a
@@ -401,7 +425,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
         {
             count = repositoryHandler.countAttachedRelationshipsByType(userId,
                                                                        schemaElementGUID,
-                                                                       OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                        methodName);

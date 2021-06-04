@@ -997,7 +997,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "schemas/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseSchemasResponse restResult = restClient.callDatabaseSchemasGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -1318,7 +1318,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "schemas/{2}/tables?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/{2}/tables?startFrom={3}&pageSize={4}";
 
         DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -1362,7 +1362,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "schemas/tables/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseTablesResponse restResult = restClient.callDatabaseTablesGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -1679,7 +1679,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "schemas/{2}/tables/views?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/{2}/tables/views?startFrom={3}&pageSize={4}";
 
         DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -1723,7 +1723,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "schemas/tables/views/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/views/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseViewsResponse restResult = restClient.callDatabaseViewsGetRESTCall(methodName,
                                                                                    urlTemplate,
@@ -1806,12 +1806,18 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName                     = "createDatabaseColumn";
         final String parentElementGUIDParameterName = "databaseTableGUID";
         final String propertiesParameterName        = "databaseColumnProperties";
+        final String dataTypeParameterName          = "databaseColumnProperties.dataType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
         invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
+
+        if (databaseColumnProperties.getExternalTypeGUID() == null)
+        {
+            invalidParameterHandler.validateName(databaseColumnProperties.getDataType(), dataTypeParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}/columns";
 
@@ -2046,7 +2052,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "schemas/tables/{2}/columns?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/{2}/columns?startFrom={3}&pageSize={4}";
 
         DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
                                                                                        urlTemplate,
@@ -2090,7 +2096,7 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "schemas/tables/columns/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + retrieveURLTemplatePrefix + "/schemas/tables/columns/by-name/{2}?startFrom={3}&pageSize={4}";
 
         DatabaseColumnsResponse restResult = restClient.callDatabaseColumnsGetRESTCall(methodName,
                                                                                        urlTemplate,

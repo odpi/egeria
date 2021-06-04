@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.datamanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TabularColumnProperties;
 
 import java.io.Serializable;
@@ -25,9 +26,8 @@ public class TabularColumnElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader           elementHeader = null;
+    private ElementHeader           elementHeader           = null;
     private TabularColumnProperties tabularColumnProperties = null;
-
 
     /**
      * Default constructor
@@ -48,6 +48,7 @@ public class TabularColumnElement implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            tabularColumnProperties = template.getTabularColumnProperties();
         }
     }
 
@@ -127,10 +128,6 @@ public class TabularColumnElement implements MetadataElement, Serializable
             return true;
         }
         if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
         {
             return false;
         }

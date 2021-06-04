@@ -23,24 +23,29 @@ public abstract class OMAGServerServiceInstance
 
     protected OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
+
     /**
      * Default constructor
      *
      * @param serverName name of the new server
+     * @param serverType type for new server
      * @param serviceName name of the new service instance
+     * @param maxPageSize maximum number of results that can be returned on a single call.
      */
-    @Deprecated
     public OMAGServerServiceInstance(String   serverName,
-                                     String   serviceName)
+                                     String   serverType,
+                                     String   serviceName,
+                                     int      maxPageSize)
     {
         this.serverName = serverName;
         this.serviceName = serviceName;
+        this.maxPageSize = maxPageSize;
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         if (serverName != null)
         {
-            platformInstanceMap.addServiceInstanceToPlatform(serverName, serviceName, this);
+            platformInstanceMap.addServiceInstanceToPlatform(serverName, serverType, serviceName, this);
         }
     }
 
@@ -56,16 +61,7 @@ public abstract class OMAGServerServiceInstance
                                      String   serviceName,
                                      int      maxPageSize)
     {
-        this.serverName = serverName;
-        this.serviceName = serviceName;
-        this.maxPageSize = maxPageSize;
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        if (serverName != null)
-        {
-            platformInstanceMap.addServiceInstanceToPlatform(serverName, serviceName, this);
-        }
+        this(serverName, null, serviceName, maxPageSize);
     }
 
 
@@ -80,7 +76,7 @@ public abstract class OMAGServerServiceInstance
 
         if (serverName != null)
         {
-            platformInstanceMap.addServiceInstanceToPlatform(serverName, serviceName, this);
+            platformInstanceMap.addServiceInstanceToPlatform(serverName, null, serviceName, this);
         }
     }
 

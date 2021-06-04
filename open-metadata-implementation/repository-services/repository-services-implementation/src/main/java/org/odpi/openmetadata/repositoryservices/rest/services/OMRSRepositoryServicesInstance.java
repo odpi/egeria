@@ -54,22 +54,48 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
         this.localServerURL = localServerURL;
         this.metadataHighwayManager = metadataHighwayManager;
 
-        try
-        {
-            this.localMetadataCollection = localRepositoryConnector.getMetadataCollection();
-        }
-        catch (Throwable error)
+        /*
+         * The local repository connector is null in governance servers, view servers and metadata access points.
+         */
+        if (localRepositoryConnector == null)
         {
             this.localMetadataCollection = null;
         }
-
-        try
+        else
         {
-            this.enterpriseMetadataCollection = enterpriseRepositoryConnector.getMetadataCollection();
+            try
+            {
+                this.localMetadataCollection = localRepositoryConnector.getMetadataCollection();
+            }
+            catch (Exception error)
+            {
+                /*
+                 * This is unexpected but if the local metadata collection is not set up, the error has already been recorded.
+                 */
+                this.localMetadataCollection = null;
+            }
         }
-        catch (Throwable error)
+
+        /*
+         * The enterprise repository connector is null in governance servers, view servers and repository proxies.
+         */
+        if (enterpriseRepositoryConnector == null)
         {
             this.enterpriseMetadataCollection = null;
+        }
+        else
+        {
+            try
+            {
+                this.enterpriseMetadataCollection = enterpriseRepositoryConnector.getMetadataCollection();
+            }
+            catch (Exception error)
+            {
+                /*
+                 * This is unexpected but if the enterprise metadata collection is not set up, the error has already been recorded.
+                 */
+                this.enterpriseMetadataCollection = null;
+            }
         }
     }
 

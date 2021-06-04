@@ -43,11 +43,11 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    SoftwareServerCapabilityHandler<FileSystemElement> getFileSystemHandler(String userId,
-                                                                            String serverName,
-                                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException
+    ReferenceableHandler<ReferenceableElement> getReferenceableHandler(String userId,
+                                                                       String serverName,
+                                                                       String serviceOperationName) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                          serverName,
@@ -55,7 +55,7 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getFileSystemHandler();
+            return instance.getReferenceableHandler();
         }
 
         return null;

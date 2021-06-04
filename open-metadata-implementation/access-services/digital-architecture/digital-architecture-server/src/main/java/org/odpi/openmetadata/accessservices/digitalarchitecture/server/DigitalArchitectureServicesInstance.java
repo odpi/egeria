@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArch
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.LocationHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -27,6 +28,8 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
 
 
     private AssetHandler<ReferenceDataAssetElement>  assetHandler;
+
+    private LocationHandler<LocationElement>  locationHandler;
 
     private ValidValuesHandler<ValidValueElement,
         ValidValueAssignmentConsumerElement,
@@ -90,6 +93,20 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
                                                publishZones,
                                                auditLog);
 
+        this.locationHandler = new LocationHandler<>(new LocationConverter<>(repositoryHelper, serviceName, serverName),
+                                                     LocationElement.class,
+                                                     serviceName,
+                                                     serverName,
+                                                     invalidParameterHandler,
+                                                     repositoryHandler,
+                                                     repositoryHelper,
+                                                     localServerUserId,
+                                                     securityVerifier,
+                                                     supportedZones,
+                                                     defaultZones,
+                                                     publishZones,
+                                                     auditLog);
+
         this.validValuesHandler = new ValidValuesHandler<>(new ValidValueConverter<>(repositoryHelper, serviceName, serverName),
                                                            ValidValueElement.class,
                                                            new ValidValueAssignmentConsumerConverter<>(repositoryHelper, serviceName, serverName),
@@ -134,6 +151,22 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return assetHandler;
+    }
+
+
+    /**
+     * Return the handler for managing locations.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    LocationHandler<LocationElement> getLocationHandler() throws PropertyServerException
+    {
+        final String methodName = "getLocationHandler";
+
+        validateActiveRepository(methodName);
+
+        return locationHandler;
     }
 
 

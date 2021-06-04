@@ -20,6 +20,7 @@ open-metadata-implementation/access-services/ @mandy-chessell
 open-metadata-implementation/access-services/asset-consumer/ @mandy-chessell
 open-metadata-implementation/access-services/asset-owner/ @mandy-chessell
 open-metadata-implementation/access-services/community-profile/ @mandy-chessell
+open-metadata-implementation/access-services/data-manager/ @mandy-chessell
 open-metadata-implementation/access-services/data-engine/ @popa-raluca
 open-metadata-implementation/access-services/digital-architecture/ @mandy-chessell
 open-metadata-implementation/access-services/enterprise-architecture/ @mandy-chessell
@@ -27,9 +28,9 @@ open-metadata-implementation/access-services/glossary-view/ @lcpopa
 open-metadata-implementation/access-services/stewardship-action/ @mandy-chessell
 open-metadata-implementation/access-services/security-officer/ @danielaotelea
 open-metadata-implementation/access-services/governance-program/ @mandy-chessell
-open-metadata-implementation/access-services/governance-engine/ @danielaotelea
+open-metadata-implementation/access-services/governance-engine/ @mandy-chessell
 open-metadata-implementation/access-services/subject-area/ @davidradl
-open-metadata-implementation/access-services/asset-lineage/ @DimitriosMaimaris
+open-metadata-implementation/access-services/asset-lineage/ @DimitriosMaimaris @lcpopa @popa-raluca
 open-metadata-implementation/adapters/open-connectors/rest-client-connectors/spring-rest-client-connector/ @planetf1
 open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/ @cmgrote
 open-metadata-implementation/adapters/governance-engines-plugins/ @planetf1
@@ -81,7 +82,7 @@ open-metadata-resources/open-metadata-labs/ @mandy-chessell @planetf1
 
 open-metadata-test/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/ @planetf1 @mandy-chessell
-open-metadata-test/open-metadata-fvt/access-services-fvt/ @planetf1 @davidradl
+open-metadata-test/open-metadata-fvt/access-services-fvt/ @planetf1 @davidradl @mandy-chessell
 open-metadata-test/open-metadata-fvt/open-types-fvt/ @planetf1 @davidradl
 
 # release notes

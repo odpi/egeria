@@ -24,8 +24,9 @@ services:
             - '12181:2181'
         networks:
             - cocopharma
-        volumes:
-            - zookeeper-data:/bitnami/zookeeper
+        # Persistence
+        #volumes:
+        #    - zookeeper-data:/bitnami/zookeeper
 
     kafka:
         depends_on:
@@ -39,8 +40,9 @@ services:
             - '19092:9092'
         networks:
             - cocopharma
-        volumes:
-            - kafka-data:/bitnami/kafka
+        # Persistence
+        #volumes:
+        #    - kafka-data:/bitnami/kafka
 
     notebook:
         image: '${egeria_repo}/jupyter:${egeria_version}'
@@ -52,12 +54,11 @@ services:
             - ctsPlatformURL=https://dev:9443
             - factoryPlatformURL=https://factory:9443
             - eventBusURLroot=kafka:9092
-            - uiExternalURL=https://localhost:18443
+            - uiExternalURL=https://localhost:10443
         command: start.sh jupyter lab --LabApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
         ports:
             - '18888:8888'
         depends_on:
-            - kafka
             - core
             - dev
             - datalake
@@ -78,8 +79,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
-        volumes:
-            - core-data:/deployments/data
+        # Persistence
+        #volumes:
+        #    - core-data:/deployments/data
 
     datalake:
         depends_on:
@@ -91,8 +93,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
-        volumes:
-            - datalake-data:/deployments/data
+        # Persistence
+        #volumes:
+        #    - datalake-data:/deployments/data
 
     dev:
         depends_on:
@@ -104,8 +107,9 @@ services:
             - cocopharma
         env_file:
             - '.env'
-        volumes:
-            - dev-data:/deployments/data
+        # Persistence
+        #volumes:
+        #    - dev-data:/deployments/data
 
     factory:
         depends_on:
@@ -117,13 +121,13 @@ services:
             - cocopharma
         env_file:
             - '.env'
-        volumes:
-            - factory-data:/deployments/data
+        # Persistence
+        #volumes:
+        #    - factory-data:/deployments/data
 
     ui:
         depends_on:
             - datalake
-            - uistatic
         image: '${egeria_repo}/egeria:${egeria_version}'
         environment:
             - OMAS_SERVER_URL=https://datalake:9443
@@ -132,7 +136,6 @@ services:
             - OPEN_LINEAGE_SERVER_NAME=open-lineage
             - OPEN_LINEAGE_GRAPH_SOURCE=MAIN
             - JAVA_APP_JAR=user-interface/ui-chassis-spring-${egeria_version}.jar
-            - ZUUL_ROUTES_UI_URL=http://uistatic:80
         ports:
             - '18443:8443'
         networks:
@@ -141,7 +144,7 @@ services:
             - '.env'
 
     uistatic:
-        image: '${egeria_repo}/egeria-uistatic:${egeria_version}'
+        image: '${egeria_repo}/egeria-ui:${egeria_ui_version}'
         ports:
             - '10080:80'
         networks:
@@ -152,7 +155,7 @@ services:
     presentation:
         depends_on:
             - datalake
-        image: '${egeria_repo}/egeria-presentation-server:${egeria_version}'
+        image: '${egeria_repo}/egeria-react-ui:${egeria_react_ui_version}'
         environment:
             - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"https://datalake:9443"}
         ports:
@@ -161,22 +164,47 @@ services:
             cocopharma:
         env_file:
             - '.env'
+
+    nginx:
+        depends_on:
+            - ui
+            - uistatic
+        image: 'nginx:latest'
+        ports:
+            - '10443:443'
+        networks:
+            cocopharma:
+        env_file:
+            - '.env'
+        environment:
+            - UI_STATIC=http://uistatic:80
+            - UI_API=https://ui:8443
+            - NGINX_SERVER_NAME=nginx
+        volumes:
+          - type: bind
+            source: ./etc/default.conf.template
+            target: /etc/nginx/templates/default.conf.template
+          - type: bind
+            source: ./ssl
+            target: /etc/nginx/ssl
 networks:
     cocopharma:
 
+# Persistence:
 # These are the persistent volumes used by each of the egeria servers. See the README.md for further information
 #
 # Change external to true and create volumes manually if you wish to persist between runs
-volumes:
-    core-data:
-        external: false
-    datalake-data:
-        external: false
-    dev-data:
-        external: false
-    factory-data:
-        external: false
-    zookeeper-data:
-        external: false
-    kafka-data:
-        external: false
+#
+#volumes:
+#    core-data:
+#        external: false
+#    datalake-data:
+#        external: false
+#    dev-data:
+#        external: false
+#    factory-data:
+#        external: false
+#    zookeeper-data:
+#        external: false
+#    kafka-data:
+#        external: false

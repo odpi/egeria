@@ -7,18 +7,12 @@ import java.util.List;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.events.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.InternalOMRSEventProcessingContext;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventProcessor;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessorInterface;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessorInterface;
 import org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
@@ -299,7 +293,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     		
     		for (EntityDetail entity: eventEntities)
     		{
-    			if(exchangeRule.processInstanceEvent(entity))
+    			if (exchangeRule.processInstanceEvent(entity))
     			{
     				validEntities.add(entity);
     			}

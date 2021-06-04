@@ -66,7 +66,7 @@ use the following command.  The file should be specified either as a fully quali
 or as a path name relative to the start up directory of the OMAG Server Platform.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives/file
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives/file
 { path name of file }
 ```
 
@@ -74,7 +74,7 @@ Alternatively it is possible to set up the list of open metadata archives as a l
 [Connections](../../../frameworks/open-connector-framework/docs/concepts/connection.md).
 These connections refer to connectors that can read and retrieve the open metadata archive content.
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/open-metadata-archives
 { list of connections }
 ```
 This option can be used when the open metadata archives are not stored in a file, or a different

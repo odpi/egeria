@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
@@ -147,7 +148,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                     int startFrom = 0;
                     int pageSize  = 100;
 
-                    List<DataFileElement> cataloguedFiles = context.getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
+                    List<DataFileElement> cataloguedFiles = this.getContext().getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
 
                     while ((cataloguedFiles != null) && (! cataloguedFiles.isEmpty()))
                     {
@@ -178,7 +179,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         }
 
                         startFrom = startFrom + cataloguedFiles.size();
-                        cataloguedFiles = context.getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
+                        cataloguedFiles = this.getContext().getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
                     }
                 }
             }
@@ -218,100 +219,163 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
     private void catalogFile(File   file,
                              String methodName)
     {
-        try
+        if (this.isActive())
         {
-            DataFileElement cataloguedElement = context.getFileByPathName(file.getAbsolutePath());
-
-            if (cataloguedElement == null)
+            try
             {
-                if (templateQualifiedName == null)
+                DataFileElement cataloguedElement = this.getContext().getFileByPathName(file.getAbsolutePath());
+
+                if (cataloguedElement == null)
                 {
-                    DataFileProperties properties = new DataFileProperties();
-
-                    properties.setQualifiedName(file.getAbsolutePath());
-                    properties.setDisplayName(file.getName());
-                    properties.setModifiedTime(new Date(file.lastModified()));
-
-                    List<String> guids = context.addDataFileToCatalog(properties, null);
-
-                    if ((guids != null) && (! guids.isEmpty()) && (auditLog != null))
+                    if (templateQualifiedName == null)
                     {
-                        auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
-                                                                                                                            properties.getQualifiedName(),
-                                                                                                                            guids.get(guids.size() - 1)));
-                    }
-                }
-                else
-                {
-                    if (templateGUID == null)
-                    {
-                        DataFileElement templateElement = context.getFileByPathName(templateQualifiedName);
+                        String fileExtension = FilenameUtils.getExtension(file.getAbsolutePath());
 
-                        if (templateElement != null)
+                        DataFileProperties properties = new DataFileProperties();
+
+                        properties.setTypeName(this.getAssetTypeName(fileExtension));
+                        properties.setQualifiedName(file.getAbsolutePath());
+                        properties.setDisplayName(file.getName());
+                        properties.setModifiedTime(new Date(file.lastModified()));
+
+                        List<String> guids = this.getContext().addDataFileToCatalog(properties, null);
+
+                        if ((guids != null) && (!guids.isEmpty()) && (auditLog != null))
                         {
-                            if ((templateElement.getElementHeader() != null) && (templateElement.getElementHeader().getGUID() != null))
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
+                                                                                                                                properties.getQualifiedName(),
+                                                                                                                                guids.get(
+                                                                                                                                        guids.size() - 1)));
+                        }
+                    }
+                    else
+                    {
+                        if (templateGUID == null)
+                        {
+                            DataFileElement templateElement = this.getContext().getFileByPathName(templateQualifiedName);
+
+                            if (templateElement != null)
                             {
-                                templateGUID = templateElement.getElementHeader().getGUID();
+                                if ((templateElement.getElementHeader() != null) && (templateElement.getElementHeader().getGUID() != null))
+                                {
+                                    templateGUID = templateElement.getElementHeader().getGUID();
+                                }
+                                else
+                                {
+                                    if (auditLog != null)
+                                    {
+                                        auditLog.logMessage(methodName,
+                                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(
+                                                                    connectorName,
+                                                                    templateElement.toString()));
+                                    }
+                                }
                             }
                             else
                             {
                                 if (auditLog != null)
                                 {
                                     auditLog.logMessage(methodName,
-                                                        BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                                                       templateElement.toString()));
+                                                        BasicFilesIntegrationConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName,
+                                                                                                                                       templateQualifiedName));
                                 }
                             }
                         }
-                        else
+
+                        if (templateGUID != null)
                         {
-                            if (auditLog != null)
+                            TemplateProperties properties = new TemplateProperties();
+
+                            properties.setQualifiedName(file.getAbsolutePath());
+                            properties.setDisplayName(file.getName());
+                            properties.setNetworkAddress(file.getAbsolutePath());
+
+                            List<String> guids = this.getContext().addDataFileToCatalogFromTemplate(templateGUID, properties);
+
+                            if ((guids != null) && (!guids.isEmpty()) && (auditLog != null))
                             {
                                 auditLog.logMessage(methodName,
-                                                    BasicFilesIntegrationConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName,
-                                                                                                                                   templateQualifiedName));
+                                                    BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED_FROM_TEMPLATE.getMessageDefinition(
+                                                            connectorName,
+                                                            properties.getQualifiedName(),
+                                                            guids.get(guids.size() - 1),
+                                                            templateQualifiedName,
+                                                            templateGUID));
                             }
-                        }
-                    }
-
-                    if (templateGUID != null)
-                    {
-                        TemplateProperties properties = new TemplateProperties();
-
-                        properties.setQualifiedName(file.getAbsolutePath());
-                        properties.setDisplayName(file.getName());
-
-                        List<String> guids = context.addDataFileToCatalogFromTemplate(templateGUID, properties);
-
-                        if ((guids != null) && (! guids.isEmpty()) && (auditLog != null))
-                        {
-                            auditLog.logMessage(methodName,
-                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED_FROM_TEMPLATE.getMessageDefinition(connectorName,
-                                                                                                                                              properties.getQualifiedName(),
-                                                                                                                                              guids.get(guids.size() - 1),
-                                                                                                                                              templateQualifiedName,
-                                                                                                                                              templateGUID));
                         }
                     }
                 }
             }
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
+            catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                    connectorName,
-                                                                                                                                    file.getAbsolutePath(),
-                                                                                                                                    error.getMessage()),
-                                      error);
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName,
+                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                                  error.getClass().getName(),
+                                                  connectorName,
+                                                  file.getAbsolutePath(),
+                                                  error.getMessage()),
+                                          error);
 
+                }
             }
         }
     }
 
+
+    /**
+     * Determine the open metadata type to use based on the file extension from the file name.  If no file extension, or it is unrecognized
+     * then the default is "DataFile".
+     *
+     * @param fileExtension file extension extracted from the file name
+     * @return asset type name to use
+     */
+    private String getAssetTypeName(String fileExtension)
+    {
+        String assetTypeName = "DataFile";
+
+        if (fileExtension != null)
+        {
+            switch (fileExtension)
+            {
+                case "csv":
+                    assetTypeName = "CSVFile";
+                    break;
+
+                case "json":
+                    assetTypeName = "JSONFile";
+                    break;
+
+                case "avro":
+                    assetTypeName = "AvroFileName";
+                    break;
+
+                case "pdf":
+                case "doc":
+                case "docx":
+                case "ppt":
+                case "pptx":
+                case "xls":
+                case "xlsx":
+                case "md":
+                    assetTypeName = "Document";
+                    break;
+
+                case "jpg":
+                case "jpeg":
+                case "png":
+                case "gif":
+                case "mp3":
+                case "mp4":
+                    assetTypeName = "MediaFile";
+                    break;
+            }
+        }
+
+        return assetTypeName;
+    }
 
     /**
      * The file no longer exists so this method updates the metadata catalog. This may be a delete or an archive action
@@ -325,75 +389,78 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                                       DataFileElement retrievedElement,
                                       String          methodName)
     {
-
-        try
+        if (this.isActive())
         {
-            DataFileElement cataloguedElement = retrievedElement;
-
-            if (cataloguedElement == null)
+            try
             {
-                cataloguedElement = context.getFileByPathName(file.getAbsolutePath());
-            }
+                DataFileElement cataloguedElement = retrievedElement;
 
-            if (cataloguedElement == null)
-            {
-                return;
-            }
-
-            if ((cataloguedElement.getElementHeader() != null) && (cataloguedElement.getElementHeader().getGUID() != null) &&
-                (cataloguedElement.getDataFileProperties() != null) && (cataloguedElement.getDataFileProperties().getQualifiedName() != null))
-            {
-                if (allowCatalogDelete)
+                if (cataloguedElement == null)
                 {
-                    context.deleteDataFileFromCatalog(cataloguedElement.getElementHeader().getGUID(),
-                                                      cataloguedElement.getDataFileProperties().getQualifiedName());
+                    cataloguedElement = this.getContext().getFileByPathName(file.getAbsolutePath());
+                }
 
-                    if (auditLog != null)
+                if (cataloguedElement == null)
+                {
+                    return;
+                }
+
+                if ((cataloguedElement.getElementHeader() != null) && (cataloguedElement.getElementHeader().getGUID() != null) &&
+                            (cataloguedElement.getDataFileProperties() != null) && (cataloguedElement.getDataFileProperties().getQualifiedName() != null))
+                {
+                    if (allowCatalogDelete)
                     {
-                        auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_DELETED.getMessageDefinition(connectorName,
-                                                                                                                            cataloguedElement.getDataFileProperties().getQualifiedName(),
-                                                                                                                            cataloguedElement.getElementHeader().getGUID()));
+                        this.getContext().deleteDataFileFromCatalog(cataloguedElement.getElementHeader().getGUID(),
+                                                                    cataloguedElement.getDataFileProperties().getQualifiedName());
+
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_DELETED.getMessageDefinition(connectorName,
+                                                                                                                                cataloguedElement.getDataFileProperties().getQualifiedName(),
+                                                                                                                                cataloguedElement.getElementHeader().getGUID()));
+                        }
+                    }
+                    else
+                    {
+                        ArchiveProperties archiveProperties = new ArchiveProperties();
+
+                        archiveProperties.setArchiveDate(new Date());
+                        archiveProperties.setArchiveProcess(connectorName);
+
+                        this.getContext().archiveDataFileInCatalog(cataloguedElement.getElementHeader().getGUID(), archiveProperties);
+
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_ARCHIVED.getMessageDefinition(connectorName,
+                                                                                                                                 cataloguedElement.getDataFileProperties().getQualifiedName(),
+                                                                                                                                 cataloguedElement.getElementHeader().getGUID()));
+                        }
                     }
                 }
                 else
                 {
-                    ArchiveProperties archiveProperties = new ArchiveProperties();
-
-                    archiveProperties.setArchiveDate(new Date());
-                    archiveProperties.setArchiveProcess(connectorName);
-
-                    context.archiveDataFileInCatalog(cataloguedElement.getElementHeader().getGUID(), archiveProperties);
-
                     if (auditLog != null)
                     {
                         auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_ARCHIVED.getMessageDefinition(connectorName,
-                                                                                                                             cataloguedElement.getDataFileProperties().getQualifiedName(),
-                                                                                                                             cataloguedElement.getElementHeader().getGUID()));
+                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
+                                                                                                                           cataloguedElement.toString()));
                     }
                 }
             }
-            else
+            catch (Exception error)
             {
                 if (auditLog != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                                       cataloguedElement.toString()));
+                    auditLog.logException(methodName,
+                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                                  error.getClass().getName(),
+                                                  connectorName,
+                                                  file.getAbsolutePath(),
+                                                  error.getMessage()),
+                                          error);
                 }
-            }
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                    connectorName,
-                                                                                                                                    file.getAbsolutePath(),
-                                                                                                                                    error.getMessage()),
-                                      error);
             }
         }
     }
@@ -406,55 +473,60 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      */
     private void updateFileInCatalog(File   file)
     {
-        final String methodName = "updateFileInCatalog";
-        try
+        if (isActive())
         {
-            DataFileElement dataFileInCatalog = context.getFileByPathName(file.getAbsolutePath());
+            final String methodName = "updateFileInCatalog";
 
-            if (dataFileInCatalog != null)
+            try
             {
-                if ((dataFileInCatalog.getElementHeader() != null) && (dataFileInCatalog.getElementHeader().getGUID() != null) &&
-                            (dataFileInCatalog.getDataFileProperties() != null) && (dataFileInCatalog.getDataFileProperties().getQualifiedName() != null))
+                DataFileElement dataFileInCatalog = this.getContext().getFileByPathName(file.getAbsolutePath());
+
+                if (dataFileInCatalog != null)
                 {
-                    DataFileProperties properties = new DataFileProperties();
-
-                    properties.setModifiedTime(new Date(file.lastModified()));
-
-                    context.updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
-
-                    if (auditLog != null)
+                    if ((dataFileInCatalog.getElementHeader() != null) && (dataFileInCatalog.getElementHeader().getGUID() != null) &&
+                                (dataFileInCatalog.getDataFileProperties() != null) && (dataFileInCatalog.getDataFileProperties().getQualifiedName() != null))
                     {
-                        auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                            dataFileInCatalog.getDataFileProperties().getQualifiedName(),
-                                                                                                                            dataFileInCatalog.getElementHeader().getGUID()));
+                        DataFileProperties properties = new DataFileProperties();
+
+                        properties.setModifiedTime(new Date(file.lastModified()));
+
+                        this.getContext().updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
+
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
+                                                                                                                                dataFileInCatalog.getDataFileProperties().getQualifiedName(),
+                                                                                                                                dataFileInCatalog.getElementHeader().getGUID()));
+                        }
+                    }
+                    else
+                    {
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
+                                                                                                                               dataFileInCatalog.toString()));
+                        }
                     }
                 }
                 else
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                                           dataFileInCatalog.toString()));
-                    }
+                    this.catalogFile(file, methodName);
                 }
             }
-            else
+            catch (Exception error)
             {
-                this.catalogFile(file, methodName);
-            }
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                    connectorName,
-                                                                                                                                    file.getAbsolutePath(),
-                                                                                                                                    error.getMessage()),
-                                      error);
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName,
+                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                                  error.getClass().getName(),
+                                                  connectorName,
+                                                  file.getAbsolutePath(),
+                                                  error.getMessage()),
+                                          error);
+                }
             }
         }
     }

@@ -19,15 +19,15 @@ Security is configured for a specific platform once it is running by
 using the following command.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/platform/security/connection
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/platform/security/connection
 ```
-This passes in a connection  used to create the platform security connector and the `serverURLRoot` of the platform
+This passes in a connection  used to create the platform security connector and the `platformURLRoot` of the platform
 in the request body.  For example, this is the request body that would
 set up the [sample platform security connector](../../../../open-metadata-resources/open-metadata-samples/open-metadata-security-samples) provided for the Coco Pharmaceuticals case study:
 ```json
 {
     "class": "PlatformSecurityRequestBody",
-    "urlRoot": "{{serverURLRoot}}",
+    "urlRoot": "{{platformURLRoot}}",
     "platformSecurityConnection" : {
 	    "class": "Connection",
 	    "connectorType": {
@@ -44,7 +44,7 @@ It is possible to query the setting of the platform security connector
 using the following command:
 
 ```
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/platform/security/connection
+GET {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/platform/security/connection
 ```
 
 If the response is:
@@ -79,7 +79,7 @@ It is possible to remove the configuration for the connector using
 the following command:
 
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/platform/security/connection
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/platform/security/connection
 ```
 
 This removes all authorization checking from the platform services.

@@ -49,7 +49,7 @@ public class GovernanceServiceElementsResponse extends GovernanceEngineOMASAPIRe
 
         if (template != null)
         {
-            this.elements = template.getGovernanceServices();
+            this.elements = template.getElements();
         }
     }
 
@@ -59,7 +59,7 @@ public class GovernanceServiceElementsResponse extends GovernanceEngineOMASAPIRe
      *
      * @return list of properties objects
      */
-    public List<GovernanceServiceElement> getGovernanceServices()
+    public List<GovernanceServiceElement> getElements()
     {
         if (elements == null)
         {
@@ -129,7 +129,7 @@ public class GovernanceServiceElementsResponse extends GovernanceEngineOMASAPIRe
             return false;
         }
         GovernanceServiceElementsResponse that = (GovernanceServiceElementsResponse) objectToCompare;
-        return Objects.equals(getGovernanceServices(), that.getGovernanceServices());
+        return Objects.equals(getElements(), that.getElements());
     }
 
     
@@ -141,6 +141,6 @@ public class GovernanceServiceElementsResponse extends GovernanceEngineOMASAPIRe
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getGovernanceServices());
+        return Objects.hash(super.hashCode(), getElements());
     }
 }

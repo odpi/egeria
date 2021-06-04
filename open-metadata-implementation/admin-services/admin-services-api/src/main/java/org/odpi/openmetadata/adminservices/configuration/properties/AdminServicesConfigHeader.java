@@ -26,6 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = ConformanceSuiteConfig.class, name = "ConformanceSuiteConfig"),
         @JsonSubTypes.Type(value = PlatformConformanceWorkbenchConfig.class, name = "PlatformConformanceWorkbenchConfig"),
         @JsonSubTypes.Type(value = RepositoryConformanceWorkbenchConfig.class, name = "RepositoryConformanceWorkbenchConfig"),
+        @JsonSubTypes.Type(value = RepositoryPerformanceWorkbenchConfig.class, name = "RepositoryPerformanceWorkbenchConfig"),
         @JsonSubTypes.Type(value = DiscoveryEngineServicesConfig.class, name = "DiscoveryServerConfig"),
         @JsonSubTypes.Type(value = EnterpriseAccessConfig.class, name = "EnterpriseAccessConfig"),
         @JsonSubTypes.Type(value = EventBusConfig.class, name = "EventBusConfig"),

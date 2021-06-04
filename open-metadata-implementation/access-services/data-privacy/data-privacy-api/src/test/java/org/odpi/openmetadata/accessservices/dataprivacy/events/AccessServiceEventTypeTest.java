@@ -79,7 +79,7 @@ public class AccessServiceEventTypeTest
         {
             jsonString = objectMapper.writeValueAsString(DataPrivacyEventType.NEW_DIGITAL_SERVICE_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -88,7 +88,7 @@ public class AccessServiceEventTypeTest
         {
             assertTrue(objectMapper.readValue(jsonString, DataPrivacyEventType.class) == DataPrivacyEventType.NEW_DIGITAL_SERVICE_EVENT);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

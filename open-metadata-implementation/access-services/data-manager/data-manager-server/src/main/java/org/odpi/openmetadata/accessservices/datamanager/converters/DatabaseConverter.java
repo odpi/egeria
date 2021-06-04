@@ -71,13 +71,14 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                     databaseProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     databaseProperties.setDisplayName(this.removeName(instanceProperties));
                     databaseProperties.setDescription(this.removeDescription(instanceProperties));
+                    databaseProperties.setPathName(this.removePathName(instanceProperties));
+                    databaseProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
+                    databaseProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    databaseProperties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    databaseProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    databaseProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
+                    databaseProperties.setDatabaseType(this.removeDatabaseType(instanceProperties));
+                    databaseProperties.setDatabaseVersion(this.removeDatabaseVersion(instanceProperties));
+                    databaseProperties.setDatabaseInstance(this.removeDatabaseInstance(instanceProperties));
+                    databaseProperties.setDatabaseImportedFrom(this.removeDatabaseImportedFrom(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
@@ -85,25 +86,6 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                      */
                     databaseProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     databaseProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                    databaseProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                    databaseProperties.setOwner(this.getOwner(instanceProperties));
-                    databaseProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                    databaseProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    databaseProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    databaseProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
 

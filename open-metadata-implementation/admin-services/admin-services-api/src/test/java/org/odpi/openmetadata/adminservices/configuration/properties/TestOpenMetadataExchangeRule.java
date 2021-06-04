@@ -95,7 +95,7 @@ public class TestOpenMetadataExchangeRule
         {
             jsonString = objectMapper.writeValueAsString(OpenMetadataExchangeRule.LEARNED_TYPES);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -104,7 +104,7 @@ public class TestOpenMetadataExchangeRule
         {
             assertTrue(objectMapper.readValue(jsonString, OpenMetadataExchangeRule.class) == OpenMetadataExchangeRule.LEARNED_TYPES);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

@@ -67,21 +67,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setConnection(instanceHandler.getOutTopicConnection(userId, serverName, methodName, callerId));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -138,21 +126,9 @@ public class DiscoveryConfigurationServices
                                                            displayName,
                                                            description));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -191,21 +167,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryEngineProperties(handler.getDiscoveryEngineByGUID(userId, guid));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -244,21 +208,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryEngineProperties(handler.getDiscoveryEngineByName(userId, name));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -299,21 +251,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryEngines(handler.getAllDiscoveryEngines(userId, startingFrom, maximumResults));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -389,21 +329,9 @@ public class DiscoveryConfigurationServices
                                           additionalProperties,
                                           extendedProperties);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -454,21 +382,9 @@ public class DiscoveryConfigurationServices
                                           guid,
                                           qualifiedName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -529,21 +445,9 @@ public class DiscoveryConfigurationServices
                                                             description,
                                                             connection));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -582,21 +486,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryServiceProperties(handler.getDiscoveryServiceByGUID(userId, guid));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -635,21 +527,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryServiceProperties(handler.getDiscoveryServiceByName(userId, name));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -690,21 +570,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryServices(handler.getAllDiscoveryServices(userId, startingFrom, maximumResults));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -743,21 +611,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUIDs(handler.getDiscoveryServiceRegistrations(userId, discoveryServiceGUID));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -825,21 +681,9 @@ public class DiscoveryConfigurationServices
                                            additionalProperties,
                                            extendedProperties);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -891,21 +735,9 @@ public class DiscoveryConfigurationServices
                                            guid,
                                            qualifiedName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -959,21 +791,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.registerDiscoveryServiceWithEngine(userId, discoveryEngineGUID, discoveryServiceGUID, discoveryRequestType, defaultAnalysisParameters);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1014,21 +834,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setRegisteredDiscoveryService(handler.getRegisteredDiscoveryService(userId, discoveryEngineGUID, discoveryServiceGUID));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1071,21 +879,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
             response.setGUIDs(handler.getRegisteredDiscoveryServices(userId, discoveryEngineGUID, startingFrom, maximumResults));
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -1129,21 +925,9 @@ public class DiscoveryConfigurationServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.unregisterDiscoveryServiceFromEngine(userId, discoveryEngineGUID, discoveryServiceGUID);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

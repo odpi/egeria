@@ -13,23 +13,6 @@ public abstract class AuditableServerServiceInstance extends OMAGServerServiceIn
     protected String   localServerUserId = null;
     protected AuditLog auditLog;
 
-    /**
-     * Constructor.
-     *
-     * @param serverName name of this server
-     * @param serviceName name of this service
-     * @param auditLog link to the repository responsible for servicing the REST calls.
-     */
-    @Deprecated
-    public AuditableServerServiceInstance(String   serverName,
-                                          String   serviceName,
-                                          AuditLog auditLog)
-    {
-        super(serverName, serviceName);
-
-        this.auditLog = auditLog;
-    }
-
 
     /**
      * Constructor.

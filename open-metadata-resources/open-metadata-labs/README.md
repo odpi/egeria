@@ -42,9 +42,10 @@ This notebook will guide you to the rest of the labs.
 
 You can start running a notebook by simply double-clicking the filename in the left pane of the Jupyter interface.
 
-
 ----
-Return to [open-metadata-resources](..).
+* Return to [open-metadata-resources](..)
+* Return to [Site Map](../../Content-Organization.md)
+* Return to [Home Page](../../index.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

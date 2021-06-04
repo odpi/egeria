@@ -97,7 +97,7 @@ public class StewardshipActionAdmin extends AccessServiceAdmin
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   StewardshipActionAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

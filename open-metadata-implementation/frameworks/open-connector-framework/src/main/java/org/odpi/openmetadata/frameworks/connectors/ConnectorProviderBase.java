@@ -290,7 +290,9 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
              * the connector implementation.
              */
             throw new ConnectionCheckedException(OCFErrorCode.INVALID_CONNECTOR.getMessageDefinition(connectorClassName,
-                                                                                                     connection.getConnectionName()),
+                                                                                                     connection.getConnectionName(),
+                                                                                                     unexpectedSomething.getClass().getName(),
+                                                                                                     unexpectedSomething.getMessage()),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  unexpectedSomething);

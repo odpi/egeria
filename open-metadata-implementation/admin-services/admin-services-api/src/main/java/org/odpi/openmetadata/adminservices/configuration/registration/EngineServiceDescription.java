@@ -18,52 +18,15 @@ public enum EngineServiceDescription implements Serializable
                         "https://egeria.odpi.org/open-metadata-implementation/engine-services/asset-analysis/",
                         "Discovery Engine OMAS"),
 
-    METADATA_WATCHDOG_OMES(6001,
-                           "Metadata Watchdog",
-                           "Metadata Watchdog OMES",
-                           "metadata-watchdog",
-                           "Monitors changes in the metadata and initiates updates as a result.  One example of a " +
-                                   "watchdog service is detection of a new asset. Another example is to monitor the addition of " +
-                                   "open discovery reports and kick off action on their content.  Examples of updates include " +
-                                   "creating governance actions, governance action processes and incident reports.",
-                           "https://egeria.odpi.org/open-metadata-implementation/engine-services/metadata-watchdog/",
+    GOVERNANCE_ACTION_OMES(6001,
+                           "Governance Action",
+                           "Governance Action OMES",
+                           "governance-action",
+                           "Executes requested governance action services to monitor, assess and maintain metadata and its " +
+                                   "real-world counterparts.",
+                           "https://egeria.odpi.org/open-metadata-implementation/engine-services/governance-action/",
                            "Governance Engine OMAS"),
 
-    REQUEST_TRIAGE_OMES(6002,
-                        "Request Triage",
-                        "Request Triage OMES",
-                        "request-triage",
-                        "Decides how a particular situation should be handled.  This may involve a human decision maker.",
-                        "https://egeria.odpi.org/open-metadata-implementation/engine-services/request-triage/",
-                        "Governance Engine OMAS"),
-
-    ISSUE_REMEDIATION_OMES(6003,
-                           "Issue Remediation",
-                           "Issue Remediation OMES",
-                           "issue-remediation",
-                           "Monitors for RemediationRequest instances and runs the requested remediation service. " +
-                                   "Examples of remediation services are duplicate linking and consolidating.",
-                           "https://egeria.odpi.org/open-metadata-implementation/engine-services/issue-remediation/",
-                           "Governance Engine OMAS"),
-
-    RULE_VERIFIER_OMES(6004,
-                          "Rule Verifier",
-                          "Rule Verifier OMES",
-                          "rule-verifier",
-                          "Validates that specific metadata elements are set up correctly.  For example, it could detect " +
-                                  "assets that are not allocated to a governance zone.",
-                          "https://egeria.odpi.org/open-metadata-implementation/engine-services/rule-verifier/",
-                          "Governance Engine OMAS"),
-
-    ASSET_PROVISIONING_OMES(6005,
-                            "Asset Provisioning",
-                            "Asset Provisioning OMES",
-                            "asset-provisioning",
-                            "Invokes a provisioning service whenever a provisioning request is made.  Typically the " +
-                                    "provisioning service is an external service.  It may also create lineage metadata to " +
-                                    "describe the work of the provisioning engine.",
-                            "https://egeria.odpi.org/open-metadata-implementation/engine-services/asset-provisioning/",
-                            "Governance Engine OMAS"),
     ;
 
     private static final long     serialVersionUID    = 1L;

@@ -154,7 +154,29 @@ public interface AssetClassificationInterface
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
      * @param ownerId userId or profileGUID of the owner - or null to clear the field
-     * @param ownerType indicator of the type of Id provides above - or null to clear the field
+     * @param ownerType indicator of the type of Id provided above - or null to clear the field
+     *
+     * @throws InvalidParameterException userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    void updateAssetOwner(String    userId,
+                          String    assetGUID,
+                          String    ownerId,
+                          OwnerType ownerType) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException;
+
+
+    /**
+     * Update the owner information for a specific asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param ownerId unique identifier/property of the owner - or null to clear the field
+     * @param ownerTypeName name of the type of Id provided above - or null to clear the field
+     * @param ownerPropertyName name of the property that describes the ownerId
      *
      * @throws InvalidParameterException userId is null
      * @throws PropertyServerException problem accessing property server
@@ -163,9 +185,10 @@ public interface AssetClassificationInterface
     void updateAssetOwner(String    userId,
                           String    assetGUID,
                           String    ownerId,
-                          OwnerType ownerType) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+                          String    ownerTypeName,
+                          String    ownerPropertyName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException;
 
 
     /**
@@ -177,7 +200,8 @@ public interface AssetClassificationInterface
      *                         If null then the assetGUID is used.
      * @param securityLabels list of security labels defining the security characteristics of the element
      * @param securityProperties Descriptive labels describing the security properties of the element
-     * @throws InvalidParameterException entity not known, null userId or guid
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
@@ -196,8 +220,9 @@ public interface AssetClassificationInterface
      * @param userId calling user
      * @param assetGUID unique identifier of asset
      * @param assetElementGUID element where the security tags need to be removed.
-     *                         If null then the assetGUID is used.
-     * @throws InvalidParameterException entity not known, null userId or guid
+     *                         If null then the assetGUID is used
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
@@ -206,4 +231,41 @@ public interface AssetClassificationInterface
                              String                assetElementGUID) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException;
+
+    /**
+     * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to classify
+     * @param name name of the template
+     * @param description description of when, where and how to use the template
+     * @param additionalProperties any additional properties
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void addTemplateClassification(String              userId,
+                                   String              assetGUID,
+                                   String              name,
+                                   String              description,
+                                   Map<String, String> additionalProperties) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
+
+
+    /**
+     * Remove the classification that indicates that this asset can be used as a template.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to declassify
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void removeTemplateClassification(String userId,
+                                      String assetGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException;
 }

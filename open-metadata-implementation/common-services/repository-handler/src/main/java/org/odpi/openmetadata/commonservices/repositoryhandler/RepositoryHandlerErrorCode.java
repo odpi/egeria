@@ -63,10 +63,14 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "Route the request through a different process that is set up to use the correct external source identifiers."),
     LOCAL_CANNOT_CHANGE_EXTERNAL(400, "OMAG-REPOSITORY-HANDLER-400-008",
             "Method {0} is unable to modify {1} instance {2} because it is has metadata provenance of {3} with " +
-                                  "an externalSourceGUID of {4} and an externalSourceName of {5} because user {6} is using a local cohort interface",
-            "The system is unable to modify the requested instance because it does not have ownership rights to the " +
-                                  "instance.",
-            "Route the request through a process that is set up to use the correct external source identifiers."),
+                                  "an externalSourceGUID of {4} and an externalSourceName of {5} and user {6} issued a request with the Local Cohort metadata provenance set",
+            "The system is unable to modify the requested instance because it does not have ownership rights to the instance.",
+            "Route the request through a process that is set up to use the correct external source identifiers.  " +
+                    "To understand more about this behavior, lookup Metadata Provenance in Egeria's Glossary."),
+    UNRECOGNIZED_PROPERTY(400, "OMAG-REPOSITORY-HANDLER-400-009",
+            "The property named {0} with value of {1} supplied on method {2} is not found in entity {3}",
+            "The system does no process the request because there is a possibility that the caller is requesting changes to the wrong object.",
+                           "Correct the value of the property passed on the request and retry."),
     USER_NOT_AUTHORIZED(403, "OMAG-REPOSITORY-HANDLER-403-001",
             "User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}",
             "The system is unable to process the request because the user should not be making this request.",
@@ -105,9 +109,9 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "The system is unable to process a request because multiple relationships have been discovered and it is unsure which relationship to follow.",
             "Investigate why multiple relationships exist.  Then retry the request once the issue is resolved."),
     UNKNOWN_ENTITY(404, "OMAG-REPOSITORY-HANDLER-404-007",
-            "The {0} with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
-            "The system is unable to update information associated with the asset because none of the connected open metadata repositories recognize the asset's unique identifier.",
-            "The unique identifier of the asset is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
+            "The {0} entity with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
+            "The system is unable to update information associated with the entity because none of the connected open metadata repositories recognize the entity's unique identifier.",
+            "The unique identifier of the entity is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
     NO_RELATIONSHIPS_FOUND(404, "OMAG-REPOSITORY-HANDLER-404-008",
             "No {0} relationships are connected to the {1} entity with unique identifier {2}: the calling method is {3} and the server is {4}",
             "The system is unable to process a request because no relationships have been discovered and it is unable to retrieve all of the information it needs.",
@@ -130,11 +134,28 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "The system is unable to process a request because it can not find the requested entity to update.",
             "This may be a logic error or a configuration error (such as the cohort does not contain the correct members.  Look for errors in the " +
                                                     "server's audit log and console to understand and correct the source of any error."),
+    UNKNOWN_RELATIONSHIP(404, "OMAG-REPOSITORY-HANDLER-404-012",
+                   "The {0} relationship with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
+                   "The system is unable to update information associated with the relationship because none of the connected open metadata repositories recognize the relationship's unique identifier.",
+                   "The unique identifier of the relationship is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
+
     PROPERTY_SERVER_ERROR(500, "OMAG-REPOSITORY-HANDLER-500-001",
                           "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service " +
                                   "{2} on server {3}; message was {0}",
                           "The system is unable to process the request because of an internal error.",
-                          "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the ODPi Egeria community for help."),
+                          "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the Egeria community for help."),
+
+    UNABLE_TO_SET_ANCHORS(500, "OMAG-REPOSITORY-HANDLER-500-002",
+                          "The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of type {1} during method {2}." +
+                                  " The resulting exception was {3} with error message {4}",
+                          "The server was attempting to add Anchors classifications to a collection of metadata instances that are " +
+                                  "logically part of the same object.  This classification is used to optimize the retrieval and " +
+                                  "maintenance of complex objects.  It is optional function.  The server continues to " +
+                                  "process the original request which will complete successfully unless something else goes wrong.",
+                          "No specific action is required.  This message is to highlight that the retrieval and management of metadata is not optimal" +
+                                  "because none of the repositories in the cohort support the Anchors classification.  To enable the " +
+                                  "optimization provided through the Anchors classification, add an Egeria native metadata server to the cohort.  " +
+                                  "This will provide the support for the Anchors classification."),
     ;
 
     private ExceptionMessageDefinition messageDefinition;

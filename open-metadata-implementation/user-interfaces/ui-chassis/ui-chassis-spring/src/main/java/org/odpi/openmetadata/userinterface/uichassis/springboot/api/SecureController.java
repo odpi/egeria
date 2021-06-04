@@ -29,7 +29,7 @@ public class SecureController {
         String userName = null;
         Authentication auth = authService.getAuthentication(request);
         if(auth != null && auth.getDetails() != null && (auth.getDetails() instanceof TokenUser)){
-            userName = ((TokenUser) auth.getDetails()).getUser().getUsername();
+            userName = ((TokenUser) auth.getDetails()).getUsername();
         }
 
         if(userName ==  null){

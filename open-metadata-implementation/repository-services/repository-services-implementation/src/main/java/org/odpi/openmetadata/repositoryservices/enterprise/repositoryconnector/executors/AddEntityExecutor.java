@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -22,10 +23,10 @@ public class AddEntityExecutor extends RepositoryExecutorBase
     private InstanceProperties     initialProperties;
     private List<Classification>   initialClassifications;
     private InstanceStatus         initialStatus;
+    private MaintenanceAccumulator accumulator;
     private String                 externalSourceGUID = null;
     private String                 externalSourceName = null;
     private EntityDetail           newEntity          = null;
-    private MaintenanceAccumulator accumulator        = new MaintenanceAccumulator();
 
 
     /**
@@ -36,6 +37,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
      * @param initialProperties initial list of properties for the new entity null means no properties.
      * @param initialClassifications initial list of classifications for the new entity null means no classifications.
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public AddEntityExecutor(String               userId,
@@ -43,6 +45,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
                              InstanceProperties   initialProperties,
                              List<Classification> initialClassifications,
                              InstanceStatus       initialStatus,
+                             AuditLog             auditLog,
                              String               methodName)
     {
         super(userId, methodName);
@@ -51,6 +54,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
         this.initialProperties = initialProperties;
         this.initialClassifications = initialClassifications;
         this.initialStatus = initialStatus;
+        this.accumulator = new MaintenanceAccumulator(auditLog);
     }
 
 
@@ -64,6 +68,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
      * @param initialProperties initial list of properties for the new entity null means no properties.
      * @param initialClassifications initial list of classifications for the new entity null means no classifications.
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public AddEntityExecutor(String               userId,
@@ -73,6 +78,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
                              InstanceProperties   initialProperties,
                              List<Classification> initialClassifications,
                              InstanceStatus       initialStatus,
+                             AuditLog             auditLog,
                              String               methodName)
     {
         super(userId, methodName);
@@ -83,6 +89,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
         this.initialProperties = initialProperties;
         this.initialClassifications = initialClassifications;
         this.initialStatus = initialStatus;
+        this.accumulator = new MaintenanceAccumulator(auditLog);
     }
 
 
@@ -96,6 +103,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -157,9 +165,11 @@ public class AddEntityExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return result;
@@ -201,7 +211,7 @@ public class AddEntityExecutor extends RepositoryExecutorBase
 
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(super.methodName);
+        accumulator.throwCapturedGenericException(super.methodName);
         accumulator.throwCapturedTypeErrorException();
         accumulator.throwCapturedClassificationErrorException();
         accumulator.throwCapturedPropertyErrorException();

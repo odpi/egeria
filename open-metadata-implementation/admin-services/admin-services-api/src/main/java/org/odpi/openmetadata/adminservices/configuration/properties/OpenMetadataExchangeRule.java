@@ -27,6 +27,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         supplied in the related list of TypeDefs (see typesToSend, typesToSave and typesToFederate) should be processed.
  *     </li>
  *     <li>
+ *         DESELECTED_TYPES means that in addition to TypeDefs events, only metadata instances NOT of the types
+ *         supplied in the related list of TypeDefs (see typesToSend, typesToSave and typesToFederate) should be processed.
+ *     </li>
+ *     <li>
  *         LEARNED_TYPES means that the local repository requests reference copies of metadata based on the requests of
  *         the local user community.
  *     </li>
@@ -47,6 +51,8 @@ public enum OpenMetadataExchangeRule implements Serializable
     LEARNED_TYPES     (3,  "Learned Types",     "Registration plus all type definitions (TypeDefs) and metadata " +
                                                 "instances (Entities and Relationships) of types " +
                                                 "requested by local users to this server."),
+    DESELECTED_TYPES  (4,  "Deselected Types",  "Registration plus all type definitions (TypeDefs) and metadata " +
+                                                "instances (Entities and Relationships) NOT listed in selected types."),
     ALL               (99, "All",               "Registration plus all type definitions (TypeDefs) and metadata " +
                                                 "instances (Entities and Relationships).");
 

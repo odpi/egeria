@@ -12,19 +12,21 @@ provided by Egeria.
 * **Sequential Discovery Pipeline** - Runs nested discovery services
   in a sequence.  [More information on discovery pipelines](../../../frameworks/open-discovery-framework/docs/discovery-pipeline.md).
   
-* **DuplicateSuspectDiscoveryService** - Builds a list of all of the assets that
-  appear to be duplicates of the requested asset.
+* **CSVDiscoveryService** - Extracts the column names from the first line of the file, counts up the number of records in the file
+  and extracts its last modified time..
 
 ## Further information
 
 Discovery services are responsible for analysing the content of assets and creating
-descriptions of its content (called [Annotations](../../../frameworks/open-discovery-framework/docs/discovery-annotation.md)).  The annotations from a top-level discovery service
+descriptions of its content (called [Annotations](../../../frameworks/open-discovery-framework/docs/discovery-annotation.md)).  
+The annotations from a top-level discovery service
 execution are grouped together and linked from the asset as a discovery analysis report.
 They run in the [Asset Analysis OMES](../../../engine-services/asset-analysis).
 
 Once the discovery service has completed its analysis,
-an event is sent to the [Request Triage](../../../engine-services/request-triage)
-to process the results.
+an event is sent by the [Governance Engine OMAS](../../../access-services/governance-engine) to any listening
+[Engine Host OMAG Servers](../../../admin-services/docs/concepts/engine-host.md) running 
+the [Governance Action OMES](../../../engine-services/governance-action) to process the results.
 
 The interfaces used by a discovery service are defined in
 the [Open Discovery Framework (ODF)](../../../frameworks/open-discovery-framework)

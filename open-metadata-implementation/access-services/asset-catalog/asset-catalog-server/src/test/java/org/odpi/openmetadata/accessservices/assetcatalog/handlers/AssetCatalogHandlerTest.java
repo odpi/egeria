@@ -20,13 +20,16 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -49,11 +52,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.NAME;
 
 public class AssetCatalogHandlerTest {
 
     private static final String RELATIONSHIP_GUID = "212123-abc";
-    private static final String ASSET_TYPE = "Process";
+    private static final String ASSET_TYPE = "Asset";
     private static final String CLASSIFICATION_NAME = "Confidentiality";
     private static final Integer FROM = 0;
     private static final Integer PAGE_SIZE = 10;
@@ -64,6 +68,8 @@ public class AssetCatalogHandlerTest {
     private static final String RELATIONSHIP_TYPE_GUID = "adadad-bcba-123";
     private final String USER = "test-user";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
+    private static final String PROCESS_TYPE = "Process";
+    private static final String PROCESS_TYPE_GUID = "ProcessGUID";
     @Mock
     private RepositoryHandler repositoryHandler;
 
@@ -84,7 +90,7 @@ public class AssetCatalogHandlerTest {
 
     @Before
     public void before() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -539,12 +545,14 @@ public class AssetCatalogHandlerTest {
         String methodName = "searchByType";
         SearchParameters searchParams = mockSearchParams();
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
-        mockSearchString(SEARCH_CRITERIA, searchParams.isCaseInsensitive());
+        mockSearchString(SEARCH_CRITERIA, searchParams.getCaseInsensitive());
+        InstanceProperties matchProperties = mockMatchProperties();
 
         OMRSMetadataCollection metadataCollection = mockMetadataCollection();
-        when(metadataCollection.findEntitiesByPropertyValue(USER,
+        when(metadataCollection.findEntitiesByProperty(USER,
                 ASSET_TYPE_GUID,
-                SEARCH_CRITERIA,
+                matchProperties,
+                MatchCriteria.ANY,
                 FROM,
                 Collections.singletonList(InstanceStatus.ACTIVE),
                 null,
@@ -554,6 +562,7 @@ public class AssetCatalogHandlerTest {
                 PAGE_SIZE)).thenReturn(mockEntities());
 
         List<AssetElements> assetElements = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
+        assertEquals(1, assetElements.size());
         assertEquals(FIRST_GUID, assetElements.get(0).getGuid());
         assertEquals(ASSET_TYPE, assetElements.get(0).getType().getName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -663,11 +672,16 @@ public class AssetCatalogHandlerTest {
 
     private List<EntityDetail> mockEntities() {
         List<EntityDetail> entityDetails = new ArrayList<>();
+
         EntityDetail entityDetail = new EntityDetail();
         entityDetail.setGUID(FIRST_GUID);
-
         entityDetail.setType(mockInstanceType(ASSET_TYPE, ASSET_TYPE_GUID));
         entityDetails.add(entityDetail);
+
+        EntityDetail processEntityDetail = new EntityDetail();
+        processEntityDetail.setType(mockInstanceType(PROCESS_TYPE, PROCESS_TYPE_GUID));
+        entityDetails.add(processEntityDetail);
+
         return entityDetails;
     }
 
@@ -733,6 +747,19 @@ public class AssetCatalogHandlerTest {
 
     private void mockSearchString(String searchCriteria, boolean isCaseSensitive) {
         when(repositoryHelper.getContainsRegex(searchCriteria, isCaseSensitive)).thenReturn(searchCriteria);
+    }
+
+    private InstanceProperties mockMatchProperties() {
+        InstanceProperties matchProperties = new InstanceProperties();
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitivePropertyValue.setPrimitiveValue(SEARCH_CRITERIA);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+        matchProperties.setProperty(NAME, primitivePropertyValue);
+        return matchProperties;
     }
 
 }

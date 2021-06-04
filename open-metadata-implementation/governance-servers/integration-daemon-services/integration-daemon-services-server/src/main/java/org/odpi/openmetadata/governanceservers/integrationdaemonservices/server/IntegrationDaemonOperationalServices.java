@@ -169,8 +169,6 @@ public class IntegrationDaemonOperationalServices
 
             auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));
 
-            activatedServicesList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
-
             return activatedServicesList;
         }
         catch (InvalidParameterException error)
@@ -338,7 +336,7 @@ public class IntegrationDaemonOperationalServices
         final String serviceURLMarkerPropertyName = "integrationServiceURLMarker";
         final String unknownValue                 = "???";
 
-        if ("".equals(integrationServiceConfig.getIntegrationServiceName()) || (integrationServiceConfig.getIntegrationServiceName() == null))
+        if ((integrationServiceConfig.getIntegrationServiceName() == null) || (integrationServiceConfig.getIntegrationServiceName().length() == 0))
         {
             throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NULL_SERVICE_CONFIG_VALUE.getMessageDefinition(serviceNamePropertyName,
                                                                                                                                         unknownValue,
@@ -347,7 +345,7 @@ public class IntegrationDaemonOperationalServices
                                                       methodName);
         }
 
-        if ("".equals(integrationServiceConfig.getIntegrationServiceFullName()) || (integrationServiceConfig.getIntegrationServiceFullName() == null))
+        if ((integrationServiceConfig.getIntegrationServiceFullName() == null) || (integrationServiceConfig.getIntegrationServiceFullName().length() == 0))
         {
             throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NULL_SERVICE_CONFIG_VALUE.getMessageDefinition(serviceFullNamePropertyName,
                                                                                                                                         integrationServiceConfig.getIntegrationServiceName(),
@@ -356,7 +354,7 @@ public class IntegrationDaemonOperationalServices
                                                       methodName);
         }
 
-        if ("".equals(integrationServiceConfig.getIntegrationServiceURLMarker()) || (integrationServiceConfig.getIntegrationServiceURLMarker() == null))
+        if ((integrationServiceConfig.getIntegrationServiceURLMarker() == null) || (integrationServiceConfig.getIntegrationServiceURLMarker().length() == 0))
         {
             throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NULL_SERVICE_CONFIG_VALUE.getMessageDefinition(serviceURLMarkerPropertyName,
                                                                                                                                         integrationServiceConfig.getIntegrationServiceFullName(),

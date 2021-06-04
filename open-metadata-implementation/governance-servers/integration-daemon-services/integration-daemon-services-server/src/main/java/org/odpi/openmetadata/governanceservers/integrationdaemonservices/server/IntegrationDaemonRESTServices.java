@@ -5,14 +5,14 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationDaemonStatusResponse;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +36,105 @@ public class IntegrationDaemonRESTServices
 
 
     /**
+     * Retrieve the configuration properties of the named connector.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param serviceURLMarker integration service identifier
+     * @param connectorName name of a specific connector
+     *
+     * @return properties map or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    public PropertiesResponse getConfigurationProperties(String serverName,
+                                                         String userId,
+                                                         String serviceURLMarker,
+                                                         String connectorName)
+    {
+        final String methodName = "getConfigurationProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        PropertiesResponse response = new PropertiesResponse();
+        AuditLog           auditLog = null;
+
+        try
+        {
+            IntegrationServiceHandler handler = instanceHandler.getIntegrationServiceHandler(userId, serverName, serviceURLMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setProperties(handler.getConfigurationProperties(userId, connectorName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
+     *
+     * @param userId calling user
+     * @param serviceURLMarker integration service identifier
+     * @param requestBody name of a specific connector or null for all connectors and the properties to change
+     *
+     * @return void or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    public  VoidResponse updateConfigurationProperties(String                               serverName,
+                                                       String                               userId,
+                                                       String                               serviceURLMarker,
+                                                       ConnectorConfigPropertiesRequestBody requestBody)
+    {
+        final String methodName = "updateConfigurationProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            IntegrationServiceHandler handler = instanceHandler.getIntegrationServiceHandler(userId, serverName, serviceURLMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.updateConfigurationProperties(userId,
+                                                      requestBody.getConnectorName(),
+                                                      requestBody.getMergeUpdate(),
+                                                      requestBody.getConfigurationProperties());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Request that the integration daemon refresh all of the connectors in all of the integration services
      *
      * @param serverName name of the integration daemon
@@ -53,7 +152,7 @@ public class IntegrationDaemonRESTServices
                                             String          userId,
                                             NullRequestBody requestBody)
     {
-        final String        methodName = "refreshAllServices";
+        final String methodName = "refreshAllServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -77,21 +176,9 @@ public class IntegrationDaemonRESTServices
                 }
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -109,7 +196,7 @@ public class IntegrationDaemonRESTServices
      * @param serverName name of the integration daemon
      * @param userId identifier of calling user
      * @param serviceURLMarker unique name of the integration service
-     * @param connectorName name of a specific connector to refresh - if null all connectors are refreshed
+     * @param requestBody name of a specific connector to refresh - if null all connectors are refreshed
      *
      * @return void or
      *
@@ -117,12 +204,12 @@ public class IntegrationDaemonRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
      */
-    public  VoidResponse refreshService(String serverName,
-                                        String userId,
-                                        String serviceURLMarker,
-                                        String connectorName)
+    public  VoidResponse refreshService(String          serverName,
+                                        String          userId,
+                                        String          serviceURLMarker,
+                                        NameRequestBody requestBody)
     {
-        final String        methodName = "refreshService";
+        final String methodName = "refreshService";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -134,23 +221,19 @@ public class IntegrationDaemonRESTServices
             IntegrationServiceHandler handler = instanceHandler.getIntegrationServiceHandler(userId, serverName, serviceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            String connectorName = null;
+
+            if (requestBody != null)
+            {
+                connectorName = requestBody.getName();
+            }
+
             handler.refreshService(connectorName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -165,7 +248,7 @@ public class IntegrationDaemonRESTServices
      * @param serverName name of the integration daemon
      * @param userId identifier of calling user
      * @param serviceURLMarker unique name of the integration service
-     * @param connectorName name of a specific connector to refresh - if null all connectors are restarted.
+     * @param requestBody name of a specific connector to refresh - if null all connectors are restarted.
      *
      * @return void or
      *
@@ -173,12 +256,12 @@ public class IntegrationDaemonRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service.
      */
-    public  VoidResponse restartService(String serverName,
-                                        String userId,
-                                        String serviceURLMarker,
-                                        String connectorName)
+    public  VoidResponse restartService(String          serverName,
+                                        String          userId,
+                                        String          serviceURLMarker,
+                                        NameRequestBody requestBody)
     {
-        final String        methodName = "restartService";
+        final String methodName = "restartService";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -190,23 +273,19 @@ public class IntegrationDaemonRESTServices
             IntegrationServiceHandler handler = instanceHandler.getIntegrationServiceHandler(userId, serverName, serviceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            String connectorName = null;
+
+            if (requestBody != null)
+            {
+                connectorName = requestBody.getName();
+            }
+
             handler.restartService(connectorName);
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -260,21 +339,9 @@ public class IntegrationDaemonRESTServices
                 response.setIntegrationServiceSummaries(integrationServiceSummaries);
             }
         }
-        catch (InvalidParameterException error)
+        catch (Exception error)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());

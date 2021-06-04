@@ -27,7 +27,7 @@ public class VirtualConnection extends Connection
     /*
      * Attributes of a virtual connection
      */
-    protected List<EmbeddedConnection> embeddedConnections = null;
+    private List<EmbeddedConnection> embeddedConnections = null;
 
 
     /**
@@ -126,19 +126,34 @@ public class VirtualConnection extends Connection
     public String toString()
     {
         return "VirtualConnection{" +
-                "embeddedConnections=" + embeddedConnections +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", connectorType=" + connectorType +
-                ", endpoint=" + endpoint +
-                ", securedProperties=" + securedProperties +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", connectorType=" + getConnectorType() +
+                       ", userId='" + getUserId() + '\'' +
+                       ", encryptedPassword='" + getEncryptedPassword() + '\'' +
+                       ", clearPassword='" + getClearPassword() + '\'' +
+                       ", endpoint=" + getEndpoint() +
+                       ", configurationProperties=" + getConfigurationProperties() +
+                       ", securedProperties=" + getSecuredProperties() +
+                       ", assetSummary='" + getAssetSummary() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", meanings=" + getMeanings() +
+                       ", securityTags=" + getSecurityTags() +
+                       ", searchKeywords=" + getSearchKeywords() +
+                       ", latestChange='" + getLatestChange() + '\'' +
+                       ", latestChangeDetails=" + getLatestChangeDetails() +
+                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
+                       ", type=" + getType() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", URL='" + getURL() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 

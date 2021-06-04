@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.dino.api.ffdc;
 
-import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
@@ -194,5 +193,39 @@ public class DinoExceptionHandler {
                                                 className,
                                                 methodName);
 
+    }
+
+    /*
+     * Mapping functions for InvalidParameterException and similar - as thrown by DiscoveryConfigurationClient
+     */
+
+    public static DinoViewServiceException mapInvalidParameterException(String className,
+                                                                        String methodName,
+                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException exception)
+    {
+        if (exception != null)
+        {
+            String message = exception.getReportedErrorMessage();
+            return new DinoViewServiceException(DinoViewErrorCode.INVALID_PARAMETER.getMessageDefinition(methodName, message),
+                                                className,
+                                                methodName);
+        }
+        else
+        {
+            return new DinoViewServiceException(DinoViewErrorCode.UNKNOWN_ERROR.getMessageDefinition(methodName),
+                                                className,
+                                                methodName);
+        }
+
+    }
+
+    public static DinoViewServiceException mapUserNotAuthorizedException(String                         className,
+                                                                         String                     methodName,
+                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException repositoryException)
+    {
+        String userId = repositoryException.getUserId();
+        return new DinoViewServiceException(DinoViewErrorCode.USER_NOT_AUTHORIZED.getMessageDefinition(userId),
+                                            className,
+                                            methodName);
     }
 }

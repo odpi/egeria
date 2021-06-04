@@ -85,21 +85,21 @@ public class TexViewRESTServices {
             response.setServerList(serverList);
 
         }
-        catch (InvalidParameterException error)
+        catch (InvalidParameterException exception)
         {
-            restExceptionHandler.captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, exception);
         }
-        catch (PropertyServerException error)
+        catch (PropertyServerException exception)
         {
-            restExceptionHandler.capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, exception);
         }
-        catch (UserNotAuthorizedException error)
+        catch (UserNotAuthorizedException exception)
         {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, exception);
         }
-        catch (Throwable error)
+        catch (Exception exception)
         {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+            restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -140,21 +140,21 @@ public class TexViewRESTServices {
                 handler = instanceHandler.getTexViewHandler(userId, serverName, methodName);
 
             }
-            catch (InvalidParameterException error)
+            catch (InvalidParameterException exception)
             {
-                restExceptionHandler.captureInvalidParameterException(response, error);
+                restExceptionHandler.captureInvalidParameterException(response, exception);
             }
-            catch (PropertyServerException error)
+            catch (PropertyServerException exception)
             {
-                restExceptionHandler.capturePropertyServerException(response, error);
+                restExceptionHandler.capturePropertyServerException(response, exception);
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException exception)
             {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+                restExceptionHandler.captureUserNotAuthorizedException(response, exception);
             }
-            catch (Throwable error)
+            catch ( Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
 
 
@@ -172,13 +172,13 @@ public class TexViewRESTServices {
                                                                  methodName));
 
             }
-            catch (TexViewServiceException error)
+            catch (TexViewServiceException exception)
             {
-                TexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+                TexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
             }
-            catch (Throwable error)
+            catch ( Exception exception)
             {
-                restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+                restExceptionHandler.captureThrowable(response, exception, methodName, auditLog);
             }
         }
         else
@@ -186,11 +186,11 @@ public class TexViewRESTServices {
             /*
              * Raise (and immediately capture) a RexViewServicesException
              */
-            TexViewServiceException error = new TexViewServiceException(TexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
+            TexViewServiceException exception = new TexViewServiceException(TexViewErrorCode.VIEW_SERVICE_REQUEST_BODY_MISSING.getMessageDefinition(),
                                                                         this.getClass().getName(),
                                                                         methodName);
 
-            TexExceptionHandler.captureCheckedException(response, error, error.getClass().getName());
+            TexExceptionHandler.captureCheckedException(response, exception, exception.getClass().getName());
         }
 
 

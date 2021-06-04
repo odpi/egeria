@@ -42,7 +42,6 @@ stages:
               options: >-
                   --batch-mode
                   -e
-                  -s .m2/settings.xml
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
           - task: Maven@3
             inputs:
@@ -54,7 +53,6 @@ stages:
               options: >-
                   --batch-mode
                   -e
-                  -s .m2/settings.xml
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
                   -Dclm.stage="build"
                   -Dclm.applicationId="$(Nexus.IQ.AppId)"

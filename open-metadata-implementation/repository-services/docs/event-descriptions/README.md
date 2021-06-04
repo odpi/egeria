@@ -56,5 +56,9 @@ Other members may pick up the error and act on it as well.
 
 
 ----
+* Return to [repository services design](..)
+* Return to [open repository repository cohort](../open-metadata-repository-cohort.md)
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

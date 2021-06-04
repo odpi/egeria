@@ -57,9 +57,6 @@ You should also set the upstream repository to connect your clone to the main Eg
 $ git remote add upstream https://github.com/odpi/egeria.git
 ```
 
-If you are using Windows, [set up git for long path names](task-set-long-path-names.md).
-This is not required for other operating systems.
-
 Now you are ready to [create a branch for your changes](task-creating-git-branches.md).
 
 ----

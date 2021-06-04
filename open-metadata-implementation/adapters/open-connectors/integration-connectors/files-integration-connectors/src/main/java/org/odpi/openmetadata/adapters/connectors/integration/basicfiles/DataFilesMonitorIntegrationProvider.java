@@ -11,7 +11,8 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 public class DataFilesMonitorIntegrationProvider extends BasicFilesMonitorIntegrationProviderBase
 {
     private static final String  connectorTypeGUID = "bbbd2213-dee1-4a21-8951-68f0f6d35eb7";
-    private static final String  connectorTypeName = "Data Files Monitor Integration Connector";
+    private static final String  connectorTypeQualifiedName = "Egeria:IntegrationConnector:Files:DataFilesMonitor";
+    private static final String  connectorTypeDisplayName = "Data Files Monitor Integration Connector";
     private static final String  connectorTypeDescription = "Connector supports cataloguing of files under a specific directory (folder) in the file system.";
 
     /**
@@ -21,8 +22,9 @@ public class DataFilesMonitorIntegrationProvider extends BasicFilesMonitorIntegr
     public DataFilesMonitorIntegrationProvider()
     {
         super(connectorTypeGUID,
-              connectorTypeName,
+              connectorTypeQualifiedName,
+              connectorTypeDisplayName,
               connectorTypeDescription,
-              DataFolderMonitorIntegrationConnector.class);
+              DataFilesMonitorIntegrationConnector.class);
     }
 }

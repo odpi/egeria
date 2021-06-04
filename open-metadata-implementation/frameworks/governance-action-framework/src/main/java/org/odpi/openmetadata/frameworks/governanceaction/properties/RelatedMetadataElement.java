@@ -22,6 +22,8 @@ public class RelatedMetadataElement extends ElementControlHeader
 
     private String              relationshipGUID       = null;
     private ElementType         relationshipType       = null;
+    private Date                effectiveFromTime      = null;
+    private Date                effectiveToTime        = null;
     private ElementProperties   relationshipProperties = null;
     private OpenMetadataElement elementProperties      = null;
 
@@ -48,6 +50,8 @@ public class RelatedMetadataElement extends ElementControlHeader
         {
             relationshipType = template.getRelationshipType();
             relationshipGUID = template.getRelationshipGUID();
+            effectiveFromTime = template.getEffectiveFromTime();
+            effectiveToTime   = template.getEffectiveToTime();
             relationshipProperties = template.getRelationshipProperties();
             elementProperties = template.getElementProperties();
         }
@@ -95,6 +99,47 @@ public class RelatedMetadataElement extends ElementControlHeader
     public void setRelationshipType(ElementType relationshipType)
     {
         this.relationshipType = relationshipType;
+    }
+
+
+    /**
+     * Return the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @return Date object
+     */
+    public Date getEffectiveFromTime() { return effectiveFromTime; }
+
+
+    /**
+     * Set up the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @param effectiveFromTime Date object
+     */
+    public void setEffectiveFromTime(Date effectiveFromTime)
+    {
+        this.effectiveFromTime = effectiveFromTime;
+    }
+
+
+    /**
+     * Return the date/time that this instance should no longer be used.
+     *
+     * @return Date object
+     */
+    public Date getEffectiveToTime()
+    {
+        return effectiveToTime;
+    }
+
+
+    /**
+     * Set up the date/time that this instance should no longer be used.
+     *
+     * @param effectiveToTime Date object
+     */
+    public void setEffectiveToTime(Date effectiveToTime)
+    {
+        this.effectiveToTime = effectiveToTime;
     }
 
 
@@ -150,6 +195,8 @@ public class RelatedMetadataElement extends ElementControlHeader
         return "RelatedMetadataElement{" +
                        "relationshipGUID='" + relationshipGUID + '\'' +
                        ", relationshipType=" + relationshipType +
+                       ", effectiveFromTime=" + effectiveFromTime +
+                       ", effectiveToTime=" + effectiveToTime +
                        ", relationshipProperties=" + relationshipProperties +
                        ", elementProperties=" + elementProperties +
                        ", headerVersion=" + getHeaderVersion() +
@@ -194,6 +241,8 @@ public class RelatedMetadataElement extends ElementControlHeader
         RelatedMetadataElement that = (RelatedMetadataElement) objectToCompare;
         return Objects.equals(relationshipGUID, that.relationshipGUID) &&
                        Objects.equals(relationshipType, that.relationshipType) &&
+                       Objects.equals(effectiveFromTime, that.effectiveFromTime) &&
+                       Objects.equals(effectiveToTime, that.effectiveToTime) &&
                        Objects.equals(relationshipProperties, that.relationshipProperties) &&
                        Objects.equals(elementProperties, that.elementProperties);
     }
@@ -207,6 +256,7 @@ public class RelatedMetadataElement extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipGUID, relationshipType, relationshipProperties, elementProperties);
+        return Objects.hash(super.hashCode(), relationshipGUID, relationshipType, effectiveFromTime,
+                            effectiveToTime, relationshipProperties, elementProperties);
     }
 }

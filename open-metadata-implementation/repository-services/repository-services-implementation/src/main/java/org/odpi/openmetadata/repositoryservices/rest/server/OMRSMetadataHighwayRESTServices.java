@@ -72,9 +72,9 @@ public class OMRSMetadataHighwayRESTServices
         {
             exceptionHandler.captureRepositoryErrorException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
-            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
+            exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -118,9 +118,9 @@ public class OMRSMetadataHighwayRESTServices
         {
             exceptionHandler.captureRepositoryErrorException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
-            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
+            exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -166,9 +166,9 @@ public class OMRSMetadataHighwayRESTServices
         {
             exceptionHandler.captureRepositoryErrorException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
-            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
+            exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -213,9 +213,9 @@ public class OMRSMetadataHighwayRESTServices
         {
             exceptionHandler.captureRepositoryErrorException(response, error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
-            exceptionHandler.captureThrowable(response, error, userId, serverName, methodName);
+            exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

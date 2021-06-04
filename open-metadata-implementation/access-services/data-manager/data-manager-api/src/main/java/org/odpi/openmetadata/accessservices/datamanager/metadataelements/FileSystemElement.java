@@ -130,10 +130,6 @@ public class FileSystemElement implements MetadataElement, Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         FileSystemElement that = (FileSystemElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(fileSystemProperties, that.fileSystemProperties);

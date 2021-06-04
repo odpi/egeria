@@ -3,23 +3,19 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.RelatedTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * Mapping methods to map between the relatedTerm and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class RelatedTermMapper extends LineMapper<RelatedTerm> {
+public class RelatedTermMapper extends RelationshipMapper<RelatedTerm> {
     public static final String RELATED_TERM = "RelatedTerm";
 
     public RelatedTermMapper(OMRSAPIHelper omrsapiHelper) {
@@ -27,13 +23,13 @@ public class RelatedTermMapper extends LineMapper<RelatedTerm> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param relatedTerm               supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param relatedTerm               supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(RelatedTerm relatedTerm, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(RelatedTerm relatedTerm, InstanceProperties instanceProperties) {
         if (relatedTerm.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getDescription(), "description");
         }
@@ -56,13 +52,13 @@ public class RelatedTermMapper extends LineMapper<RelatedTerm> {
     /**
      * Map a primitive omrs property to the relatedTerm object.
      *
-     * @param relatedTerm         the glossary to be updated
+     * @param relatedTerm         the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(RelatedTerm relatedTerm, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(RelatedTerm relatedTerm, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -85,7 +81,7 @@ public class RelatedTermMapper extends LineMapper<RelatedTerm> {
     }
 
     @Override
-    protected boolean mapEnumToLine(RelatedTerm relatedTerm, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(RelatedTerm relatedTerm, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -101,7 +97,7 @@ public class RelatedTermMapper extends LineMapper<RelatedTerm> {
     }
 
     @Override
-    protected RelatedTerm getLineInstance() {
+    protected RelatedTerm getRelationshipInstance() {
         return new RelatedTerm();
     }
 }

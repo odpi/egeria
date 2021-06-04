@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
@@ -24,6 +25,7 @@ import java.util.List;
 
 class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
+    private ServerTypeClassification             serverTypeClassification            = null;
     private OMAGServerConfig                     operationalConfiguration            = null;
     private OMRSOperationalServices              operationalRepositoryServices       = null;
     private OCFMetadataOperationalServices       operationalOCFMetadataServices      = null;
@@ -44,11 +46,14 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      * @param serviceName name of the new service instance
      * @param maxPageSize maximum number of results that can be returned
      */
-    OMAGOperationalServicesInstance(String   serverName,
-                                    String   serviceName,
-                                    int      maxPageSize)
+    OMAGOperationalServicesInstance(String                   serverName,
+                                    ServerTypeClassification serverTypeClassification,
+                                    String                   serviceName,
+                                    int                      maxPageSize)
     {
-        super(serverName, serviceName, maxPageSize);
+        super(serverName, serverTypeClassification.getServerTypeName(), serviceName, maxPageSize);
+
+        this.serverTypeClassification = serverTypeClassification;
     }
 
 
@@ -79,7 +84,8 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return OMRSOperationalServices object
      */
-    OMRSOperationalServices getOperationalRepositoryServices() {
+    OMRSOperationalServices getOperationalRepositoryServices()
+    {
         return operationalRepositoryServices;
     }
 

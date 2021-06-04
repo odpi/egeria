@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.PersonalProfile;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.PersonalProfileElement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,7 @@ public class PersonalProfileListResponse extends GovernanceProgramOMASAPIRespons
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<PersonalProfile> personalProfiles = null;
+    private List<PersonalProfileElement> personalProfiles = null;
 
 
     /**
@@ -59,7 +59,7 @@ public class PersonalProfileListResponse extends GovernanceProgramOMASAPIRespons
      *
      * @return unique identifier
      */
-    public List<PersonalProfile> getPersonalProfiles()
+    public List<PersonalProfileElement> getPersonalProfiles()
     {
         if (personalProfiles == null)
         {
@@ -81,7 +81,7 @@ public class PersonalProfileListResponse extends GovernanceProgramOMASAPIRespons
      *
      * @param personalProfiles - unique identifier
      */
-    public void setPersonalProfiles(List<PersonalProfile> personalProfiles)
+    public void setPersonalProfiles(List<PersonalProfileElement> personalProfiles)
     {
         this.personalProfiles = personalProfiles;
     }

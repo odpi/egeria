@@ -139,12 +139,66 @@ public enum RexViewErrorCode implements ExceptionMessageSet
              "The system could not perform the requested action.",
              "Check the conformance of the target repository and retry with a supported operation."),
 
+    TYPE_SYSTEM_ENTITY_SUPERTYPE_NAME_MISSING
+            (400, "OMVS-REPOSITORY-EXPLORER-400-019",
+             "The repository explorer view service method {0} detected that entity type {1} has a super type with no name, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_ENTITY_SUPERTYPE_MISSING
+            (400, "OMVS-REPOSITORY-EXPLORER-400-020",
+             "The repository explorer view service method {0} detected that entity type {1} refers a super type {2} that is not in the type gallery, as returned by repository {3} on platform {4}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_ENTITY_DEF_MISSING
+            (400, "OMVS-REPOSITORY-EXPLORER-400-021",
+             "The repository explorer view service method {0} detected that entity type {1} does not have an EntityDef, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_RELATIONSHIP_END_DEF_MISSING
+            (400, "OMVS-REPOSITORY-EXPLORER-400-022",
+             "The repository explorer view service method {0} detected that relationship type {1} is missing a RelationshipEndDef, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_VALID_ENTITY_NAME_MISSING
+            (400, "OMVS-REPOSITORY-EXPLORER-400-023",
+             "The repository explorer view service method {0} detected that the classification type {1} refers to a validEntityDef that has no name, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_VALID_ENTITY_MISSING
+            (400, "OMVS-REPOSITORY-EXPLORER-400-024",
+             "The repository explorer view service method {0} detected that classification type {1} refers to a validEntityDef for entity type {2} that is not in the type gallery, as returned by repository {3} on platform {4}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_NAME_MISSING
+            (400, "OMVS-REPOSITORY-EXPLORER-400-025",
+             "The repository explorer view service method {0} detected that the classification type {1} refers to a supertype that has no name, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_SUPERTYPE_MISSING
+            (400, "OMVS-REPOSITORY-EXPLORER-400-026",
+             "The repository explorer view service method {0} detected that the classification type {1} refers to a supertype {2} that is not in the type gallery, as returned by repository {3} on platform {4}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
+    TYPE_SYSTEM_CLASSIFICATION_DEF_MISSING
+            (400, "OMVS-REPOSITORY-EXPLORER-400-027",
+             "The repository explorer view service method {0} detected that classification type {1} does not have a ClassificationDef, as returned by repository {2} on platform {3}",
+             "The system could not resolve the type system.",
+             "Check the type system returned by the repository's getAllTypes method returns a complete and consistent TypeDefGallery."),
+
     /*
      * Provide a catch-all error code in case Rex catches a Throwable. It will capture the Throwable
      * and package it into the REST response, but does not specific error handling for the error
      */
     UNKNOWN_ERROR
-            (400, "OMVS-REPOSITORY-EXPLORER-400-019",
+            (400, "OMVS-REPOSITORY-EXPLORER-400-028",
              "The repository explorer view service caught an unknown error during operation {0}. The detailed message is {1}",
              "The system could not perform the requested action.",
              "Please check the detailed message and the system log.")

@@ -276,11 +276,15 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
         Relationship newRelationship = null;
         InstanceProperties instanceProps = null;
 
+        long start;
+        long elapsedTime;
         try {
 
             instanceProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), relationshipDef);
 
+            start = System.currentTimeMillis();
             newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(), relationshipDef.getGUID(), instanceProps, entityOne.getGUID(), entityTwo.getGUID(), null);
+            elapsedTime = System.currentTimeMillis() - start;
 
             // Record the created instance's GUID for later clean up.
             createdRelationshipsTUT.add(newRelationship);
@@ -325,7 +329,9 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                         assertion8,
                         testTypeName + assertionMsg8,
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                        "addRelationship",
+                        elapsedTime);
 
         createdRelationshipsTUT.add(newRelationship);
 
@@ -346,11 +352,16 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
          * Validate that the relationship can be retrieved.
          */
 
-        verifyCondition((newRelationship.equals(metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID()))),
+        start = System.currentTimeMillis();
+        Relationship retrievedRelationship = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+        elapsedTime = System.currentTimeMillis() - start;
+        verifyCondition((newRelationship.equals(retrievedRelationship)),
                         assertion2,
                         testTypeName + assertionMsg2,
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId(),
+                        "getRelationship",
+                        elapsedTime);
 
 
 
@@ -369,18 +380,21 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
         try {
 
-
+            start = System.currentTimeMillis();
             reIdentifiedRelationship = metadataCollection.reIdentifyRelationship(workPad.getLocalServerUserId(),
                                                                                  relationshipDef.getGUID(),
                                                                                  relationshipDef.getName(),
                                                                                  newRelationship.getGUID(),
                                                                                  newGUID);
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition(true,
                             assertion9,
                             testTypeName + assertionMsg9,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId(),
+                            "reIdentifyRelationship",
+                            elapsedTime);
 
             createdRelationshipsTUT.add(reIdentifiedRelationship);
 
@@ -431,19 +445,26 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
          */
 
         try {
+            start = System.currentTimeMillis();
             metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
+            elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((false),
                             assertion5,
                             testTypeName + assertionMsg5,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId(),
+                            "getRelationship-negative",
+                            elapsedTime);
         } catch (RelationshipNotKnownException exception) {
+            elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion5,
                             testTypeName + assertionMsg5,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId(),
+                            "getRelationship-negative",
+                            elapsedTime);
         }
 
         /*
@@ -451,13 +472,16 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
          */
 
         try {
-            metadataCollection.getRelationship(workPad.getLocalServerUserId(), newGUID);
-
-            assertCondition((reIdentifiedRelationship.equals(metadataCollection.getRelationship(workPad.getLocalServerUserId(), newGUID))),
+            start = System.currentTimeMillis();
+            Relationship theRelationship = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newGUID);
+            elapsedTime = System.currentTimeMillis() - start;
+            assertCondition((reIdentifiedRelationship.equals(theRelationship)),
                             assertion6,
                             testTypeName + assertionMsg6,
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
+                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId(),
+                            "getRelationship",
+                            elapsedTime);
 
         } catch (RelationshipNotKnownException exception) {
             assertCondition((false),

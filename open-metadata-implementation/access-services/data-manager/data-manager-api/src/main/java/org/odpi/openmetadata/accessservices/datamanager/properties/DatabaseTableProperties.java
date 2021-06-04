@@ -91,10 +91,10 @@ public class DatabaseTableProperties extends SchemaElementProperties
     public String toString()
     {
         return "DatabaseTableProperties{" +
-                       ", deprecated=" + getIsDeprecated() +
+                       "aliases=" + aliases +
+                       ", isDeprecated=" + getIsDeprecated() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", aliases='" + getAliases() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +

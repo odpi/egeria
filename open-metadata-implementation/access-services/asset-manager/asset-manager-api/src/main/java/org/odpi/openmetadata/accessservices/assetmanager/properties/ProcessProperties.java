@@ -104,13 +104,6 @@ public class ProcessProperties extends AssetProperties
                        ", implementationLanguage='" + implementationLanguage + '\'' +
                        ", technicalName='" + getTechnicalName() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerCategory=" + getOwnerCategory() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                       ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                       ", otherOriginValues=" + getOtherOriginValues() +
-                       ", isReferenceAsset=" + getIsReferenceAsset() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +
                        ", description='" + getDescription() + '\'' +

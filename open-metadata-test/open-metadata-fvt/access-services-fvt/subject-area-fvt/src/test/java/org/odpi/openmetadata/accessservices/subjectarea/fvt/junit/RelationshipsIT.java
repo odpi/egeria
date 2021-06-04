@@ -9,7 +9,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.odpi.openmetadata.accessservices.subjectarea.fvt.RelationshipsFVT;
 import org.odpi.openmetadata.http.HttpHelper;
-
+import org.apache.commons.lang3.StringUtils;
+import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class RelationshipsIT {
@@ -21,6 +22,6 @@ public class RelationshipsIT {
     @ParameterizedTest
     @ValueSource(strings = {"serverinmem","servergraph"})
     public void testRelationships(String server) {
-        assertDoesNotThrow(() -> RelationshipsFVT.runIt("https://localhost:10443", server, "garygeeke"));
+        assertDoesNotThrow(() -> RelationshipsFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));
     }
 }

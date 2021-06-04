@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.api;
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -66,6 +67,26 @@ public interface AssetOnboardingInterface
                               AssetProperties assetProperties) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException;
+
+
+    /**
+     * Create a new metadata element to represent an asset using an existing asset as a template.
+     *
+     * @param userId calling user
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String addAssetToCatalogUsingTemplate(String             userId,
+                                          String             templateGUID,
+                                          TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException;
 
 
     /**

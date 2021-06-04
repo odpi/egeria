@@ -8,9 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.server.ValidValuesRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -483,7 +481,7 @@ public class ValidValuesResource
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param validValueName qualified name of the valid value.
+     * @param requestBody qualified name of the valid value.
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
      *
@@ -494,13 +492,13 @@ public class ValidValuesResource
      */
     @PostMapping(path = "/valid-values/by-name")
 
-    public ValidValuesResponse getValidValueByName(@PathVariable String  serverName,
-                                                   @PathVariable String  userId,
-                                                   @RequestParam int     startFrom,
-                                                   @RequestParam int     pageSize,
-                                                   @RequestBody  String  validValueName)
+    public ValidValuesResponse getValidValueByName(@PathVariable String          serverName,
+                                                   @PathVariable String          userId,
+                                                   @RequestParam int             startFrom,
+                                                   @RequestParam int             pageSize,
+                                                   @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getValidValueByName(serverName, userId, validValueName, startFrom, pageSize);
+        return restAPI.getValidValueByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -512,7 +510,7 @@ public class ValidValuesResource
      * @param userId calling user
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
-     * @param searchString string value to look for - may contain RegEx characters.
+     * @param requestBody string value to look for - may contain RegEx characters.
      *
      * @return list of valid value beans or
      * InvalidParameterException one of the parameters is invalid or
@@ -521,13 +519,13 @@ public class ValidValuesResource
      */
     @PostMapping(path = "/valid-values/by-search-string")
 
-    public ValidValuesResponse findValidValues(@PathVariable String  serverName,
-                                               @PathVariable String  userId,
-                                               @RequestParam int     startFrom,
-                                               @RequestParam int     pageSize,
-                                               @RequestBody  String  searchString)
+    public ValidValuesResponse findValidValues(@PathVariable String                  serverName,
+                                               @PathVariable String                  userId,
+                                               @RequestParam int                     startFrom,
+                                               @RequestParam int                     pageSize,
+                                               @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findValidValues(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findValidValues(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 

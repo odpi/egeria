@@ -2,14 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -25,6 +24,7 @@ import java.util.*;
  */
 public class CategoryFVT {
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Test Glossary for category sample";
+    private static final String DEFAULT_TEST_GLOSSARY_NAME2 = "Test Glossary for category sample 2";
     private static final String DEFAULT_TEST_CATEGORY_NAME = "Test category A";
     private static final String DEFAULT_TEST_CATEGORY_NAME_UPDATED = "Test category A updated";
     private static final String DEFAULT_TEST_CATEGORY_NAME2 = "Test category B";
@@ -89,8 +89,6 @@ public class CategoryFVT {
 
     public void run() throws  SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-
-
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME);
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
@@ -103,27 +101,27 @@ public class CategoryFVT {
         FVTUtils.validateNode(category2);
 
         FindRequest findRequest = new FindRequest();
-        List<Category> results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, true);
+        List<Category> results = glossaryFVT.getCategories(glossaryGuid, findRequest, true);
         if (results.size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on getGlossaryCategories onlyTop true" + results.size());
         }
-        results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, false);
+        results = glossaryFVT.getCategories(glossaryGuid, findRequest, false);
         if (results.size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on getGlossaryCategories " + results.size());
         }
         findRequest.setPageSize(1);
-        results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, false);
+        results = glossaryFVT.getCategories(glossaryGuid, findRequest, false);
         if (results.size() != 1) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on getGlossaryCategories with page size 1" + results.size());
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on getGlossaryCategories with page size 1, got " + results.size());
         }
         Category categoryChild = createCategoryWithParentGlossary(DEFAULT_TEST_CATEGORY_A_CHILD, category1, glossaryGuid);
         FVTUtils.validateNode(categoryChild);
         findRequest.setPageSize(null);
-        results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, true);
+        results = glossaryFVT.getCategories(glossaryGuid, findRequest, true);
         if (results.size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 top categories back on getGlossaryCategories " + results.size());
         }
-        results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, false);
+        results = glossaryFVT.getCategories(glossaryGuid, findRequest, false);
         if (results.size() != 3) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected all 3 categories  getGlossaryCategories " + results.size());
         }
@@ -171,22 +169,44 @@ public class CategoryFVT {
         FVTUtils.validateNode(category3);
 
         System.out.println("create categories to find");
+        results = findCategories("zzz");
+        if (results.size() != 0) {
+            for (Category result : results) {
+                System.err.println("pre result name " + result.getName());
+                System.err.println("pre result guid " + result.getSystemAttributes().getGUID());
+                if ( result.getParentCategory() != null) {
+                    System.err.println("pre result parent cat name " + result.getParentCategory().getName());
+                }
+            }
+        }
+
+
         Category categoryForFind1 = getCategoryForInput("abc", glossaryGuid);
-        categoryForFind1.setQualifiedName("yyy");
+        categoryForFind1.setQualifiedName("iii");
         categoryForFind1 = issueCreateCategory(categoryForFind1);
         FVTUtils.validateNode(categoryForFind1);
-        Category categoryForFind2 = createCategory("yyy", glossaryGuid);
+        Category categoryForFind2 = createCategory("iii", glossaryGuid);
         FVTUtils.validateNode(categoryForFind2);
-        Category categoryForFind3 = createCategory("zzz", glossaryGuid);
+//        Category categoryForFind3 = createCategory("jjj", glossaryGuid);
+        Category categoryForFind3ForInput = getCategoryForInput("jjj", glossaryGuid);
+        categoryForFind3ForInput.setDescription("This is a description for jjj");
+        Category categoryForFind3 = issueCreateCategory(categoryForFind3ForInput);
         FVTUtils.validateNode(categoryForFind3);
         Category categoryForFind4 = createCategory("This is a Category with spaces in name", glossaryGuid);
         FVTUtils.validateNode(categoryForFind4);
 
-        results = findCategories("zzz");
+        results = findCategories("jjj");
         if (results.size() != 1) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
+            System.err.println("categoryForFind3 name " + categoryForFind3.getName());
+            for (Category result: results) {
+                System.err.println("result name " + result.getName());
+                System.err.println("result desc " + result.getDescription());
+                System.err.println("result guid " + result.getSystemAttributes().getGUID());
+            }
+
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find for jjj got " + results.size());
         }
-        results = findCategories("yyy");
+        results = findCategories("iii");
         if (results.size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
         }
@@ -202,15 +222,15 @@ public class CategoryFVT {
         //soft delete a category and check it is not found
         deleteCategory(categoryForFind2.getSystemAttributes().getGUID());
         //FVTUtils.validateNode(deleted4);
-        results = findCategories("yyy");
+        results = findCategories("iii");
         if (results.size() != 1) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find for yyy got " + results.size());
         }
 
         // search for a category with a name with spaces in
         results = findCategories("This is a Category with spaces in name");
         if (results.size() != 1) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find for Category with spaces in name got " + results.size());
         }
         // make sure there is a category with the name
         createCategory(DEFAULT_TEST_CATEGORY_NAME, glossaryGuid);
@@ -218,6 +238,163 @@ public class CategoryFVT {
         if (categoryForUniqueQFN2 == null || categoryForUniqueQFN2.equals("")) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
         }
+        deleteCategory(categoryForFind1.getSystemAttributes().getGUID());
+        deleteCategory(categoryForFind3.getSystemAttributes().getGUID());
+        deleteCategory(categoryForFind4.getSystemAttributes().getGUID());
+        deleteCategory(categoryForUniqueQFN2.getSystemAttributes().getGUID());
+
+        testHierarchyWithSearchCriteria();
+
+    }
+
+    private void testHierarchyWithSearchCriteria() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        System.out.println("Create a glossary");
+        Glossary glossary = glossaryFVT.createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME2);
+        String glossaryGuid = glossary.getSystemAttributes().getGUID();
+        System.out.println("Create a aaa");
+        Category parentCategory = createCategoryWithGlossaryGuid("aaa", glossary.getSystemAttributes().getGUID());
+        String parentGuid = parentCategory.getSystemAttributes().getGUID();
+
+        Set<String> childGuids = new HashSet();
+        // create 20 children
+        for (int i=0;i<10;i++) {
+            Category cat1 = createCategoryWithParentGlossaryGuid("aa" + i, parentGuid, glossaryGuid);
+            childGuids.add(cat1.getSystemAttributes().getGUID());
+            Category cat2 =createCategoryWithParentGlossaryGuid("bb" + i, parentGuid, glossaryGuid);
+            childGuids.add(cat2.getSystemAttributes().getGUID());
+            // create a grandchild of cat1 with the same name
+            Category grandchild =createCategoryWithParentGlossaryGuid("aa" + i, cat1.getSystemAttributes().getGUID(), glossaryGuid);
+            childGuids.add(grandchild.getSystemAttributes().getGUID());
+        }
+
+        if (getCategoryChildren(parentGuid).size() != 20) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 20 child categories");
+        }
+        FindRequest findRequest =new FindRequest();
+        findRequest.setSearchCriteria("aa3");
+        int count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
+        if (count !=1) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 child category, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
+        if (count !=2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 glossary categories for aa3 including grandchild, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=0) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 glossary categories for aa3 not including grandchild, got " + count);
+        }
+
+        findRequest.setSearchCriteria("aa.*");
+        count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
+        if (count !=10) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 child category, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
+        if (count !=21) {
+            // 1 aaa and its 10 aa1-10 children and then the first category has another 10 aa1-10 children
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 21 glossary categories for aa* including grandchildren, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=1) {
+            // should find aaa
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for aa* not including grandchildren, got " + count);
+        }
+
+        // issue with page size 5
+        findRequest.setPageSize(5);
+        List<Category> categories = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest);
+        count = categories.size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 child categories with aa*,got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary categories for aa* including grandchildren, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=1) {
+            // expect to find aaa
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 glossary categories for aa* not including grandchildren, got " + count);
+        }
+        // issue with page size 5, startingFrom 5
+        findRequest.setStartingFrom(5);
+
+        categories = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest);
+        count = categories.size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 child categories with aa (findRequest.setStartingFrom(5)),got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary categories for aa* (findRequest.setStartingFrom(5) including grandchildren, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=0) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 glossary categories as startingFrom is higher than the number of elements " + count);
+        }
+
+        findRequest.setStartingFrom(0);
+        findRequest.setSearchCriteria("bb.*");
+        findRequest.setPageSize(20);
+        if (subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size() !=10) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 child categories for bb*");
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
+        if (count !=10) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary categories for bb* including grandchildren, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=0) {
+            // only aaa at the top and we are looking for bb*
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 glossary categories for bb* not including grandchildren, got " + count);
+        }
+        // issue with page size 5, startingFrom 5 check the categorychildren
+        findRequest.setPageSize(5);
+        count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 child categories for bb, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary categories for bb* including grandchildren, got " + count);
+        }
+        // issue with page size 5, startingFrom 5 check the categorychildren
+        findRequest.setStartingFrom(5);
+        count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 child categories for bb, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
+        if (count !=5) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary categories for bb* including grandchildren, got " + count);
+        }
+
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=0) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 glossary categories for bb* not including grandchildren, got " + count);
+        }
+
+        findRequest.setStartingFrom(0);
+        findRequest.setPageSize(10);
+        count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
+        if (count !=10) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 child categories for bb*, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, false).size();
+        if (count !=10) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary categories for bb* including grandchildren, got " + count);
+        }
+        count = glossaryFVT.getCategories(glossaryGuid, findRequest, true).size();
+        if (count !=0) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 0 glossary categories for bb* not including grandchildren, got " + count);
+        }
+        //cleanup
+        for (String childGuid: childGuids) {
+            deleteCategory(childGuid);
+        }
+        deleteCategory(parentGuid);
+        glossaryFVT.deleteGlossary(glossaryGuid);
     }
 
     private Category createCategoryWithParentGlossaryGuid(String subjectAreaName, String parentGuid, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
@@ -333,7 +510,7 @@ public class CategoryFVT {
         System.out.println("Purge succeeded");
     }
 
-    public List<Line> getCategoryRelationships(Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Relationship> getCategoryRelationships(Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaCategory.getAllRelationships(this.userId, category.getSystemAttributes().getGUID());
     }
     private void deleteRemaining() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
@@ -360,5 +537,9 @@ public class CategoryFVT {
     public List<Term> getTerms(String categoryGuid)  throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
         return subjectAreaCategoryClient.getTerms(userId, categoryGuid, new FindRequest());
+    }
+    public List<Term> getTerms(String categoryGuid, FindRequest findRequest)  throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        return subjectAreaCategoryClient.getTerms(userId, categoryGuid, findRequest);
     }
 }

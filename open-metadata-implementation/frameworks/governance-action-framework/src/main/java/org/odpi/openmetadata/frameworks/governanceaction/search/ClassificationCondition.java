@@ -23,8 +23,8 @@ public class ClassificationCondition implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private String name;
-    private SearchProperties matchProperties;
+    private String           name;
+    private SearchProperties searchProperties;
 
     /**
      * Typical constructor
@@ -44,7 +44,7 @@ public class ClassificationCondition implements Serializable
         if (templateProperties != null)
         {
             this.name = templateProperties.getName();
-            this.matchProperties = new SearchProperties(templateProperties.getMatchProperties());
+            this.searchProperties = new SearchProperties(templateProperties.getSearchProperties());
         }
     }
 
@@ -73,19 +73,19 @@ public class ClassificationCondition implements Serializable
      *
      * @return SearchProperties
      */
-    public SearchProperties getMatchProperties()
+    public SearchProperties getSearchProperties()
     {
-        return matchProperties;
+        return searchProperties;
     }
 
     /**
      * Set the (optional) properties-based conditions for the classification.
      *
-     * @param matchProperties for the classification
+     * @param searchProperties for the classification
      */
-    public void setMatchProperties(SearchProperties matchProperties)
+    public void setSearchProperties(SearchProperties searchProperties)
     {
-        this.matchProperties = matchProperties;
+        this.searchProperties = searchProperties;
     }
 
     /**
@@ -98,7 +98,7 @@ public class ClassificationCondition implements Serializable
     {
         return "ClassificationCondition{" +
                 "name='" + name +
-                "', matchProperties=" + matchProperties +
+                "', searchProperties=" + searchProperties +
                 '}';
     }
 
@@ -122,7 +122,7 @@ public class ClassificationCondition implements Serializable
         }
         ClassificationCondition that = (ClassificationCondition) objectToCompare;
         return Objects.equals(getName(), that.getName()) &&
-                Objects.equals(getMatchProperties(), that.getMatchProperties());
+                Objects.equals(getSearchProperties(), that.getSearchProperties());
     }
 
 
@@ -134,7 +134,7 @@ public class ClassificationCondition implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getName(), getMatchProperties());
+        return Objects.hash(getName(), getSearchProperties());
     }
 
 }

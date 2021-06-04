@@ -17,9 +17,7 @@ how to set them up are described in
 
 
 ----
-Return the [repository services components](.)
-
-
+* Return to [repository services component descriptions](.)
 
 
 ----

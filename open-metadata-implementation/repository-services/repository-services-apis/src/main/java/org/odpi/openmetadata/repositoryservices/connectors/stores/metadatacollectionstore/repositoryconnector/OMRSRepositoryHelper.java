@@ -11,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * OMRSRepositoryHelper provides methods to repository connectors and repository event mappers to help
@@ -93,6 +94,19 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     String  getOtherEndName(String                 sourceName,
                             String                 anchorEntityGUID,
                             Relationship           relationship);
+
+
+    /**
+     * Return the entity proxy for the related entity.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param anchorEntityGUID unique identifier of the anchor entity
+     * @param relationship relationship to another entity
+     * @return proxy to the other entity.
+     */
+    EntityProxy  getOtherEnd(String                 sourceName,
+                             String                 anchorEntityGUID,
+                             Relationship           relationship);
 
 
     /**
@@ -239,6 +253,19 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     List<TypeDefAttribute> getAllPropertiesForTypeDef(String  sourceName,
                                                       TypeDef typeDef,
                                                       String  methodName);
+
+
+    /**
+     * Return the names of all of the type definitions that define the supplied property name.
+     *
+     * @param sourceName name of the caller.
+     * @param propertyName property name to query.
+     * @param methodName calling method.
+     * @return set of names of the TypeDefs that define a property with this name
+     */
+    Set<String> getAllTypeDefsForProperty(String sourceName,
+                                          String propertyName,
+                                          String methodName);
 
 
     /**
@@ -644,6 +671,22 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Throws an exception if an entity is classified with the supplied classification name.
+     * It is typically used when adding new classifications to entities.
+     *
+     * @param sourceName          source of the request (used for logging)
+     * @param entity              entity to update
+     * @param classificationName  classification to retrieve
+     * @param methodName          calling method
+     * @throws ClassificationErrorException  the classification is not attached to the entity
+     */
+    void checkEntityNotClassifiedEntity(String        sourceName,
+                                        EntitySummary entity,
+                                        String        classificationName,
+                                        String        methodName) throws ClassificationErrorException;
+
+
+    /**
      * Add a classification to an existing entity.
      *
      * @param sourceName          source of the request (used for logging)
@@ -674,7 +717,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return the names classification from an existing entity.
+     * Return the named classification from an existing entity and throws an exception if it is not.
      *
      * @param sourceName          source of the request (used for logging)
      * @param entity              entity to update

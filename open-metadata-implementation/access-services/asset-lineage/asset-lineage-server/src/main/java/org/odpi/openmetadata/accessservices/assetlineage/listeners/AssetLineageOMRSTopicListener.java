@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,28 +51,30 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private static final String PROCESSING_RELATIONSHIP_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning relationship {} ";
     private static final String PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE = "Asset Lineage OMAS is processing a {} event concerning entity {} ";
 
-    private AssetLineagePublisher publisher;
-    private AuditLog auditLog;
-    private Converter converter;
-    private Set<String> lineageClassificationTypes;
-    private String serverName;
+    private final AssetLineagePublisher
+            publisher;
+    private final AuditLog auditLog;
+    private final Converter converter;
+    private final Set<String> lineageClassificationTypes;
+    private final String serverName;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
-     *
-     * @param repositoryHelper  helper object for building and querying TypeDefs and metadata instances
+     *  @param repositoryHelper  helper object for building and querying TypeDefs and metadata instances
      * @param outTopicConnector The connector used for the Asset Lineage OMAS Out Topic
      * @param serverName        name of this server instance
      * @param serverUserName    name of the user of the server instance
+     * @param accessServiceOptions
      */
     public AssetLineageOMRSTopicListener(OMRSRepositoryHelper repositoryHelper,
                                          OpenMetadataTopicConnector outTopicConnector,
                                          String serverName, String serverUserName,
                                          Set<String> lineageClassificationTypes,
-                                         AuditLog auditLog)
+                                         AuditLog auditLog,
+                                         Map<String, Object> accessServiceOptions)
             throws OCFCheckedExceptionBase {
-        this.publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName);
+        this.publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName, accessServiceOptions);
         this.lineageClassificationTypes = lineageClassificationTypes;
         this.auditLog = auditLog;
         this.serverName = serverName;
@@ -166,10 +169,12 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param entityDetail   entity object that has just been updated.
      * @param originalEntity original entity
+     *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    private void processUpdatedEntity(EntityDetail entityDetail, EntityDetail originalEntity) throws OCFCheckedExceptionBase, JsonProcessingException {
+    private void processUpdatedEntity(EntityDetail entityDetail, EntityDetail originalEntity) throws OCFCheckedExceptionBase,
+                                                                                                     JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName())) {
             return;
         }
@@ -189,12 +194,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * Process delete event for lineage entities.
      *
      * @param entityDetail entity object that has been deleted
+     *
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the service name is not known - indicating a logic error
      * @throws ConnectorCheckedException  unable to send the event due to connectivity issue
      * @throws JsonProcessingException    exception parsing the event json
      */
-    private void processDeletedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException, UserNotAuthorizedException, PropertyServerException {
+    private void processDeletedEntity(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName())) {
             return;
         }
@@ -207,6 +213,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * Process classified event for lineage entities.
      *
      * @param entityDetail the entity object that has been deleted
+     *
      * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -231,6 +238,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * The event is processed only if it contains lineage classifications
      *
      * @param entityDetail the entity object that contains a classification that has been updated
+     *
      * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -251,6 +259,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * The Classification Context event is sent if there are lineage classifications available on lineage entity.
      *
      * @param entityDetail the entity object that contains a classification that has been deleted
+     *
      * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -272,12 +281,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     /**
      * @param entityDetail     the entity object that may be published
      * @param lineageEventType lineage event type
+     *
      * @throws JsonProcessingException    exception parsing the event json
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws PropertyServerException    there is a problem retrieving information from the property server.
      */
-    private void publishEntityEvent(EntityDetail entityDetail, AssetLineageEventType lineageEventType)
-            throws JsonProcessingException, ConnectorCheckedException, UserNotAuthorizedException, PropertyServerException {
+    private void publishEntityEvent(EntityDetail entityDetail, AssetLineageEventType lineageEventType) throws JsonProcessingException,
+                                                                                                              OCFCheckedExceptionBase {
         if (publisher.isEntityEligibleForPublishing(entityDetail)) {
             publisher.publishLineageEntityEvent(converter.createLineageEntity(entityDetail), lineageEventType);
         }
@@ -287,6 +297,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * Process New Relationship event when the relationship type is Process Hierarchy, Semantinc Assignment or Term Categorization
      *
      * @param relationship the relationship object that has been created
+     *
      * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -294,18 +305,20 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (!isLineageRelationship(relationship)) return;
 
         String relationshipType = relationship.getType().getTypeDefName();
-
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(),
+                relationship.getGUID());
         switch (relationshipType) {
             case SEMANTIC_ASSIGNMENT:
             case TERM_CATEGORIZATION:
-                log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
                 String glossaryTermGUID = relationship.getEntityTwoProxy().getGUID();
                 publisher.publishGlossaryContext(glossaryTermGUID);
                 break;
             case PROCESS_HIERARCHY:
-            case LINEAGE_MAPPING:
-                log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
                 publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship),
+                        AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+                break;
+            case LINEAGE_MAPPING:
+                publisher.publishLineageMappingRelationshipEvent(converter.createLineageRelationship(relationship),
                         AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
                 break;
             default:
@@ -317,6 +330,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * Process the updates for lineage relationship
      *
      * @param relationship the relationship object that has been updated
+     *
      * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -332,6 +346,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * Determines if the given relationship is a lineage relationship
      *
      * @param relationship the relationship object
+     *
      * @return true if the it is a lineage relationship
      */
     private boolean isLineageRelationship(Relationship relationship) {
@@ -349,6 +364,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * Process delete events for lineage relationships
      *
      * @param relationship the relationship object that has been deleted
+     *
      * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
      * @throws JsonProcessingException exception parsing the event json
      */
@@ -365,6 +381,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      *
      * @param entityDetail   the new entity object
      * @param originalEntity the original entity object
+     *
      * @return true if the status of the Process entity has been changed to active
      */
     private boolean isProcessStatusChangedToActive(EntityDetail entityDetail, EntityDetail originalEntity) {
@@ -377,6 +394,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * Checks if the entity classification list contains lineage classifications
      *
      * @param entityDetail the entity object
+     *
      * @return true if the entity contains lineage classifications
      */
     private boolean anyLineageClassificationsLeft(EntityDetail entityDetail) {
@@ -394,6 +412,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * Sanity checks on the relationship object
      *
      * @param relationship the relationship object
+     *
      * @return true if the relationship type is available and if the both ends of the relationship are available
      */
     private Boolean isRelationshipValid(Relationship relationship) {

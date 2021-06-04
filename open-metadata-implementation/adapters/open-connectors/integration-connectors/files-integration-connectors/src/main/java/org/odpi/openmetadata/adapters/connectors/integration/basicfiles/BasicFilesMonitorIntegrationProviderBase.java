@@ -15,19 +15,21 @@ import java.util.List;
  */
 class BasicFilesMonitorIntegrationProviderBase extends ConnectorProviderBase
 {
-    static String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
-    static String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY    = "allowCatalogDelete";
+    static final String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
+    static final String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY    = "allowCatalogDelete";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * store implementation.
      *
      * @param connectorTypeGUID the unique identifier for this connector
-     * @param connectorTypeName the unique name for this connector type
+     * @param connectorTypeQualifiedName the unique name for this connector type
+     * @param connectorTypeDisplayName the printable name for this connector type
      * @param connectorTypeDescription the description of this connector type
      */
     BasicFilesMonitorIntegrationProviderBase(String   connectorTypeGUID,
-                                             String   connectorTypeName,
+                                             String   connectorTypeQualifiedName,
+                                             String   connectorTypeDisplayName,
                                              String   connectorTypeDescription,
                                              Class<?> connectorClass)
     {
@@ -38,8 +40,8 @@ class BasicFilesMonitorIntegrationProviderBase extends ConnectorProviderBase
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
+        connectorType.setQualifiedName(connectorTypeQualifiedName);
+        connectorType.setDisplayName(connectorTypeDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 

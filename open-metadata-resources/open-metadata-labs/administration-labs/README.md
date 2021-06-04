@@ -24,11 +24,6 @@ Alternatively you can jump straight to [building a data catalog](../asset-manage
 * [Understanding more about the OMAG Server Platform](understanding-platform-services.ipynb)
 * [Understanding the status of and open metadata cohort](understanding-cohorts.ipynb)
 
-## Understanding about Egeria's governance servers
-
-* [Configuring the discovery server](open-discovery-config.ipynb)
-
-
 ## What next?
 
 If you have not tried it yet, we recommend the [building a data catalog](../asset-management-labs).

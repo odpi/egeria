@@ -13,10 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
- * OMRSEventPublisher publishes OMRS Events to the supplied OMRSTopicConnector.
+ * OMRSRegistryEventPublisher publishes OMRS Events to the supplied OMRSTopicConnector.
  */
 public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
 {
@@ -24,8 +25,8 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
 
     private static final Logger log = LoggerFactory.getLogger(OMRSRegistryEventPublisher.class);
 
-    private String             publisherName;
-    private OMRSTopicConnector omrsTopicConnector;
+    private String                   publisherName;
+    private List<OMRSTopicConnector> omrsTopicConnectors;
 
 
     /**
@@ -33,12 +34,12 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
      *
      * @param publisherName  name of the cohort (or enterprise virtual repository) that this event publisher
      *                       is sending events to.
-     * @param topicConnector OMRS Topic to send requests on
+     * @param topicConnectors OMRS Topic to send requests on
      * @param auditLog       audit log for this component.
      */
-    public OMRSRegistryEventPublisher(String             publisherName,
-                                      OMRSTopicConnector topicConnector,
-                                      AuditLog           auditLog)
+    public OMRSRegistryEventPublisher(String                   publisherName,
+                                      List<OMRSTopicConnector> topicConnectors,
+                                      AuditLog                 auditLog)
     {
         super();
 
@@ -54,17 +55,17 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
         /*
          * The topic connector is needed to publish events.
          */
-        if (topicConnector == null)
+        if ((topicConnectors == null) || (topicConnectors.isEmpty()))
         {
             log.debug("Null topic connector");
 
-           throw new OMRSLogicErrorException(OMRSErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(publisherName),
-                                             this.getClass().getName(),
-                                             actionDescription);
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(publisherName),
+                                              this.getClass().getName(),
+                                              actionDescription);
 
         }
 
-        this.omrsTopicConnector = topicConnector;
+        this.omrsTopicConnectors = topicConnectors;
 
         log.debug("New Event Publisher: " + publisherName);
     }
@@ -82,16 +83,20 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
         boolean      successFlag       = false;
 
         log.debug("Sending registryEvent for cohort: " + publisherName);
-        log.debug("topicConnector: " + omrsTopicConnector);
         log.debug("registryEvent: " + registryEvent);
         log.debug("localEventOriginator: " + registryEvent.getEventOriginator());
 
         try
         {
-            omrsTopicConnector.sendRegistryEvent(registryEvent);
+            for (OMRSTopicConnector omrsTopicConnector : omrsTopicConnectors)
+            {
+                log.debug("topicConnector: " + omrsTopicConnector);
+                omrsTopicConnector.sendRegistryEvent(registryEvent);
+            }
+
             successFlag = true;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   OMRSAuditCode.SEND_REGISTRY_EVENT_ERROR.getMessageDefinition(publisherName),

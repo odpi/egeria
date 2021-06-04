@@ -61,6 +61,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     private Map<String, List<TypeDefLink>>  typeDefSuperTypes              = new HashMap<>();
     private Map<String, InstanceType>       knownInstanceTypes             = new HashMap<>();
     private Map<String, String>             metadataCollectionNames        = new HashMap<>();
+    private Map<String, Set<String>>        knownPropertyToTypeDefNames    = new HashMap<>();
 
 
     /*
@@ -133,6 +134,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param sourceName source of the request (used for logging)
      * @param newTypeDef TypeDef structure describing the new TypeDef.
      */
+    @Override
     public void addTypeDef(String  sourceName, TypeDef      newTypeDef)
     {
         this.cacheTypeDef(sourceName, newTypeDef,true);
@@ -156,13 +158,42 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             activeTypeDefGUIDs.put(newTypeDef.getGUID(), newTypeDef);
             activeTypeDefNames.put(newTypeDef.getName(), newTypeDef);
 
-            log.debug("New Active Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
+            log.debug("New Active Type {} from {}. Full TypeDef: {}", newTypeDef.getName(), sourceName, newTypeDef);
         }
         else
         {
-            log.debug("New Known Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
+            log.debug("New Known Type {} from {}. Full TypeDef: {}", newTypeDef.getName(), sourceName, newTypeDef);
+        }
+        cacheTypeDefPropertyLookup(sourceName, newTypeDef);
+    }
+
+
+    /**
+     * Cache a lookup of the TypeDef's properties by their name, to the names of the TypeDefs in which a property by
+     * that name is defined.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param typeDef TypeDef structure describing the new TypeDef.
+     */
+    private void cacheTypeDefPropertyLookup(String sourceName, TypeDef typeDef)
+    {
+        // retrieve all properties on the newTypeDef
+        String                     typeDefName                   = typeDef.getName();
+        List<TypeDefAttribute>     propertiesDefinition          = typeDef.getPropertiesDefinition();
+
+        if (propertiesDefinition != null)
+        {
+            // for each property, add this typeDef's GUID as one that defines a property with this name
+            for (TypeDefAttribute property : propertiesDefinition)
+            {
+                String propertyName = property.getAttributeName();
+                knownPropertyToTypeDefNames.computeIfAbsent(propertyName, k -> new HashSet<>());
+                knownPropertyToTypeDefNames.get(propertyName).add(typeDefName);
+                log.debug("Cached property '{}' from {}, for lookup under TypeDef: {}", propertyName, sourceName, typeDefName);
+            }
         }
     }
+
 
     /**
      * Remove a definition of a TypeDef.
@@ -186,7 +217,29 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             activeTypeDefNames.remove(obsoleteTypeDefName);
         }
 
-        log.debug("Removed Type " + obsoleteTypeDefName + " from " + sourceName);
+        log.debug("Removed Type {} from {}", obsoleteTypeDefName, sourceName);
+        uncacheTypeDefPropertyLookup(sourceName, obsoleteTypeDefName);
+    }
+
+
+    /**
+     * Remove a TypeDef from the reverse property lookup.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param typeDefName unique name for the type.
+     */
+    private void uncacheTypeDefPropertyLookup(String sourceName, String typeDefName)
+    {
+        // Not much choice but to iterate through the entire Map...
+        for (String propertyName : knownPropertyToTypeDefNames.keySet())
+        {
+            // ... but the removal operation at least is idempotent (no need to first check it is present in the Set)
+            boolean removed = knownPropertyToTypeDefNames.get(propertyName).remove(typeDefName);
+            if (removed)
+            {
+                log.debug("Removed Type {} from {}, from reverse-lookup of property: {}", typeDefName, sourceName, propertyName);
+            }
+        }
     }
 
 
@@ -196,6 +249,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param sourceName source of the request (used for logging)
      * @param newAttributeTypeDef AttributeTypeDef structure describing the new TypeDef.
      */
+    @Override
     public void addAttributeTypeDef(String  sourceName, AttributeTypeDef newAttributeTypeDef)
     {
         this.cacheAttributeTypeDef(sourceName, newAttributeTypeDef, true);
@@ -240,6 +294,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param sourceName source of the request (used for logging)
      * @param typeDef TypeDef structure.
      */
+    @Override
     public void updateTypeDef(String  sourceName, TypeDef   typeDef)
     {
         this.cacheTypeDef(sourceName, typeDef,true);
@@ -253,6 +308,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param obsoleteTypeDefGUID String unique identifier for the TypeDef.
      * @param obsoleteTypeDefName String unique name for the TypeDef.
      */
+    @Override
     public void deleteTypeDef(String    sourceName,
                               String    obsoleteTypeDefGUID,
                               String    obsoleteTypeDefName)
@@ -280,6 +336,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param obsoleteAttributeTypeDefGUID String unique identifier for the AttributeTypeDef.
      * @param obsoleteAttributeTypeDefName String unique name for the AttributeTypeDef.
      */
+    @Override
     public void deleteAttributeTypeDef(String    sourceName,
                                        String    obsoleteAttributeTypeDefGUID,
                                        String    obsoleteAttributeTypeDefName)
@@ -311,6 +368,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param originalTypeDefName TypeDef's original unique name.
      * @param newTypeDef updated TypeDef with new identifiers.
      */
+    @Override
     public void reIdentifyTypeDef(String   sourceName,
                                   String   originalTypeDefGUID,
                                   String   originalTypeDefName,
@@ -329,6 +387,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param originalAttributeTypeDefName AttributeTypeDef's original unique name.
      * @param newAttributeTypeDef updated AttributeTypeDef with new identifiers
      */
+    @Override
     public void reIdentifyAttributeTypeDef(String            sourceName,
                                            String            originalAttributeTypeDefGUID,
                                            String            originalAttributeTypeDefName,
@@ -485,7 +544,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             else
             {
                 log.error(typeName + " type is not known in TypeDef cache");
-                throwContentManagerLogicError(sourceName, methodName, thisMethodName);
+                throwContentManagerLogicError(sourceName, methodName, thisMethodName + "(" + typeName + ")");
             }
         }
 
@@ -513,7 +572,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param sourceName source of the request (used for logging)
      * @param actualTypeName name of the entity type
      * @param expectedTypeName name of the expected type
-     * @return boolean if they match (a null in either results in false)
+     * @return boolean if they match (a null in actualTypeName results in false; a null in expectedType results in true)
      */
     boolean  isTypeOf(String   sourceName,
                       String   actualTypeName,
@@ -663,6 +722,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @throws TypeErrorException the type name is not a recognized type or is of the wrong category or there is
      *                              a problem with the cached TypeDef.
      */
+    @Override
     public InstanceType getInstanceType(String          sourceName,
                                         TypeDefCategory category,
                                         String          typeName,
@@ -806,6 +866,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @throws TypeErrorException the type name is not a recognized type or there is
      *                              a problem with the cached TypeDef.
      */
+    @Override
     public boolean    isValidTypeCategory(String            sourceName,
                                           TypeDefCategory   category,
                                           String            typeName,
@@ -864,6 +925,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param methodName name of calling method.
      * @return boolean indicating if the classification is valid for the entity.
      */
+    @Override
     public boolean    isValidClassificationForEntity(String  sourceName,
                                                      String  classificationTypeName,
                                                      String  entityTypeName,
@@ -988,6 +1050,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @return InstanceStatus enum
      * @throws TypeErrorException the type name is not recognized.
      */
+    @Override
     public InstanceStatus getInitialStatus(String sourceName,
                                            String typeName,
                                            String methodName) throws TypeErrorException
@@ -1007,6 +1070,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param guid unique identifier for the instance.
      * @return String URL with placeholder for variables such as userId.
      */
+    @Override
     public String getEntityURL(String  sourceName, String guid)
     {
         return OMRSRepositoryRESTServices.getEntityURL(localServerName, guid);
@@ -1020,6 +1084,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param guid unique identifier for the instance.
      * @return String URL with placeholder for variables such as userId.
      */
+    @Override
     public String getRelationshipURL(String  sourceName, String guid)
     {
         return OMRSRepositoryRESTServices.getRelationshipURL(localServerName, guid);
@@ -1338,13 +1403,13 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @return instance properties object.
      * @throws TypeErrorException the enum type is not recognized
      */
-    public InstanceProperties addEnumPropertyToInstance(String             sourceName,
-                                                        InstanceProperties properties,
-                                                        String             propertyName,
-                                                        String             enumTypeGUID,
-                                                        String             enumTypeName,
-                                                        int                ordinal,
-                                                        String             methodName) throws TypeErrorException
+    InstanceProperties addEnumPropertyToInstance(String             sourceName,
+                                                 InstanceProperties properties,
+                                                 String             propertyName,
+                                                 String             enumTypeGUID,
+                                                 String             enumTypeName,
+                                                 int                ordinal,
+                                                 String             methodName) throws TypeErrorException
     {
         final String thisMethodName = "addEnumPropertyToInstance";
 
@@ -1382,8 +1447,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
 
                             enumPropertyValue.setOrdinal(ordinal);
-                            enumPropertyValue.setSymbolicName(enumPropertyValue.getSymbolicName());
-                            enumPropertyValue.setDescription(enumPropertyValue.getDescription());
+                            enumPropertyValue.setSymbolicName(enumElementDef.getValue());
+                            enumPropertyValue.setDescription(enumElementDef.getDescription());
 
                             resultingProperties.setProperty(propertyName, enumPropertyValue);
 
@@ -1453,6 +1518,30 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         }
 
         return propertiesDefinition;
+    }
+
+
+    /**
+     * Return the names of all of the type definitions that define the supplied property name.
+     *
+     * @param sourceName name of the caller.
+     * @param propertyName property name to query.
+     * @param methodName calling method.
+     * @return set of names of the TypeDefs that define a property with this name
+     */
+    Set<String> getAllTypeDefsForProperty(String sourceName,
+                                          String propertyName,
+                                          String methodName)
+    {
+        final String               thisMethodName                = "getAllTypeDefsForProperty";
+
+        if (propertyName == null)
+        {
+            throwContentManagerLogicError(sourceName, methodName, thisMethodName);
+            return null;
+        }
+
+        return knownPropertyToTypeDefNames.getOrDefault(propertyName, null);
     }
 
 
@@ -2316,6 +2405,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param cohortName source of the event (cohort name)
      * @param typeDefEvent event to process
      */
+    @Override
     public void sendTypeDefEvent(String           cohortName,
                                  OMRSTypeDefEvent typeDefEvent)
     {
@@ -2493,7 +2583,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param sourceName source of the event
      * @param additionalInformation object from event being processed
      */
-    private void logUnexpectedException(Throwable   error,
+    private void logUnexpectedException(Exception   error,
                                         String      actionDescription,
                                         String      sourceName,
                                         String      additionalInformation)
@@ -2522,6 +2612,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param typeDef details of the new TypeDef
      */
+    @Override
     public void processNewTypeDefEvent(String       sourceName,
                                        String       originatorMetadataCollectionId,
                                        String       originatorServerName,
@@ -2678,7 +2769,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             log.debug("TypeDef not added because repository has a logic error: " + typeDef);
             log.debug("TypeDefKnownException: ", error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             logUnexpectedException(error,
                                    actionDescription,
@@ -2686,7 +2777,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                    typeDef.toString());
 
             log.debug("TypeDef not added because repository has an unexpected error: " + typeDef);
-            log.debug("Throwable: ", error);
+            log.debug("Exception: ", error);
         }
     }
 
@@ -2703,6 +2794,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param attributeTypeDef details of the new AttributeTypeDef.
      */
+    @Override
     public void processNewAttributeTypeDefEvent(String           sourceName,
                                                 String           originatorMetadataCollectionId,
                                                 String           originatorServerName,
@@ -2860,7 +2952,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             log.debug("TypeDef not added because repository has a logic error: " + attributeTypeDef);
             log.debug("TypeDefKnownException: ", error);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             logUnexpectedException(error,
                                    actionDescription,
@@ -2868,7 +2960,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                    attributeTypeDef.toString());
 
             log.debug("TypeDef not added because repository has an unexpected error: " + attributeTypeDef);
-            log.debug("Throwable: ", error);
+            log.debug("Exception: ", error);
         }
     }
 
@@ -2885,6 +2977,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param typeDefPatch details of the new version of the TypeDef
      */
+    @Override
     public void processUpdatedTypeDefEvent(String       sourceName,
                                            String       originatorMetadataCollectionId,
                                            String       originatorServerName,
@@ -3023,14 +3116,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 log.debug("PatchErrorException: ", error);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logUnexpectedException(error, actionDescription, sourceName, typeDefPatch.toString());
 
             if (log.isDebugEnabled())
             {
                 log.debug("Patch not applied because of an error " + typeDefPatch);
-                log.debug("Throwable: ", error);
+                log.debug("Exception: ", error);
             }
         }
     }
@@ -3050,6 +3143,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeDefGUID unique identifier of the TypeDef
      * @param typeDefName unique name of the TypeDef
      */
+    @Override
     public void processDeletedTypeDefEvent(String      sourceName,
                                            String      originatorMetadataCollectionId,
                                            String      originatorServerName,
@@ -3144,14 +3238,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 log.debug("TypeDefNotKnownException: ", error);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logUnexpectedException(error, actionDescription, sourceName, typeDefName + " (" + typeDefGUID + ")");
 
             if (log.isDebugEnabled())
             {
                 log.debug("Type not deleted because of an error " + typeDefName);
-                log.debug("Throwable: ", error);
+                log.debug("Exception: ", error);
             }
         }
     }
@@ -3171,6 +3265,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param attributeTypeDefGUID unique identifier of the AttributeTypeDef
      * @param attributeTypeDefName unique name of the AttributeTypeDef
      */
+    @Override
     public void processDeletedAttributeTypeDefEvent(String      sourceName,
                                                     String      originatorMetadataCollectionId,
                                                     String      originatorServerName,
@@ -3265,14 +3360,14 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 log.debug("TypeDefNotKnownException: ", error);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             logUnexpectedException(error, actionDescription, sourceName, attributeTypeDefName + " (" + attributeTypeDefGUID + ")");
 
             if (log.isDebugEnabled())
             {
                 log.debug("Type not deleted because of an error " + attributeTypeDefName);
-                log.debug("Throwable: ", error);
+                log.debug("Exception: ", error);
             }
         }
     }
@@ -3291,6 +3386,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param originalTypeDefSummary details of the original TypeDef
      * @param typeDef updated TypeDef with new identifiers inside.
      */
+    @Override
     public void processReIdentifiedTypeDefEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
                                                 String         originatorServerName,
@@ -3317,6 +3413,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param originalAttributeTypeDef description of original AttributeTypeDef
      * @param attributeTypeDef updated AttributeTypeDef with new identifiers inside.
      */
+    @Override
     public void processReIdentifiedAttributeTypeDefEvent(String           sourceName,
                                                          String           originatorMetadataCollectionId,
                                                          String           originatorServerName,
@@ -3344,6 +3441,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param conflictingTypeDefSummary the details of the TypeDef in the other metadata collection
      * @param errorMessage details of the error that occurs when the connection is used.
      */
+    @Override
     public void processTypeDefConflictEvent(String         sourceName,
                                             String         originatorMetadataCollectionId,
                                             String         originatorServerName,
@@ -3408,6 +3506,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param conflictingAttributeTypeDef description of the AttributeTypeDef in the other metadata collection.
      * @param errorMessage details of the error that occurs when the connection is used.
      */
+    @Override
     public void processAttributeTypeDefConflictEvent(String           sourceName,
                                                      String           originatorMetadataCollectionId,
                                                      String           originatorServerName,
@@ -3474,6 +3573,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param targetTypeDefSummary details of the target TypeDef
      * @param otherTypeDef details of the TypeDef in the local repository.
      */
+    @Override
     public void processTypeDefPatchMismatchEvent(String         sourceName,
                                                  String         originatorMetadataCollectionId,
                                                  String         originatorServerName,

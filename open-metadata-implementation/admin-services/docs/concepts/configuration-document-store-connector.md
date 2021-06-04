@@ -44,6 +44,8 @@ The configuration document is represented by the `OMAGServerConfig` structure.
 The name of the server is stored in the `localServerName` property in
 `OMAGServerConfig`.
 
+## Sample implementations
+
 The implementations of this connector provided by Egeria are found in the
 [configuration-store-connectors](.././../../adapters/open-connectors/configuration-store-connectors)
 module.  There are two connectors:
@@ -57,9 +59,16 @@ open metadata configuration as a clear text JSON file.
 the open metadata configuration as an encrypted JSON file.
 
 
+## Configuring the connector into an OMAG Server Platform
+
 See [Configuring the Configuration Document Store](../user/configuring-the-configuration-document-store.md)
 for the command to install a particular configuration document store connector
 into the OMAG Server Platform.
+
+----
+* Return to the [Administration Guide](../user)
+* Return to the [Developer Guide](../../../../open-metadata-publication/website/developer-guide/extending-egeria-using-connectors.md)
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

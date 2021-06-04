@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.EntityNotDeletedException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,6 +92,14 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 setUniqueQualifiedNameIfBlank(suppliedProject);
                 ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
                 EntityDetail projectEntityDetail = projectMapper.map(suppliedProject);
+                InstanceProperties instanceProperties = projectEntityDetail.getProperties();
+                if (instanceProperties == null ) {
+                    instanceProperties = new InstanceProperties();
+                }
+                if (instanceProperties.getEffectiveFromTime() == null) {
+                    instanceProperties.setEffectiveFromTime(new Date());
+                    projectEntityDetail.setProperties(instanceProperties);
+                }
                 String entityDetailGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, projectEntityDetail);
                 response = getProjectByGuid(userId, entityDetailGuid);
             }
@@ -178,7 +188,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(String userId, String guid, FindRequest findRequest) {
+    public SubjectAreaOMASAPIResponse<Relationship> getProjectRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getProjectRelationships";
         return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
     }
@@ -221,10 +231,10 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(updateProject, suppliedProject);
 
-                Date termFromTime = suppliedProject.getEffectiveFromTime();
-                Date termToTime = suppliedProject.getEffectiveToTime();
-                updateProject.setEffectiveFromTime(termFromTime);
-                updateProject.setEffectiveToTime(termToTime);
+                Long projectFromTime = suppliedProject.getEffectiveFromTime();
+                Long projectToTime = suppliedProject.getEffectiveToTime();
+                updateProject.setEffectiveFromTime(projectFromTime);
+                updateProject.setEffectiveToTime(projectToTime);
 
                 ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
                 EntityDetail entityDetail = projectMapper.map(updateProject);
@@ -313,6 +323,11 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
             if (isPurge) {
                 oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, PROJECT_TYPE_NAME, guid);
             } else {
+                response = getProjectByGuid(userId, guid);
+                if (response.head().isPresent()) {
+                    Project currentProject = response.head().get();
+                    checkReadOnly(methodName, currentProject, "delete");
+                }
                 // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
                 List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
                 if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, PROJECT_TYPE_NAME, methodName)) {

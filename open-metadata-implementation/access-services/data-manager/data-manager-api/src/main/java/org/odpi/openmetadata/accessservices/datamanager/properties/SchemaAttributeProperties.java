@@ -42,7 +42,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private String            nativeJavaClass       = null;
     private List<String>      aliases               = null;
 
-    private SchemaTypeProperties schemaType         = null;
 
     /**
      * Default constructor
@@ -77,7 +76,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             defaultValueOverride  = template.getDefaultValueOverride();
             nativeJavaClass       = template.getNativeJavaClass();
             aliases               = template.getAliases();
-            schemaType            = template.getSchemaType();
         }
     }
 
@@ -374,27 +372,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
 
     /**
-     * Set up SchemaType for this schema attribute.
-     *
-     * @return schema type properties
-     */
-    public SchemaTypeProperties getSchemaType()
-    {
-        return schemaType;
-    }
-
-
-    /**
-     * Set up SchemaType for this schema attribute.
-     *
-     * @param schemaType schema type properties
-     */
-    public void setSchemaType(SchemaTypeProperties schemaType)
-    {
-        this.schemaType = schemaType;
-    }
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -416,7 +393,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 ", isNullable=" + isNullable +
                 ", nativeJavaClass='" + nativeJavaClass + '\'' +
                 ", aliases=" + aliases +
-                ", schemaType=" + schemaType +
                 ", nullable=" + getIsNullable() +
                 ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
@@ -464,8 +440,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                 sortOrder == that.sortOrder &&
                 Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
-                Objects.equals(aliases, that.aliases) &&
-                Objects.equals(schemaType, that.schemaType);
+                Objects.equals(aliases, that.aliases);
     }
 
 
@@ -478,6 +453,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), elementPosition, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
-                            defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, nativeJavaClass, aliases, schemaType);
+                            defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, nativeJavaClass, aliases);
     }
 }

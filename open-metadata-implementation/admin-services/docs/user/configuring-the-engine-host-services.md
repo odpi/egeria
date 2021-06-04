@@ -27,7 +27,7 @@ running the Governance Engine OMAS is configured using two properties: the serve
 metadata server's OMAG Server Platform and the name of the metadata server.
  
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{engineHostServerName}/engine-definitions/client-config
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{engineHostServerName}/engine-definitions/client-config
 {
         "class": "OMAGServerClientConfig",
         "omagserverPlatformRootURL": {MDServerURLRoot},
@@ -46,7 +46,7 @@ The following command removes the configuration for the engine host services fro
 OMAG server's configuration document.  This may be used if the engine host services have been
 added in error.  
 ```
-DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{engineHostServerName}/engine-host-services
+DELETE {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{engineHostServerName}/engine-host-services
 ```
 
 ## Further Information

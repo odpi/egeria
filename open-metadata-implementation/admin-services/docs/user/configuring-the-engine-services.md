@@ -5,8 +5,7 @@
 # Configuring the Open Metadata Engine Services (OMES)
 
 The engine services (or Open Metadata Engine Services (OMESs) to give them
-their full name)
-run in an [Engine Host](../concepts/engine-host.md) OMAG Server.
+their full name) run in an [Engine Host](../concepts/engine-host.md) OMAG Server.
 They are part of the [Engine Host Services](configuring-the-engine-host-services.md).
 
 Each [engine service](../../../engine-services) provides support for a particular
@@ -23,36 +22,14 @@ of governance services of a specific type.:
   in an [open discovery analysis report](../../../frameworks/open-discovery-framework/docs/discovery-analysis-report.md)
   that is attached to the asset in the open metadata repositories.
 
-* **Metadata Watchdog** - Hosts [OpenWatchdogEngines](../../../frameworks/governance-action-framework/docs/open-watchdog-engine.md)
-  that monitor changes in the metadata and initiates updates as a result.  One example of a
-  watchdog service is duplicate detection. Another example is to monitor the addition of
-  open discovery reports and take action on their content.  Examples of updates include
-  creating RequestForAction instances.  
-  
-* **Request Triage** - Hosts [OpenTriageEngines](../../../frameworks/governance-action-framework/docs/open-triage-engine.md)
-  that monitor for new/changed RequestForAction instances and runs triage rules to determine
-  how to manage the request.  This could be to initiate an external workflow, wait for manual
-  decision or initiate a remediation request.
-  
-* **Issue Remediation** - Hosts [OpenRemediationEngines](../../../frameworks/governance-action-framework/docs/open-remediation-engine.md)
-  that monitor for remediation requests and runs the requested remediation service.
-  Examples of remediation services are duplicate linking and consolidating.
-  
-* **Action Scheduler** - Hosts [OpenSchedulingEngines](../../../frameworks/governance-action-framework/docs/open-verification-service.md)
-  that maintains a calendar of events and creates RequestForAction instances at the requested
-  time.  For example, it may move assets between zones when a particular date is reached.
-
-* **Asset Provisioning** - Hosts [OpenProvisioningEngines](../../../frameworks/governance-action-framework/docs/open-provisioning-engine.md)
-  that invokes a provisioning service whenever a provisioning request is made.  Typically the
-  provisioning service is an external service.  It may also create lineage metadata to
-  describe the work of the provisioning engine.                
-
+* **Governance Action** - Hosts [Governance Action Services](../../../frameworks/governance-action-framework/docs/governance-action-service.md)
+  that monitor changes in the metadata and initiates updates and other actions as a result.
 
 It is possible to get a description of each of the registered
 engine services using the following command:
 
 ```
-GET {serverURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/engine-services
+GET {platformURLRoot}/open-metadata/platform-services/users/{userId}/server-platform/registered-services/engine-services
 ```
 Note the `engineServiceURLMarker` for the engine service that you want to configure.
 
@@ -78,7 +55,7 @@ are retrieved from the metadata access point / metadata server when the
 engine service starts up.
 
 ```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/engine-services/{engineServiceURLMarker}
+POST {platformURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/engine-services/{engineServiceURLMarker}
 {
         "class": "EngineServiceRequestBody",
         "omagserverPlatformRootURL": {MDServerURLRoot},

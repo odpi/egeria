@@ -15,14 +15,14 @@ public enum GovernanceZoneSampleDefinitions
                 "Personal Files Zone",
                 "Assets that are for an individual's use.  Initially the creator of the asset is the owner. " +
                       "This person can reassign the asset to additional zones to increase its visibility or " +
-                      "reassign the owner.",
+                      "reassign the ownership.",
                 "Assets that should only be visible and editable to the owner."),
 
     QUARANTINE( "quarantine",
                 "Quarantine Zone",
                 "Assets from third parties that are being evaluated by the onboarding team. " +
                         "The assets will move into the other zones once the asset has been catalogued and classified.",
-                "Data sets just received"),
+                "Data sets just received and have not yet been properly catalogued."),
 
     DATA_LAKE( "data-lake",
                 "Data Lake Zone",

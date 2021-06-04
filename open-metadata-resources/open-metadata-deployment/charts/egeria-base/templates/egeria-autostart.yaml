@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-autostart
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  # Server autostart
+  # When initially created this is set to the null list - so no servers are auto started.
+  # However after configuration completes, we will set this via a job,
+  # STARTUP_SERVER_LIST: {{ .Values.egeria.serverName }},{{ .Values.egeria.viewServerName }}
+  STARTUP_SERVER_LIST: ""

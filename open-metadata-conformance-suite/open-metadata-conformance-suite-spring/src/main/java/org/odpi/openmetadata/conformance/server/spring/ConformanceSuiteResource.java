@@ -25,12 +25,32 @@ public class ConformanceSuiteResource
 {
     private ConformanceSuiteTestLabServices restAPI = new ConformanceSuiteTestLabServices();
 
+
     /**
-     * Requests detailed information on the execution of a specific test case.
+     * Requests the list of test case IDs that are available.
+     * (Response is likely to weigh in at around 250KB.)
      *
      * @param userId calling user.
      * @param serverName the name of the conformance service.
-     * @param testCaseId technology under test server name.
+     * @return TestCaseListResponse or
+     * InvalidParameterException the serverName is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    @GetMapping(path = "/report/test-cases")
+    public TestCaseListResponse getTestCaseIds(@PathVariable String   userId,
+                                               @PathVariable String   serverName)
+    {
+        return restAPI.getTestCaseIds(userId, serverName);
+    }
+
+
+    /**
+     * Requests detailed information on the execution of a specific test case.
+     * (Response size will vary, but could be 50-100KB each for the larger test cases.)
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @param testCaseId of the test case for which to retrieve a detailed report.
      * @return TestCaseReportResponse or
      * InvalidParameterException the serverName or workbenchId is not known or
      * UserNotAuthorizedException the supplied userId is not known.
@@ -41,6 +61,43 @@ public class ConformanceSuiteResource
                                                     @PathVariable String   testCaseId)
     {
         return restAPI.getTestCaseReport(userId, serverName, testCaseId);
+    }
+
+
+    /**
+     * Requests the list of profile (names) that are available.
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @return TestCaseListResponse or
+     * InvalidParameterException the serverName is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    @GetMapping(path = "/report/profiles")
+    public ProfileNameListResponse getProfileNames(@PathVariable String   userId,
+                                                   @PathVariable String   serverName)
+    {
+        return restAPI.getProfileNames(userId, serverName);
+    }
+
+
+    /**
+     * Requests detailed information on the execution of a specific test case.
+     * (Response size will vary, but could be ~25MB for the largest profile ("Metadata sharing").)
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @param profileName name of the profile for which to obtain a detailed report.
+     * @return ProfileReportResponse or
+     * InvalidParameterException the serverName or workbenchId is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    @GetMapping(path = "/report/profiles/{profileName}")
+    public ProfileReportResponse getProfileReport(@PathVariable String   userId,
+                                                  @PathVariable String   serverName,
+                                                  @PathVariable String   profileName)
+    {
+        return restAPI.getProfileReport(userId, serverName, profileName);
     }
 
 
@@ -82,6 +139,11 @@ public class ConformanceSuiteResource
 
     /**
      * Request a full report on the conformance of the technology under test.
+     * Note: this can be 100's of MB, and aside from being un-loadable by just about any JSON editor also runs the risk
+     * of over-running the server-side JVM's heap: just serializing the response can use around 1GB of heap. It remains
+     * for backwards compatibility reasons, but it is suggested to instead use a combination of the other (more granular)
+     * endpoints to retrieve the information of interest, and make iterative calls if still necessary to retrieve all
+     * details of every profile and test case that was executed.
      *
      * @param userId calling user.
      * @param serverName the name of the conformance service.
@@ -94,6 +156,23 @@ public class ConformanceSuiteResource
                                                       @PathVariable String   serverName)
     {
         return restAPI.getConformanceReport(userId, serverName);
+    }
+
+
+    /**
+     * Request a summary report on the conformance of the technology under test.
+     *
+     * @param userId calling user.
+     * @param serverName the name of the conformance service.
+     * @return TestLabSummaryResponse or
+     * InvalidParameterException the serverName or workbenchId is not known or
+     * UserNotAuthorizedException the supplied userId is not known.
+     */
+    @GetMapping(path = "/report/summary")
+    public TestLabSummaryResponse getConformanceSummaryReport(@PathVariable String   userId,
+                                                              @PathVariable String   serverName)
+    {
+        return restAPI.getConformanceSummaryReport(userId, serverName);
     }
 
 

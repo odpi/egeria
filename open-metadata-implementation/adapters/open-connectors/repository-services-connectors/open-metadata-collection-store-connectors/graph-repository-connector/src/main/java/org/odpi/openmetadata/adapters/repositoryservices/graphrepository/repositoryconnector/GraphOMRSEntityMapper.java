@@ -253,7 +253,7 @@ public class GraphOMRSEntityMapper {
 
         // Some properties are mandatory. If any of these are null then throw exception
         boolean missingAttribute = false;
-        String  missingAttributeName = null;
+        String missingAttributeName = null;
 
         if (entity.getGUID() != null)
             vertex.property(PROPERTY_KEY_ENTITY_GUID, entity.getGUID());
@@ -284,8 +284,8 @@ public class GraphOMRSEntityMapper {
         if (missingAttribute) {
             log.error("{} entity is missing core attribute {}", methodName, missingAttributeName);
             throw new RepositoryErrorException(GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR.getMessageDefinition(entity.getGUID(), methodName,
-                                                                                                               this.getClass().getName(),
-                                                                                                               repositoryName),
+                    this.getClass().getName(),
+                    repositoryName),
                     this.getClass().getName(),
                     methodName);
         }
@@ -294,6 +294,13 @@ public class GraphOMRSEntityMapper {
         vertex.property(PROPERTY_KEY_ENTITY_VERSION, entity.getVersion());
 
         // Other properties can be removed if set to null
+
+        if (entity.getReIdentifiedFromGUID() != null) {
+            vertex.property(PROPERTY_KEY_ENTITY_REIDENTIFIED_FROM_GUID, entity.getReIdentifiedFromGUID());
+        }
+        else {
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_REIDENTIFIED_FROM_GUID);
+        }
 
         if (entity.getMetadataCollectionName() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME, entity.getMetadataCollectionName());
@@ -570,6 +577,7 @@ public class GraphOMRSEntityMapper {
 
 
         entity.setGUID((String) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_GUID));
+        entity.setReIdentifiedFromGUID((String) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_REIDENTIFIED_FROM_GUID));
         entity.setMetadataCollectionId((String) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID));
         entity.setMetadataCollectionName((String) getVertexProperty( vertex, PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME));
         entity.setCreatedBy((String) getVertexProperty( vertex,  PROPERTY_KEY_ENTITY_CREATED_BY));

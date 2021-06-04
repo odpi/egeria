@@ -12,6 +12,8 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.EmptyCon
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.SchemaConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.AnalyticsArtifactHandler;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.ExecutionContext;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -26,6 +28,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class AnalyticsModelingServicesInstance extends OMASServiceInstance
 {
     private DatabaseContextHandler databaseContextHandler;
+    
+    private AnalyticsArtifactHandler artifactHandler;
     
     private RelationalDataHandler<Database,
 								    Schema,
@@ -80,6 +84,21 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
                 auditLog);
         
         databaseContextHandler = new DatabaseContextHandler(relationalDataHandler, omEntityDao, invalidParameterHandler);
+        
+        ExecutionContext ctx = new ExecutionContext(
+    			serviceName,
+    			serverName,
+    			invalidParameterHandler,
+    			repositoryHandler,
+    			repositoryHelper,
+    			localServerUserId,
+    			securityVerifier,
+    			supportedZones,
+    			defaultZones,
+    			publishZones,
+    			auditLog);
+
+        artifactHandler = new AnalyticsArtifactHandler(ctx);
     }
 
 
@@ -89,5 +108,13 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
      */
     public DatabaseContextHandler getContextBuilder() {
         return databaseContextHandler;
+    }
+    
+    /**
+     * Get the handler that to create repository assets.
+     * @return Database Context Handler
+     */
+    public AnalyticsArtifactHandler getArtifactHandler() {
+        return artifactHandler;
     }
 }

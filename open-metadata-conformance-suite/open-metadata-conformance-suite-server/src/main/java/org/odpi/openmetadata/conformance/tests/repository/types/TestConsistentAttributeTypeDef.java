@@ -53,15 +53,18 @@ public class TestConsistentAttributeTypeDef extends RepositoryConformanceTestCas
         {
             if (metadataCollection != null)
             {
+                long start = System.currentTimeMillis();
                 AttributeTypeDef restAPITypeDef = metadataCollection.getAttributeTypeDefByGUID(workPad.getLocalServerUserId(),
                                                                                                attributeTypeDef.getGUID());
-
+                long elapsedTime = System.currentTimeMillis() - start;
 
                 assertCondition((attributeTypeDef.equals(restAPITypeDef)),
                                 assertion1,
                                 attributeTypeDef.getName() + assertionMsg1,
                                 super.defaultProfileId,
-                                super.defaultRequirementId);
+                                super.defaultRequirementId,
+                                "getAttributeTypeDefByGUID",
+                                elapsedTime);
 
             }
 

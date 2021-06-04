@@ -205,6 +205,24 @@ public class AssetConverter extends ReferenceableConverter
                 bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
             }
 
+            instanceProperties = super.getClassificationProperties(AssetMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME);
+
+            if (instanceProperties != null)
+            {
+                bean.setOwner(repositoryHelper.getStringProperty(serviceName,
+                                                                 AssetMapper.OWNER_PROPERTY_NAME,
+                                                                 instanceProperties,
+                                                                 methodName));
+                bean.setOwnerTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                         AssetMapper.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                                         instanceProperties,
+                                                                         methodName));
+                bean.setOwnerPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                             AssetMapper.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                                             instanceProperties,
+                                                                             methodName));
+            }
+
             instanceProperties = super.getClassificationProperties(AssetMapper.ASSET_ORIGIN_CLASSIFICATION_NAME);
 
             if (instanceProperties != null)

@@ -161,7 +161,7 @@ public class DataProfileAnnotation extends DataFieldAnnotation
 
 
     /**
-     * Return the precision of the data filed that has been deduced from the data stored.
+     * Return the precision of the data field that has been deduced from the data stored.
      *
      * @return integer
      */
@@ -172,7 +172,7 @@ public class DataProfileAnnotation extends DataFieldAnnotation
 
 
     /**
-     * Set up the precision of the data filed that has been deduced from the data stored.
+     * Set up the precision of the data field that has been deduced from the data stored.
      *
      * @param inferredPrecision integer
      */
@@ -205,9 +205,9 @@ public class DataProfileAnnotation extends DataFieldAnnotation
 
 
     /**
-     * Return the date of the review.
+     * Return the map of properties that make up the profile.
      *
-     * @return date time
+     * @return property map
      */
     public Map<String, String> getProfileProperties()
     {
@@ -225,9 +225,9 @@ public class DataProfileAnnotation extends DataFieldAnnotation
 
 
     /**
-     * Set up the date of the review
+     * Set up the map of properties that make up the profile.
      *
-     * @param profileProperties date time
+     * @param profileProperties property map
      */
     public void setProfileProperties(Map<String, String> profileProperties)
     {

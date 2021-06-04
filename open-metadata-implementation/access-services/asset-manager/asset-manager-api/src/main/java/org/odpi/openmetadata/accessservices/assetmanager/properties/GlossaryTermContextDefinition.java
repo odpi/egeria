@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GlossaryTermRelationship describes a type of relationship between two glossary terms in a glossary.
+ * GlossaryTermContextDefinition describes a type of context that a glossary term represents.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -76,7 +76,7 @@ public class GlossaryTermContextDefinition implements Serializable
     /**
      * Set up the scope of where the context applies.
      *
-     * @param scope user id or name of scope
+     * @param scope string
      */
     public void setScope(String scope)
     {
@@ -87,7 +87,7 @@ public class GlossaryTermContextDefinition implements Serializable
     /**
      * Returns the name of the scope of where the context applies.
      *
-     * @return user id or name of scope
+     * @return string
      */
     public String getScope()
     {

@@ -61,7 +61,7 @@
 * [Event Bus](../../open-metadata-implementation/admin-services/docs/concepts/event-bus.md)
 * [Event Management Services Subsystem (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/event-management-services.md)
 * [Events (OMRS)](../../open-metadata-implementation/repository-services/docs/event-descriptions)
-
+* [External Identifiers](external-identifiers)
 
 ## F
 
@@ -93,6 +93,7 @@
 
 * [Informal Tag](../../open-metadata-implementation/access-services/docs/concepts/attachments/informal-tags.md)
 * [Information View OMAS](../../open-metadata-implementation/access-services/information-view)
+* [Instance Security](../../open-metadata-implementation/common-services/metadata-security)
 * Instances
    * [Metadata Instances](../../open-metadata-implementation/repository-services/docs/metadata-instances.md)
      * [Instance Events](../../open-metadata-implementation/repository-services/docs/event-descriptions/instance-events.md)
@@ -164,6 +165,8 @@
 
 ## P
 
+* [Platform Security](../../open-metadata-implementation/common-services/metadata-security)
+* [Platform URL Root](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 * [Projects](../../open-metadata-implementation/access-services/docs/concepts/projects)
 * [Provenance of metadata](../../open-metadata-publication/website/metadata-provenance)
 
@@ -183,17 +186,22 @@
 * [Resource](../../open-metadata-implementation/access-services/docs/concepts/resource.md)
 * [REST Repository Connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)
 * [Reviews](../../open-metadata-implementation/access-services/docs/concepts/feedback/reviews-and-star-ratings.md)
+* [Root URL](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 
 ## S
 
+* [Security](../../open-metadata-implementation/common-services/metadata-security)
 * [Security Officer Server](../../open-metadata-implementation/admin-services/docs/concepts/security-officer-server.md)
 * [Security Sync Server](../../open-metadata-implementation/admin-services/docs/concepts/security-sync-server.md)
 * [Server Capabilities](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities)
 * [Server Chassis](../../open-metadata-implementation/server-chassis)
 * [Servers for Governance](../../open-metadata-implementation/governance-servers)
-* [Server Personalities (Types)](../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
+* [Server Name](../../open-metadata-implementation/admin-services/docs/concepts/server-name.md)
+* [Server Security](../../open-metadata-implementation/common-services/metadata-security)
+* [Server Types](../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
+* [Server URL Root](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 * [Star Ratings](../../open-metadata-implementation/access-services/docs/concepts/feedback/reviews-and-star-ratings.md)
-* [Stewardship Engine](../../open-metadata-implementation/frameworks/governance-action-framework/docs/stewardship-engine.md)
+* [Stewardship Engine](../../open-metadata-implementation/frameworks/governance-action-framework/docs/governance-action-engine.md)
 * [Stewardship Server](../../open-metadata-implementation/admin-services/docs/concepts/stewardship-server.md)
 * [Supported Zones](../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
 
@@ -215,6 +223,7 @@
 
 ## U
 
+* [URL Root](../../open-metadata-implementation/admin-services/docs/concepts/platform-url-root.md)
 * [User Identity](../../open-metadata-implementation/access-services/docs/concepts/users/user-identity.md)
 * [User Roles](../../open-metadata-implementation/access-services/docs/concepts/user-roles)
 * [Users](../../open-metadata-implementation/access-services/docs/concepts/users)

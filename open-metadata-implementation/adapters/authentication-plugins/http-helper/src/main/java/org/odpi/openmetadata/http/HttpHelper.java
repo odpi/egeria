@@ -55,7 +55,7 @@ public class HttpHelper {
      * Only if the override property strict.ssl is set
      */
     public static void noStrictSSLIfConfigured() {
-        if ("true".equalsIgnoreCase(System.getProperty("strict.ssl")))
+        if ("false".equalsIgnoreCase(System.getProperty("strict.ssl")))
         {
             noStrictSSL();
         }

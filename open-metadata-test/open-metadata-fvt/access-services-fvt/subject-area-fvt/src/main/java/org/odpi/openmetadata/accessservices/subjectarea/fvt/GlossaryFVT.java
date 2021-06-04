@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -211,7 +211,7 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
-        glossary.setEffectiveToTime(new Date(now - 10));
+        glossary.setEffectiveToTime(new Date(now - 10).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
@@ -224,7 +224,7 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
-        glossary.setEffectiveFromTime(new Date(now - 10));
+        glossary.setEffectiveFromTime(new Date(now - 10).getTime());
         return issueCreateGlossary(glossary);
     }
 
@@ -233,8 +233,8 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
-        glossary.setEffectiveFromTime(new Date(now - 10));
-        glossary.setEffectiveToTime(new Date(now - 11));
+        glossary.setEffectiveFromTime(new Date(now - 10).getTime());
+        glossary.setEffectiveToTime(new Date(now - 11).getTime());
         return issueCreateGlossary(glossary);
     }
 
@@ -243,8 +243,8 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // make the glossary effective in a days time for day
-        glossary.setEffectiveFromTime(new Date(now + 1000 * 60 * 60 * 24));
-        glossary.setEffectiveToTime(new Date(now + 2000 * 60 * 60 * 24));
+        glossary.setEffectiveFromTime(new Date(now + 1000 * 60 * 60 * 24).getTime());
+        glossary.setEffectiveToTime(new Date(now + 2000 * 60 * 60 * 24).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
@@ -291,16 +291,16 @@ public class GlossaryFVT {
         System.out.println("Purge succeeded");
     }
 
-    public List<Line> getGlossaryRelationships(Glossary glossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Relationship> getGlossaryRelationships(Glossary glossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaGlossary.getAllRelationships(this.userId, glossary.getSystemAttributes().getGUID());
     }
 
-    public List<Category> getGlossaryCategories(String glossaryGuid, FindRequest findRequest, boolean onlyTop) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Category> getCategories(String glossaryGuid, FindRequest findRequest, boolean onlyTop) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         return subjectAreaGlossaryClient.getCategories(userId, glossaryGuid, findRequest, onlyTop);
     }
 
-    public List<Term> getGlossaryTerms(String glossaryGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<Term> getTerms(String glossaryGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaGlossaryClient.getTerms(userId, glossaryGuid, findRequest);
     }
 }

@@ -50,7 +50,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     public ConnectorCheckedException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Map<String, Object> relatedProperties)
+                                     Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, relatedProperties);
     }

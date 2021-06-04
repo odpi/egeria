@@ -18,9 +18,27 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PortImplementationEvent extends DataEngineEventHeader{
-
+public class PortImplementationEvent extends DataEngineEventHeader {
+    private String processQualifiedName;
     private PortImplementation portImplementation;
+
+    /**
+     * Gets the process qualified name.
+     *
+     * @return the process qualified name
+     */
+    public String getProcessQualifiedName() {
+        return processQualifiedName;
+    }
+
+    /**
+     * Sets the process qualified name.
+     *
+     * @param processQualifiedName the process qualified name
+     */
+    public void setProcessQualifiedName(String processQualifiedName) {
+        this.processQualifiedName = processQualifiedName;
+    }
 
     /**
      * Gets port implementation.
@@ -42,22 +60,24 @@ public class PortImplementationEvent extends DataEngineEventHeader{
     }
 
     @Override
+    public String toString() {
+        return "PortImplementationEvent{" +
+                "processQualifiedName='" + processQualifiedName + '\'' +
+                ", portImplementation=" + portImplementation +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PortImplementationEvent that = (PortImplementationEvent) o;
-        return Objects.equals(portImplementation, that.portImplementation);
+        return Objects.equals(processQualifiedName, that.processQualifiedName) &&
+                Objects.equals(portImplementation, that.portImplementation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(portImplementation);
-    }
-
-    @Override
-    public String toString() {
-        return "PortImplementationEvent{" +
-                "portImplementation=" + portImplementation +
-                '}';
+        return Objects.hash(processQualifiedName, portImplementation);
     }
 }

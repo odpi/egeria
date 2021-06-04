@@ -5,7 +5,7 @@
 
 This project welcomes contributors from any organization or background, provided they are
 willing to follow the simple processes outlined below, as well as adhere to the 
-[Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
+[Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Joining the community
 
@@ -35,22 +35,22 @@ There are two regular online meetings using Zoom each week, both on a Tuesday. A
 
 ### Connecting to Slack
 
-Egeria uses the [ODPi's Slack community](http://slack.odpi.org/) to provide an ongoing dialogue between members.
+Egeria uses the [LF AI & Data Slack community](http://slack.lfai.foundation) to provide an ongoing dialogue between members.
 This creates a recorded discussion of design decisions and discussions that complement the project meetings.
 
-Follow the link above and register with the ODPi slack service using your email address.
+Follow the link above and register with the LF AI & Data slack service using your email address.
 Once signed in you can see all of the active slack channels.
-The main slack channel for the Egeria project is called `#egeria-project`:
+The main slack channel for the Egeria project is called `#egeria-discussion`
 
-[https://odpi.slack.com/messages/CAZDMLTFF](https://odpi.slack.com/messages/CAZDMLTFF]).
+Additional channels are added from time to time as new workgroups and discussion topics are established. For Egeria these
+channel names will begin with '#egeria'. You can also view slack channels from other LF AI & Data projects.
 
-Additional channels are added from time to time as new workgroups and discussion topics are established.
 
 More information about slack is available in the [developer-resources/tools](developer-resources/tools/Slack.md) pages.
 
 ### Egeria's mailing list
 
-Follow the link to sign up to the [mailing list](https://lists.odpi.org/g/odpi-project-egeria).
+Follow the link to review the [mailing list archives](https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics)
 
 ### Other websites and resources
 

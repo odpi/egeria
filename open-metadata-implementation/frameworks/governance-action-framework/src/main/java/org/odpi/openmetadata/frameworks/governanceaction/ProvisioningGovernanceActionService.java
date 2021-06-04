@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * landscape and maintaining the Assets and lineage associated with them.
  *
  * To create your own provisioning governance action service, create a new class that extends this class
- * along with another class that extends the GovernanceServiceProvider class to act as its connector provider.
+ * along with another class that extends the GovernanceActionServiceProviderBase class to act as its connector provider.
  * Add a start() method that begins by calling super.start() and then includes the provisioning logic.
  * You may also wish to add the metadata for the new assets, a process to represent this governance action service's
  * activity that are linked with the source asset(s) using LineageMapping relationships:

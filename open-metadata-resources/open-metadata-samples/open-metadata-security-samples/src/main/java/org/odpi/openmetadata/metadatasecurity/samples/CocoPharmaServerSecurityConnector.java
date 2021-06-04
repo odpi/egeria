@@ -6,10 +6,15 @@ package org.odpi.openmetadata.metadatasecurity.samples;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataAssetSecurity;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataConnectionSecurity;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -27,7 +32,11 @@ import java.util.Map;
  * users that overrides the default behavior of that open metadata security connector that does
  * not allow any access to anything.
  */
-public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurityConnector
+public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurityConnector implements OpenMetadataRepositorySecurity,
+                                                                                                      OpenMetadataServerSecurity,
+                                                                                                      OpenMetadataServiceSecurity,
+                                                                                                      OpenMetadataConnectionSecurity,
+                                                                                                      OpenMetadataAssetSecurity
 {
     /*
      * These variables represent the different groups of user.  Typically these would be
@@ -129,6 +138,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         final String exchangeDL01UserId = "exchangeDL01npa";
         final String findItDL01UserId   = "findItDL01npa";
         final String fixItDL01UserId    = "fixItDL01npa";
+        final String onboardDL01UserId  = "onboardDL01npa";
+        final String monitorDL01UserId  = "monitorDL01npa";
 
         /*
          * Set up default zone membership
@@ -178,6 +189,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         allUsers.add(exchangeDL01UserId);
         allUsers.add(findItDL01UserId);
         allUsers.add(fixItDL01UserId);
+        allUsers.add(onboardDL01UserId);
+        allUsers.add(monitorDL01UserId);
 
         allEmployees.add(zachNowUserId);
         allEmployees.add(steveStarterUserId);
@@ -234,6 +247,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         npaAccounts.add(fixItDL01UserId);
         npaAccounts.add(governDL01UserId);
         npaAccounts.add(exchangeDL01UserId);
+        npaAccounts.add(onboardDL01UserId);
+        npaAccounts.add(monitorDL01UserId);
         assetOnboarding.addAll(npaAccounts);
 
         List<String> zoneSetUp = new ArrayList<>();
@@ -564,6 +579,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
         return null;
     }
+
 
     /**
      * Tests for whether a specific user should have access to an asset based on its zones.
@@ -1091,12 +1107,14 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                                             newAsset.getZoneMembership()))
                         {
                             /*
-                             * Perform special processing for quarantine zone.
-                             * The owner must be specified
+                             * Perform special processing for quarantine zone. The owner must be specified.
+                             * The quarantine zone can only be removed by NPA accounts or a different person
+                             * to the person who set up the asset.
                              */
-                            if ((newAsset.getOwner() != null) && (newAsset.getOwnerType() != 0))
+                            if (newAsset.getOwner() != null)
                             {
-                                if (validateSeparationOfDuties(userId, originalAssetAuditHeader))
+                                if (npaAccounts.contains(userId) ||
+                                            (validateSeparationOfDuties(userId, originalAssetAuditHeader)))
                                 {
                                     return;
                                 }
@@ -1111,9 +1129,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                             }
                             else
                             {
-                                super.throwIncompleteAsset(userId,
-                                                           newAsset,
-                                                           methodName);
+                                super.throwIncompleteAsset(userId, newAsset, "owner", methodName);
                             }
                         }
                         else
@@ -1123,9 +1139,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                     }
                     else
                     {
-                        super.throwIncompleteAsset(userId,
-                                                   newAsset,
-                                                   methodName);
+                        super.throwIncompleteAsset(userId, newAsset, "zoneMembership", methodName);
                     }
                 }
             }
@@ -1147,8 +1161,8 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
     @Override
-    public void  validateUserForAssetAttachmentUpdate(String     userId,
-                                                      Asset      asset) throws UserNotAuthorizedException
+    public void  validateUserForAssetAttachmentUpdate(String userId,
+                                                      Asset  asset) throws UserNotAuthorizedException
     {
         if (asset != null)
         {
@@ -1561,13 +1575,35 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
+     * @return entity to return (may be altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
     @Override
-    public void  validateUserForEntityRead(String          userId,
-                                           String          metadataCollectionName,
-                                           EntityDetail    instance) throws UserNotAuthorizedException
+    public EntityDetail  validateUserForEntityRead(String       userId,
+                                                   String       metadataCollectionName,
+                                                   EntityDetail instance) throws UserNotAuthorizedException
     {
+        if ("cocoMDS2".equals(serverName))
+        {
+            /*
+             * The cocoMDS2 server connects to all cohorts and so its repository may contain entities from all
+             * repositories.  As such it does not return reference copy entities.
+             */
+            if (instance.getMetadataCollectionName() == null)
+            {
+                /*
+                 * An exception here is a configuration or logic error because the metadata collection name should be set up
+                 * in the Coco Pharmaceuticals environment.
+                 */
+                return super.validateUserForEntityRead(userId, metadataCollectionName, instance);
+            }
+            else if (! instance.getMetadataCollectionName().equals(metadataCollectionName))
+            {
+                return null;
+            }
+        }
+
+        return instance;
     }
 
 
@@ -1798,13 +1834,15 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
+     * @return relationship to return (may be altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
     @Override
-    public void  validateUserForRelationshipRead(String          userId,
-                                                 String          metadataCollectionName,
-                                                 Relationship    instance) throws UserNotAuthorizedException
+    public Relationship validateUserForRelationshipRead(String          userId,
+                                                        String          metadataCollectionName,
+                                                        Relationship    instance) throws UserNotAuthorizedException
     {
+        return instance;
     }
 
 
@@ -1909,5 +1947,49 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                                                      String         newHomeMetadataCollectionId,
                                                      String         newHomeMetadataCollectionName) throws UserNotAuthorizedException
     {
+    }
+
+
+    /**
+     * Tests for whether a reference copy should be saved to the repository.
+     *
+     * @param instance instance details
+     * @return flag indicating whether the reference copy should be saved
+     */
+    public boolean  validateEntityReferenceCopySave(EntityDetail instance)
+    {
+        /*
+         * The cocoMDS6 server is linked to the manufacturing IOT devices as well as the core cohort
+         * and so it does not save reference copies so that the IOT metadata does not clutter the cocoMDS6 repository
+         * (and hence becomes visible in the core cohort.
+         */
+        if ("cocoMDS6".equals(serverName))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Tests for whether a reference copy should be saved to the repository.
+     *
+     * @param instance instance details
+     * @return flag indicating whether the reference copy should be saved
+     */
+    public boolean  validateRelationshipReferenceCopySave(Relationship instance)
+    {
+        /*
+         * The cocoMDS6 server is linked to the manufacturing IOT devices as well as the core cohort
+         * and so it does not save reference copies so that the IOT metadata does not clutter the cocoMDS6 repository
+         * (and hence becomes visible in the core cohort.
+         */
+        if ("cocoMDS6".equals(serverName))
+        {
+            return false;
+        }
+
+        return true;
     }
 }

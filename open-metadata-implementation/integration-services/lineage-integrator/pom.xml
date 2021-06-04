@@ -10,7 +10,7 @@
     <parent>
         <artifactId>integration-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.6-SNAPSHOT</version>
+        <version>2.11-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -31,9 +31,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>lineage-integrator-api</module>
+        <module>lineage-integrator-client</module>
         <module>lineage-integrator-server</module>
+        <module>lineage-integrator-spring</module>
     </modules>
-    
+
     <dependencies>
 
     </dependencies>

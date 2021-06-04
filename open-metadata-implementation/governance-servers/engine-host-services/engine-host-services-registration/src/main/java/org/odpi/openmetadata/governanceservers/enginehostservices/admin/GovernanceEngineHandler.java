@@ -2,15 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.ElementHeader;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
+import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 
+import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
@@ -25,13 +33,15 @@ import java.util.*;
  */
 public abstract class GovernanceEngineHandler
 {
-    protected String   serverName;               /* Initialized in constructor */
-    protected String   serverUserId;             /* Initialized in constructor */
-    protected String   engineUserId;             /* Initialized in constructor */
-    protected AuditLog auditLog;                 /* Initialized in constructor */
-    protected int      maxPageSize;              /* Initialized in constructor */
+    protected String                 serverName;        /* Initialized in constructor */
+    protected String                 serverUserId;      /* Initialized in constructor */
+    private   String                 engineServiceName; /* Initialized in constructor */
+    protected GovernanceEngineClient serverClient;      /* Initialized in constructor */
+    protected String                 engineUserId;      /* Initialized in constructor */
+    protected AuditLog               auditLog;          /* Initialized in constructor */
+    protected int                    maxPageSize;       /* Initialized in constructor */
 
-    protected String                     governanceEngineName;              /* Initialized in constructor */
+    protected String                     governanceEngineName;   /* Initialized in constructor */
     protected String                     governanceEngineGUID       = null;
     protected GovernanceEngineProperties governanceEngineProperties = null;
     private   GovernanceEngineElement    governanceEngineElement    = null;
@@ -40,8 +50,10 @@ public abstract class GovernanceEngineHandler
     private List<String>  governanceEngineSuperTypeNames = null;
 
 
-    private GovernanceEngineConfigurationClient configurationClient;      /* Initialized in constructor */
-    private GovernanceServiceCacheMap           governanceServiceLookupTable = new GovernanceServiceCacheMap();
+    private GovernanceEngineConfigurationClient configurationClient;        /* Initialized in constructor */
+
+
+    private GovernanceServiceCacheMap  governanceServiceLookupTable = new GovernanceServiceCacheMap();
 
 
     /**
@@ -50,17 +62,22 @@ public abstract class GovernanceEngineHandler
      * @param engineConfig the properties of the governance engine.
      * @param serverName the name of the engine host server where the governance engine is running
      * @param serverUserId user id for the server to use
+     * @param engineServiceName name of the OMES that is supporting this governance engine
      * @param configurationClient client to retrieve the configuration
+     * @param serverClient client to control the execution of governance action requests
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
     public GovernanceEngineHandler(EngineConfig                        engineConfig,
                                    String                              serverName,
                                    String                              serverUserId,
+                                   String                              engineServiceName,
                                    GovernanceEngineConfigurationClient configurationClient,
+                                   GovernanceEngineClient              serverClient,
                                    AuditLog                            auditLog,
                                    int                                 maxPageSize)
     {
+        this.engineServiceName = engineServiceName;
         this.governanceEngineName = engineConfig.getEngineQualifiedName();
         this.serverName = serverName;
         this.serverUserId = serverUserId;
@@ -70,9 +87,12 @@ public abstract class GovernanceEngineHandler
             engineUserId = serverUserId;
         }
         this.configurationClient = configurationClient;
+        this.serverClient = serverClient;
         this.auditLog = auditLog;
         this.maxPageSize = maxPageSize;
     }
+
+
 
 
     /**
@@ -97,6 +117,7 @@ public abstract class GovernanceEngineHandler
 
         mySummary.setGovernanceEngineName(governanceEngineName);
         mySummary.setGovernanceEngineTypeName(governanceEngineTypeName);
+        mySummary.setGovernanceEngineService(engineServiceName);
         mySummary.setGovernanceEngineGUID(governanceEngineGUID);
 
         if (governanceEngineProperties != null)
@@ -105,12 +126,13 @@ public abstract class GovernanceEngineHandler
         }
 
         mySummary.setGovernanceRequestTypes(governanceServiceLookupTable.getGovernanceRequestTypes());
-
         mySummary.setGovernanceEngineStatus(GovernanceEngineStatus.ASSIGNED);
+
         if (governanceEngineGUID != null)
         {
             mySummary.setGovernanceEngineStatus(GovernanceEngineStatus.CONFIGURING);
         }
+
         if (governanceServiceLookupTable.getGovernanceRequestTypes() != null)
         {
             mySummary.setGovernanceEngineStatus(GovernanceEngineStatus.RUNNING);
@@ -267,7 +289,9 @@ public abstract class GovernanceEngineHandler
                         governanceServiceLookupTable.put(governanceRequestType, governanceServiceCache);
 
                         auditLog.logMessage(methodName,
-                                            EngineHostServicesAuditCode.SUPPORTED_REQUEST_TYPE.getMessageDefinition(governanceEngineName, serverName));
+                                            EngineHostServicesAuditCode.SUPPORTED_REQUEST_TYPE.getMessageDefinition(governanceEngineName,
+                                                                                                                    serverName,
+                                                                                                                    governanceRequestType));
                     }
                 }
             }
@@ -380,6 +404,90 @@ public abstract class GovernanceEngineHandler
 
             return new ArrayList<>(governanceServiceLookupTable.keySet());
         }
+    }
+
+
+    /**
+     * Execute the requested governance action on or after the start time.
+     *
+     * @param governanceActionGUID unique identifier of potential governance action to run.
+     */
+    public void executeGovernanceAction(String governanceActionGUID)
+    {
+        final String methodName = "executeGovernanceAction";
+
+        try
+        {
+            GovernanceActionElement    latestGovernanceActionElement = serverClient.getGovernanceAction(serverUserId, governanceActionGUID);
+            GovernanceActionProperties properties                    = latestGovernanceActionElement.getProperties();
+
+            if (properties.getActionStatus() == GovernanceActionStatus.APPROVED)
+            {
+                serverClient.claimGovernanceAction(serverUserId, governanceActionGUID);
+
+                // todo if the start date is in the future then the governance action should be given to the scheduler
+
+                serverClient.updateGovernanceActionStatus(serverUserId, governanceActionGUID, GovernanceActionStatus.IN_PROGRESS);
+
+                runGovernanceService(governanceActionGUID,
+                                     properties.getRequestType(),
+                                     properties.getRequestParameters(),
+                                     properties.getRequestSourceElements(),
+                                     properties.getActionTargetElements());
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logException(methodName,
+                                  EngineHostServicesAuditCode.ACTION_PROCESSING_ERROR.getMessageDefinition(methodName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           governanceActionGUID,
+                                                                                                           error.getMessage()),
+                                  error);
+        }
+    }
+
+
+    /**
+     * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
+     *
+     * @param governanceActionGUID unique identifier of the asset to analyse
+     * @param requestType unique identifier of the asset that the annotations should be attached to
+     * @param requestParameters name-value properties to control the governance action service
+     * @param requestSourceElements metadata elements associated with the request to the governance action service
+     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
+     *
+     * @return service handler for this request
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the governance action engine.
+     */
+    public abstract GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
+                                                                  String                     requestType,
+                                                                  Map<String, String>        requestParameters,
+                                                                  List<RequestSourceElement> requestSourceElements,
+                                                                  List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
+                                                                                                                          UserNotAuthorizedException,
+                                                                                                                          PropertyServerException;
+
+
+    /**
+     * Pass on the watchdog event to any governance service that supports them.
+     *
+     * @param watchdogGovernanceEvent element describing the changing metadata data.
+     *
+     * @throws InvalidParameterException Vital fields of the governance action are not filled out
+     * @throws UserNotAuthorizedException the governance service is not permitted to execute the governance action
+     * @throws PropertyServerException there is a problem communicating with the open metadata stores
+     */
+    public void publishWatchdogEvent(WatchdogGovernanceEvent watchdogGovernanceEvent) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        /*
+         * This method is overridden by subclasses where applicable
+         */
     }
 
 

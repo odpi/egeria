@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetProperties;
 
 import java.util.Date;
 import java.util.Map;
@@ -19,10 +18,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataStoreProperties extends AssetProperties
+public class DataStoreProperties extends DataAssetProperties
 {
     private static final long    serialVersionUID = 1L;
 
+    private String              pathName            = null;
     private Date                createTime          = null;
     private Date                modifiedTime        = null;
     private String              encodingType        = null;
@@ -51,6 +51,7 @@ public class DataStoreProperties extends AssetProperties
 
         if (template != null)
         {
+            pathName            = template.getPathName();
             createTime          = template.getCreateTime();
             modifiedTime        = template.getModifiedTime();
             encodingType        = template.getEncodingType();
@@ -66,9 +67,33 @@ public class DataStoreProperties extends AssetProperties
      *
      * @param template object to copy
      */
-    public DataStoreProperties(AssetProperties template)
+    public DataStoreProperties(DataAssetProperties template)
     {
         super(template);
+    }
+
+
+    /**
+     * Return the fully qualified physical location of the data store.  This should be suitable for the
+     * network address of the Endpoint.
+     *
+     * @return string name
+     */
+    public String getPathName()
+    {
+        return pathName;
+    }
+
+
+    /**
+     * Set up the fully qualified physical location of the data store.  This should be suitable for the
+     * network address of the Endpoint.
+     *
+     * @param pathName string name
+     */
+    public void setPathName(String pathName)
+    {
+        this.pathName = pathName;
     }
 
 
@@ -221,24 +246,27 @@ public class DataStoreProperties extends AssetProperties
     public String toString()
     {
         return "DataStoreProperties{" +
-                "createTime=" + createTime +
-                ", modifiedTime=" + modifiedTime +
-                ", encodingType='" + encodingType + '\'' +
-                ", encodingLanguage='" + encodingLanguage + '\'' +
-                ", encodingDescription='" + encodingDescription + '\'' +
-                ", encodingProperties='" + encodingProperties + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOtherOriginValues() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "pathName='" + pathName + '\'' +
+                       ", createTime=" + createTime +
+                       ", modifiedTime=" + modifiedTime +
+                       ", encodingType='" + encodingType + '\'' +
+                       ", encodingLanguage='" + encodingLanguage + '\'' +
+                       ", encodingDescription='" + encodingDescription + '\'' +
+                       ", encodingProperties=" + encodingProperties +
+                       ", technicalName='" + getTechnicalName() + '\'' +
+                       ", technicalDescription='" + getTechnicalDescription() + '\'' +
+                       ", isReferenceAsset=" + getIsReferenceAsset() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", summary='" + getSummary() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", abbreviation='" + getAbbreviation() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -264,12 +292,13 @@ public class DataStoreProperties extends AssetProperties
             return false;
         }
         DataStoreProperties that = (DataStoreProperties) objectToCompare;
-        return Objects.equals(createTime, that.createTime) &&
-                Objects.equals(modifiedTime, that.modifiedTime) &&
-                Objects.equals(encodingType, that.encodingType) &&
-                Objects.equals(encodingLanguage, that.encodingLanguage) &&
-                Objects.equals(encodingDescription, that.encodingDescription) &&
-                Objects.equals(encodingProperties, that.encodingProperties);
+        return Objects.equals(pathName, that.pathName) &&
+                       Objects.equals(createTime, that.createTime) &&
+                       Objects.equals(modifiedTime, that.modifiedTime) &&
+                       Objects.equals(encodingType, that.encodingType) &&
+                       Objects.equals(encodingLanguage, that.encodingLanguage) &&
+                       Objects.equals(encodingDescription, that.encodingDescription) &&
+                       Objects.equals(encodingProperties, that.encodingProperties);
     }
 
 
@@ -281,6 +310,6 @@ public class DataStoreProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), createTime, modifiedTime, encodingType, encodingLanguage, encodingDescription, encodingProperties);
+        return Objects.hash(super.hashCode(), pathName, createTime, modifiedTime, encodingType, encodingLanguage, encodingDescription, encodingProperties);
     }
 }

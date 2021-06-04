@@ -28,10 +28,11 @@ It has 2 parts to its interface:
 * A generalized interface to extract all of the open metadata known about the asset.  This is referred to
   as the **connected asset properties**.  This interface is documented [here](retrieving-asset-properties.md).
   
-An application creates a connector using the Asset Consumer OMAS client.
-When an Asset is cataloged in the open metadata repository,
+An application creates a connector using the [Asset Consumer OMAS client](creating-a-connector.md).
+When an [Asset is cataloged](../../../../../open-metadata-publication/website/cataloging-assets) in the open metadata repository,
 there is a [Connection](../../../../frameworks/open-connector-framework/docs/concepts/connection.md) object
 linked to it.  This defines all of the properties required to create the connector.
+
 See [Creating a connector](creating-a-connector.md) for step by step instructions on creating connectors.
 Asset Consumer OMAS looks up the Connection object and calls the [Connector Broker](../../../../frameworks/open-connector-framework/docs/concepts/connector-broker.md)
 to create the connector.

@@ -1,0 +1,100 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: presentation
+  name: {{ .Release.Name }}-presentation
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 8091
+      targetPort: 8091
+      {{- if ( eq  .Values.service.type "NodePort" ) -}}
+      nodePort: {{ .Values.service.nodeport.presentation }}
+      {{- end }}
+  selector:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: presentation
+...
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: {{ include "myapp.name" . }}-presentation
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: presentation
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: presentation
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: presentation
+    spec:
+      {{- include "egeria.security" . | nindent 6 }}
+      containers:
+        - name: presentation
+          image: "{{ if (.Values.image.presentation.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.presentation.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.presentation.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.presentation.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.presentation.name }}\
+                  :{{ .Values.image.presentation.tag | default .Values.egeria.version }}"
+          imagePullPolicy: {{ .Values.image.presentation.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-env
+          ports:
+            - containerPort: 8091
+          # No other checks until this passes
+          startupProbe:
+            tcpSocket:
+              port: 8091
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 15
+          # Is pod ready to service network requests - it will pause (for replicas, others will take the load)
+          readinessProbe:
+            httpGet:
+              path: /{{ .Values.egeria.viewOrg }}
+              port: 8091
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          # Is pod doing useful work - if not we will restart it
+          livenessProbe:
+            httpGet:
+              path: /{{ .Values.egeria.viewOrg }}
+              port: 8091
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          resources: {}
+          env:
+            - name: EGERIA_PRESENTATIONSERVER_SERVER_{{ .Values.egeria.viewOrg }}
+              value: "{\"remoteServerName\":\"{{ .Values.egeria.viewServerName }}\",\"remoteURL\":\"https://{{ .Release.Name }}-platform:9443\"}"
+      restartPolicy: Always
+
+status: {}
+...

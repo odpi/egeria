@@ -126,7 +126,28 @@ public class ClassificationDef extends TypeDef
      */
     public void setValidEntityDefs(List<TypeDefLink> validEntityDefs)
     {
-        this.validEntityDefs = validEntityDefs;
+        if (validEntityDefs == null)
+        {
+            this.validEntityDefs = null;
+        }
+        else if (validEntityDefs.isEmpty())
+        {
+            this.validEntityDefs = null;
+        }
+        else
+        {
+            List<TypeDefLink> resultList = new ArrayList<>();
+
+            for (TypeDefLink  typeDefLink : validEntityDefs)
+            {
+                if (typeDefLink != null)
+                {
+                    resultList.add(new TypeDefLink(typeDefLink));
+                }
+            }
+
+            this.validEntityDefs = resultList;
+        }
     }
 
 

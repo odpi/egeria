@@ -154,12 +154,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param technicalDescription the stored description property associated with the asset
      * @param formula the formula that characterize the processing behavior of the process
      * @param implementationLanguage the implementation language used to create the process
-     * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
-     * @param owner identifier of the owner
-     * @param ownerType is the owner identifier a user id, personal profile or team profile
-     * @param originOrganizationCapabilityGUID unique identifier of originating organization
-     * @param originBusinessCapabilityGUID unique identifier of originating business capability
-     * @param otherOriginValues the properties that characterize where this asset is from
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param suppliedTypeName name of the type that is a subtype of asset - or null to create standard type
      * @param suppliedExtendedProperties properties from any subtype
@@ -180,12 +174,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                 String              technicalDescription,
                                 String              formula,
                                 String              implementationLanguage,
-                                List<String>        zoneMembership,
-                                String              owner,
-                                int                 ownerType,
-                                String              originOrganizationCapabilityGUID,
-                                String              originBusinessCapabilityGUID,
-                                Map<String, String> otherOriginValues,
                                 Map<String, String> additionalProperties,
                                 String              suppliedTypeName,
                                 Map<String, Object> suppliedExtendedProperties,
@@ -235,12 +223,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                       qualifiedName,
                                                       technicalName,
                                                       technicalDescription,
-                                                      zoneMembership,
-                                                      owner,
-                                                      ownerType,
-                                                      originOrganizationCapabilityGUID,
-                                                      originBusinessCapabilityGUID,
-                                                      otherOriginValues,
                                                       additionalProperties,
                                                       typeGUID,
                                                       typeName,
@@ -294,6 +276,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                    qualifiedNameParameterName,
                                                    displayName,
                                                    description,
+                                                   null,
                                                    methodName);
     }
 
@@ -312,12 +295,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param technicalDescription the stored description property associated with the asset
      * @param formula the formula that characterize the processing behavior of the process
      * @param implementationLanguage the implementation language used to create the process
-     * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
-     * @param owner identifier of the owner
-     * @param ownerType is the owner identifier a user id, personal profile or team profile
-     * @param originOrganizationCapabilityGUID unique identifier of originating organization
-     * @param originBusinessCapabilityGUID unique identifier of originating business capability
-     * @param otherOriginValues the properties that characterize where this asset is from
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param suppliedTypeName name of the type that is a subtype of asset - or null to create standard type
      * @param suppliedExtendedProperties properties from any subtype
@@ -338,12 +315,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                               String              technicalDescription,
                               String              formula,
                               String              implementationLanguage,
-                              List<String>        zoneMembership,
-                              String              owner,
-                              int                 ownerType,
-                              String              originOrganizationCapabilityGUID,
-                              String              originBusinessCapabilityGUID,
-                              Map<String, String> otherOriginValues,
                               Map<String, String> additionalProperties,
                               String              suppliedTypeName,
                               Map<String, Object> suppliedExtendedProperties,
@@ -351,7 +322,55 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
+        String typeName = OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        Map<String, Object> extendedProperties = suppliedExtendedProperties;
+
+        if (formula != null)
+        {
+            if (extendedProperties == null)
+            {
+                extendedProperties = new HashMap<>();
+            }
+
+            extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, formula);
+        }
+
+        if (implementationLanguage != null)
+        {
+            if (extendedProperties == null)
+            {
+                extendedProperties = new HashMap<>();
+            }
+
+            extendedProperties.put(OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, implementationLanguage);
+        }
+
+        processHandler.updateAsset(userId,
+                                   externalSourceGUID,
+                                   externalSourceName,
+                                   processGUID,
+                                   processGUIDParameterName,
+                                   qualifiedName,
+                                   technicalName,
+                                   technicalDescription,
+                                   additionalProperties,
+                                   typeGUID,
+                                   typeName,
+                                   extendedProperties,
+                                   isMergeUpdate,
+                                   methodName);
     }
 
 
@@ -387,8 +406,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                           externalSourceName,
                                           processGUID,
                                           processGUIDParameterName,
-                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                          OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                          OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
+                                          OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                           supportedZones,
                                           processStatus,
                                           processStatusParameterName,
@@ -425,7 +444,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-
+        // todo
     }
 
 
@@ -456,7 +475,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-
+        // todo
     }
 
 
@@ -611,6 +630,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
+        // todo
         return null;
     }
 
@@ -636,6 +656,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
+        // todo
         return null;
     }
 
@@ -661,6 +682,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
+        // todo
         return null;
     }
 
@@ -690,6 +712,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
+        // todo
         return null;
     }
 
@@ -1230,51 +1253,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * Process linkage and lineage stitching
      */
     
-
-    /**
-     * Classify a port, process or process as "BusinessSignificant" (this may effect the way that lineage is displayed).
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param elementGUIDParameterName parameter name for elementGUID
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void setBusinessSignificant(String userId,
-                                       String elementGUID,
-                                       String elementGUIDParameterName,
-                                       String methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-
-    }
-
-
-    /**
-     * Remove the "BusinessSignificant" designation from the element.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param elementGUIDParameterName parameter name for elementGUID
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void clearBusinessSignificant(String userId,
-                                         String elementGUID,
-                                         String elementGUIDParameterName,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-
-    }
 
 
     /**

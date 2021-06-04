@@ -51,7 +51,17 @@ The connection for the server security connector is passed
 in the request body.  Again, there are `GET` and `DELETE` services with the same URL
 to retrieve and remove this connector respectively.
 
-The connectors are optional.  If they are not defined then there are no additional authorization checks
+The security implementation in a server potentially invokes the server security connector
+multiple types as the request (shown as dotted white arrow) penetrates the server code.
+Figure 2 shows the different layers of checks.  Each layer is optional and so the
+server security connector can be implemented to support the most appropriate
+granularity of security for the situation. Details of the implementation choices are
+given in the [security connector API](metadata-security-apis).
+
+![Figure 2](docs/layers-of-security-checks.png)
+> **Figure 2:** layers of security checks within the server
+
+The security connectors are optional.  If they are not defined then there are no additional authorization checks
 performed inside the OMAG Server Platform nor the OMAG Servers hosted on the platform.
 As such, it is important that the open metadata platform security connector is configured
 as soon as the platform is started, and the server security connector is configured before the server is started for the first time.
@@ -59,7 +69,7 @@ as soon as the platform is started, and the server security connector is configu
 The `metadata-security` module provides the interfaces, connector implementation and plug points that sit in the
 server and server platform.  Details of the specifics of these interfaces follow. 
 
-* [Open Metadata Security Connector Interfaces](metadata-security-connectors)
+* [Open Metadata Security Connector Interfaces](metadata-security-apis)
 * [Open Metadata Security server-side implementations](metadata-security-server)
  
 There are sample

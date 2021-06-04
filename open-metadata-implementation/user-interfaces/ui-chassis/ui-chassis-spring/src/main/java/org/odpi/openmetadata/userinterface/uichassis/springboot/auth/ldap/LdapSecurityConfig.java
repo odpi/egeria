@@ -23,31 +23,31 @@ import org.springframework.security.core.AuthenticationException;
 class LdapSecurityConfig extends SecurityConfig {
 
     @Value("${ldap.user.search.base}")
-    private String userSearchBase;
+    protected String userSearchBase;
 
     @Value("${ldap.user.search.filter}")
-    private String userSearchFilter;
+    protected String userSearchFilter;
 
     @Value("${ldap.group.search.base}")
-    private String groupSearchBase;
+    protected String groupSearchBase;
 
     @Value("${ldap.group.search.filter}")
-    private String groupSearchFilter;
+    protected String groupSearchFilter;
 
     @Value("${ldap.url}")
-    private String ldapURL;
+    protected String ldapURL;
 
     @Value("#{'${ldap.user.dn.patterns}'.split(';')}")
-    private String[] userDnPatterns;
+    protected String[] userDnPatterns;
 
     @Value("${ldap.npa.dn}")
-    private String npaDn;
+    protected String npaDn;
 
     @Value("${ldap.npa.password}")
-    private String npaPassword;
+    protected String npaPassword;
 
     @Value("${ldap.group.role.attribute}")
-    private String roleAttribute;
+    protected String roleAttribute;
 
 
     @Override

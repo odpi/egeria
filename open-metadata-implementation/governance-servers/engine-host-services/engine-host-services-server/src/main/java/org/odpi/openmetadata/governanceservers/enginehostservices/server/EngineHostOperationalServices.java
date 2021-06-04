@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.server;
 
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
@@ -110,33 +112,53 @@ public class EngineHostOperationalServices
             }
 
             /*
-             * The configuration for the governance engines is located in an open metadata server.
-             * It is accessed through the Governance Engine OMAS.  If the values needed to call
-             * the Governance Engine OMAS are not present in the configuration then there is no point in continuing
-             * and an exception is thrown.
+             * The configuration for the governance engines is located in an open metadata server. It is accessed through the Governance Engine
+             * OMAS.  If the values needed to call the Governance Engine OMAS are not present in the configuration then there is no point in
+             * continuing and an exception is thrown.
              */
             String accessServiceRootURL    = this.getAccessServiceRootURL(configuration);
             String accessServiceServerName = this.getAccessServiceServerName(configuration);
 
             /*
-             * Create a client to retrieve the governance engine definitions through the Governance Engine OMAS.
+             * Create a REST client to issue REST calls to the Governance Engine OMAS.  This client is then wrapped in the specific API
+             * clients.
              */
             GovernanceEngineRESTClient restClient;
             if (localServerPassword == null)
             {
-                restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL);
+                restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL, auditLog);
             }
             else
             {
-                restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId);
+                restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId, auditLog);
             }
 
+            /*
+             * The event client issues a REST call to the Governance Engine OMAS to retrieve the client-side connection to is OutTopic
+             * creates the topic connector, listens for incoming and then passes them to any registered listeners.  There are two listeners
+             * expected - one used by the engine host services to receive updates to the governance engine configuration and new GovernanceActions
+             * - the other used by the Governance Action OMES to receive new Watchdog events for registered Open Watchdog Governance Action Services.
+             */
+            GovernanceEngineEventClient eventClient = new GovernanceEngineEventClient(accessServiceServerName,
+                                                                                      accessServiceRootURL,
+                                                                                      restClient,
+                                                                                      maxPageSize,
+                                                                                      auditLog,
+                                                                                      localServerId);
+
+            /*
+             * This is the client used to retrieve configuration and the client used to manage governance action entities
+             */
             GovernanceEngineConfigurationClient configurationClient = new GovernanceEngineConfigurationClient(accessServiceServerName,
                                                                                                               accessServiceRootURL,
                                                                                                               restClient,
                                                                                                               maxPageSize,
-                                                                                                              auditLog,
-                                                                                                              localServerId);
+                                                                                                              auditLog);
+
+            GovernanceEngineClient serverClient = new GovernanceEngineClient(accessServiceServerName,
+                                                                             accessServiceRootURL,
+                                                                             restClient,
+                                                                             maxPageSize);
 
             /*
              * Initialize each of the integration services and accumulate the integration connector handlers for the
@@ -147,6 +169,7 @@ public class EngineHostOperationalServices
 
             List<String> activatedServiceList = initializeEngineServices(configuration.getEngineServiceConfigs(),
                                                                          configurationClient,
+                                                                         serverClient,
                                                                          serviceEngineLists,
                                                                          governanceEngineHandlers);
 
@@ -158,6 +181,7 @@ public class EngineHostOperationalServices
              */
             EngineConfigurationRefreshThread configurationRefreshThread = new EngineConfigurationRefreshThread(governanceEngineHandlers,
                                                                                                                configurationClient,
+                                                                                                               eventClient,
                                                                                                                auditLog,
                                                                                                                localServerUserId,
                                                                                                                localServerName,
@@ -216,11 +240,13 @@ public class EngineHostOperationalServices
      *
      * @param engineServiceConfigList       configured engine services
      * @param configurationClient           client needed to retrieve governance engine definitions
+     * @param serverClient                  client needed to manage governance actions
      * @return activatedServiceList          list of engine services running in the server
      * @throws OMAGConfigurationErrorException problem with the configuration
      */
     private List<String> initializeEngineServices(List<EngineServiceConfig>            engineServiceConfigList,
                                                   GovernanceEngineConfigurationClient  configurationClient,
+                                                  GovernanceEngineClient               serverClient,
                                                   Map<String, List<String>>            serviceEngineLists,
                                                   Map<String, GovernanceEngineHandler> governanceEngineHandlers) throws OMAGConfigurationErrorException
     {
@@ -271,6 +297,7 @@ public class EngineHostOperationalServices
                                                                                                                    localServerPassword,
                                                                                                                    maxPageSize,
                                                                                                                    configurationClient,
+                                                                                                                   serverClient,
                                                                                                                    engineServiceConfig);
 
                         if ((serviceEngineHandlers == null) || (serviceEngineHandlers.isEmpty()))

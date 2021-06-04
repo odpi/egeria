@@ -367,29 +367,6 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                        "expecting is not available.  If there are no additional error messages then raise an issue with the Egeria " +
                                        "community to get this improved.  Once the root cause of the problem is resolved, restart the server."),
 
-
-    NO_OMAS_SERVER_URL("OMAG-ADMIN-0150",
-                       OMRSAuditLogRecordSeverity.ERROR,
-                       "{0} in server {1} is not configured with the platform URL root for the {2}",
-                       "The server is not able to retrieve its configuration from the metadata server because it does not " +
-                               "know which platform it is running on.  The engine service fails to start.",
-                       "Add the platform URL root of the metadata server where the partner OMAS is running " +
-                               "to this engine service's configuration document."),
-
-    NO_OMAS_SERVER_NAME("OMAG-ADMIN-0151",
-                        OMRSAuditLogRecordSeverity.ERROR,
-                        "{0} in server {1} is not configured with the name for the server running the {2}",
-                        "The server is not able to retrieve its configuration because it does not know which metadata server to use.  " +
-                                "It fails to start.",
-                        "Add the server name of the metadata server where the partner OMAS is running " +
-                                "to this engine service's configuration document."),
-
-    NO_ENGINES("OMAG-ADMIN-0152",
-               OMRSAuditLogRecordSeverity.ERROR,
-               "The {0} in server {1} is not configured with any engines",
-               "The server is not able to run any requests since this has not engines.  It fails to start.",
-               "Add the qualified name for at least one engine to the engine service in this server's configuration document."),
-
     ALL_ZONES("OMAG-ADMIN-0201",
               OMRSAuditLogRecordSeverity.STARTUP,
               "The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones",

@@ -31,6 +31,7 @@ public class DataStoreProperties extends AssetProperties
 {
     private static final long    serialVersionUID = 1L;
 
+    private String              pathName            = null;
     private Date                createTime          = null;
     private Date                modifiedTime        = null;
     private String              encodingType        = null;
@@ -59,6 +60,7 @@ public class DataStoreProperties extends AssetProperties
 
         if (template != null)
         {
+            pathName            = template.getPathName();
             createTime          = template.getCreateTime();
             modifiedTime        = template.getModifiedTime();
             encodingType        = template.getEncodingType();
@@ -77,6 +79,30 @@ public class DataStoreProperties extends AssetProperties
     public DataStoreProperties(AssetProperties template)
     {
         super(template);
+    }
+
+
+    /**
+     * Return the fully qualified physical location of the data store.  This should be suitable for the
+     * network address of the Endpoint.
+     *
+     * @return string name
+     */
+    public String getPathName()
+    {
+        return pathName;
+    }
+
+
+    /**
+     * Set up the fully qualified physical location of the data store.  This should be suitable for the
+     * network address of the Endpoint.
+     *
+     * @param pathName string name
+     */
+    public void setPathName(String pathName)
+    {
+        this.pathName = pathName;
     }
 
 
@@ -229,23 +255,24 @@ public class DataStoreProperties extends AssetProperties
     public String toString()
     {
         return "DataStoreProperties{" +
-                "createTime=" + createTime +
-                ", modifiedTime=" + modifiedTime +
-                ", encodingType='" + encodingType + '\'' +
-                ", encodingLanguage='" + encodingLanguage + '\'' +
-                ", encodingDescription='" + encodingDescription + '\'' +
-                ", encodingProperties='" + encodingProperties + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerType=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOtherOriginValues() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "pathName=" + pathName +
+                       ", createTime=" + createTime +
+                       ", modifiedTime=" + modifiedTime +
+                       ", encodingType='" + encodingType + '\'' +
+                       ", encodingLanguage='" + encodingLanguage + '\'' +
+                       ", encodingDescription='" + encodingDescription + '\'' +
+                       ", encodingProperties='" + encodingProperties + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", owner='" + getOwner() + '\'' +
+                       ", ownerType=" + getOwnerType() +
+                       ", zoneMembership=" + getZoneMembership() +
+                       ", origin=" + getOtherOriginValues() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -271,12 +298,13 @@ public class DataStoreProperties extends AssetProperties
             return false;
         }
         DataStoreProperties that = (DataStoreProperties) objectToCompare;
-        return Objects.equals(createTime, that.createTime) &&
-                Objects.equals(modifiedTime, that.modifiedTime) &&
-                Objects.equals(encodingType, that.encodingType) &&
-                Objects.equals(encodingLanguage, that.encodingLanguage) &&
-                Objects.equals(encodingDescription, that.encodingDescription) &&
-                Objects.equals(encodingProperties, that.encodingProperties);
+        return Objects.equals(pathName, that.pathName) &&
+                       Objects.equals(createTime, that.createTime) &&
+                       Objects.equals(modifiedTime, that.modifiedTime) &&
+                       Objects.equals(encodingType, that.encodingType) &&
+                       Objects.equals(encodingLanguage, that.encodingLanguage) &&
+                       Objects.equals(encodingDescription, that.encodingDescription) &&
+                       Objects.equals(encodingProperties, that.encodingProperties);
     }
 
 
@@ -288,6 +316,7 @@ public class DataStoreProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), createTime, modifiedTime, encodingType, encodingLanguage, encodingDescription, encodingProperties);
+        return Objects.hash(super.hashCode(), pathName, createTime, modifiedTime, encodingType,
+                            encodingLanguage, encodingDescription, encodingProperties);
     }
 }

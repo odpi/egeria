@@ -21,15 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataConformanceRequirementResults implements Serializable
+public class OpenMetadataConformanceRequirementResults extends OpenMetadataConformanceRequirementSummary
 {
     private static final long   serialVersionUID = 1L;
 
-    private Integer                                   id                   = null;
-    private String                                    name                 = null;
-    private String                                    description          = null;
-    private String                                    documentationURL     = null;
-    private OpenMetadataConformanceStatus             conformanceStatus    = null;
     private List<OpenMetadataConformanceTestEvidence> positiveTestEvidence = null;
     private List<OpenMetadataConformanceTestEvidence> negativeTestEvidence = null;
 
@@ -55,10 +50,7 @@ public class OpenMetadataConformanceRequirementResults implements Serializable
                                                      String     description,
                                                      String     documentationURL)
     {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.documentationURL = documentationURL;
+        super(id, name, description, documentationURL);
     }
 
 
@@ -69,126 +61,12 @@ public class OpenMetadataConformanceRequirementResults implements Serializable
      */
     public OpenMetadataConformanceRequirementResults(OpenMetadataConformanceRequirementResults  template)
     {
+        super(template);
         if (template != null)
         {
-            this.id = template.getId();
-            this.name = template.getName();
-            this.description = template.getDescription();
-            this.documentationURL = template.getDocumentationURL();
-            this.conformanceStatus = template.getConformanceStatus();
             this.positiveTestEvidence = template.getPositiveTestEvidence();
             this.negativeTestEvidence = template.getNegativeTestEvidence();
         }
-    }
-
-
-    /**
-     * Return the identifier of the requirement.
-     *
-     * @return integer used to index the requirement
-     */
-    public Integer getId()
-    {
-        return id;
-    }
-
-
-    /**
-     * Set up the identifier of the requirement.
-     *
-     * @param id integer used to index the requirement
-     */
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
-
-
-    /**
-     * Return the display name of the requirement.
-     *
-     * @return string name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the display name of the requirement.
-     *
-     * @param name string name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-     * Return the short description of the requirement.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the short description of the requirement.
-     *
-     * @param description string description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the URL link to the requirement.
-     *
-     * @return url
-     */
-    public String getDocumentationURL()
-    {
-        return documentationURL;
-    }
-
-
-    /**
-     * Set up the URL link to the requirement.
-     *
-     * @param documentationURL url
-     */
-    public void setDocumentationURL(String documentationURL)
-    {
-        this.documentationURL = documentationURL;
-    }
-
-
-    /**
-     * Return the conformance status of the technology under test (TUT).
-     *
-     * @return status enum
-     */
-    public OpenMetadataConformanceStatus getConformanceStatus()
-    {
-        return conformanceStatus;
-    }
-
-
-    /**
-     * Set up the conformance status of the technology under test (TUT).
-     *
-     * @param conformanceStatus status enum
-     */
-    public void setConformanceStatus(OpenMetadataConformanceStatus conformanceStatus)
-    {
-        this.conformanceStatus = conformanceStatus;
     }
 
 
@@ -248,11 +126,11 @@ public class OpenMetadataConformanceRequirementResults implements Serializable
     public String toString()
     {
         return "OpenMetadataConformanceRequirementResults{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", documentationURL='" + documentationURL + '\'' +
-                ", conformanceStatus=" + conformanceStatus +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", documentationURL='" + getDocumentationURL() + '\'' +
+                ", conformanceStatus=" + getConformanceStatus() +
                 ", positiveTestEvidence=" + positiveTestEvidence +
                 ", negativeTestEvidence=" + negativeTestEvidence +
                 '}';

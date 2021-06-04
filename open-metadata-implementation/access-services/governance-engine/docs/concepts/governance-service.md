@@ -14,7 +14,7 @@ There are six types of governance services:
   in the digital landscape. (For example, if the asset describes a file, the discovery service
   analyses the data stored in the file).
   
-* [Open Watchdog Service](../../../../frameworks/governance-action-framework/docs/open-watchdog-service.md) for
+* [Watchdog Governance Service](../../../../frameworks/governance-action-framework/docs/watchdog-governance-service.md) for
   monitoring changes to open metadata elements and when certain changes occur
   (such as the creation of a new [Asset](../../../docs/concepts/assets))
   the watchdog service requests action from
@@ -23,7 +23,7 @@ There are six types of governance services:
   a [Governance Action Process](../../../../frameworks/governance-action-framework/docs/governance-action-process.md)
   or an [Incident Report](../../../../frameworks/governance-action-framework/docs/incident-report.md).
   
-* [Open Verification Service](../../../../frameworks/governance-action-framework/docs/open-verification-service.md)
+* [Verification Governance Service](../../../../frameworks/governance-action-framework/docs/verification-governance-service.md)
   for testing the properties of specific open metadata elements  
   to ensure they are set up correctly or
   do not indicate a situation where governance activity is required.
@@ -31,31 +31,29 @@ There are six types of governance services:
   can be used to trigger other governance services as part of a
   [Governance Action Process](../../../../frameworks/governance-action-framework/docs/governance-action-process.md).
   
-* [Open Triage Service](../../../../frameworks/governance-action-framework/docs/open-triage-service.md) for making
-  decisions on how to handle a specific situation or incident.  Often this involves
-  a human decision maker.
+* [Triage Governance Service](../../../../frameworks/governance-action-framework/docs/triage-governance-service.md) for making
+  decisions on how to handle a specific situation or incident.  Often this involves a human decision maker.
   
-* [Open Remediation Service](../../../../frameworks/governance-action-framework/docs/open-remediation-service.md) for
+* [Remediation Governance Service](../../../../frameworks/governance-action-framework/docs/remediation-governance-service.md) for
   correcting errors in open metadata or the digital landscape it represents.
    
-* [Open Provisioning Service](../../../../frameworks/governance-action-framework/docs/open-provisioning-service.md) for
+* [Provisioning Governance Service](../../../../frameworks/governance-action-framework/docs/provisioning-governance-service.md) for
   configuring, enabling, provisioning resources in the digital landscape.  Often these provisioning
   services manage the cataloguing of new assets and the lineage between them.
 
-There is an [Open Metadata Engine Service (OMES)](../../../../engine-services)
-for each type of governance service.  The engine services support
-the specialist REST APIs and event handling needed for the specific
-type of governance service.
+The [Governance Action Open Metadata Engine Service (OMES)](../../../../engine-services/governance-action)
+supports the execution of the governance action service.
+It supports the specialist REST APIs and event handling needed for the specific type of governance action service.
 
 
 | Governance Service | Engine Service |
 | :----------------- | :------------- | 
 | Open Discovery Service | [Asset Analysis OMES](../../../../engine-services/asset-analysis) |
-| Open Watchdog Service | [Metadata Watchdog OMES](../../../../engine-services/metadata-watchdog) |
-| Open Verification Service | [Rule Verifier OMES](../../../../engine-services/rule-verifier) |
-| Open Triage Service | [Request Triage OMES](../../../../engine-services/request-triage) |
-| Open Remediation Service | [Issue Remediation OMES](../../../../engine-services/issue-remediation) |
-| Open Provisioning Service | [Asset Provisioning OMES](../../../../engine-services/asset-provisioning) |
+| Watchdog Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
+| Verification Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
+| Triage Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
+| Remediation Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
+| Provisioning Governance Service | [Governance Action OMES](../../../../engine-services/governance-action) |
 
 
 ## Support for implementing governance services

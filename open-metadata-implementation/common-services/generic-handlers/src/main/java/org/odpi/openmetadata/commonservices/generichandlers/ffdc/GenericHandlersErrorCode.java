@@ -60,12 +60,53 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                   "Typically these associations are created by an integration connector running in the Catalog Integrator OMIS." +
                                   "Look for errors reported in the hosting integration daemon."),
 
+    UNKNOWN_ENGINE_NAME(400, "OMAG-GENERIC-HANDLERS-400-005",
+                        "Governance Engine with unique name of {0} is not found by calling service {1} running in server {2}",
+                        "The system is unable to initiate a governance action because the nominated governance engine is not found in the metadata repository.",
+                        "Investigate whether the requested name is incorrect or the definition is missing. " +
+                                "Then retry the request once the issue is resolved."),
+
+    UNKNOWN_EXECUTOR(400, "OMAG-GENERIC-HANDLERS-400-006",
+                        "Unable to initiate an instance of a governance action because the governance action type {0} does not have a Governance Engine linked via the {1} relationship",
+                        "The system is unable to initiate a governance action process because is its implementation definition is incomplete.",
+                        "Update the definition of the first governance action type so that it is linked to a governance engine to execute the requested action. " +
+                                "Then retry the request once the definition is corrected."),
+
+    NO_PROCESS_IMPLEMENTATION(400, "OMAG-GENERIC-HANDLERS-400-007",
+                     "Unable to initiate an instance of the {0} governance action process because there is no first governance action type defined",
+                     "The system is unable to initiate a governance action process because is its implementation definition is missing.",
+                     "Link a governance action type to the governance action process.  If the process is to have multiple steps to it, link " +
+                             "additional governance action types to this first one to describe the execution flow. " +
+                             "Then retry the request once the definition is corrected."),
+
+    WRONG_END_GUID(400, "OMAG-GENERIC-HANDLERS-400-008",
+                              "The {0} {1} does not match the {2} guid {3} at end {4} in the {5} relationship identified as {6} {7}",
+                              "The request can not be processed because one of the unique identifiers supplied on the call does not match the " +
+                                      "values stored in the open metadata repositories.",
+                              "The most likely cause of the error is that the parameters passed on the call are incorrect.  " +
+                                      "Correct the parameters and retry the request.  If the values are correct then save this error message along with " +
+                                      "details of the stored metadata instances and contact the Egeria community."),
+
     ONLY_CREATOR_CAN_DELETE(403, "OMAG-GENERIC-HANDLERS-403-001",
             "The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it " +
                                     "was not created by the requesting user {5}",
                             "The request fails because the user does not have the rights to take this action.",
                             "Retry the request with a relationship created with this user, or request that the user who created " +
                                     "the relationship issues the delete request."),
+
+    INVALID_PROCESSING_USER(403, "OMAG-GENERIC-HANDLERS-403-002",
+                            "Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for governance action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}",
+                            "The system is unable to update a governance action because the requester has not claimed the governance action.",
+                            "Investigate why the Engine Host OMAG Server is attempting to process this governance action.  If you have multiple Engine Host OMAG Servers " +
+                                    "running the same governance engines then it is possible that they both attempted to claim the governance action at the same time.  If this is the case, " +
+                                    "validate that the governance action is processed successful by the victorious engine host.  If this happens frequently, it may be necessary to " +
+                                    "separate the workload amongst distinct governance engines that support the same governance services."),
+
+    INVALID_GOVERNANCE_ACTION_STATUS(403, "OMAG-GENERIC-HANDLERS-403-003",
+                            "Engine Host OMAG Server with a userId of {0} is not allowed claim the governance action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}",
+                            "The system is unable to claim a governance action because another Engine Host OMAG Server has got there first.",
+                            "This is a normal event if there are more than one Engine Host OMAG Server running the same governance engine."),
+
 
     MULTIPLE_CONNECTIONS_FOUND(404, "OMAG-GENERIC-HANDLERS-404-001",
             "{0} connections are connected to the asset with unique identifier {1}; the calling method is {2} and the server is {3}",
@@ -127,6 +168,51 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                               "identifier correctly.",
                       "The error is likely to be either in the handler code or the integration connector that is managing the exchange" +
                               "of metadata for ."),
+
+    MISSING_GOVERNANCE_ACTION(500, "OMAG-GENERIC-HANDLERS-500-007",
+                            "The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} is null",
+                            "The system is unable to process the request because the handler has failed to retrieve the entity for the " +
+                                    "identifier.  Normally this would result in an InvalidParameterException and it is curious that it did not.",
+                            "The error is likely to be in one of the repository connectors, but it may be either in the handler code " +
+                                    "or the governance engines managing the governance action entities."),
+
+    MISSING_GOVERNANCE_ACTION_PROPERTIES(500, "OMAG-GENERIC-HANDLERS-500-008",
+                              "The entity for identifier {0} supplied on the {1} parameter by the {2} service on method {3} has null properties",
+                              "The system is unable to process the request because the handler has retrieved a governance action entity " +
+                                      "that has no properties.  The handler does not know how to proceed.",
+                              "The error is likely to be in one of the repository connectors " +
+                                      "or the governance engines managing the governance action entities."),
+
+    UNKNOWN_ANCHOR_GUID(500, "OMAG-GENERIC-HANDLERS-500-009",
+                                         "An anchor GUID of <unknown> has been passed to local method {0} by the {1} service through method {2}",
+                                         "The system is unable to process the request because the handler has an invalid anchor GUID.",
+                                         "Gather diagnostics and add them to issue #4680."),
+
+    NULL_ANCHOR_GUID(500, "OMAG-GENERIC-HANDLERS-500-010",
+                        "A null anchor GUID has been passed to local method {0} by the {1} service through method {2}",
+                        "The system is unable to process the request because the handler has a null anchor GUID.",
+                        "This typically means the caller has either been returned an entity with a null GUID or there is an error" +
+                                "in the templated create logic.  Use the stack trace to determine the source of the error"),
+
+    BAD_ENTITY(500, "OMAG-GENERIC-HANDLERS-500-011",
+                     "An entity has been retrieved by method {0} from service {1} that has an invalid header: {2}",
+                     "The system is unable to format all or part of the response because the repositories have returned an invalid entity.",
+                     "Use knowledge of the request and the contents of the repositories to track down and correct the invalid entity.  " +
+                             "There is probably an error in the implementation of the repository that originated the entity."),
+
+    BAD_ENTITY_PROXY(500, "OMAG-GENERIC-HANDLERS-500-012",
+                     "A relationship {0} has been retrieved by method {1} from service {2} that has an invalid entity proxy at end {3}: {4}",
+                     "The system is unable to format all or part of the response because the repositories have returned a relationship with an " +
+                             "invalid entity proxy that links it to an entity.",
+                     "Use knowledge of the request and the contents of the repositories to track down and correct the relationship with the " +
+                             "invalid entity proxy.  There is probably an error in the implementation of the repository that originated the relationship."),
+
+    BAD_RELATIONSHIP(500, "OMAG-GENERIC-HANDLERS-500-013",
+                     "A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2}",
+                     "The system is unable to format all or part of the response because the repositories have returned an invalid relationship.",
+                     "Use knowledge of the request and the contents of the repositories to track down and correct the invalid relationship.  " +
+                             "There is probably an error in the implementation of the repository that originated the relationship."),
+
     ;
 
     private ExceptionMessageDefinition messageDefinition;

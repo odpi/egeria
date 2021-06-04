@@ -732,6 +732,18 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Validate that a home metadata collection identifier in an classification is not null.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param classification classification to test.
+     * @param methodName method receiving the call
+     * @throws RepositoryErrorException no guid provided
+     */
+    void validateHomeMetadataGUID(String           sourceName,
+                                  Classification   classification,
+                                  String           methodName) throws RepositoryErrorException;
+
+    /**
      * Validate that the asOfTime parameter is not for the future.
      *
      * @param sourceName  source of the request (used for logging)
@@ -759,6 +771,23 @@ public interface OMRSRepositoryValidator
                                  String parameterName,
                                  Date   asOfTime,
                                  String methodName) throws InvalidParameterException;
+
+
+    /**
+     * Validate that the time parameters are not inverted ('from' later than 'to').
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param parameterName name of the parameter that passed the guid.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the instance (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the instance (exclusive)
+     * @param methodName method receiving the call
+     * @throws InvalidParameterException 'fromTime' is later than 'toTime'
+     */
+    void validateDateRange(String sourceName,
+                           String parameterName,
+                           Date   fromTime,
+                           Date   toTime,
+                           String methodName) throws InvalidParameterException;
 
 
     /**
@@ -1106,7 +1135,8 @@ public interface OMRSRepositoryValidator
 
 
     /**
-     * Verify that the supplied instance is in one of the supplied statuses.
+     * Verify that the supplied instance is in one of the supplied statuses. Note that if the supplied statuses are
+     * null, then only statuses that are not DELETE are considered valid.
      *
      * @param validStatuses  list of statuses the instance should be in any one of them
      * @param instance  instance to test

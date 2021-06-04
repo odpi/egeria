@@ -87,8 +87,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
 
     LOCAL_REPOSITORY_MODE_NOT_SET(400, "OMAG-ADMIN-400-008",
             "The local repository mode has not been set for OMAG server {0}",
-            "The local repository mode must be enabled before the event mapper connection or repository proxy connection is set.  The system is unable to configure the local server.",
-            "The local repository mode is supplied by the caller to the OMAG server. This call to enable the local repository needs to be made before the call to set the event mapper connection or repository proxy connection."),
+            "The local repository mode must be enabled before the event mapper connection is set.  The system is unable to configure the local server.",
+            "The local repository mode is supplied by the caller to the OMAG server. This call to enable the local repository needs to be made before the call to set the event mapper connection."),
 
     NULL_SERVER_CONFIG(400, "OMAG-ADMIN-400-009",
             "The OMAG server {0} has been passed null configuration.",
@@ -97,7 +97,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
 
     NULL_REPOSITORY_CONFIG(400, "OMAG-ADMIN-400-010",
             "The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration",
-            "The system is unable to initialize the local server instance because all servers need at least and audit log which is supported by the " +
+            "The system is unable to initialize the local server instance because all servers need at least an audit log which is supported by the " +
                                    "repository services.",
             "Use the administration services to add the repository services configuration.  At a minimum, configure the audit log.  If this server " +
                                    "is to be a cohort member, then there are choices to also configure the local repository, enterprise repository " +
@@ -357,36 +357,18 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                        "The view service fails to start as it does not have a sufficiently large maxPageSize .",
                                        "Reconfigure the View service to have a maxPageSize that is sufficient."),
 
+    LOCAL_REPOSITORY_MODE_NOT_PROXY(400, "OMAG-ADMIN-400-052",
+                                  "Unable to configure an event mapper for OMAG server {0} because its local repository mode is set to {1}",
+                                  "The local repository mode must be set to repository proxy before the event mapper connection is set.  The system is unable to configure the local server.",
+                                  "The local repository mode is supplied by the caller to the OMAG server when the repository connection is set up.  " +
+                                          "This call to enable the repository connection needs to be made before the call to set the event mapper connection."),
+
     NO_CONFIG_DOC(400,"OMAG-ADMIN-400-101",
                   "An engine service for OMAG server {0} has been passed null configuration",
                   "The engine service can not retrieve its configuration values.  " +
                           "The Engine Host OMAG server fails to start.",
                   "This is an internal logic error since the admin services should not have initialized this engine service " +
                           "without this section of the configuration document filled in.  Raise an issue to get this fixed."),
-
-    NO_OMAS_SERVER_URL(400,"OMAG-ADMIN-400-102",
-                       "{0} in server {1} is not configured with the platform URL root for the {2}",
-                       "The engine service is not able to locate the metadata server to retrieve the configuration for " +
-                               "its governance engines.  The Engine Host server fails to start.",
-                       "To be successful the engine service needs both the platform URL root and the name of the metadata " +
-                               "server as well as the list of engines it is to host. Add the " +
-                               "configuration for the platform URL root to this server's configuration document and check that the " +
-                               "other required configuration properties are in place. Then restart this server."),
-
-    NO_OMAS_SERVER_NAME(400, "OMAG-ADMIN-400-103",
-                        "{0} in server {1} is not configured with the name for the server running the {2}",
-                        "The server is not able to retrieve its configuration from the metadata server.  It fails to start.",
-                        "Add the configuration for the metadata server name to this server's configuration document.  " +
-                                "Ensure that the platform URL root points to the platform where the metadata server is running and that" +
-                                "there is at least one engine listed.  Once the configuration document is set up correctly,  " +
-                                "restart this server."),
-
-    NO_ENGINES(400, "OMAG-ADMIN-400-104",
-               "{0} in server {1} is not configured with any engines",
-               "The server is not able to run any services in this engine service.  The engine service fails to start which causes " +
-                       "the server to fail too.",
-               "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
-                       "and then restart the server."),
 
     NULL_PROPERTY_NAME(400, "OMAG-ADMIN-400-105",
                "The {0} property in the configuration for server {1} is null",

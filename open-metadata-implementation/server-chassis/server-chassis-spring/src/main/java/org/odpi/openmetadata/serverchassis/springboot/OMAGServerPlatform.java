@@ -37,7 +37,7 @@ import java.util.*;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "2.6-SNAPSHOT",
+                version = "2.11-SNAPSHOT",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -57,11 +57,11 @@ import java.util.*;
                         "\n" +
                         "Click on the documentation link to find out more ...",
                 license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
-                contact = @Contact(url = "https://egeria.odpi.org", name = "ODPi Egeria Project", email = "odpi-project-egeria@lists.odpi.org")
+                contact = @Contact(url = "https://egeria.odpi.org", name = "Egeria Project", email = "egeria-technical-discuss@lists.lfaidata.foundation")
         ),
 
         externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation",
-                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.html")
+                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user")
         )
 
 

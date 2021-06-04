@@ -48,7 +48,7 @@ public enum GovernanceEngineErrorCode implements ExceptionMessageSet
 
     UNEXPECTED_INITIALIZATION_EXCEPTION(503, "OMAS-GOVERNANCE-ENGINE-503-005",
                                         "A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}",
-                                        "The system detected an unexpected error during start up and is now in an unknown start.",
+                                        "The system detected an unexpected error during start up and is now in an unknown state.",
                                         "The error message should indicate the cause of the error.  Otherwise look for errors in the " +
                                                 "remote server's audit log and console to understand and correct the source of the error.");
 

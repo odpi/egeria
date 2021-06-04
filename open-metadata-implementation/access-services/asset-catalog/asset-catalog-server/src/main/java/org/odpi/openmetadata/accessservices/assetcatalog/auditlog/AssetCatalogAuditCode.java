@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.auditlog;
 
+import lombok.ToString;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  * <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
+@ToString
 public enum AssetCatalogAuditCode implements AuditLogMessageSet {
     
     SERVICE_INITIALIZED("OMAS-ASSET-CATALOG-0001",
@@ -93,17 +95,5 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
     public AuditLogMessageDefinition getMessageDefinition(String... params) {
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
-    }
-
-    /**
-     * JSON-style toString
-     *
-     * @return string of property names and values for this enum
-     */
-    @Override
-    public String toString() {
-        return "AssetCatalogAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
     }
 }

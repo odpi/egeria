@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * relationships and setting up guards to guide the next step of processing.
  *
  * To create your own verification governance action service, create a new class that extends this class
- * along with another class that extends the GovernanceServiceProvider class to act as its connector provider.
+ * along with another class that extends the GovernanceActionServiceProviderBase class to act as its connector provider.
  * Add a start() method that begins by calling super.start() and then includes the logic to retrieve the metadata elements
  * and make an assessment.  The requestSourceElements describe the situation that the governance action service is assessing
  * and the actionTargetElements describe the elements that should/could be acted upon.

@@ -4,16 +4,20 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.api.IntegrationDaemonAPI;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationDaemonStatusResponse;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * IntegrationDaemon is the client library for the Integration Daemon's REST API.  The integration daemon is an OMAG Server.
@@ -123,6 +127,85 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
 
 
     /**
+     * Retrieve the configuration properties of the named connector.
+     *
+     * @param userId calling user
+     * @param serviceURLMarker integration service identifier
+     * @param connectorName name of a specific connector or null for all connectors
+     *
+     * @return property map
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration daemon
+     */
+    public Map<String, Object> getConfigurationProperties(String              userId,
+                                                          String              serviceURLMarker,
+                                                          String              connectorName) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        final String   methodName = "updateConfigurationProperties";
+        final String   serviceNameParameterName = "serviceURLMarker";
+        final String   connectorNameParameterName = "connectorName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-services/{2}/connectors/{3}/configuration-properties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serviceURLMarker, serviceNameParameterName, methodName);
+        invalidParameterHandler.validateName(connectorName, connectorNameParameterName, methodName);
+
+        PropertiesResponse restResult = restClient.callPropertiesGetRESTCall(methodName,
+                                                                             serverPlatformRootURL + urlTemplate,
+                                                                             serverName,
+                                                                             userId,
+                                                                             serviceURLMarker,
+                                                                             connectorName);
+
+        return restResult.getProperties();
+    }
+
+
+    /**
+     * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
+     *
+     * @param userId calling user
+     * @param serviceURLMarker integration service identifier
+     * @param connectorName name of a specific connector or null for all connectors
+     * @param isMergeUpdate should the properties be merged into the existing properties or replace them
+     * @param configurationProperties new configuration properties
+     * @throws InvalidParameterException the connector name is not recognized
+     */
+    public void updateConfigurationProperties(String              userId,
+                                              String              serviceURLMarker,
+                                              String              connectorName,
+                                              boolean             isMergeUpdate,
+                                              Map<String, Object> configurationProperties) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        final String   methodName = "updateConfigurationProperties";
+        final String   serviceNameParameterName = "serviceURLMarker";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-services/{2}/connectors/configuration-properties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serviceURLMarker, serviceNameParameterName, methodName);
+
+        ConnectorConfigPropertiesRequestBody requestBody = new ConnectorConfigPropertiesRequestBody();
+
+        requestBody.setConnectorName(connectorName);
+        requestBody.setMergeUpdate(isMergeUpdate);
+        requestBody.setConfigurationProperties(configurationProperties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        serviceURLMarker);
+    }
+
+
+    /**
      * Refresh all connectors running in the integration daemon, regardless of the integration service they belong to.
      *
      * @param userId calling user
@@ -168,14 +251,18 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
     {
         final String   methodName = "refreshService";
         final String   nameParameter = "serviceURLMarker";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-service/{2}/refresh";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-services/{2}/refresh";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(serviceURLMarker, nameParameter, methodName);
 
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(connectorName);
+
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        connectorName,
+                                        requestBody,
                                         serverName,
                                         userId,
                                         serviceURLMarker);
@@ -183,7 +270,8 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
 
 
     /**
-     * Request that the integration service shutdown and recreate its integration connectors.
+     * Request that the integration service shutdown and recreate its integration connectors.  If a connector name
+     * is provided, only that connector is restarted.
      *
      * @param userId calling user
      * @param serviceURLMarker integration service identifier
@@ -207,9 +295,13 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(serviceURLMarker, nameParameter, methodName);
 
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(connectorName);
+
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        connectorName,
+                                        requestBody,
                                         serverName,
                                         userId,
                                         serviceURLMarker);
@@ -237,9 +329,9 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
         invalidParameterHandler.validateUserId(userId, methodName);
 
         IntegrationDaemonStatusResponse restResult = restClient.callIntegrationDaemonStatusGetRESTCall(methodName,
-                                                                                        serverPlatformRootURL + urlTemplate,
-                                                                                        serverName,
-                                                                                        userId);
+                                                                                                       serverPlatformRootURL + urlTemplate,
+                                                                                                       serverName,
+                                                                                                       userId);
 
         return restResult.getIntegrationServiceSummaries();
     }

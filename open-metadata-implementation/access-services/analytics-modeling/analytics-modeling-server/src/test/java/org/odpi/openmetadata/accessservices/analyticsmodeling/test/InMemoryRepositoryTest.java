@@ -2,21 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.analyticsmodeling.test;
 
-import static org.testng.Assert.fail;
-import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-import java.util.List;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.EntityPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.contentmanager.OMEntityDaoForTests;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -50,9 +47,21 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconten
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
 
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.testng.Assert.fail;
+
 public class InMemoryRepositoryTest {
 
 	protected static final String USER_ID = "userId";
+	protected static final String LOCAL_SERVER_USER_ID = "localServerUserId";
+	protected static final String serviceName = "serviceName";
+	protected static final String serverName = "serverName";
+	protected static final Integer PAGE_SIZE = 20;
+
+	
 
     @Mock
     protected OMRSRepositoryConnector enterpriseConnector;
@@ -61,20 +70,26 @@ public class InMemoryRepositoryTest {
     protected OMRSAuditLog auditLog;
     private OMRSRepositoryContentManager localRepositoryContentManager = null;
     protected OMEntityDaoForTests omEntityDao;
-    
+  
+    protected RepositoryHandler repositoryHandler;
     protected OMRSMetadataCollection metadataCollection;
-    
+ 	protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+   
     final private String context = "Analytics Modeling OMAS test";
     
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         omEntityDao = new OMEntityDaoForTests(enterpriseConnector, Collections.emptyList(), auditLog);
         omEntityDao.setContext("JUnitTest");
         
         OMRSRepositoryConnector repositoryConnector = initializeInMemoryRepositoryConnector();
         
         metadataCollection = repositoryConnector.getMetadataCollection();
-
+        
+		repositoryHandler = new RepositoryHandler(auditLog, 
+				new RepositoryErrorHandler(omrsRepositoryHelper, serviceName, serverName, auditLog),
+				metadataCollection,
+	            PAGE_SIZE);
       
         when(enterpriseConnector.getMetadataCollection()).thenReturn(repositoryConnector.getMetadataCollection());
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(repositoryConnector.getRepositoryHelper());
@@ -98,8 +113,7 @@ public class InMemoryRepositoryTest {
 
 
         OMRSRepositoryEventManager localRepositoryEventManager = new OMRSRepositoryEventManager("local repository outbound",
-                new OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule.ALL,
-                        null),
+                new OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule.ALL, null),
                 new OMRSRepositoryContentValidator(localRepositoryContentManager),
                 auditLog);
 
@@ -108,8 +122,7 @@ public class InMemoryRepositoryTest {
                 null,
                 localRepositoryEventManager,
                 localRepositoryContentManager,
-                new OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule.ALL,
-                        null))
+                new OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule.ALL, null))
                 .getConnector(connection);
 
 
@@ -130,7 +143,16 @@ public class InMemoryRepositoryTest {
 
         return localOMRSRepositoryConnector;
     }
-
+    
+	/**
+	 * Get entity property of type string.
+	 * @param entity whose property is requested.
+	 * @param name if the requested property.
+	 * @return property value.
+	 */
+	public String getStringProperty(EntityDetail entity, String name) {
+		return omEntityDao.getEntityStringProperty(entity, name);
+	}
 
 	protected EntityDetail createDatabaseEntity(String dbName, String type, String version ) {
 		String qualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.DATABASE, dbName);

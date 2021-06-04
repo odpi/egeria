@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
@@ -14,27 +15,30 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class VerifyAttributeTypeDefExecutor extends RepositoryExecutorBase
 {
+    private MaintenanceAccumulator accumulator;
     private AttributeTypeDef       attributeTypeDef;
     private boolean                result      = false;
     private boolean                resultSet   = false;
-    private MaintenanceAccumulator accumulator = new MaintenanceAccumulator();
 
 
 
     /**
      * Constructor takes the parameters for the request.
      *
-     * @param userId unique identifier for requesting user.
-     * @param attributeTypeDef  AttributeTypeDef structure describing the type to test.
+     * @param userId unique identifier for requesting user
+     * @param attributeTypeDef  AttributeTypeDef structure describing the type to test
+     * @param auditLog logging destination
      * @param methodName calling method
      */
     public VerifyAttributeTypeDefExecutor(String           userId,
                                           AttributeTypeDef attributeTypeDef,
+                                          AuditLog         auditLog,
                                           String           methodName)
     {
         super(userId, methodName);
 
         this.attributeTypeDef = attributeTypeDef;
+        accumulator = new MaintenanceAccumulator(auditLog);
     }
 
 
@@ -48,6 +52,7 @@ public class VerifyAttributeTypeDefExecutor extends RepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -84,9 +89,11 @@ public class VerifyAttributeTypeDefExecutor extends RepositoryExecutorBase
         {
             accumulator.captureException(error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
-            accumulator.captureGenericException(error);
+            accumulator.captureGenericException(methodName,
+                                                metadataCollectionId,
+                                                error);
         }
 
         return resultSet;
@@ -121,7 +128,7 @@ public class VerifyAttributeTypeDefExecutor extends RepositoryExecutorBase
 
         accumulator.throwCapturedRepositoryErrorException();
         accumulator.throwCapturedUserNotAuthorizedException();
-        accumulator.throwCapturedThrowableException(super.methodName);
+        accumulator.throwCapturedGenericException(super.methodName);
         accumulator.throwCapturedTypeDefNotSupportedException();
         accumulator.throwCapturedInvalidTypeDefException();
         accumulator.throwCapturedInvalidParameterException();

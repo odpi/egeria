@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -91,7 +91,7 @@ public class DefaultSubjectAreaNodeClients implements SubjectAreaNodeClients {
     }
 
     /**
-     * @param <T> - {@link Line} type of object
+     * @param <T> - {@link Relationship} type of object
      * @param clazz - the class for which you want to get the client from cache
      *
      * @return SubjectAreaNodeClient or null if this client is not present

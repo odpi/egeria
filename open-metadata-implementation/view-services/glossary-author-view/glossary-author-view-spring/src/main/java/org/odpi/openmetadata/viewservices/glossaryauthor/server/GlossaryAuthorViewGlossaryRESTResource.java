@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -154,26 +154,29 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
-                                                                     @PathVariable String guid,
-                                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                     @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
-                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-                                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-    ) {
+    public SubjectAreaOMASAPIResponse<Relationship> getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                             @PathVariable String guid,
+                                                                             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                             @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
+                                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                             @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+                                                                            ) {
         return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
      * Get terms that are owned by this glossary. The server has a maximum page size defined, the number of terms returned is limited by that maximum page size.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param guid               guid of the category to get terms
-     * @param startingFrom       the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @param asOfTime   the terms returned as they were at this time. null indicates at the current time.
+     * @param searchCriteria String expression matching child Term property values.
+     * @param startingFrom the starting element number for this set of results. This is used when retrieving elements
+     * @param pageSize Return the maximum number of elements that can be returned on this request.
+     * @param sequencingOrder sequencing order
+     * @param sequencingProperty property used for sequencing.
      * @return A list of terms owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -186,21 +189,30 @@ public class GlossaryAuthorViewGlossaryRESTResource {
     public SubjectAreaOMASAPIResponse<Term> getGlossaryTerms(@PathVariable String serverName,
                                                              @PathVariable String userId,
                                                              @PathVariable String guid,
-                                                             @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
-                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return restAPI.getTerms(serverName, userId, guid, startingFrom, pageSize);
+                                                             @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                             @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                             @RequestParam(value = "sequencingOrder", required = false) String sequencingOrder,
+                                                             @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty) {
+        return restAPI.getTerms(serverName, userId, guid, searchCriteria,asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
+
 
     /**
      * Get the Categories owned by this glossary. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       unique identifier for requesting user, under which the request is performed
-     * @param guid         guid of the category to get terms
+     * @param guid         guid of the glossary to get terms
+     * @param searchCriteria String expression matching child Category property values.
+     * @param asOfTime     the categories returned as they were at this time. null indicates at the current time.
+     * @param onlyTop      when only the top categories (those categories without parents) are returned.
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
-     *                     beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize     the maximum number of elements that can be returned on this request.
-     * @param onlyTop      when set returns only the top categories (those categories without parents).
+     * @param sequencingOrder    the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     *
      * @return A list of categories owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -213,11 +225,15 @@ public class GlossaryAuthorViewGlossaryRESTResource {
     public SubjectAreaOMASAPIResponse<Category> getGlossaryCategories(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,
-                                                                      @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
+                                                                      @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                      @RequestParam(value = "onlyTop", required = false, defaultValue = "true") Boolean onlyTop,
+                                                                      @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
                                                                       @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                                      @RequestParam(value = "onlyTop", required = false, defaultValue = "true") Boolean onlyTop) {
-
-        return restAPI.getCategories(serverName, userId, guid, startingFrom, pageSize, onlyTop);
+                                                                      @RequestParam(value = "sequencingOrder", required = false) String sequencingOrder,
+                                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+                                                                     ) {
+        return restAPI.getCategories(serverName, userId, guid, searchCriteria, asOfTime, onlyTop, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**

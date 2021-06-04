@@ -257,15 +257,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(processProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String externalSourceGUID = null;
-        String externalSourceName = null;
-
-        if ((assetManagerIsHome) && (correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
-        {
-            externalSourceGUID = correlationProperties.getAssetManagerGUID();
-            externalSourceName = correlationProperties.getAssetManagerName();
-        }
-
         String typeName = OpenMetadataAPIMapper.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME;
 
         if (processProperties.getTypeName() != null)
@@ -273,27 +264,14 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             typeName = processProperties.getTypeName();
         }
 
-        int ownerCategory = OwnerCategory.USER_ID.getOpenTypeOrdinal();
-
-        if (processProperties.getOwnerCategory() != null)
-        {
-            ownerCategory = processProperties.getOwnerCategory().getOpenTypeOrdinal();
-        }
-
         String processGUID = processHandler.createProcess(userId,
-                                                          externalSourceGUID,
-                                                          externalSourceName,
+                                                          this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
+                                                          this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                           processProperties.getQualifiedName(),
                                                           processProperties.getTechnicalName(),
                                                           processProperties.getTechnicalDescription(),
                                                           processProperties.getFormula(),
                                                           processProperties.getImplementationLanguage(),
-                                                          processProperties.getZoneMembership(),
-                                                          processProperties.getOwner(),
-                                                          ownerCategory,
-                                                          processProperties.getOriginOrganizationGUID(),
-                                                          processProperties.getOriginBusinessCapabilityGUID(),
-                                                          processProperties.getOtherOriginValues(),
                                                           processProperties.getAdditionalProperties(),
                                                           typeName,
                                                           processProperties.getExtendedProperties(),
@@ -338,6 +316,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      */
     public String createProcessFromTemplate(String                        userId,
                                             MetadataCorrelationProperties correlationProperties,
+                                            boolean                       assetManagerIsHome,
                                             String                        templateGUID,
                                             TemplateProperties            templateProperties,
                                             String                        methodName) throws InvalidParameterException,
@@ -354,8 +333,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         String processGUID = processHandler.createProcessFromTemplate(userId,
-                                                                      null,
-                                                                      null,
+                                                                      this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
+                                                                      this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                                       templateGUID,
                                                                       templateGUIDParameterName,
                                                                       templateProperties.getQualifiedName(),
@@ -436,13 +415,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             typeName = processProperties.getTypeName();
         }
 
-        int ownerCategory = OwnerCategory.USER_ID.getOpenTypeOrdinal();
-
-        if (processProperties.getOwnerCategory() != null)
-        {
-            ownerCategory = processProperties.getOwnerCategory().getOpenTypeOrdinal();
-        }
-
         processHandler.updateProcess(userId,
                                      externalSourceGUID,
                                      externalSourceName,
@@ -454,12 +426,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                      processProperties.getTechnicalDescription(),
                                      processProperties.getFormula(),
                                      processProperties.getImplementationLanguage(),
-                                     processProperties.getZoneMembership(),
-                                     processProperties.getOwner(),
-                                     ownerCategory,
-                                     processProperties.getOriginOrganizationGUID(),
-                                     processProperties.getOriginBusinessCapabilityGUID(),
-                                     processProperties.getOtherOriginValues(),
                                      processProperties.getAdditionalProperties(),
                                      typeName,
                                      processProperties.getExtendedProperties(),
@@ -1791,7 +1757,14 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                         correlationProperties,
                                         methodName);
 
-        processHandler.setBusinessSignificant(userId, elementGUID, elementGUIDParameterName, methodName);
+        processHandler.setBusinessSignificant(userId,
+                                              elementGUID,
+                                              elementGUIDParameterName,
+                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                              null,
+                                              null,
+                                              null,
+                                              methodName);
     }
 
 
@@ -1826,7 +1799,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                         correlationProperties,
                                         methodName);
 
-        processHandler.clearBusinessSignificant(userId, elementGUID, elementGUIDParameterName, methodName);
+        processHandler.clearBusinessSignificant(userId,
+                                                elementGUID,
+                                                elementGUIDParameterName,
+                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                methodName);
     }
 
 

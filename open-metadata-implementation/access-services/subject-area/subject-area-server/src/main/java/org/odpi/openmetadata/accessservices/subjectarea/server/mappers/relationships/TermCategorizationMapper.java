@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the termCategorization and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class TermCategorizationMapper extends LineMapper<Categorization> {
+public class TermCategorizationMapper extends RelationshipMapper<Categorization> {
     public static final String TERM_CATEGORIZATION = "TermCategorization";
 
     public TermCategorizationMapper(OMRSAPIHelper omrsapiHelper) {
@@ -23,13 +23,13 @@ public class TermCategorizationMapper extends LineMapper<Categorization> {
     }
 
     /**
-     * Map the supplied Line to omrs InstanceProperties.
+     * Map the supplied relationship to omrs InstanceProperties.
      *
-     * @param termCategorization               supplied line
-     * @param instanceProperties equivalent instance properties to the Line
+     * @param termCategorization               supplied relationship
+     * @param instanceProperties equivalent instance properties to the relationship
      */
     @Override
-    protected void mapLineToInstanceProperties(Categorization termCategorization, InstanceProperties instanceProperties) {
+    protected void mapRelationshipToInstanceProperties(Categorization termCategorization, InstanceProperties instanceProperties) {
         if (termCategorization.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termCategorization.getDescription(), "description");
         }
@@ -43,13 +43,13 @@ public class TermCategorizationMapper extends LineMapper<Categorization> {
     /**
      * Map a primitive omrs property to the termCategorization object.
      *
-     * @param termCategorization         the glossary to be updated
+     * @param termCategorization   the omas relationship to be updated
      * @param propertyName the omrs property name
      * @param value        the omrs primitive property value
-     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     * @return true if the propertyName was recognised and mapped to the relationship, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(Categorization termCategorization, String propertyName, Object value) {
+    protected boolean mapPrimitiveToRelationship(Categorization termCategorization, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -61,7 +61,7 @@ public class TermCategorizationMapper extends LineMapper<Categorization> {
     }
 
     @Override
-    protected boolean mapEnumToLine(Categorization termCategorization, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToRelationship(Categorization termCategorization, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -77,7 +77,7 @@ public class TermCategorizationMapper extends LineMapper<Categorization> {
     }
 
     @Override
-    protected Categorization getLineInstance() {
+    protected Categorization getRelationshipInstance() {
         return new Categorization();
     }
 

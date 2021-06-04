@@ -11,7 +11,7 @@ a [discovery service](discovery-service.md) to locate
 and analyze an asset and then record the results.
 
 
-
+![Figure 1](discovery-context.png)
 
 
 ----

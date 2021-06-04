@@ -24,8 +24,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicLi
  */
 public class OMRSEventListener implements OMRSTopicListener
 {
-    private String cohortName;
-    private String localMetadataCollectionId;
+    private String                     cohortName;
+    private String                     localMetadataCollectionId;
+    private OpenMetadataEventsSecurity securityVerifier;
 
     /*
      * There is an event processor for each category of event.  The OMRSEventListener passes appropriate events to these
@@ -45,12 +46,14 @@ public class OMRSEventListener implements OMRSTopicListener
      * @param localMetadataCollectionId unique identifier for the local metadata collection
      * @param registryEventProcessor processor for registry events
      * @param repositoryEventProcessor processor for TypeDef and Instance synchronization events
+     * @param securityVerifier new security verifier
      * @param auditLog audit log for this component.
      */
     public OMRSEventListener(String                       cohortName,
                              String                       localMetadataCollectionId,
                              OMRSRegistryEventProcessor   registryEventProcessor,
                              OMRSRepositoryEventProcessor repositoryEventProcessor,
+                             OpenMetadataEventsSecurity   securityVerifier,
                              AuditLog                     auditLog)
     {
         this.cohortName                = cohortName;
@@ -58,6 +61,11 @@ public class OMRSEventListener implements OMRSTopicListener
         this.registryEventProcessor    = registryEventProcessor;
         this.typeDefEventProcessor     = repositoryEventProcessor;
         this.instanceEventProcessor    = repositoryEventProcessor;
+
+        if (securityVerifier != null)
+        {
+            this.securityVerifier = securityVerifier;
+        }
 
         final String   actionDescription = "Initialize OMRS Event Listener";
 
@@ -245,7 +253,12 @@ public class OMRSEventListener implements OMRSTopicListener
         }
         else
         {
-            instanceEventProcessor.sendInstanceEvent(cohortName, instanceEvent);
+            OMRSInstanceEvent verifiedEvent = securityVerifier.validateInboundEvent(cohortName, instanceEvent);
+
+            if (verifiedEvent != null)
+            {
+                instanceEventProcessor.sendInstanceEvent(cohortName, instanceEvent);
+            }
         }
     }
 }

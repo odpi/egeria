@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAr
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -64,8 +64,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Project createdProject = clients.projects().create(userId, suppliedProject);
             response.addResult(createdProject);
-        }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -99,8 +99,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Project obtainedProject = clients.projects().getByGUID(userId, guid);
             response.addResult(obtainedProject);
-        }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -162,8 +162,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             Config subjectAreaConfig = client.getConfig(userId);
             List<Project> projects = clients.projects().find(userId, findRequest, subjectAreaConfig.getMaxPageSize());
             response.addAllResults(projects);
-        }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -189,7 +189,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(
+    public SubjectAreaOMASAPIResponse<Relationship> getProjectRelationships(
             String serverName,
             String userId,
             String guid,
@@ -200,11 +200,11 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             String sequencingProperty
 
 
-    ) {
+                                                                           ) {
         final String methodName = "getProjectRelationships";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             if (startingFrom == null) {
@@ -223,10 +223,10 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Line> lines =  clients.projects().getRelationships(userId, guid, findRequest);
-            response.addAllResults(lines);
-        }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+            List<Relationship> relationships =  clients.projects().getRelationships(userId, guid, findRequest);
+            response.addAllResults(relationships);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -276,8 +276,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
                 updatedProject = clients.projects().update(userId, guid, project);
             }
             response.addResult(updatedProject);
-        }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -330,8 +330,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             } else {
                 clients.projects().delete(userId, guid);
             }
-        }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -369,8 +369,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Project project = clients.projects().restore(userId, guid);
             response.addResult(project);
-        }  catch (Throwable error) {
-            response = getResponseForError(error, auditLog, className, methodName);
+        }  catch (Exception exception) {
+            response = getResponseForException(exception, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;

@@ -20,20 +20,19 @@ cohort registry store - there is no central store.
 Figure 2 shows the logical structure inside the cohort registry store.
 
 ![Figure 2: Internal structure for the information stored inside a single cohort registry store](cohort-registry-store-contents.png)
-> Figure 2: Internal structure for the information stored inside a single
-cohort registry store.
+> Figure 2: Internal structure for the information stored inside a single cohort registry store.
 
 There is one local registration record describing the information sent to
 the other members of the cohort and a list of remote registration records received from
 the other members of the cohort.
 
-A implementations of this type of connector is
-located in the
+A implementations of this type of connector is located in the
 [adapters/open-connectors/repository-services-connectors/cohort-registry-store-connectors](../../../../adapters/open-connectors/repository-services-connectors/cohort-registry-store-connectors)
 module.
 
 ----
-Return to [repository services connectors](.).
+* Return to [repository services connectors](.).
+* Return to [open metadata repository cohort](../../open-metadata-repository-cohort.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

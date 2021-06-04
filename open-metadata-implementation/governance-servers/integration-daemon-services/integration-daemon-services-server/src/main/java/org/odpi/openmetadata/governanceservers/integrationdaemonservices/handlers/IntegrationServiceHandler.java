@@ -5,17 +5,18 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handle
 
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationConnectorConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -31,8 +32,8 @@ public class IntegrationServiceHandler
     private IntegrationContextManager contextManager;                /* Initialized in constructor */
     private AuditLog                  auditLog;                      /* Initialized in constructor */
 
-    private List<IntegrationConnectorHandler>  connectorHandlers = new ArrayList<>();
-
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private       List<IntegrationConnectorHandler> connectorHandlers = new ArrayList<>();
 
     /**
      * Constructor passes the service config. It is just saved at this point. Interesting things
@@ -85,10 +86,7 @@ public class IntegrationServiceHandler
                                                                                                    contextManager,
                                                                                                    auditLog);
 
-                    if (connectorHandler.getIntegrationConnectorStatus() != IntegrationConnectorStatus.FAILED)
-                    {
-                        connectorHandlers.add(connectorHandler);
-                    }
+                    connectorHandlers.add(connectorHandler);
                 }
             }
         }
@@ -96,8 +94,6 @@ public class IntegrationServiceHandler
         if (connectorHandlers.isEmpty())
         {
             final String actionDescription = "Initialize integration service";
-
-            connectorHandlers = null;
 
             auditLog.logMessage(actionDescription,
                                 IntegrationDaemonServicesAuditCode.NO_INTEGRATION_CONNECTORS.
@@ -138,7 +134,7 @@ public class IntegrationServiceHandler
                     connectorReport.setStatistics(connectorHandler.getStatistics());
                     connectorReport.setLastStatusChange(connectorHandler.getLastStatusChange());
                     connectorReport.setLastRefreshTime(connectorHandler.getLastRefreshTime());
-                    connectorReport.setMinSecondsBetweenRefresh(connectorHandler.getMinSecondsBetweenRefresh());
+                    connectorReport.setMinMinutesBetweenRefresh(connectorHandler.getMinMinutesBetweenRefresh());
 
                     connectorReports.add(connectorReport);
                 }
@@ -171,7 +167,7 @@ public class IntegrationServiceHandler
             {
                 if (connectorHandler != null)
                 {
-                    connectorHandler.refreshConnector(actionDescription);
+                    connectorHandler.refreshConnector(actionDescription, false);
                 }
             }
         }
@@ -183,7 +179,100 @@ public class IntegrationServiceHandler
                 {
                     if (connectorName.equals(connectorHandler.getIntegrationConnectorName()))
                     {
-                        connectorHandler.refreshConnector(actionDescription);
+                        connectorHandler.refreshConnector(actionDescription, false);
+                        return;
+                    }
+                }
+            }
+
+            final String parameterName = "connectorName";
+
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_CONNECTOR_NAME.getMessageDefinition(connectorName,
+                                                                                                                               serviceConfig.getIntegrationServiceFullName(),
+                                                                                                                               localServerName),
+                                                this.getClass().getName(),
+                                                actionDescription,
+                                                parameterName);
+        }
+    }
+
+
+    /**
+     * Retrieve the configuration properties of the named connector.
+     *
+     * @param userId calling user
+     * @param connectorName name of a specific connector or null for all connectors
+     *
+     * @return property map
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     */
+    public Map<String, Object> getConfigurationProperties(String userId,
+                                                          String connectorName) throws InvalidParameterException
+    {
+        final String   methodName = "updateConfigurationProperties";
+        final String   connectorNameParameterName = "connectorName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(connectorName, connectorNameParameterName, methodName);
+
+        for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
+        {
+            if (connectorHandler != null)
+            {
+                if (connectorName.equals(connectorHandler.getIntegrationConnectorName()))
+                {
+                    return connectorHandler.getConfigurationProperties();
+                }
+            }
+        }
+
+        final String parameterName = "connectorName";
+        final String actionDescription = "Retrieve configuration properties";
+
+        throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_CONNECTOR_NAME.getMessageDefinition(connectorName,
+                                                                                                                           serviceConfig.getIntegrationServiceFullName(),
+                                                                                                                           localServerName),
+                                            this.getClass().getName(),
+                                            actionDescription,
+                                            parameterName);
+    }
+
+
+    /**
+     * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
+     *
+     * @param connectorName name of a specific connector or null for all connectors
+     * @param isMergeUpdate should the properties be merged into the existing properties or replace them
+     * @param configurationProperties new configuration properties
+     * @throws InvalidParameterException the connector name is not recognized
+     */
+    public void updateConfigurationProperties(String              userId,
+                                              String              connectorName,
+                                              boolean             isMergeUpdate,
+                                              Map<String, Object> configurationProperties) throws InvalidParameterException
+    {
+        final String actionDescription = "Update connector configuration properties REST API call";
+
+        if (connectorName == null)
+        {
+            for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
+            {
+                if (connectorHandler != null)
+                {
+                    connectorHandler.updateConfigurationProperties(userId, actionDescription, isMergeUpdate, configurationProperties);
+                }
+            }
+        }
+        else
+        {
+            for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
+            {
+                if (connectorHandler != null)
+                {
+                    if (connectorName.equals(connectorHandler.getIntegrationConnectorName()))
+                    {
+                        connectorHandler.updateConfigurationProperties(userId, actionDescription, isMergeUpdate, configurationProperties);
                         return;
                     }
                 }
@@ -254,11 +343,18 @@ public class IntegrationServiceHandler
     {
         final String actionDescription = "Server shutdown";
 
-        for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
+        /*
+        if the server hosting  integration daemon has encountered a problem
+        when starting then the connectorHandlers can be null
+         */
+        if(connectorHandlers != null)
         {
-            if (connectorHandler != null)
+            for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
             {
-                connectorHandler.shutdown(actionDescription);
+                if (connectorHandler != null)
+                {
+                    connectorHandler.shutdown(actionDescription);
+                }
             }
         }
     }

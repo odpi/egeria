@@ -156,7 +156,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
             "The system is unable to create the requested connector instance because the Connector's class is failing to load in the JVM.  This has resulted in an exception in the class loader.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process. Then retry the request."),
     INVALID_CONNECTOR(500, "OCF-CONNECTION-500-010",
-            "Invalid Connector class {0}",
+            "Invalid Connector class {0} for connector {1}; resulting exception {2} produced message {3}",
             "The system is unable to create the requested connector instance because the Connector's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
             "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Then retry the request."),
     NULL_CONNECTOR(500, "OCF-CONNECTION-500-011",
