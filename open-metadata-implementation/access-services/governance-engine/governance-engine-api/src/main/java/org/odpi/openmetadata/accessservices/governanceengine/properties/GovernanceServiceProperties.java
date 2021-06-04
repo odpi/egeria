@@ -34,7 +34,8 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     private String              displayName                  = null;
     private String              description                  = null;
     private String              owner                        = null;
-    private OwnerCategory       ownerCategory                = null;
+    private String              ownerTypeName                = null;
+    private String              ownerPropertyName            = null;
     private List<String>        zoneMembership               = null;
     private String              originOrganizationGUID       = null;
     private String              originBusinessCapabilityGUID = null;
@@ -68,7 +69,8 @@ public class GovernanceServiceProperties extends ReferenceableProperties
             displayName                  = template.getDisplayName();
             description                  = template.getDescription();
             owner                        = template.getOwner();
-            ownerCategory                = template.getOwnerCategory();
+            ownerTypeName                = template.getOwnerTypeName();
+            ownerPropertyName            = template.getOwnerPropertyName();
             zoneMembership               = template.getZoneMembership();
             originOrganizationGUID       = template.getOriginOrganizationGUID();
             originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
@@ -147,25 +149,48 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     }
 
 
+
     /**
      * Return the type of owner stored in the owner property.
      *
-     * @return OwnerCategory enum
+     * @return String name
      */
-    public OwnerCategory getOwnerCategory()
+    public String getOwnerTypeName()
     {
-        return ownerCategory;
+        return ownerTypeName;
     }
 
 
     /**
-     * Set up the owner type for this asset.
+     * Set up the type of owner stored in the owner property.
      *
-     * @param ownerCategory OwnerCategory enum
+     * @param ownerTypeName String name
      */
-    public void setOwnerCategory(OwnerCategory ownerCategory)
+    public void setOwnerTypeName(String ownerTypeName)
     {
-        this.ownerCategory = ownerCategory;
+        this.ownerTypeName = ownerTypeName;
+    }
+
+
+    /**
+     * Return the property name used to identifier the owner.
+     *
+     * @return String name
+     */
+    public String getOwnerPropertyName()
+    {
+        return ownerPropertyName;
+    }
+
+
+    /**
+     * Set up the property name used to identifier the owner.
+     *
+     * @param ownerPropertyName String name
+     */
+    public void setOwnerPropertyName(String ownerPropertyName)
+    {
+        this.ownerPropertyName = ownerPropertyName;
     }
 
 
@@ -314,7 +339,8 @@ public class GovernanceServiceProperties extends ReferenceableProperties
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", owner='" + owner + '\'' +
-                       ", ownerCategory=" + ownerCategory +
+                       ", ownerTypeName='" + ownerTypeName + '\'' +
+                       ", ownerPropertyName='" + ownerPropertyName + '\'' +
                        ", zoneMembership=" + zoneMembership +
                        ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
                        ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
@@ -351,7 +377,8 @@ public class GovernanceServiceProperties extends ReferenceableProperties
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(owner, that.owner) &&
-                       ownerCategory == that.ownerCategory &&
+                       Objects.equals(ownerTypeName, that.ownerTypeName) &&
+                       Objects.equals(ownerPropertyName, that.ownerPropertyName) &&
                        Objects.equals(zoneMembership, that.zoneMembership) &&
                        Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
                        Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
@@ -369,7 +396,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), qualifiedName, displayName, description, owner, ownerCategory, zoneMembership, originOrganizationGUID,
+        return Objects.hash(super.hashCode(), qualifiedName, displayName, description, owner, ownerTypeName, ownerPropertyName, zoneMembership, originOrganizationGUID,
                             originBusinessCapabilityGUID, otherOriginValues, additionalProperties, connection);
     }
 }
