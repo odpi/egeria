@@ -4,15 +4,10 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifi
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineAttribute;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 /**
  * Test Synonym mapper
@@ -28,7 +23,7 @@ public class TestClassificationFactory
     @BeforeMethod
 
     public void setup() throws Exception{
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
     @Test
     public void testClassificationFactory()
