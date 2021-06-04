@@ -264,8 +264,7 @@ public class EngineServiceRegistration implements Serializable
 
 
     /**
-     * Return the wiki page link for the engine service.  The default value points to a page on the Atlas
-     * confluence wiki.
+     * Return the wiki page link for the engine service.
      *
      * @return String url
      */
