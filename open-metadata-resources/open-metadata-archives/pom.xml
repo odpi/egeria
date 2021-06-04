@@ -33,6 +33,7 @@
         <module>design-model-archives</module>
         <module>open-connector-archives</module>
         <module>open-metadata-types</module>
+        <module>open-metadata-types-utility</module>
     </modules>
 
 </project>

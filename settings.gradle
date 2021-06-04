@@ -370,6 +370,7 @@ include(':open-metadata-resources:open-metadata-archives:design-model-archives:g
 include(':open-metadata-resources:open-metadata-archives:design-model-archives')
 include(':open-metadata-resources:open-metadata-archives:open-connector-archives')
 include(':open-metadata-resources:open-metadata-archives:open-metadata-types')
+include(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
 include(':open-metadata-resources:open-metadata-archives')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
