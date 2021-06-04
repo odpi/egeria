@@ -78,8 +78,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param owner identifier of the owner of this governance action
-     * @param ownerType type of owner (userId or actor profile)
      * @param supportedGuards list of guards that triggered this governance action
      * @param additionalProperties additional properties for a governance action
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
@@ -98,8 +96,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                              int                  domainIdentifier,
                                              String               displayName,
                                              String               description,
-                                             String               owner,
-                                             int                  ownerType,
                                              List<String>         supportedGuards,
                                              Map<String, String>  additionalProperties,
                                              String               governanceEngineGUID,
@@ -118,8 +114,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                               domainIdentifier,
                                                                               displayName,
                                                                               description,
-                                                                              owner,
-                                                                              ownerType,
                                                                               supportedGuards,
                                                                               additionalProperties,
                                                                               repositoryHelper,
@@ -214,8 +208,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param owner identifier of the owner of this governance action
-     * @param ownerType type of owner (userId or actor profile)
      * @param supportedGuards list of guards that triggered this governance action
      * @param additionalProperties additional properties for a governance action
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
@@ -234,8 +226,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                            int                 domainIdentifier,
                                            String              displayName,
                                            String              description,
-                                           String              owner,
-                                           int                 ownerType,
                                            List<String>        supportedGuards,
                                            Map<String, String> additionalProperties,
                                            String              governanceEngineGUID,
@@ -385,8 +375,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                               domainIdentifier,
                                                                               displayName,
                                                                               description,
-                                                                              owner,
-                                                                              ownerType,
                                                                               supportedGuards,
                                                                               additionalProperties,
                                                                               repositoryHelper,

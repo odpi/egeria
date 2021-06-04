@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.properties.DedicatedTopicList;
 import org.odpi.openmetadata.adminservices.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -2079,20 +2080,20 @@ public class OMAGServerAdminServices
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
-     * @return string response or
+     * @return list of topics response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or cohortName parameter.
      * OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.
      */
-    public NameListResponse getDedicatedCohortTopicNames(String userId,
-                                                         String serverName,
-                                                         String cohortName)
+    public DedicatedTopicListResponse getDedicatedCohortTopicNames(String userId,
+                                                                   String serverName,
+                                                                   String cohortName)
     {
-        final String methodName = "getCohortTopicName";
+        final String methodName = "getDedicatedCohortTopicNames";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        NameListResponse response = new NameListResponse();
+        DedicatedTopicListResponse response = new DedicatedTopicListResponse();
 
         try
         {
@@ -2108,13 +2109,13 @@ public class OMAGServerAdminServices
 
                 if (currentCohortDetails != null)
                 {
-                    List<String> topicNames = new ArrayList<>();
+                    DedicatedTopicList topicNames = new DedicatedTopicList();
 
-                    topicNames.add(this.getCohortTopicName(currentCohortDetails.getCohortOMRSRegistrationTopicConnection()));
-                    topicNames.add(this.getCohortTopicName(currentCohortDetails.getCohortOMRSTypesTopicConnection()));
-                    topicNames.add(this.getCohortTopicName(currentCohortDetails.getCohortOMRSInstancesTopicConnection()));
+                    topicNames.setRegistrationTopicName(this.getCohortTopicName(currentCohortDetails.getCohortOMRSRegistrationTopicConnection()));
+                    topicNames.setTypesTopicName(this.getCohortTopicName(currentCohortDetails.getCohortOMRSTypesTopicConnection()));
+                    topicNames.setInstancesTopicName(this.getCohortTopicName(currentCohortDetails.getCohortOMRSInstancesTopicConnection()));
 
-                    response.setNames(topicNames);
+                    response.setDedicatedTopicList(topicNames);
                 }
             }
         }
@@ -2135,7 +2136,6 @@ public class OMAGServerAdminServices
 
         return response;
     }
-
 
 
     /**

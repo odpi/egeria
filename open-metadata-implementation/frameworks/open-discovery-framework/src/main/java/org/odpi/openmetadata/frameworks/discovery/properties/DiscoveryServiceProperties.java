@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
 import java.util.*;
 
@@ -34,14 +33,7 @@ public class DiscoveryServiceProperties extends PropertyBase
     private String              qualifiedName                = null;
     private String              displayName                  = null;
     private String              description                  = null;
-    private String              owner                        = null;
-    private OwnerType           ownerType                    = null;
-    private List<String>        zoneMembership               = null;
-    private String              originOrganizationGUID       = null;
-    private String              originBusinessCapabilityGUID = null;
-    private Map<String, String> otherOriginValues            = null;
     private Map<String, String> additionalProperties         = null;
-
     private Connection          connection                   = null;
 
 
@@ -68,12 +60,6 @@ public class DiscoveryServiceProperties extends PropertyBase
             qualifiedName                = template.getQualifiedName();
             displayName                  = template.getDisplayName();
             description                  = template.getDescription();
-            owner                        = template.getOwner();
-            ownerType                    = template.getOwnerType();
-            zoneMembership               = template.getZoneMembership();
-            originOrganizationGUID       = template.getOriginOrganizationGUID();
-            originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
-            otherOriginValues            = template.getOtherOriginValues();
             additionalProperties         = template.getAdditionalProperties();
             connection                   = template.getConnection();
         }
@@ -151,159 +137,6 @@ public class DiscoveryServiceProperties extends PropertyBase
 
 
     /**
-     * Returns the name of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwner()
-    {
-        return owner;
-    }
-
-
-    /**
-     * Set up the name of the owner for this asset.
-     *
-     * @param owner String name
-     */
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
-    }
-
-
-    /**
-     * Return the type of owner stored in the owner property.
-     *
-     * @return OwnerCategory enum
-     */
-    public OwnerType getOwnerType()
-    {
-        return ownerType;
-    }
-
-
-    /**
-     * Set up the owner type for this asset.
-     *
-     * @param ownerType OwnerCategory enum
-     */
-    public void setOwnerType(OwnerType ownerType)
-    {
-        this.ownerType = ownerType;
-    }
-
-
-    /**
-     * Return the names of the zones that this discovery service is a member of.
-     *
-     * @return list of zone names
-     */
-    public List<String> getZoneMembership()
-    {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(zoneMembership);
-        }
-    }
-
-
-    /**
-     * Set up the names of the zones that this discovery service is a member of.
-     *
-     * @param zoneMembership list of zone names
-     */
-    public void setZoneMembership(List<String> zoneMembership)
-    {
-        this.zoneMembership = zoneMembership;
-    }
-
-
-    /**
-     * Return the unique identifier for the organization that originated this discovery service.
-     *
-     * @return string guid
-     */
-    public String getOriginOrganizationGUID()
-    {
-        return originOrganizationGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier for the organization that originated this discovery service.
-     *
-     * @param originOrganizationGUID string guid
-     */
-    public void setOriginOrganizationGUID(String originOrganizationGUID)
-    {
-        this.originOrganizationGUID = originOrganizationGUID;
-    }
-
-
-    /**
-     * Return the unique identifier of the business capability that originated this discovery service.
-     *
-     * @return string guid
-     */
-    public String getOriginBusinessCapabilityGUID()
-    {
-        return originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the business capability that originated this discovery service.
-     *
-     * @param originBusinessCapabilityGUID string guid
-     */
-    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID)
-    {
-        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Return the properties that characterize where this discovery service is from.
-     *
-     * @return map of name value pairs, all strings
-     */
-    public Map<String, String> getOtherOriginValues()
-    {
-        if (otherOriginValues == null)
-        {
-            return null;
-        }
-        else if (otherOriginValues.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(otherOriginValues);
-        }
-    }
-
-
-    /**
-     * Set up the properties that characterize where this discovery service is from.
-     *
-     * @param otherOriginValues map of name value pairs, all strings
-     */
-    public void setOtherOriginValues(Map<String, String> otherOriginValues)
-    {
-        this.otherOriginValues = otherOriginValues;
-    }
-
-    /**
      * Set up additional properties.
      *
      * @param additionalProperties Additional properties object
@@ -370,12 +203,6 @@ public class DiscoveryServiceProperties extends PropertyBase
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerType=" + ownerType +
-                ", zoneMembership=" + zoneMembership +
-                ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                ", otherOriginValues=" + otherOriginValues +
                 ", additionalProperties=" + additionalProperties +
                 ", connection=" + connection +
                 ", headerVersion=" + getHeaderVersion() +
@@ -407,12 +234,6 @@ public class DiscoveryServiceProperties extends PropertyBase
         return Objects.equals(qualifiedName, that.qualifiedName) &&
                 Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(owner, that.owner) &&
-                ownerType == that.ownerType &&
-                Objects.equals(zoneMembership, that.zoneMembership) &&
-                Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
-                Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
-                Objects.equals(otherOriginValues, that.otherOriginValues) &&
                 Objects.equals(additionalProperties, that.additionalProperties) &&
                 Objects.equals(connection, that.connection);
     }
@@ -426,8 +247,6 @@ public class DiscoveryServiceProperties extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, displayName, description, owner, ownerType, zoneMembership,
-                            originOrganizationGUID, originBusinessCapabilityGUID, otherOriginValues, additionalProperties,
-                            connection);
+        return Objects.hash(qualifiedName, displayName, description,  additionalProperties, connection);
     }
 }
