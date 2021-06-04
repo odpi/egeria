@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 # Building a Threat Model
 
 Threat modeling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified, enumerated, and mitigation can be prioritized. 
@@ -31,16 +33,12 @@ Most common threat categories following [STRIDE](https://docs.microsoft.com/en-u
 
 #### Spoofing identity
 
-Native support 
-
 Egeria does not store and manage sensitive user identity information such as usernames with passwords. 
 Egeria Open Metadata Security module delegates this responsibility to dedicated security connectors that can be developed to integrate with external Identity Management system.
 
 Learn more about [Open Metadata Security](https://egeria.odpi.org/open-metadata-implementation/common-services/metadata-security/).
 
 #### Tampering with data
-
-Native support
 
 Access to metadata in Egeria platform is also controlled by Open Metadata Security connectors. 
 You can configure and use security API to introduce access control on different levels like Platform and Server. 
@@ -49,7 +47,6 @@ Furthermore, Open Metadata Server Security Connector APIs allow fine-grained acc
 Lear more about [Open Metadata Security connectors](https://egeria.odpi.org/open-metadata-implementation/common-services/metadata-security/metadata-security-apis/).
 
 #### Repudiation
-Native support
 
 Egeria platform uses its AuditLog framework help with diagnostics, auditing and data repudiation threats. All system events, user operations are recorded and published to AudiLog subsystem. 
 You can configure different severity levels and extend this framework to send audit log trails to variety of external systems. 
@@ -58,13 +55,11 @@ Lear more about [Diagnostics and Auditing](https://egeria.odpi.org/open-metadata
 
 
 #### Information disclosure
-Native support
 
 Egeria supports transport level security for its components to minimize information disclosure on the data in transit.
 Although SSL/TLS is enabled by default in the Egeria Open Metadata Platform, it is strongly recommended that consumers configure all components using strong encryption and preferred trusted PKI.
 
 #### Denial of service
-Some support
 
 Some core Egeria components are designed to counter threats like DoS. Measures like MaxPageSize on APIs that read metadata or throttling mechanism for the React UI login page.
 However, consumers should also plan to mitigate these threats on infra/service level by enforcing additional counter measures on key components such as Gateways (Revers Proxy). 
