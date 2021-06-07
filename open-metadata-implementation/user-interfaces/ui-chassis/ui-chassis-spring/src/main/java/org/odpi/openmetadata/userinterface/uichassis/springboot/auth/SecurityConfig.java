@@ -35,7 +35,6 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${cors.allowed-origins}")
     List<String> allowedOrigins;
 
-
     public SecurityConfig() {
         super(true);
     }
