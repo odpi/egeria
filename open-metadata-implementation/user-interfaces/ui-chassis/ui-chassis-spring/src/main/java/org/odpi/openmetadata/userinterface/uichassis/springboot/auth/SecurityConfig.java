@@ -49,8 +49,6 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/logout").permitAll()
                 .antMatchers("/api/public/**").permitAll()
-                .antMatchers("/api/public/css/**").permitAll()
-                .antMatchers("/api/public/js/**").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/**").permitAll()
             .anyRequest().authenticated()
