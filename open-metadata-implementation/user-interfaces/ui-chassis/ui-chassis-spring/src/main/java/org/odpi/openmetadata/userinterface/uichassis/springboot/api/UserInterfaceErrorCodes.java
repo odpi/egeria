@@ -31,7 +31,11 @@ public enum UserInterfaceErrorCodes {
     INVALID_REQUEST_FOR_GLOSSARY_VIEW(HttpStatus.INTERNAL_SERVER_ERROR, "USER-INTERFACE-500-006",
             "The request for glossary view is invalid",
             "The system is unable to handle request.",
-            "Check that the configuration for Glossary View is correct." );
+            "Check that the configuration for Glossary View is correct." ),
+    ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND, "USER-INTERFACE-404-001",
+            "The entity is not found",
+            "The system is unable to handle the request.",
+            "Check that the unique identifier of the entity is correct.");
 
     private HttpStatus httpErrorCode;
     private String errorMessageId;

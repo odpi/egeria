@@ -163,11 +163,6 @@ public class SoftwareServerProperties extends AssetProperties
                 ", softwareServerUserId='" + softwareServerUserId + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", meanings=" + getMeanings() +
