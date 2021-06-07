@@ -394,7 +394,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 currentTerm.setEffectiveToTime(termToTime);
                 // always update the governance actions for a replace or an update
                 currentTerm.setGovernanceClassifications(suppliedTerm.getGovernanceClassifications());
-
+                currentTerm.setSpineObject(suppliedTerm.isSpineObject());
+                currentTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
+                currentTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
                 EntityDetail forUpdate = termMapper.map(currentTerm);
                 Optional<EntityDetail> updatedEntity = oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, forUpdate);
