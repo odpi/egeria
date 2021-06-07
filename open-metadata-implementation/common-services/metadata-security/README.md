@@ -69,7 +69,7 @@ as soon as the platform is started, and the server security connector is configu
 The `metadata-security` module provides the interfaces, connector implementation and plug points that sit in the
 server and server platform.  Details of the specifics of these interfaces follow. 
 
-* [Open Metadata Security Connector Interfaces](metadata-security-connectors)
+* [Open Metadata Security Connector Interfaces](metadata-security-apis)
 * [Open Metadata Security server-side implementations](metadata-security-server)
  
 There are sample

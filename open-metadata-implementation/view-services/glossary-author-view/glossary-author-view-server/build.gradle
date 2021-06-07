@@ -16,6 +16,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
 
 }
 

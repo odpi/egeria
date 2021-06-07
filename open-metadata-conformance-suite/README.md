@@ -38,7 +38,7 @@ is sharing metadata with.
 Any technology that can demonstrate that it is conformant can apply to the ODPi for permission to display
 the conformance mark in their product/descriptive literature (see below).
 
-More details on the conformance mark can be found on the [ODPi Website](https://www.odpi.org/projects/egeria/conformance).
+More details on the conformance mark can be found on the [LF AI & Data Website](https://lfaidata.foundation/projects/egeria/conformance/).
 
 Information on how to run the open metadata conformance suite is located in the [docs section](docs).
 The internal design is described in the [design section](design).

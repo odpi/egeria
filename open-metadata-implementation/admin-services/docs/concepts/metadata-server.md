@@ -9,7 +9,7 @@ instances.  It is able to be a
 [member of an open metadata repository cohort](cohort-member.md) and so
 can exchange metadata with other members of the cohort.
 
-![Figure 1](metadata-server.png)
+![Figure 1](metadata-server.png#pagewidth)
 > **Figure 1:** Metadata server in the open metadata ecosystem
 
 The metadata server typically has the [access services](../../../access-services)
@@ -21,13 +21,13 @@ support all types of metadata.
 
 Figure 2 shows the configuration document for a metadata server that does not connect to a cohort.
 
-![Figure 2](../concepts/standalone-metadata-server-config.png)
+![Figure 2](../concepts/standalone-metadata-server-config.png#pagewidth)
 > **Figure 2:** Standalone metadata server
 
 Figure 3 shows the metadata server configuration document with the cohort configuration added to
 enable it to communicate with other metadata servers.
 
-![Figure 3](../concepts/connected-metadata-server-config.png)
+![Figure 3](../concepts/connected-metadata-server-config.png#pagewidth)
 > **Figure 3:** Connected metadata server
 
 

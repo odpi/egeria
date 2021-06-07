@@ -241,6 +241,95 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
 
 
     /**
+     * Set up the Ownership classification for this entity.
+     * This method overrides an previously defined AssetOwnership classification for this entity.
+     *
+     * @param userId calling user
+     * @param owner name of the owner
+     * @param ownerTypeName type of element that owner comes from
+     * @param ownerPropertyName name of property used to identify owner
+     * @param methodName calling method
+     * @throws InvalidParameterException Ownership is not supported in the local repository, or any repository
+     *                                   connected by an open metadata repository cohort
+     */
+    protected void setOwnershipClassification(String userId,
+                                              String owner,
+                                              String ownerTypeName,
+                                              String ownerPropertyName,
+                                              String methodName) throws InvalidParameterException
+    {
+        if (owner != null)
+        {
+            try
+            {
+                Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                      null,
+                                                                                      null,
+                                                                                      InstanceProvenanceType.LOCAL_COHORT,
+                                                                                      userId,
+                                                                                      OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                                                      typeName,
+                                                                                      ClassificationOrigin.ASSIGNED,
+                                                                                      null,
+                                                                                      getOwnershipProperties(owner,
+                                                                                                             ownerTypeName,
+                                                                                                             ownerPropertyName,
+                                                                                                             methodName));
+                newClassifications.put(classification.getName(), classification);
+            }
+            catch (TypeErrorException error)
+            {
+                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME);
+            }
+        }
+    }
+
+
+
+
+    /**
+     * Return the bean properties describing the element's owner in an InstanceProperties object.
+     *
+     * @param owner name of the owner
+     * @param ownerTypeName type of element that owner comes from
+     * @param ownerPropertyName name of property used to identify owner
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     * @throws InvalidParameterException the owner enum type is not supported
+     */
+    InstanceProperties getOwnershipProperties(String owner,
+                                              String ownerTypeName,
+                                              String ownerPropertyName,
+                                              String methodName)
+    {
+        InstanceProperties properties = null;
+
+        if (owner != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      null,
+                                                                      OpenMetadataAPIMapper.OWNER_PROPERTY_NAME,
+                                                                      owner,
+                                                                      methodName);
+
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                                      ownerTypeName,
+                                                                      methodName);
+
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                                      ownerPropertyName,
+                                                                      methodName);
+        }
+
+        return properties;
+    }
+
+
+    /**
      * Set up the Template classification.
      *
      * @param userId calling user
@@ -387,29 +476,16 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                             Map<String, String> archiveProperties,
                                             String              methodName)
     {
-        InstanceProperties properties;
-
-        if (archiveDate != null)
-        {
-            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+        InstanceProperties properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                     null,
                                                                     OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
-                                                                    archiveDate,
+                                                                    archiveDate != null ? archiveDate : new Date(),
                                                                     methodName);
-        }
-        else
-        {
-            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                    null,
-                                                                    OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
-                                                                    new Date(),
-                                                                    methodName);
-        }
 
         if (archiveUser != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
+                                                                      properties,
                                                                       OpenMetadataAPIMapper.ARCHIVE_USER_PROPERTY_NAME,
                                                                       archiveUser,
                                                                       methodName);
@@ -500,25 +576,52 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                 Map<String, Object> securityProperties,
                                                 String              methodName)
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                                          null,
+                                                                                          OpenMetadataAPIMapper.SECURITY_LABELS_PROPERTY_NAME,
+                                                                                          securityLabels,
+                                                                                          methodName);
+        properties = repositoryHelper.addMapPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.SECURITY_PROPERTIES_PROPERTY_NAME,
+                                                               securityProperties,
+                                                               methodName);
 
-        if (securityLabels != null)
-        {
-            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           null,
-                                                                           OpenMetadataAPIMapper.SECURITY_LABELS_PROPERTY_NAME,
-                                                                           securityLabels,
-                                                                           methodName);
-        }
+        return properties;
+    }
 
-        if (securityProperties != null)
-        {
-            properties = repositoryHelper.addMapPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   OpenMetadataAPIMapper.SECURITY_PROPERTIES_PROPERTY_NAME,
-                                                                   securityProperties,
-                                                                   methodName);
-        }
+
+    /**
+     * Return the security tag properties in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @param description description of why this is significant
+     * @param scope scope of its business significance
+     * @param businessCapabilityGUID unique identifier of the business capability that rates this as significant
+     * @return InstanceProperties object
+     */
+    InstanceProperties getBusinessSignificanceProperties(String description,
+                                                         String scope,
+                                                         String businessCapabilityGUID,
+                                                         String methodName)
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                     description,
+                                                                                     methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
+                                                                  scope,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME,
+                                                                  businessCapabilityGUID,
+                                                                  methodName);
 
         return properties;
     }

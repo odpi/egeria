@@ -22,16 +22,16 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
      * Create a new client with no authentication embedded in the HTTP request and an audit log.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public CSVFileAssetOwner(String   serverName,
-                             String   serverPlatformRootURL,
+                             String   serverPlatformURLRoot,
                              AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -39,14 +39,14 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public CSVFileAssetOwner(String serverName,
-                             String serverPlatformRootURL) throws InvalidParameterException
+                             String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -56,7 +56,7 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
      * There is also an audit log destination.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
@@ -65,12 +65,12 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
      * REST API calls.
      */
     public CSVFileAssetOwner(String   serverName,
-                             String   serverPlatformRootURL,
+                             String   serverPlatformURLRoot,
                              String   userId,
                              String   password,
                              AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -79,18 +79,18 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public CSVFileAssetOwner(String serverName,
-                             String serverPlatformRootURL,
+                             String serverPlatformURLRoot,
                              String userId,
                              String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -98,7 +98,7 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
      * Create a new client that is going to be used in an OMAG Server (view service or integration service typically).
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
      * @param auditLog logging destination
@@ -106,12 +106,12 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
      * REST API calls.
      */
     public CSVFileAssetOwner(String               serverName,
-                             String               serverPlatformRootURL,
+                             String               serverPlatformURLRoot,
                              AssetOwnerRESTClient restClient,
                              int                  maxPageSize,
                              AuditLog             auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
@@ -195,7 +195,7 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
         requestBody.setQuoteCharacter(quoteCharacter);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          serverPlatformURLRoot + urlTemplate,
                                                                           requestBody,
                                                                           serverName,
                                                                           userId);

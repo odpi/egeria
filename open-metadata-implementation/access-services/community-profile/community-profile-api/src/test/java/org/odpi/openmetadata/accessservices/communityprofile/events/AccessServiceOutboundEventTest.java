@@ -44,8 +44,8 @@ public class AccessServiceOutboundEventTest
     {
         MockAccessServiceOutboundEvent  testObject = new MockAccessServiceOutboundEvent();
 
-        testObject.setEventType(CommunityProfileOutboundEventType.NEW_ASSET_IN_COLLECTION_EVENT);
-        assertTrue(CommunityProfileOutboundEventType.NEW_ASSET_IN_COLLECTION_EVENT.equals(testObject.getEventType()));
+        testObject.setEventType(CommunityProfileOutboundEventType.NEW_ELEMENT_EVENT);
+        assertTrue(CommunityProfileOutboundEventType.NEW_ELEMENT_EVENT.equals(testObject.getEventType()));
     }
 
 

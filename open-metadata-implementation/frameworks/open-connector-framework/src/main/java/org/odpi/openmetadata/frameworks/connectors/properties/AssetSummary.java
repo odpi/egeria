@@ -29,7 +29,13 @@ import java.util.Map;
  *     <li>description - full description of the asset.
  *     (Sourced from attribute description within Asset - model 0010)</li>
  *     <li>owner - name of the person or organization that owns the asset.
- *     (Sourced from attribute owner within AssetOwnershipClassification - model 0445)</li>
+ *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
+ *     <li>ownerTypeName - name of the element type identifying the person or organization that owns the asset.
+ *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
+ *     <li>ownerPropertyName - name of the property identifying person or organization that owns the asset.
+ *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
+ *     <li>ownerType - type of the the person or organization that owns the asset.
+ *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
  *     <li>zoneMembership - list of governance zones assigned to the asset</li>
  *     <li>classifications - list of classifications assigned to the asset</li>
  * </ul>
@@ -179,9 +185,32 @@ public class AssetSummary extends AssetDescriptor
      *
      * @return OwnerType enum
      */
+    @Deprecated
     public OwnerType getOwnerType()
     {
         return assetBean.getOwnerType();
+    }
+
+
+    /**
+     * Return the type name of the element representing the owner.
+     *
+     * @return type name String
+     */
+    public String getOwnerTypeName()
+    {
+        return assetBean.getOwnerTypeName();
+    }
+
+
+    /**
+     * Return the property name that is being used to identify the owner.
+     *
+     * @return property name String
+     */
+    public String getOwnerPropertyName()
+    {
+        return assetBean.getOwnerPropertyName();
     }
 
 

@@ -91,13 +91,6 @@ public class GovernanceActionProcessRESTServices
 
                 GovernanceActionProcessProperties processProperties = requestBody.getProperties();
 
-                int ownerTypeOrdinal = 0;
-
-                if (processProperties.getOwnerCategory() != null)
-                {
-                    ownerTypeOrdinal = processProperties.getOwnerCategory().getOpenTypeOrdinal();
-                }
-
                 Map<String, Object> extendedProperties = new HashMap<>();
                 extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, processProperties.getFormula());
                 extendedProperties.put(OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
@@ -108,12 +101,6 @@ public class GovernanceActionProcessRESTServices
                                                                  processProperties.getQualifiedName(),
                                                                  processProperties.getTechnicalName(),
                                                                  processProperties.getTechnicalDescription(),
-                                                                 processProperties.getZoneMembership(),
-                                                                 processProperties.getOwner(),
-                                                                 ownerTypeOrdinal,
-                                                                 processProperties.getOriginOrganizationGUID(),
-                                                                 processProperties.getOriginBusinessCapabilityGUID(),
-                                                                 processProperties.getOtherOriginValues(),
                                                                  processProperties.getAdditionalProperties(),
                                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
@@ -236,42 +223,6 @@ public class GovernanceActionProcessRESTServices
                                     extendedProperties,
                                     requestBody.getMergeUpdate(),
                                     methodName);
-
-                int ownerTypeOrdinal = 0;
-
-                if (processProperties.getOwnerCategory() != null)
-                {
-                    ownerTypeOrdinal = processProperties.getOwnerCategory().getOpenTypeOrdinal();
-                }
-
-                if ((processProperties.getOwner() != null) || (! requestBody.getMergeUpdate()))
-                {
-                    handler.updateAssetOwner(userId, processGUID, processGUIDParameterName, processProperties.getOwner(), ownerTypeOrdinal, methodName);
-                }
-
-                if ((processProperties.getZoneMembership() != null) || (! requestBody.getMergeUpdate()))
-                {
-                    handler.updateAssetZones(userId, processGUID, processGUIDParameterName, processProperties.getZoneMembership(), methodName);
-                }
-
-                if ((processProperties.getOriginOrganizationGUID() != null) ||
-                            (processProperties.getOriginBusinessCapabilityGUID() != null) ||
-                            (processProperties.getOtherOriginValues() != null) ||
-                            (! requestBody.getMergeUpdate()))
-                {
-                    final String organizationGUIDParameterName = "originOrganizationGUID";
-                    final String businessCapabilityGUIDParameterName = "originBusinessCapabilityGUID";
-
-                    handler.addAssetOrigin(userId,
-                                           processGUID,
-                                           processGUIDParameterName,
-                                           processProperties.getOriginOrganizationGUID(),
-                                           organizationGUIDParameterName,
-                                           processProperties.getOriginBusinessCapabilityGUID(),
-                                           businessCapabilityGUIDParameterName,
-                                           processProperties.getOtherOriginValues(),
-                                           methodName);
-                }
 
                 if (requestBody.getProcessStatus() != null)
                 {
@@ -668,20 +619,13 @@ public class GovernanceActionProcessRESTServices
                                                                                                                                   serverName,
                                                                                                                                   methodName);
 
-                int ownerTypeOrdinal = 0;
 
-                if (requestBody.getOwnerCategory() != null)
-                {
-                    ownerTypeOrdinal = requestBody.getOwnerCategory().getOpenTypeOrdinal();
-                }
 
                 response.setGUID(handler.createGovernanceActionType(userId,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDomainIdentifier(),
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
-                                                                    requestBody.getOwner(),
-                                                                    ownerTypeOrdinal,
                                                                     requestBody.getSupportedGuards(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getGovernanceEngineGUID(),
@@ -744,13 +688,6 @@ public class GovernanceActionProcessRESTServices
 
                 invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-                int ownerTypeOrdinal = 0;
-
-                if (properties.getOwnerCategory() != null)
-                {
-                    ownerTypeOrdinal = properties.getOwnerCategory().getOpenTypeOrdinal();
-                }
-
                 handler.updateGovernanceActionType(userId,
                                                    actionTypeGUID,
                                                    requestBody.getMergeUpdate(),
@@ -758,8 +695,6 @@ public class GovernanceActionProcessRESTServices
                                                    properties.getDomainIdentifier(),
                                                    properties.getDisplayName(),
                                                    properties.getDescription(),
-                                                   properties.getOwner(),
-                                                   ownerTypeOrdinal,
                                                    properties.getSupportedGuards(),
                                                    properties.getAdditionalProperties(),
                                                    properties.getGovernanceEngineGUID(),

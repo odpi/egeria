@@ -221,27 +221,16 @@ public class AssetBuilder extends ReferenceableBuilder
     {
         if (owner != null)
         {
-            try
+            if (ownerType == 0)
             {
-                Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                      null,
-                                                                                      null,
-                                                                                      InstanceProvenanceType.LOCAL_COHORT,
-                                                                                      userId,
-                                                                                      OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                                                      typeName,
-                                                                                      ClassificationOrigin.ASSIGNED,
-                                                                                      null,
-                                                                                      getOwnerProperties(userId,
-                                                                                                         owner,
-                                                                                                         ownerType,
-                                                                                                         methodName));
-                newClassifications.put(classification.getName(), classification);
+                setOwnershipClassification(userId, owner, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME, null, methodName);
             }
-            catch (TypeErrorException error)
+            else if (ownerType == 1)
             {
-                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME);
+                setOwnershipClassification(userId, owner, OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME, null, methodName);
             }
+
+            setOwnershipClassification(userId, owner, null, null, methodName);
         }
     }
 
@@ -249,68 +238,31 @@ public class AssetBuilder extends ReferenceableBuilder
     /**
      * Return the bean properties describing the asset's owner in an InstanceProperties object.
      *
-     * @param userId calling user
-     * @param owner name of the owner.
+     * @param owner name of the owner
      * @param ownerType Enum ordinal for type of owner - 0=userId; 1= profileId; 99=other.
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException the owner enum type is not supported
      */
-    InstanceProperties getOwnerProperties(String userId,
-                                          String owner,
+    @Deprecated
+    InstanceProperties getOwnerProperties(String owner,
                                           int    ownerType,
-                                          String methodName) throws InvalidParameterException
+                                          String methodName)
     {
-        InstanceProperties properties;
-
         if (owner != null)
         {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.OWNER_PROPERTY_NAME,
-                                                                      owner,
-                                                                      methodName);
+            if (ownerType == 0)
+            {
+                return getOwnershipProperties(owner, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME, null, methodName);
+            }
+            else if (ownerType == 1)
+            {
+                return getOwnershipProperties(owner, OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME, null, methodName);
+            }
 
-            try
-            {
-                properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                        properties,
-                                                                        OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME,
-                                                                        OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_NAME,
-                                                                        OpenMetadataAPIMapper.USER_ID_OWNER_TYPE_ORDINAL,
-                                                                        methodName);
-            }
-            catch (TypeErrorException error)
-            {
-                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_NAME);
-            }
-        }
-        else
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.OWNER_PROPERTY_NAME,
-                                                                      userId,
-                                                                      methodName);
-
-            try
-            {
-                properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                        properties,
-                                                                        OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME,
-                                                                        OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_NAME,
-                                                                        ownerType,
-                                                                        methodName);
-            }
-            catch (TypeErrorException error)
-            {
-                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_OWNER_TYPE_ENUM_TYPE_NAME);
-            }
+            return getOwnershipProperties(owner, null, null, methodName);
         }
 
-        return properties;
+        return null;
     }
 
 
@@ -378,7 +330,7 @@ public class AssetBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.ORGANIZATION_GUID_PROPERTY_NAME,
+                                                                      OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME,
                                                                       organizationGUID,
                                                                       methodName);
         }
@@ -387,7 +339,7 @@ public class AssetBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.BUSINESS_CAPABILITY_GUID_PROPERTY_NAME,
+                                                                      OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME,
                                                                       businessCapabilityGUID,
                                                                       methodName);
 
@@ -401,6 +353,109 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                          otherOriginValues,
                                                                          methodName);
         }
+
+        return properties;
+    }
+
+
+    /**
+     * Add the asset origin classification to an asset.
+     *
+     * @param userId calling user
+     * @param organization Unique identifier  of the organization where this asset originated from - or null
+     * @param organizationPropertyName property name used for the identifier of the organization
+     * @param businessCapability  Unique identifier of the business capability where this asset originated from
+     * @param businessCapabilityPropertyName property name used for the identifier of the businessCapability
+     * @param otherOriginValues Descriptive labels describing origin of the asset
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     */
+    void  setAssetOrigin(String                userId,
+                         String                organization,
+                         String                organizationPropertyName,
+                         String                businessCapability,
+                         String                businessCapabilityPropertyName,
+                         Map<String, String>   otherOriginValues,
+                         String                methodName) throws InvalidParameterException
+    {
+        if ((organization != null) || (businessCapability != null) || ((otherOriginValues != null) && (! otherOriginValues.isEmpty())))
+        {
+            try
+            {
+                Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                      null,
+                                                                                      null,
+                                                                                      InstanceProvenanceType.LOCAL_COHORT,
+                                                                                      userId,
+                                                                                      OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                                                      typeName,
+                                                                                      ClassificationOrigin.ASSIGNED,
+                                                                                      null,
+                                                                                      getOriginProperties(organization,
+                                                                                                          organizationPropertyName,
+                                                                                                          businessCapability,
+                                                                                                          businessCapabilityPropertyName,
+                                                                                                          otherOriginValues,
+                                                                                                          methodName));
+                newClassifications.put(classification.getName(), classification);
+            }
+            catch (TypeErrorException error)
+            {
+                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME);
+            }
+        }
+    }
+
+
+    /**
+     * Return the bean properties describing the asset's owner in an InstanceProperties object.
+     *
+     * @param organization Unique identifier  of the organization where this asset originated from - or null
+     * @param organizationPropertyName property name used for the identifier of the organization
+     * @param businessCapability  Unique identifier of the business capability where this asset originated from
+     * @param businessCapabilityPropertyName property name used for the identifier of the businessCapability
+     * @param otherOriginValues Descriptive labels describing origin of the asset
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    InstanceProperties getOriginProperties(String                organization,
+                                           String                organizationPropertyName,
+                                           String                businessCapability,
+                                           String                businessCapabilityPropertyName,
+                                           Map<String, String>   otherOriginValues,
+                                           String                methodName)
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME,
+                                                                                     organization,
+                                                                                     methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  organizationPropertyName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME,
+                                                                  businessCapability,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  businessCapabilityPropertyName,
+                                                                  methodName);
+
+
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataAPIMapper.OTHER_ORIGIN_VALUES_PROPERTY_NAME,
+                                                                     otherOriginValues,
+                                                                     methodName);
 
         return properties;
     }
