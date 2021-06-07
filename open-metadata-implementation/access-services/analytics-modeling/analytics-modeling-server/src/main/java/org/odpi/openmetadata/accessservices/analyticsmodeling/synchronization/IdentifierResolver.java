@@ -245,7 +245,7 @@ public class IdentifierResolver {
 	 * @return if asset references something then identifiers need to be resolved.
 	 */
 	public boolean required() {
-		return asset.getReference() != null && !asset.getReference().isEmpty();
+		return asset != null && asset.getReference() != null && !asset.getReference().isEmpty();
 	}
 
 	/**
