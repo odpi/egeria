@@ -880,7 +880,7 @@ public class RelationshipsFVT {
         }
         Term term3PostCreate = termFVT.getTermByGUID(term3.getSystemAttributes().getGUID());
         if (!term3PostCreate.isSpineAttribute()) {
-            throw new SubjectAreaFVTCheckedException("ERROR: expect term 1 to be a Spine Attribute");
+            throw new SubjectAreaFVTCheckedException("ERROR: expect term 3 to be a Spine Attribute");
         }
 
         subjectAreaRelationship.hasA().delete(this.userId, guid);
