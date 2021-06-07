@@ -33,9 +33,14 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
             "Review the exception that was returned from the send."),
 
     ERROR_ATTEMPTING_KAFKA_INITIALIZATION(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-002 ",
-            "Egeria was unable to initialize a connection to a Kafka cluster.  The message in the exception was: {2}",
+            "Egeria was unable to initialize a connection to a Kafka cluster.  The message in the exception was: {0}",
             "The system is unable initialize.",
-            "Ensure that Kafka is available")
+            "Ensure that Kafka is available"),
+
+    ERROR_CONNECTING_KAFKA_PRODUCER(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-003 ",
+            "Egeria encountered an exception while attempting to connect a message producer to a Kafka.  The message in the exception was: {0}",
+            "Egeria is unable to produce events",
+            "Ensure that the Kafka service is available and that the connection properties are valid.")
         ;
         private final ExceptionMessageDefinition messageDefinition;
 
