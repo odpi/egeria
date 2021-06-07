@@ -69,6 +69,10 @@ The potential subsystems within an [OMAG Server](omag-server.md) are as follows:
     services for a User Interface (UI).  The view services run in a
     [View Server](view-server.md).
 
+----
+
+* Return to [OMAG Server Platform](omag-server-platform.md)
+* Return to [Administration Guide](../user)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

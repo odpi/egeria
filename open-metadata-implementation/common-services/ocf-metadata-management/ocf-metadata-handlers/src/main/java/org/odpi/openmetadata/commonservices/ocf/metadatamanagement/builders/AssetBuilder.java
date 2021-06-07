@@ -4,14 +4,10 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.LatestChange;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.List;
 import java.util.Map;
@@ -21,11 +17,13 @@ import java.util.Map;
  */
 public class AssetBuilder extends ReferenceableBuilder
 {
-    private String              displayName;
-    private String              description;
-    private String              owner          = null;
-    private OwnerType           ownerType      = null;
-    private List<String>        zoneMembership = null;
+    private String       displayName;
+    private String       description;
+    private String       owner             = null;
+    private String       ownerTypeName     = null;
+    private String       ownerPropertyName = null;
+    private OwnerType    ownerType         = null;
+    private List<String> zoneMembership    = null;
 
 
     /**
@@ -47,61 +45,11 @@ public class AssetBuilder extends ReferenceableBuilder
         this.displayName = assetProperties.getDisplayName();
         this.description = assetProperties.getDescription();
         this.owner = assetProperties.getOwner();
+        this.ownerTypeName = assetProperties.getOwnerTypeName();
+        this.ownerPropertyName = assetProperties.getOwnerPropertyName();
         this.ownerType = assetProperties.getOwnerType();
         this.zoneMembership = assetProperties.getZoneMembership();
     }
-
-
-
-    /**
-     * Constructor supporting all properties.
-     *
-     * @param qualifiedName unique name
-     * @param displayName new value for the display name.
-     * @param description new description for the asset.
-     * @param owner name of the owner.
-     * @param ownerType type of owner.
-     * @param zoneMembership list of zones that this asset belongs to.
-     * @param origin properties that describe the origin of the asset.
-     * @param latestChange description of the last change to the asset.
-     * @param additionalProperties additional properties
-     * @param extendedProperties  properties from the subtype.
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    public AssetBuilder(String               qualifiedName,
-                        String               displayName,
-                        String               description,
-                        String               owner,
-                        OwnerType            ownerType,
-                        List<String>         zoneMembership,
-                        Map<String, String>  origin,
-                        String               latestChange,
-                        Map<String, String>  additionalProperties,
-                        Map<String, Object>  extendedProperties,
-                        OMRSRepositoryHelper repositoryHelper,
-                        String               serviceName,
-                        String               serverName)
-    {
-        super(qualifiedName,
-              additionalProperties,
-              AssetMapper.ASSET_TYPE_NAME,
-              AssetMapper.ASSET_TYPE_GUID,
-              extendedProperties,
-              latestChange,
-              repositoryHelper,
-              serviceName,
-              serverName);
-
-        this.displayName = displayName;
-        this.description = description;
-        this.owner = owner;
-        this.ownerType = ownerType;
-        this.zoneMembership = zoneMembership;
-    }
-
-
 
 
     /**
@@ -189,6 +137,8 @@ public class AssetBuilder extends ReferenceableBuilder
 
         return properties;
     }
+
+
 
     /**
      * Add the OwnerType enum to the properties.

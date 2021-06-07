@@ -45,8 +45,13 @@ public class AssetMapper
     public static final String ASSET_OWNERSHIP_CLASSIFICATION_GUID       = "d531c566-03d2-470a-be69-6f52cabd5fb9";
     public static final String ASSET_OWNERSHIP_CLASSIFICATION_NAME       = "AssetOwnership";
 
-    public static final String OWNER_PROPERTY_NAME                       = "owner";                                /* from Asset entity */
-    public static final String OWNER_TYPE_PROPERTY_NAME                  = "ownerType";                            /* from Asset entity */
+    public static final String OWNERSHIP_CLASSIFICATION_TYPE_GUID        = "8139a911-a4bd-432b-a9f4-f6d11c511abe";
+    public static final String OWNERSHIP_CLASSIFICATION_TYPE_NAME        = "Ownership";
+
+    public static final String OWNER_PROPERTY_NAME                       = "owner";                     /* from (Asset)Ownership classification */
+    public static final String OWNER_TYPE_NAME_PROPERTY_NAME             = "ownerTypeName";             /* from Ownership classification */
+    public static final String OWNER_PROPERTY_NAME_PROPERTY_NAME         = "ownerPropertyName";         /* from Ownership classification */
+    public static final String OWNER_TYPE_PROPERTY_NAME                  = "ownerType";                 /* from (Asset)Ownership classification */
 
 
 }
