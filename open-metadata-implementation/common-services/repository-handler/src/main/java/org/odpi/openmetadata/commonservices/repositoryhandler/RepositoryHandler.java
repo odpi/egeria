@@ -94,7 +94,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -140,86 +140,13 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
     }
-
-
-    /**
-     * Create a new entity from an external source in the open metadata repository with the specified instance status.
-     *
-     * @param userId calling user
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param externalSourceGUID unique identifier (guid) for the external source.
-     * @param externalSourceName unique name for the external source.
-     * @param properties properties for the entity
-     * @param instanceStatus initial status (needs to be valid for type)
-     * @param methodName name of calling method
-     *
-     * @return unique identifier of new entity
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public String  createExternalEntity(String                  userId,
-                                        String                  entityTypeGUID,
-                                        String                  entityTypeName,
-                                        String                  externalSourceGUID,
-                                        String                  externalSourceName,
-                                        InstanceProperties      properties,
-                                        InstanceStatus          instanceStatus,
-                                        String                  methodName) throws UserNotAuthorizedException,
-                                                                                   PropertyServerException
-    {
-        return this.createEntity(userId,
-                                 entityTypeGUID,
-                                 entityTypeName,
-                                 externalSourceGUID,
-                                 externalSourceName,
-                                 properties,
-                                 null,
-                                 instanceStatus,
-                                 methodName);
-    }
-
-
-    /**
-     * Create a new entity in the open metadata repository with the ACTIVE instance status.
-     *
-     * @param userId calling user
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param properties properties for the entity
-     * @param methodName name of calling method
-     *
-     * @return unique identifier of new entity
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public String  createEntity(String                  userId,
-                                String                  entityTypeGUID,
-                                String                  entityTypeName,
-                                InstanceProperties      properties,
-                                String                  methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        return this.createEntity(userId,
-                                 entityTypeGUID,
-                                 entityTypeName,
-                                 null,
-                                 null,
-                                 properties,
-                                 null,
-                                 InstanceStatus.ACTIVE,
-                                 methodName);
-    }
-
 
     /**
      * Create a new entity in the open metadata repository with the ACTIVE instance status.
@@ -401,7 +328,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -636,7 +563,7 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
@@ -720,7 +647,7 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
@@ -978,150 +905,6 @@ public class RepositoryHandler
         }
     }
 
-    /**
-     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
-     * to the supplied values.
-     *
-     * @param userId calling user
-     * @param entityGUID entity to update
-     * @param existingEntityClassifications existing classifications
-     * @param classifications classifications for the entity
-     * @param methodName name of calling method
-     * @throws InvalidParameterException problem with the GUID
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    private void updateEntityClassifications(String                  userId,
-                                             String                  entityGUID,
-                                             List<Classification>    existingEntityClassifications,
-                                             List<Classification>    classifications,
-                                             String                  methodName) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        final String localMethodName = "updateEntityClassifications";
-
-        try
-        {
-            if ((existingEntityClassifications == null) || (existingEntityClassifications.isEmpty()))
-            {
-                if ((classifications != null) && (! classifications.isEmpty()))
-                {
-                    /*
-                     * All of the classifications are new
-                     */
-                    for (Classification  newClassification : classifications)
-                    {
-                        if (newClassification != null)
-                        {
-                            this.classifyEntity(userId,
-                                                entityGUID,
-                                                newClassification.getName(),
-                                                newClassification.getProperties(),
-                                                methodName);
-                        }
-                    }
-                }
-
-                /*
-                 * If both the existing and new classifications are null then nothing to do.
-                 */
-            }
-            else if ((classifications == null) || (classifications.isEmpty()))
-            {
-                /*
-                 * All of the classifications are deleted
-                 */
-                for (Classification  obsoleteClassification : existingEntityClassifications)
-                {
-                    if (obsoleteClassification != null)
-                    {
-                        this.declassifyEntity(userId,
-                                              entityGUID,
-                                              obsoleteClassification.getName(),
-                                              obsoleteClassification,
-                                              methodName);
-                    }
-                }
-            }
-            else /* there are existing classifications as well as new ones */
-            {
-                Map<String, Classification> entityClassificationMap = new HashMap<>();
-
-                for (Classification entityClassification : existingEntityClassifications)
-                {
-                    if ((entityClassification != null) && (entityClassification.getName() != null))
-                    {
-                        entityClassificationMap.put(entityClassification.getName(), entityClassification);
-                    }
-                }
-
-                for (Classification classification : classifications)
-                {
-                    if ((classification != null) && (classification.getName() != null))
-                    {
-                        Classification matchingEntityClassification = entityClassificationMap.get(classification.getName());
-
-                        if (matchingEntityClassification == null)
-                        {
-                            this.classifyEntity(userId,
-                                                entityGUID,
-                                                classification.getName(),
-                                                classification.getProperties(),
-                                                methodName);
-                        }
-                        else /* new and old match */
-                        {
-                            if (classification.getProperties() == null)
-                            {
-                                if (matchingEntityClassification.getProperties() != null)
-                                {
-                                    this.reclassifyEntity(userId,
-                                                          entityGUID,
-                                                          classification.getName(),
-                                                          matchingEntityClassification,
-                                                          null, // clears all properties
-                                                          methodName);
-                                }
-                            }
-                            else if (!classification.getProperties().equals(matchingEntityClassification.getProperties()))
-                            {
-                                this.reclassifyEntity(userId,
-                                                      entityGUID,
-                                                      classification.getName(),
-                                                      matchingEntityClassification,
-                                                      classification.getProperties(),
-                                                      methodName);
-                            }
-
-                            entityClassificationMap.remove(classification.getName());
-                        }
-                    }
-
-                    /*
-                     * Whatever is left in the map needs to be removed
-                     */
-                    for (String entityClassificationName : entityClassificationMap.keySet())
-                    {
-                        if (entityClassificationName != null && classification != null)
-                        {
-                            this.declassifyEntity(userId,
-                                                  entityGUID,
-                                                  classification.getName(),
-                                                  entityClassificationMap.get(entityClassificationName),
-                                                  methodName);
-                        }
-                    }
-                }
-            }
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-    }
-
 
     /**
      * Retrieve a specific classification for an entity. Null is returned if the entity is not classified
@@ -1171,52 +954,6 @@ public class RepositoryHandler
 
         return null;
     }
-
-
-    /**
-     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
-     * to the supplied values.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier entity to update
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param properties properties for the entity
-     * @param classifications classifications for entity
-     * @param methodName name of calling method
-     *
-     * @return returned entity containing the update
-     * @throws InvalidParameterException problem with the GUID
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public EntityDetail updateEntity(String                  userId,
-                                     String                  entityGUID,
-                                     String                  entityTypeGUID,
-                                     String                  entityTypeName,
-                                     InstanceProperties      properties,
-                                     List<Classification>    classifications,
-                                     String                  methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        EntityDetail entity = this.updateEntityProperties(userId,
-                                                          entityGUID,
-                                                          entityTypeGUID,
-                                                          entityTypeName,
-                                                          properties,
-                                                          methodName);
-
-        this.updateEntityClassifications(userId,
-                                         entity.getGUID(),
-                                         entity.getClassifications(),
-                                         classifications,
-                                         methodName);
-
-        return entity;
-    }
-
 
     /**
      * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
@@ -1334,64 +1071,11 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
-
-
-
-    /**
-     * Update an existing entity status in the open metadata repository.
-     * This method is deprecated because it is not possible to validate the metadata provenance without
-     * the external source identifiers (if any)
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of entity to update
-     * @param entityTypeGUID type of entity to create
-     * @param entityTypeName name of the entity's type
-     * @param instanceStatus initial status (needs to be valid for type)
-     * @param methodName name of calling method
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public void    updateEntityStatus(String                  userId,
-                                      String                  entityGUID,
-                                      String                  entityTypeGUID,
-                                      String                  entityTypeName,
-                                      InstanceStatus          instanceStatus,
-                                      String                  methodName) throws UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        final String localMethodName = "updateEntityStatus(deprecated)";
-
-        try
-        {
-            EntityDetail newEntity = metadataCollection.updateEntityStatus(userId,
-                                                                           entityGUID,
-                                                                           instanceStatus);
-
-            if (newEntity == null)
-            {
-                errorHandler.handleNoEntity(entityTypeGUID,
-                                            entityTypeName,
-                                            null,
-                                            methodName);
-            }
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-    }
-
 
     /**
      * Update an existing entity status in the open metadata repository.  The external source identifiers
@@ -1461,7 +1145,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1514,7 +1198,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -1570,72 +1254,13 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
     }
-
-
-    /**
-     * Add a new classification to an existing entity in the open metadata repository.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of entity to update
-     * @param classificationTypeGUID identifier of the classification's type
-     * @param classificationTypeName name of the classification's type
-     * @param properties properties for the classification
-     * @param methodName name of calling method
-     * @return updated entity
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public EntityDetail    classifyEntity(String                  userId,
-                                          String                  entityGUID,
-                                          String                  classificationTypeGUID,
-                                          String                  classificationTypeName,
-                                          InstanceProperties      properties,
-                                          String                  methodName) throws UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        final String localMethodName = "classifyEntity(deprecated)";
-
-        try
-        {
-            EntityDetail newEntity = metadataCollection.classifyEntity(userId,
-                                                                       entityGUID,
-                                                                       classificationTypeName,
-                                                                       properties);
-
-            if (newEntity == null)
-            {
-                errorHandler.handleNoEntityForClassification(entityGUID,
-                                                             classificationTypeGUID,
-                                                             classificationTypeName,
-                                                             properties,
-                                                             methodName);
-            }
-            else
-            {
-                return newEntity;
-            }
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-
-        return null;
-    }
-
 
     /**
      * Add a new classification to an existing entity in the open metadata repository.
@@ -1697,86 +1322,12 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
-    }
-
-
-    /**
-     * Update the properties of an existing classification to an existing entity in the open metadata repository.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of entity to update
-     * @param classificationTypeName name of the classification's type
-     * @param existingClassificationHeader current value of classification
-     * @param newProperties properties for the classification
-     * @param methodName name of calling method
-     *
-     * @throws InvalidParameterException invalid parameters passed - probably GUID
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public void    reclassifyEntity(String                  userId,
-                                    String                  entityGUID,
-                                    String                  classificationTypeName,
-                                    InstanceAuditHeader     existingClassificationHeader,
-                                    InstanceProperties      newProperties,
-                                    String                  methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String localMethodName = "reclassifyEntity";
-
-        InstanceAuditHeader auditHeader = existingClassificationHeader;
-
-        if (auditHeader == null)
-        {
-            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
-        }
-
-        /*
-         * OK to reclassify.
-         */
-        if (auditHeader != null)
-        {
-            try
-            {
-                EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
-                                                                                       entityGUID,
-                                                                                       classificationTypeName,
-                                                                                       newProperties);
-
-                if (newEntity == null)
-                {
-                    errorHandler.handleNoEntityForClassification(entityGUID,
-                                                                 null,
-                                                                 classificationTypeName,
-                                                                 newProperties,
-                                                                 methodName);
-                }
-            }
-            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-            {
-                errorHandler.handleUnauthorizedUser(userId, methodName);
-            }
-            catch (Throwable error)
-            {
-                errorHandler.handleRepositoryError(error, methodName, localMethodName);
-            }
-        }
-        else /* should be a classify */
-        {
-            this.classifyEntity(userId,
-                                entityGUID,
-                                classificationTypeName,
-                                newProperties,
-                                methodName);
-        }
     }
 
 
@@ -1861,9 +1412,9 @@ public class RepositoryHandler
             {
                 errorHandler.handleUnauthorizedUser(userId, methodName);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
-                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+                errorHandler.handleRepositoryError(error, methodName, localMethodName + "(" + classificationTypeName + ")");
             }
         }
         else /* should be a classify */
@@ -2025,78 +1576,6 @@ public class RepositoryHandler
         }
     }
 
-
-    /**
-     * Remove an entity from the open metadata repository if the validating properties match.
-     *
-     * @param userId calling user
-     * @param obsoleteEntityGUID unique identifier of the entity
-     * @param entityTypeGUID type of entity to delete
-     * @param entityTypeName name of the entity's type
-     * @param validatingPropertyName name of property that should be in the entity if we have the correct one.
-     * @param validatingProperty value of property that should be in the entity if we have the correct one.
-     * @param methodName name of calling method
-     *
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     * @throws InvalidParameterException mismatch on properties
-     */
-    @Deprecated
-    public void removeEntity(String           userId,
-                             String           obsoleteEntityGUID,
-                             String           entityTypeGUID,
-                             String           entityTypeName,
-                             String           validatingPropertyName,
-                             String           validatingProperty,
-                             String           methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
-    {
-        final String guidParameterName = "obsoleteEntityGUID";
-        final String localMethodName   = "removeEntity(deprecated)";
-
-        try
-        {
-            EntityDetail obsoleteEntity = this.getEntityByGUID(userId,
-                                                               obsoleteEntityGUID,
-                                                               guidParameterName,
-                                                               entityTypeName,
-                                                               methodName);
-
-            if (obsoleteEntity != null)
-            {
-                errorHandler.validateProperties(obsoleteEntityGUID,
-                                                validatingPropertyName,
-                                                validatingProperty,
-                                                obsoleteEntity.getProperties(),
-                                                methodName);
-
-            }
-        }
-        catch (UserNotAuthorizedException | PropertyServerException | InvalidParameterException error)
-        {
-            throw error;
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-
-        try
-        {
-            metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
-        {
-            this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-    }
-
-
     /**
      * Remove an entity from the open metadata repository if the validating properties match. The external source identifiers
      * are used to validate the provenance of the entity before the update.  If they are null,
@@ -2169,7 +1648,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2236,7 +1715,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2288,7 +1767,7 @@ public class RepositoryHandler
         {
             this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2332,7 +1811,7 @@ public class RepositoryHandler
                 this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2374,7 +1853,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2407,7 +1886,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2461,7 +1940,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2530,7 +2009,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2648,7 +2127,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -2798,7 +2277,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3109,7 +2588,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3188,7 +2667,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3243,7 +2722,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3295,7 +2774,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3342,7 +2821,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3403,7 +2882,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3464,7 +2943,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3523,7 +3002,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3583,7 +3062,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3643,7 +3122,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3709,7 +3188,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3796,7 +3275,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3865,7 +3344,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -3931,7 +3410,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4003,7 +3482,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4050,7 +3529,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4136,7 +3615,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4230,7 +3709,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4333,7 +3812,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4557,7 +4036,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4644,7 +4123,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4709,7 +4188,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4808,7 +4287,7 @@ public class RepositoryHandler
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -4873,7 +4352,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5033,7 +4512,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5086,7 +4565,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5152,7 +4631,7 @@ public class RepositoryHandler
                                    relationship.getGUID(),
                                    methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5191,7 +4670,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5224,7 +4703,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5275,7 +4754,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5440,7 +4919,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5478,7 +4957,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5526,7 +5005,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5561,7 +5040,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5617,7 +5096,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
@@ -5848,7 +5327,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }

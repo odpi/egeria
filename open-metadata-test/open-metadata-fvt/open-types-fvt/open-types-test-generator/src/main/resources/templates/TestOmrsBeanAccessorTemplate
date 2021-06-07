@@ -45,7 +45,7 @@ public class TestBeansToAccessOMRS {
     @BeforeMethod
 
     public void setup() throws Exception{
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
     <$$$
 @Test

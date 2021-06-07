@@ -4,11 +4,15 @@
 package org.odpi.openmetadata.adminservices.client;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.properties.DedicatedTopicList;
+import org.odpi.openmetadata.adminservices.rest.DedicatedTopicListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -68,7 +72,9 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
      */
 
     /**
-     * Enable registration of server to an open metadata repository cohort.  This is a group of open metadata
+     * Enable registration of server to an open metadata repository cohort using the default topic structure (SINGLE_TOPIC).
+     *
+     * A cohort is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
      * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
      * information and events related to changes in their supported metadata types and instances.
@@ -114,6 +120,58 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
 
 
     /**
+     * Enable registration of server to an open metadata repository cohort using the topic pattern specified by cohortTopicStructure.
+     *
+     * A cohort is a group of open metadata
+     * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
+     * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration
+     * information and events related to changes in their supported metadata types and instances.
+     * They are also able to query each other's metadata directly through REST calls.
+     *
+     * @param cohortName  name of the cohort
+     * @param cohortTopicStructure the style of cohort topic set up to use
+     * @param additionalProperties additional properties for the event bus connection
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command
+     * @throws OMAGInvalidParameterException invalid parameter
+     * @throws OMAGConfigurationErrorException unusual state in the admin server
+     */
+    public void addCohortRegistration(String               cohortName,
+                                      CohortTopicStructure cohortTopicStructure,
+                                      Map<String, Object>  additionalProperties) throws OMAGNotAuthorizedException,
+                                                                                        OMAGInvalidParameterException,
+                                                                                        OMAGConfigurationErrorException
+    {
+        final String methodName    = "addCohortRegistration";
+        final String parameterName = "cohortName";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-structure/{3}";
+
+        try
+        {
+            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        Map<String, Object>  requestBody = additionalProperties;
+        if (requestBody == null)
+        {
+            requestBody = new HashMap<>();
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        adminUserId,
+                                        serverName,
+                                        cohortName,
+                                        cohortTopicStructure);
+    }
+
+
+    /**
      * Retrieve the current topic name for the cohort.  This call can only be made once the cohort
      * is set up with addCohortRegistration().
      *
@@ -151,6 +209,43 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
 
 
     /**
+     * Retrieve the current topic names for the three dedicated topics of the cohort.  This call can only be made once the cohort
+     * is set up with addCohortRegistration().
+     *
+     * @param cohortName  name of the cohort.
+     * @return List of topic names - registration first, then types and then instances
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public DedicatedTopicList getDedicatedCohortTopicNames(String cohortName) throws OMAGNotAuthorizedException,
+                                                                                     OMAGInvalidParameterException,
+                                                                                     OMAGConfigurationErrorException
+    {
+        final String methodName    = "getDedicatedCohortTopicNames";
+        final String parameterName = "cohortName";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/dedicated-topic-names";
+
+        try
+        {
+            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        DedicatedTopicListResponse response = restClient.callDedicatedTopicListGetRESTCall(methodName,
+                                                                                           serverPlatformRootURL + urlTemplate,
+                                                                                           adminUserId,
+                                                                                           serverName,
+                                                                                           cohortName);
+
+        return response.getDedicatedTopicList();
+    }
+
+
+    /**
      * Override the current topic name for the cohort.  This call can only be made once the cohort
      * is set up with addCohortRegistration().
      *
@@ -169,6 +264,124 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
         final String parameterName       = "cohortName";
         final String topicParameterName  = "topicName";
         final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name-override";
+
+        try
+        {
+            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+            invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        topicName,
+                                        adminUserId,
+                                        serverName,
+                                        cohortName);
+    }
+
+
+    /**
+     * Override the current topic name for the registration topic for the cohort.  This call can only be made once the cohort
+     * is set up with addCohortRegistration().
+     *
+     * @param cohortName  name of the cohort.
+     * @param topicName new name for the topic.
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void overrideRegistrationCohortTopicName(String cohortName,
+                                                    String topicName) throws OMAGNotAuthorizedException,
+                                                                             OMAGInvalidParameterException,
+                                                                             OMAGConfigurationErrorException
+    {
+        final String methodName          = "overrideRegistrationCohortTopicName";
+        final String parameterName       = "cohortName";
+        final String topicParameterName  = "topicName";
+        final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name-override/registration";
+
+        try
+        {
+            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+            invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        topicName,
+                                        adminUserId,
+                                        serverName,
+                                        cohortName);
+    }
+
+
+    /**
+     * Override the current topic name for the registration topic for the cohort.  This call can only be made once the cohort
+     * is set up with addCohortRegistration().
+     *
+     * @param cohortName  name of the cohort.
+     * @param topicName new name for the topic.
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void overrideTypesCohortTopicName(String cohortName,
+                                             String topicName) throws OMAGNotAuthorizedException,
+                                                                      OMAGInvalidParameterException,
+                                                                      OMAGConfigurationErrorException
+    {
+        final String methodName          = "overrideTypesCohortTopicName";
+        final String parameterName       = "cohortName";
+        final String topicParameterName  = "topicName";
+        final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name-override/types";
+
+        try
+        {
+            invalidParameterHandler.validateName(cohortName, parameterName, methodName);
+            invalidParameterHandler.validateName(topicName, topicParameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        topicName,
+                                        adminUserId,
+                                        serverName,
+                                        cohortName);
+    }
+
+
+
+    /**
+     * Override the current topic name for the registration topic for the cohort.  This call can only be made once the cohort
+     * is set up with addCohortRegistration().
+     *
+     * @param cohortName  name of the cohort.
+     * @param topicName new name for the topic.
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void overrideInstancesCohortTopicName(String cohortName,
+                                                 String topicName) throws OMAGNotAuthorizedException,
+                                                                          OMAGInvalidParameterException,
+                                                                          OMAGConfigurationErrorException
+    {
+        final String methodName          = "overrideInstancesCohortTopicName";
+        final String parameterName       = "cohortName";
+        final String topicParameterName  = "topicName";
+        final String urlTemplate         = "/open-metadata/admin-services/users/{0}/servers/{1}/cohorts/{2}/topic-name-override/instances";
 
         try
         {

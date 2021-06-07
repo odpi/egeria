@@ -100,6 +100,12 @@ public class AssetConverter<B> extends AssetOwnerOMASConverter<B>
                     assetProperties.setOwner(this.getOwner(instanceProperties));
                     assetProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
 
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME, entity);
+
+                    assetProperties.setOwner(this.getOwner(instanceProperties));
+                    assetProperties.setOwnerTypeName(this.getOwnerTypeName(instanceProperties));
+                    assetProperties.setOwnerPropertyName(this.getOwnerPropertyName(instanceProperties));
+
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
                     assetProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));

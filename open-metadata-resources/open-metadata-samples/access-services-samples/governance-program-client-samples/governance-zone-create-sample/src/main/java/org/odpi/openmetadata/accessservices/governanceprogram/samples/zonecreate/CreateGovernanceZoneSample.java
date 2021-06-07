@@ -30,9 +30,9 @@ public class CreateGovernanceZoneSample
      * @param serverURLRoot location of server
      * @param clientUserId userId to access the server
      */
-    private CreateGovernanceZoneSample(String  serverName,
-                                       String  serverURLRoot,
-                                       String  clientUserId)
+    public CreateGovernanceZoneSample(String  serverName,
+                                      String  serverURLRoot,
+                                      String  clientUserId)
     {
         this.serverName = serverName;
         this.serverURLRoot = serverURLRoot;
@@ -81,7 +81,7 @@ public class CreateGovernanceZoneSample
     /**
      * This runs the sample
      */
-    private void run()
+    public void run()
     {
         try
         {
@@ -101,7 +101,7 @@ public class CreateGovernanceZoneSample
         }
         catch (Throwable error)
         {
-            System.out.println("There was an exception when calling the asset owner client.  Error message is: " + error.getMessage());
+            System.out.println("There was an exception when calling the GovernanceZoneManager client.  Error message is: " + error.getMessage());
         }
     }
 
@@ -117,7 +117,7 @@ public class CreateGovernanceZoneSample
     {
         String  serverName = "cocoMDS2";
         String  serverURLRoot = "https://localhost:9443";
-        String  clientUserId = "juleskeeper";
+        String  clientUserId = "erinoverview";
 
 
         if (args.length > 1)

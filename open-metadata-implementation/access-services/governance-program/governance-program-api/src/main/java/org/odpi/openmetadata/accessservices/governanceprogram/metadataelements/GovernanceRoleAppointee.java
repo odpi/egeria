@@ -5,13 +5,14 @@ package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceRoleAppointee is the bean used to return a governance role and current appointee.
+ * GovernanceRoleAppointee is the bean used to return a governance role and current appointee(s).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,7 +28,7 @@ public class GovernanceRoleAppointee extends GovernanceRoleElement
 {
     private static final long serialVersionUID = 1L;
 
-    private GovernanceAppointee         appointee     = null;
+    private List<GovernanceAppointee> currentAppointees = null;
 
 
     /**
@@ -50,7 +51,7 @@ public class GovernanceRoleAppointee extends GovernanceRoleElement
 
         if (template != null)
         {
-            appointee = template.getAppointee();
+            currentAppointees = template.getCurrentAppointees();
         }
     }
 
@@ -69,22 +70,31 @@ public class GovernanceRoleAppointee extends GovernanceRoleElement
     /**
      * Return information about the person appointed to the governance role.
      *
-     * @return GovernanceAppointee object
+     * @return list of GovernanceAppointee objects
      */
-    public GovernanceAppointee getAppointee()
+    public List<GovernanceAppointee> getCurrentAppointees()
     {
-        return appointee;
+        if (currentAppointees == null)
+        {
+            return null;
+        }
+        else if (currentAppointees.isEmpty())
+        {
+            return null;
+        }
+
+        return currentAppointees;
     }
 
 
     /**
      * Set up the information about the person appointed to the governance role.
      *
-     * @param appointee  GovernanceAppointee object
+     * @param currentAppointees  list of GovernanceAppointee objects
      */
-    public void setAppointee(GovernanceAppointee appointee)
+    public void setCurrentAppointees(List<GovernanceAppointee> currentAppointees)
     {
-        this.appointee = appointee;
+        this.currentAppointees = currentAppointees;
     }
 
 
@@ -100,7 +110,7 @@ public class GovernanceRoleAppointee extends GovernanceRoleElement
         return "GovernanceRoleAppointee{" +
                        "elementHeader=" + getElementHeader() +
                        ", role=" + getRole() +
-                       ", appointee=" + appointee +
+                       ", currentAppointees=" + currentAppointees +
                        '}';
     }
 
@@ -127,7 +137,7 @@ public class GovernanceRoleAppointee extends GovernanceRoleElement
             return false;
         }
         GovernanceRoleAppointee that = (GovernanceRoleAppointee) objectToCompare;
-        return Objects.equals(appointee, that.appointee);
+        return Objects.equals(currentAppointees, that.currentAppointees);
     }
 
 
@@ -139,6 +149,6 @@ public class GovernanceRoleAppointee extends GovernanceRoleElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), appointee);
+        return Objects.hash(super.hashCode(), currentAppointees);
     }
 }

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.Go
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassificationEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
@@ -118,6 +119,33 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
+     * Process an entity extracted from an event.
+     *
+     * @param sourceName source of the event
+     * @param entity entity from the event
+     * @return boolean flag indicating that the event is processed
+     */
+    private boolean excludeGovernanceEngineEvent(String         sourceName,
+                                                 EntityDetail   entity)
+    {
+        if (entity != null)
+        {
+            InstanceType type = entity.getType();
+
+            if (type != null)
+            {
+                return (repositoryHelper.isTypeOf(sourceName,
+                                                  type.getTypeDefName(),
+                                                  OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME));
+            }
+        }
+
+        return false;
+    }
+
+
+
+    /**
      * Process a relationship extracted from an event.
      *
      * @param sourceName source of the event
@@ -156,6 +184,33 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                         return true;
                     }
                 }
+            }
+        }
+
+        return false;
+    }
+
+
+
+    /**
+     * Process a relationship extracted from an event.
+     *
+     * @param sourceName source of the event
+     * @param relationship relationship from the event
+     * @return boolean flag indicating that the event is processed
+     */
+    private boolean excludeSupportedGovernanceService(String       sourceName,
+                                                      Relationship relationship)
+    {
+        if (relationship != null)
+        {
+            InstanceType type = relationship.getType();
+
+            if (type != null)
+            {
+                 return repositoryHelper.isTypeOf(sourceName,
+                                                  type.getTypeDefName(),
+                                                  OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME);
             }
         }
 
@@ -233,16 +288,55 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                              */
                             auditLog.logMessage(methodName, GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(entity.toString()));
                         }
+                        catch (InvalidParameterException error)
+                        {
+                            auditLog.logMessage(methodName,
+                                                GovernanceEngineAuditCode.SKIPPING_INSTANCE.getMessageDefinition(sourceName,
+                                                                                                                 methodName,
+                                                                                                                 entity.getGUID(),
+                                                                                                                 error.getMessage()));
+                        }
                         catch (Exception error)
                         {
                             auditLog.logException(methodName,
-                                                  GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, entity.getGUID()),
+                                                  GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                                        sourceName,
+                                                                                                                        methodName,
+                                                                                                                        entity.getGUID(),
+                                                                                                                        error.getMessage()),
                                                   error);
                         }
                     }
 
                     return true;
                 }
+            }
+        }
+
+        return false;
+    }
+
+
+
+    /**
+     * Process an entity extracted from an event.
+     *
+     * @param sourceName source of the event
+     * @param entity entity from the event
+     * @return boolean flag indicating that the event should be ignored
+     */
+    private boolean excludeGovernanceActionEvent(String       sourceName,
+                                                 EntityDetail entity)
+    {
+        if (entity != null)
+        {
+            InstanceType type = entity.getType();
+
+            if (type != null)
+            {
+                return repositoryHelper.isTypeOf(sourceName,
+                                                 type.getTypeDefName(),
+                                                 OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME);
             }
         }
 
@@ -340,7 +434,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param instanceStatus value from the repository services
      * @return ElementOrigin enum
      */
-    ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    private ElementStatus getElementStatus(InstanceStatus instanceStatus)
     {
         if (instanceStatus != null)
         {
@@ -612,16 +706,29 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 if (previousEntity != null)
                 {
-                    watchdogEvent.setPreviousMetadataElement(
-                            metadataElementHandler.getMetadataElementByGUID(userId, previousEntity.getGUID(), methodName));
+                    watchdogEvent.setPreviousMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId,
+                                                                                                             previousEntity.getGUID(),
+                                                                                                             methodName));
                 }
 
                 eventPublisher.publishWatchdogEvent(watchdogEvent);
             }
+            catch (InvalidParameterException error)
+            {
+                auditLog.logMessage(methodName,
+                                      GovernanceEngineAuditCode.SKIPPING_INSTANCE.getMessageDefinition(sourceName,
+                                                                                                       methodName,
+                                                                                                       entity.getGUID(),
+                                                                                                       error.getMessage()));
+            }
             catch (Exception error)
             {
                 auditLog.logException(methodName,
-                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, entity.getGUID()),
+                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                            sourceName,
+                                                                                                            methodName,
+                                                                                                            entity.getGUID(),
+                                                                                                            error.getMessage()),
                                       error);
             }
         }
@@ -662,10 +769,22 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 eventPublisher.publishWatchdogEvent(watchdogEvent);
             }
+            catch (InvalidParameterException error)
+            {
+                auditLog.logMessage(methodName,
+                                    GovernanceEngineAuditCode.SKIPPING_INSTANCE.getMessageDefinition(sourceName,
+                                                                                                     methodName,
+                                                                                                     entity.getGUID(),
+                                                                                                     error.getMessage()));
+            }
             catch (Exception error)
             {
                 auditLog.logException(methodName,
-                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, entity.getGUID()),
+                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                            sourceName,
+                                                                                                            methodName,
+                                                                                                            entity.getGUID(),
+                                                                                                            error.getMessage()),
                                       error);
             }
         }
@@ -691,6 +810,15 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
         {
             try
             {
+                /*
+                 * Validate that the relationship is visible to this service
+                 */
+                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityOneProxy().getGUID(), methodName);
+                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityTwoProxy().getGUID(), methodName);
+
+                /*
+                 * OK to publish relationship
+                 */
                 WatchdogRelatedElementsEvent watchdogEvent = new WatchdogRelatedElementsEvent();
 
                 watchdogEvent.setEventType(eventType);
@@ -703,10 +831,22 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 eventPublisher.publishWatchdogEvent(watchdogEvent);
             }
+            catch (InvalidParameterException error)
+            {
+                auditLog.logMessage(methodName,
+                                    GovernanceEngineAuditCode.SKIPPING_INSTANCE.getMessageDefinition(sourceName,
+                                                                                                     methodName,
+                                                                                                     relationship.getGUID(),
+                                                                                                     error.getMessage()));
+            }
             catch (Exception error)
             {
                 auditLog.logException(methodName,
-                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(sourceName, methodName, relationship.getGUID()),
+                                      GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                            sourceName,
+                                                                                                            methodName,
+                                                                                                            relationship.getGUID(),
+                                                                                                            error.getMessage()),
                                       error);
             }
         }
@@ -1140,8 +1280,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processRefreshEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
+        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
+                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
                     (! excludeGovernanceManagementEvents(sourceName, entity)))
         {
             processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, nullEntity, methodName);
@@ -1460,58 +1600,10 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processRefreshRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
+        if ((! excludeSupportedGovernanceService(sourceName, relationship)) &&
                     (! excludeGovernanceManagementEvents(sourceName, relationship)))
         {
             processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
-    }
-
-
-    /**
-     * An open metadata repository is passing information about a collection of entities and relationships
-     * with the other repositories in the cohort.
-     *
-     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
-     *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName name of the server that the event came from.
-     * @param originatorServerType type of server that the event came from.
-     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
-     * @param instances multiple entities and relationships for sharing.
-     */
-    @Override
-    public void processInstanceBatchEvent(String        sourceName,
-                                          String        originatorMetadataCollectionId,
-                                          String        originatorServerName,
-                                          String        originatorServerType,
-                                          String        originatorOrganizationName,
-                                          InstanceGraph instances)
-    {
-        final String methodName = "processInstanceBatchEvent";
-
-        if (instances != null)
-        {
-            List<EntityDetail> entities = instances.getEntities();
-
-            if (entities != null)
-            {
-                for (EntityDetail entity : entities)
-                {
-                    processGovernanceEngineEvent(sourceName, entity, methodName);
-                }
-            }
-
-            List<Relationship>  relationships = instances.getRelationships();
-
-            if (relationships != null)
-            {
-                for (Relationship relationship : relationships)
-                {
-                    processSupportedGovernanceService(sourceName, relationship, methodName);
-                }
-            }
         }
     }
 }

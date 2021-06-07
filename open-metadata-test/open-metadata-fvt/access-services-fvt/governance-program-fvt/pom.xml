@@ -68,6 +68,17 @@
             <artifactId>fvt-utilities</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-leadership-sample</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-zone-create-sample</artifactId>
+        </dependency>
+
+
         <!-- Integration Tests will depend on the assembly -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>

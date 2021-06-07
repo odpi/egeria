@@ -31,8 +31,12 @@ public class OpenLineageException extends OCFCheckedExceptionBase {
                 className,
                 actionDescription,
                 errorMessage,
+                null,
+                null,
                 systemAction,
-                userAction);
+                userAction,
+                null,
+                null);
     }
 
 
@@ -58,8 +62,12 @@ public class OpenLineageException extends OCFCheckedExceptionBase {
                 className,
                 actionDescription,
                 errorMessage,
+                null,
+                null,
                 systemAction,
                 userAction,
-                caughtError);
+                caughtError.getClass().getName(),
+                null);
+
     }
 }

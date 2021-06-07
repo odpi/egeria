@@ -3,16 +3,22 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,11 +43,12 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
+     * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
+     * relationships between them.  The relationships may be omitted if they do not have any properties.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
-     *                      content of the bean
+     * @param primaryEntity entity that is the root of the cluster of entities that make up the content of the bean
+     * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
@@ -49,6 +56,7 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
      */
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
+                               List<EntityDetail> supplementaryEntities,
                                List<Relationship> relationships,
                                String             methodName) throws PropertyServerException
     {
@@ -89,9 +97,136 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
 
                     bean.setProfileProperties(profileProperties);
 
+                    if (supplementaryEntities != null)
+                    {
+                        List<UserIdentityElement>  userIdentities = new ArrayList<>();
+                        List<ContactMethodElement> contactMethods = new ArrayList<>();
+
+                        for (EntityDetail entity : supplementaryEntities)
+                        {
+                            if ((entity != null) && (entity.getType() != null))
+                            {
+                                String entityTypeName = entity.getType().getTypeDefName();
+
+                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME))
+                                {
+                                    UserIdentityElement    userBean = new UserIdentityElement();
+                                    UserIdentityProperties userProperties = new UserIdentityProperties();
+
+                                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+
+                                    InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
+
+                                    userProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
+                                    userProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
+
+                                    userProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                                    userProperties.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
+
+                                    userBean.setProperties(userProperties);
+
+                                    userIdentities.add(userBean);
+                                }
+                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME))
+                                {
+                                    ContributionRecordElement contributionBean   = new ContributionRecordElement();
+                                    ContributionRecord        contributionRecord = new ContributionRecord();
+
+                                    contributionBean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                                    InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
+
+                                    contributionRecord.setQualifiedName(this.removeQualifiedName(entityProperties));
+                                    contributionRecord.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
+                                    contributionRecord.setKarmaPoints(this.removeKarmaPoints(entityProperties));
+                                    contributionRecord.setKarmaPointPlateau(karmaPointPlateau);
+
+                                    contributionRecord.setTypeName(bean.getElementHeader().getType().getTypeName());
+                                    contributionRecord.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
+                                }
+                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME))
+                                {
+                                    ContactMethodElement    contactMethodBean       = new ContactMethodElement();
+                                    ContactMethodProperties contactMethodProperties = new ContactMethodProperties();
+
+                                    contactMethodBean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                                    InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
+
+                                    contactMethodProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
+                                    contactMethodProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
+                                    contactMethodProperties.setType(this.getContactMethodTypeFromProperties(entityProperties));
+                                    contactMethodProperties.setService(this.removeContactMethodService(entityProperties));
+                                    contactMethodProperties.setValue(this.removeContactMethodValue(entityProperties));
+
+                                    contactMethodProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                                    contactMethodProperties.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
+
+                                    contactMethodBean.setProperties(contactMethodProperties);
+
+                                    contactMethods.add(contactMethodBean);
+                                }
+                            }
+                            else
+                            {
+                                handleBadEntity(beanClass.getName(), entity, methodName);
+                            }
+                        }
+
+                        if (! userIdentities.isEmpty())
+                        {
+                            bean.setUserIdentities(userIdentities);
+                        }
+
+                        if (! contactMethods.isEmpty())
+                        {
+                            bean.setContactMethods(contactMethods);
+                        }
+                    }
+
                     if (relationships != null)
                     {
+                        List<ElementStub> peers = new ArrayList<>();
+                        List<ElementStub> roles = new ArrayList<>();
 
+                        for (Relationship relationship : relationships)
+                        {
+                            if ((relationship != null) && (relationship.getType() != null))
+                            {
+                                String relationshipTypeName = relationship.getType().getTypeDefName();
+
+                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_NAME))
+                                {
+                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+
+                                    ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
+
+                                    peers.add(elementStub);
+                                }
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME))
+                                {
+                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+
+                                    ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
+
+                                    roles.add(elementStub);
+                                }
+                            }
+                            else
+                            {
+                                handleBadRelationship(beanClass.getName(), relationship, methodName);
+                            }
+                        }
+
+                        if (! peers.isEmpty())
+                        {
+                            bean.setPeers(peers);
+                        }
+
+                        if (! roles.isEmpty())
+                        {
+                            bean.setRoles(roles);
+                        }
                     }
                 }
                 else
