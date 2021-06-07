@@ -476,29 +476,16 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                             Map<String, String> archiveProperties,
                                             String              methodName)
     {
-        InstanceProperties properties;
-
-        if (archiveDate != null)
-        {
-            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+        InstanceProperties properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                     null,
                                                                     OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
-                                                                    archiveDate,
+                                                                    archiveDate != null ? archiveDate : new Date(),
                                                                     methodName);
-        }
-        else
-        {
-            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                    null,
-                                                                    OpenMetadataAPIMapper.ARCHIVE_DATE_PROPERTY_NAME,
-                                                                    new Date(),
-                                                                    methodName);
-        }
 
         if (archiveUser != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
+                                                                      properties,
                                                                       OpenMetadataAPIMapper.ARCHIVE_USER_PROPERTY_NAME,
                                                                       archiveUser,
                                                                       methodName);
