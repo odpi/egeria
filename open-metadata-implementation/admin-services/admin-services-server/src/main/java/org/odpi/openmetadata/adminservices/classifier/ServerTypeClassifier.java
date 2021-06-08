@@ -417,6 +417,7 @@ public class ServerTypeClassifier
                                                     this.getClass().getName(),
                                                     methodName);
         }
+    }
 
     /**
      * Checks that a classification has been derived for a configuration document.
