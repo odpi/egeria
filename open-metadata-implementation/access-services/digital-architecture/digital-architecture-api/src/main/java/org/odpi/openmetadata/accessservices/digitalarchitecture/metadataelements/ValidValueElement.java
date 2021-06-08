@@ -47,6 +47,7 @@ public class ValidValueElement implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            validValueProperties = template.getValidValueProperties();
         }
     }
 

@@ -4,7 +4,8 @@
 # Data manager integration
 
 A data manager is a technology that manages collections of data.  Examples include
-database management systems, content management systems, document management systems and file management systems.
+database management systems, document/content managers,
+event brokers, API gateways and file systems.
 
 The data manager typically maintains a catalog of the data it is managing and the purpose of the
 data manager integration is to bring this metadata into the open metadata ecosystem.
@@ -24,17 +25,32 @@ to interface with a specific data manager.  This is
 running in an appropriate [Open Metadata Integration Service (OMIS)](../../../../open-metadata-implementation/integration-services)
 hosted in an [Integration Daemon](../../../../open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md).
 
-The OMIS to use for databases and database virtualization platforms is the 
-[Database Integrator OMIS](../../../../open-metadata-implementation/integration-services/database-integrator).
-The OMIS to use for file systems and file managers is the 
-[Files Integrator OMIS](../../../../open-metadata-implementation/integration-services/files-integrator).
+The OMIS to use for different types of technology is shown in the table below.
 
-Integration connector `Database Extractor` is monitoring for schema changes in the Database Server
+| Technology | Examples | OMIS   |
+| :--------- | :------- | :--------- |
+| Database | PostgreSQL | [Database Integrator OMIS](../../../../open-metadata-implementation/integration-services/database-integrator) |
+| Filesystems | local disk storage | [Files Integrator OMIS](../../../../open-metadata-implementation/integration-services/files-integrator) |
+| Document/Content Managers | Photo Library | [Files Integrator OMIS](../../../../open-metadata-implementation/integration-services/files-integrator) |
+| Event Brokers | Apache Kafka | [Topic Integrator OMIS](../../../../open-metadata-implementation/integration-services/topic-integrator) |
+| API Managers | Swagger Site | [API Integrator OMIS](../../../../open-metadata-implementation/integration-services/api-integrator) |
+
+
+In Figure 1, integration connector `Database Extractor` is monitoring for schema changes in the Database Server
 and cataloguing them in open metadata through the Database Integrator OMIS.  The Database Integrator OMIS
 calls the [Data Manager OMAS](../../../../open-metadata-implementation/access-services/data-manager) which stores the open metadata in its local repository.
 
-Similarly, integration connector `File System Extractor` is monitoring for changes to files on the file system and
+Similarly, 
+* Integration connector `File System Extractor` is monitoring for changes to files on the file system and
 cataloguing them in open metadata through the Files Integrator OMIS and the Data Manager OMAS.
+* Integration connector `Document Extractor` is monitoring for changes to documents in a content manager and
+cataloguing them in open metadata through the Files Integrator OMIS and the Data Manager OMAS.
+* Integration connector `Topic Extractor` is monitoring for changes to files on the file system and
+cataloguing them in open metadata through the Topic Integrator OMIS and the Data Manager OMAS.
+* Integration connector `API Extractor` is monitoring for changes to deployed APIs in a platform or API gateway and
+cataloguing them in open metadata through the API Integrator OMIS and the Data Manager OMAS.
+
+
 
 ![Figure 1](data-manager-integration-metadata-extraction.png#pagewidth)
 > **Figure 1:** Set up for metadata extraction from data managers and stored in a local repository
@@ -42,7 +58,7 @@ cataloguing them in open metadata through the Files Integrator OMIS and the Data
 Figure 2 shows a similar set up except that the resulting metadata is being stored in a remote metadata
 repository connected via a [cohort](../../../../open-metadata-implementation/admin-services/docs/concepts/cohort-member.md).
 
-![Figure 2](data-manager-integration-metadata-extraction-remote.png#pagewidth)
+![Figure 2](data-manager-integration-metadata-extraction-remote.png)
 > **Figure 2:** Set up for metadata extraction from data managers and stored in a remote repository
 
 Figure 3 adds a new integration connector (called `Data Asset Distributor`) that listens for events

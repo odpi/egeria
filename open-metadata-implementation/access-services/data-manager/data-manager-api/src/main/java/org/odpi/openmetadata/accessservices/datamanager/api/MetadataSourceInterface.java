@@ -3,10 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.api;
 
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.FileManagerProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.FileSystemProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.SoftwareServerCapabilitiesProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -20,12 +17,83 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 public interface MetadataSourceInterface
 {
     /**
+     * Create information about the component that manages APIs.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param apiManagerProperties description of the API manager (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the API manager's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    String createAPIManager(String               userId,
+                            String               externalSourceGUID,
+                            String               externalSourceName,
+                            APIManagerProperties apiManagerProperties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
+
+
+
+    /**
+     * Create information about the database manager (DBMS) that is supplying database schema metadata.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param databaseManagerProperties description of the database manager (DBMS) (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the database manager's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    String createDatabaseManager(String                    userId,
+                                 String                    externalSourceGUID,
+                                 String                    externalSourceName,
+                                 DatabaseManagerProperties databaseManagerProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
+
+
+
+
+    /**
+     * Create information about the integration daemon that is managing the acquisition of metadata from the
+     * data manager.  Typically this is Egeria's data manager proxy.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param eventBrokerProperties description of the event broker (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the event broker's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    String createEventBroker(String                userId,
+                             String                externalSourceGUID,
+                             String                externalSourceName,
+                             EventBrokerProperties eventBrokerProperties) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
+
+
+    /**
      * Create information about a File System that is being used to store data files.
      *
      * @param userId calling user
      * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName   name of the software server capability entity that represented the external source
-     * @param fileSystemProperties description of the file system
+     * @param fileSystemProperties description of the file system (specify qualified name at a minimum)
      *
      * @return unique identifier of the file system's software server capability
      *
@@ -47,7 +115,7 @@ public interface MetadataSourceInterface
      * @param userId calling user
      * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName   name of the software server capability entity that represented the external source
-     * @param fileManagerProperties description of the
+     * @param fileManagerProperties description of the file manager (specify qualified name at a minimum)
      *
      * @return unique identifier of the file manager's software server capability
      *
@@ -62,38 +130,14 @@ public interface MetadataSourceInterface
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException;
 
-
-    /**
-     * Create information about the integration daemon that is managing the acquisition of metadata from the
-     * data manager.  Typically this is Egeria's data manager proxy.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName   name of the software server capability entity that represented the external source
-     * @param databaseManagerProperties description of the integration daemon (specify qualified name at a minimum)
-     *
-     * @return unique identifier of the database management's software server capability
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    String createDatabaseManager(String                    userId,
-                                 String                    externalSourceGUID,
-                                 String                    externalSourceName,
-                                 DatabaseManagerProperties databaseManagerProperties) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException;
-
-
     /**
      * Retrieve the unique identifier of the software server capability that describes a metadata source.  This could be
-     * a database manager, filesystem or file manager.
+     * a database manager, event broker, API Manager, filesystem or file manager.
      *
      * @param userId calling user
-     * @param qualifiedName unique name of the integration daemon
+     * @param qualifiedName unique name of the data manager
      *
-     * @return unique identifier of the integration daemon's software server capability
+     * @return unique identifier of the data manager's software server capability
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

@@ -140,7 +140,6 @@ public class TestAssetSummary
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
         assertTrue(resultObject.getLatestChange().equals("TestLatestChange"));
-        assertTrue(resultObject.getOwnerType() == OwnerType.PROFILE_ID);
         assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getExtendedProperties() == null);
         assertTrue(resultObject.getAdditionalProperties() == null);
@@ -164,7 +163,6 @@ public class TestAssetSummary
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getShortDescription() == null);
         assertTrue(nullObject.getOwner() == null);
-        assertTrue(nullObject.getOwnerType() == null);
         assertTrue(nullObject.getExtendedProperties() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
     }
