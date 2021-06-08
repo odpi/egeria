@@ -144,7 +144,6 @@
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
                                 <ignoredUnusedDeclaredDependency>org.odpi.egeria:*connector</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:virtualization-services-api</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
