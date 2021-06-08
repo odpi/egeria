@@ -36,7 +36,6 @@
         <module>open-lineage-services</module>
         <module>data-engine-proxy-services</module>
         <module>data-platform-services</module>
-        <module>virtualization-services</module>
     </modules>
 
 </project>

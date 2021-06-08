@@ -134,6 +134,13 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                     "indicate the cause of this error.  Work to clear the underlying error.  " +
                     "Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka."),
 
+    ERROR_CONNECTING_KAFKA_PRODUCER("OCF-KAFKA-TOPIC-CONNECTOR-0019",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Egeria encountered an exception when attempting to connect the message producer to the kafka topic {0}",
+            "Resolve the kafka service is available and that the kafka producer connection properties are correct",
+            "Check the  Kafka error logs for related messages that could " +
+                    "indicate the cause of this error.  Work to clear the underlying error.  " +
+                    "Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka."),
     ;
 
     private final AuditLogMessageDefinition messageDefinition;

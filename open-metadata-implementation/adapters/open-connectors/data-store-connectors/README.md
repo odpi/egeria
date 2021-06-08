@@ -12,9 +12,6 @@ connectors to different types of data stores.  These connectors implement the
 
 * **[file-connectors](file-connectors)** provides connector to read files.
 
-* **[gaian-connector](gaian-connector)** provides a JDBC-style connector to the [Gaian](https://github.com/gaiandb/gaiandb) virtualization
-engine.
-
 * **[cassandra-data-store-connector](cassandra-data-store-connector)** provides connector to read data from
 [Apache Cassandra](http://cassandra.apache.org/).
 
