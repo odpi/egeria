@@ -109,10 +109,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>information-view-spring</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>project-management-spring</artifactId>
         </dependency>
         <dependency>

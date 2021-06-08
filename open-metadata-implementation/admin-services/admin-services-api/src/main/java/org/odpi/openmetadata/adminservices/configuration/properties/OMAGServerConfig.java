@@ -107,9 +107,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
     private EngineHostServicesConfig        engineHostServicesConfig        = null;
     private OpenLineageServerConfig         openLineageServerConfig         = null;
-    private SecuritySyncConfig              securitySyncConfig              = null;
-    private SecurityOfficerConfig           securityOfficerConfig           = null;
-    private VirtualizationConfig            virtualizationConfig            = null;
     private DataEngineProxyConfig           dataEngineProxyConfig           = null;
     private DataPlatformServicesConfig      dataPlatformServicesConfig      = null;
     private List<String>                    auditTrail                      = null;
@@ -154,9 +151,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             conformanceSuiteConfig          = template.getConformanceSuiteConfig();
             openLineageServerConfig         = template.getOpenLineageServerConfig();
             dataEngineProxyConfig           = template.getDataEngineProxyConfig();
-            securitySyncConfig              = template.getSecuritySyncConfig();
-            securityOfficerConfig           = template.getSecurityOfficerConfig();
-            virtualizationConfig            = template.getVirtualizationConfig();
             dataPlatformServicesConfig      = template.getDataPlatformServicesConfig();
             auditTrail                      = template.getAuditTrail();
         }
@@ -587,72 +581,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     }
 
 
-    /**
-     * Return the configuration for the security synchronization services.
-     *
-     * @return SecuritySyncConfig properties
-     */
-    @Deprecated
-    public SecuritySyncConfig getSecuritySyncConfig()
-    {
-        return securitySyncConfig;
-    }
-
-
-    /**
-     * Set up the configuration for the security synchronization services.
-     *
-     * @param securitySyncConfig SecuritySyncConfig properties
-     */
-    @Deprecated
-    public void setSecuritySyncConfig(SecuritySyncConfig securitySyncConfig)
-    {
-        this.securitySyncConfig = securitySyncConfig;
-    }
-
-    /**
-     * Return the configuration for the security officer services.
-     *
-     * @return SecurityOfficerConfig properties
-     */
-    @Deprecated
-    public SecurityOfficerConfig getSecurityOfficerConfig()
-    {
-        return securityOfficerConfig;
-    }
-
-    /**
-     * Set up the configuration for the security officer services.
-     *
-     * @param securityOfficerConfig SecurityOfficerConfig properties
-     */
-    @Deprecated
-    public void setSecurityOfficerConfig(SecurityOfficerConfig securityOfficerConfig)
-    {
-        this.securityOfficerConfig = securityOfficerConfig;
-    }
-
-    /**
-     * Return the configuration for the virtualization services.
-     *
-     * @return VirtualizationConfig properties
-     */
-    @Deprecated
-    public VirtualizationConfig getVirtualizationConfig()
-    {
-        return virtualizationConfig;
-    }
-
-    /**
-     * Set up the configuration for the virtualization services.
-     *
-     * @param virtualizationConfig properties
-     */
-    @Deprecated
-    public void setVirtualizationConfig(VirtualizationConfig virtualizationConfig)
-    {
-        this.virtualizationConfig = virtualizationConfig;
-    }
 
     /**
      * Return the configuration for the data platform services.
@@ -726,9 +654,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        ", repositoryServicesConfig=" + repositoryServicesConfig +
                        ", conformanceSuiteConfig=" + conformanceSuiteConfig +
                        ", openLineageServerConfig=" + openLineageServerConfig +
-                       ", securitySyncConfig=" + securitySyncConfig +
-                       ", securityOfficerConfig=" + securityOfficerConfig +
-                       ", virtualizationConfig=" + virtualizationConfig +
                        ", dataEngineProxyConfig=" + dataEngineProxyConfig +
                        ", dataPlatformServicesConfig=" + dataPlatformServicesConfig +
                        ", auditTrail=" + auditTrail +
@@ -772,9 +697,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
                        Objects.equals(getConformanceSuiteConfig(), that.getConformanceSuiteConfig()) &&
                        Objects.equals(getOpenLineageServerConfig(), that.getOpenLineageServerConfig()) &&
-                       Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
-                       Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
-                       Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
                        Objects.equals(getDataEngineProxyConfig(), that.getDataEngineProxyConfig()) &&
                        Objects.equals(getDataPlatformServicesConfig(), that.getDataPlatformServicesConfig()) &&
                        Objects.equals(getAuditTrail(), that.getAuditTrail());
@@ -795,7 +717,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                             getAccessServicesConfig(), getIntegrationServicesConfig(), getEngineHostServicesConfig(), getViewServicesConfig(),
                             getRepositoryServicesConfig(), getConformanceSuiteConfig(),
                             getOpenLineageServerConfig(),
-                            getSecuritySyncConfig(), getSecurityOfficerConfig(), getVirtualizationConfig(),
                             getDataEngineProxyConfig(), getDataPlatformServicesConfig(), getAuditTrail());
     }
 }
