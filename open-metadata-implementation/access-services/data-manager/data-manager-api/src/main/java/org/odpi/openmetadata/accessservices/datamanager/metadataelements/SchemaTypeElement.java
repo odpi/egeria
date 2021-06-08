@@ -6,9 +6,11 @@ package org.odpi.openmetadata.accessservices.datamanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.datamanager.properties.DerivedSchemaTypeQueryTargetProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,9 +26,35 @@ public class SchemaTypeElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private SchemaTypeProperties schemaTypeProperties = null;
-    private ElementHeader        elementHeader = null;
+    private SchemaTypeProperties                         schemaTypeProperties = null;
+    private ElementHeader                                elementHeader        = null;
 
+    /*
+     * For complex schema types such as StructSchemaType
+     */
+    private int                                          attributeCount       = 0;
+
+    /*
+     * For Map Schema Types
+     */
+    private SchemaTypeElement                            mapFromElement = null;
+    private SchemaTypeElement                            mapToElement   = null;
+
+    /*
+     * For External Schema Types
+     */
+    private SchemaTypeElement                            externalSchemaType = null;
+
+    /*
+     * Schema options for SchemaTypeChoice
+     */
+    private List<SchemaTypeElement>                      schemaOptions = null;
+
+    /*
+     * Used when a value, or set of values associated with the schema are derived rather than stored.
+     */
+    private String                                       formula              = null;
+    private List<DerivedSchemaTypeQueryTargetProperties> queries              = null;
 
     /**
      * Default constructor
@@ -48,6 +76,18 @@ public class SchemaTypeElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             schemaTypeProperties = template.getSchemaTypeProperties();
+
+            attributeCount = template.getAttributeCount();
+
+            mapFromElement = template.getMapFromElement();
+            mapToElement   = template.getMapToElement();
+
+            externalSchemaType = template.getExternalSchemaType();
+
+            schemaOptions = template.getSchemaOptions();
+
+            formula = template.getFormula();
+            queries = template.getQueries();
         }
     }
 
@@ -98,6 +138,171 @@ public class SchemaTypeElement implements MetadataElement, Serializable
     }
 
 
+
+    /**
+     * Return the count of attributes in this schema type.
+     *
+     * @return String data type name
+     */
+    public int getAttributeCount() { return attributeCount; }
+
+
+    /**
+     * Set up the count of attributes in this schema type
+     *
+     * @param attributeCount data type name
+     */
+    public void setAttributeCount(int attributeCount)
+    {
+        this.attributeCount = attributeCount;
+    }
+
+
+
+    /**
+     * Return the type of schema element that represents the key or property name for the map.
+     * This is also called the domain of the map.
+     *
+     * @return SchemaElement
+     */
+    public SchemaTypeElement getMapFromElement()
+    {
+        return mapFromElement;
+    }
+
+
+    /**
+     * Set up the type of schema element that represents the key or property name for the map.
+     * This is also called the domain of the map.
+     *
+     * @param mapFromElement SchemaElement
+     */
+    public void setMapFromElement(SchemaTypeElement mapFromElement)
+    {
+        this.mapFromElement = mapFromElement;
+    }
+
+
+    /**
+     * Return the type of schema element that represents the property value for the map.
+     * This is also called the range of the map.
+     *
+     * @return SchemaElement
+     */
+    public SchemaTypeElement getMapToElement()
+    {
+        return mapToElement;
+    }
+
+
+    /**
+     * Set up the type of schema element that represents the property value for the map.
+     * This is also called the range of the map.
+     *
+     * @param mapToElement SchemaType
+     */
+    public void setMapToElement(SchemaTypeElement mapToElement)
+    {
+        this.mapToElement = mapToElement;
+    }
+
+
+    /**
+     * Return the schema type that is reusable amongst assets.
+     *
+     * @return bean describing external schema
+     */
+    public SchemaTypeElement getExternalSchemaType()
+    {
+        return externalSchemaType;
+    }
+
+
+    /**
+     * Set up the schema type that is reusable amongst assets.
+     *
+     * @param externalSchemaType bean describing external schema
+     */
+    public void setExternalSchemaType(SchemaTypeElement externalSchemaType)
+    {
+        this.externalSchemaType = externalSchemaType;
+    }
+
+
+    /**
+     * Return the list of alternative schema types that this attribute or asset may use.
+     *
+     * @return list of schema types
+     */
+    public List<SchemaTypeElement> getSchemaOptions()
+    {
+        if (schemaOptions == null)
+        {
+            return null;
+        }
+        else if (schemaOptions.isEmpty())
+        {
+            return null;
+        }
+
+        return schemaOptions;
+    }
+
+
+    /**
+     * Set up the list of alternative schema types that this attribute or asset may use.
+     *
+     * @param schemaOptions list of schema types
+     */
+    public void setSchemaOptions(List<SchemaTypeElement> schemaOptions)
+    {
+        this.schemaOptions = schemaOptions;
+    }
+
+
+    /**
+     * Return the formula used to combine the values of the queries.  Each query is has a identifier and the
+     * formula has placeholders for these identifiers in it to show how the query results are combined.
+     *
+     * @return String formula
+     */
+    public String getFormula() { return formula; }
+
+
+    /**
+     * Set up the formula used to combine the values of the queries.  Each query is has a identifier and the
+     * formula has placeholders for these identifiers in it to show how the query results are combined.
+     *
+     * @param formula String formula
+     */
+    public void setFormula(String formula)
+    {
+        this.formula = formula;
+    }
+
+
+    /**
+     * Return the list of individual query targets for a derived column.
+     *
+     * @return list of queries and their target element
+     */
+    public List<DerivedSchemaTypeQueryTargetProperties> getQueries()
+    {
+        return queries;
+    }
+
+
+    /**
+     * Set up the list of individual query targets for a derived column.
+     *
+     * @param queries list of queries and their target element
+     */
+    public void setQueries(List<DerivedSchemaTypeQueryTargetProperties> queries)
+    {
+        this.queries = queries;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -107,9 +312,14 @@ public class SchemaTypeElement implements MetadataElement, Serializable
     public String toString()
     {
         return "SchemaTypeElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties='" + getSchemaTypeProperties() + '\'' +
-                '}';
+                       "schemaTypeProperties=" + schemaTypeProperties +
+                       ", elementHeader=" + elementHeader +
+                       ", attributeCount=" + attributeCount +
+                       ", mapFromElement=" + mapFromElement +
+                       ", mapToElement=" + mapToElement +
+                       ", formula='" + formula + '\'' +
+                       ", queries=" + queries +
+                       '}';
     }
 
 
@@ -131,8 +341,15 @@ public class SchemaTypeElement implements MetadataElement, Serializable
             return false;
         }
         SchemaTypeElement that = (SchemaTypeElement) objectToCompare;
-        return Objects.equals(schemaTypeProperties, that.schemaTypeProperties) &&
-                Objects.equals(elementHeader, that.elementHeader);
+        return attributeCount == that.attributeCount &&
+                       Objects.equals(schemaTypeProperties, that.schemaTypeProperties) &&
+                       Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(mapFromElement, that.mapFromElement) &&
+                       Objects.equals(mapToElement, that.mapToElement) &&
+                       Objects.equals(externalSchemaType, that.externalSchemaType) &&
+                       Objects.equals(schemaOptions, that.schemaOptions) &&
+                       Objects.equals(formula, that.formula) &&
+                       Objects.equals(queries, that.queries);
     }
 
 
@@ -144,6 +361,8 @@ public class SchemaTypeElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, schemaTypeProperties);
+        return Objects.hash(schemaTypeProperties, elementHeader, attributeCount, mapFromElement, mapToElement, externalSchemaType, schemaOptions,
+                            formula,
+                            queries);
     }
 }

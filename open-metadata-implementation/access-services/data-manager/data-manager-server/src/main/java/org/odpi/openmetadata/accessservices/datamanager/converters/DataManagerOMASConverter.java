@@ -551,37 +551,86 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
     }
 
 
+    /**
+     * Set up the properties that can be extracted form the schema type.
+     *
+     * @param schemaAttributeEntity entity to unpack
+     * @param schemaTypeElement schema type properties
+     * @param properties output column properties
+     */
+    void setUpSchemaAttribute(EntityDetail              schemaAttributeEntity,
+                              SchemaTypeElement         schemaTypeElement,
+                              SchemaAttributeProperties properties)
+    {
+        /*
+         * The initial set of values come from the entity.
+         */
+        InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
+
+        properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+        properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+        properties.setDisplayName(this.removeDisplayName(instanceProperties));
+        properties.setDescription(this.removeDescription(instanceProperties));
+
+        properties.setElementPosition(this.removePosition(instanceProperties));
+        properties.setMinCardinality(this.removeMinCardinality(instanceProperties));
+        properties.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
+        properties.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
+        properties.setOrderedValues(this.removeOrderedValues(instanceProperties));
+        properties.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
+        properties.setSortOrder(this.removeSortOrder(instanceProperties));
+        properties.setMinimumLength(this.removeMinimumLength(instanceProperties));
+        properties.setLength(this.removeLength(instanceProperties));
+        properties.setPrecision(this.removePrecision(instanceProperties));
+        properties.setIsNullable(this.removeIsNullable(instanceProperties));
+        properties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
+        properties.setAliases(this.removeAliases(instanceProperties));
+
+        /*
+         * Any remaining properties are returned in the extended properties.  They are assumed to be defined in a subtype.
+         */
+        properties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+        if (schemaTypeElement != null)
+        {
+            this.addSchemaTypeToAttribute(schemaTypeElement, properties);
+        }
+    }
 
 
     /**
      * Set up the properties that can be extracted form the schema type.
      *
-     * @param schemaTypeProperties schema type properties
-     * @param columnProperties output column properties
+     * @param schemaTypeElement schema type properties
+     * @param attributeProperties output column properties
      */
-    void addSchemaTypeToColumn(SchemaTypeProperties schemaTypeProperties,
-                               TabularColumnProperties columnProperties)
+    void addSchemaTypeToAttribute(SchemaTypeElement         schemaTypeElement,
+                                  SchemaAttributeProperties attributeProperties)
     {
+        SchemaTypeProperties    schemaTypeProperties = schemaTypeElement.getSchemaTypeProperties();
+
         if (schemaTypeProperties instanceof PrimitiveSchemaTypeProperties)
         {
-            columnProperties.setDataType(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDataType());
-            columnProperties.setDefaultValue(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
+            attributeProperties.setDataType(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDataType());
+            attributeProperties.setDefaultValue(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
         }
         else if (schemaTypeProperties instanceof LiteralSchemaTypeProperties)
         {
-            columnProperties.setDataType(((LiteralSchemaTypeProperties) schemaTypeProperties).getDataType());
-            columnProperties.setFixedValue(((LiteralSchemaTypeProperties) schemaTypeProperties).getFixedValue());
+            attributeProperties.setDataType(((LiteralSchemaTypeProperties) schemaTypeProperties).getDataType());
+            attributeProperties.setFixedValue(((LiteralSchemaTypeProperties) schemaTypeProperties).getFixedValue());
         }
         else if (schemaTypeProperties instanceof EnumSchemaTypeProperties)
         {
-            columnProperties.setDataType(((EnumSchemaTypeProperties) schemaTypeProperties).getDataType());
-            columnProperties.setDefaultValue(((EnumSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
-            columnProperties.setValidValuesSetGUID(((EnumSchemaTypeProperties) schemaTypeProperties).getValidValueSetGUID());
+            attributeProperties.setDataType(((EnumSchemaTypeProperties) schemaTypeProperties).getDataType());
+            attributeProperties.setDefaultValue(((EnumSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
+            attributeProperties.setValidValuesSetGUID(((EnumSchemaTypeProperties) schemaTypeProperties).getValidValueSetGUID());
         }
         else if (schemaTypeProperties instanceof ExternalSchemaTypeProperties)
         {
-            columnProperties.setDataType(((ExternalSchemaTypeProperties) schemaTypeProperties).getDataType());
-            columnProperties.setExternalTypeGUID(((ExternalSchemaTypeProperties) schemaTypeProperties).getExternalSchemaTypeGUID());
+            attributeProperties.setDataType(((ExternalSchemaTypeProperties) schemaTypeProperties).getDataType());
+
+            SchemaTypeElement externalSchemaType = schemaTypeElement.getExternalSchemaType();
+            attributeProperties.setExternalTypeGUID(externalSchemaType.getElementHeader().getGUID());
         }
     }
 }
