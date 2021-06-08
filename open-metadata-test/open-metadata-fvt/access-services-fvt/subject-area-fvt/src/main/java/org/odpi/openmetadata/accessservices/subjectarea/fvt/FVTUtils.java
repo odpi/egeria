@@ -37,6 +37,11 @@ public class FVTUtils {
             // error
             throw new SubjectAreaFVTCheckedException("ERROR: Expected relationship to have a name,  ");
         }
+        //  Unknown
+        if (relationship.getName().equals("Unknown")) {
+            // error
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected relationship to have a known name,  ");
+        }
         if (relationship.getSystemAttributes()==null) {
             // error
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + relationship.getName() + "'s system attributes to exist,  ");

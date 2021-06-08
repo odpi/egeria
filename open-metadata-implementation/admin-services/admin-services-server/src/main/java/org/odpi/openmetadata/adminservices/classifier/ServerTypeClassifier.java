@@ -418,24 +418,6 @@ public class ServerTypeClassifier
                                                     methodName);
         }
 
-        if (configurationDocument.getDiscoveryEngineServicesConfig() != null)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
-                                                                                                              configurationDocument.getDiscoveryEngineServicesConfig().toString()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-
-        if (configurationDocument.getStewardshipEngineServicesConfig() != null)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.OLD_CONFIGURATION.getMessageDefinition(serverName,
-                                                                                                              configurationDocument.getStewardshipEngineServicesConfig().toString()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-    }
-
-
     /**
      * Checks that a classification has been derived for a configuration document.
      * This should never be called.  If it is occurring then there has probably been a new type

@@ -7,6 +7,8 @@ Release 2.10 adds:
 * New and improved open metadata types for governance
 * New API for Governance Program OMAS
 
+See also an important notice about removal of Java 8 support in a future release.
+
 Details of these and other changes are in the sections that follow.
 
 ## Description of Changes
@@ -141,6 +143,15 @@ For details on both see the commit history in GitHub.
 
 * It is recommended to use a chromium-based browser such as Google Chrome or Microsoft Edge, or Apple Safari for the Egeria React UI. Some parts of the UI experience such as Dino currently experience problems with Firefox. See [odpi/egeria-react-ui#96](https://github.com/odpi/egeria-react-ui/issues/96) .
 * When running the 'Understanding Platform Services' lab, ensure you run the 'egeria-service-config' notebook first and do not restart the python kernel before running this lab. See [#4842](https://github.com/odpi/egeria/issues/4842) .
+* When logging in to the react UI for the coco pharma lab demo, ensure to use http://myhost.mydomain/coco/login as otherwise the login will not work. see [odpi/egeria#41](https://github.com/odpi/egeria-react-ui/issues/41)
+* A few further bugs are noted at https://github.com/odpi/egeria/issues/5211#issuecomment-850321243 including for samples and UI.
+
+## Removal of Java 8 Support
+
+Egeria will drop support for Java 8 in a forthcoming release within the next
+few months. We have been building and testing with Java 11 for over a year
+and will move to build all packages with Java 11, and require Java 11. At this
+point Java 8 will no longer be supported for new releases.
 
 # Egeria Implementation Status at Release 2.10
 
