@@ -241,8 +241,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the wiki page link for the access service.  The default value points to a page on the Atlas
-     * confluence wiki.
+     * Return the wiki page link for the access service.
      *
      * @return String url
      */

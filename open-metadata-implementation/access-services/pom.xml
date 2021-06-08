@@ -46,7 +46,6 @@
         <module>discovery-engine</module>
         <module>governance-engine</module>
         <module>governance-program</module>
-        <module>information-view</module>
         <module>it-infrastructure</module>
         <module>project-management</module>
         <module>security-manager</module>
