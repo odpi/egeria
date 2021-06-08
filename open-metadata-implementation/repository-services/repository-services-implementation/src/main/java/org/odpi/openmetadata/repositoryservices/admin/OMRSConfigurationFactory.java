@@ -280,6 +280,7 @@ public class OMRSConfigurationFactory
      *
      * @param localServerName name of the local server
      * @param cohortName      name of the cohort
+     * @param cohortTopicStructure the style of cohort topic set up to use
      * @param configurationProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
@@ -287,13 +288,14 @@ public class OMRSConfigurationFactory
      * @param eventBusConfigurationProperties name value property pairs for the event bus connection
      * @return default values in a CohortConfig object
      */
-    public CohortConfig getDefaultCohortConfig(String              localServerName,
-                                               String              cohortName,
-                                               Map<String, Object> configurationProperties,
-                                               String              eventBusConnectorProvider,
-                                               String              topicURLRoot,
-                                               String              serverId,
-                                               Map<String, Object> eventBusConfigurationProperties)
+    public CohortConfig getDefaultCohortConfig(String               localServerName,
+                                               String               cohortName,
+                                               CohortTopicStructure cohortTopicStructure,
+                                               Map<String, Object>  configurationProperties,
+                                               String               eventBusConnectorProvider,
+                                               String               topicURLRoot,
+                                               String               serverId,
+                                               Map<String, Object>  eventBusConfigurationProperties)
     {
         CohortConfig cohortConfig  = new CohortConfig();
         String       newCohortName = defaultCohortName;
@@ -305,12 +307,39 @@ public class OMRSConfigurationFactory
 
         cohortConfig.setCohortName(newCohortName);
         cohortConfig.setCohortRegistryConnection(connectorConfigurationFactory.getDefaultCohortRegistryConnection(localServerName, newCohortName));
-        cohortConfig.setCohortOMRSTopicConnection(connectorConfigurationFactory.getDefaultCohortOMRSTopicConnection(newCohortName,
-                                                                                                                    configurationProperties,
-                                                                                                                    eventBusConnectorProvider,
-                                                                                                                    topicURLRoot,
-                                                                                                                    serverId,
-                                                                                                                    eventBusConfigurationProperties));
+
+        if ((cohortTopicStructure == null) || (cohortTopicStructure == CohortTopicStructure.SINGLE_TOPIC) || (cohortTopicStructure == CohortTopicStructure.BOTH_SINGLE_AND_DEDICATED_TOPICS))
+        {
+            cohortConfig.setCohortOMRSTopicConnection(connectorConfigurationFactory.getDefaultSingleCohortOMRSTopicConnection(newCohortName,
+                                                                                                                              configurationProperties,
+                                                                                                                              eventBusConnectorProvider,
+                                                                                                                              topicURLRoot,
+                                                                                                                              serverId,
+                                                                                                                              eventBusConfigurationProperties));
+        }
+
+        if ((cohortTopicStructure == CohortTopicStructure.DEDICATED_TOPICS) || (cohortTopicStructure == CohortTopicStructure.BOTH_SINGLE_AND_DEDICATED_TOPICS))
+        {
+            cohortConfig.setCohortOMRSRegistrationTopicConnection(connectorConfigurationFactory.getDefaultRegistrationCohortOMRSTopicConnection(newCohortName,
+                                                                                                                                                configurationProperties,
+                                                                                                                                                eventBusConnectorProvider,
+                                                                                                                                                topicURLRoot,
+                                                                                                                                                eventBusConfigurationProperties));
+
+            cohortConfig.setCohortOMRSTypesTopicConnection(connectorConfigurationFactory.getDefaultTypesCohortOMRSTopicConnection(newCohortName,
+                                                                                                                                  configurationProperties,
+                                                                                                                                  eventBusConnectorProvider,
+                                                                                                                                  topicURLRoot,
+                                                                                                                                  eventBusConfigurationProperties));
+
+            cohortConfig.setCohortOMRSInstancesTopicConnection(connectorConfigurationFactory.getDefaultInstancesCohortOMRSTopicConnection(newCohortName,
+                                                                                                                                          configurationProperties,
+                                                                                                                                          eventBusConnectorProvider,
+                                                                                                                                          topicURLRoot,
+                                                                                                                                          serverId,
+                                                                                                                                          eventBusConfigurationProperties));
+        }
+
         cohortConfig.setCohortOMRSTopicProtocolVersion(this.getDefaultCohortOMRSTopicProtocolVersion());
         cohortConfig.setEventsToProcessRule(this.getDefaultEventsToProcessRule());
         cohortConfig.setSelectedTypesToProcess(this.getDefaultSelectedTypesToProcess());

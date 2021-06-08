@@ -153,7 +153,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * received on the topic.
      *
      * @param topicListener object implementing the OMRSTopicListener interface
-     * @param serviceName name os service that the listener is from
+     * @param serviceName name of the service that the listener is from
      */
     @Override
     public void registerListener(OMRSTopicListener topicListener,

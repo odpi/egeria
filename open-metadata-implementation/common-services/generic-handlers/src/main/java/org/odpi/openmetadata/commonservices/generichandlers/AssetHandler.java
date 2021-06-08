@@ -1349,19 +1349,25 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        AssetBuilder builder = new AssetBuilder(repositoryHelper, serviceName, serverName);
+        String ownerTypeName = null;
 
-        this.setClassificationInRepository(userId,
-                                           null,
-                                           null,
-                                           assetGUID,
-                                           assetGUIDParameterName,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                                           OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                           builder.getOwnerProperties(ownerId, ownerType, methodName),
-                                           false,
-                                           methodName);
+        if (ownerType == 0)
+        {
+            ownerTypeName = OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME;
+        }
+        else if (ownerType == 1)
+        {
+            ownerTypeName = OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME;
+        }
+
+        this.addOwner(userId,
+                      assetGUID,
+                      assetGUIDParameterName,
+                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                      ownerId,
+                      ownerTypeName,
+                      null,
+                      methodName);
     }
 
 

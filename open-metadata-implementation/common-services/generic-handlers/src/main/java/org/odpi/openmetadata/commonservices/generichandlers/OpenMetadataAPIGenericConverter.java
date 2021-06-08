@@ -1641,6 +1641,51 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+
+    /**
+     * Extract the ownerTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string text or null
+     */
+    protected String getOwnerTypeName(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getOwnerTypeName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the ownerPropertyName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string text or null
+     */
+    protected String getOwnerPropertyName(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getOwnerPropertyName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
     /**
      * Extract the ownerType property from the supplied instance properties.
      *

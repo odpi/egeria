@@ -97,8 +97,22 @@ public class KafkaOpenMetadataEventProducer implements Runnable
 
         if (producer == null)
         {
-            log.debug("Creating Producer");
-            producer = new KafkaProducer<>(producerProperties);
+            try
+            {
+                producer = new KafkaProducer<>(producerProperties);
+            }
+            catch ( Exception error )
+            {
+                if( auditLog != null)
+                {
+                    auditLog.logException(methodName, KafkaOpenMetadataTopicConnectorAuditCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(topicName), error);
+                }
+
+                throw new ConnectorCheckedException( KafkaOpenMetadataTopicConnectorErrorCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(error.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    error);
+            }
         }
         while (!eventSent)
         {

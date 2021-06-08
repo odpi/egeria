@@ -136,9 +136,9 @@ public enum PermittedSynchronization implements Serializable
     @Override
     public String toString()
     {
-        return "KeyPattern{" +
-                       "openTypeOrdinal=" + openTypeOrdinal +
-                       ", ordinal=" + ordinal +
+        return "PermittedSynchronization{" +
+                       "ordinal=" + ordinal +
+                       ", openTypeOrdinal=" + openTypeOrdinal +
                        ", name='" + name + '\'' +
                        ", description='" + description + '\'' +
                        ", openTypeGUID='" + getOpenTypeGUID() + '\'' +

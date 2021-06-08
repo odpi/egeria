@@ -991,6 +991,49 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
 
     /**
+     * Update the owner information for a specific asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param ownerId unique identifier/property of the owner - or null to clear the field
+     * @param ownerTypeName name of the type of Id provided above - or null to clear the field
+     * @param ownerPropertyName name of the property that describes the ownerId
+     *
+     * @throws InvalidParameterException userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateAssetOwner(String    userId,
+                                 String    assetGUID,
+                                 String    ownerId,
+                                 String    ownerTypeName,
+                                 String    ownerPropertyName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        final String   methodName = "updateAssetOwner";
+
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/owner";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        OwnerRequestBody requestBody = new OwnerRequestBody();
+        requestBody.setOwnerId(ownerId);
+        requestBody.setOwnerTypeName(ownerTypeName);
+        requestBody.setOwnerPropertyName(ownerPropertyName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
+    }
+
+
+    /**
      * Add or replace the security tags for an asset or one of its elements.
      *
      * @param userId calling user

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.securitymanager.converters;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementClassification;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.OwnerCategory;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -16,7 +15,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -318,77 +316,6 @@ public abstract class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGen
         }
 
         return ElementOriginCategory.UNKNOWN;
-    }
-
-
-
-    /**
-     * Retrieve and delete the OwnerCategory enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    OwnerCategory removeOwnerCategoryFromProperties(InstanceProperties   properties)
-    {
-        OwnerCategory ownerCategory = this.getOwnerCategoryFromProperties(properties);
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
-            }
-
-            properties.setInstanceProperties(instancePropertiesMap);
-        }
-
-        return ownerCategory;
-    }
-
-
-    /**
-     * Retrieve the OwnerCategory enum property from the instance properties of a classification
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    OwnerCategory getOwnerCategoryFromProperties(InstanceProperties   properties)
-    {
-        OwnerCategory ownerCategory = OwnerCategory.OTHER;
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
-
-                if (instancePropertyValue instanceof EnumPropertyValue)
-                {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
-                    {
-                        case 0:
-                            ownerCategory = OwnerCategory.USER_ID;
-                            break;
-
-                        case 1:
-                            ownerCategory = OwnerCategory.PROFILE_ID;
-                            break;
-
-                        case 99:
-                            ownerCategory = OwnerCategory.OTHER;
-                            break;
-                    }
-                }
-            }
-        }
-
-        return ownerCategory;
     }
 
 

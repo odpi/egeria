@@ -204,7 +204,7 @@ public class OCFRuntimeException extends RuntimeException
             this.reportedHTTPCode = template.getReportedHTTPCode();
             this.reportingClassName = template.getReportingClassName();
             this.reportingActionDescription = template.getReportingActionDescription();
-            this.reportedErrorMessage = template.getErrorMessage();
+            this.reportedErrorMessage = template.getReportedErrorMessage();
             this.reportedErrorMessageId = template.getReportedErrorMessageId();
             this.reportedErrorMessageParameters = template.getReportedErrorMessageParameters();
             this.reportedSystemAction = template.getReportedSystemAction();
@@ -231,7 +231,7 @@ public class OCFRuntimeException extends RuntimeException
             this.reportedHTTPCode = template.getReportedHTTPCode();
             this.reportingClassName = template.getReportingClassName();
             this.reportingActionDescription = template.getReportingActionDescription();
-            this.reportedErrorMessage = template.getErrorMessage();
+            this.reportedErrorMessage = template.getReportedErrorMessage();
             this.reportedSystemAction = template.getReportedSystemAction();
             this.reportedUserAction = template.getReportedUserAction();
             this.reportedCaughtException = template.getReportedCaughtException();
@@ -316,19 +316,6 @@ public class OCFRuntimeException extends RuntimeException
         return reportingActionDescription;
     }
 
-
-    /**
-     * A formatted short description of the cause of the condition that resulted in this exception.
-     * It includes the message id and is formatted with the message parameters.  The message is defined in En_US.
-     * The method is deprecated because it is inconsistent in its naming compared with other methods.
-     *
-     * @return string message
-     */
-    @Deprecated
-    public String getErrorMessage()
-    {
-        return reportedErrorMessage;
-    }
 
     /**
      * A formatted short description of the cause of the condition that resulted in this exception.
@@ -498,32 +485,6 @@ public class OCFRuntimeException extends RuntimeException
                 ", reportedCaughtException=" + reportedCaughtException +
                 ", relatedProperties=" + relatedProperties +
                 '}';
-    }
-
-
-    /**
-     * This is the typical constructor used for creating an OCFRuntimeException.
-     *
-     * @param httpCode   http response code to use if this exception flows over a REST call
-     * @param className   name of class reporting error
-     * @param actionDescription   description of function it was performing when error detected
-     * @param errorMessage   description of error
-     * @param systemAction   actions of the system as a result of the error
-     * @param userAction   instructions for correcting the error
-     */
-    @Deprecated
-    public OCFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(errorMessage);
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
-
-        log.debug(httpCode + ", " + className + ", " + actionDescription);
-        this.validateCoreProperties();
     }
 
 
