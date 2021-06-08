@@ -1919,6 +1919,13 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
+                        <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-types-utility</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-types-test-generator</artifactId>
