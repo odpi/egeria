@@ -87,6 +87,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                 R createdrelationship = mapper.map(createdOMRSRelationship.get());
                 response.addResult(createdrelationship);
             }
+
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
             response.setExceptionInfo(e, className);
         }
