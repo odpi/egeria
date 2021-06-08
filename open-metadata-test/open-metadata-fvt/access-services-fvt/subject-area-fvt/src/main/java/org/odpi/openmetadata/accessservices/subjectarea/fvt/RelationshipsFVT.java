@@ -830,14 +830,15 @@ public class RelationshipsFVT {
     }
 
     private void hasaFVT(Term term1, Term term3) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
-        HasA createdHasATerm = createHasA(term1, term3);
-        FVTUtils.validateRelationship(createdHasATerm);
-        System.out.println("Created Hasa " + createdHasATerm);
-        String guid = createdHasATerm.getGuid();
+        HasA createdHasA = createHasA(term1, term3);
+
+        FVTUtils.validateRelationship(createdHasA);
+        System.out.println("Created Hasa " + createdHasA);
+        String guid = createdHasA.getGuid();
 
         HasA gotHasATerm = subjectAreaRelationship.hasA().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotHasATerm);
-        System.out.println("Got Hasa " + createdHasATerm);
+        System.out.println("Got Hasa " + createdHasA);
         HasA updateHasATerm = new HasA();
         updateHasATerm.setDescription("ddd2");
         HasA updatedHasATerm = subjectAreaRelationship.hasA().update(this.userId, guid, updateHasATerm);
@@ -845,31 +846,42 @@ public class RelationshipsFVT {
         if (!updatedHasATerm.getDescription().equals(updateHasATerm.getDescription())) {
             throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship update description not as expected");
         }
-        if (!updatedHasATerm.getSource().equals(createdHasATerm.getSource())) {
+        if (!updatedHasATerm.getSource().equals(createdHasA.getSource())) {
             throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship update source not as expected");
         }
-        if (!updatedHasATerm.getSteward().equals(createdHasATerm.getSteward())) {
+        if (!updatedHasATerm.getSteward().equals(createdHasA.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship update steward not as expected");
         }
-        FVTUtils.checkEnds(updatedHasATerm, createdHasATerm, "has-a", "update");
+        FVTUtils.checkEnds(updatedHasATerm, createdHasA, "has-a", "update");
 
-        System.out.println("Updated HASARelationship " + createdHasATerm);
-        HasA replaceHasATerm = new HasA();
-        replaceHasATerm.setDescription("ddd3");
-        HasA replacedHasATerm = subjectAreaRelationship.hasA().replace(this.userId, guid, replaceHasATerm);
-        FVTUtils.validateRelationship(replacedHasATerm);
-        if (!replacedHasATerm.getDescription().equals(replaceHasATerm.getDescription())) {
+        System.out.println("Updated HASARelationship " + createdHasA);
+        HasA replaceHasA = new HasA();
+        replaceHasA.setDescription("ddd3");
+        HasA replacedHasA = subjectAreaRelationship.hasA().replace(this.userId, guid, replaceHasA);
+        FVTUtils.validateRelationship(replacedHasA);
+        if (!replacedHasA.getDescription().equals(replaceHasA.getDescription())) {
             throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship replace description not as expected");
         }
-        if (replacedHasATerm.getSource() != null) {
+        if (replacedHasA.getSource() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship replace source not as expected");
         }
-        if (replacedHasATerm.getSteward() != null) {
+        if (replacedHasA.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship replace steward not as expected");
         }
-        FVTUtils.checkEnds(updatedHasATerm, replacedHasATerm, "has-a", "replace");
+        FVTUtils.checkEnds(updatedHasATerm, replacedHasA, "has-a", "replace");
 
-        System.out.println("Replaced HASARelationship " + createdHasATerm);
+        System.out.println("Replaced HASARelationship " + createdHasA);
+
+        // check that term1 and term3 have the spine object and attribute flags sets
+
+        Term term1PostCreate = termFVT.getTermByGUID(term1.getSystemAttributes().getGUID());
+        if (!term1PostCreate.isSpineObject()) {
+            throw new SubjectAreaFVTCheckedException("ERROR: expect term 1 to be a Spine Object");
+        }
+        Term term3PostCreate = termFVT.getTermByGUID(term3.getSystemAttributes().getGUID());
+        if (!term3PostCreate.isSpineAttribute()) {
+            throw new SubjectAreaFVTCheckedException("ERROR: expect term 3 to be a Spine Attribute");
+        }
 
         subjectAreaRelationship.hasA().delete(this.userId, guid);
         //FVTUtils.validateLine(gotHASATerm);
