@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.dataengine.client;
 import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEngineInTopicClientConnector;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventType;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesDeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
@@ -12,17 +14,23 @@ import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 
@@ -152,7 +160,6 @@ public class DataEngineEventClient implements DataEngineClient {
     public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation, String processQualifiedName) throws
                                                                                                                                       InvalidParameterException,
                                                                                                                                       ConnectorCheckedException {
-
         PortImplementationEvent event = new PortImplementationEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
@@ -263,6 +270,48 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public String getExternalSourceName() {
         return this.externalSource;
+    }
+
+    @Override
+    public String upsertDatabase(String userId, Database database) throws InvalidParameterException, ConnectorCheckedException {
+        DatabaseEvent event = new DatabaseEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.DATABASE_EVENT);
+        event.setDatabase(database);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
+        return null;
+    }
+
+    @Override
+    public String upsertRelationalTables(String userId, RelationalTable relationalTable) throws InvalidParameterException, ConnectorCheckedException {
+        RelationalTableEvent event = new RelationalTableEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.RELATIONAL_TABLE_EVENT);
+        event.setRelationalTable(relationalTable);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
+        return null;
+    }
+
+    @Override
+    public String upsertDataFiles(String userId, DataFile dataFile) throws InvalidParameterException, ConnectorCheckedException {
+        DataFileEvent event = new DataFileEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.DATA_FILE_EVENT);
+        event.setDataFile(dataFile);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
+        return null;
     }
 
     private DeleteEvent getDeleteEvent(String userId, String qualifiedName, String guid) {

@@ -1010,19 +1010,27 @@ public class DataEngineRESTServices {
         try {
             if (!isDatabaseRequestBodyValid(userId, serverName, databaseRequestBody, methodName)) return response;
 
-            Database database = databaseRequestBody.getDatabase();
-            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
-
-            DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
+            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(), databaseRequestBody.getExternalSourceName(),
                     methodName);
-            String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, databaseRequestBody.getExternalSourceName());
-
-            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
             response.setGUID(databaseGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
         return response;
+    }
+
+    public String upsertDatabase(String userId, String serverName, Database database, String externalSourceName, String methodName) throws
+                                                                                                                                    InvalidParameterException,
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    PropertyServerException {
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
+
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
+                methodName);
+        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
+        return databaseGUID;
     }
 
     /**
@@ -1042,20 +1050,81 @@ public class DataEngineRESTServices {
         try {
             if (!isRelationalTableRequestBodyValid(userId, serverName, relationalTableRequestBody, methodName)) return response;
 
-            RelationalTable relationalTable = relationalTableRequestBody.getRelationalTable();
-            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
-
-            DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
-                    methodName);
-            String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId,
-                    relationalTableRequestBody.getDatabaseQualifiedName(), relationalTable, relationalTableRequestBody.getExternalSourceName());
-
-            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
+            String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getDatabaseQualifiedName(),
+                    relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName(), methodName);
             response.setGUID(relationalTableGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
         return response;
+    }
+
+    public String upsertRelationalTable(String userId, String serverName, String databaseQualifiedName, RelationalTable relationalTable,
+                                         String externalSourceName, String methodName) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                                              PropertyServerException {
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
+
+        DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName,
+                methodName);
+
+        String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId, databaseQualifiedName, relationalTable,
+                externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
+        return relationalTableGUID;
+    }
+
+    /**
+     * Updates or inserts a DataFile or CSVFile, along with its schema, columns and folder hierarchy
+     *
+     * @param serverName          server name
+     * @param userId              user id
+     * @param dataFileRequestBody request body
+     *
+     * @return file guid
+     */
+    public GUIDResponse upsertDataFile(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
+
+        String methodName = "upsertDataFile";
+        GUIDResponse response = new GUIDResponse();
+        String guid;
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, dataFileRequestBody, methodName)) {
+                return response;
+            }
+
+            guid = upsertDataFile(serverName, userId, dataFileRequestBody.getDataFile(), dataFileRequestBody.getExternalSourceName(), methodName);
+            response.setGUID(guid);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
+    }
+
+    public String upsertDataFile(String userId, String serverName, DataFile file, String externalSourceName, String methodName) throws
+                                                                                                                                InvalidParameterException,
+                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                PropertyServerException {
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, file);
+
+        DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
+        DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
+
+        String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+
+        List<Attribute> columns = file.getColumns();
+        SchemaType schemaType = getDefaultSchemaTypeIfAbsentAndAddAttributes(file, file.getSchema(), columns);
+
+        Map<String, Object> extendedProperties = getExtendedProperties(file);
+        String fileTypeGuid = file instanceof CSVFile ? CSV_FILE_TYPE_GUID : DATA_FILE_TYPE_GUID;
+        String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME;
+        file.setFileType(fileTypeName);
+
+        String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType, columns, extendedProperties,
+                externalSourceGuid, externalSourceName, userId, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, guid);
+        return guid;
     }
 
     private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeQualifiedName, String oldSchemaTypeQualifiedName,
@@ -1348,52 +1417,6 @@ public class DataEngineRESTServices {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Updates or inserts a DataFile or CSVFile, along with its schema, columns and folder hierarchy
-     *
-     * @param serverName          server name
-     * @param userId              user id
-     * @param dataFileRequestBody request body
-     *
-     * @return file guid
-     */
-    public GUIDResponse upsertDataFile(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
-
-        String methodName = "createDataFileAndSchema";
-        GUIDResponse response = new GUIDResponse();
-        String guid;
-
-        try {
-            if (isRequestBodyInvalid(userId, serverName, dataFileRequestBody, methodName)) {
-                return response;
-            }
-
-            DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
-            DataEngineRegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
-
-            String externalSourceName = dataFileRequestBody.getExternalSourceName();
-            String externalSourceGuid = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-
-            DataFile file = dataFileRequestBody.getDataFile();
-            List<Attribute> columns = file.getColumns();
-            SchemaType schemaType = getDefaultSchemaTypeIfAbsentAndAddAttributes(file, file.getSchema(), columns);
-
-            Map<String, Object> extendedProperties = getExtendedProperties(file);
-            String fileTypeGuid = file instanceof CSVFile ? CSV_FILE_TYPE_GUID : DATA_FILE_TYPE_GUID;
-            String fileTypeName = file instanceof CSVFile ? CSV_FILE_TYPE_NAME : DATA_FILE_TYPE_NAME;
-            file.setFileType(fileTypeName);
-
-            guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType, columns,
-                    extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
-
-            response.setGUID(guid);
-
-        } catch (Exception error) {
-            restExceptionHandler.captureExceptions(response, error, methodName);
-        }
-        return response;
     }
 
     private SchemaType getDefaultSchemaTypeIfAbsentAndAddAttributes(DataFile file, SchemaType schemaType, List<Attribute> attributes) {

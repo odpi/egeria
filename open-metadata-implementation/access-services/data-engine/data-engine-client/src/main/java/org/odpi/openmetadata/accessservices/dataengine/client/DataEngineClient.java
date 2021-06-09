@@ -244,4 +244,58 @@ public interface DataEngineClient {
      * @return Source system name
      */
     String getExternalSourceName();
+
+    /**
+     * Create or update the database entity
+     *
+     * @param userId   the name of the calling user
+     * @param database the database bean
+     *
+     * @return unique identifier of database in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  internal problem with the connector
+     */
+    String upsertDatabase(String userId, Database database) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException,
+                                                                   ConnectorCheckedException;
+
+    /**
+     * Create or update the relational table entity
+     *
+     * @param userId          the name of the calling user
+     * @param relationalTable the relational table bean
+     *
+     * @return unique identifier of the relational table in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  internal problem with the connector
+     */
+    String upsertRelationalTables(String userId, RelationalTable relationalTable) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException,
+                                                                                         ConnectorCheckedException;
+
+    /**
+     * Create or update the data file entity
+     *
+     * @param userId   the name of the calling user
+     * @param dataFile the data file  bean
+     *
+     * @return unique identifier of the relational table in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  internal problem with the connector
+     */
+    String upsertDataFiles(String userId, DataFile dataFile) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException,
+                                                                    ConnectorCheckedException;
 }

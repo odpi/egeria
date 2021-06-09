@@ -29,6 +29,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PORT_ALIAS_URL_TEMPLATE = DATA_ENGINE_PATH + "port-aliases";
     private static final String PROCESS_HIERARCHY_URL_TEMPLATE = DATA_ENGINE_PATH + "process-hierarchies";
     private static final String LINEAGE_MAPPINGS_URL_TEMPLATE = DATA_ENGINE_PATH + "lineage-mappings";
+    private static final String DATABASE_URL_TEMPLATE = DATA_ENGINE_PATH + "databases";
+    private static final String RELATIONAL_TABLE_URL_TEMPLATE = DATA_ENGINE_PATH + "relational-tables";
+    private static final String DATA_FILE_URL_TEMPLATE = DATA_ENGINE_PATH + "data-files";
 
     private static final String PROCESSES_METHOD_NAME = "createOrUpdateProcesses";
     private static final String PROCESSES_DELETE_METHOD_NAME = "deleteProcesses";
@@ -42,6 +45,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PORT_ALIAS_DELETE_METHOD_NAME = "deletePortAlias";
     private static final String PROCESS_HIERARCHY_METHOD_NAME = "createOrUpdateProcessHierarchy";
     private static final String LINEAGE_MAPPINGS_METHOD_NAME = "addLineageMappings";
+    private static final String DATABASE_METHOD_NAME = "upsertDatabase";
+    private static final String RELATIONAL_TABLE_METHOD_NAME = "upsertRelationalTable";
+    private static final String DATA_FILE_METHOD_NAME = "upsertDataFile";
 
     private String serverPlatformRootURL;
     private String externalSourceName;
@@ -272,6 +278,48 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         requestBody.setExternalSourceName(externalSourceName);
 
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
+    }
+
+
+    @Override
+    public String upsertDatabase(String userId, Database database) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                          PropertyServerException {
+        final String methodName = DATABASE_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        DatabaseRequestBody requestBody = new DatabaseRequestBody();
+        requestBody.setDatabase(database);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, methodName, DATABASE_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public String upsertRelationalTables(String userId, RelationalTable relationalTable) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                                                PropertyServerException {
+        final String methodName = RELATIONAL_TABLE_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        RelationalTableRequestBody requestBody = new RelationalTableRequestBody();
+        requestBody.setRelationalTable(relationalTable);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, methodName, RELATIONAL_TABLE_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public String upsertDataFiles(String userId, DataFile dataFile) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        final String methodName = DATA_FILE_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        DataFileRequestBody requestBody = new DataFileRequestBody();
+        requestBody.setDataFile(dataFile);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, methodName, DATA_FILE_URL_TEMPLATE, requestBody);
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,

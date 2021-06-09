@@ -90,6 +90,15 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                         case DELETE_DATA_ENGINE_EVENT:
                             dataEngineEventProcessor.processDeleteDataEngineEvent(dataEngineEvent);
                             break;
+                        case DATABASE_EVENT:
+                            dataEngineEventProcessor.processDatabaseEvent(dataEngineEvent);
+                            break;
+                        case RELATIONAL_TABLE_EVENT:
+                            dataEngineEventProcessor.processRelationalTableEvent(dataEngineEvent);
+                            break;
+                        case DATA_FILE_EVENT:
+                            dataEngineEventProcessor.processDataFileEvent(dataEngineEvent);
+                            break;
                         default:
                             log.debug("Ignored instance event - unknown event type");
                             break;

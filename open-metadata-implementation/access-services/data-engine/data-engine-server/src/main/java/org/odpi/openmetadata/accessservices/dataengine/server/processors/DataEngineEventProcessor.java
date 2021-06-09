@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesDeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
@@ -14,6 +16,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
@@ -259,6 +262,60 @@ public class DataEngineEventProcessor {
     public void processDeletePortAliasEvent(String dataEngineEvent) {
         final String methodName = "processDeletePortAliasEvent";
         deletePort(dataEngineEvent, methodName, PORT_ALIAS_TYPE_NAME);
+    }
+
+    /**
+     * Process a {@link DatabaseEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processDatabaseEvent(String dataEngineEvent) {
+        final String methodName = "processDatabaseEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DatabaseEvent databaseEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DatabaseEvent.class);
+
+            dataEngineRESTServices.upsertDatabase(databaseEvent.getUserId(), serverName, databaseEvent.getDatabase(),
+                    databaseEvent.getExternalSourceName(), methodName);
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link DatabaseEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processRelationalTableEvent(String dataEngineEvent) {
+        final String methodName = "processRelationalTableEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            RelationalTableEvent relationalTableEvent = OBJECT_MAPPER.readValue(dataEngineEvent, RelationalTableEvent.class);
+
+            dataEngineRESTServices.upsertRelationalTable(relationalTableEvent.getUserId(), serverName, relationalTableEvent.getDatabaseQualifiedName(),
+                    relationalTableEvent.getRelationalTable(), relationalTableEvent.getExternalSourceName(), methodName);
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link DatabaseEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processDataFileEvent(String dataEngineEvent) {
+        final String methodName = "processDataFileEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DataFileEvent dataFileEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataFileEvent.class);
+
+            dataEngineRESTServices.upsertDataFile(dataFileEvent.getUserId(), serverName, dataFileEvent.getDataFile(),
+                    dataFileEvent.getExternalSourceName(), methodName);
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
     }
 
     private void deletePort(String dataEngineEvent, String methodName, String portType) {
