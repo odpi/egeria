@@ -43,9 +43,6 @@ allprojects {
     group = 'org.odpi.egeria'
     version = '2.11-SNAPSHOT'
 
-    apply plugin: 'java'
-
-
     // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
     //gradleLint {
@@ -58,6 +55,7 @@ allprojects {
 
     // Mostly java, so default to this for now
     apply plugin: 'java'
+    apply plugin: 'jacoco'
 
     // As we've migrated from maven - we'll assume all submodules publish directly to maven
     apply plugin: 'maven-publish'
@@ -83,7 +81,7 @@ allprojects {
         gremlinVersion = '3.4.11'
         groovyVersion = '3.0.7'
         janusVersion = '0.5.3'
-        springwebVersion = '5.3.7'
+        springwebVersion = '5.3.8'
         springdataVersion = '2.5.1'
         springldapVersion = '2.3.4.RELEASE'
         springbootVersion = '2.5.0'
@@ -91,6 +89,7 @@ allprojects {
         mockitoVersion = '3.10.0'
         junitjupiterVersion = '5.7.2'
         tomcatVersion = '9.0.46'
+        httpcoreVersion = '4.4.14'
     }
 
     dependencies {
@@ -135,7 +134,9 @@ allprojects {
             implementation("org.apache.commons:commons-collections4:4.4")
             implementation("org.apache.commons:commons-lang3:3.12.0")
             implementation("org.apache.httpcomponents:httpclient:4.5.13")
-            implementation("org.apache.httpcomponents:httpcore:4.4.14")
+            implementation("org.apache.httpcomponents:httpcore:${httpcoreVersion}")
+            implementation("org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}")
+            implementation("org.apache.httpcomponents:httpcore-osgi:${httpcoreVersion}")
             implementation("org.apache.jena:jena-core:3.17.0")
             implementation("org.apache.kafka:kafka-clients:2.8.0")
             implementation("org.apache.lucene:lucene-core:${luceneVersion}")
@@ -196,8 +197,8 @@ allprojects {
             implementation("org.springframework:spring-core:${springwebVersion}")
             implementation("org.springframework.ldap:ldap-core:${springldapVersion}")
             implementation("javax.servlet:javax.servlet-api:4.0.1")
-	    implementation("commons-configuration:commons-configuration:1.10")
-	    implementation("org.apache.commons:commons-configuration2:2.7")
+	        implementation("commons-configuration:commons-configuration:1.10")
+	        implementation("org.apache.commons:commons-configuration2:2.7")
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
             runtimeOnly("joda-time:joda-time:2.10.10")
@@ -212,7 +213,7 @@ allprojects {
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.4")
             runtimeOnly("org.janusgraph:janusgraph-es:${janusVersion}")
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.2")
-	    runtimeOnly("javax.servlet:javax.servlet-api:4.0.1");
+	        runtimeOnly("javax.servlet:javax.servlet-api:4.0.1");
             testImplementation("junit:junit:4.13.2")
             testImplementation("org.glassfish:javax.json:1.1.4")
             testImplementation("org.junit.jupiter:junit-jupiter-api:${junitjupiterVersion}")
@@ -225,6 +226,8 @@ allprojects {
             testImplementation("org.slf4j:slf4j-simple:1.7.30")
             testImplementation("org.testng:testng:7.3.0")
             testImplementation("org.hamcrest:hamcrest:2.2")
+            implementation("org.apache.thrift:libthrift:0.14.1")
+            implementation("org.elasticsearch.client:elasticsearch-rest-client:7.13.1")
         }
     }
 
@@ -247,6 +250,7 @@ allprojects {
         targetCompatibility = "1.8"
     }
 
+
     // Tasks to help in finding dependency chains
     task printAllDependencies(type: DependencyReportTask) {}
     task printSubDependencies(type: DependencyReportTask) {}
@@ -261,4 +265,34 @@ allprojects {
  */
 
 subprojects {
+}
+
+// Aggregation task 
+
+// Jacoco reporting -- from gradle docs
+task codeCoverageReport(type: JacocoReport) {
+    // Gather execution data from all subprojects
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    // Add all relevant sourcesets from the subprojects
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
+    // enable the different report types (html, xml, csv)
+    reports {
+        // xml is usually used to integrate code coverage with
+        // other tools like SonarQube, Coveralls or Codecov
+        xml.enabled true
+
+        // HTML reports can be used to see code coverage
+        // without any external tools
+        html.enabled true
+        csv.enabled true
+    }
+
+}
+// always run the tests before generating the report
+codeCoverageReport.dependsOn {
+    subprojects*.test
 }

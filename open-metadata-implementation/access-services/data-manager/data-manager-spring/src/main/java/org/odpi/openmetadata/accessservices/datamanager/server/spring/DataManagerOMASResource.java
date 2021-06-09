@@ -4,9 +4,7 @@ package org.odpi.openmetadata.accessservices.datamanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.datamanager.rest.DatabaseManagerRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.FileManagerRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.FileSystemRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -121,6 +119,50 @@ public class DataManagerOMASResource
                                               @RequestBody  DatabaseManagerRequestBody requestBody)
     {
         return restAPI.createDatabaseManagerInCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Create information about the API manager that manages APIs.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the integration daemon (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the database manager's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-sources/api-managers")
+
+    public GUIDResponse createAPIManager(@PathVariable String                serverName,
+                                         @PathVariable String                userId,
+                                         @RequestBody  APIManagerRequestBody requestBody)
+    {
+        return restAPI.createAPIManagerInCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Create information about the event broker that manages topics.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param requestBody description of the integration daemon (specify qualified name at a minimum)
+     *
+     * @return unique identifier of the database manager's software server capability or
+     * InvalidParameterException  the bean properties are invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-sources/event-brokers")
+
+    public GUIDResponse createEventBroker(@PathVariable String                 serverName,
+                                          @PathVariable String                 userId,
+                                          @RequestBody  EventBrokerRequestBody requestBody)
+    {
+        return restAPI.createEventBrokerInCatalog(serverName, userId, requestBody);
     }
 
 

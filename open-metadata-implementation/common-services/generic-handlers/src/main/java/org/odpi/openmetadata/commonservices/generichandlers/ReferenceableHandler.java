@@ -1790,12 +1790,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void setVendorProperties(String               userId,
-                             String               referenceableGUID,
-                             Map<String, String>  vendorProperties,
-                             String               methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void setVendorProperties(String               userId,
+                                    String               referenceableGUID,
+                                    Map<String, String>  vendorProperties,
+                                    String               methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String referenceableGUIDParameter = "referenceableGUID";
         final String propertyFacetGUIDParameter = "propertyFacet[x]";

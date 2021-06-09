@@ -99,7 +99,7 @@
             <includes>
                 <include>org.odpi.egeria:cloud-information-model:*</include>
                 <include>org.odpi.egeria:glossary-canonical-model:*</include>
-                <include>org.odpi.egeria:open-metadata-types:*</include>
+                <include>org.odpi.egeria:open-metadata-types-utility:*</include>
             </includes>
             <binaries>
                 <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>

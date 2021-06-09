@@ -47,6 +47,7 @@ public class LocationElement implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            locationProperties = template.getLocationProperties();
         }
     }
 
