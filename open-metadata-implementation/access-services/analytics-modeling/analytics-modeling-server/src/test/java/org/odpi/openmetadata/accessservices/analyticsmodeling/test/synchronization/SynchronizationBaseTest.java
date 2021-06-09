@@ -51,6 +51,8 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 											+ "/dataSourceSchema[@name='GOSALES/dbo']/baseModule[@name='dbo']";
 
 	protected static final String UID_STOREID = "iBASEMODULE";
+	protected static final String UID_STOREID_MODULE = "iMODULE";
+	protected static final String UID_STOREID_REPORT = "iREPORT";
 	protected static final String MODULE_NAME = "dbo";
 	protected static final String TEST_DESCRIPTION = "This is for testing description persistance.";
 
@@ -88,10 +90,12 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 	// Verify structure and content of the built asset as graph with nodes and edges. 
 	//----------------------------------------------------------------------------------
 	protected void assertSubgraph(String guid, String fileMaster) throws IOException, AnalyticsModelingCheckedException {
+		
 		ArrayList<EntityDetail> nodes = new ArrayList<>();
 		ArrayList<Relationship> edges = new ArrayList<>();
 		
-		String assetQName = omEntityDao.getEntityQName(omEntityDao.getEntityByGuid(guid));
+		EntityDetail asset = omEntityDao.getEntityByGuid(guid);
+		String assetQName = omEntityDao.getEntityQName(asset);
 
 		try {
 			
@@ -130,6 +134,11 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 	}
 
 	private String buildJsonArray(String name, List<? extends Object> list) {
+		
+		if (list == null) {
+			return String.format("\"%s\":[]", name);
+		}
+		
 		StringBuilder content = new StringBuilder();
 		for ( Object element : list) {
 			if (content.length() != 0) {
@@ -211,6 +220,14 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 		});
 	}
 
+	/**
+	 * Collect nodes of the graph following the edges from the specified node.
+	 * @param nodes collected
+	 * @param edges followed
+	 * @param guid of the specified node
+	 * @param assetQName 
+	 * @throws AnalyticsModelingCheckedException
+	 */
 	private void collectRelatedNodes(ArrayList<EntityDetail> nodes, ArrayList<Relationship> edges, String guid, String assetQName)
 			throws AnalyticsModelingCheckedException {
 
@@ -233,7 +250,8 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 		nodes.add(start);
 
 		// collect all nodes connected to the start as second end of a relationship
-		List<Relationship> rels = omEntityDao.getRelationshipsForEntity(start, null).stream()
+		List<Relationship> rels = omEntityDao.getRelationshipsForEntity(start, null)
+			.stream()
 			.filter(r->r.getEntityOneProxy().getGUID().equals(guid))
 			.collect(Collectors.toList());
 		
@@ -253,8 +271,7 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 			collectRelatedNodes(nodes, edges, r.getEntityTwoProxy().getGUID(), assetQName);
 		}
 	}
-
-
+	
 	//----------------------------------------------------------------------------------------------------------------
 	// Tests support functions.
 	//----------------------------------------------------------------------------------------------------------------

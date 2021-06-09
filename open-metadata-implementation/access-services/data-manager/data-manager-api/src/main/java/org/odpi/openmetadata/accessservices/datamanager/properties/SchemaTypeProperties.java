@@ -38,11 +38,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
     private String encodingStandard = null;
     private String namespace        = null;
 
-    /*
-     * Values for when the schemaType is derived from other values rather than stored
-     */
-    private String                                       formula = null;
-    private List<DerivedSchemaTypeQueryTargetProperties> queries = null;
 
     /**
      * Default constructor
@@ -69,8 +64,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
             usage = template.getUsage();
             encodingStandard = template.getEncodingStandard();
             namespace = template.getNamespace();
-            formula = template.getFormula();
-            queries = template.getQueries();
         }
     }
 
@@ -176,61 +169,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
 
 
     /**
-     * Return the formula used to combine the values of the queries.  Each query is numbers 0, 1, ... and the
-     * formula has placeholders in it to show how the query results are combined.
-     *
-     * @return String formula
-     */
-    public String getFormula() { return formula; }
-
-
-    /**
-     * Set up the formula used to combine the values of the queries.  Each query is numbers 0, 1, ... and the
-     * formula has placeholders in it to show how the query results are combined.
-     *
-     * @param formula String formula
-     */
-    public void setFormula(String formula)
-    {
-        this.formula = formula;
-    }
-
-
-    /**
-     * Return the list of queries that are used to create the derived schema element.
-     *
-     * @return list of queries
-     */
-    public List<DerivedSchemaTypeQueryTargetProperties> getQueries()
-    {
-        if (queries == null)
-        {
-            return null;
-        }
-        else if (queries.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(queries);
-        }
-    }
-
-
-    /**
-     * Set up the list of queries that are used to create the derived schema element.
-     *
-     * @param queries list of queries
-     */
-    public void setQueries(List<DerivedSchemaTypeQueryTargetProperties> queries)
-    {
-        this.queries = queries;
-    }
-
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -244,8 +182,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", namespace='" + namespace + '\'' +
-                ", formula='" + formula + '\'' +
-                ", queries=" + queries +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", deprecated=" + getIsDeprecated() +
@@ -283,9 +219,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
                 Objects.equals(author, that.author) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
-                Objects.equals(namespace, that.namespace) &&
-                Objects.equals(formula, that.formula) &&
-                Objects.equals(queries, that.queries);
+                Objects.equals(namespace, that.namespace);
     }
 
 
@@ -297,6 +231,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), versionNumber, author, usage, encodingStandard, namespace, formula, queries);
+        return Objects.hash(super.hashCode(), versionNumber, author, usage, encodingStandard, namespace);
     }
 }

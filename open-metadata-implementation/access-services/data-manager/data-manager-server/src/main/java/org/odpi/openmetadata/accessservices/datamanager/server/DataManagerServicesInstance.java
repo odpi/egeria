@@ -37,6 +37,19 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                    FileFolderElement,
                                    DataFileElement>                          filesAndFoldersHandler;
 
+    private AssetHandler<TopicElement>                                       topicHandler;
+    private EventTypeHandler<EventTypeElement>                               eventTypeHandler;
+
+    private AssetHandler<APIElement>                                         apiHandler;
+    private SchemaTypeHandler<APISpecificationElement>                       apiSpecificationHandler;
+    private SchemaTypeHandler<APIOperationElement>                           apiOperationHandler;
+    private SchemaTypeHandler<APIParameterListElement>                       apiParameterListHandler;
+    private SchemaAttributeHandler<APIParameterElement, SchemaTypeElement>   apiParameterHandler;
+
+    private SchemaTypeHandler<SchemaTypeElement>                             schemaTypeHandler;
+    private SchemaAttributeHandler<SchemaAttributeElement,
+                                   SchemaTypeElement>                        schemaAttributeHandler;
+
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -154,6 +167,137 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                                    defaultZones,
                                                                    publishZones,
                                                                    auditLog);
+
+        this.topicHandler = new AssetHandler<>(new TopicConverter<>(repositoryHelper, serviceName,serverName),
+                                                                   TopicElement.class,
+                                                                   serviceName,
+                                                                   serverName,
+                                                                   invalidParameterHandler,
+                                                                   repositoryHandler,
+                                                                   repositoryHelper,
+                                                                   localServerUserId,
+                                                                   securityVerifier,
+                                                                   supportedZones,
+                                                                   defaultZones,
+                                                                   publishZones,
+                                                                   auditLog);
+
+        this.eventTypeHandler = new EventTypeHandler<>(new EventTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                       EventTypeElement.class,
+                                                       serviceName,
+                                                       serverName,
+                                                       invalidParameterHandler,
+                                                       repositoryHandler,
+                                                       repositoryHelper,
+                                                       localServerUserId,
+                                                       securityVerifier,
+                                                       supportedZones,
+                                                       defaultZones,
+                                                       publishZones,
+                                                       auditLog);
+
+        this.apiHandler = new AssetHandler<>(new APIConverter<>(repositoryHelper, serviceName,serverName),
+                                             APIElement.class,
+                                             serviceName,
+                                             serverName,
+                                             invalidParameterHandler,
+                                             repositoryHandler,
+                                             repositoryHelper,
+                                             localServerUserId,
+                                             securityVerifier,
+                                             supportedZones,
+                                             defaultZones,
+                                             publishZones,
+                                             auditLog);
+
+        this.apiSpecificationHandler = new SchemaTypeHandler<>(new APISpecificationConverter<>(repositoryHelper, serviceName,serverName),
+                                                               APISpecificationElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
+
+
+        this.apiOperationHandler = new SchemaTypeHandler<>(new APIOperationConverter<>(repositoryHelper, serviceName,serverName),
+                                                           APIOperationElement.class,
+                                                           serviceName,
+                                                           serverName,
+                                                           invalidParameterHandler,
+                                                           repositoryHandler,
+                                                           repositoryHelper,
+                                                           localServerUserId,
+                                                           securityVerifier,
+                                                           supportedZones,
+                                                           defaultZones,
+                                                           publishZones,
+                                                           auditLog);
+
+        this.apiParameterListHandler = new SchemaTypeHandler<>(new APIParameterListConverter<>(repositoryHelper, serviceName,serverName),
+                                                               APIParameterListElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
+
+        this.apiParameterHandler = new SchemaAttributeHandler<>(new APIParameterConverter<>(repositoryHelper, serviceName,serverName),
+                                                                APIParameterElement.class,
+                                                                new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                                SchemaTypeElement.class,
+                                                                serviceName,
+                                                                serverName,
+                                                                invalidParameterHandler,
+                                                                repositoryHandler,
+                                                                repositoryHelper,
+                                                                localServerUserId,
+                                                                securityVerifier,
+                                                                supportedZones,
+                                                                defaultZones,
+                                                                publishZones,
+                                                                auditLog);
+
+        this.schemaTypeHandler = new SchemaTypeHandler<>(new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                        SchemaTypeElement.class,
+                                                        serviceName,
+                                                        serverName,
+                                                        invalidParameterHandler,
+                                                        repositoryHandler,
+                                                        repositoryHelper,
+                                                        localServerUserId,
+                                                        securityVerifier,
+                                                        supportedZones,
+                                                        defaultZones,
+                                                        publishZones,
+                                                        auditLog);
+
+        this.schemaAttributeHandler = new SchemaAttributeHandler<>(new SchemaAttributeConverter<>(repositoryHelper, serviceName,serverName),
+                                                                   SchemaAttributeElement.class,
+                                                                   new SchemaTypeConverter<>(repositoryHelper, serviceName,serverName),
+                                                                   SchemaTypeElement.class,
+                                                                   serviceName,
+                                                                   serverName,
+                                                                   invalidParameterHandler,
+                                                                   repositoryHandler,
+                                                                   repositoryHelper,
+                                                                   localServerUserId,
+                                                                   securityVerifier,
+                                                                   supportedZones,
+                                                                   defaultZones,
+                                                                   publishZones,
+                                                                   auditLog);
     }
 
 
@@ -165,8 +309,6 @@ public class DataManagerServicesInstance extends OMASServiceInstance
      */
     public OpenMetadataAPIGenericHandler<ElementStub> getGenericHandler()
     {
-        final String methodName = "getGenericHandler";
-
         return genericHandler;
     }
 
@@ -221,5 +363,148 @@ public class DataManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return filesAndFoldersHandler;
+    }
+
+
+    /**
+     * Return the handler for managing TopicElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<TopicElement> getTopicHandler() throws PropertyServerException
+    {
+        final String methodName = "getTopicHandler";
+
+        validateActiveRepository(methodName);
+
+        return topicHandler;
+    }
+
+
+    /**
+     * Return the handler for managing EventTypeElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    EventTypeHandler<EventTypeElement> getEventTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getEventTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return eventTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing APIElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<APIElement> getAPIHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPIHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiHandler;
+    }
+
+    /**
+     * Return the handler for managing APISpecificationElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaTypeHandler<APISpecificationElement> getAPISpecificationHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPISpecificationHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiSpecificationHandler;
+    }
+
+
+    /**
+     * Return the handler for managing APIOperationElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaTypeHandler<APIOperationElement> getAPIOperationHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPIOperationHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiOperationHandler;
+    }
+
+
+    /**
+     * Return the handler for managing APIParameterListElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaTypeHandler<APIParameterListElement> getAPIParameterListHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPIParameterListHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiParameterListHandler;
+    }
+
+
+    /**
+     * Return the handler for managing APIParameterElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaAttributeHandler<APIParameterElement, SchemaTypeElement> getAPIParameterHandler() throws PropertyServerException
+    {
+        final String methodName = "getAPIParameterHandler";
+
+        validateActiveRepository(methodName);
+
+        return apiParameterHandler;
+    }
+
+
+    /**
+     * Return the handler for managing SchemaTypeElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaTypeHandler<SchemaTypeElement> getSchemaTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getSchemaTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return schemaTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing SchemaAttributeElement objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> getSchemaAttributeHandler() throws PropertyServerException
+    {
+        final String methodName = "getSchemaAttributeHandler";
+
+        validateActiveRepository(methodName);
+
+        return schemaAttributeHandler;
     }
 }
