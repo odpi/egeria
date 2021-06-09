@@ -67,7 +67,6 @@
                 <include>org.odpi.egeria:discovery-service-connectors:*</include>
                 <include>org.odpi.egeria:governance-action-connectors:*</include>
                 <include>org.odpi.egeria:files-integration-connectors:*</include>
-                <!--include>org.odpi.egeria:gaian-connector:*</include-->
                 <include>org.odpi.egeria:graph-repository-connector:*</include>
                 <include>org.odpi.egeria:inmemory-open-metadata-topic-connector:*</include>
                 <include>org.odpi.egeria:inmemory-repository-connector:*</include>
@@ -77,10 +76,7 @@
                 <include>org.odpi.egeria:open-metadata-archive-file-connector:*</include>
                 <!-- included as we use for the tutorial environment for access control -->
                 <include>org.odpi.egeria:open-metadata-security-samples:*</include>
-                <!--include>org.odpi.egeria:security-officer-tag-connector:*</include-->
                 <include>org.odpi.egeria:spring-rest-client-connector:*</include>
-                <!--include>org.odpi.egeria:ranger-connector:*</include-->
-                <!--include>org.odpi.egeria:view-generator-connectors:*</include-->
                 <!-- pluggable discovery service -->
                 <include>org.odpi.egeria:governance-services-sample:*</include>
             </includes>
@@ -103,7 +99,7 @@
             <includes>
                 <include>org.odpi.egeria:cloud-information-model:*</include>
                 <include>org.odpi.egeria:glossary-canonical-model:*</include>
-                <include>org.odpi.egeria:open-metadata-types:*</include>
+                <include>org.odpi.egeria:open-metadata-types-utility:*</include>
             </includes>
             <binaries>
                 <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>

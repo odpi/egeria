@@ -691,7 +691,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param technicalName the stored display name property for the asset
      * @param technicalDescription the stored description property associated with the asset
      * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeGUID identifier of the type that is a subtype of asset - or null to create standard type
      * @param typeName name of the type that is a subtype of asset - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param instanceStatus initial status of the Asset in the metadata repository
@@ -710,7 +709,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String               technicalName,
                                            String               technicalDescription,
                                            Map<String, String>  additionalProperties,
-                                           String               typeGUID,
                                            String               typeName,
                                            Map<String, Object>  extendedProperties,
                                            InstanceStatus       instanceStatus,
@@ -751,12 +749,73 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
-                                           typeGUID,
-                                           typeName,
+                                           assetTypeId,
+                                           assetTypeName,
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            methodName);
+    }
+
+
+    /**
+     * Update an asset's properties.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param assetGUID unique identifier of the metadata element to update
+     * @param assetGUIDParameterName parameter name that supplied the assetGUID
+     * @param qualifiedName unique name for this database
+     * @param technicalName the stored display name property for the asset
+     * @param technicalDescription the stored description property associated with the asset
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of Database - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param isMergeUpdate should the new properties be merged with the existing properties of overlay them?
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateAsset(String               userId,
+                            String               externalSourceGUID,
+                            String               externalSourceName,
+                            String               assetGUID,
+                            String               assetGUIDParameterName,
+                            String               qualifiedName,
+                            String               technicalName,
+                            String               technicalDescription,
+                            Map<String, String>  additionalProperties,
+                            String               typeName,
+                            Map<String, Object>  extendedProperties,
+                            boolean              isMergeUpdate,
+                            String               methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        this.updateAsset(userId,
+                         externalSourceGUID,
+                         externalSourceName,
+                         assetGUID,
+                         assetGUIDParameterName,
+                         qualifiedName,
+                         technicalName,
+                         technicalDescription,
+                         additionalProperties,
+                         typeGUID,
+                         typeName,
+                         supportedZones,
+                         extendedProperties,
+                         isMergeUpdate,
+                         methodName);
     }
 
 
