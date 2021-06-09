@@ -267,7 +267,6 @@
         <!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
         <!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.exclusions>**/open-metadata-fvt/**</sonar.exclusions>
         <sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
         <sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
 
