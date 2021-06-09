@@ -120,6 +120,13 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 createdTermGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, termEntityDetail);
                 if (createdTermGuid != null) {
                     TermAnchor termAnchor = new TermAnchor();
+                    // we expect that the created term has a from time of now or the supplied value.
+                    // set the relationship from value to the same
+                    termAnchor.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
+                    if (instanceProperties.getEffectiveToTime() != null) {
+                        termAnchor.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
+                    }
+
                     termAnchor.getEnd1().setNodeGuid(glossaryGuid);
                     termAnchor.getEnd2().setNodeGuid(createdTermGuid);
 
@@ -132,6 +139,12 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                 Categorization categorization = new Categorization();
                                 categorization.getEnd1().setNodeGuid(categorySummary.getGuid());
                                 categorization.getEnd2().setNodeGuid(createdTermGuid);
+                                // we expect that the created term has a from time of now or the supplied value.
+                                // set the relationship from value to the same
+                                categorization.setEffectiveFromTime(instanceProperties.getEffectiveFromTime().getTime());
+                                if (instanceProperties.getEffectiveToTime() != null) {
+                                    categorization.setEffectiveToTime(instanceProperties.getEffectiveToTime().getTime());
+                                }
                                 relationship = termCategorizationMapper.map(categorization);
                                 oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
                                 response = getTermByGuid(userId, createdTermGuid);
@@ -375,13 +388,15 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentTerm, suppliedTerm);
 
-                Date termFromTime = suppliedTerm.getEffectiveFromTime();
-                Date termToTime = suppliedTerm.getEffectiveToTime();
+                Long termFromTime = suppliedTerm.getEffectiveFromTime();
+                Long termToTime = suppliedTerm.getEffectiveToTime();
                 currentTerm.setEffectiveFromTime(termFromTime);
                 currentTerm.setEffectiveToTime(termToTime);
                 // always update the governance actions for a replace or an update
                 currentTerm.setGovernanceClassifications(suppliedTerm.getGovernanceClassifications());
-
+                currentTerm.setSpineObject(suppliedTerm.isSpineObject());
+                currentTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
+                currentTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
                 EntityDetail forUpdate = termMapper.map(currentTerm);
                 Optional<EntityDetail> updatedEntity = oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, forUpdate);

@@ -88,7 +88,7 @@ echo -e '\n\n > Setting up Glossary Author:\n'
    --data @- <<EOF
 {
   "class": "ViewServiceConfig",
-  "omagserverPlatformRootURL": "${EGERIA_ENDPOINT}"
+  "omagserverPlatformRootURL": "${EGERIA_ENDPOINT}",
   "omagserverName" : "${EGERIA_SERVER}"
 }
 EOF

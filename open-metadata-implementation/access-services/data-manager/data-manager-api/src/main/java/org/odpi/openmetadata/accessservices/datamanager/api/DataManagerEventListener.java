@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.accessservices.datamanager.api;
 
 
-import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutTopicEvent;
+import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
 
 /**
  * DataManagerEventListener is the interface that a client implements to
@@ -17,5 +17,5 @@ public interface DataManagerEventListener
      *
      * @param event event object - call getEventType to find out what type of event.
      */
-    void processEvent(DataManagerOutTopicEvent event);
+    void processEvent(DataManagerOutboundEvent event);
 }

@@ -74,7 +74,7 @@ class DataEngineCommonHandlerTest {
 
     @BeforeEach
     void before() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
     }

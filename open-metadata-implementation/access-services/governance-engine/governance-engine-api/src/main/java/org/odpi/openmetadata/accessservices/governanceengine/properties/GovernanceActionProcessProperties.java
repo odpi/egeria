@@ -30,12 +30,6 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
     private String              usage                        = null;
     private String              technicalName                = null;
     private String              technicalDescription         = null;
-    private String              owner                        = null;
-    private OwnerCategory       ownerCategory                = null;
-    private List<String>        zoneMembership               = null;
-    private String              originOrganizationGUID       = null;
-    private String              originBusinessCapabilityGUID = null;
-    private Map<String, String> otherOriginValues            = null;
     private String              formula                      = null;
     private String              implementationLanguage       = null;
 
@@ -67,12 +61,6 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
 
             technicalName = template.getTechnicalName();
             technicalDescription = template.getTechnicalDescription();
-            owner = template.getOwner();
-            ownerCategory = template.getOwnerCategory();
-            zoneMembership = template.getZoneMembership();
-            originOrganizationGUID = template.getOriginOrganizationGUID();
-            originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
-            otherOriginValues = template.getOtherOriginValues();
 
             formula = template.getFormula();
             implementationLanguage = template.getImplementationLanguage();
@@ -240,160 +228,6 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
 
 
     /**
-     * Returns the name of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwner()
-    {
-        return owner;
-    }
-
-
-    /**
-     * Set up the name of the owner for this asset.
-     *
-     * @param owner String name
-     */
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
-    }
-
-
-    /**
-     * Return the type of owner stored in the owner property.
-     *
-     * @return OwnerCategory enum
-     */
-    public OwnerCategory getOwnerCategory()
-    {
-        return ownerCategory;
-    }
-
-
-    /**
-     * Set up the owner type for this asset.
-     *
-     * @param ownerType OwnerCategory enum
-     */
-    public void setOwnerCategory(OwnerCategory ownerType)
-    {
-        this.ownerCategory = ownerType;
-    }
-
-
-    /**
-     * Return the names of the zones that this asset is a member of.
-     *
-     * @return list of zone names
-     */
-    public List<String> getZoneMembership()
-    {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(zoneMembership);
-        }
-    }
-
-
-    /**
-     * Set up the names of the zones that this asset is a member of.
-     *
-     * @param zoneMembership list of zone names
-     */
-    public void setZoneMembership(List<String> zoneMembership)
-    {
-        this.zoneMembership = zoneMembership;
-    }
-
-
-    /**
-     * Return the unique identifier for the organization that originated this asset.
-     *
-     * @return string guid
-     */
-    public String getOriginOrganizationGUID()
-    {
-        return originOrganizationGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier for the organization that originated this asset.
-     *
-     * @param originOrganizationGUID string guid
-     */
-    public void setOriginOrganizationGUID(String originOrganizationGUID)
-    {
-        this.originOrganizationGUID = originOrganizationGUID;
-    }
-
-
-    /**
-     * Return the unique identifier of the business capability that originated this asset.
-     *
-     * @return string guid
-     */
-    public String getOriginBusinessCapabilityGUID()
-    {
-        return originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the business capability that originated this asset.
-     *
-     * @param originBusinessCapabilityGUID string guid
-     */
-    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID)
-    {
-        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Return the properties that characterize where this asset is from.
-     *
-     * @return map of name value pairs, all strings
-     */
-    public Map<String, String> getOtherOriginValues()
-    {
-        if (otherOriginValues == null)
-        {
-            return null;
-        }
-        else if (otherOriginValues.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(otherOriginValues);
-        }
-    }
-
-
-    /**
-     * Set up the properties that characterize where this asset is from.
-     *
-     * @param otherOriginValues map of name value pairs, all strings
-     */
-    public void setOtherOriginValues(Map<String, String> otherOriginValues)
-    {
-        this.otherOriginValues = otherOriginValues;
-    }
-
-
-    /**
      * Return the description of the processing performed by this process.
      *
      * @return string description
@@ -450,12 +284,6 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
                        ", usage='" + usage + '\'' +
                        ", technicalName='" + technicalName + '\'' +
                        ", technicalDescription='" + technicalDescription + '\'' +
-                       ", owner='" + owner + '\'' +
-                       ", ownerCategory=" + ownerCategory +
-                       ", zoneMembership=" + zoneMembership +
-                       ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                       ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                       ", otherOriginValues=" + otherOriginValues +
                        ", formula='" + formula + '\'' +
                        ", implementationLanguage='" + implementationLanguage + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -493,12 +321,6 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
                        Objects.equals(usage, that.usage) &&
                        Objects.equals(technicalName, that.technicalName) &&
                        Objects.equals(technicalDescription, that.technicalDescription) &&
-                       Objects.equals(owner, that.owner) &&
-                       ownerCategory == that.ownerCategory &&
-                       Objects.equals(zoneMembership, that.zoneMembership) &&
-                       Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
-                       Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
-                       Objects.equals(otherOriginValues, that.otherOriginValues) &&
                        Objects.equals(formula, that.formula) &&
                        Objects.equals(implementationLanguage, that.implementationLanguage);
     }
@@ -512,8 +334,7 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, summary, description, abbreviation, usage, technicalName, technicalDescription, owner,
-                            ownerCategory, zoneMembership, originOrganizationGUID, originBusinessCapabilityGUID, otherOriginValues,
+        return Objects.hash(super.hashCode(), displayName, summary, description, abbreviation, usage, technicalName, technicalDescription,
                             formula, implementationLanguage);
     }
 }

@@ -41,7 +41,7 @@ apply plugin: 'nebula-aggregate-javadocs'
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '2.10-SNAPSHOT'
+    version = '2.11-SNAPSHOT'
 
     // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
@@ -76,22 +76,24 @@ allprojects {
     ext {
         logbackVersion = '1.2.3'
         jacksonVersion = '2.12.2'
-        nettyVersion = '4.1.63.Final'
+        nettyVersion = '4.1.65.Final'
         luceneVersion = '8.8.2'
-        gremlinVersion = '3.4.10'
+        gremlinVersion = '3.4.11'
         groovyVersion = '3.0.7'
         janusVersion = '0.5.3'
-        springsecurityVersion = '5.4.6'
-        springbootVersion = '2.4.5'
-        springwebVersion = '5.3.6'
-        springdataVersion = '2.5.0'
-        junitjupiterVersion = '5.7.1'
-        mockitoVersion = '3.9.0'
+        springwebVersion = '5.3.8'
+        springdataVersion = '2.5.1'
+        springldapVersion = '2.3.4.RELEASE'
+        springbootVersion = '2.5.0'
+        springsecurityVersion = '5.5.0'
+        mockitoVersion = '3.10.0'
+        junitjupiterVersion = '5.7.2'
+        tomcatVersion = '9.0.46'
+        httpcoreVersion = '4.4.14'
     }
 
     dependencies {
         constraints {
-            //implementation("com.ibm.gaiandb:gaian":"")
             implementation("ch.qos.logback:logback-classic:${logbackVersion}")
             implementation("ch.qos.logback:logback-core:${logbackVersion}")
             implementation("com.datastax.oss:java-driver-core:4.11.1")
@@ -102,19 +104,20 @@ allprojects {
             implementation("com.fasterxml:classmate:1.5.1")
             implementation("com.github.jsonld-java:jsonld-java:0.13.3")
             implementation("com.github.spotbugs:spotbugs-annotations:4.2.3")
-            implementation("com.google.crypto.tink:tink:1.5.0")
+            implementation("com.google.crypto.tink:tink:1.6.0")
             implementation("com.google.code.findbugs:jsr305:3.0.2")
             implementation("com.google.guava:guava:30.1.1-jre")
             implementation("com.h2database:h2:1.4.200")
-            implementation("com.mikesamuel:json-sanitizer:1.2.2")
+            implementation("com.mikesamuel:json-sanitizer:1.2.3")
             implementation("com.sleepycat:je:18.3.12")
             implementation("commons-codec:commons-codec:1.15")
-            implementation("commons-io:commons-io:2.8.0")
+            implementation("commons-io:commons-io:2.9.0")
             implementation("commons-logging:commons-logging:1.2")
-            implementation("io.github.classgraph:classgraph:4.8.105")
+            implementation("org.apache.commons:commons-text:1.9")
+            implementation("io.github.classgraph:classgraph:4.8.107")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
-            implementation('io.lettuce:lettuce-core:6.1.1.RELEASE')
-            implementation("io.micrometer:micrometer-registry-prometheus:1.6.6")
+            implementation("io.micrometer:micrometer-registry-prometheus:1.7.0")
+            implementation('io.lettuce:lettuce-core:6.1.2.RELEASE')
             implementation("io.netty:netty-handler:${nettyVersion}")
             implementation("io.netty:netty-common:${nettyVersion}")
             implementation("io.netty:netty-buffer:${nettyVersion}")
@@ -130,10 +133,10 @@ allprojects {
             implementation("org.apache.avro:avro:1.10.2")
             implementation("org.apache.commons:commons-collections4:4.4")
             implementation("org.apache.commons:commons-lang3:3.12.0")
-            implementation("org.apache.derby:derby:10.8.3.1")
-            implementation("org.apache.hadoop:hadoop-common:2.9.2")
             implementation("org.apache.httpcomponents:httpclient:4.5.13")
-            implementation("org.apache.httpcomponents:httpcore:4.4.14")
+            implementation("org.apache.httpcomponents:httpcore:${httpcoreVersion}")
+            implementation("org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}")
+            implementation("org.apache.httpcomponents:httpcore-osgi:${httpcoreVersion}")
             implementation("org.apache.jena:jena-core:3.17.0")
             implementation("org.apache.kafka:kafka-clients:2.8.0")
             implementation("org.apache.lucene:lucene-core:${luceneVersion}")
@@ -141,11 +144,13 @@ allprojects {
             implementation("org.apache.lucene:lucene-queryparser:${luceneVersion}")
             implementation("org.apache.lucene:lucene-spatial:8.4.1")
             implementation("org.apache.lucene:lucene-spatial-extras:${luceneVersion}")
-            implementation("org.apache.ranger:ranger-plugins-common:1.2.0")
             implementation("org.apache.tinkerpop:tinkergraph-gremlin:${gremlinVersion}")
             implementation("org.apache.tinkerpop:gremlin-driver:${gremlinVersion}")
             implementation("org.apache.tinkerpop:gremlin-core:${gremlinVersion}")
-            implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.45") //TODO May need to exclude tomcat-annotations-api
+            implementation("org.apache.tinkerpop:gremlin-groovy:${gremlinVersion}")
+            implementation("org.apache.tinkerpop:gremlin-shaded:${gremlinVersion}")
+            implementation("org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}") //TODO May need to exclude tomcat-annotations-api
+            implementation("org.apache.tomcat:tomcat-coyote:${tomcatVersion}") //TODO May need to exclude tomcat-annotations-api
             implementation("org.codehaus.groovy:groovy:${groovyVersion}")
             implementation("org.codehaus.groovy:groovy-cli-picocli:${groovyVersion}")
             implementation("org.codehaus.groovy:groovy-console:${groovyVersion}")
@@ -153,7 +158,7 @@ allprojects {
             implementation("org.codehaus.groovy:groovy-templates:${groovyVersion}")
             implementation("org.codehaus.groovy:groovysh:${groovyVersion}")
             implementation("org.codehaus.plexus:plexus-utils:3.3.0")
-            implementation("org.elasticsearch:elasticsearch:7.12.1")
+            implementation("org.elasticsearch:elasticsearch:7.13.1")
             implementation("org.hdrhistogram:HdrHistogram:2.1.12")
             implementation("org.janusgraph:janusgraph-core:${janusVersion}")
             implementation("org.janusgraph:janusgraph-inmemory:${janusVersion}")
@@ -163,7 +168,7 @@ allprojects {
             implementation("org.reflections:reflections:0.9.12")
             implementation("org.slf4j:jcl-over-slf4j:1.7.30")
             implementation("org.slf4j:slf4j-api:1.7.30")
-            implementation("org.springdoc:springdoc-openapi-ui:1.5.8")
+            implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
             implementation("org.springframework.boot:spring-boot-autoconfigure:${springbootVersion}")
             implementation("org.springframework.boot:spring-boot:${springbootVersion}")
             implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springbootVersion}")
@@ -190,6 +195,10 @@ allprojects {
             implementation("org.springframework:spring-webmvc:${springwebVersion}")
             implementation("org.springframework:spring-tx:${springwebVersion}")
             implementation("org.springframework:spring-core:${springwebVersion}")
+            implementation("org.springframework.ldap:ldap-core:${springldapVersion}")
+            implementation("javax.servlet:javax.servlet-api:4.0.1")
+	        implementation("commons-configuration:commons-configuration:1.10")
+	        implementation("org.apache.commons:commons-configuration2:2.7")
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
             runtimeOnly("joda-time:joda-time:2.10.10")
@@ -205,6 +214,7 @@ allprojects {
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.4")
             runtimeOnly("org.janusgraph:janusgraph-es:${janusVersion}")
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.2")
+	        runtimeOnly("javax.servlet:javax.servlet-api:4.0.1");
             testImplementation("junit:junit:4.13.2")
             testImplementation("org.glassfish:javax.json:1.1.4")
             testImplementation("org.junit.jupiter:junit-jupiter-api:${junitjupiterVersion}")
@@ -217,6 +227,8 @@ allprojects {
             testImplementation("org.slf4j:slf4j-simple:1.7.30")
             testImplementation("org.testng:testng:7.3.0")
             testImplementation("org.hamcrest:hamcrest:2.2")
+            implementation("org.apache.thrift:libthrift:0.14.1")
+            implementation("org.elasticsearch.client:elasticsearch-rest-client:7.13.1")
         }
     }
 

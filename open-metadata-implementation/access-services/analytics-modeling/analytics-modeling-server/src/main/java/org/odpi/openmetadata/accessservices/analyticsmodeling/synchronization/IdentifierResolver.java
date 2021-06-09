@@ -34,7 +34,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class IdentifierResolver {
 	
 	private static String CLIENT           = org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants.ANALYTICS_MODELING_OMAS_NAME;
-	private static String ANY_STRING_REGEX = ".*";
 	public static String NAME_SEPARATOR    = ".";
 	
 	private ExecutionContext ctx;
@@ -170,8 +169,6 @@ public class IdentifierResolver {
 
 	/**
 	 * Function augments references to external artifacts with repository GUIDs of corresponding assets.
-	 * 
-	 * @param asset to process.
 	 */
 	private void resolveAssetReferences() {
 
@@ -218,10 +215,10 @@ public class IdentifierResolver {
 	 * @param methodName for logging.
 	 * @return list of elements
 	 */
-	private List<EntityDetail> getSchemaAttributes(String assetQualifiedName, String methodName) {
+	public List<EntityDetail> getSchemaAttributes(String assetQualifiedName, String methodName) {
 		
 		List<EntityDetail> metadata = new ArrayList<>();
-		String pattern = QualifiedNameUtils.escapeQualifiedNameRegExPattern(assetQualifiedName) + ANY_STRING_REGEX;
+		String pattern = ctx.getRepositoryHelper().getStartsWithRegex(assetQualifiedName + "::");
 
 		try {
 			List<EntityDetail> metadataPage;
@@ -243,22 +240,20 @@ public class IdentifierResolver {
 		return metadata;
 	}
 
-
 	/**
 	 * Check when asset identifiers need to be resolved.
 	 * @return if asset references something then identifiers need to be resolved.
 	 */
 	public boolean required() {
-		return asset.getReference() != null && !asset.getReference().isEmpty();
+		return asset != null && asset.getReference() != null && !asset.getReference().isEmpty();
 	}
-
 
 	/**
 	 * Get GUIDs of the identifiers listed as sources of metadata.
 	 * @param item referencing metadata
 	 * @return list of GUIDs.
 	 */
-	public List<String> getItemGUIDs(MetadataItem item) {
+	public List<String> getItemGUIDs(AnalyticsMetadata item) {
 		List<String>  list = item.getSourceId();
 		return list == null || list.isEmpty()
 				? Collections.emptyList()

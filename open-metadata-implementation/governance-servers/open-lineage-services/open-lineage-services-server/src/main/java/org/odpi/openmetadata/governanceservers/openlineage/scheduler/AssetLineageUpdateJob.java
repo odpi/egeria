@@ -31,11 +31,12 @@ public class AssetLineageUpdateJob implements Job {
     private static final Logger log = LoggerFactory.getLogger(AssetLineageUpdateJob.class);
 
     private static final String GLOSSARY_TERM = "GlossaryTerm";
-    private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Polling asset-lineage for changes as of time {} {}";
+    private static final String RUN_ASSET_LINEAGE_UPDATE_JOB = "Polling AssetLineage OMAS for changes as of time {} {}";
     private static final String RUNNING_FAILURE = "AssetLineageUpdateJob task execution at {} {} failed because of the following exception {}";
     private static final String ASSET_LINEAGE_CONFIG_DEFAULT_VALUE_ERROR = "AssetLineageUpdateJob default value" +
             " was defined as '{}' and it should have an ISO-8601 format such as '{}'. The job will shutdown and won't start again. " +
             "Correct the default value and restart the server instance.";
+    private static final String LAST_UPDATE_TIME_UNKNOWN = "Last update time unknown";
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -63,7 +64,7 @@ public class AssetLineageUpdateJob implements Job {
             Optional<Long> storedAssetLineageUpdateTime = lineageGraph.getAssetLineageUpdateTime();
             Optional<LocalDateTime> assetLineageLastUpdateTime = getAssetLineageLastUpdateTime(configAssetLineageDefaultTime,
                     storedAssetLineageUpdateTime, localDateTime);
-            log.debug(RUN_ASSET_LINEAGE_UPDATE_JOB, assetLineageLastUpdateTime.get(), ZoneId.systemDefault().getId());
+            assetLineageLastUpdateTime.ifPresent(lastUpdateTime -> log.debug(RUN_ASSET_LINEAGE_UPDATE_JOB, lastUpdateTime, ZoneId.systemDefault().getId()));
             assetLineageClient.publishEntities(localServerName, localServerUserId, GLOSSARY_TERM, assetLineageLastUpdateTime);
 
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
@@ -98,7 +99,8 @@ public class AssetLineageUpdateJob implements Job {
                 throw jobExecutionException;
             }
         }
-
+        log.debug(LAST_UPDATE_TIME_UNKNOWN);
         return Optional.empty();
+
     }
 }

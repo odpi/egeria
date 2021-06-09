@@ -126,9 +126,7 @@ public class SchemaAttribute extends SchemaElement
             return false;
         }
         SchemaAttribute that = (SchemaAttribute) objectToCompare;
-        return elementPosition == that.elementPosition 
-        		&& getQualifiedName().equals(that.getQualifiedName())
-           		&& nativeJavaClass.equals(that.nativeJavaClass);
+        return Objects.equals(elementPosition, that.elementPosition);
     }
 
 

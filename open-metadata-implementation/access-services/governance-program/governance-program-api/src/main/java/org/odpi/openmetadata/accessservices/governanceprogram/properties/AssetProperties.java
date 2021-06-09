@@ -1,5 +1,6 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import com.fasterxml.jackson.annotation.*;
@@ -10,55 +11,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Asset holds asset properties that are used for displaying details of
- * an asset in summary lists or hover text.  It includes the following properties:
- * <ul>
- *     <li>type - metadata type information for the asset</li>
- *     <li>guid - globally unique identifier for the asset</li>
- *     <li>url - external link for the asset</li>
- *     <li>qualifiedName - The official (unique) name for the asset. This is often defined by the IT systems
- *     management organization and should be used (when available) on audit logs and error messages.
- *     (qualifiedName from Referenceable - model 0010)</li>
- *     <li>displayName - A consumable name for the asset.  Often a shortened form of the assetQualifiedName
- *     for use on user interfaces and messages.   The assetDisplayName should only be used for audit logs and error
- *     messages if the assetQualifiedName is not set. (Sourced from attribute name within Asset - model 0010)</li>
- *     <li>shortDescription - short description about the asset.
- *     (Sourced from assetSummary within ConnectionsToAsset - model 0205)</li>
- *     <li>description - full description of the asset.
- *     (Sourced from attribute description within Asset - model 0010)</li>
- *     <li>owner - name of the person or organization that owns the asset.
- *     (Sourced from attribute owner within Asset - model 0010)</li>
- *     <li>ownerType - type of the person or organization that owns the asset.
- *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
- *     <li>zoneMembership - name of the person or organization that owns the asset.
- *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
- *     <li>origin - origin identifiers describing the source of the asset.
- *     (Sourced from classification AssetOrigin attached to Asset - model 0440)</li>
- *     <li>latestChange - description of last update to the asset.
- *     (Sourced from classification LatestChange attached to Asset - model 0010)</li>
- *     <li>isReferenceData - flag to show if asset contains reference data.
- *     (Sourced from classification ReferenceData within Asset - model 0524)</li>
- *     <li>classifications - list of all classifications assigned to the asset</li>
- *     <li>extendedProperties - list of properties assigned to the asset from the Asset subclasses</li>
- *     <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
- * </ul>
+ * AssetProperties is a java bean used to describe assets managed by the governance program.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetProperties extends ReferenceableProperties
+public class AssetProperties extends SupplementaryProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String              displayName                  = null;
-    private String              description                  = null;
-    private String              owner                        = null;
-    private OwnerType           ownerType                    = null;
-    private List<String>        zoneMembership               = null;
-    private String              originOrganizationGUID       = null;
-    private String              originBusinessCapabilityGUID = null;
-    private Map<String, String> otherOriginValues            = null;
-
+    private String technicalName = null;
+    private String technicalDescription = null;
 
     /**
      * Default constructor
@@ -79,216 +42,57 @@ public class AssetProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName                  = template.getDisplayName();
-            description                  = template.getDescription();
-            owner                        = template.getOwner();
-            ownerType                    = template.getOwnerType();
-            zoneMembership               = template.getZoneMembership();
-            originOrganizationGUID       = template.getOriginOrganizationGUID();
-            originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
-            otherOriginValues            = template.getOtherOriginValues();
+            technicalName = template.getDisplayName();
+            technicalDescription = template.getTechnicalDescription();
         }
     }
 
 
     /**
-     * Returns the stored display name property for the asset.
-     * If no display name is available then null is returned.
+     * Returns the stored technical name property for the asset.
+     * If no technical name is available then null is returned.
      *
      * @return String name
      */
-    public String getDisplayName()
+    public String getTechnicalName()
     {
-        return displayName;
+        return technicalName;
     }
 
 
     /**
-     * Set up the stored display name property for the asset.
+     * Set up the stored technical name property for the asset.
      *
-     * @param displayName String name
+     * @param technicalName String name
      */
-    public void setDisplayName(String displayName)
+    public void setTechnicalName(String technicalName)
     {
-        this.displayName = displayName;
+        this.technicalName = technicalName;
     }
 
 
     /**
-     * Returns the stored description property for the asset.
+     * Returns the stored technical description property for the asset.
      * If no description is provided then null is returned.
      *
      * @return description String text
      */
-    public String getDescription()
+    public String getTechnicalDescription()
     {
-        return description;
+        return technicalDescription;
     }
 
 
     /**
-     * Set up the stored description property associated with the asset.
+     * Set up the stored technical description property associated with the asset.
      *
-     * @param description String text
+     * @param technicalDescription String text
      */
-    public void setDescription(String description)
+    public void setTechnicalDescription(String technicalDescription)
     {
-        this.description = description;
+        this.technicalDescription = technicalDescription;
     }
 
-
-    /**
-     * Returns the name of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwner()
-    {
-        return owner;
-    }
-
-
-    /**
-     * Set up the name of the owner for this asset.
-     *
-     * @param owner String name
-     */
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
-    }
-
-
-    /**
-     * Return the type of owner stored in the owner property.
-     *
-     * @return OwnerCategory enum
-     */
-    public OwnerType getOwnerType()
-    {
-        return ownerType;
-    }
-
-
-    /**
-     * Set up the owner type for this asset.
-     *
-     * @param ownerType OwnerCategory enum
-     */
-    public void setOwnerType(OwnerType ownerType)
-    {
-        this.ownerType = ownerType;
-    }
-
-
-    /**
-     * Return the names of the zones that this asset is a member of.
-     *
-     * @return list of zone names
-     */
-    public List<String> getZoneMembership()
-    {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(zoneMembership);
-        }
-    }
-
-
-    /**
-     * Set up the names of the zones that this asset is a member of.
-     *
-     * @param zoneMembership list of zone names
-     */
-    public void setZoneMembership(List<String> zoneMembership)
-    {
-        this.zoneMembership = zoneMembership;
-    }
-
-
-    /**
-     * Return the unique identifier for the organization that originated this asset.
-     *
-     * @return string guid
-     */
-    public String getOriginOrganizationGUID()
-    {
-        return originOrganizationGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier for the organization that originated this asset.
-     *
-     * @param originOrganizationGUID string guid
-     */
-    public void setOriginOrganizationGUID(String originOrganizationGUID)
-    {
-        this.originOrganizationGUID = originOrganizationGUID;
-    }
-
-
-    /**
-     * Return the unique identifier of the business capability that originated this asset.
-     *
-     * @return string guid
-     */
-    public String getOriginBusinessCapabilityGUID()
-    {
-        return originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the business capability that originated this asset.
-     *
-     * @param originBusinessCapabilityGUID string guid
-     */
-    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID)
-    {
-        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Return the properties that characterize where this asset is from.
-     *
-     * @return map of name value pairs, all strings
-     */
-    public Map<String, String> getOtherOriginValues()
-    {
-        if (otherOriginValues == null)
-        {
-            return null;
-        }
-        else if (otherOriginValues.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(otherOriginValues);
-        }
-    }
-
-
-    /**
-     * Set up the properties that characterize where this asset is from.
-     *
-     * @param otherOriginValues map of name value pairs, all strings
-     */
-    public void setOtherOriginValues(Map<String, String> otherOriginValues)
-    {
-        this.otherOriginValues = otherOriginValues;
-    }
 
     /**
      * Standard toString method.
@@ -299,19 +103,18 @@ public class AssetProperties extends ReferenceableProperties
     public String toString()
     {
         return "AssetProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerCategory=" + ownerType +
-                ", zoneMembership=" + zoneMembership +
-                ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                ", otherOriginValues=" + otherOriginValues +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "technicalName='" + technicalName + '\'' +
+                       ", technicalDescription='" + technicalDescription + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", summary='" + getSummary() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", abbreviation='" + getAbbreviation() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -337,16 +140,9 @@ public class AssetProperties extends ReferenceableProperties
             return false;
         }
         AssetProperties that = (AssetProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(owner, that.owner) &&
-                ownerType == that.ownerType &&
-                Objects.equals(zoneMembership, that.zoneMembership) &&
-                Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
-                Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
-                Objects.equals(otherOriginValues, that.otherOriginValues);
+        return Objects.equals(technicalName, that.technicalName) &&
+                Objects.equals(technicalDescription, that.technicalDescription);
     }
-
 
     /**
      * Return has code based on properties.
@@ -356,7 +152,6 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, owner, ownerType, zoneMembership, originOrganizationGUID,
-                            originBusinessCapabilityGUID, otherOriginValues);
+        return Objects.hash(super.hashCode(), technicalName, technicalDescription);
     }
 }

@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServerCapability;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
@@ -193,5 +194,15 @@ public class ExecutionContext {
 		return auditLog;
 	}
 	
-	
+	/**
+	 * Helper function to get string property from property collection of the entity.
+	 * @param propName property name to retrieve.
+	 * @param properties collection.
+	 * @param methodName requested the operation.
+	 * @return property value.
+	 */
+	public String getStringProperty(String propName, InstanceProperties properties, String methodName)
+	{
+		return repositoryHelper.getStringProperty(serviceName, propName, properties, methodName);
+	}
 }

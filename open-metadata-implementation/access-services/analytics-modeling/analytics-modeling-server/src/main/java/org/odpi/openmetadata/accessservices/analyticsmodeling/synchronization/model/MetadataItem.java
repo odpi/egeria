@@ -3,16 +3,26 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  *	MetadataItem is an abstraction of something that references source of
  *	simple data that have same type like integer, string, etc.
  *
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class MetadataItem extends AnalyticsMetadata {
 
 	private String expression;

@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.slf4j.Logger;
@@ -35,7 +35,6 @@ public class StoringServices {
      */
     public void upsertEntityContext(LineageRelationshipsEvent lineageRelationshipsEvent) {
         String termGUID = lineageRelationshipsEvent.getRelationshipsContext().getEntityGuid();
-        lineageGraph.removeObsoleteEdgesFromGraph(termGUID, lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
         lineageGraph.storeToGraph(lineageRelationshipsEvent.getRelationshipsContext().getRelationships());
     }
     /**
@@ -106,9 +105,14 @@ public class StoringServices {
      */
     public void apply(LineageSyncEvent lineageSyncEvent) {
         // publishSummary
-        if(lineageSyncEvent.getPublishSummary()!=null)
+        if (lineageSyncEvent.getPublishSummary() != null) {
             lineageGraph.saveAssetLineageUpdateTime(lineageSyncEvent.getPublishSummary().getLineageTimestamp());
+        }
         // updateSummary...
+        if (lineageSyncEvent.getSyncUpdateContext() != null) {
+            lineageGraph.updateNeighbours(lineageSyncEvent.getSyncUpdateContext().getEntityGUID(),
+                    lineageSyncEvent.getSyncUpdateContext().getNeighboursGUID());
+        }
     }
 
     /**
@@ -120,5 +124,4 @@ public class StoringServices {
     public boolean isEntityInGraph(String guid) {
         return lineageGraph.isEntityInGraph(guid);
     }
-
 }

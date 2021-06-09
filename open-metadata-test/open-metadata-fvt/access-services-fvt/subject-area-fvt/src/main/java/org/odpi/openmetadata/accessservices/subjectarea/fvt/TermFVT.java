@@ -227,30 +227,33 @@ public class TermFVT {
         if (results.size() != spacedTermcount +1 ) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected spaced " + spacedTermcount+1 + " back on the find got "  +results.size());
         }
-        Term term = results.get(0);
+
+        Term term = termForFind4;
+        // we need to find a term that has our glossary so we can see how the summary changes when we change the
+        // glossary effectivity
         long now = new Date().getTime();
-        Date fromTermTime = new Date(now+6*1000*60*60*24);
-        Date toTermTime = new Date(now+7*1000*60*60*24);
+        Long fromTermTime = new Date(now+6*1000*60*60*24).getTime();
+        Long toTermTime = new Date(now+7*1000*60*60*24).getTime();
 
         term.setEffectiveFromTime(fromTermTime);
         term.setEffectiveToTime(toTermTime);
         Term updatedFutureTerm = updateTerm(term.getSystemAttributes().getGUID(), term);
-        if (updatedFutureTerm.getEffectiveFromTime().getTime()!=fromTermTime.getTime()) {
+        if (updatedFutureTerm.getEffectiveFromTime().longValue()!=fromTermTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term from time to update");
         }
-        if (updatedFutureTerm.getEffectiveToTime().getTime() !=toTermTime.getTime()) {
+        if (updatedFutureTerm.getEffectiveToTime().longValue() !=toTermTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term to time to update");
         }
-        Date fromGlossaryTime = new Date(now+8*1000*60*60*24);
-        Date toGlossaryTime = new Date(now+9*1000*60*60*24);
+        Long fromGlossaryTime = new Date(now+8*1000*60*60*24).getTime();
+        Long toGlossaryTime = new Date(now+9*1000*60*60*24).getTime();
         glossary.setEffectiveFromTime(fromGlossaryTime);
         glossary.setEffectiveToTime(toGlossaryTime);
         Glossary updatedFutureGlossary= glossaryFVT.updateGlossary(glossaryGuid, glossary);
 
-        if (updatedFutureGlossary.getEffectiveFromTime().getTime()!= fromGlossaryTime.getTime()) {
+        if (updatedFutureGlossary.getEffectiveFromTime().longValue()!= fromGlossaryTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary from time to update");
         }
-        if (updatedFutureGlossary.getEffectiveToTime().getTime()!= toGlossaryTime.getTime()) {
+        if (updatedFutureGlossary.getEffectiveToTime().longValue()!= toGlossaryTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary to time to update");
         }
 
@@ -258,11 +261,11 @@ public class TermFVT {
 
         GlossarySummary glossarySummary =  newTerm.getGlossary();
 
-        if (glossarySummary.getFromEffectivityTime().getTime()!= fromGlossaryTime.getTime()) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected from glossary summary time "+glossarySummary.getFromEffectivityTime().getTime()+ " to equal " +fromGlossaryTime.getTime());
+        if (glossarySummary.getFromEffectivityTime().longValue()!= fromGlossaryTime.longValue()) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected from glossary summary time "+glossarySummary.getFromEffectivityTime() + " to equal " +fromGlossaryTime);
         }
-        if (glossarySummary.getToEffectivityTime().getTime()!= toGlossaryTime.getTime()) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected to glossary summary time "+glossarySummary.getToEffectivityTime().getTime()+ " to equal " +toGlossaryTime.getTime());
+        if (glossarySummary.getToEffectivityTime().longValue() != toGlossaryTime.longValue()) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected to glossary summary time "+glossarySummary.getToEffectivityTime() + " to equal " + toGlossaryTime);
         }
 
         if (glossarySummary.getRelationshipguid() == null) {
@@ -531,8 +534,8 @@ public class TermFVT {
     public Term updateTermToFuture(String guid, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         long now = new Date().getTime();
 
-       term.setEffectiveFromTime(new Date(now+6*1000*60*60*24));
-       term.setEffectiveToTime(new Date(now+7*1000*60*60*24));
+       term.setEffectiveFromTime(new Date(now+6*1000*60*60*24).getTime());
+       term.setEffectiveToTime(new Date(now+7*1000*60*60*24).getTime());
 
         Term updatedTerm = subjectAreaTerm.update(this.userId, guid, term);
         if (updatedTerm != null)

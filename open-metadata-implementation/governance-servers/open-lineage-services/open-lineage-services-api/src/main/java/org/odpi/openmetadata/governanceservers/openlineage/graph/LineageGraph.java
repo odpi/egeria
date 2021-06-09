@@ -21,12 +21,12 @@ public interface LineageGraph extends OpenLineageGraphConnector {
     void storeToGraph(Set<GraphContext> graphContext);
 
     /**
-     * Checks difference between new graph context and existing graph and delete edge graphs that are no longer in the cotnext
+     * Updates the neighbours of a node by removing all the relationships that no longer have a direct link to the entity.
      *
-     * @param entityGUID entity GUID whose context is being updated
-     * @param graphContext the nodes and edges related to the entity
+     * @param nodeGUID - the identifier of the entity that was updated
+     * @param neighboursGUIDS - the identifiers of the nodes that have a direct relationship to the entity
      */
-    void removeObsoleteEdgesFromGraph(String entityGUID, Set<GraphContext> graphContext);
+    void updateNeighbours(String nodeGUID, Set<String> neighboursGUIDS);
 
     /**
      * Updates a vertex in the Graph

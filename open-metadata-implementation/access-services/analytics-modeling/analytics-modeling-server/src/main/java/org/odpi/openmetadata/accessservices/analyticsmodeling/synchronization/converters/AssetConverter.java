@@ -3,7 +3,13 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters;
 
-import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.beans.Asset;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AssetReference;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -11,7 +17,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-public class AssetConverter extends OpenMetadataAPIGenericConverter<Asset> {
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class AssetConverter extends OpenMetadataAPIGenericConverter<AnalyticsAsset> {
 
 	public AssetConverter(OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
 		super(repositoryHelper, serviceName, serverName);
@@ -28,7 +37,7 @@ public class AssetConverter extends OpenMetadataAPIGenericConverter<Asset> {
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
-    public Asset getNewBean(Class<Asset>     beanClass,
+    public AnalyticsAsset getNewBean(Class<AnalyticsAsset>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
     {
@@ -36,13 +45,33 @@ public class AssetConverter extends OpenMetadataAPIGenericConverter<Asset> {
             handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
         }
         
-        Asset bean = new Asset();
+        AnalyticsAsset bean = new AnalyticsAsset();
 		InstanceProperties instanceProperties = entity.getProperties();
+		bean.setGuid(entity.getGUID());
 		if (instanceProperties != null) {
-			bean.setDisplayName(this.removeDisplayName(instanceProperties));
+			bean.setDisplayName(this.removeName(instanceProperties));
 			bean.setDescription(this.removeDescription(instanceProperties));
 			bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-			bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+			Map<String, String> props = this.removeAdditionalProperties(instanceProperties);
+			bean.setAdditionalProperties(props);
+			
+			if (props != null) {
+				bean.setUid(props.get(Constants.UID));
+				bean.setType(props.get(Constants.TYPE));
+				bean.setLocation(props.get(Constants.LOCATION));
+				bean.setLastModified(props.get(Constants.LASTMODIFIED));
+				String jsonReference = props.get(Constants.REFERENCE);
+				if (jsonReference != null && !jsonReference.isEmpty()) {
+					try {
+						bean.setReference(new ObjectMapper()
+								.readValue(jsonReference.getBytes(), new TypeReference<List<AssetReference>>(){}));
+					} catch (IOException e) {
+						// log warning into execution context
+					}
+				} else {
+					bean.setReference(null);
+				}
+			}
 		}
 
         return bean;

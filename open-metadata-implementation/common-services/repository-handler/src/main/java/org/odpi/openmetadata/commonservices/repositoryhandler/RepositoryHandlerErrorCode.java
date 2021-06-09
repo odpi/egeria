@@ -63,10 +63,14 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "Route the request through a different process that is set up to use the correct external source identifiers."),
     LOCAL_CANNOT_CHANGE_EXTERNAL(400, "OMAG-REPOSITORY-HANDLER-400-008",
             "Method {0} is unable to modify {1} instance {2} because it is has metadata provenance of {3} with " +
-                                  "an externalSourceGUID of {4} and an externalSourceName of {5} because user {6} is using a local cohort interface",
-            "The system is unable to modify the requested instance because it does not have ownership rights to the " +
-                                  "instance.",
-            "Route the request through a process that is set up to use the correct external source identifiers."),
+                                  "an externalSourceGUID of {4} and an externalSourceName of {5} and user {6} issued a request with the Local Cohort metadata provenance set",
+            "The system is unable to modify the requested instance because it does not have ownership rights to the instance.",
+            "Route the request through a process that is set up to use the correct external source identifiers.  " +
+                    "To understand more about this behavior, lookup Metadata Provenance in Egeria's Glossary."),
+    UNRECOGNIZED_PROPERTY(400, "OMAG-REPOSITORY-HANDLER-400-009",
+            "The property named {0} with value of {1} supplied on method {2} is not found in entity {3}",
+            "The system does no process the request because there is a possibility that the caller is requesting changes to the wrong object.",
+                           "Correct the value of the property passed on the request and retry."),
     USER_NOT_AUTHORIZED(403, "OMAG-REPOSITORY-HANDLER-403-001",
             "User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}",
             "The system is unable to process the request because the user should not be making this request.",

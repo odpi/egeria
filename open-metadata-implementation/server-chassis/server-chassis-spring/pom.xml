@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.10-SNAPSHOT</version>
+        <version>2.11-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -264,12 +264,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>information-view-spring</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -313,6 +307,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-manager-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>security-manager-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -651,12 +651,6 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
-                    <artifactId>information-view-spring</artifactId>
-                    <scope>runtime</scope>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.odpi.egeria</groupId>
                     <artifactId>subject-area-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
@@ -694,6 +688,12 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>security-officer-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>security-manager-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

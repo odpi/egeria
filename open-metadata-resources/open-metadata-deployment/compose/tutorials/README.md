@@ -5,31 +5,29 @@
 
 This image is intended to support on-site labs, tutorials. 
 
-Rather than having to install Egeria, prereqs & tools separately, these scripts make it easy
-to get a stack running quickly
+Rather than having to install Egeria, prerequisites and tools separately, these scripts make it easy
+to get a stack running quickly.
 
-This has much reduced function than Egeria's kubernetes support via Helm which is a better
-option for real-world coding & deployment. The same configuration we have here for the lab is 
-also available for k8s. 
+This has much reduced function than Egeria's [kubernetes support](../../charts) via Helm which is a better
+option for real-world coding and deployment. 
+It is therefore recommended you consider switching to kubernetes as it offers us more flexibility.
+See [https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab](https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab).
 
-It is recommended you consider switching to k8s as it offers us more flexibility.
+## Contents
 
-See https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/odpi-egeria-lab
-
-Components included are:
- * Multiple egeria images -- this uses the latest docker egeria image, as published to dockerhub
-   and as used by our helm charts
-   - Core egeria server - core:9443 internally, localhost:19443 externally
-   - Datalake server    - datalake:9443 internally, localhost:19444 externally 
-   - Development server - dev:9443 internally, localhost:19445 externally
-   - Factory server     - factory:9443 internally, localhost:19446 externally
-   - Egeria ui          - ui:8443 internally (https), localhost:18443 externally (https)
-   - Static content     - staticui:80 internally (https), localhost:10080 externally (https)
-   - nginx              - nginx:443 internally (https), localhost:10443 externally (https)
-   - presentation       - presentation:8091 internally (https), localhost:18091 externally (https) 
-* kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
- * zookeeper - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image
- * notebook - notebook:8888 internally, localhost:18888 externally (lab version, base image) - see https://jupyter-docker-stacks.readthedocs.io/en/latest/
+Components included in the docker compose scripts are:
+ * Multiple egeria images -- this uses the latest docker egeria image, as published to [Docker Hub](https://hub.docker.com/search?q=egeria&type=image)
+   - Core [OMAG server platform](../../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md) - core:9443 internally, localhost:19443 externally
+   - Data Lake OMAG server platform   - datalake:9443 internally, localhost:19444 externally 
+   - Development OMAG server platform - dev:9443 internally, localhost:19445 externally
+   - Factory OMAG server platform    - factory:9443 internally, localhost:19446 externally
+   - [UI Platform](../../../../open-metadata-implementation/user-interfaces)   - ui:8443 internally (https), localhost:18443 externally (https)
+   - UI Static content     - staticui:80 internally (https), localhost:10080 externally (https)
+   - React UI's [Presentation server](../../../../open-metadata-implementation/admin-services/docs/concepts/presentation-server.md)       - presentation:8091 internally (https), localhost:18091 externally (https) 
+ * [nginx](https://nginx.org/en/)  - nginx:443 internally (https), localhost:10443 externally (https)
+ * [Apache Kafka](../../../../developer-resources/tools/Apache-Kafka.md) - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
+ * [Apache Zookeeper](../../../../developer-resources/tools/Apache-Kafka.md) - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image
+ * Jupyter notebooks - notebook:8888 internally, localhost:18888 externally (lab version, base image) - see https://jupyter-docker-stacks.readthedocs.io/en/latest/
 
 ## Usage
 
@@ -58,11 +56,11 @@ Components included are:
  ```
 $ docker ps                                                                                                                                                                                                                                                                                                                            [10:43:05]
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                                                             NAMES
-668a0cb4c603        odpi/jupyter:2.10-SNAPSHOT   "tini -g -- start.sh…"   4 minutes ago       Up 4 minutes        0.0.0.0:18888->8888/tcp                                           tutorials_notebook_1
-dd0061d76740        odpi/egeria:2.10-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19446->9443/tcp   tutorials_factory_1
-b4529b10242e        odpi/egeria:2.10-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19443->9443/tcp   tutorials_core_1
-9ca6fac8eeb4        odpi/egeria:2.10-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19445->9443/tcp   tutorials_dev_1
-edd729d03841        odpi/egeria:2.10-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19444->9443/tcp   tutorials_datalake_1
+668a0cb4c603        odpi/jupyter:2.11-SNAPSHOT   "tini -g -- start.sh…"   4 minutes ago       Up 4 minutes        0.0.0.0:18888->8888/tcp                                           tutorials_notebook_1
+dd0061d76740        odpi/egeria:2.11-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19446->9443/tcp   tutorials_factory_1
+b4529b10242e        odpi/egeria:2.11-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19443->9443/tcp   tutorials_core_1
+9ca6fac8eeb4        odpi/egeria:2.11-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19445->9443/tcp   tutorials_dev_1
+edd729d03841        odpi/egeria:2.11-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19444->9443/tcp   tutorials_datalake_1
 ea3884c6ceb8        bitnami/kafka:latest        "/opt/bitnami/script…"   4 minutes ago       Up 4 minutes        0.0.0.0:19092->9092/tcp                                           tutorials_kafka_1
 b076f6ddc67c        bitnami/zookeeper:latest    "/opt/bitnami/script…"   4 minutes ago       Up 4 minutes        2888/tcp, 3888/tcp, 8080/tcp, 0.0.0.0:12181->2181/tcp             tutorials_zookeeper_1
 
@@ -89,7 +87,7 @@ issue or incompatibility.
 $ docker logs tutorials_core_1                                                                                                                                                                                                                                                                                                         [10:43:39]
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -cp "." -jar /deployments/server/server-chassis-spring-2.10-SNAPSHOT.jar  
+INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -cp "." -jar /deployments/server/server-chassis-spring-2.11-SNAPSHOT.jar  
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _

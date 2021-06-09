@@ -19,6 +19,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ErrorRes
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ModuleResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemaTablesResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemasResponse;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -38,6 +39,7 @@ public class AnalyticsModelingRestServices {
 	
 	private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AnalyticsModelingRestServices.class),
 			AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName());
+	
 	private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 	
 	public RESTExceptionHandler getExceptionHandler() {
@@ -226,6 +228,78 @@ public class AnalyticsModelingRestServices {
 	}
 
 	/**
+	 * Update analytics artifact defined as json input.
+	 * @param serverName where to create artifact.
+	 * @param userId requested the operation.
+	 * @param serverCapability source where artifact persist.
+	 * @param artifact definition.
+	 * @return response with artifact or error description.
+	 */
+	public AnalyticsModelingOMASAPIResponse updateArtifact(String serverName, String userId, String serverCapability, AnalyticsAsset artifact) {
+
+		String methodName = "updateArtifact";
+		AnalyticsModelingOMASAPIResponse ret;
+		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+		try {
+
+			validateUrlParameters(serverName, userId, null, null, null, null, methodName);
+
+			AssetsResponse response = new AssetsResponse();
+			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
+					.updateAssets(userId, serverCapability, artifact);
+			response.setAssetList(assets);
+			ret = response;
+		} catch (AnalyticsModelingCheckedException e) {
+			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
+		} catch (Exception e) {
+			ret = handleExceptionResponse(e, methodName);
+        }
+		
+		restCallLogger.logRESTCallReturn(token, ret.toString());
+		return ret;
+	}
+	
+	/**
+	 * Delete analytics artifact defined by unique identifier.
+	 * @param serverName where to create artifact.
+	 * @param userId requested the operation.
+	 * @param serverCapability source where artifact persist.
+	 * @param identifier of the artifact in the 3rd party system.
+	 * @return response with status of the operation.
+	 */
+	public AnalyticsModelingOMASAPIResponse deleteArtifact(String serverName, String userId, String serverCapability,
+			String identifier) {
+		
+		String methodName = "deleteArtifact";
+		AnalyticsModelingOMASAPIResponse ret;
+		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+		try {
+
+			validateUrlParameters(serverName, userId, null, null, null, null, methodName);
+
+			AssetsResponse response = new AssetsResponse();
+			ResponseContainerAssets assets = getHandler().getAnalyticsArtifactHandler(serverName, userId, methodName)
+					.deleteAssets(userId, serverCapability, identifier);
+			response.setAssetList(assets);
+			ret = response;
+		} catch (AnalyticsModelingCheckedException e) {
+			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
+		} catch (Exception e) {
+			ret = handleExceptionResponse(e, methodName);
+        }
+		
+		restCallLogger.logRESTCallReturn(token, ret.toString());
+		return ret;
+	}
+
+	
+	/**
 	 * Validate path and query parameters from URL.
 	 * @param serverName mandatory path parameter of the base URL.
 	 * @param userId mandatory path parameter of the base URL.
@@ -268,6 +342,17 @@ public class AnalyticsModelingRestServices {
 	private AnalyticsModelingOMASAPIResponse handleInvalidParameterResponse(InvalidParameterException e, String methodName)	{
 		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
 				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition(e.getParameterName()),
+				this.getClass().getSimpleName(),
+				methodName,
+				e);
+		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
+		getExceptionHandler().captureThrowable(ret, error, methodName);
+		return ret;
+	}
+	
+	private AnalyticsModelingOMASAPIResponse handleExceptionResponse(Exception e, String methodName)	{
+		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
+				AnalyticsModelingErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(e.getClass().getName(), methodName, e.getLocalizedMessage()),
 				this.getClass().getSimpleName(),
 				methodName,
 				e);

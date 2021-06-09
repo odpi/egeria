@@ -11,6 +11,7 @@ public class Node {
     private String group;
     private Map<String, String> properties;
     private Integer level = 0;
+    private String qualifiedName;
 
     public Node(String id, String label) {
         this.id = id;
@@ -57,6 +58,14 @@ public class Node {
         this.level = level;
     }
 
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
+    }
+
     @Override
     public String toString() {
         return "Node{" +
@@ -65,6 +74,7 @@ public class Node {
                 ", group='" + group + '\'' +
                 ", properties=" + properties +
                 ", level=" + level +
+                ", qualifiedName=" + qualifiedName +
                 '}';
     }
 }

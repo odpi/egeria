@@ -35,7 +35,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TestUtilities {
 	
 
-	static public void assertObjectJson(Object ds, String master) {
+	/**
+	 * Assert the object content same as in master.
+	 * @param ds content to test.
+	 * @param master to compare with.
+	 */
+	public static void assertObjectJson(Object ds, String master) {
+		String output = writeObjectJson(ds);
+		assertEquals(output, master, ds.getClass().getName() + " json failed.");
+	}
+
+	/**
+	 * Build string with JSON content of the object.
+	 * @param ds object source of the content.
+	 * @return string with JSON.
+	 */
+	public static String writeObjectJson(Object ds) {
 		ObjectMapper om = new ObjectMapper();
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -45,11 +60,17 @@ public class TestUtilities {
 		} catch (IOException e) {
 			fail("Can't write JSON for object " + ds.getClass().getName());
 		}
-		String output = new String(baos.toByteArray(), StandardCharsets.UTF_8);
-		assertEquals(output, master, ds.getClass().getName() + " json failed.");
+		return new String(baos.toByteArray(), StandardCharsets.UTF_8);
 	}
 	
-	static public <T extends Object> T readObjectJson(String json, Class<T> cls) {
+	/**
+	 * Build object from JSON content provided in string.
+	 * @param <T> class of the object to build.
+	 * @param json source of the object content.
+	 * @param cls class to build.
+	 * @return
+	 */
+	public static <T extends Object> T readObjectJson(String json, Class<T> cls) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			return mapper.readValue(json, cls);
@@ -59,6 +80,13 @@ public class TestUtilities {
 		return null;	
 	}
 
+	/**
+	 * Read file content into a string.
+	 * @param folder location of the file.
+	 * @param fileName without extension, JSON extension is appended.
+	 * @return string with file content.
+	 * @throws IOException
+	 */
 	public static String readJsonFile(String folder, String fileName) throws IOException {
 		String root = Paths.get(".").toAbsolutePath().normalize().toString();
 		String input  =  root + folder + fileName + ".json";
@@ -107,6 +135,11 @@ public class TestUtilities {
 		guid.setValue(generateGUID(object));	// set predefined guid value
 	}
 
+	/**
+	 * Generate fake GUID based on class and name.
+	 * @param object whose GUID to generate.
+	 * @return predictable GUID like ClassName@displayName
+	 */
 	private static String generateGUID(BaseObjectType object) {
 
 		String prefix = object.getClass().getSimpleName() + "@";

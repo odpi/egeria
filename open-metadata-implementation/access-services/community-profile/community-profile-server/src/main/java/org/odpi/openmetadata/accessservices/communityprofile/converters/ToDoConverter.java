@@ -3,81 +3,111 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.mappers.ToDoMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDo;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ToDoElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 
 /**
  * ToDoConverter generates a To Do bean from an To Do entity.
  */
-public class ToDoConverter extends CommonHeaderConverter
+public class ToDoConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(ToDoConverter.class);
-
     /**
-     * Constructor captures the initial content
+     * Constructor
      *
-     * @param entity properties to convert
      * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public ToDoConverter(EntityDetail         entity,
-                         OMRSRepositoryHelper repositoryHelper,
-                         String               serviceName)
+    public ToDoConverter(OMRSRepositoryHelper repositoryHelper,
+                             String               serviceName,
+                             String               serverName)
     {
-        super(entity, repositoryHelper, serviceName);
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Return the bean constructed from the repository content.
+     * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
      *
-     * @return bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the entity supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public ToDo getBean()
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
-        final String methodName = "getBean";
-
-        ToDo  bean = new ToDo();
-
-        super.updateBean(bean);
-
-        if (entity != null)
+        try
         {
-            InstanceProperties instanceProperties = entity.getProperties();
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof ToDoElement)
             {
+                ToDoElement    bean           = (ToDoElement) returnBean;
+                ToDoProperties toDoProperties = new ToDoProperties();
+
+                InstanceProperties instanceProperties;
+
                 /*
-                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
-                 * to do properties.
+                 * The initial set of values come from the entity.
                  */
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, ToDoMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setName(repositoryHelper.removeStringProperty(serviceName, ToDoMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName, ToDoMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setCompletionTime(repositoryHelper.removeDateProperty(serviceName, ToDoMapper.CREATION_TIME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setPriority(repositoryHelper.removeIntProperty(serviceName, ToDoMapper.PRIORITY_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setDueTime(repositoryHelper.removeDateProperty(serviceName, ToDoMapper.DUE_TIME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setCompletionTime(repositoryHelper.removeDateProperty(serviceName, ToDoMapper.COMPLETION_TIME_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setStatus(this.getToDoStatusFromProperties(instanceProperties));
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, ToDoMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
-                bean.setClassifications(super.getClassificationsFromEntity());
+                if (entity != null)
+                {
+                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    toDoProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    toDoProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    toDoProperties.setName(this.removeName(instanceProperties));
+                    toDoProperties.setDescription(this.removeDescription(instanceProperties));
+                    toDoProperties.setCreationTime(this.removeCreationTime(instanceProperties));
+                    toDoProperties.setPriority(this.removeIntPriority(instanceProperties));
+                    toDoProperties.setDueTime(this.removeDueTime(instanceProperties));
+                    toDoProperties.setCompletionTime(this.removeCompletionTime(instanceProperties));
+                    toDoProperties.setStatus(this.getToDoStatusFromProperties(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    toDoProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    toDoProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
+
+                bean.setProperties(toDoProperties);
             }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
         }
 
-        log.debug("Bean: " + bean.toString());
-
-        return bean;
+        return null;
     }
 
 
@@ -89,46 +119,42 @@ public class ToDoConverter extends CommonHeaderConverter
      */
     private ToDoStatus getToDoStatusFromProperties(InstanceProperties   properties)
     {
+        final String methodName = "getToDoStatusFromProperties";
+
         ToDoStatus   toDoStatus = ToDoStatus.ABANDONED;
 
         if (properties != null)
         {
-            InstancePropertyValue instancePropertyValue = properties.getPropertyValue(ToDoMapper.STATUS_PROPERTY_NAME);
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
+                                                                     properties,
+                                                                     methodName);
 
-            if (instancePropertyValue instanceof EnumPropertyValue)
+            switch (ordinal)
             {
-                EnumPropertyValue enumPropertyValue = (EnumPropertyValue)instancePropertyValue;
+                case 0:
+                    toDoStatus = ToDoStatus.OPEN;
+                    break;
 
-                switch (enumPropertyValue.getOrdinal())
-                {
-                    case 0:
-                        toDoStatus = ToDoStatus.OPEN;
-                        break;
+                case 1:
+                    toDoStatus = ToDoStatus.IN_PROGRESS;
+                    break;
 
-                    case 1:
-                        toDoStatus = ToDoStatus.IN_PROGRESS;
-                        break;
+                case 2:
+                    toDoStatus = ToDoStatus.WAITING;
+                    break;
 
-                    case 2:
-                        toDoStatus = ToDoStatus.WAITING;
-                        break;
+                case 3:
+                    toDoStatus = ToDoStatus.COMPLETE;
+                    break;
 
-                    case 3:
-                        toDoStatus = ToDoStatus.COMPLETE;
-                        break;
+                case 99:
+                    toDoStatus = ToDoStatus.ABANDONED;
+                    break;
 
-                    case 99:
-                        toDoStatus = ToDoStatus.ABANDONED;
-                        break;
-                }
             }
 
-            Map<String, InstancePropertyValue>   instancePropertyValueMap = properties.getInstanceProperties();
-            instancePropertyValueMap.remove(ToDoMapper.STATUS_PROPERTY_NAME);
-            properties.setInstanceProperties(instancePropertyValueMap);
         }
-
-        log.debug("ToDoStatus: " + toDoStatus.getName());
 
         return toDoStatus;
     }

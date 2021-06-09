@@ -5,7 +5,6 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,9 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 
 
@@ -52,7 +53,7 @@ public class OpenLineageServiceTest {
     private static LineageVerticesAndEdges lineageVerticesAndEdges;
 
     @Mock
-    private LineageGraphDisplayRulesService lineageGraphDisplayRulesService;
+    private LineageGraphDisplayService lineageGraphDisplayService;
 
     @Mock
     private OpenLineageClient openLineageClient;
@@ -65,8 +66,8 @@ public class OpenLineageServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @BeforeAll
-    static void readResource() throws IOException {
+    @BeforeEach
+    public void readResource() throws IOException {
         String payload = FileUtils.readFileToString(new File(RESPONSE_JSON), "UTF-8");
         lineageVerticesAndEdges = OBJECT_MAPPER.readValue(payload, LineageVerticesAndEdges.class);
     }
@@ -146,6 +147,7 @@ public class OpenLineageServiceTest {
         try {
             when(openLineageClient.lineage(eq(USER_ID), eq(Scope.END_TO_END), eq("n11"), eq(""), eq(true)))
                     .thenReturn(lineageVerticesAndEdges);
+            doCallRealMethod().when(lineageGraphDisplayService).setNodesLevel(anyList(), anyList(),anyList());
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }

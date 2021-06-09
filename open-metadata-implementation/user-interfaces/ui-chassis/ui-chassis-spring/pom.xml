@@ -10,7 +10,7 @@
     <parent>
         <artifactId>ui-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.10-SNAPSHOT</version>
+        <version>2.11-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -411,7 +411,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+	    </plugin>
         </plugins>
     </build>
 </project>

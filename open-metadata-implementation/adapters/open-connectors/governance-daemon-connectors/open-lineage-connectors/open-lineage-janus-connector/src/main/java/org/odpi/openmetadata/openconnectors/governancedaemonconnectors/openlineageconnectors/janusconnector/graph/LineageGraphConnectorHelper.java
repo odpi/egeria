@@ -482,6 +482,10 @@ public class LineageGraphConnectorHelper {
             String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
             lineageVertex.setGuid(guid);
         }
+        if (originalVertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).isPresent()){
+            String qualifiedName = originalVertex.property(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).value().toString();
+            lineageVertex.setQualifiedName(qualifiedName);
+        }
         if (NODE_LABEL_SUB_PROCESS.equals(nodeType) && originalVertex.property((PROPERTY_KEY_PROCESS_GUID)).isPresent()) {
             lineageVertex.setGuid(originalVertex.property((PROPERTY_KEY_PROCESS_GUID)).value().toString());
             lineageVertex.setNodeID(originalVertex.property((PROPERTY_KEY_PROCESS_GUID)).value().toString());
@@ -871,7 +875,7 @@ public class LineageGraphConnectorHelper {
         Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(CONNECTION));
         commitTransaction();
         if (connection.hasNext()) {
-            return Optional.of(connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            return Optional.of( this.getDisplayNameForVertex(connection.next()) );
         }
         return Optional.empty();
     }

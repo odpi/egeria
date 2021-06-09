@@ -11,18 +11,20 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSummary;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -33,8 +35,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType.LINEAGE_SYNC_EVENT;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_CATEGORY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
 
@@ -45,6 +53,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetLineagePublisher {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
+    private static final String GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE = "glossaryTermLineageEventsChunkSize";
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final OpenMetadataTopicConnector outTopicConnector;
     private final String serverUserName;
@@ -52,6 +61,7 @@ public class AssetLineagePublisher {
     private final ClassificationHandler classificationHandler;
     private final GlossaryContextHandler glossaryHandler;
     private final AssetContextHandler assetContextHandler;
+    private int glossaryTermLineageEventsChunkSize;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
@@ -61,8 +71,8 @@ public class AssetLineagePublisher {
      * @param serverName        name of the user of the server instance
      * @param serverUserName    name of this server instance
      */
-    public AssetLineagePublisher(OpenMetadataTopicConnector outTopicConnector, String serverName, String serverUserName) throws
-                                                                                                                         OCFCheckedExceptionBase {
+    public AssetLineagePublisher(OpenMetadataTopicConnector outTopicConnector, String serverName, String serverUserName,
+                                 Map<String, Object> accessServiceOptions) throws OCFCheckedExceptionBase {
         String methodName = "AssetLineagePublisher";
 
         this.outTopicConnector = outTopicConnector;
@@ -71,6 +81,13 @@ public class AssetLineagePublisher {
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
         this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
+        if (accessServiceOptions != null && accessServiceOptions.get(GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE) != null) {
+            glossaryTermLineageEventsChunkSize = (int) accessServiceOptions.get(GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE);
+        }
+        if (glossaryTermLineageEventsChunkSize < 1) {
+            glossaryTermLineageEventsChunkSize = 1;
+        }
+
     }
 
     /**
@@ -127,8 +144,8 @@ public class AssetLineagePublisher {
             log.info("Context not found for the entity {} ", entityDetail.getGUID());
         }
 
-        publishLineageRelationshipsEvents(glossaryTermContext);
-
+        publishGlossaryTermLineageRelationshipsEvents(glossaryTermContext);
+        publishLineageSyncUpdateEvent(entityDetail.getGUID(), glossaryTermContext);
 
         return glossaryTermContext;
     }
@@ -155,6 +172,82 @@ public class AssetLineagePublisher {
                 }
             }
         }
+    }
+
+
+    /**
+     * Publishes events for the relationships of an entity based on the context map. The context is built in chunks of relationships configurable by glossaryTermLineageEventsChunkSize.
+     *
+     * @param contextMap the context map to be published
+     *
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    private void publishGlossaryTermLineageRelationshipsEvents(Multimap<String, RelationshipsContext> contextMap) throws JsonProcessingException,
+            ConnectorCheckedException {
+        for (String eventType : contextMap.keySet()) {
+            for (RelationshipsContext relationshipsContext : contextMap.get(eventType)) {
+                if (CollectionUtils.isNotEmpty(relationshipsContext.getRelationships())) {
+                    int noOfRelationships = relationshipsContext.getRelationships().size();
+                    int chunksToSend = (noOfRelationships / glossaryTermLineageEventsChunkSize) + 1;
+                    Iterator<GraphContext> relationshipsIterator = relationshipsContext.getRelationships().iterator();
+
+                    for (int i = 0; i < chunksToSend; i++) {
+                        Set<GraphContext> chunk = new HashSet<>();
+                        for (int j = 0; j < glossaryTermLineageEventsChunkSize && relationshipsIterator.hasNext(); j++) {
+                            chunk.add(relationshipsIterator.next());
+                        }
+                        RelationshipsContext relationshipContextChunk = new RelationshipsContext();
+                        relationshipContextChunk.setRelationships(chunk);
+                        relationshipContextChunk.setEntityGuid(relationshipsContext.getEntityGuid());
+                        LineageRelationshipsEvent event = new LineageRelationshipsEvent();
+                        event.setRelationshipsContext(relationshipContextChunk);
+                        event.setAssetLineageEventType(AssetLineageEventType.getByEventTypeName(eventType));
+
+                        publishEvent(event);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Publishes a LINEAGE_SYNC_EVENT which contains the GUID of the entity that was updated and all its neighbour entities' GUIDs
+     *
+     * @param entityGUID the GUID of the published entity
+     * @param contextMap the context map that was published
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    private void publishLineageSyncUpdateEvent(String entityGUID, Multimap<String, RelationshipsContext> contextMap) throws JsonProcessingException,
+            ConnectorCheckedException {
+        Set<String> neighbourGuids = new HashSet<>();
+        for (String eventType : contextMap.keySet()) {
+            for (RelationshipsContext relationshipsContext : contextMap.get(eventType)) {
+
+                List<String> fromVertexGuids = relationshipsContext.getRelationships()
+                        .stream()
+                        .map(r -> r.getFromVertex().getGuid())
+                        .filter(str -> !str.equals(entityGUID))
+                        .collect(Collectors.toList());
+                List<String> toVertexGuids = relationshipsContext.getRelationships()
+                        .stream()
+                        .map(r -> r.getToVertex().getGuid())
+                        .filter(str -> !str.equals(entityGUID))
+                        .collect(Collectors.toList());
+
+                neighbourGuids.addAll(fromVertexGuids);
+                neighbourGuids.addAll(toVertexGuids);
+            }
+        }
+        LineageSyncUpdateContext lineageSyncUpdateContext = new LineageSyncUpdateContext();
+        lineageSyncUpdateContext.setEntityGUID(entityGUID);
+        lineageSyncUpdateContext.setNeighboursGUID(neighbourGuids);
+        LineageSyncEvent event = new LineageSyncEvent();
+        event.setSyncUpdateContext(lineageSyncUpdateContext);
+
+        event.setAssetLineageEventType(LINEAGE_SYNC_EVENT);
+        publishEvent(event);
     }
 
     /**

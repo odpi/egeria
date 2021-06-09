@@ -2781,10 +2781,14 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                     if (relationship != null) {
                         InstanceType type = relationship.getType();
                         if (type != null) {
-                            this.deleteRelationship(userId,
-                                    type.getTypeDefGUID(),
-                                    type.getTypeDefName(),
-                                    relationship.getGUID());
+                            if (metadataCollectionId.equals(relationship.getMetadataCollectionId())) {
+                                this.deleteRelationship(userId,
+                                        type.getTypeDefGUID(),
+                                        type.getTypeDefName(),
+                                        relationship.getGUID());
+                            } else {
+                                graphStore.removeRelationshipFromStore(relationship.getGUID());
+                            }
                         }
                     }
                 }
@@ -3764,7 +3768,9 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 }
             }
             catch (ClassificationErrorException error) {
-                throw new TypeErrorException(error);
+                // Do nothing: this simply means the repository did not have the classification reference copy stored
+                // anyway, so nothing to remove (no-op)
+                log.debug("{} entity wth GUID {} had no classification {}, so nothing to purge", methodName, entity.getGUID(), classification.getName());
             }
         }
     }

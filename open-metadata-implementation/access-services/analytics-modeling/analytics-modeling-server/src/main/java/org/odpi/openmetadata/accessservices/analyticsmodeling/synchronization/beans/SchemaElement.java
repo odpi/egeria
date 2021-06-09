@@ -4,10 +4,12 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.b
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.Objects;
+
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
+import java.util.Objects;
 
 /**
  * <p>

@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.converters;
 
+
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -11,7 +13,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -20,7 +24,7 @@ import java.util.List;
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Data Manager bean.
  */
-public abstract class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
+public class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {
     /**
      * Constructor
@@ -37,41 +41,8 @@ public abstract class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIG
     }
 
 
-
     /**
-     * Extract the properties from the entity.
-     *
-     * @param beanClass name of the class to create
-     * @param entity entity containing the properties
-     * @param methodName calling method
-     * @return filled out element header
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
-     * the converter has been configured with a type of bean that is incompatible with the handler
-     */
-    ElementHeader getMetadataElementHeader(Class<B>     beanClass,
-                                           EntityDetail entity,
-                                           String       methodName) throws PropertyServerException
-    {
-        if (entity != null)
-        {
-            return getMetadataElementHeader(beanClass,
-                                            entity,
-                                            entity.getClassifications(),
-                                            methodName);
-        }
-        else
-        {
-            super.handleMissingMetadataInstance(beanClass.getName(),
-                                                TypeDefCategory.ENTITY_DEF,
-                                                methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the properties from the entity.
+     * Extract the properties from the entity or relationship.
      *
      * @param beanClass name of the class to create
      * @param header header from the entity containing the properties
@@ -80,17 +51,15 @@ public abstract class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIG
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    ElementHeader getMetadataElementHeader(Class<B>             beanClass,
-                                           InstanceHeader       header,
-                                           List<Classification> entityClassifications,
-                                           String               methodName) throws PropertyServerException
+    public ElementHeader getMetadataElementHeader(Class<B>       beanClass,
+                                                  InstanceHeader header,
+                                                  String         methodName) throws PropertyServerException
     {
         if (header != null)
         {
             ElementHeader elementHeader = new ElementHeader();
 
             elementHeader.setGUID(header.getGUID());
-            elementHeader.setClassifications(this.getEntityClassifications(entityClassifications));
             elementHeader.setType(this.getElementType(header));
 
             ElementOrigin elementOrigin = new ElementOrigin();
@@ -117,16 +86,36 @@ public abstract class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIG
 
 
     /**
-     * Extract the classifications from the entity.
+     * Extract the properties from the entity.
      *
-     * @param entity entity containing the classifications
-     * @return list of bean classifications
+     * @param beanClass name of the class to create
+     * @param entityProxy entityProxy from the relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    private List<ElementClassification> getEntityClassifications(EntityDetail entity)
+    ElementStub getElementStub(Class<B>    beanClass,
+                               EntityProxy entityProxy,
+                               String      methodName) throws PropertyServerException
     {
-        if (entity != null)
+        if (entityProxy != null)
         {
-            return this.getEntityClassifications(entity.getClassifications());
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entityProxy.getUniqueProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
         }
 
         return null;
@@ -136,33 +125,125 @@ public abstract class GovernanceProgramOMASConverter<B> extends OpenMetadataAPIG
     /**
      * Extract the classifications from the entity.
      *
-     * @param entityClassifications classifications direct from the entity
+     * @param entity entity containing the classifications
      * @return list of bean classifications
      */
-    private List<ElementClassification> getEntityClassifications(List<Classification> entityClassifications)
+    private List<ElementClassification> getEntityClassifications(EntityDetail entity)
     {
-        List<ElementClassification> beanClassifications = null;
-
-        if (entityClassifications != null)
+        if (entity != null)
         {
-            beanClassifications = new ArrayList<>();
+            List<String> assetZoneMembership = null;
+            String       assetOwnerProperty  = null;
+            int          ownerCategory       = 0;
 
-            for (Classification entityClassification : entityClassifications)
+            if (entity.getProperties() != null)
             {
-                if (entityClassification != null)
+                /*
+                 * Asset ownership and zone membership may be stored in a couple of deprecated properties
+                 */
+                assetZoneMembership = this.getZoneMembership(entity.getProperties());
+                assetOwnerProperty = this.getOwner(entity.getProperties());
+                ownerCategory = this.getOwnerTypeOrdinal(entity.getProperties());
+            }
+
+            List<ElementClassification> beanClassifications = null;
+
+            if (entity.getClassifications() != null)
+            {
+                beanClassifications = new ArrayList<>();
+
+                for (Classification entityClassification : entity.getClassifications())
                 {
-                    ElementClassification beanClassification = new ElementClassification();
+                    if (entityClassification != null)
+                    {
+                        if (OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME.equals(entityClassification.getName()))
+                        {
+                            /*
+                             * Asset ownership may be stored in a deprecated classification (which takes precedence over the deprecated properties
+                             */
+                            assetOwnerProperty = this.getOwner(entityClassification.getProperties());
+                            ownerCategory = this.getOwnerTypeOrdinal(entityClassification.getProperties());
+                        }
+                        else
+                        {
+                            ElementClassification beanClassification = new ElementClassification();
 
-                    beanClassification.setClassificationName(entityClassification.getName());
-                    beanClassification.setClassificationProperties(repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));
+                            beanClassification.setClassificationName(entityClassification.getName());
+                            beanClassification.setClassificationProperties(
+                                    repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));
 
-                    beanClassifications.add(beanClassification);
+                            beanClassifications.add(beanClassification);
+                        }
+                    }
+                }
+
+                if (assetOwnerProperty != null)
+                {
+                    /*
+                     * The ownership classification takes priority
+                     */
+                    if (getClassification(OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME, beanClassifications) == null)
+                    {
+                        /*
+                         * If the ownership classification is not available then one is constructed using the information
+                         * from the deprecated mechanisms.
+                         */
+                        ElementClassification beanClassification = new ElementClassification();
+                        Map<String, Object>   beanProperties     = new HashMap<>();
+
+                        beanProperties.put(OpenMetadataAPIMapper.OWNER_PROPERTY_NAME, assetOwnerProperty);
+
+                        if (ownerCategory == 0)
+                        {
+                            beanProperties.put(OpenMetadataAPIMapper.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                               OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME);
+                            beanProperties.put(OpenMetadataAPIMapper.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+                        }
+                        else if (ownerCategory == 1)
+                        {
+                            beanProperties.put(OpenMetadataAPIMapper.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME);
+                            beanProperties.put(OpenMetadataAPIMapper.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+                        }
+
+
+                        beanClassification.setClassificationName(OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME);
+                        beanClassification.setClassificationProperties(beanProperties);
+
+                        beanClassifications.add(beanClassification);
+                    }
+                }
+
+                if (assetZoneMembership != null)
+                {
+                    /*
+                     * The AssetZoneMembership classification takes priority
+                     */
+                    if (getClassification(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, beanClassifications) == null)
+                    {
+                        /*
+                         * If the AssetZoneMembership classification is not available then one is constructed using the information
+                         * from the deprecated properties.
+                         */
+                        ElementClassification beanClassification = new ElementClassification();
+                        Map<String, Object>   beanProperties     = new HashMap<>();
+
+                        beanProperties.put(OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME, assetZoneMembership);
+
+                        beanClassification.setClassificationName(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME);
+                        beanClassification.setClassificationProperties(beanProperties);
+
+                        beanClassifications.add(beanClassification);
+                    }
                 }
             }
 
+            return beanClassifications;
         }
 
-        return beanClassifications;
+        return null;
     }
 
 

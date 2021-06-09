@@ -18,8 +18,6 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
     private int          domainIdentifier;
     private String       displayName;
     private String       description;
-    private String       owner;
-    private int          ownerType;
     private List<String> supportedGuards;
 
     /**
@@ -29,8 +27,6 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param owner identifier of the owner of this governance action
-     * @param ownerType type of owner (userId or actor profile)
      * @param supportedGuards list of guards that triggered this governance action
      * @param additionalProperties additional properties for a governance action
      * @param repositoryHelper helper methods
@@ -41,8 +37,6 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
                                 int                  domainIdentifier,
                                 String               displayName,
                                 String               description,
-                                String               owner,
-                                int                  ownerType,
                                 List<String>         supportedGuards,
                                 Map<String, String>  additionalProperties,
                                 OMRSRepositoryHelper repositoryHelper,
@@ -62,8 +56,6 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
         this.displayName = displayName;
         this.description = description;
         this.supportedGuards = supportedGuards;
-        this.ownerType = ownerType;
-        this.owner = owner;
     }
 
 
@@ -95,27 +87,6 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                   description,
                                                                   methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.OWNER_PROPERTY_NAME,
-                                                                  owner,
-                                                                  methodName);
-
-        try
-        {
-            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                    properties,
-                                                                    OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.OWNER_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.OWNER_TYPE_ENUM_TYPE_NAME,
-                                                                    ownerType,
-                                                                    methodName);
-        }
-        catch (TypeErrorException error)
-        {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTIVITY_TYPE_PROPERTY_NAME);
-        }
-
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,

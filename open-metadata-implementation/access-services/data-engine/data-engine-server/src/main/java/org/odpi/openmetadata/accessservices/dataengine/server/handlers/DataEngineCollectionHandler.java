@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.CollectionBuilder;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CollectionMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -15,7 +14,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.Optional;
 
-import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CollectionMapper.COLLECTION_MEMBERSHIP_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TO_COLLECTION_TYPE_NAME;
 
 /**
  * DataEngineCollectionHandler manages collection objects. It runs server-side in the
@@ -72,20 +74,19 @@ public class DataEngineCollectionHandler {
 
         String methodName = "createCollection";
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(collection.getQualifiedName(), CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(collection.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         CollectionBuilder builder = getCollectionBuilder(collection);
 
-        return collectionOpenMetadataAPIGenericHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
-                CollectionMapper.COLLECTION_TYPE_GUID, CollectionMapper.COLLECTION_TYPE_NAME,
-                collection.getQualifiedName(), CollectionMapper.QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
+        return collectionOpenMetadataAPIGenericHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName, COLLECTION_TYPE_GUID,
+                COLLECTION_TYPE_NAME, collection.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, builder, methodName);
     }
 
     CollectionBuilder getCollectionBuilder(Collection collection) {
         return new CollectionBuilder(collection.getQualifiedName(),
-                collection.getName(), CollectionMapper.COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
+                collection.getName(), COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 
     /**
@@ -103,7 +104,7 @@ public class DataEngineCollectionHandler {
     public Optional<EntityDetail> findCollectionEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
             PropertyServerException,
             InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, CollectionMapper.COLLECTION_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, COLLECTION_TYPE_NAME);
     }
 
     /**
@@ -124,8 +125,7 @@ public class DataEngineCollectionHandler {
             UserNotAuthorizedException,
             PropertyServerException {
 
-        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, collectionGUID,
-                COLLECTION_MEMBERSHIP_NAME, CollectionMapper.COLLECTION_TYPE_NAME, externalSourceName,
-                null);
+        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, collectionGUID, REFERENCEABLE_TO_COLLECTION_TYPE_NAME,
+                COLLECTION_TYPE_NAME, externalSourceName, null);
     }
 }

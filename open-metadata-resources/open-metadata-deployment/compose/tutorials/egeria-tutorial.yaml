@@ -54,7 +54,7 @@ services:
             - ctsPlatformURL=https://dev:9443
             - factoryPlatformURL=https://factory:9443
             - eventBusURLroot=kafka:9092
-            - uiExternalURL=https://localhost:18443
+            - uiExternalURL=https://localhost:10443
         command: start.sh jupyter lab --LabApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
         ports:
             - '18888:8888'

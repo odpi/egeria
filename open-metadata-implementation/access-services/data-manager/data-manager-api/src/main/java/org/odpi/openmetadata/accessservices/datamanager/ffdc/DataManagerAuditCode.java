@@ -40,7 +40,13 @@ public enum DataManagerAuditCode implements AuditLogMessageSet
                                "It will begin publishing data manager metadata changes to its out topic.",
                        "This is part of the normal start up of the service. Check that there are no errors from the event bus."),
 
-    SERVICE_INITIALIZED("OMAS-DATA-MANAGER-0005",
+    SERVICE_INSTANCE_FAILURE("OMAS-DATA-MANAGER-0003",
+                             OMRSAuditLogRecordSeverity.EXCEPTION,
+                             "The Data Manager Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+                             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
+    SERVICE_INITIALIZED("OMAS-DATA-MANAGER-0004",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Data Manager Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Data Manager OMAS has completed initialization of a new instance.",
@@ -49,13 +55,13 @@ public enum DataManagerAuditCode implements AuditLogMessageSet
                                 "and default zones defined.  Investigate any reported errors.  Also ensure that the" +
                                 "enterprise repository services and the OCF metadata management services are initialized."),
 
-    SERVICE_SHUTDOWN("OMAS-DATA-MANAGER-0006",
+    SERVICE_SHUTDOWN("OMAS-DATA-MANAGER-0005",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Data Manager Open Metadata Access Service (OMAS) is shutting down server instance {0}",
             "The local server has requested shut down of an Data Manager OMAS server instance.",
             "No action is required if this shutdown was intended."),
 
-    PUBLISHING_SHUTDOWN("OMAS-DATA-MANAGER-0007",
+    PUBLISHING_SHUTDOWN("OMAS-DATA-MANAGER-0006",
                         OMRSAuditLogRecordSeverity.SHUTDOWN,
                         "The Data Manager Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
                         "The local administrator has requested shut down of an Data Manager OMAS instance.  " +
@@ -63,7 +69,7 @@ public enum DataManagerAuditCode implements AuditLogMessageSet
                         "This is part of the normal shutdown of the service.   No action is required if this is service" +
                                 "shutdown was intentional."),
 
-    PUBLISHING_SHUTDOWN_ERROR("OMAS-DATA-MANAGER-0008",
+    PUBLISHING_SHUTDOWN_ERROR("OMAS-DATA-MANAGER-0007",
                               OMRSAuditLogRecordSeverity.SHUTDOWN,
                               "The Data Manager Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out " +
                                       "topic {1}. The error message was: {2}",
@@ -74,12 +80,6 @@ public enum DataManagerAuditCode implements AuditLogMessageSet
                                       "is the consequence of a previous error. Review the error message and any other reported failures to " +
                                       "determine if this exception needs special attention."),
 
-    SERVICE_INSTANCE_FAILURE("OMAS-DATA-MANAGER-0011",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The Data Manager Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
-            "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
-    
     SERVICE_INSTANCE_TERMINATION_FAILURE("OMAS-DATA-MANAGER-0012",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Data Manager Open Metadata Access Service (OMAS) is unable to terminate a new instance; error message is {0}",
@@ -99,13 +99,33 @@ public enum DataManagerAuditCode implements AuditLogMessageSet
                             "Event {0} could not be consumed. Error: {1}",
                             "The system is unable to process the request.",
                             "Verify the topic configuration."),
+    
+    OUTBOUND_ENTITY_EVENT("OMAS-DATA-MANAGER-0015",
+                          OMRSAuditLogRecordSeverity.EVENT,
+                          "The Data Manager Open Metadata Access Service (OMAS) has sent an entity element event of type {0} on its out topic.  {1} event subject is {2}",
+                          "The Data Manager OMAS has detected a situation that results in an outbound entity element event.",
+                          "This message is for capturing a record of all of the events send on the out topic.  If a permanent record is needed " +
+                                  "of these entity element events, then ensure there is an audit log destination that sends log records to permanent storage."),
 
-    PARSE_EVENT_EXCEPTION("OMAS-DATA-MANAGER-0015",
-          OMRSAuditLogRecordSeverity.EXCEPTION,
-          "Inbound event {0} could not be parsed. IOException included the following message: {1}",
-          "The system is unable to process the event received on the Data Manager OMAS in topic.",
-          "Verify the content and structure of the in topic event.  Check that it includes the correct class name key"),
+    OUTBOUND_RELATIONSHIP_EVENT("OMAS-DATA-MANAGER-0016",
+                                OMRSAuditLogRecordSeverity.EVENT,
+                                "The Data Manager Open Metadata Access Service (OMAS) has sent a relationship event of type {0} on its out topic.  {1} relationship subject is {2} and is connecting {3} {4} to {5} {6}",
+                                "The Data Manager OMAS has detected a situation that results in an outbound event about an entity element.",
+                                "This message is for capturing a record of all of the entity events send on the out topic.  If a permanent record is needed " +
+                                        "of these events, then ensure there is an audit log destination that sends log records to permanent storage."),
 
+    OUTBOUND_CLASSIFICATION_EVENT("OMAS-DATA-MANAGER-0017",
+                                  OMRSAuditLogRecordSeverity.EVENT,
+                                  "The Data Manager Open Metadata Access Service (OMAS) has sent an event of type {0} on its out topic.  {1} event subject is {2} and the classification changed was {3}",
+                                  "The Data Manager OMAS has detected a situation that results in an outbound event about a change to the classifications of an entity element.",
+                                  "This message is for capturing a record of all of the classification events send on the out topic.  If a permanent record is needed " +
+                                          "of these events, then ensure there is an audit log destination that sends log records to permanent storage."),
+
+    OUTBOUND_EVENT_EXCEPTION("OMAS-DATA-MANAGER-0018",
+                             OMRSAuditLogRecordSeverity.EXCEPTION,
+                             "Unable to send an outbound event of type {0} for instance with unique identifier of {1} and type name {2} due to exception {3}.  The error message from the exception was {4}",
+                             "The system detected an exception whilst attempting to send an event to the out topic.  No event is sent.",
+                             "Investigate and correct the source of the error.  Once fixed, events will be sent."),
 
     ;
 

@@ -135,9 +135,13 @@ asset and requests for access to its contents.
 
 ![Asset Zone Membership](asset-zone-membership.png)
 
-Governance Zones allow assets to be grouped according to their usage.  It is possible to
-assign supported zones to Egeria Open Metadata Access Services (OMASs) to limit the scope
+Governance Zones allow assets to be grouped according to their usage.  
+Governance Zones are defined by the
+[Governance Program OMAS](../../../open-metadata-implementation/access-services/governance-program)
+It is possible to
+assign supported zones to assets through the  to limit the scope
 of assets that are returned from searches.
+More information on Governance Zones if described [here](../../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
 
 #### Usage
 

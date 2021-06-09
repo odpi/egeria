@@ -10,13 +10,14 @@ import java.util.Objects;
  */
 public class GovernanceZoneProperties extends ReferenceableProperties
 {
+    private static final long     serialVersionUID = 1L;
+
     private String displayName      = null;
     private String description      = null;
     private String criteria         = null;
     private String scope            = null;
     private int    domainIdentifier = 0;
 
-    private static final long     serialVersionUID = 1L;
 
     /**
      * Default constructor
@@ -41,6 +42,8 @@ public class GovernanceZoneProperties extends ReferenceableProperties
             this.displayName = template.getDisplayName();
             this.description = template.getDescription();
             this.criteria = template.getCriteria();
+            this.scope = template.getScope();
+            this.domainIdentifier = template.getDomainIdentifier();
         }
     }
 
@@ -112,7 +115,7 @@ public class GovernanceZoneProperties extends ReferenceableProperties
 
 
     /**
-     * Return the definition of the scope of this domain
+     * Return the definition of the scope of this zone.
      *
      * @return scope definition
      */
@@ -123,7 +126,7 @@ public class GovernanceZoneProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the scope definition
+     * Set up the scope definition of this zone.
      *
      * @param scope string definition
      */
@@ -164,14 +167,16 @@ public class GovernanceZoneProperties extends ReferenceableProperties
     public String toString()
     {
         return "GovernanceZoneProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", criteria='" + criteria + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", criteria='" + criteria + '\'' +
+                       ", scope='" + scope + '\'' +
+                       ", domainIdentifier=" + domainIdentifier +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -197,11 +202,12 @@ public class GovernanceZoneProperties extends ReferenceableProperties
             return false;
         }
         GovernanceZoneProperties that = (GovernanceZoneProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getCriteria(), that.getCriteria());
+        return domainIdentifier == that.domainIdentifier &&
+                       Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(criteria, that.criteria) &&
+                       Objects.equals(scope, that.scope);
     }
-
 
 
     /**
@@ -212,6 +218,6 @@ public class GovernanceZoneProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getCriteria());
+        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getCriteria(), getScope(), getDomainIdentifier());
     }
 }

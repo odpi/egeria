@@ -73,7 +73,7 @@ The result looks something like this:
             "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/glossary-view/"
         },
         {
-            "serviceName": "Security Officer",
+            "serviceName": "Security Manager",
             "serviceURLMarker": "security-officer",
             "serviceDescription": "Set up rules to protect data",
             "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/security-officer/"
@@ -143,12 +143,6 @@ The result looks something like this:
             "serviceURLMarker": "governance-engine",
             "serviceDescription": "Set up an operational governance engine",
             "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/governance-engine/"
-        },
-        {
-            "serviceName": "Information View",
-            "serviceURLMarker": "information-view",
-            "serviceDescription": "Support information virtualization and data set definitions",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/information-view/"
         },
         {
             "serviceName": "Digital Architecture",

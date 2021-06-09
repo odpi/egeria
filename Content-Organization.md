@@ -39,14 +39,14 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[governance-program](open-metadata-implementation/access-services/governance-program)** - set up and manage a governance program.
     * **[it-infrastructure](open-metadata-implementation/access-services/it-infrastructure)** - manage metadata about deployed infrastructure.
     * **[project-management](open-metadata-implementation/access-services/project-management)** - manage definitions of projects for metadata management and governance.
-    * **[security-officer](open-metadata-implementation/access-services/security-officer)** - set up rules to protect data and support the distribution of this metadata.
+    * **[security-manager](open-metadata-implementation/access-services/security-manager)** - synchronization of metadata with security services.
+    * **[security-officer](open-metadata-implementation/access-services/security-officer)** - set up rules to protect data.
     * **[software-developer](open-metadata-implementation/access-services/software-developer)** - deliver useful metadata to software developers.
     * **[stewardship-action](open-metadata-implementation/access-services/stewardship-action)** - manage metadata as part of a data steward's work to improve the data landscape.
     * **[subject-area](open-metadata-implementation/access-services/subject-area)** - develop a definition of a subject area including glossary terms, reference data and rules.
  
   * **[adapters](open-metadata-implementation/adapters)** - pluggable component implementations.
     * **[authentication-plugins](open-metadata-implementation/adapters/authentication-plugins)** support extensions to technology such as LDAP that are used to verify the identity of an individual or service requesting access to data/metadata.
-    * **[governance-engines-plugins](open-metadata-implementation/adapters/governance-engines-plugins)** support plugins to governance engines to enable them to use open metadata settings in their validation and enforcement decisions, and the resulting actions they take.
     * **[open-connectors](open-metadata-implementation/adapters/open-connectors)** are connectors that support the Open Connector Framework (OCF).
       * **[configuration-store-connectors](open-metadata-implementation/adapters/open-connectors/configuration-store-connectors)** contains the connectors that manage the open metadata configuration.
       * **[connector-configuration-factory](open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)** creates **Connection** objects to configure the open connectors.

@@ -1,0 +1,16 @@
+{
+  "qualifiedName" : "(SoftwareServerCapability)=http://localhost:9300/p2pd/servlet::(InformationView)=iBASEMODULE",
+  "additionalProperties" : {
+    "uid" : "iBASEMODULE",
+    "location" : "UPDATED: CAMID(\":\")/dataSource[@name='_GOSALES_Egeria']/dataSourceConnection[@name='_GOSALES_Egeria']/dataSourceSchema[@name='GOSALES/dbo']/baseModule[@name='dbo']",
+    "lastModified" : "UPDATED: TimeStamp",
+    "type" : "baseModule"
+  },
+  "guid" : "bce54b72-afa8-4ee6-b7d0-b2bb7632e8bd",
+  "displayName" : "UPDATED: dbo",
+  "description" : "UPDATED: This is for testing description persistance.",
+  "uid" : "iBASEMODULE",
+  "location" : "UPDATED: CAMID(\":\")/dataSource[@name='_GOSALES_Egeria']/dataSourceConnection[@name='_GOSALES_Egeria']/dataSourceSchema[@name='GOSALES/dbo']/baseModule[@name='dbo']",
+  "type" : "baseModule",
+  "lastModified" : "UPDATED: TimeStamp"
+}
