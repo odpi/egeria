@@ -30,6 +30,28 @@ because they affect the contents of the open metadata repositories.
 Details of the structure of the different types of OMRS Events can be
 found on the [events descriptions](event-descriptions).
 
+## Cohort Topic(s)
+
+A cohort can be configured to use:
+
+* One OMRS Event Topic for all types of OMRS events
+* Three OMRS Event Topics, one for each type of OMRS event
+
+Using the single cohort topic is ok for small environment.  However, the use of the three topics gives
+the best throughput, ensures rapid inclusion of new members in the cohort and enables a member to connect multiple instances
+of itself to the cohort for high availability (HA).
+
+Versions of the OMRS prior to release 2.11 only support the single cohort topic.
+To allow a server running an older version of OMRS to join a cohort using the three topics, it is possible to
+configure the other members to use both the single topic and the three topics.
+This ensures all members see the same metadata, but the members configured to use both options will process
+all events twice.  This configuration should only be used when absolutely needed and attention should be
+paid to upgrading the back-level server so it can use the three topics.
+
+Details of configuring the different topic options can be found in the
+[Administration Guide](../../admin-services/docs/user/configuring-registration-to-a-cohort.md).
+
+
 ## Enterprise OMRS Event Topic
 
 The [enterprise repository services](subsystem-descriptions/enterprise-repository-services.md)
