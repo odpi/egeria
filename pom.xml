@@ -2496,13 +2496,6 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>cassandra-data-store-connector</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
                 <artifactId>cassandra-metadata-extractor-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>

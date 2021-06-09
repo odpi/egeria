@@ -63,10 +63,10 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>cassandra-data-store-connector</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.odpi.egeria</groupId>-->
+<!--            <artifactId>cassandra-data-store-connector</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>avro-file-connector</artifactId>
