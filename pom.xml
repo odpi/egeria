@@ -168,7 +168,7 @@
         <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
         <gremlin.version>3.4.11</gremlin.version>
         <spring-security.version>5.5.0</spring-security.version>
-        <spring.version>5.3.7</spring.version>
+        <spring.version>5.3.8</spring.version>
         <spring-data.version>2.5.1</spring-data.version>
         <springdoc.version>1.5.9</springdoc.version>
         <springdoc-plugin.version>1.3</springdoc-plugin.version>
@@ -221,6 +221,8 @@
         <lombok.version>1.18.20</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
+        <elasticsearch.version>7.13.1</elasticsearch.version>
+        <thrift.version>0.14.1</thrift.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
@@ -3047,6 +3049,34 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.thrift</groupId>
+                <artifactId>libthrift</artifactId>
+                <version>${thrift.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-client</artifactId>
+                <version>${elasticsearch.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore-nio</artifactId>
+                <version>${httpcore.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore-osgi</artifactId>
+                <version>${httpcore.version}</version>
+                <scope>compile</scope>
             </dependency>
 
         </dependencies>
