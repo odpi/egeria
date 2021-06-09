@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -19,8 +20,9 @@ public class TabularSchemaTypeProperties extends ComplexSchemaTypeProperties
 {
     private static final long    serialVersionUID = 1L;
 
+
     /**
-     * Default constructor
+     * Default constructor used by subclasses
      */
     public TabularSchemaTypeProperties()
     {
@@ -29,9 +31,9 @@ public class TabularSchemaTypeProperties extends ComplexSchemaTypeProperties
 
 
     /**
-     * Copy/clone constructor.
+     * Copy/clone Constructor.
      *
-     * @param template object to copy
+     * @param template template object to copy.
      */
     public TabularSchemaTypeProperties(TabularSchemaTypeProperties template)
     {
@@ -48,19 +50,19 @@ public class TabularSchemaTypeProperties extends ComplexSchemaTypeProperties
     public String toString()
     {
         return "TabularSchemaTypeProperties{" +
-                "versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "versionNumber='" + getVersionNumber() + '\'' +
+                       ", author='" + getAuthor() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", encodingStandard='" + getEncodingStandard() + '\'' +
+                       ", namespace='" + getNamespace() + '\'' +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

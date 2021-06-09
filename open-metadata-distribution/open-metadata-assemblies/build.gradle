@@ -83,7 +83,7 @@ dependencies {
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
-    implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
+    implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
     implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
@@ -132,7 +132,7 @@ distributions {
             into('utilities') {
                 from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').shadowJar }
-                from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility').shadowJar }
                 fileMode = 0755
             }
             into('samples') {
