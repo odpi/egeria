@@ -11,8 +11,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ComplexSchemaTypeProperties describes a schema with multiple attributes.  Notice it does not contain the attributes,
- * just a count of them.  This is because a complex schema type may have literally thousands of attributes
+ * ComplexSchemaTypeProperties describes a schema with multiple attributes.  Notice it does not contain the attributes.
+ * This is because a complex schema type may have literally thousands of attributes
  * and so the attribute contents are retrieved separated through calls that support paging.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -23,13 +23,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+                      @JsonSubTypes.Type(value = APIParameterListProperties.class, name = "APIParameterListProperties"),
+                      @JsonSubTypes.Type(value = StructSchemaTypeProperties.class, name = "StructSchemaTypeProperties"),
                       @JsonSubTypes.Type(value = TabularSchemaTypeProperties.class, name = "TabularSchemaTypeProperties"),
               })
 public class ComplexSchemaTypeProperties extends SchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
-
-    private int    attributeCount = 0;
 
 
     /**
@@ -49,30 +49,6 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
     public ComplexSchemaTypeProperties(ComplexSchemaTypeProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            attributeCount = template.getAttributeCount();
-        }
-    }
-
-
-    /**
-     * Return the count of attributes in this schema type.
-     *
-     * @return String data type name
-     */
-    public int getAttributeCount() { return attributeCount; }
-
-
-    /**
-     * Set up the count of attributes in this schema type
-     *
-     * @param attributeCount data type name
-     */
-    public void setAttributeCount(int attributeCount)
-    {
-        this.attributeCount = attributeCount;
     }
 
 
@@ -84,53 +60,20 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
     @Override
     public String toString()
     {
-        return "ComplexSchemaType{" +
-                "attributeCount='" + attributeCount + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
-    }
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        ComplexSchemaTypeProperties that = (ComplexSchemaTypeProperties) objectToCompare;
-        return attributeCount == that.attributeCount;
-    }
-
-
-    /**
-     * Create a hash code for this element type.
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), attributeCount);
+        return "ComplexSchemaTypeProperties{" +
+                       "versionNumber='" + getVersionNumber() + '\'' +
+                       ", author='" + getAuthor() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", encodingStandard='" + getEncodingStandard() + '\'' +
+                       ", namespace='" + getNamespace() + '\'' +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }

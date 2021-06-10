@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,11 +16,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = EventTypeListProperties.class, name = "EventTypeListProperties"),
+        })
 public class SchemaTypeChoiceProperties extends SchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
-
-    private List<SchemaTypeProperties> schemaOptions = null;
 
 
     /**
@@ -44,68 +47,6 @@ public class SchemaTypeChoiceProperties extends SchemaTypeProperties
     public SchemaTypeChoiceProperties(SchemaTypeChoiceProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            schemaOptions = template.getSchemaOptions();
-        }
-    }
-
-
-    /**
-     * Return the list of alternative schema types that this attribute or asset may use.
-     *
-     * @return list of schema types
-     */
-    public List<SchemaTypeProperties> getSchemaOptions()
-    {
-        if (schemaOptions == null)
-        {
-            return null;
-        }
-        else if (schemaOptions.isEmpty())
-        {
-            return null;
-        }
-
-        return schemaOptions;
-    }
-
-
-    /**
-     * Set up the list of alternative schema types that this attribute or asset may use.
-     *
-     * @param schemaOptions list of schema types
-     */
-    public void setSchemaOptions(List<SchemaTypeProperties> schemaOptions)
-    {
-        this.schemaOptions = schemaOptions;
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        SchemaTypeChoiceProperties that = (SchemaTypeChoiceProperties) objectToCompare;
-        return Objects.equals(getSchemaOptions(), that.getSchemaOptions());
     }
 
 
@@ -118,29 +59,19 @@ public class SchemaTypeChoiceProperties extends SchemaTypeProperties
     public String toString()
     {
         return "SchemaTypeChoiceProperties{" +
-                "versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), schemaOptions);
+                       "versionNumber='" + getVersionNumber() + '\'' +
+                       ", author='" + getAuthor() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", encodingStandard='" + getEncodingStandard() + '\'' +
+                       ", namespace='" + getNamespace() + '\'' +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 }
