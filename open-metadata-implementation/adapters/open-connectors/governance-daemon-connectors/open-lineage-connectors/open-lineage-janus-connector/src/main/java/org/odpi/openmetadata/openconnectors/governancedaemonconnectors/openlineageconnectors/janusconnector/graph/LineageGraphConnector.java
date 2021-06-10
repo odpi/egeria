@@ -161,7 +161,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                     guid -> findInputColumns(g, guid)
             );
 
-            guidList.forEach(guid -> findMissedOrphanColumns(g, guid));
+            guidList.forEach(guid -> findOrphanOutputColumns(g, guid));
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().commit();
             }
@@ -189,12 +189,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     /**
-     * Finds the paths to the output columns that are do not have an input for all the processes in the graph.
+     * For all the processes in the graph finds the paths to the output columns that do not have an input column
      *
      * @param g    - Graph traversal object
      * @param guid - The unique identifier of a Process
      */
-    private void findMissedOrphanColumns(GraphTraversalSource g, String guid) {
+    private void findOrphanOutputColumns(GraphTraversalSource g, String guid) {
 
         List<Vertex> outputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
                 .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "OUTPUT_PORT")
@@ -209,7 +209,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
 
         if (!outputPathsForColumns.isEmpty()) {
-            outputPathsForColumns.forEach(columnOut -> addOutNodesAndEdgesForQuerying(columnOut, process));
+            outputPathsForColumns.forEach(columnOut -> addOutNodesAndEdgesForQuerying(process, columnOut));
         }
     }
 
@@ -330,7 +330,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             subProcess = existingSubprocess.next();
         }
 
-        if (subProcess != null && processGuid.equals(subProcess.property(PROPERTY_KEY_PROCESS_GUID).value())) {
+        if (existingSubProcessBelongsToProcess(processGuid, subProcess)) {
             g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(columnOut.id())).next();
             g.V(subProcess.id()).property(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid).next();
             addOutAssetToProcessEdge(columnOut, process);
@@ -347,7 +347,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             if (fromOutputExistingSubprocess.hasNext()) {
                 fromOutputSubProcess = fromOutputExistingSubprocess.next();
             }
-            if (fromOutputSubProcess != null && processGuid.equals(fromOutputSubProcess.property(PROPERTY_KEY_PROCESS_GUID).value())) {
+            if (existingSubProcessBelongsToProcess(processGuid, fromOutputSubProcess)) {
                 g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(fromOutputSubProcess.id())).next();
                 g.V(fromOutputSubProcess.id()).property(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid).next();
                 addInAssetToProcessEdge(columnIn, process);
@@ -384,7 +384,22 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     }
 
+    /** Checks if the processGUID is among the subProcess proerties
+     * @param processGuid the guid of the process
+     * @param subProcess the node that should have the process guid in the properties
+     * @return true or false
+     */
+    private boolean existingSubProcessBelongsToProcess(String processGuid, Vertex subProcess) {
+        return subProcess != null && processGuid.equals(subProcess.property(PROPERTY_KEY_PROCESS_GUID).value());
+    }
 
+    /**
+     * Add nodes and edges that are going to be used for lineage UI.
+     * This method handles the case where a process has only input column without an output column
+     *
+     * @param columnIn  - The vertex of the input schema element
+     * @param process   - The vertex of the process.
+     */
     private void addInputNodesAndEdgesForQuerying(Vertex columnIn, Vertex process) {
 
         final String columnInGuid = getGuid(columnIn);
@@ -419,7 +434,14 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         }
     }
 
-    private void addOutNodesAndEdgesForQuerying(Vertex columnOut, Vertex process) {
+    /**
+     * Add nodes and edges that are going to be used for lineage UI.
+     * This method handles the case where a process has only output column without an input column
+     *
+     * @param process   - The vertex of the process.
+     * @param columnOut  - The vertex of the output schema element
+     */
+    private void addOutNodesAndEdgesForQuerying(Vertex process, Vertex columnOut) {
         final String columnOutGuid = getGuid(columnOut);
 
         final String processGuid = getGuid(process);
