@@ -211,7 +211,7 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
-        glossary.setEffectiveToTime(new Date(now - 10));
+        glossary.setEffectiveToTime(new Date(now - 10).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
@@ -224,7 +224,7 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
-        glossary.setEffectiveFromTime(new Date(now - 10));
+        glossary.setEffectiveFromTime(new Date(now - 10).getTime());
         return issueCreateGlossary(glossary);
     }
 
@@ -233,8 +233,8 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
-        glossary.setEffectiveFromTime(new Date(now - 10));
-        glossary.setEffectiveToTime(new Date(now - 11));
+        glossary.setEffectiveFromTime(new Date(now - 10).getTime());
+        glossary.setEffectiveToTime(new Date(now - 11).getTime());
         return issueCreateGlossary(glossary);
     }
 
@@ -243,8 +243,8 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // make the glossary effective in a days time for day
-        glossary.setEffectiveFromTime(new Date(now + 1000 * 60 * 60 * 24));
-        glossary.setEffectiveToTime(new Date(now + 2000 * 60 * 60 * 24));
+        glossary.setEffectiveFromTime(new Date(now + 1000 * 60 * 60 * 24).getTime());
+        glossary.setEffectiveToTime(new Date(now + 2000 * 60 * 60 * 24).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());

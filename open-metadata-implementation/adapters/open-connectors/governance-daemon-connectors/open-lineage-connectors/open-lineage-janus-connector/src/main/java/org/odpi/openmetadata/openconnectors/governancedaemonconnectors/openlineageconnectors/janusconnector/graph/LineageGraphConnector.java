@@ -821,7 +821,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().rollback();
             }
-            log.debug("Vertex with guid did not delete {}", guid);
+            log.debug("Vertex with guid is not present {}", guid);
             return;
         }
 

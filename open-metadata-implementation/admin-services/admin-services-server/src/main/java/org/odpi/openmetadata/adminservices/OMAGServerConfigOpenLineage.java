@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OLSSimplifiedAccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
@@ -44,6 +45,10 @@ public class OMAGServerConfigOpenLineage {
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validatePropertyNotNull(openLineageServerConfig.getInTopicName(), "inTopicName", serverName, methodName);
             errorHandler.validatePropertyNotNull(openLineageServerConfig.getLineageGraphConnection(), "lineageGraphConnection", serverName, methodName);
+            OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
+            errorHandler.validatePropertyNotNull(accessServiceConfig, "accessServiceConfig", serverName, methodName);
+            errorHandler.validatePropertyNotNull(accessServiceConfig.getServerName(), "accessServiceConfig.serverName", serverName, methodName);
+            errorHandler.validatePropertyNotNull(accessServiceConfig.getServerPlatformUrlRoot(), "accessServiceConfig.serverPlatformUrlRoot", serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);

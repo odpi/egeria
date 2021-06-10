@@ -33,13 +33,12 @@ stages:
             inputs:
               mavenPomFile: 'pom.xml'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.8'
+              jdkVersionOption: '11'
               jdkArchitectureOption: 'x64'
               goals: 'install'
               options: >-
                   --batch-mode
                   --quiet
-                  -s .m2/settings.xml
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
               mavenOptions: '-Xmx5500m'
           - task: Maven@3
@@ -47,13 +46,12 @@ stages:
             inputs:
               mavenPomFile: 'pom.xml'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.8'
+              jdkVersionOption: '11'
               jdkArchitectureOption: 'x64'
               goals: 'sonar:sonar'
               options: >-
                   --batch-mode
                   --quiet
-                  -s .m2/settings.xml
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
                   -Dsonar
                   -Dsonar.projectKey="$(projectKey)"

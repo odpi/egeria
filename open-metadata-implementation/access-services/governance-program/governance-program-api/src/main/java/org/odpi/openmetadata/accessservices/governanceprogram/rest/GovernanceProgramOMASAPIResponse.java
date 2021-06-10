@@ -6,9 +6,6 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -27,8 +24,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = PersonalProfileResponse.class, name = "PersonalProfileResponse"),
                 @JsonSubTypes.Type(value = PersonalProfileListResponse.class, name = "PersonalProfileListResponse"),
-                @JsonSubTypes.Type(value = GovernanceOfficerResponse.class, name = "GovernanceOfficerResponse"),
-                @JsonSubTypes.Type(value = GovernanceOfficerListResponse.class, name = "GovernanceOfficerListResponse")
+                @JsonSubTypes.Type(value = GovernanceRoleResponse.class, name = "GovernanceRoleResponse"),
+                @JsonSubTypes.Type(value = GovernanceRoleListResponse.class, name = "GovernanceRoleListResponse"),
+                @JsonSubTypes.Type(value = SubjectAreaDefinitionResponse.class, name = "SubjectAreaDefinitionResponse"),
+                @JsonSubTypes.Type(value = SubjectAreaListResponse.class, name = "SubjectAreaListResponse"),
+                @JsonSubTypes.Type(value = SubjectAreaResponse.class, name = "SubjectAreaResponse"),
+                @JsonSubTypes.Type(value = GovernanceZoneDefinitionResponse.class, name = "GovernanceZoneDefinitionResponse"),
+                @JsonSubTypes.Type(value = GovernanceZoneListResponse.class, name = "GovernanceZoneListResponse"),
+                @JsonSubTypes.Type(value = GovernanceZoneResponse.class, name = "GovernanceZoneResponse"),
         })
 public abstract class GovernanceProgramOMASAPIResponse extends FFDCResponseBase
 {

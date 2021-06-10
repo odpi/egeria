@@ -3,227 +3,127 @@
 
 # Egeria diagnostic guide
 
-Egeria will typically be embedded in complex deployment environments.
-Because of this, we try to practice First Failure Data Capture (FFDC).
+This guide focuses on diagnosing and fixing issues running Egeria's
+[OMAG Server Platform](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md)
+and the [OMAG Servers](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
+that run on it.
 
-## First failure data capture (FFDC)
+If you are having problems building Egeria, please see the
+[Building Egeria](../../../open-metadata-resources/open-metadata-tutorials/building-egeria-tutorial) tutorial.
 
-First Failure Data Capture (FFDC) is an approach to error handling that aims to guide
-the support team to the cause of an error based on the output of a single, or small number of,
-messages, rather than relying on tracing through the logic flow.
 
-This is not always possible, particularly for bugs and unexpected
-runtime conditions, but it is a worthy goal because it is rarely practical
-to turn on debug tracing in a runtime system.
+## The diagnosis process
 
-FFDC typically requires as much information as possible to be gathered
-at the point where the error is first detected.  This information is added to as the
-call unwinds.  This way we know:
- * What went wrong precisely
- * What was the server doing when it went wrong
- * What is the consequence of this failure to the caller, or others
+The OMAG Server Platform has many functions itself, and is typically be embedded in complex deployment environments.
+This means that diagnosing (and most importantly fixing them) needs to be done in a
+systematic way.  
 
-FFDC requires careful design by the developer because they need to anticipate
-the likely errors and design the error handling accordingly.
-Many modules have more error handling code than "happy path code".
-In addition, there is wide spread use of two important components
-throughout Egeria.
+Figure 1 shows a view of the diagnostic process.  
 
-* The [FFDC Services](../../../open-metadata-implementation/common-services/ffdc-services) -
-  provides base services for implementing FFDC in an Egeria module.
+![Diagnostic Process](diagnostic-process.png)
+> **Figure 1:** The diagnostic process
 
-     * Common audit log messages and exception codes.
-     * Common exceptions and base exceptions.
-     * Common REST Structures.
-     * Invalid parameter handler for common parameter types.
-     * REST Call logger for debug messages and performance logging.
-     * Handler for common exceptions.
-     
-* The [Audit Log Framework (ALF)](../../../open-metadata-implementation/frameworks/audit-log-framework) -
-  provides interface definitions and classes to enable connectors to support natural language enabled
-  diagnostics such as exception messages and audit log messages.
+The diagram shows three phases linked together in sequence with a return arrow from the third phase,
+looping back to the first.  It is an example of process that appears rational in hindsight.
+When you are in the middle of the process you may find that you are iterating backwards and
+forwards between the different stages, particularly if it is a puzzling problem.
+However, it is often helpful to step back and look at each step in the process and
+assemble your thoughts along these lines.  The diagnostic guide is organized according to
+this process and at the very least, it will help you to find the information that you need.
 
-The result is the consistent availability of detailed diagnostics when things go wrong.
+So now consider each phase of the process.
 
-In addition the [Open Metadata Repository Services (OMRS)](../../../open-metadata-implementation/repository-services/docs/component-descriptions/audit-log.md)
-provides an extension to the ALF's audit log destination that supports multiple
-[audit log store connectors](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors).
-This means that an OMAG Server can be configured to route 
-audit log messages to multiple destinations.
+* **Information Gathering** - The first phase is to gather the information needed to understand the nature of the problem.
 
-![Using different log destination](../../../open-metadata-implementation/frameworks/audit-log-framework/docs/audit-log-framework-overview.png)
-
-Details of the supported audit log store connectors and
-how to set them up are described in
-[Configuring the Audit Log](../../../open-metadata-implementation/admin-services/docs/user/configuring-the-audit-log.md).
-
-## FFDC principles practised by the Egeria community
-
-* Each type of message has a unique identifier and
-  the parameters embedded in it are sufficient to determine the
-  call parameters and the code path to the exact point where the error
-  is detected.
-
-* All parameters are validated both client side and server side.
-
-* APIs use different types of exceptions to separate:
-  * Invalid parameters from the caller
-  * User security errors that need administrator action
-  * Temporary problems in the server
-  * Bugs and logic errors (ie reaching a point in the path that should be impossible).
+    * **Clarify the problem** - Create a clear picture in your mind of the symptoms of your problem.  Be as precise as possible since that will simplify your work at a later stage.
+    Ask yourself:
+        * What is not working?  Did something fail? Or is it unresponsive, or creating the wrong results?
+        * Has it ever worked or has it just stopped working?
+        * If it has just stopped working, what has changed recently?
+        * Who does it affect?  Everyone?  Specific users?  Running in specific environments?
+        * What is the context of the problem?  For example, what is the deployment topology in terms of the machines,
+       containers, OMAG Server Platforms, OMAG Services and connected services (such as Apache Kafka).
   
-  Typically, the modules use checked exceptions for the first three types of errors and
-  runtime exceptions for the last.
+    * **Classifying the problem** - Identifying the type of problem guides you to which diagnostics will be helpful.
+       For example, consider the following options, and also identify whether this is a consistent or intermittent error.
+       
+        * The platform failed to start
+        * The platform failed while it was running
+        * A server failed to start
+        * A server failed while it was running
+        * A connector within a server failed to start up properly
+        * A connector within a server detected and error
+        * A request to a server failed with an exception
+        * A request to a server hangs
+        * A request to a server produces the wrong results
+        * A server is failing to join a cohort
+        * Metadata is not being shared across the cohort
+        * Requests are running slowly
+            
+    * **Gather diagnostics** - This is where you are looking to capture the evidence that may identify
+    both the source of the error and the nature of the failure.
+    The different types of diagnostics that are available are described [here](diagnostic-sources.md).
+    If the problem is in the Egeria code,
+    rather than its runtime environment, then the 
+    [Egeria diagnostics may also defined how to fix the problem](ffdc.md).
+    
+* **Information Integration and Interpretation** - The second phase uses the evidence gathered in the
+  to make a diagnosis to determine which component is in error and what it is doing that is incorrect.
+  To do this, you need to:
   
-* Where there is no direct external caller, errors are logging the Audit Log
-  rather than throwing an exception in a background thread.
+  * **Understand the correct behavior** - how should it be working?  If the desired capability
+  is in the Egeria code, what is the status of the module and is the function that you are using complete
+  and expected to work.
   
-* Exception objects containing stack traces never leave the OMAG Server Platform.
-  The full exception is added to the Audit Log so the stack trace can be analysed by the platform team.
-  Important diagnostic information - such as the exception type, message, system action and user action
-  is captured in the REST response.
-  If the calling program is an Egeria client, it recreates the exception (minus the stack trace of course)
-  and throws it to its caller.
-  That way, all information about the exception is preserved without compromising the security of the server platform.
+  * **Understand the actual behavior** - compare and contrast how it is actually working with
+  how it should be working.
+  
+  * **Classify the behavior** - identify the nature of the behavior you are seeing. 
+  For example:
+    * **Not Implemented** - The desired behavior is not yet implemented - or in development.
+    * **Bad Environment** - The OMAG Server Platform's runtime (container) environment is incorrect or failing or lacking resources.
+    * **Bad Platform Configuration** - The OMAG Server Platform is incorrectly configured.
+    * **Bad Server Configuration** - The OMAG Server is incorrectly configured.  This may be its subsystems, or tis connectors.
+    * **Failing dependent service** - A service being called by the platform or a server (for example, Kafka, LDAP) is not running correctly.
+    * **Insufficient security access** - A platform, server or user does not have security authorization to complete a request.
+    * **Caller error** - An error in the caller to Egeria's request
+    * **Bad connector implementation** - An error in the implementation of a connector.
+    * **Egeria platform bug** - one of the subsystems of Egeria is not operating correctly.
+    
+  With this information, it may be possible to match what is occurring in your environment with
+  descriptions of common errors, or errors found by other users of Egeria.  These will hopefully
+  also include a description of how to fix the problem.
+  
+* **Taking Action** - Once the cause of the problem is understood, you next need to fix it. There are three parts to this: 
 
+  * **Agree necessary changes** - Sometimes the diagnostics describe how to fix the problem, sometimes that are
+  choices to be agreed with the people responsible for the components/configuration that needs fixing.
+  
+  * **Make necessary changes** - Once the approach has been agreed, the changes need to be made.
+  
+  * **Monitor results** - Finally the changes need to be tested to ensure the problem is fixed and
+  there are no unwanted side-effects.  If the solution did not work, then begin again with the
+  information gathering process.  It may also be a time to request help from the 
+  [Egeria community](../../../Community-Guide.md).  If the situation is worse, you may wish to back out the changes
+  you have made before trying the diagnosis process again.
 
-## Exceptions
+The description above is an overview of what to do to diagnose and fix a problem.
+This may be enough to help you resolve the issues you are seeing.
+However, whilst some problems are frequently encountered, others are unique to your situation.
+What follows are some descriptions of the diagnostics for problems that are frequently seen.
+These can help you to eliminate the obvious causes.  
 
-### An example of a response from a REST API call
+* [Examples of OMAG Server Platform startup errors](examples-of-platform-start-up-errors.md)
+* [Examples of OMAG Server startup errors](examples-of-server-start-up-errors.md)
+* [Examples of Open Metadata Repository Cohort errors](examples-of-cohort-errors.md)
+* [Examples of REST API call failures](examples-of-common-rest-api-errors.md)
 
-This is how an exception is passed from the OMAG Server Platform to a calling program.  
-
-```json
-{
-    "class": "VoidResponse",
-    "relatedHTTPCode": 400,
-    "exceptionClassName": "org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException",
-    "exceptionCausedBy": "java.lang.NullPointerException",
-    "actionDescription": "refreshService",
-    "exceptionErrorMessage": "OMAG-COMMON-400-016 An unexpected java.lang.NullPointerException exception was caught by refreshService; error message was null",
-    "exceptionErrorMessageId": "OMAG-COMMON-400-016",
-    "exceptionErrorMessageParameters": [
-        "java.lang.NullPointerException",
-        "refreshService",
-        "null"
-    ],
-    "exceptionSystemAction": "The system is unable to process the request and has returned an exception to the caller.",
-    "exceptionUserAction": "Review the error message.  Also look up its full message definition which includes the system action and user action.  This is most likely to describe the correct action to take to resolve the error.  If that does not help, look for other diagnostics created at the same time.  Also validate that the caller is a valid client of this server and is operating correctly."
-}
-```
-
-and another example:
-
-```json
-{
-    "class": "VoidResponse",
-    "relatedHTTPCode": 404,
-    "exceptionClassName": "org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException",
-    "actionDescription": "refreshService",
-    "exceptionErrorMessage": "OMAG-MULTI-TENANT-404-001 The OMAG Server exchangeDL01 is not available to service a request from user garygeeke",
-    "exceptionErrorMessageId": "OMAG-MULTI-TENANT-404-001",
-    "exceptionErrorMessageParameters": [
-        "exchangeDL01",
-        "garygeeke"
-    ],
-    "exceptionSystemAction": "The system is unable to process the request because the server is not running on the called platform.",
-    "exceptionUserAction": "Verify that the correct server is being called on the correct platform and that this server is running. Retry the request when the server is available.",
-    "exceptionProperties": {
-        "serverName": "exchangeDL01",
-        "parameterName": "serverName"
-    }
-}
-```
-
-Additional examples of common errors are shown here.
-## Audit Log Messages
-
-The diagram below illustrates the structure of the audit log records:
-
-![Audit log record structure](../../../open-metadata-implementation/frameworks/audit-log-framework/docs/audit-log-record.png)
-
-### Audit Log Record Severities
-
-The audit log severities supported by the OMAG Servers are as follows:
-
-* **Information** - The server is providing information about its normal operation.
-* **Event** - An event was received from another member of the open metadata repository cohort.
-* **Decision** - A decision has been made related to the interaction of the local metadata repository and the rest of the cohort.
-* **Action** - An Action is required by the administrator. At a minimum, the situation needs to be investigated and 
-  if necessary, corrective action taken.
-* **Error** - An error occurred, possibly caused by an incompatibility between the local metadata repository
-  and one of the remote repositories. The local repository may restrict some of the metadata interchange
-  functions as a result.
-* **Exception** - An unexpected exception occurred.  This means that the server needs some administration
-  attention to correct configuration or fix a logic error because it is not operating as a proper peer in the
-  open metadata repository cohort.
-* **Security** - Unauthorized access to a service or metadata instance has been attempted.
-* **Startup** - A new component is starting up.
-* **Shutdown** - An existing component is shutting down.
-* **Asset** - An auditable action relating to an asset has been taken.
-* **Types** - Activity is occurring that relates to the open metadata types in use by this server.
-* **Cohort** - The server is exchanging registration information about an open metadata repository cohort that
-  it is connecting to.
-* **Trace** - This is additional information on the operation of the server that may be
-  of assistance in debugging a problem.  It is not normally logged to any destination, but can be added when needed.,
-* **PerfMon** - This log record contains performance monitoring timing information for 
-  specific types of processing. It is not normally logged to any destination, but can be added when needed.
-* **\<Unknown\>** - Uninitialized Severity
-
-### Example of an audit log message
-Below is an example of the types of information captured in an audit log record.
-```json
-{
-    "guid": "bfc4ebe9-0550-4c33-b3d6-aa760401b400",
-    "timeStamp": 1583442856062,
-    "originatorProperties": {
-        "Server Name": "findItDL01",
-        "Organization Name": "Coco Pharmaceuticals",
-        "Server Type": "Open Metadata and Governance Server"
-    },
-    "originatorComponent": {
-        "componentId": 2000,
-        "componentName": "Discovery Engine Services",
-        "componentWikiURL": "https://egeria.odpi.org/open-metadata-implementation/governance-servers/discovery-engine-services/",
-        "componentType": "Run automated discovery services"
-    },
-    "actionDescription": "Register configuration listener",
-    "threadId": 116,
-    "threadName": "org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryConfigurationRefreshHandler",
-    "severityCode": 5,
-    "severity": "Error",
-    "messageId": "DISCOVERY-ENGINE-SERVICES-0028",
-    "messageText": "Failed to refresh configuration for discovery engine AssetQuality.  The exception was org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException with error message DISCOVERY-ENGINE-SERVICES-400-014 Properties for discovery engine called AssetQuality have not been returned by open metadata server cocoMDS1 to discovery server cocoMDS1",
-    "messageParameters": [
-        "AssetQuality",
-        "org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException",
-        "DISCOVERY-ENGINE-SERVICES-400-014 Properties for discovery engine called AssetQuality have not been returned by open metadata server cocoMDS1 to discovery server cocoMDS1"
-    ],
-    "additionalInformation": [
-        "PropertyServerException{reportedHTTPCode=400, reportingClassName='org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler', reportingActionDescription='refreshConfig', errorMessage='DISCOVERY-ENGINE-SERVICES-400-014 Properties for discovery engine called AssetQuality have not been returned by open metadata server cocoMDS1 to discovery server cocoMDS1', reportedSystemAction='The discovery server is not able to initialize the discovery engine and so it will not de able to support discovery requests targeted to this discovery engine.', reportedUserAction='This may be a configuration error or the metadata server may be down.  Look for other error messages and review the configuration of the discovery server.  Once the cause is resolved, restart the discovery server.', reportedCaughtException=null, relatedProperties=null}"
-    ],
-    "systemAction": "The discovery engine is unable to process any discovery requests until its configuration can be retrieved.",
-    "userAction": "Review the error messages and resolve the cause of the problem.  Either wait for the discovery server to refresh the configuration, or issue the refreshConfigcall to request that the discovery engine calls the Discovery Engine OMAS to refresh the configuration for the discovery service.",
-    "exceptionClassName": "org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException",
-    "exceptionMessage": "DISCOVERY-ENGINE-SERVICES-400-014 Properties for discovery engine called AssetQuality have not been returned by open metadata server cocoMDS1 to discovery server cocoMDS1",
-    "exceptionStackTrace": "PropertyServerException{reportedHTTPCode=400, reportingClassName='org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler', reportingActionDescription='refreshConfig', errorMessage='DISCOVERY-ENGINE-SERVICES-400-014 Properties for discovery engine called AssetQuality have not been returned by open metadata server cocoMDS1 to discovery server cocoMDS1', reportedSystemAction='The discovery server is not able to initialize the discovery engine and so it will not de able to support discovery requests targeted to this discovery engine.', reportedUserAction='This may be a configuration error or the metadata server may be down.  Look for other error messages and review the configuration of the discovery server.  Once the cause is resolved, restart the discovery server.', reportedCaughtException=null, relatedProperties=null}\n\tat org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler.refreshConfig(DiscoveryEngineHandler.java:154)\n\tat org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryConfigurationRefreshHandler.run(DiscoveryConfigurationRefreshHandler.java:140)\n\tat java.lang.Thread.run(Thread.java:748)\n",
-    "originator": {
-        "serverName": "findItDL01",
-        "serverType": "Open Metadata and Governance Server",
-        "organizationName": "Coco Pharmaceuticals"
-    },
-    "reportingComponent": {
-        "componentId": 2000,
-        "componentName": "Discovery Engine Services",
-        "componentWikiURL": "https://egeria.odpi.org/open-metadata-implementation/governance-servers/discovery-engine-services/",
-        "componentType": "Run automated discovery services"
-    }
-}
-```
 
 ## Further information
 
+* [First Failure Data Capture (FFDC)](ffdc.md)
 * [Integration Daemon Diagnostics Guide](integration-daemon-diagnostic-guide.md)
+* [Administration Guide](../../../open-metadata-implementation/admin-services/docs/user)
 
 ----
 Return to [Home Page](../../../index.md)

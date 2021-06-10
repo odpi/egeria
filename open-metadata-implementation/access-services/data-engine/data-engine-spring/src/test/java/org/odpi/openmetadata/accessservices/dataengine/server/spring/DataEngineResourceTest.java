@@ -42,7 +42,7 @@ class DataEngineResourceTest {
         String qualifiedName = "testQualifiedName";
         dataEngineResource.getExternalDataEngineByQualifiedName(SERVER_NAME, USER, qualifiedName);
 
-        verify(dataEngineRestServices, times(1)).getExternalDataEngineByQualifiedName(SERVER_NAME, USER, qualifiedName);
+        verify(dataEngineRestServices, times(1)).getExternalDataEngine(SERVER_NAME, USER, qualifiedName);
     }
 
     @Test

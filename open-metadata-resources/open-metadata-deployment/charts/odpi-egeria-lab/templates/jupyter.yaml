@@ -85,7 +85,7 @@ spec:
             - name: eventBusURLroot
               value: "{{ .Release.Name }}-kafka:9092"
             - name: uiExternalURL
-              value: "https://localhost:18443"
+              value: "{{ .Release.Name }}-nginx:443"
             - name: repositoryType
               value: {{ .Values.egeria.repositoryType}}
           ports:

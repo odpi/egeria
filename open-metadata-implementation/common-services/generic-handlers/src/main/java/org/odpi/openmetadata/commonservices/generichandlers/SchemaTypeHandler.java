@@ -24,7 +24,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     private OpenMetadataAPIGenericConverter<B> schemaTypeConverter;
 
     /**
-     * Construct the asset handler with information needed to work with B objects.
+     * Construct the handler with information needed to work with B objects.
      *
      * @param converter specific converter for this bean class
      * @param beanClass name of bean class that is represented by the generic class B
@@ -226,8 +226,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
      * @param externalSourceName     unique name of software server capability representing the caller
      * @param existingSchemaTypeGUID unique identifier of the existing schemaType entity
      * @param existingSchemaTypeGUIDParameterName name of parameter for existingSchemaTypeGUID
-     * @param builder             new schemaType values
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param builder                new schemaType values
+     * @param isMergeUpdate          should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param methodName             calling method
      *
      * @throws InvalidParameterException  the schemaType bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -498,6 +499,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                         null,
                                                         null,
+                                                        null,
                                                         startFrom,
                                                         pageSize,
                                                         methodName);
@@ -544,6 +546,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               specificMatchPropertyNames,
                                                               true,
                                                               null,
+                                                              null,
+                                                              false,
+                                                              supportedZones,
                                                               null,
                                                               startFrom,
                                                               pageSize,
@@ -659,13 +664,16 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     {
         final String schemaGUIDParameterName = "schemaRootGUID";
 
-        int     attributeCount         = 0;
-        String  validValuesSetGUID     = null;
-        String  externalSchemaTypeGUID = null;
-        B       externalSchemaType     = null;
-        B       mapToSchemaType        = null;
-        B       mapFromSchemaType      = null;
-        List<B> schemaTypeOptions      = null;
+        int          attributeCount         = 0;
+        String       validValuesSetGUID     = null;
+        String       externalSchemaTypeGUID = null;
+        B            externalSchemaType     = null;
+        String       mapToSchemaTypeGUID    = null;
+        B            mapToSchemaType        = null;
+        String       mapFromSchemaTypeGUID  = null;
+        B            mapFromSchemaType      = null;
+        List<String> schemaTypeOptionGUIDs  = null;
+        List<B>      schemaTypeOptions      = null;
 
         /*
          * Look for an external schema type - the real content will be hanging off of this element.
@@ -675,7 +683,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             EntityDetail externalSchemaTypeEntity = this.getAttachedEntity(userId,
                                                                            schemaRootHeader.getGUID(),
                                                                            schemaGUIDParameterName,
-                                                                           OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                           OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                            OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
                                                                            OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
@@ -683,6 +691,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
             if (externalSchemaTypeEntity != null)
             {
+                externalSchemaTypeGUID = externalSchemaTypeEntity.getGUID();
                 externalSchemaType = this.getSchemaTypeFromEntity(userId, externalSchemaTypeEntity, methodName);
             }
         }
@@ -702,7 +711,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             EntityDetail validValuesSetEntity = this.getAttachedEntity(userId,
                                                                        schemaRootHeader.getGUID(),
                                                                        schemaGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
@@ -718,7 +727,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             EntityDetail mapFromSchemaTypeEntity = this.getAttachedEntity(userId,
                                                                           schemaRootHeader.getGUID(),
                                                                           schemaGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
@@ -726,13 +735,14 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
             if (mapFromSchemaTypeEntity != null)
             {
+                mapFromSchemaTypeGUID = mapFromSchemaTypeEntity.getGUID();
                 mapFromSchemaType = this.getSchemaTypeFromEntity(userId, mapFromSchemaTypeEntity, methodName);
             }
 
             EntityDetail mapToSchemaTypeEntity = this.getAttachedEntity(userId,
                                                                         schemaRootHeader.getGUID(),
                                                                         schemaGUIDParameterName,
-                                                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                         OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
                                                                         OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
                                                                         OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
@@ -740,6 +750,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
             if (mapToSchemaTypeEntity != null)
             {
+                mapToSchemaTypeGUID = mapToSchemaTypeEntity.getGUID();
                 mapToSchemaType = this.getSchemaTypeFromEntity(userId, mapToSchemaTypeEntity, methodName);
             }
         }
@@ -748,7 +759,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             List<EntityDetail> schemaTypeOptionsEntities = getAttachedEntities(userId,
                                                                                schemaRootHeader.getGUID(),
                                                                                schemaGUIDParameterName,
-                                                                               OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                               OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
@@ -758,18 +769,33 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
             if ((schemaTypeOptionsEntities != null) && (! schemaTypeOptionsEntities.isEmpty()))
             {
+                schemaTypeOptionGUIDs = new ArrayList<>();
                 schemaTypeOptions = new ArrayList<>();
 
                 for (EntityDetail schemaTypeOptionEntity : schemaTypeOptionsEntities)
                 {
                     if (schemaTypeOptionEntity != null)
                     {
+                        schemaTypeOptionGUIDs.add(schemaTypeOptionEntity.getGUID());
                         schemaTypeOptions.add(this.getSchemaTypeFromEntity(userId, schemaTypeOptionEntity, methodName));
                     }
                 }
             }
-
         }
+
+        List<Relationship> queryTargets = this.getAttachmentLinks(userId,
+                                                                  schemaRootHeader.getGUID(),
+                                                                  schemaGUIDParameterName,
+                                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                  2,
+                                                                  0,
+                                                                  0,
+                                                                  methodName);
+
 
         return schemaTypeConverter.getNewSchemaTypeBean(beanClass,
                                                         schemaRootHeader,
@@ -780,9 +806,13 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                         validValuesSetGUID,
                                                         externalSchemaTypeGUID,
                                                         externalSchemaType,
+                                                        mapFromSchemaTypeGUID,
                                                         mapFromSchemaType,
+                                                        mapToSchemaTypeGUID,
                                                         mapToSchemaType,
+                                                        schemaTypeOptionGUIDs,
                                                         schemaTypeOptions,
+                                                        queryTargets,
                                                         methodName);
     }
 }

@@ -20,16 +20,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ContributionRecord extends CommonHeader
+public class ContributionRecord extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<Classification> classifications      = null;
-    private String               qualifiedName        = null;
-    private int                  karmaPoints          = 0;
-    private int                  karmaPointPlateau    = 0;
-    private Map<String, Object>  extendedProperties   = null;
-    private Map<String, String>  additionalProperties = null;
+    private int karmaPoints       = 0;
+    private int karmaPointPlateau = 0;
+
 
 
     /**
@@ -52,68 +49,9 @@ public class ContributionRecord extends CommonHeader
 
         if (template != null)
         {
-            this.classifications = template.getClassifications();
-            this.qualifiedName = template.getQualifiedName();
             this.karmaPoints = template.getKarmaPoints();
             this.karmaPointPlateau = template.getKarmaPointPlateau();
-            this.extendedProperties = template.getExtendedProperties();
-            this.additionalProperties = template.getAdditionalProperties();
         }
-    }
-
-
-    /**
-     * Return the list of active classifications for this element.
-     *
-     * @return list of classification objects
-     */
-    public List<Classification> getClassifications()
-    {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return classifications;
-        }
-    }
-
-
-    /**
-     * Set up the list of active classifications for this element.
-     *
-     * @param classifications list of classification objects
-     */
-    public void setClassifications(List<Classification> classifications)
-    {
-        this.classifications = classifications;
-    }
-
-
-    /**
-     * Return the qualified for this record - it is that same as the qualified name for the personal profile.
-     *
-     * @return string name
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-
-    /**
-     * Set up the qualified for this record - it is that same as the qualified name for the personal profile.
-     *
-     * @param qualifiedName string name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
     }
 
 
@@ -162,72 +100,6 @@ public class ContributionRecord extends CommonHeader
 
 
     /**
-     * Return any properties associated with the subclass of this element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setExtendedProperties(Map<String, Object> additionalProperties)
-    {
-        this.extendedProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return any additional properties associated with the element.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the element.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -235,21 +107,15 @@ public class ContributionRecord extends CommonHeader
     @Override
     public String toString()
     {
-        return "PersonalProfile{" +
-                "classifications=" + classifications +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", karmaPoints=" + karmaPoints +
-                ", karmaPointPlateau=" + karmaPointPlateau +
-                ", extendedProperties=" + extendedProperties +
-                ", additionalProperties=" + additionalProperties +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                ", originId='" + getOriginId() + '\'' +
-                ", originName='" + getOriginName() + '\'' +
-                ", originType='" + getOriginType() + '\'' +
-                ", originLicense='" + getOriginLicense() + '\'' +
-                '}';
+        return "ContributionRecord{" +
+                       "karmaPoints=" + karmaPoints +
+                       ", karmaPointPlateau=" + karmaPointPlateau +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -276,10 +142,7 @@ public class ContributionRecord extends CommonHeader
         }
         ContributionRecord that = (ContributionRecord) objectToCompare;
         return getKarmaPoints() == that.getKarmaPoints() &&
-               getKarmaPointPlateau() == that.getKarmaPointPlateau() &&
-                Objects.equals(getClassifications(), that.getClassifications()) &&
-                Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+               getKarmaPointPlateau() == that.getKarmaPointPlateau();
     }
 
 
@@ -291,7 +154,6 @@ public class ContributionRecord extends CommonHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getClassifications(), getKarmaPoints(), getKarmaPointPlateau(),
-                            getExtendedProperties(), getAdditionalProperties());
+        return Objects.hash(super.hashCode(), getKarmaPoints(), getKarmaPointPlateau());
     }
 }

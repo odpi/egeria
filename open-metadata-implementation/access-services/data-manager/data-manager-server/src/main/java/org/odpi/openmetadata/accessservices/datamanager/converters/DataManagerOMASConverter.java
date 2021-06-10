@@ -15,7 +15,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -24,7 +23,7 @@ import java.util.Map;
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Data Manager bean.
  */
-public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
+public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {
     /**
      * Constructor
@@ -79,6 +78,51 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
 
 
     /**
+     * Extract the properties from the entity or relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param header header from the entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementHeader getMetadataElementHeader(Class<B>       beanClass,
+                                                  InstanceHeader header,
+                                                  String         methodName) throws PropertyServerException
+    {
+        if (header != null)
+        {
+            ElementHeader elementHeader = new ElementHeader();
+
+            elementHeader.setGUID(header.getGUID());
+            elementHeader.setType(this.getElementType(header));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementHeader.setOrigin(elementOrigin);
+
+            return elementHeader;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Extract the properties from the entity.
      *
      * @param beanClass name of the class to create
@@ -125,6 +169,112 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
 
 
     /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entityProxy entityProxy from the relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>    beanClass,
+                                      EntityProxy entityProxy,
+                                      String      methodName) throws PropertyServerException
+    {
+        if (entityProxy != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entityProxy.getUniqueProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>     beanClass,
+                                      EntityDetail entity,
+                                      String       methodName) throws PropertyServerException
+    {
+        if (entity != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entity, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entity.getProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>     beanClass,
+                                      Relationship relationship,
+                                      String       methodName) throws PropertyServerException
+    {
+        if (relationship != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the classifications from the entity.
      *
      * @param entity entity containing the classifications
@@ -135,6 +285,28 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
         if (entity != null)
         {
             return this.getEntityClassifications(entity.getClassifications());
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract the requested classification from the entity.
+     *
+     * @param entity entity containing the classifications
+     * @return list of bean classifications
+     */
+    public Classification getEntityClassification(String       classificationName,
+                                                  EntityDetail entity)
+    {
+        if (entity != null)
+        {
+            List<Classification> classifications = entity.getClassifications();
+
+            if (classifications != null)
+            {
+                return this.getEntityClassification(classificationName, classifications);
+            }
         }
 
         return null;
@@ -191,6 +363,35 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
                 if (classification != null)
                 {
                     if (classification.getClassificationName().equals(classificationName))
+                    {
+                        return classification;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve a specific named classification.
+     *
+     * @param classificationName name of classification
+     * @param classifications list of classifications retrieved from the repositories
+     * @return null or the requested classification
+     */
+    private Classification getEntityClassification(String               classificationName,
+                                                   List<Classification> classifications)
+    {
+        if ((classificationName != null) && (classifications != null))
+        {
+            for (Classification classification : classifications)
+            {
+                if (classification != null)
+                {
+                    if (classification.getName().equals(classificationName))
                     {
                         return classification;
                     }
@@ -320,77 +521,6 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
     }
 
 
-
-    /**
-     * Retrieve and delete the OwnerCategory enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    OwnerCategory removeOwnerCategoryFromProperties(InstanceProperties   properties)
-    {
-        OwnerCategory ownerCategory = this.getOwnerCategoryFromProperties(properties);
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
-            }
-
-            properties.setInstanceProperties(instancePropertiesMap);
-        }
-
-        return ownerCategory;
-    }
-
-
-    /**
-     * Retrieve the OwnerCategory enum property from the instance properties of a classification
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    OwnerCategory getOwnerCategoryFromProperties(InstanceProperties   properties)
-    {
-        OwnerCategory ownerCategory = OwnerCategory.OTHER;
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
-
-                if (instancePropertyValue instanceof EnumPropertyValue)
-                {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
-                    {
-                        case 0:
-                            ownerCategory = OwnerCategory.USER_ID;
-                            break;
-
-                        case 1:
-                            ownerCategory = OwnerCategory.PROFILE_ID;
-                            break;
-
-                        case 99:
-                            ownerCategory = OwnerCategory.OTHER;
-                            break;
-                    }
-                }
-            }
-        }
-
-        return ownerCategory;
-    }
-
-
     /**
      * Extract and delete the sortOrder property from the supplied instance properties.
      *
@@ -421,37 +551,86 @@ public abstract class DataManagerOMASConverter<B> extends OpenMetadataAPIGeneric
     }
 
 
+    /**
+     * Set up the properties that can be extracted form the schema type.
+     *
+     * @param schemaAttributeEntity entity to unpack
+     * @param schemaTypeElement schema type properties
+     * @param properties output column properties
+     */
+    void setUpSchemaAttribute(EntityDetail              schemaAttributeEntity,
+                              SchemaTypeElement         schemaTypeElement,
+                              SchemaAttributeProperties properties)
+    {
+        /*
+         * The initial set of values come from the entity.
+         */
+        InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
+
+        properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+        properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+        properties.setDisplayName(this.removeDisplayName(instanceProperties));
+        properties.setDescription(this.removeDescription(instanceProperties));
+
+        properties.setElementPosition(this.removePosition(instanceProperties));
+        properties.setMinCardinality(this.removeMinCardinality(instanceProperties));
+        properties.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
+        properties.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
+        properties.setOrderedValues(this.removeOrderedValues(instanceProperties));
+        properties.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
+        properties.setSortOrder(this.removeSortOrder(instanceProperties));
+        properties.setMinimumLength(this.removeMinimumLength(instanceProperties));
+        properties.setLength(this.removeLength(instanceProperties));
+        properties.setPrecision(this.removePrecision(instanceProperties));
+        properties.setIsNullable(this.removeIsNullable(instanceProperties));
+        properties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
+        properties.setAliases(this.removeAliases(instanceProperties));
+
+        /*
+         * Any remaining properties are returned in the extended properties.  They are assumed to be defined in a subtype.
+         */
+        properties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+        if (schemaTypeElement != null)
+        {
+            this.addSchemaTypeToAttribute(schemaTypeElement, properties);
+        }
+    }
 
 
     /**
      * Set up the properties that can be extracted form the schema type.
      *
-     * @param schemaTypeProperties schema type properties
-     * @param columnProperties output column properties
+     * @param schemaTypeElement schema type properties
+     * @param attributeProperties output column properties
      */
-    void addSchemaTypeToColumn(SchemaTypeProperties schemaTypeProperties,
-                               TabularColumnProperties columnProperties)
+    void addSchemaTypeToAttribute(SchemaTypeElement         schemaTypeElement,
+                                  SchemaAttributeProperties attributeProperties)
     {
+        SchemaTypeProperties    schemaTypeProperties = schemaTypeElement.getSchemaTypeProperties();
+
         if (schemaTypeProperties instanceof PrimitiveSchemaTypeProperties)
         {
-            columnProperties.setDataType(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDataType());
-            columnProperties.setDefaultValue(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
+            attributeProperties.setDataType(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDataType());
+            attributeProperties.setDefaultValue(((PrimitiveSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
         }
         else if (schemaTypeProperties instanceof LiteralSchemaTypeProperties)
         {
-            columnProperties.setDataType(((LiteralSchemaTypeProperties) schemaTypeProperties).getDataType());
-            columnProperties.setFixedValue(((LiteralSchemaTypeProperties) schemaTypeProperties).getFixedValue());
+            attributeProperties.setDataType(((LiteralSchemaTypeProperties) schemaTypeProperties).getDataType());
+            attributeProperties.setFixedValue(((LiteralSchemaTypeProperties) schemaTypeProperties).getFixedValue());
         }
         else if (schemaTypeProperties instanceof EnumSchemaTypeProperties)
         {
-            columnProperties.setDataType(((EnumSchemaTypeProperties) schemaTypeProperties).getDataType());
-            columnProperties.setDefaultValue(((EnumSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
-            columnProperties.setValidValuesSetGUID(((EnumSchemaTypeProperties) schemaTypeProperties).getValidValueSetGUID());
+            attributeProperties.setDataType(((EnumSchemaTypeProperties) schemaTypeProperties).getDataType());
+            attributeProperties.setDefaultValue(((EnumSchemaTypeProperties) schemaTypeProperties).getDefaultValue());
+            attributeProperties.setValidValuesSetGUID(((EnumSchemaTypeProperties) schemaTypeProperties).getValidValueSetGUID());
         }
         else if (schemaTypeProperties instanceof ExternalSchemaTypeProperties)
         {
-            columnProperties.setDataType(((ExternalSchemaTypeProperties) schemaTypeProperties).getDataType());
-            columnProperties.setExternalTypeGUID(((ExternalSchemaTypeProperties) schemaTypeProperties).getExternalSchemaTypeGUID());
+            attributeProperties.setDataType(((ExternalSchemaTypeProperties) schemaTypeProperties).getDataType());
+
+            SchemaTypeElement externalSchemaType = schemaTypeElement.getExternalSchemaType();
+            attributeProperties.setExternalTypeGUID(externalSchemaType.getElementHeader().getGUID());
         }
     }
 }

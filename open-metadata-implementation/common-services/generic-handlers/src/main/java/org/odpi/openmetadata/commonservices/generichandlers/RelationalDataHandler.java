@@ -10,9 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -320,43 +318,12 @@ public class RelationalDataHandler<DATABASE,
         {
             if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null))
             {
-                InstanceProperties classificationProperties = null;
+                InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
+                                                                                         encodingLanguage,
+                                                                                         encodingDescription,
+                                                                                         encodingProperties,
+                                                                                         methodName);
 
-                if (encodingType != null)
-                {
-                    classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                            null,
-                                                                                            OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME,
-                                                                                            encodingType,
-                                                                                            methodName);
-                }
-
-                if (encodingLanguage != null)
-                {
-                    classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                            classificationProperties,
-                                                                                            OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME,
-                                                                                            encodingLanguage,
-                                                                                            methodName);
-                }
-
-                if (encodingDescription != null)
-                {
-                    classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                            classificationProperties,
-                                                                                            OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
-                                                                                            encodingDescription,
-                                                                                            methodName);
-                }
-
-                if ((encodingProperties != null) && (! encodingProperties.isEmpty()))
-                {
-                    classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                                               classificationProperties,
-                                                                                               OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
-                                                                                               encodingProperties,
-                                                                                               methodName);
-                }
 
                 databaseHandler.setClassificationInRepository(userId,
                                                               databaseGUID,
@@ -365,6 +332,169 @@ public class RelationalDataHandler<DATABASE,
                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
                                                               OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
                                                               classificationProperties,
+                                                              methodName);
+            }
+
+            databaseHandler.setVendorProperties(userId, databaseGUID, vendorProperties, methodName);
+
+            try
+            {
+                InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                                       null,
+                                                                                                       OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_GUID,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_OWNS_ORDINAL,
+                                                                                                       methodName);
+
+                databaseHandler.linkElementToElement(userId,
+                                                     databaseManagerGUID,
+                                                     databaseManagerName,
+                                                     databaseManagerGUID,
+                                                     databaseManagerGUIDParameterName,
+                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                     databaseGUID,
+                                                     databaseGUIDParameterName,
+                                                     OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                     relationshipProperties,
+                                                     methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME);
+            }
+        }
+
+        return databaseGUID;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database that is owned by an external element.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param qualifiedName unique name for this database
+     * @param displayName the stored display name property for the database
+     * @param description the stored description property associated with the database
+     * @param pathName the fully qualified physical location of the data store
+     * @param createTime the time that the database was created
+     * @param modifiedTime the last known time the data store was modified
+     * @param encodingType the name of the encoding style used in the database
+     * @param encodingLanguage the name of the natural language used for text strings within the database
+     * @param encodingDescription the description of the encoding used in the database
+     * @param encodingProperties properties used to control encoding
+     * @param databaseType a description of the database type
+     * @param databaseVersion the version of the database - often this is related to the version of its schemas.
+     * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
+     * @param databaseImportedFrom the source (typically connection name) of the database information
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of Database - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabase(String               userId,
+                                 String               databaseManagerGUID,
+                                 String               databaseManagerName,
+                                 String               qualifiedName,
+                                 String               displayName,
+                                 String               description,
+                                 String               pathName,
+                                 Date                 createTime,
+                                 Date                 modifiedTime,
+                                 String               encodingType,
+                                 String               encodingLanguage,
+                                 String               encodingDescription,
+                                 Map<String, String>  encodingProperties,
+                                 String               databaseType,
+                                 String               databaseVersion,
+                                 String               databaseInstance,
+                                 String               databaseImportedFrom,
+                                 Map<String, String>  additionalProperties,
+                                 String               typeName,
+                                 Map<String, Object>  extendedProperties,
+                                 Map<String, String>  vendorProperties,
+                                 String               methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String databaseManagerGUIDParameterName  = "databaseManagerGUID";
+        final String databaseGUIDParameterName         = "databaseGUID";
+        final String qualifiedNameParameterName        = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        databaseHandler.verifyExternalSourceIdentity(userId, databaseManagerGUID, databaseManagerName, methodName);
+
+        String assetTypeName = OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+
+        Map<String, Object> assetExtendedProperties = new HashMap<>();
+        if (extendedProperties != null)
+        {
+            assetExtendedProperties.putAll(extendedProperties);
+        }
+
+        assetExtendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME, databaseType);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
+
+        /*
+         * This call will set up the default zones and give ownership of the asset to the calling user.
+         */
+        String databaseGUID = databaseHandler.createAssetInRepository(userId,
+                                                                      databaseManagerGUID,
+                                                                      databaseManagerName,
+                                                                      qualifiedName,
+                                                                      displayName,
+                                                                      description,
+                                                                      additionalProperties,
+                                                                      assetTypeName,
+                                                                      assetExtendedProperties,
+                                                                      InstanceStatus.ACTIVE,
+                                                                      methodName);
+
+        if (databaseGUID != null)
+        {
+            if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null))
+            {
+                InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
+                                                                                         encodingLanguage,
+                                                                                         encodingDescription,
+                                                                                         encodingProperties,
+                                                                                         methodName);
+
+
+                databaseHandler.setClassificationInRepository(userId,
+                                                              databaseManagerGUID,
+                                                              databaseManagerName,
+                                                              databaseGUID,
+                                                              databaseGUIDParameterName,
+                                                              OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_GUID,
+                                                              OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME,
+                                                              classificationProperties,
+                                                              false,
                                                               methodName);
             }
 
@@ -526,6 +656,163 @@ public class RelationalDataHandler<DATABASE,
                                                                        PropertyServerException
     {
         final String elementGUIDParameterName    = "databaseGUID";
+
+        this.updateDatabase(userId,
+                            databaseManagerGUID,
+                            databaseManagerName,
+                            databaseGUID,
+                            qualifiedName,
+                            displayName,
+                            description,
+                            createTime,
+                            modifiedTime,
+                            encodingType,
+                            encodingLanguage,
+                            encodingDescription,
+                            encodingProperties,
+                            databaseType,
+                            databaseVersion,
+                            databaseInstance,
+                            databaseImportedFrom,
+                            additionalProperties,
+                            typeName,
+                            extendedProperties,
+                            vendorProperties,
+                            methodName);
+
+        this.updateGovernanceClassifications(userId,
+                                             databaseGUID,
+                                             elementGUIDParameterName,
+                                             owner,
+                                             ownerTypeOrdinal,
+                                             zoneMembership,
+                                             originOrganizationGUID,
+                                             originBusinessCapabilityGUID,
+                                             otherOriginValues,
+                                             methodName);
+    }
+
+
+    /**
+     * Update the metadata element representing a database.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param elementGUIDParameterName parameter name of elementGUID
+     * @param owner identifier of the owner
+     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
+     * @param zoneMembership governance zones for the database - null means use the default zones set for this service
+     * @param originOrganizationGUID the properties that characterize where this database is from
+     * @param originBusinessCapabilityGUID the properties that characterize where this database is from
+     * @param otherOriginValues the properties that characterize where this database is from
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @SuppressWarnings(value = "deprecated")
+    public void updateGovernanceClassifications(String               userId,
+                                                String               elementGUID,
+                                                String               elementGUIDParameterName,
+                                                String               owner,
+                                                int                  ownerTypeOrdinal,
+                                                List<String>         zoneMembership,
+                                                String               originOrganizationGUID,
+                                                String               originBusinessCapabilityGUID,
+                                                Map<String, String>  otherOriginValues,
+                                                String               methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        if (owner != null)
+        {
+            databaseHandler.updateAssetOwner(userId, elementGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, methodName);
+        }
+
+        databaseHandler.updateAssetZones(userId, elementGUID, elementGUIDParameterName, zoneMembership, methodName);
+
+
+        if ((originOrganizationGUID != null) || (originBusinessCapabilityGUID != null) || (otherOriginValues != null))
+        {
+            final String organizationGUIDParameterName = "originOrganizationGUID";
+            final String businessCapabilityGUIDParameterName = "originBusinessCapabilityGUID";
+
+            databaseHandler.addAssetOrigin(userId,
+                                           elementGUID,
+                                           elementGUIDParameterName,
+                                           originOrganizationGUID,
+                                           organizationGUIDParameterName,
+                                           originBusinessCapabilityGUID,
+                                           businessCapabilityGUIDParameterName,
+                                           otherOriginValues,
+                                           methodName);
+        }
+        else
+        {
+            databaseHandler.removeAssetOrigin(userId, elementGUID, elementGUIDParameterName, methodName);
+        }
+    }
+
+
+
+
+    /**
+     * Update the metadata element representing a database.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseGUID unique identifier of the metadata element to update
+     * @param qualifiedName unique name for this database
+     * @param displayName the stored display name property for the database
+     * @param description the stored description property associated with the database
+     * @param createTime the time that the database was created
+     * @param modifiedTime the last known time the data store was modified
+     * @param encodingType the name of the encoding style used in the database
+     * @param encodingLanguage the name of the natural language used for text strings within the database
+     * @param encodingDescription the description of the encoding used in the database
+     * @param encodingProperties properties used to control encoding
+     * @param databaseType a description of the database type
+     * @param databaseVersion the version of the database - often this is related to the version of its schemas.
+     * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
+     * @param databaseImportedFrom the source (typically connection name) of the database information
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of Database - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabase(String               userId,
+                               String               databaseManagerGUID,
+                               String               databaseManagerName,
+                               String               databaseGUID,
+                               String               qualifiedName,
+                               String               displayName,
+                               String               description,
+                               Date                 createTime,
+                               Date                 modifiedTime,
+                               String               encodingType,
+                               String               encodingLanguage,
+                               String               encodingDescription,
+                               Map<String, String>  encodingProperties,
+                               String               databaseType,
+                               String               databaseVersion,
+                               String               databaseInstance,
+                               String               databaseImportedFrom,
+                               Map<String, String>  additionalProperties,
+                               String               typeName,
+                               Map<String, Object>  extendedProperties,
+                               Map<String, String>  vendorProperties,
+                               String               methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String elementGUIDParameterName    = "databaseGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -573,49 +860,14 @@ public class RelationalDataHandler<DATABASE,
                                     assetExtendedProperties,
                                     methodName);
 
-        databaseHandler.updateAssetOwner(userId, databaseGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, methodName);
-
-        databaseHandler.updateAssetZones(userId, databaseGUID, elementGUIDParameterName, zoneMembership, methodName);
-
         if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null))
         {
-            InstanceProperties classificationProperties = null;
+            InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
+                                                                                     encodingLanguage,
+                                                                                     encodingDescription,
+                                                                                     encodingProperties,
+                                                                                     methodName);
 
-            if (encodingType != null)
-            {
-                classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                        null,
-                                                                                        OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME,
-                                                                                        encodingType,
-                                                                                        methodName);
-            }
-
-            if (encodingLanguage != null)
-            {
-                classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                        classificationProperties,
-                                                                                        OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME,
-                                                                                        encodingLanguage,
-                                                                                        methodName);
-            }
-
-            if (encodingDescription != null)
-            {
-                classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                        classificationProperties,
-                                                                                        OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
-                                                                                        encodingDescription,
-                                                                                        methodName);
-            }
-
-            if ((encodingProperties != null) && (! encodingProperties.isEmpty()))
-            {
-                classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                                           classificationProperties,
-                                                                                           OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
-                                                                                           encodingProperties,
-                                                                                           methodName);
-            }
 
             databaseHandler.setClassificationInRepository(userId,
                                                           databaseGUID,
@@ -627,26 +879,6 @@ public class RelationalDataHandler<DATABASE,
                                                           methodName);
         }
 
-        if ((originOrganizationGUID != null) || (originBusinessCapabilityGUID != null) || (otherOriginValues != null))
-        {
-            final String organizationGUIDParameterName = "originOrganizationGUID";
-            final String businessCapabilityGUIDParameterName = "originBusinessCapabilityGUID";
-
-            databaseHandler.addAssetOrigin(userId,
-                                           databaseGUID,
-                                           elementGUIDParameterName,
-                                           originOrganizationGUID,
-                                           organizationGUIDParameterName,
-                                           originBusinessCapabilityGUID,
-                                           businessCapabilityGUIDParameterName,
-                                           otherOriginValues,
-                                           methodName);
-        }
-        else
-        {
-            databaseHandler.removeAssetOrigin(userId, databaseGUID, elementGUIDParameterName, methodName);
-        }
-
         if (vendorProperties != null)
         {
             databaseHandler.setVendorProperties(userId,
@@ -656,6 +888,63 @@ public class RelationalDataHandler<DATABASE,
         }
     }
 
+
+    /**
+     * Add the encoding parameters to an instance properties object.
+     *
+     * @param encodingType the name of the encoding style used in the database
+     * @param encodingLanguage the name of the natural language used for text strings within the database
+     * @param encodingDescription the description of the encoding used in the database
+     * @param encodingProperties properties used to control encoding
+     * @param methodName calling method
+     * @return packaged properties
+     */
+    private InstanceProperties getEncodingProperties(String               encodingType,
+                                                     String               encodingLanguage,
+                                                     String               encodingDescription,
+                                                     Map<String, String>  encodingProperties,
+                                                     String               methodName)
+    {
+        InstanceProperties classificationProperties = null;
+
+        if (encodingType != null)
+        {
+            classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                    null,
+                                                                                    OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME,
+                                                                                    encodingType,
+                                                                                    methodName);
+        }
+
+        if (encodingLanguage != null)
+        {
+            classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                    classificationProperties,
+                                                                                    OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME,
+                                                                                    encodingLanguage,
+                                                                                    methodName);
+        }
+
+        if (encodingDescription != null)
+        {
+            classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                    classificationProperties,
+                                                                                    OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                    encodingDescription,
+                                                                                    methodName);
+        }
+
+        if ((encodingProperties != null) && (! encodingProperties.isEmpty()))
+        {
+            classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                                       classificationProperties,
+                                                                                       OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME,
+                                                                                       encodingProperties,
+                                                                                       methodName);
+        }
+
+        return classificationProperties;
+    }
 
     /**
      * Update the zones for the database asset so that it becomes visible to consumers.
@@ -737,6 +1026,13 @@ public class RelationalDataHandler<DATABASE,
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
+        databaseHandler.removeLinkedDataSet(userId,
+                                            databaseManagerGUID,
+                                            databaseManagerName,
+                                            databaseGUID,
+                                            OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                            methodName);
+
         databaseHandler.deleteBeanInRepository(userId,
                                                databaseManagerGUID,
                                                databaseManagerName,
@@ -744,7 +1040,7 @@ public class RelationalDataHandler<DATABASE,
                                                elementGUIDParameterName,
                                                OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
                                                OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                               qualifiedNameParameterName,
+                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                qualifiedName,
                                                methodName);
     }
@@ -810,6 +1106,7 @@ public class RelationalDataHandler<DATABASE,
         return databaseHandler.getBeansByType(userId,
                                               OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
                                               OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                              null,
                                               startFrom,
                                               pageSize,
                                               methodName);
@@ -928,6 +1225,110 @@ public class RelationalDataHandler<DATABASE,
     /* ============================================================================
      * A database may host one or more database schemas depending on its capability
      */
+
+    /**
+     * Create a new metadata element to represent a database schema.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseGUID unique identifier of the database where the schema is located
+     * @param qualifiedName unique name for this database schema
+     * @param displayName the stored display name property for the database schema
+     * @param description the stored description property associated with the database schema
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new database schema
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseSchema(String               userId,
+                                       String               databaseManagerGUID,
+                                       String               databaseManagerName,
+                                       String               databaseGUID,
+                                       String               qualifiedName,
+                                       String               displayName,
+                                       String               description,
+                                       Map<String, String>  additionalProperties,
+                                       String               typeName,
+                                       Map<String, Object>  extendedProperties,
+                                       Map<String, String>  vendorProperties,
+                                       String               methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseGUID";
+        final String createdElementGUIDParameterName = "databaseSchemaGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        databaseSchemaHandler.verifyExternalSourceIdentity(userId, databaseManagerGUID, databaseManagerName, methodName);
+
+        String assetTypeName = OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        invalidParameterHandler.validateTypeName(assetTypeName,
+                                                 OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                 serviceName,
+                                                 methodName,
+                                                 repositoryHelper);
+
+        /*
+         * This call will set up the default zones and give ownership of the asset to the calling user.
+         */
+        String databaseSchemaGUID = databaseSchemaHandler.createAssetInRepository(userId,
+                                                                                  databaseManagerGUID,
+                                                                                  databaseManagerName,
+                                                                                  qualifiedName,
+                                                                                  displayName,
+                                                                                  description,
+                                                                                  additionalProperties,
+                                                                                  assetTypeName,
+                                                                                  extendedProperties,
+                                                                                  InstanceStatus.ACTIVE,
+                                                                                  methodName);
+
+        /*
+         * This relationship links the database to the database schema.
+         */
+        databaseSchemaHandler.linkElementToElement(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerName,
+                                                   databaseGUID,
+                                                   parentElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                   databaseSchemaGUID,
+                                                   createdElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                   null,
+                                                   methodName);
+
+        if (vendorProperties != null)
+        {
+            databaseHandler.setVendorProperties(userId,
+                                                databaseGUID,
+                                                vendorProperties,
+                                                methodName);
+        }
+
+        return databaseSchemaGUID;
+    }
+
 
     /**
      * Create a new metadata element to represent a database schema.
@@ -1153,6 +1554,7 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @SuppressWarnings(value = "deprecated")
     public void updateDatabaseSchema(String              userId,
                                      String              databaseManagerGUID,
                                      String              databaseManagerName,
@@ -1208,7 +1610,20 @@ public class RelationalDataHandler<DATABASE,
                                           extendedProperties,
                                           methodName);
 
-        databaseHandler.updateAssetOwner(userId, databaseSchemaGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, methodName);
+        this.updateGovernanceClassifications(userId,
+                                             databaseSchemaGUID,
+                                             elementGUIDParameterName,
+                                             owner,
+                                             ownerTypeOrdinal,
+                                             zoneMembership,
+                                             originOrganizationGUID,
+                                             originBusinessCapabilityGUID,
+                                             otherOriginValues,
+                                             methodName);
+        if (owner != null)
+        {
+            databaseHandler.updateAssetOwner(userId, databaseSchemaGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, methodName);
+        }
 
         databaseHandler.updateAssetZones(userId, databaseSchemaGUID, elementGUIDParameterName, zoneMembership, methodName);
 
@@ -1335,7 +1750,7 @@ public class RelationalDataHandler<DATABASE,
                                                      elementGUIDParameterName,
                                                      OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
                                                      OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                     qualifiedNameParameterName,
+                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                      qualifiedName,
                                                      methodName);
     }
@@ -1930,8 +2345,8 @@ public class RelationalDataHandler<DATABASE,
                                                     databaseTableGUIDParameterName,
                                                     OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
                                                     OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                     qualifiedName,
-                                                    qualifiedNameParameterName,
                                                     methodName);
     }
 
@@ -2384,12 +2799,15 @@ public class RelationalDataHandler<DATABASE,
         }
 
         databaseViewHandler.setClassificationInRepository(userId,
+                                                          databaseManagerGUID,
+                                                          databaseManagerName,
                                                           databaseViewGUID,
                                                           elementGUIDParameterName,
                                                           expectedTypeName,
                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                           OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                           properties,
+                                                          false,
                                                           methodName);
     }
 
@@ -3262,9 +3680,11 @@ public class RelationalDataHandler<DATABASE,
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
+     * @param externalSchemaTypeGUID unique identifier of an external schema identifier
      * @param dataType data type name - for stored values
      * @param defaultValue string containing default value - for stored values
      * @param fixedValue string containing fixed value - for literals
+     * @param validValuesSetGUID unique identifier for a valid values set to support
      * @param formula String formula - for derived values
      * @param isDeprecated is this table deprecated?
      * @param elementPosition the position of this column in its parent table.
@@ -3473,8 +3893,8 @@ public class RelationalDataHandler<DATABASE,
                                                      elementGUIDParameterName,
                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                      qualifiedName,
-                                                     qualifiedNameParameterName,
                                                      methodName);
     }
 

@@ -10,7 +10,7 @@ It is used by a technology that is integrating using the
 
 Figure 1 shows the repository proxy operating.
 
-![Figure 1](repository-proxy.png)
+![Figure 1](repository-proxy.png#pagewidth)
 > **Figure 1:** Repository proxy translating between third party APIs/events and open metadata
 
 There are two repository proxy implementations included with Egeria
@@ -21,12 +21,12 @@ There are two repository proxy implementations included with Egeria
 
 ## Configuring a Repository Proxy
 
-Figure 2 shows the configuration document for a metadata that does not connect to a cohort.
+Figure 2 shows the configuration document for a repository proxy.
 
-![Figure 1](../concepts/standalone-metadata-server-config.png)
-> **Figure 1:** Configuration for a repository proxy
+![Figure 2](../concepts/repository-proxy-configuration.png#pagewidth)
+> **Figure 2:** Configuration for a repository proxy
 
-The tasks for configuring an repository proxy are as follows:
+The tasks for configuring a repository proxy are as follows:
 
 * [Setting up the default event bus](../user/configuring-event-bus.md)
 * [Configuring the default local server URL root](../user/configuring-local-server-url.md)

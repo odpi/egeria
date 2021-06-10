@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -51,8 +50,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 abstract public class Relationship implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
-    private Date effectiveFromTime = null;
-    private Date effectiveToTime = null;
+    private Long effectiveFromTime = null;
+    private Long effectiveToTime = null;
     private Map<String, String> additionalProperties;
     protected RelationshipType relationshipType;
     private boolean readOnly = false;
@@ -98,11 +97,11 @@ abstract public class Relationship implements Serializable, OmasObject {
      *
      * @return Date the relationship becomes effective.
      */
-    public Date getEffectiveFromTime() {
+    public Long getEffectiveFromTime() {
         return effectiveFromTime;
     }
 
-    public void setEffectiveFromTime(Date effectiveFromTime) {
+    public void setEffectiveFromTime(Long effectiveFromTime) {
         this.effectiveFromTime = effectiveFromTime;
     }
 
@@ -111,11 +110,11 @@ abstract public class Relationship implements Serializable, OmasObject {
      *
      * @return Date the relationship stops being effective.
      */
-    public Date getEffectiveToTime() {
+    public Long getEffectiveToTime() {
         return effectiveToTime;
     }
 
-    public void setEffectiveToTime(Date effectiveToTime) {
+    public void setEffectiveToTime(Long effectiveToTime) {
         this.effectiveToTime = effectiveToTime;
     }
 

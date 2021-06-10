@@ -16,7 +16,7 @@ manage the metadata exchange through REST API calls and events.
 Figure 1 shows how the different categories of OMAG Servers
 are linked together to build the solutions.
 
-![Egeria Solution Composition](egeria-solution-components.png#pagewidth)
+![Egeria Solution Composition](../../../open-metadata-implementation/admin-services/docs/concepts/egeria-solution-components.png#pagewidth)
 > **Figure 1:** OMAG Servers connected together as components in an Egeria solution
 
 The inner ring, titled **Integrated Metadata**, illustrates the exchange of metadata between

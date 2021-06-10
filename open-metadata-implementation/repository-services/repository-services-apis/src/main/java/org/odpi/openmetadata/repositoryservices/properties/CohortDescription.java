@@ -22,9 +22,13 @@ public class CohortDescription extends OMRSProperty
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                 cohortName = null;
-    private CohortConnectionStatus connectionStatus = null;
-    private Connection             topicConnection = null;
+    private String                 cohortName                  = null;
+    private CohortConnectionStatus connectionStatus            = null;
+    private Connection             topicConnection             = null;
+    private Connection             singleTopicConnection       = null;
+    private Connection             registrationTopicConnection = null;
+    private Connection             typesTopicConnection        = null;
+    private Connection             instancesTopicConnection    = null;
 
 
     /**
@@ -48,6 +52,12 @@ public class CohortDescription extends OMRSProperty
         if (template != null)
         {
             cohortName = template.getCohortName();
+            connectionStatus = template.getConnectionStatus();
+            topicConnection = template.getTopicConnection();
+            singleTopicConnection = template.getSingleTopicConnection();
+            registrationTopicConnection = template.getRegistrationTopicConnection();
+            typesTopicConnection = template.getTypesTopicConnection();
+            instancesTopicConnection = template.getInstancesTopicConnection();
         }
     }
 
@@ -73,27 +83,137 @@ public class CohortDescription extends OMRSProperty
     }
 
 
+    /**
+     * Return the status of the connection to the cohort.
+     *
+     * @return status
+     */
     public CohortConnectionStatus getConnectionStatus()
     {
         return connectionStatus;
     }
 
 
+    /**
+     * Set up the status of the connector tio the cohort.
+     *
+     * @param connectionStatus status
+     */
     public void setConnectionStatus(CohortConnectionStatus connectionStatus)
     {
         this.connectionStatus = connectionStatus;
     }
 
 
+    /**
+     * Return the connection to the principle cohort topic if it is in use.
+     *
+     * @return Connection object
+     */
+    @Deprecated
     public Connection getTopicConnection()
     {
         return topicConnection;
     }
 
 
+    /**
+     * Set up the connection to the principle cohort topic if it is in use.
+     *
+     * @param topicConnection Connection object
+     */
+    @Deprecated
     public void setTopicConnection(Connection topicConnection)
     {
         this.topicConnection = topicConnection;
+    }
+
+
+    /**
+     * Return the connection to the single cohort topic if it is in use.
+     *
+     * @return Connection object
+     */
+    public Connection getSingleTopicConnection()
+    {
+        return singleTopicConnection;
+    }
+
+
+    /**
+     * Set up the connection to the single cohort topic if it is in use.
+     *
+     * @param singleTopicConnection Connection object
+     */
+    public void setSingleTopicConnection(Connection singleTopicConnection)
+    {
+        this.singleTopicConnection = singleTopicConnection;
+    }
+
+
+    /**
+     * Return the connection to the registration cohort topic if it is in use.
+     *
+     * @return Connection object
+     */
+    public Connection getRegistrationTopicConnection()
+    {
+        return registrationTopicConnection;
+    }
+
+
+    /**
+     * Set up the connection to the registration cohort topic if it is in use.
+     *
+     * @param registrationTopicConnection Connection object
+     */
+    public void setRegistrationTopicConnection(Connection registrationTopicConnection)
+    {
+        this.registrationTopicConnection = registrationTopicConnection;
+    }
+
+
+    /**
+     * Return the connection to the types cohort topic if it is in use.
+     *
+     * @return Connection object
+     */
+    public Connection getTypesTopicConnection()
+    {
+        return typesTopicConnection;
+    }
+
+
+    /**
+     * Set up the connection to the types cohort topic if it is in use.
+     *
+     * @param typesTopicConnection Connection object
+     */
+    public void setTypesTopicConnection(Connection typesTopicConnection)
+    {
+        this.typesTopicConnection = typesTopicConnection;
+    }
+
+
+    /**
+     * Return the connection to the instances cohort topic if it is in use.
+     *
+     * @return Connection object
+     */
+    public Connection getInstancesTopicConnection()
+    {
+        return instancesTopicConnection;
+    }
+
+
+    /**
+     * Set up the connection to the instances cohort topic if it is in use.
+     *
+     * @param instanceTopicConnection Connection object
+     */
+    public void setInstancesTopicConnection(Connection instanceTopicConnection)
+    {
+        this.instancesTopicConnection = instanceTopicConnection;
     }
 
 
@@ -106,8 +226,13 @@ public class CohortDescription extends OMRSProperty
     public String toString()
     {
         return "CohortDescription{" +
-                "cohortName=" + cohortName +
-                '}';
+                       "cohortName='" + cohortName + '\'' +
+                       ", connectionStatus=" + connectionStatus +
+                       ", singleTopicConnection=" + singleTopicConnection +
+                       ", registrationTopicConnection=" + registrationTopicConnection +
+                       ", typesTopicConnection=" + typesTopicConnection +
+                       ", instancesTopicConnection=" + instancesTopicConnection +
+                       '}';
     }
 
 
@@ -124,16 +249,17 @@ public class CohortDescription extends OMRSProperty
         {
             return true;
         }
-        if (!(objectToCompare instanceof CohortDescription))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         CohortDescription that = (CohortDescription) objectToCompare;
-        return Objects.equals(getCohortName(), that.getCohortName());
+        return Objects.equals(cohortName, that.cohortName) &&
+                       connectionStatus == that.connectionStatus &&
+                       Objects.equals(singleTopicConnection, that.singleTopicConnection) &&
+                       Objects.equals(registrationTopicConnection, that.registrationTopicConnection) &&
+                       Objects.equals(typesTopicConnection, that.typesTopicConnection) &&
+                       Objects.equals(instancesTopicConnection, that.instancesTopicConnection);
     }
 
 
@@ -145,7 +271,7 @@ public class CohortDescription extends OMRSProperty
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(super.hashCode(), getCohortName());
+        return Objects.hash(cohortName, connectionStatus, singleTopicConnection, registrationTopicConnection, typesTopicConnection,
+                            instancesTopicConnection);
     }
 }
