@@ -43,9 +43,6 @@ allprojects {
     group = 'org.odpi.egeria'
     version = '2.11-SNAPSHOT'
 
-    apply plugin: 'java'
-
-
     // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
     //gradleLint {
@@ -58,6 +55,7 @@ allprojects {
 
     // Mostly java, so default to this for now
     apply plugin: 'java'
+    apply plugin: 'jacoco'
 
     // As we've migrated from maven - we'll assume all submodules publish directly to maven
     apply plugin: 'maven-publish'
@@ -253,6 +251,7 @@ allprojects {
         targetCompatibility = "1.8"
     }
 
+
     // Tasks to help in finding dependency chains
     task printAllDependencies(type: DependencyReportTask) {}
     task printSubDependencies(type: DependencyReportTask) {}
@@ -267,4 +266,34 @@ allprojects {
  */
 
 subprojects {
+}
+
+// Aggregation task 
+
+// Jacoco reporting -- from gradle docs
+task codeCoverageReport(type: JacocoReport) {
+    // Gather execution data from all subprojects
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    // Add all relevant sourcesets from the subprojects
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
+    // enable the different report types (html, xml, csv)
+    reports {
+        // xml is usually used to integrate code coverage with
+        // other tools like SonarQube, Coveralls or Codecov
+        xml.enabled true
+
+        // HTML reports can be used to see code coverage
+        // without any external tools
+        html.enabled true
+        csv.enabled true
+    }
+
+}
+// always run the tests before generating the report
+codeCoverageReport.dependsOn {
+    subprojects*.test
 }
